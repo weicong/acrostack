@@ -3,23 +3,24 @@ packages:
   - packages/*
   - tools/*
 
-catalogMode: prefer
-
 catalog:
+  "@ant-design/icons": ^6.1.1
+  "@tanstack/react-form": ^1.0.0
   "@types/node": ^24
-  typescript: ^5
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
-  vite-plus: latest
-  react: ^19.0.0
-  react-dom: ^19.0.0
   "@types/react": ^19.0.0
   "@types/react-dom": ^19.0.0
-  antd: ^6.0.0
-  "@tanstack/react-form": ^1.0.0
-  dayjs: ^1.11.0
-  bumpp: ^11.0.1
   "@typescript/native-preview": 7.0.0-dev.20260328.1
+  antd: ^6.0.0
+  bumpp: ^11.0.1
+  dayjs: ^1.11.0
+  react: ^19.0.0
+  react-dom: ^19.0.0
+  typescript: ^5
+  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vite-plus: latest
+  vitest: npm:@voidzero-dev/vite-plus-test@latest
+
+catalogMode: prefer
 overrides:
   vite: "catalog:"
   vitest: "catalog:"

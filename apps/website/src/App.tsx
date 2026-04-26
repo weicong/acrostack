@@ -1,44 +1,17 @@
-import { createForm } from "tanstack-form-antd";
-import { Card, Typography, Space, Divider, message } from "antd";
+import { Typography, Space, Tabs } from "antd";
+import { Basic } from "./demos/Basic";
+import { EditableTable } from "./demos/EditableTable";
+import { CRUD } from "./demos/CRUD";
 
 const { Title, Text } = Typography;
 
-interface UserProfile {
-  basicInfo: {
-    firstName: string;
-    lastName: string;
-    age: number;
-  };
-  role: "admin" | "user" | "guest";
-  bio: string;
-  notifications: boolean;
-  tags: string[];
-}
-
-// Create the form components using the factory
-const {
-  Form,
-  TextField,
-  NumberField,
-  SelectField,
-  TextAreaField,
-  SwitchField,
-  SubmitButton,
-  Dependency,
-} = createForm<UserProfile>();
-
 export default function App() {
-  const handleSubmit = (values: UserProfile) => {
-    console.log("Submitted values:", values);
-    message.success("Form submitted successfully! Check console for details.");
-  };
-
   return (
     <div style={{ padding: "40px", background: "#f0f2f5", minHeight: "100vh" }}>
       <Space
-        direction="vertical"
+        orientation="vertical"
         size="large"
-        style={{ display: "flex", maxWidth: "800px", margin: "0 auto" }}
+        style={{ display: "flex", maxWidth: "1000px", margin: "0 auto" }}
       >
         <header>
           <Title level={2}>Ant Design × TanStack Form Demo</Title>
@@ -49,79 +22,26 @@ export default function App() {
           </Text>
         </header>
 
-        <Card title="User Profile Form" variant="borderless">
-          <Form
-            defaultValues={{
-              basicInfo: {
-                firstName: "Ant",
-                lastName: "Gravity",
-                age: 25,
-              },
-              role: "admin",
-              bio: "Coding assistant powered by DeepMind.",
-              notifications: true,
-              tags: ["react", "typescript"],
-            }}
-            onSubmit={handleSubmit}
-          >
-            <Space direction="vertical" style={{ width: "100%" }} size="middle">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                <TextField
-                  name="basicInfo.firstName"
-                  label="First Name"
-                  required="First name is required"
-                />
-                <TextField name="basicInfo.lastName" label="Last Name" required />
-              </div>
-
-              <NumberField name="basicInfo.age" label="Age" min={0} max={120} required />
-
-              <SelectField
-                name="role"
-                label="Role"
-                options={[
-                  { label: "Administrator", value: "admin" },
-                  { label: "Standard User", value: "user" },
-                  { label: "Guest", value: "guest" },
-                ]}
-                required
-              />
-
-              <TextAreaField
-                name="bio"
-                label="Biography"
-                placeholder="Tell us about yourself..."
-                rows={3}
-              />
-
-              <SwitchField
-                name="notifications"
-                label="Enable Notifications"
-                checkedChildren="ON"
-                unCheckedChildren="OFF"
-              />
-
-              <Divider />
-
-              <Dependency name={["basicInfo.firstName", "basicInfo.lastName"]}>
-                {({ "basicInfo.firstName": first, "basicInfo.lastName": last }) => (
-                  <div
-                    style={{
-                      padding: "8px",
-                      background: "#fafafa",
-                      borderRadius: "4px",
-                      border: "1px dashed #d9d9d9",
-                    }}
-                  >
-                    <Text strong>Live Preview Name:</Text> {first} {last}
-                  </div>
-                )}
-              </Dependency>
-
-              <SubmitButton buttonProps={{ size: "large", block: true }}>Save Profile</SubmitButton>
-            </Space>
-          </Form>
-        </Card>
+        <Tabs
+          defaultActiveKey="basic"
+          items={[
+            {
+              key: "basic",
+              label: "Basic Form",
+              children: <Basic />,
+            },
+            {
+              key: "table",
+              label: "Editable Table",
+              children: <EditableTable />,
+            },
+            {
+              key: "crud",
+              label: "CRUD Table",
+              children: <CRUD />,
+            },
+          ]}
+        />
       </Space>
     </div>
   );

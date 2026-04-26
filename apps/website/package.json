@@ -9,6 +9,7 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "@ant-design/icons": "catalog:",
     "@tanstack/react-form": "catalog:",
     "antd": "catalog:",
     "dayjs": "catalog:",

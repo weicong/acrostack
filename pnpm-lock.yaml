@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@ant-design/icons':
+      specifier: ^6.1.1
+      version: 6.1.1
     '@tanstack/react-form':
       specifier: ^1.0.0
       version: 1.29.1
@@ -57,6 +60,9 @@ importers:
 
   apps/website:
     dependencies:
+      '@ant-design/icons':
+        specifier: 'catalog:'
+        version: 6.1.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@tanstack/react-form':
         specifier: 'catalog:'
         version: 1.29.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
