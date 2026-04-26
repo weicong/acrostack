@@ -9,16 +9,16 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@tanstack/react-form": "^1.0.0",
-    "antd": "^6.0.0",
+    "@tanstack/react-form": "catalog:",
+    "antd": "catalog:",
     "antd-tanstack-form": "workspace:*",
-    "dayjs": "^1.11.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "dayjs": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plus": "catalog:"

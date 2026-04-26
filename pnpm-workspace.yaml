@@ -11,6 +11,13 @@ catalog:
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: npm:@voidzero-dev/vite-plus-test@latest
   vite-plus: latest
+  react: ^19.0.0
+  react-dom: ^19.0.0
+  "@types/react": ^19.0.0
+  "@types/react-dom": ^19.0.0
+  antd: ^6.0.0
+  "@tanstack/react-form": ^1.0.0
+  dayjs: ^1.11.0
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
