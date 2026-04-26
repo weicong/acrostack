@@ -18,6 +18,8 @@ catalog:
   antd: ^6.0.0
   "@tanstack/react-form": ^1.0.0
   dayjs: ^1.11.0
+  bumpp: ^11.0.1
+  "@typescript/native-preview": 7.0.0-dev.20260328.1
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
