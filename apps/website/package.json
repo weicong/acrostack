@@ -11,10 +11,10 @@
   "dependencies": {
     "@tanstack/react-form": "catalog:",
     "antd": "catalog:",
-    "antd-tanstack-form": "workspace:*",
     "dayjs": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "tanstack-form-antd": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "catalog:",

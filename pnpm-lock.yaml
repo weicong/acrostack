@@ -63,9 +63,6 @@ importers:
       antd:
         specifier: 'catalog:'
         version: 6.3.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      antd-tanstack-form:
-        specifier: workspace:*
-        version: link:../../packages/antd-tanstack-form
       dayjs:
         specifier: 'catalog:'
         version: 1.11.20
@@ -75,6 +72,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.5(react@19.2.5)
+      tanstack-form-antd:
+        specifier: workspace:*
+        version: link:../../packages/tanstack-form-antd
     devDependencies:
       '@types/react':
         specifier: 'catalog:'
@@ -89,7 +89,7 @@ importers:
         specifier: 'catalog:'
         version: 0.1.19(@types/node@25.6.0)(jiti@2.6.1)(typescript@5.9.3)(vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
 
-  packages/antd-tanstack-form:
+  packages/tanstack-form-antd:
     devDependencies:
       '@tanstack/react-form':
         specifier: 'catalog:'

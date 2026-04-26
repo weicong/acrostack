@@ -1,4 +1,4 @@
-import { createForm } from "antd-tanstack-form";
+import { createForm } from "tanstack-form-antd";
 import { Card, Typography, Space, Divider, message } from "antd";
 
 const { Title, Text } = Typography;
@@ -43,7 +43,7 @@ export default function App() {
         <header>
           <Title level={2}>Ant Design × TanStack Form Demo</Title>
           <Text type="secondary">
-            This demo showcases the <code>antd-tanstack-form</code> adapter. It provides a
+            This demo showcases the <code>tanstack-form-antd</code> adapter. It provides a
             ProForm-style API with full type safety for TanStack Form using Ant Design v6
             components.
           </Text>
