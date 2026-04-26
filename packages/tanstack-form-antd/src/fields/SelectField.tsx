@@ -1,14 +1,17 @@
 import React from "react";
 import { Select } from "antd";
 import type { SelectProps as AntSelectProps } from "antd";
-import { useFieldContext } from "../form-context";
+import { useFieldContext, useFormConfig } from "../form-context";
 import { AntFormItem } from "../AntFormItem";
+import { ReadonlyDisplay } from "../ReadonlyDisplay";
 
 export interface SelectFieldProps {
   label?: string;
   required?: boolean;
   placeholder?: string;
   disabled?: boolean;
+  /** 是否只读模式 */
+  readonly?: boolean;
   /** 选项列表 */
   options?: AntSelectProps["options"];
   /** 是否支持多选 */
@@ -41,6 +44,7 @@ export function SelectField({
   required,
   placeholder,
   disabled,
+  readonly,
   options,
   mode,
   allowClear = true,
@@ -49,6 +53,8 @@ export function SelectField({
 }: SelectFieldProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const field = useFieldContext<any>();
+  const config = useFormConfig();
+  const isReadonly = readonly ?? config.readonly;
 
   const errors =
     field.state.meta.isTouched && field.state.meta.errors.length > 0
@@ -56,20 +62,29 @@ export function SelectField({
       : undefined;
 
   return (
-    <AntFormItem label={label} required={required} errors={errors}>
-      <Select
-        {...selectProps}
-        style={{ width: "100%", ...selectProps?.style }}
-        value={field.state.value}
-        onChange={(value) => field.handleChange(value)}
-        onBlur={() => field.handleBlur()}
-        placeholder={placeholder}
-        disabled={disabled}
-        options={options}
-        mode={mode}
-        allowClear={allowClear}
-        showSearch={showSearch}
-      />
+    <AntFormItem label={label} required={!isReadonly && required} errors={errors}>
+      {isReadonly ? (
+        <ReadonlyDisplay
+          type="select"
+          value={field.state.value}
+          options={options}
+          placeholder={placeholder}
+        />
+      ) : (
+        <Select
+          {...selectProps}
+          style={{ width: "100%", ...selectProps?.style }}
+          value={field.state.value}
+          onChange={(value) => field.handleChange(value)}
+          onBlur={() => field.handleBlur()}
+          placeholder={placeholder}
+          disabled={disabled}
+          options={options}
+          mode={mode}
+          allowClear={allowClear}
+          showSearch={showSearch}
+        />
+      )}
     </AntFormItem>
   );
 }

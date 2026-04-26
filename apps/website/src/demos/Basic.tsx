@@ -1,5 +1,6 @@
+import React from "react";
 import { createForm } from "tanstack-form-antd";
-import { Card, Space, Divider, message, Typography } from "antd";
+import { Card, Space, Divider, message, Typography, Switch } from "antd";
 
 const { Text } = Typography;
 
@@ -27,14 +28,26 @@ const {
 } = createForm<UserProfile>();
 
 export function Basic() {
+  const [readonly, setReadonly] = React.useState(false);
+
   const handleSubmit = (values: UserProfile) => {
     console.log("Submitted values:", values);
     message.success("Form submitted successfully! Check console for details.");
   };
 
   return (
-    <Card title="User Profile Form" variant="borderless">
+    <Card
+      title="User Profile Form"
+      variant="borderless"
+      extra={
+        <Space>
+          <span>Readonly Mode:</span>
+          <Switch checked={readonly} onChange={setReadonly} />
+        </Space>
+      }
+    >
       <Form
+        readonly={readonly}
         defaultValues={{
           basicInfo: {
             firstName: "Ant",

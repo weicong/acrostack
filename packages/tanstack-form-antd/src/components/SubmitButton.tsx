@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import type { ButtonProps } from "antd";
-import { useFormContext } from "../form-context";
+import { useFormContext, useFormConfig } from "../form-context";
 
 export interface SubmitButtonProps {
   /** 按钮文本，默认 '提交' */
@@ -17,6 +17,9 @@ export interface SubmitButtonProps {
  */
 export function SubmitButton({ label = "提交", buttonProps }: SubmitButtonProps) {
   const form = useFormContext();
+  const config = useFormConfig();
+
+  if (config.readonly) return null;
 
   return (
     <form.Subscribe selector={(state) => state.isSubmitting}>

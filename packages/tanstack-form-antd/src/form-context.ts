@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { createFormHookContexts } from "@tanstack/react-form";
 
 /**
@@ -10,3 +11,11 @@ import { createFormHookContexts } from "@tanstack/react-form";
  */
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
+
+export interface FormConfig {
+  readonly?: boolean;
+}
+
+export const FormConfigContext = createContext<FormConfig>({ readonly: false });
+
+export const useFormConfig = () => useContext(FormConfigContext);

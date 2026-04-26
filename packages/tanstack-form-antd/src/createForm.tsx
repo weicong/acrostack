@@ -12,6 +12,8 @@ import type {
 import type { TextAreaProps as AntTextAreaProps } from "antd/es/input";
 import dayjs, { type Dayjs } from "dayjs";
 import { AntFormItem } from "./AntFormItem";
+import { FormConfigContext, useFormConfig } from "./form-context";
+import { ReadonlyDisplay } from "./ReadonlyDisplay";
 
 // ==================== Type Utilities ====================
 
@@ -44,6 +46,7 @@ export interface CreateFormFormProps<TFormValues> {
   defaultValues: TFormValues;
   onSubmit?: (values: TFormValues) => void | Promise<void>;
   layout?: "horizontal" | "vertical" | "inline";
+  readonly?: boolean;
 }
 
 export interface CreateFormTextFieldProps<TFormValues> {
@@ -52,6 +55,7 @@ export interface CreateFormTextFieldProps<TFormValues> {
   required?: boolean | string;
   placeholder?: string;
   disabled?: boolean;
+  readonly?: boolean;
   validators?: SimpleValidators<string>;
   inputProps?: Omit<InputProps, "value" | "onChange" | "onBlur" | "placeholder" | "disabled">;
 }
@@ -62,6 +66,7 @@ export interface CreateFormTextAreaFieldProps<TFormValues> {
   required?: boolean | string;
   placeholder?: string;
   disabled?: boolean;
+  readonly?: boolean;
   rows?: number;
   validators?: SimpleValidators<string>;
   textAreaProps?: Omit<
@@ -76,6 +81,7 @@ export interface CreateFormNumberFieldProps<TFormValues> {
   required?: boolean | string;
   placeholder?: string;
   disabled?: boolean;
+  readonly?: boolean;
   min?: number;
   max?: number;
   step?: number;
@@ -92,6 +98,7 @@ export interface CreateFormSelectFieldProps<TFormValues> {
   required?: boolean | string;
   placeholder?: string;
   disabled?: boolean;
+  readonly?: boolean;
   options?: AntSelectProps["options"];
   mode?: "multiple" | "tags";
   allowClear?: boolean;
@@ -117,6 +124,7 @@ export interface CreateFormDatePickerFieldProps<TFormValues> {
   required?: boolean | string;
   placeholder?: string;
   disabled?: boolean;
+  readonly?: boolean;
   format?: string;
   showTime?: boolean;
   validators?: SimpleValidators<string>;
@@ -131,6 +139,7 @@ export interface CreateFormSwitchFieldProps<TFormValues> {
   label?: string;
   required?: boolean | string;
   disabled?: boolean;
+  readonly?: boolean;
   checkedChildren?: React.ReactNode;
   unCheckedChildren?: React.ReactNode;
   switchProps?: Omit<SwitchProps, "checked" | "onChange" | "disabled">;
@@ -225,6 +234,7 @@ export function createForm<TFormValues>() {
     defaultValues,
     onSubmit,
     layout = "vertical",
+    readonly = false,
   }: CreateFormFormProps<TFormValues>) {
     const form = useForm({
       defaultValues,
@@ -236,12 +246,13 @@ export function createForm<TFormValues>() {
           }
         : {}),
     } as Parameters<typeof useForm>[0]);
-
     return (
       <FormInstanceContext.Provider value={form}>
-        <AntForm layout={layout} component="form" onFinish={() => form.handleSubmit()}>
-          {children}
-        </AntForm>
+        <FormConfigContext.Provider value={{ readonly }}>
+          <AntForm layout={layout} component="form" onFinish={() => form.handleSubmit()}>
+            {children}
+          </AntForm>
+        </FormConfigContext.Provider>
       </FormInstanceContext.Provider>
     );
   }
@@ -254,25 +265,36 @@ export function createForm<TFormValues>() {
     required,
     placeholder,
     disabled,
+    readonly,
     validators,
     inputProps,
   }: CreateFormTextFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     const merged = mergeValidators<string>(required, validators);
     return (
       <form.Field name={name} validators={merged}>
         {(field: any) => (
-          <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-            <Input
-              {...inputProps}
-              value={field.state.value}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                field.handleChange(e.target.value)
-              }
-              onBlur={() => field.handleBlur()}
-              placeholder={placeholder}
-              disabled={disabled}
-            />
+          <AntFormItem
+            label={label}
+            required={!isReadonly && !!required}
+            errors={getFieldErrors(field)}
+          >
+            {isReadonly ? (
+              <ReadonlyDisplay value={field.state.value} placeholder={placeholder} />
+            ) : (
+              <Input
+                {...inputProps}
+                value={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  field.handleChange(e.target.value)
+                }
+                onBlur={() => field.handleBlur()}
+                placeholder={placeholder}
+                disabled={disabled}
+              />
+            )}
           </AntFormItem>
         )}
       </form.Field>
@@ -287,27 +309,38 @@ export function createForm<TFormValues>() {
     required,
     placeholder,
     disabled,
+    readonly,
     rows = 4,
     validators,
     textAreaProps,
   }: CreateFormTextAreaFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     const merged = mergeValidators<string>(required, validators);
     return (
       <form.Field name={name} validators={merged}>
         {(field: any) => (
-          <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-            <Input.TextArea
-              {...textAreaProps}
-              value={field.state.value}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                field.handleChange(e.target.value)
-              }
-              onBlur={() => field.handleBlur()}
-              placeholder={placeholder}
-              disabled={disabled}
-              rows={rows}
-            />
+          <AntFormItem
+            label={label}
+            required={!isReadonly && !!required}
+            errors={getFieldErrors(field)}
+          >
+            {isReadonly ? (
+              <ReadonlyDisplay value={field.state.value} placeholder={placeholder} />
+            ) : (
+              <Input.TextArea
+                {...textAreaProps}
+                value={field.state.value}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  field.handleChange(e.target.value)
+                }
+                onBlur={() => field.handleBlur()}
+                placeholder={placeholder}
+                disabled={disabled}
+                rows={rows}
+              />
+            )}
           </AntFormItem>
         )}
       </form.Field>
@@ -322,6 +355,7 @@ export function createForm<TFormValues>() {
     required,
     placeholder,
     disabled,
+    readonly,
     min,
     max,
     step,
@@ -329,23 +363,33 @@ export function createForm<TFormValues>() {
     inputNumberProps,
   }: CreateFormNumberFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     const merged = mergeValidators<number>(required, validators);
     return (
       <form.Field name={name} validators={merged}>
         {(field: any) => (
-          <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-            <InputNumber
-              {...inputNumberProps}
-              style={{ width: "100%", ...inputNumberProps?.style }}
-              value={field.state.value}
-              onChange={(value) => field.handleChange(value as number)}
-              onBlur={() => field.handleBlur()}
-              placeholder={placeholder}
-              disabled={disabled}
-              min={min}
-              max={max}
-              step={step}
-            />
+          <AntFormItem
+            label={label}
+            required={!isReadonly && !!required}
+            errors={getFieldErrors(field)}
+          >
+            {isReadonly ? (
+              <ReadonlyDisplay type="number" value={field.state.value} placeholder={placeholder} />
+            ) : (
+              <InputNumber
+                {...inputNumberProps}
+                style={{ width: "100%", ...inputNumberProps?.style }}
+                value={field.state.value}
+                onChange={(value) => field.handleChange(value as number)}
+                onBlur={() => field.handleBlur()}
+                placeholder={placeholder}
+                disabled={disabled}
+                min={min}
+                max={max}
+                step={step}
+              />
+            )}
           </AntFormItem>
         )}
       </form.Field>
@@ -360,6 +404,7 @@ export function createForm<TFormValues>() {
     required,
     placeholder,
     disabled,
+    readonly,
     options,
     mode,
     allowClear = true,
@@ -368,24 +413,39 @@ export function createForm<TFormValues>() {
     selectProps,
   }: CreateFormSelectFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     const merged = mergeValidators(required, validators);
     return (
       <form.Field name={name} validators={merged}>
         {(field: any) => (
-          <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-            <Select
-              {...selectProps}
-              style={{ width: "100%", ...selectProps?.style }}
-              value={field.state.value}
-              onChange={(value) => field.handleChange(value)}
-              onBlur={() => field.handleBlur()}
-              placeholder={placeholder}
-              disabled={disabled}
-              options={options}
-              mode={mode}
-              allowClear={allowClear}
-              showSearch={showSearch}
-            />
+          <AntFormItem
+            label={label}
+            required={!isReadonly && !!required}
+            errors={getFieldErrors(field)}
+          >
+            {isReadonly ? (
+              <ReadonlyDisplay
+                type="select"
+                value={field.state.value}
+                options={options}
+                placeholder={placeholder}
+              />
+            ) : (
+              <Select
+                {...selectProps}
+                style={{ width: "100%", ...selectProps?.style }}
+                value={field.state.value}
+                onChange={(value) => field.handleChange(value)}
+                onBlur={() => field.handleBlur()}
+                placeholder={placeholder}
+                disabled={disabled}
+                options={options}
+                mode={mode}
+                allowClear={allowClear}
+                showSearch={showSearch}
+              />
+            )}
           </AntFormItem>
         )}
       </form.Field>
@@ -400,33 +460,47 @@ export function createForm<TFormValues>() {
     required,
     placeholder,
     disabled,
+    readonly,
     format = "YYYY-MM-DD",
     showTime,
     validators,
     datePickerProps,
   }: CreateFormDatePickerFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     const merged = mergeValidators<string>(required, validators);
     return (
       <form.Field name={name} validators={merged}>
         {(field: any) => {
           const dayjsValue: Dayjs | null = field.state.value ? dayjs(field.state.value) : null;
           return (
-            <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-              <DatePicker
-                {...datePickerProps}
-                style={{ width: "100%", ...datePickerProps?.style }}
-                value={dayjsValue}
-                onChange={(_date: Dayjs | Dayjs[] | null, dateString: string | string[] | null) => {
-                  const value = Array.isArray(dateString) ? dateString[0] : dateString || "";
-                  field.handleChange(value);
-                }}
-                onBlur={() => field.handleBlur()}
-                placeholder={placeholder}
-                disabled={disabled}
-                format={format}
-                showTime={showTime}
-              />
+            <AntFormItem
+              label={label}
+              required={!isReadonly && !!required}
+              errors={getFieldErrors(field)}
+            >
+              {isReadonly ? (
+                <ReadonlyDisplay value={field.state.value} placeholder={placeholder} />
+              ) : (
+                <DatePicker
+                  {...datePickerProps}
+                  style={{ width: "100%", ...datePickerProps?.style }}
+                  value={dayjsValue}
+                  onChange={(
+                    _date: Dayjs | Dayjs[] | null,
+                    dateString: string | string[] | null,
+                  ) => {
+                    const value = Array.isArray(dateString) ? dateString[0] : dateString || "";
+                    field.handleChange(value);
+                  }}
+                  onBlur={() => field.handleBlur()}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  format={format}
+                  showTime={showTime}
+                />
+              )}
             </AntFormItem>
           );
         }}
@@ -441,23 +515,39 @@ export function createForm<TFormValues>() {
     label,
     required,
     disabled,
+    readonly,
     checkedChildren,
     unCheckedChildren,
     switchProps,
   }: CreateFormSwitchFieldProps<TFormValues>) {
     const form = useFormInstance();
+    const config = useFormConfig();
+    const isReadonly = readonly ?? config.readonly;
     return (
       <form.Field name={name}>
         {(field: any) => (
-          <AntFormItem label={label} required={!!required} errors={getFieldErrors(field)}>
-            <Switch
-              {...switchProps}
-              checked={field.state.value}
-              onChange={(checked: boolean) => field.handleChange(checked)}
-              disabled={disabled}
-              checkedChildren={checkedChildren}
-              unCheckedChildren={unCheckedChildren}
-            />
+          <AntFormItem
+            label={label}
+            required={!isReadonly && !!required}
+            errors={getFieldErrors(field)}
+          >
+            {isReadonly ? (
+              <ReadonlyDisplay
+                type="switch"
+                value={field.state.value}
+                checkedChildren={checkedChildren}
+                unCheckedChildren={unCheckedChildren}
+              />
+            ) : (
+              <Switch
+                {...switchProps}
+                checked={field.state.value}
+                onChange={(checked: boolean) => field.handleChange(checked)}
+                disabled={disabled}
+                checkedChildren={checkedChildren}
+                unCheckedChildren={unCheckedChildren}
+              />
+            )}
           </AntFormItem>
         )}
       </form.Field>
@@ -468,6 +558,10 @@ export function createForm<TFormValues>() {
 
   function SubmitButton({ children = "提交", buttonProps }: CreateFormSubmitButtonProps) {
     const form = useFormInstance();
+    const config = useFormConfig();
+
+    if (config.readonly) return null;
+
     return (
       <form.Subscribe selector={(state: any) => state.isSubmitting}>
         {(isSubmitting: boolean) => (

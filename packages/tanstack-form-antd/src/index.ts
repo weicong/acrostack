@@ -5,7 +5,14 @@ export { createForm } from "./createForm";
 export { useAppForm, withForm } from "./useAppForm";
 
 // ===== Form Context (for extension / custom components) =====
-export { fieldContext, formContext, useFieldContext, useFormContext } from "./form-context";
+export {
+  fieldContext,
+  formContext,
+  useFieldContext,
+  useFormContext,
+  FormConfigContext,
+  useFormConfig,
+} from "./form-context";
 
 // ===== AntFormItem Shell =====
 export { AntFormItem } from "./AntFormItem";
