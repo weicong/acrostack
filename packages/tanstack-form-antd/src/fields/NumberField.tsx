@@ -30,8 +30,14 @@ export function createNumberField<TValues>(
           style={{ width: "100%", ...style }}
           value={field.state.value ?? null}
           disabled={config.disabled || numberProps.disabled}
-          onChange={(value) => field.handleChange((value ?? null) as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(value) => {
+            field.handleChange((value ?? null) as never);
+            numberProps.onChange?.(value);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            numberProps.onBlur?.(event);
+          }}
         />
       );
     },

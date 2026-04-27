@@ -31,7 +31,11 @@ export function createSwitchField<TValues>(
           {...switchProps}
           checked={Boolean(field.state.value)}
           disabled={config.disabled || switchProps.disabled}
-          onChange={(checked) => field.handleChange(checked as never)}
+          onChange={(checked, event) => {
+            field.handleChange(checked as never);
+            field.handleBlur();
+            switchProps.onChange?.(checked, event);
+          }}
         />
       );
     },

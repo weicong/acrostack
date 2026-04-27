@@ -28,8 +28,14 @@ export function createTextAreaField<TValues>(
           {...textAreaProps}
           value={field.state.value ?? ""}
           disabled={config.disabled || textAreaProps.disabled}
-          onChange={(event) => field.handleChange(event.target.value as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(event) => {
+            field.handleChange(event.target.value as never);
+            textAreaProps.onChange?.(event);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            textAreaProps.onBlur?.(event);
+          }}
         />
       );
     },

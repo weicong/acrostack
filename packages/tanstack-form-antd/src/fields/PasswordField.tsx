@@ -29,8 +29,14 @@ export function createPasswordField<TValues>(
           {...passwordProps}
           value={field.state.value ?? ""}
           disabled={config.disabled || passwordProps.disabled}
-          onChange={(event) => field.handleChange(event.target.value as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(event) => {
+            field.handleChange(event.target.value as never);
+            passwordProps.onChange?.(event);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            passwordProps.onBlur?.(event);
+          }}
         />
       );
     },

@@ -29,8 +29,14 @@ export function createRadioGroupField<TValues>(
           {...radioProps}
           value={field.state.value}
           disabled={config.disabled || radioProps.disabled}
-          onChange={(event) => field.handleChange(event.target.value as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(event) => {
+            field.handleChange(event.target.value as never);
+            radioProps.onChange?.(event);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            radioProps.onBlur?.(event);
+          }}
         />
       );
     },

@@ -42,8 +42,12 @@ export function createDatePickerField<TValues>(
           onChange={(date, dateString) => {
             const nextValue = date ? normalizeDateString(dateString ?? "") : (emptyValue ?? null);
             field.handleChange(nextValue as never);
+            datePickerProps.onChange?.(date, dateString);
           }}
-          onBlur={() => field.handleBlur()}
+          onBlur={(...args) => {
+            field.handleBlur();
+            datePickerProps.onBlur?.(...args);
+          }}
         />
       );
     },

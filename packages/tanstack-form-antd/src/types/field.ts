@@ -52,34 +52,31 @@ type RangePickerProps = ComponentProps<typeof DatePicker.RangePicker>;
 export type TextFieldProps<
   TValues,
   TName extends TextFieldName<TValues> = TextFieldName<TValues>,
-> = BaseFieldProps<TValues, TName> &
-  Omit<InputProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur">;
+> = BaseFieldProps<TValues, TName> & Omit<InputProps, "name" | "value" | "defaultValue">;
 
 export type TextAreaFieldProps<
   TValues,
   TName extends TextFieldName<TValues> = TextFieldName<TValues>,
-> = BaseFieldProps<TValues, TName> &
-  Omit<TextAreaProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur">;
+> = BaseFieldProps<TValues, TName> & Omit<TextAreaProps, "name" | "value" | "defaultValue">;
 
 export type PasswordFieldProps<
   TValues,
   TName extends TextFieldName<TValues> = TextFieldName<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<PasswordInputProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> & {
+  Omit<PasswordInputProps, "name" | "value" | "defaultValue"> & {
     maskPreview?: boolean;
   };
 
 export type NumberFieldProps<
   TValues,
   TName extends NumberFieldName<TValues> = NumberFieldName<TValues>,
-> = BaseFieldProps<TValues, TName> &
-  Omit<InputNumberProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur">;
+> = BaseFieldProps<TValues, TName> & Omit<InputNumberProps, "name" | "value" | "defaultValue">;
 
 export type SelectFieldProps<
   TValues,
   TName extends FieldPath<TValues> = FieldPath<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<SelectProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> & {
+  Omit<SelectProps, "name" | "value" | "defaultValue"> & {
     previewSeparator?: string;
   };
 
@@ -87,7 +84,7 @@ export type CheckboxFieldProps<
   TValues,
   TName extends BooleanFieldName<TValues> = BooleanFieldName<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<CheckboxProps, "name" | "checked" | "defaultChecked" | "value" | "onChange" | "onBlur"> & {
+  Omit<CheckboxProps, "name" | "checked" | "defaultChecked" | "value"> & {
     checkedText?: ReactNode;
     uncheckedText?: ReactNode;
   };
@@ -96,7 +93,7 @@ export type SwitchFieldProps<
   TValues,
   TName extends BooleanFieldName<TValues> = BooleanFieldName<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<SwitchProps, "name" | "checked" | "defaultChecked" | "value" | "onChange" | "onBlur"> & {
+  Omit<SwitchProps, "name" | "checked" | "defaultChecked" | "value"> & {
     checkedText?: ReactNode;
     uncheckedText?: ReactNode;
   };
@@ -104,14 +101,13 @@ export type SwitchFieldProps<
 export type RadioGroupFieldProps<
   TValues,
   TName extends RadioFieldName<TValues> = RadioFieldName<TValues>,
-> = BaseFieldProps<TValues, TName> &
-  Omit<RadioGroupProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur">;
+> = BaseFieldProps<TValues, TName> & Omit<RadioGroupProps, "name" | "value" | "defaultValue">;
 
 export type DatePickerFieldProps<
   TValues,
   TName extends DateFieldName<TValues> = DateFieldName<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<SingleDatePickerProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> & {
+  Omit<SingleDatePickerProps, "name" | "value" | "defaultValue"> & {
     valueFormat?: string;
     emptyValue?: null | undefined | "";
     displayFormat?: string;
@@ -121,7 +117,7 @@ export type RangePickerFieldProps<
   TValues,
   TName extends RangeFieldName<TValues> = RangeFieldName<TValues>,
 > = BaseFieldProps<TValues, TName> &
-  Omit<RangePickerProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> & {
+  Omit<RangePickerProps, "name" | "value" | "defaultValue"> & {
     valueFormat?: string;
     displayFormat?: string;
     emptyValue?: null | undefined;

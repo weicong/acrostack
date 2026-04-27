@@ -32,8 +32,14 @@ export function createCheckboxField<TValues>(
           {...checkboxProps}
           checked={Boolean(field.state.value)}
           disabled={config.disabled || checkboxProps.disabled}
-          onChange={(event) => field.handleChange(event.target.checked as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(event) => {
+            field.handleChange(event.target.checked as never);
+            checkboxProps.onChange?.(event);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            checkboxProps.onBlur?.(event);
+          }}
         >
           {children}
         </Checkbox>

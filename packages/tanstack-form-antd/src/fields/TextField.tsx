@@ -28,8 +28,14 @@ export function createTextField<TValues>(
           {...inputProps}
           value={field.state.value ?? ""}
           disabled={config.disabled || inputProps.disabled}
-          onChange={(event) => field.handleChange(event.target.value as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(event) => {
+            field.handleChange(event.target.value as never);
+            inputProps.onChange?.(event);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            inputProps.onBlur?.(event);
+          }}
         />
       );
     },

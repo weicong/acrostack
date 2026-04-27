@@ -48,8 +48,12 @@ export function createRangePickerField<TValues>(
                 ? [dateStrings[0], dateStrings[1]]
                 : (emptyValue ?? null);
             field.handleChange(nextValue as never);
+            rangePickerProps.onChange?.(dates, dateStrings);
           }}
-          onBlur={() => field.handleBlur()}
+          onBlur={(...args) => {
+            field.handleBlur();
+            rangePickerProps.onBlur?.(...args);
+          }}
         />
       );
     },

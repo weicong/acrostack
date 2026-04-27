@@ -32,8 +32,14 @@ export function createSelectField<TValues>(
           style={{ width: "100%", ...style }}
           value={field.state.value}
           disabled={config.disabled || selectProps.disabled}
-          onChange={(value) => field.handleChange(value as never)}
-          onBlur={() => field.handleBlur()}
+          onChange={(value, option) => {
+            field.handleChange(value as never);
+            selectProps.onChange?.(value, option);
+          }}
+          onBlur={(event) => {
+            field.handleBlur();
+            selectProps.onBlur?.(event);
+          }}
         />
       );
     },
