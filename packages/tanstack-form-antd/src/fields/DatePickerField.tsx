@@ -1,77 +1,53 @@
-import React from "react";
+import type { MutableRefObject } from "react";
+import dayjs from "dayjs";
 import { DatePicker } from "antd";
-import type { DatePickerProps } from "antd";
-import dayjs, { type Dayjs } from "dayjs";
-import { useFieldContext, useFormConfig } from "../form-context";
-import { AntFormItem } from "../AntFormItem";
-import { ReadonlyDisplay } from "../ReadonlyDisplay";
+import { formatDatePreview, normalizeDateString } from "../adapters/valueAdapters";
+import { createFieldComponent } from "../adapters/createFieldComponent";
+import type { InternalFormContextValue } from "../context/InternalFormContext";
+import type { BoundDatePickerFieldComponent, DatePickerFieldProps } from "../types";
 
-export interface DatePickerFieldProps {
-  /** Form.Item 的 label */
-  label?: string;
-  /** 是否必填（仅影响 label 显示星号） */
-  required?: boolean;
-  /** 占位文本 */
-  placeholder?: string;
-  /** 是否禁用 */
-  disabled?: boolean;
-  /** 是否只读模式 */
-  readonly?: boolean;
-  /** 日期格式 */
-  format?: string;
-  /** 是否显示时间选择 */
-  showTime?: boolean;
-  /** 透传给 antd DatePicker 的额外属性 */
-  datePickerProps?: Omit<
-    DatePickerProps,
-    "value" | "onChange" | "onBlur" | "placeholder" | "disabled" | "format" | "showTime"
-  >;
-}
+export function createDatePickerField<TValues>(
+  contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
+): BoundDatePickerFieldComponent<TValues> {
+  return createFieldComponent<TValues, DatePickerFieldProps<TValues>>(contextRef, {
+    renderEdit: ({ field, props, config }) => {
+      const {
+        label: _label,
+        required: _required,
+        mode: _mode,
+        emptyText: _emptyText,
+        showErrorWhen: _showErrorWhen,
+        renderPreview: _renderPreview,
+        formItemProps: _formItemProps,
+        previewClassName: _previewClassName,
+        previewStyle: _previewStyle,
+        validators: _validators,
+        valueFormat,
+        displayFormat: _displayFormat,
+        emptyValue = null,
+        format,
+        ...datePickerProps
+      } = props;
+      const resolvedValueFormat = valueFormat ?? config.dateValueFormat;
+      const value = field.state.value
+        ? dayjs(String(field.state.value), resolvedValueFormat)
+        : null;
 
-/**
- * 日期选择字段。
- */
-export function DatePickerField({
-  label,
-  required,
-  placeholder,
-  disabled,
-  readonly,
-  format = "YYYY-MM-DD",
-  showTime,
-  datePickerProps,
-}: DatePickerFieldProps) {
-  const field = useFieldContext<string>();
-  const config = useFormConfig();
-  const isReadonly = readonly ?? config.readonly;
-
-  const errors =
-    field.state.meta.isTouched && field.state.meta.errors.length > 0
-      ? field.state.meta.errors.map((e) => (typeof e === "string" ? e : String(e)))
-      : undefined;
-
-  const dayjsValue: Dayjs | null = field.state.value ? dayjs(field.state.value) : null;
-
-  return (
-    <AntFormItem label={label} required={!isReadonly && required} errors={errors}>
-      {isReadonly ? (
-        <ReadonlyDisplay value={field.state.value} placeholder={placeholder} />
-      ) : (
+      return (
         <DatePicker
           {...datePickerProps}
-          style={{ width: "100%", ...datePickerProps?.style }}
-          value={dayjsValue}
-          onChange={(_date: Dayjs | Dayjs[] | null, dateString: string | string[] | null) => {
-            const value = Array.isArray(dateString) ? dateString[0] : dateString || "";
-            field.handleChange(value);
+          format={format ?? resolvedValueFormat}
+          value={value}
+          disabled={config.disabled || datePickerProps.disabled}
+          onChange={(date, dateString) => {
+            const nextValue = date ? normalizeDateString(dateString ?? "") : (emptyValue ?? null);
+            field.handleChange(nextValue as never);
           }}
           onBlur={() => field.handleBlur()}
-          placeholder={placeholder}
-          disabled={disabled}
-          format={format}
-          showTime={showTime}
         />
-      )}
-    </AntFormItem>
-  );
+      );
+    },
+    formatter: (value, props, config) =>
+      formatDatePreview(value, props.valueFormat ?? config.dateValueFormat, props.displayFormat),
+  });
 }

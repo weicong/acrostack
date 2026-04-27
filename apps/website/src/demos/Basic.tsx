@@ -1,39 +1,49 @@
-import React from "react";
-import { createForm } from "@acrostack/tanstack-form-antd";
-import { Card, Space, Divider, message, Typography, Switch } from "antd";
+import { useState } from "react";
+import { useAntdForm, validators } from "@acrostack/tanstack-form-antd";
+import { Card, Divider, Space, Switch, Typography, message } from "antd";
 
 const { Text } = Typography;
 
-interface UserProfile {
+type UserProfile = {
   basicInfo: {
     firstName: string;
     lastName: string;
-    age: number;
+    age: number | null;
   };
   role: "admin" | "user" | "guest";
   bio: string;
   notifications: boolean;
-  tags: string[];
-}
-
-const {
-  Form,
-  TextField,
-  NumberField,
-  SelectField,
-  TextAreaField,
-  SwitchField,
-  SubmitButton,
-  Dependency,
-} = createForm<UserProfile>();
+};
 
 export function Basic() {
-  const [readonly, setReadonly] = React.useState(false);
-
-  const handleSubmit = (values: UserProfile) => {
-    console.log("Submitted values:", values);
-    message.success("Form submitted successfully! Check console for details.");
-  };
+  const [preview, setPreview] = useState(false);
+  const {
+    form,
+    Form,
+    TextField,
+    NumberField,
+    SelectField,
+    TextAreaField,
+    SwitchField,
+    SubmitButton,
+    ResetButton,
+  } = useAntdForm<UserProfile>({
+    mode: preview ? "preview" : "edit",
+    defaultValues: {
+      basicInfo: {
+        firstName: "Ant",
+        lastName: "Gravity",
+        age: 25,
+      },
+      role: "admin",
+      bio: "Coding assistant powered by DeepMind.",
+      notifications: true,
+    },
+    onSubmit: async ({ value }: { value: UserProfile }) => {
+      console.log("Submitted values:", value);
+      message.success("Form submitted successfully! Check console for details.");
+    },
+  });
 
   return (
     <Card
@@ -41,37 +51,36 @@ export function Basic() {
       variant="borderless"
       extra={
         <Space>
-          <span>Readonly Mode:</span>
-          <Switch checked={readonly} onChange={setReadonly} />
+          <span>Preview Mode:</span>
+          <Switch checked={preview} onChange={setPreview} />
         </Space>
       }
     >
-      <Form
-        readonly={readonly}
-        defaultValues={{
-          basicInfo: {
-            firstName: "Ant",
-            lastName: "Gravity",
-            age: 25,
-          },
-          role: "admin",
-          bio: "Coding assistant powered by DeepMind.",
-          notifications: true,
-          tags: ["react", "typescript"],
-        }}
-        onSubmit={handleSubmit}
-      >
-        <Space orientation="vertical" style={{ width: "100%" }} size="middle">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <Form layout="vertical">
+        <Space direction="vertical" style={{ width: "100%" }} size="middle">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <TextField
               name="basicInfo.firstName"
               label="First Name"
-              required="First name is required"
+              placeholder="Enter first name"
+              validators={validators.required("First name is required")}
             />
-            <TextField name="basicInfo.lastName" label="Last Name" required />
+            <TextField
+              name="basicInfo.lastName"
+              label="Last Name"
+              placeholder="Enter last name"
+              validators={validators.required("Last name is required")}
+            />
           </div>
 
-          <NumberField name="basicInfo.age" label="Age" min={0} max={120} required />
+          <NumberField
+            name="basicInfo.age"
+            label="Age"
+            min={0}
+            max={120}
+            placeholder="Enter age"
+            validators={validators.required("Age is required")}
+          />
 
           <SelectField
             name="role"
@@ -81,14 +90,15 @@ export function Basic() {
               { label: "Standard User", value: "user" },
               { label: "Guest", value: "guest" },
             ]}
-            required
+            validators={validators.required("Role is required")}
           />
 
           <TextAreaField
             name="bio"
             label="Biography"
             placeholder="Tell us about yourself..."
-            rows={3}
+            rows={4}
+            validators={validators.maxLength(120, "Biography must be under 120 characters")}
           />
 
           <SwitchField
@@ -96,26 +106,33 @@ export function Basic() {
             label="Enable Notifications"
             checkedChildren="ON"
             unCheckedChildren="OFF"
+            checkedText="Enabled"
+            uncheckedText="Disabled"
           />
 
-          <Divider />
+          <Divider style={{ margin: 0 }} />
 
-          <Dependency name={["basicInfo.firstName", "basicInfo.lastName"]}>
-            {({ "basicInfo.firstName": first, "basicInfo.lastName": last }) => (
+          <form.Subscribe
+            selector={(state: any) => state.values.basicInfo as UserProfile["basicInfo"]}
+          >
+            {(basicInfo) => (
               <div
                 style={{
-                  padding: "8px",
+                  padding: 12,
                   background: "#fafafa",
-                  borderRadius: "4px",
+                  borderRadius: 8,
                   border: "1px dashed #d9d9d9",
                 }}
               >
-                <Text strong>Live Preview Name:</Text> {first} {last}
+                <Text strong>Live Preview Name:</Text> {basicInfo.firstName} {basicInfo.lastName}
               </div>
             )}
-          </Dependency>
+          </form.Subscribe>
 
-          <SubmitButton buttonProps={{ size: "large", block: true }}>Save Profile</SubmitButton>
+          <Space>
+            <SubmitButton size="large">Save Profile</SubmitButton>
+            <ResetButton size="large">Reset</ResetButton>
+          </Space>
         </Space>
       </Form>
     </Card>

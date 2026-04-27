@@ -2,12 +2,12 @@ import type { MutableRefObject } from "react";
 import { Input } from "antd";
 import { createFieldComponent } from "../adapters/createFieldComponent";
 import type { InternalFormContextValue } from "../context/InternalFormContext";
-import type { BoundTextFieldComponent, TextFieldProps } from "../types";
+import type { BoundPasswordFieldComponent, PasswordFieldProps } from "../types";
 
-export function createTextField<TValues>(
+export function createPasswordField<TValues>(
   contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
-): BoundTextFieldComponent<TValues> {
-  return createFieldComponent<TValues, TextFieldProps<TValues>>(contextRef, {
+): BoundPasswordFieldComponent<TValues> {
+  return createFieldComponent<TValues, PasswordFieldProps<TValues>>(contextRef, {
     renderEdit: ({ field, props, config }) => {
       const {
         label: _label,
@@ -20,18 +20,25 @@ export function createTextField<TValues>(
         previewClassName: _previewClassName,
         previewStyle: _previewStyle,
         validators: _validators,
-        ...inputProps
+        maskPreview: _maskPreview,
+        ...passwordProps
       } = props;
 
       return (
-        <Input
-          {...inputProps}
+        <Input.Password
+          {...passwordProps}
           value={field.state.value ?? ""}
-          disabled={config.disabled || inputProps.disabled}
+          disabled={config.disabled || passwordProps.disabled}
           onChange={(event) => field.handleChange(event.target.value as never)}
           onBlur={() => field.handleBlur()}
         />
       );
+    },
+    formatter: (value, props) => {
+      if (props.maskPreview === false) {
+        return value;
+      }
+      return typeof value === "string" && value.length > 0 ? "******" : value;
     },
   });
 }

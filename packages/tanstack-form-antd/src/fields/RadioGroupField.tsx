@@ -1,13 +1,14 @@
 import type { MutableRefObject } from "react";
-import { Input } from "antd";
+import { Radio } from "antd";
+import { formatSelectPreview } from "../adapters/valueAdapters";
 import { createFieldComponent } from "../adapters/createFieldComponent";
 import type { InternalFormContextValue } from "../context/InternalFormContext";
-import type { BoundTextFieldComponent, TextFieldProps } from "../types";
+import type { BoundRadioGroupFieldComponent, RadioGroupFieldProps } from "../types";
 
-export function createTextField<TValues>(
+export function createRadioGroupField<TValues>(
   contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
-): BoundTextFieldComponent<TValues> {
-  return createFieldComponent<TValues, TextFieldProps<TValues>>(contextRef, {
+): BoundRadioGroupFieldComponent<TValues> {
+  return createFieldComponent<TValues, RadioGroupFieldProps<TValues>>(contextRef, {
     renderEdit: ({ field, props, config }) => {
       const {
         label: _label,
@@ -20,18 +21,19 @@ export function createTextField<TValues>(
         previewClassName: _previewClassName,
         previewStyle: _previewStyle,
         validators: _validators,
-        ...inputProps
+        ...radioProps
       } = props;
 
       return (
-        <Input
-          {...inputProps}
-          value={field.state.value ?? ""}
-          disabled={config.disabled || inputProps.disabled}
+        <Radio.Group
+          {...radioProps}
+          value={field.state.value}
+          disabled={config.disabled || radioProps.disabled}
           onChange={(event) => field.handleChange(event.target.value as never)}
           onBlur={() => field.handleBlur()}
         />
       );
     },
+    formatter: (value, props) => formatSelectPreview(value, (props.options as never[]) ?? []),
   });
 }

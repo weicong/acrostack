@@ -1,18 +1,79 @@
 import { useState } from "react";
-import { createForm } from "@acrostack/tanstack-form-antd";
-import { Table, Button, Space, Card, Modal, Popconfirm, Tag, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { validators, useAntdForm } from "@acrostack/tanstack-form-antd";
+import { Button, Card, Modal, Popconfirm, Space, Table, Tag, message } from "antd";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
-interface UserRecord {
+type UserRecord = {
   id: string;
   name: string;
   email: string;
   role: "admin" | "user";
   status: "active" | "inactive";
-}
+};
 
-// Create the form factory for the user schema
-const { Form, TextField, SelectField, SubmitButton } = createForm<Omit<UserRecord, "id">>();
+type UserFormValues = Omit<UserRecord, "id">;
+
+type UserModalFormProps = {
+  initialValues: UserFormValues;
+  editingId: string | null;
+  onSubmitValue: (value: UserFormValues) => void;
+  onCancel: () => void;
+};
+
+function UserModalForm(props: UserModalFormProps) {
+  const { Form, TextField, SelectField, SubmitButton, ResetButton } = useAntdForm<UserFormValues>({
+    defaultValues: props.initialValues,
+    onSubmit: async ({ value }: { value: UserFormValues }) => {
+      props.onSubmitValue(value);
+    },
+  });
+
+  return (
+    <Form layout="vertical">
+      <Space direction="vertical" style={{ width: "100%" }} size="middle">
+        <TextField
+          name="name"
+          label="Full Name"
+          placeholder="Enter full name"
+          validators={validators.required("Name is required")}
+        />
+        <TextField
+          name="email"
+          label="Email Address"
+          placeholder="Enter email address"
+          validators={validators.compose(
+            validators.required("Email is required"),
+            validators.email("Invalid email format"),
+          )}
+        />
+        <SelectField
+          name="role"
+          label="Role"
+          options={[
+            { label: "Admin", value: "admin" },
+            { label: "User", value: "user" },
+          ]}
+          validators={validators.required("Role is required")}
+        />
+        <SelectField
+          name="status"
+          label="Status"
+          options={[
+            { label: "Active", value: "active" },
+            { label: "Inactive", value: "inactive" },
+          ]}
+          validators={validators.required("Status is required")}
+        />
+
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}>
+          <Button onClick={props.onCancel}>Cancel</Button>
+          <ResetButton>Reset</ResetButton>
+          <SubmitButton>{props.editingId ? "Update" : "Create"}</SubmitButton>
+        </div>
+      </Space>
+    </Form>
+  );
+}
 
 export function CRUD() {
   const [data, setData] = useState<UserRecord[]>([
@@ -31,10 +92,9 @@ export function CRUD() {
       status: "inactive",
     },
   ]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [initialValues, setInitialValues] = useState<Omit<UserRecord, "id">>({
+  const [initialValues, setInitialValues] = useState<UserFormValues>({
     name: "",
     email: "",
     role: "user",
@@ -62,19 +122,12 @@ export function CRUD() {
     setIsModalOpen(true);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = (values: Omit<UserRecord, "id">) => {
+  const handleSubmitValue = (value: UserFormValues) => {
     if (editingId) {
-      setData((prev) =>
-        prev.map((item) => (item.id === editingId ? { ...item, ...values } : item)),
-      );
+      setData((prev) => prev.map((item) => (item.id === editingId ? { ...item, ...value } : item)));
       message.success("User updated successfully");
     } else {
-      const newUser = { ...values, id: Date.now().toString() };
-      setData((prev) => [...prev, newUser]);
+      setData((prev) => [...prev, { ...value, id: Date.now().toString() }]);
       message.success("User created successfully");
     }
     setIsModalOpen(false);
@@ -92,7 +145,7 @@ export function CRUD() {
       title: "Role",
       dataIndex: "role",
       key: "role",
-      render: (role: string) => (
+      render: (role: UserRecord["role"]) => (
         <Tag color={role === "admin" ? "gold" : "blue"}>{role.toUpperCase()}</Tag>
       ),
     },
@@ -100,14 +153,14 @@ export function CRUD() {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: string) => (
+      render: (status: UserRecord["status"]) => (
         <Tag color={status === "active" ? "green" : "volcano"}>{status.toUpperCase()}</Tag>
       ),
     },
     {
       title: "Action",
       key: "action",
-      render: (_: any, record: UserRecord) => (
+      render: (_: unknown, record: UserRecord) => (
         <Space size="middle">
           <Button type="link" icon={<EditOutlined />} onClick={() => showModal(record)}>
             Edit
@@ -115,8 +168,6 @@ export function CRUD() {
           <Popconfirm
             title="Are you sure to delete this user?"
             onConfirm={() => handleDelete(record.id)}
-            okText="Yes"
-            cancelText="No"
           >
             <Button type="link" danger icon={<DeleteOutlined />}>
               Delete
@@ -137,59 +188,22 @@ export function CRUD() {
         </Button>
       }
     >
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table columns={columns} dataSource={data} rowKey="id" pagination={false} />
 
       <Modal
         title={editingId ? "Edit User" : "Add User"}
         open={isModalOpen}
-        onCancel={handleCancel}
+        onCancel={() => setIsModalOpen(false)}
         footer={null}
-        destroyOnHidden // Ensure form is destroyed and recreated with new initialValues
+        destroyOnHidden
       >
-        <Form defaultValues={initialValues} onSubmit={handleSubmit}>
-          <Space orientation="vertical" style={{ width: "100%" }} size="middle">
-            <TextField name="name" label="Full Name" required="Name is required" />
-            <TextField
-              name="email"
-              label="Email Address"
-              required="Email is required"
-              validators={{
-                onChange: ({ value }) =>
-                  !/^\S+@\S+\.\S+$/.test(value) ? "Invalid email format" : undefined,
-              }}
-            />
-            <SelectField
-              name="role"
-              label="Role"
-              options={[
-                { label: "Admin", value: "admin" },
-                { label: "User", value: "user" },
-              ]}
-              required
-            />
-            <SelectField
-              name="status"
-              label="Status"
-              options={[
-                { label: "Active", value: "active" },
-                { label: "Inactive", value: "inactive" },
-              ]}
-              required
-            />
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "8px",
-                marginTop: "16px",
-              }}
-            >
-              <Button onClick={handleCancel}>Cancel</Button>
-              <SubmitButton>{editingId ? "Update" : "Create"}</SubmitButton>
-            </div>
-          </Space>
-        </Form>
+        <UserModalForm
+          key={editingId ?? "new"}
+          editingId={editingId}
+          initialValues={initialValues}
+          onSubmitValue={handleSubmitValue}
+          onCancel={() => setIsModalOpen(false)}
+        />
       </Modal>
     </Card>
   );

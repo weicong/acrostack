@@ -1,24 +1,25 @@
-import { Typography, Space, Tabs } from "antd";
+import { Space, Tabs, Typography } from "antd";
 import { Basic } from "./demos/Basic";
-import { EditableTable } from "./demos/EditableTable";
 import { CRUD } from "./demos/CRUD";
+import { EditableTable } from "./demos/EditableTable";
 
 const { Title, Text } = Typography;
 
 export default function App() {
   return (
-    <div style={{ padding: "40px", background: "#f0f2f5", minHeight: "100vh" }}>
+    <div style={{ padding: 40, background: "#f0f2f5", minHeight: "100vh" }}>
       <Space
-        orientation="vertical"
+        direction="vertical"
         size="large"
-        style={{ display: "flex", maxWidth: "1000px", margin: "0 auto" }}
+        style={{ display: "flex", maxWidth: 1000, margin: "0 auto" }}
       >
         <header>
-          <Title level={2}>Ant Design × TanStack Form Demo</Title>
+          <Title level={2}>Ant Design x TanStack Form Demo</Title>
           <Text type="secondary">
-            This demo showcases the <code>@acrostack/tanstack-form-antd</code> adapter. It provides
-            a ProForm-style API with full type safety for TanStack Form using Ant Design v6
-            components.
+            This demo showcases the <code>@acrostack/tanstack-form-antd</code> adapter built around
+            a single <code>useAntdForm</code> entry. It keeps TanStack Form as the source of truth
+            while exposing typed Ant Design fields, preview mode, and escape hatches for custom
+            bindings.
           </Text>
         </header>
 
@@ -31,8 +32,8 @@ export default function App() {
               children: <Basic />,
             },
             {
-              key: "table",
-              label: "Editable Table",
+              key: "advanced",
+              label: "Advanced Field",
               children: <EditableTable />,
             },
             {

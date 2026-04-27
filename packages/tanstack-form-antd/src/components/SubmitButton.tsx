@@ -1,39 +1,48 @@
-import React from "react";
+import type { MutableRefObject } from "react";
 import { Button } from "antd";
-import type { ButtonProps } from "antd";
-import { useFormContext, useFormConfig } from "../form-context";
+import { getContextOrThrow, type InternalFormContextValue } from "../context/InternalFormContext";
+import type { BoundSubmitButtonComponent, SubmitButtonProps } from "../types";
 
-export interface SubmitButtonProps {
-  /** 按钮文本，默认 '提交' */
-  label?: string;
-  /** 透传给 antd Button 的额外属性 */
-  buttonProps?: Omit<ButtonProps, "type" | "htmlType" | "disabled" | "loading">;
-}
+export function createSubmitButton<TValues>(
+  contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
+): BoundSubmitButtonComponent {
+  return function SubmitButton(props: SubmitButtonProps) {
+    const context = getContextOrThrow(contextRef);
+    const { form, config } = context;
+    const {
+      autoLoading = true,
+      autoDisabled = true,
+      type = "primary",
+      htmlType = "submit",
+      loading: userLoading,
+      disabled: userDisabled,
+      ...restProps
+    } = props;
 
-/**
- * 提交按钮组件。
- * 通过 FormContext 监听 isSubmitting 状态，
- * 提交中自动禁用并显示 loading。
- */
-export function SubmitButton({ label = "提交", buttonProps }: SubmitButtonProps) {
-  const form = useFormContext();
-  const config = useFormConfig();
+    return (
+      <form.Subscribe
+        selector={(state: any) => ({
+          canSubmit: state.canSubmit,
+          isSubmitting: state.isSubmitting,
+        })}
+      >
+        {(state: { canSubmit: boolean; isSubmitting: boolean }) => {
+          const finalLoading = autoLoading ? (userLoading ?? state.isSubmitting) : userLoading;
+          const finalDisabled = autoDisabled
+            ? Boolean(userDisabled) || !state.canSubmit || config.mode === "preview"
+            : userDisabled;
 
-  if (config.readonly) return null;
-
-  return (
-    <form.Subscribe selector={(state) => state.isSubmitting}>
-      {(isSubmitting) => (
-        <Button
-          {...buttonProps}
-          type="primary"
-          htmlType="submit"
-          disabled={isSubmitting}
-          loading={isSubmitting}
-        >
-          {label}
-        </Button>
-      )}
-    </form.Subscribe>
-  );
+          return (
+            <Button
+              {...restProps}
+              type={type}
+              htmlType={htmlType}
+              loading={finalLoading}
+              disabled={finalDisabled}
+            />
+          );
+        }}
+      </form.Subscribe>
+    );
+  };
 }

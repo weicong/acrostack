@@ -1,14 +1,14 @@
 import type { MutableRefObject } from "react";
-import { Switch } from "antd";
+import { Checkbox } from "antd";
 import { formatBooleanPreview } from "../adapters/valueAdapters";
 import { createFieldComponent } from "../adapters/createFieldComponent";
 import type { InternalFormContextValue } from "../context/InternalFormContext";
-import type { BoundSwitchFieldComponent, SwitchFieldProps } from "../types";
+import type { BoundCheckboxFieldComponent, CheckboxFieldProps } from "../types";
 
-export function createSwitchField<TValues>(
+export function createCheckboxField<TValues>(
   contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
-): BoundSwitchFieldComponent<TValues> {
-  return createFieldComponent<TValues, SwitchFieldProps<TValues>>(contextRef, {
+): BoundCheckboxFieldComponent<TValues> {
+  return createFieldComponent<TValues, CheckboxFieldProps<TValues>>(contextRef, {
     renderEdit: ({ field, props, config }) => {
       const {
         label: _label,
@@ -23,16 +23,20 @@ export function createSwitchField<TValues>(
         validators: _validators,
         checkedText: _checkedText,
         uncheckedText: _uncheckedText,
-        ...switchProps
+        children,
+        ...checkboxProps
       } = props;
 
       return (
-        <Switch
-          {...switchProps}
+        <Checkbox
+          {...checkboxProps}
           checked={Boolean(field.state.value)}
-          disabled={config.disabled || switchProps.disabled}
-          onChange={(checked) => field.handleChange(checked as never)}
-        />
+          disabled={config.disabled || checkboxProps.disabled}
+          onChange={(event) => field.handleChange(event.target.checked as never)}
+          onBlur={() => field.handleBlur()}
+        >
+          {children}
+        </Checkbox>
       );
     },
     formatter: (value, props) =>

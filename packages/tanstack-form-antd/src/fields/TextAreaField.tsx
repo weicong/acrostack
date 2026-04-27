@@ -1,66 +1,37 @@
-import React from "react";
+import type { MutableRefObject } from "react";
 import { Input } from "antd";
-import type { TextAreaProps } from "antd/es/input";
-import { useFieldContext, useFormConfig } from "../form-context";
-import { AntFormItem } from "../AntFormItem";
-import { ReadonlyDisplay } from "../ReadonlyDisplay";
+import { createFieldComponent } from "../adapters/createFieldComponent";
+import type { InternalFormContextValue } from "../context/InternalFormContext";
+import type { BoundTextAreaFieldComponent, TextAreaFieldProps } from "../types";
 
-export interface TextAreaFieldProps {
-  /** Form.Item 的 label */
-  label?: string;
-  /** 是否必填（仅影响 label 显示星号） */
-  required?: boolean;
-  /** 占位文本 */
-  placeholder?: string;
-  /** 是否禁用 */
-  disabled?: boolean;
-  /** 是否只读模式 */
-  readonly?: boolean;
-  /** 行数 */
-  rows?: number;
-  /** 透传给 antd TextArea 的额外属性 */
-  textAreaProps?: Omit<
-    TextAreaProps,
-    "value" | "onChange" | "onBlur" | "placeholder" | "disabled" | "rows"
-  >;
-}
+export function createTextAreaField<TValues>(
+  contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
+): BoundTextAreaFieldComponent<TValues> {
+  return createFieldComponent<TValues, TextAreaFieldProps<TValues>>(contextRef, {
+    renderEdit: ({ field, props, config }) => {
+      const {
+        label: _label,
+        required: _required,
+        mode: _mode,
+        emptyText: _emptyText,
+        showErrorWhen: _showErrorWhen,
+        renderPreview: _renderPreview,
+        formItemProps: _formItemProps,
+        previewClassName: _previewClassName,
+        previewStyle: _previewStyle,
+        validators: _validators,
+        ...textAreaProps
+      } = props;
 
-/**
- * 多行文本输入字段。
- */
-export function TextAreaField({
-  label,
-  required,
-  placeholder,
-  disabled,
-  readonly,
-  rows = 4,
-  textAreaProps,
-}: TextAreaFieldProps) {
-  const field = useFieldContext<string>();
-  const config = useFormConfig();
-  const isReadonly = readonly ?? config.readonly;
-
-  const errors =
-    field.state.meta.isTouched && field.state.meta.errors.length > 0
-      ? field.state.meta.errors.map((e) => (typeof e === "string" ? e : String(e)))
-      : undefined;
-
-  return (
-    <AntFormItem label={label} required={!isReadonly && required} errors={errors}>
-      {isReadonly ? (
-        <ReadonlyDisplay value={field.state.value} placeholder={placeholder} />
-      ) : (
+      return (
         <Input.TextArea
           {...textAreaProps}
-          value={field.state.value}
-          onChange={(e) => field.handleChange(e.target.value)}
+          value={field.state.value ?? ""}
+          disabled={config.disabled || textAreaProps.disabled}
+          onChange={(event) => field.handleChange(event.target.value as never)}
           onBlur={() => field.handleBlur()}
-          placeholder={placeholder}
-          disabled={disabled}
-          rows={rows}
         />
-      )}
-    </AntFormItem>
-  );
+      );
+    },
+  });
 }
