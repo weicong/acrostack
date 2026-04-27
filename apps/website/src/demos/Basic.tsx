@@ -1,5 +1,5 @@
 import React from "react";
-import { createForm } from "tanstack-form-antd";
+import { createForm } from "@acrostack/tanstack-form-antd";
 import { Card, Space, Divider, message, Typography, Switch } from "antd";
 
 const { Text } = Typography;

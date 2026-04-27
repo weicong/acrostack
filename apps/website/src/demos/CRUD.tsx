@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createForm } from "tanstack-form-antd";
+import { createForm } from "@acrostack/tanstack-form-antd";
 import { Table, Button, Space, Card, Modal, Popconfirm, Tag, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 

@@ -1,5 +1,5 @@
 {
-  "name": "utils",
+  "name": "@acrostack/utils",
   "version": "0.0.0",
   "description": "A starter for creating a TypeScript package.",
   "homepage": "https://github.com/author/library#readme",
@@ -16,15 +16,9 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "publishConfig": {

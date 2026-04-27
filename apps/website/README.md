@@ -1,6 +1,6 @@
 # TanStack Form Antd Website
 
-This is a demonstration website showcasing the integration between **TanStack Form** and **Ant Design (v6)** using the `tanstack-form-antd` adapter.
+This is a demonstration website showcasing the integration between **TanStack Form** and **Ant Design (v6)** using the `@acrostack/tanstack-form-antd` adapter.
 
 ## Core Patterns & Demos
 

@@ -1,4 +1,4 @@
-import { createForm } from "tanstack-form-antd";
+import { createForm } from "@acrostack/tanstack-form-antd";
 import { Table, Button, Space, Card, Typography, message } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 

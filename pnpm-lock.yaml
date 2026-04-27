@@ -60,6 +60,9 @@ importers:
 
   apps/website:
     dependencies:
+      '@acrostack/tanstack-form-antd':
+        specifier: workspace:*
+        version: link:../../packages/tanstack-form-antd
       '@ant-design/icons':
         specifier: 'catalog:'
         version: 6.1.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -78,9 +81,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.5(react@19.2.5)
-      tanstack-form-antd:
-        specifier: workspace:*
-        version: link:../../packages/tanstack-form-antd
     devDependencies:
       '@types/react':
         specifier: 'catalog:'
