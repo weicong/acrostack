@@ -18,8 +18,7 @@ export default function App() {
           <Text type="secondary">
             This demo showcases the <code>@acrostack/tanstack-form-antd</code> adapter built around
             a single <code>useAntdForm</code> entry. It keeps TanStack Form as the source of truth
-            while exposing typed Ant Design fields, preview mode, and escape hatches for custom
-            bindings.
+            while exposing the current field set, view mode, and escape hatches for custom bindings.
           </Text>
         </header>
 
@@ -33,7 +32,7 @@ export default function App() {
             },
             {
               key: "advanced",
-              label: "Advanced Field",
+              label: "Custom Field",
               children: <EditableTable />,
             },
             {

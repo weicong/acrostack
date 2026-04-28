@@ -15,7 +15,6 @@ catalog:
   antd: ^6.0.0
   bumpp: ^11.0.1
   dayjs: ^1.11.0
-  jsdom: ^29.1.0
   react: ^19.0.0
   react-dom: ^19.0.0
   typescript: ^5

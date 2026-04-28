@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { validators, useAntdForm } from "@acrostack/tanstack-form-antd";
+import { useAntdForm } from "@acrostack/tanstack-form-antd";
 import { Button, Card, Modal, Popconfirm, Space, Table, Tag, message } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -7,8 +7,8 @@ type UserRecord = {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "user";
-  status: "active" | "inactive";
+  role: string;
+  active: boolean;
 };
 
 type UserFormValues = Omit<UserRecord, "id">;
@@ -21,12 +21,14 @@ type UserModalFormProps = {
 };
 
 function UserModalForm(props: UserModalFormProps) {
-  const { Form, TextField, SelectField, SubmitButton, ResetButton } = useAntdForm<UserFormValues>({
-    defaultValues: props.initialValues,
-    onSubmit: async ({ value }: { value: UserFormValues }) => {
-      props.onSubmitValue(value);
+  const { Form, TextField, CheckboxField, SubmitButton, ResetButton } = useAntdForm<UserFormValues>(
+    {
+      defaultValues: props.initialValues,
+      onSubmit: async ({ value }) => {
+        props.onSubmitValue(value);
+      },
     },
-  });
+  );
 
   return (
     <Form layout="vertical">
@@ -35,35 +37,51 @@ function UserModalForm(props: UserModalFormProps) {
           name="name"
           label="Full Name"
           placeholder="Enter full name"
-          validators={validators.required("Name is required")}
+          validators={{
+            onBlur: ({ value }) => {
+              if (!value) {
+                return "Name is required";
+              }
+
+              return undefined;
+            },
+          }}
         />
         <TextField
           name="email"
           label="Email Address"
           placeholder="Enter email address"
-          validators={validators.compose(
-            validators.required("Email is required"),
-            validators.email("Invalid email format"),
-          )}
+          validators={{
+            onBlur: ({ value }) => {
+              if (!value) {
+                return "Email is required";
+              }
+
+              if (!value.includes("@")) {
+                return "Invalid email format";
+              }
+
+              return undefined;
+            },
+          }}
         />
-        <SelectField
+        <TextField
           name="role"
           label="Role"
-          options={[
-            { label: "Admin", value: "admin" },
-            { label: "User", value: "user" },
-          ]}
-          validators={validators.required("Role is required")}
+          placeholder="Enter role"
+          validators={{
+            onBlur: ({ value }) => {
+              if (!value) {
+                return "Role is required";
+              }
+
+              return undefined;
+            },
+          }}
         />
-        <SelectField
-          name="status"
-          label="Status"
-          options={[
-            { label: "Active", value: "active" },
-            { label: "Inactive", value: "inactive" },
-          ]}
-          validators={validators.required("Status is required")}
-        />
+        <CheckboxField name="active" label="Status">
+          Active user
+        </CheckboxField>
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}>
           <Button onClick={props.onCancel}>Cancel</Button>
@@ -82,14 +100,14 @@ export function CRUD() {
       name: "John Doe",
       email: "john@example.com",
       role: "admin",
-      status: "active",
+      active: true,
     },
     {
       id: "2",
       name: "Jane Smith",
       email: "jane@example.com",
       role: "user",
-      status: "inactive",
+      active: false,
     },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,7 +116,7 @@ export function CRUD() {
     name: "",
     email: "",
     role: "user",
-    status: "active",
+    active: true,
   });
 
   const showModal = (record?: UserRecord) => {
@@ -108,7 +126,7 @@ export function CRUD() {
         name: record.name,
         email: record.email,
         role: record.role,
-        status: record.status,
+        active: record.active,
       });
     } else {
       setEditingId(null);
@@ -116,7 +134,7 @@ export function CRUD() {
         name: "",
         email: "",
         role: "user",
-        status: "active",
+        active: true,
       });
     }
     setIsModalOpen(true);
@@ -145,16 +163,14 @@ export function CRUD() {
       title: "Role",
       dataIndex: "role",
       key: "role",
-      render: (role: UserRecord["role"]) => (
-        <Tag color={role === "admin" ? "gold" : "blue"}>{role.toUpperCase()}</Tag>
-      ),
+      render: (role: UserRecord["role"]) => <Tag color="blue">{role.toUpperCase()}</Tag>,
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status: UserRecord["status"]) => (
-        <Tag color={status === "active" ? "green" : "volcano"}>{status.toUpperCase()}</Tag>
+      dataIndex: "active",
+      key: "active",
+      render: (active: UserRecord["active"]) => (
+        <Tag color={active ? "green" : "volcano"}>{active ? "ACTIVE" : "INACTIVE"}</Tag>
       ),
     },
     {

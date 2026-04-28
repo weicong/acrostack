@@ -21,6 +21,7 @@
   "scripts": {
     "build": "vp pack",
     "dev": "vp pack --watch",
+    "test": "vp test",
     "check": "vp check --fix",
     "prepublishOnly": "vp run build"
   },
@@ -32,7 +33,6 @@
     "@types/react-dom": "catalog:",
     "antd": "catalog:",
     "dayjs": "catalog:",
-    "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",
@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@tanstack/react-form": ">=1",
     "antd": ">=6",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=19",
+    "react-dom": ">=19"
   }
 }

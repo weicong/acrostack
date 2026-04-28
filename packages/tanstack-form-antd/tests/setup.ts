@@ -1,4 +1,9 @@
-import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vite-plus/test";
+
+afterEach(() => {
+  cleanup();
+});
 
 if (typeof window !== "undefined" && !window.matchMedia) {
   Object.defineProperty(window, "matchMedia", {
@@ -14,14 +19,4 @@ if (typeof window !== "undefined" && !window.matchMedia) {
       dispatchEvent: () => false,
     }),
   });
-}
-
-if (typeof globalThis.ResizeObserver === "undefined") {
-  class ResizeObserver {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-
-  globalThis.ResizeObserver = ResizeObserver;
 }

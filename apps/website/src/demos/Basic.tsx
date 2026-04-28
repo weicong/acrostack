@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAntdForm, validators } from "@acrostack/tanstack-form-antd";
+import { useAntdForm } from "@acrostack/tanstack-form-antd";
 import { Card, Divider, Space, Switch, Typography, message } from "antd";
 
 const { Text } = Typography;
@@ -8,42 +8,30 @@ type UserProfile = {
   basicInfo: {
     firstName: string;
     lastName: string;
-    age: number | null;
+    role: string;
   };
-  role: "admin" | "user" | "guest";
   bio: string;
   notifications: boolean;
 };
 
 export function Basic() {
   const [preview, setPreview] = useState(false);
-  const {
-    form,
-    Form,
-    TextField,
-    NumberField,
-    SelectField,
-    TextAreaField,
-    SwitchField,
-    SubmitButton,
-    ResetButton,
-  } = useAntdForm<UserProfile>({
-    mode: preview ? "preview" : "edit",
-    defaultValues: {
-      basicInfo: {
-        firstName: "Ant",
-        lastName: "Gravity",
-        age: 25,
+  const { Form, Subscribe, TextField, CheckboxField, SubmitButton, ResetButton } =
+    useAntdForm<UserProfile>({
+      defaultValues: {
+        basicInfo: {
+          firstName: "Ant",
+          lastName: "Gravity",
+          role: "admin",
+        },
+        bio: "Coding assistant powered by DeepMind.",
+        notifications: true,
       },
-      role: "admin",
-      bio: "Coding assistant powered by DeepMind.",
-      notifications: true,
-    },
-    onSubmit: async ({ value }: { value: UserProfile }) => {
-      console.log("Submitted values:", value);
-      message.success("Form submitted successfully! Check console for details.");
-    },
-  });
+      onSubmit: async ({ value }) => {
+        console.log("Submitted values:", value);
+        message.success("Form submitted successfully! Check console for details.");
+      },
+    });
 
   return (
     <Card
@@ -56,65 +44,76 @@ export function Basic() {
         </Space>
       }
     >
-      <Form layout="vertical">
+      <Form layout="vertical" mode={preview ? "view" : "edit"}>
         <Space orientation="vertical" style={{ width: "100%" }} size="middle">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <TextField
               name="basicInfo.firstName"
               label="First Name"
               placeholder="Enter first name"
-              validators={validators.required("First name is required")}
+              validators={{
+                onBlur: ({ value }) => {
+                  if (!value) {
+                    return "First name is required";
+                  }
+
+                  return undefined;
+                },
+              }}
             />
             <TextField
               name="basicInfo.lastName"
               label="Last Name"
               placeholder="Enter last name"
-              validators={validators.required("Last name is required")}
+              validators={{
+                onBlur: ({ value }) => {
+                  if (!value) {
+                    return "Last name is required";
+                  }
+
+                  return undefined;
+                },
+              }}
             />
           </div>
 
-          <NumberField
-            name="basicInfo.age"
-            label="Age"
-            min={0}
-            max={120}
-            placeholder="Enter age"
-            validators={validators.required("Age is required")}
-          />
-
-          <SelectField
-            name="role"
+          <TextField
+            name="basicInfo.role"
             label="Role"
-            options={[
-              { label: "Administrator", value: "admin" },
-              { label: "Standard User", value: "user" },
-              { label: "Guest", value: "guest" },
-            ]}
-            validators={validators.required("Role is required")}
+            placeholder="Enter role"
+            validators={{
+              onBlur: ({ value }) => {
+                if (!value) {
+                  return "Role is required";
+                }
+
+                return undefined;
+              },
+            }}
           />
 
-          <TextAreaField
+          <TextField
             name="bio"
             label="Biography"
             placeholder="Tell us about yourself..."
-            rows={4}
-            validators={validators.maxLength(120, "Biography must be under 120 characters")}
+            validators={{
+              onChange: ({ value }) => {
+                if (value.length > 120) {
+                  return "Biography must be under 120 characters";
+                }
+
+                return undefined;
+              },
+            }}
           />
 
-          <SwitchField
-            name="notifications"
-            label="Enable Notifications"
-            checkedChildren="ON"
-            unCheckedChildren="OFF"
-            checkedText="Enabled"
-            uncheckedText="Disabled"
-          />
+          <CheckboxField name="notifications" label="Notifications">
+            Enable notifications
+          </CheckboxField>
 
           <Divider style={{ margin: 0 }} />
 
-          <form.Subscribe
-            selector={(state: any) => state.values.basicInfo as UserProfile["basicInfo"]}
-          >
+          <Subscribe selector={(state: any) => state.values.basicInfo as UserProfile["basicInfo"]}>
             {(basicInfo) => (
               <div
                 style={{
@@ -127,7 +126,7 @@ export function Basic() {
                 <Text strong>Live Preview Name:</Text> {basicInfo.firstName} {basicInfo.lastName}
               </div>
             )}
-          </form.Subscribe>
+          </Subscribe>
 
           <Space>
             <SubmitButton size="large">Save Profile</SubmitButton>

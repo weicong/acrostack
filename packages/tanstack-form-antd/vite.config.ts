@@ -3,7 +3,9 @@ import { defineConfig } from "vite-plus";
 export default defineConfig({
   pack: {
     entry: "src/index.ts",
-    dts: true,
+    dts: {
+      tsgo: true,
+    },
     format: ["esm", "cjs"],
     sourcemap: true,
     deps: {
@@ -19,6 +21,13 @@ export default defineConfig({
       ],
     },
   },
+  lint: {
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+  },
+  fmt: {},
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],

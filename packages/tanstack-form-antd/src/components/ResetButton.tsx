@@ -1,36 +1,33 @@
-import type { MutableRefObject } from "react";
 import { Button } from "antd";
-import { getContextOrThrow, type InternalFormContextValue } from "../context/InternalFormContext";
-import type { BoundResetButtonComponent, ResetButtonProps } from "../types";
+import { useAntdFormContext } from "../context";
+import type { AntdFormApi, AnyFormValues, ResetButtonProps } from "../types";
+import { isActionDisabled } from "../utils/mode";
 
-export function createResetButton<TValues>(
-  contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
-): BoundResetButtonComponent {
+export function createResetButtonComponent<TFormValues extends AnyFormValues>(
+  form: AntdFormApi<TFormValues>,
+) {
   return function ResetButton(props: ResetButtonProps) {
-    const context = getContextOrThrow(contextRef);
-    const { form, config } = context;
-    const { autoDisabled = true, disabled, beforeReset, onClick, ...restProps } = props;
-
-    const finalDisabled = autoDisabled ? Boolean(disabled) || config.mode === "preview" : disabled;
+    const { children = "重置", htmlType = "button", disabled, onClick, ...buttonProps } = props;
+    const context = useAntdFormContext();
+    const finalDisabled = isActionDisabled(context, disabled);
 
     return (
       <Button
-        {...restProps}
+        {...buttonProps}
+        htmlType={htmlType}
         disabled={finalDisabled}
-        onClick={async (event) => {
+        onClick={(event) => {
           onClick?.(event);
+
           if (event.defaultPrevented) {
             return;
           }
-          if (beforeReset) {
-            const shouldReset = await beforeReset();
-            if (!shouldReset) {
-              return;
-            }
-          }
+
           form.reset();
         }}
-      />
+      >
+        {children}
+      </Button>
     );
   };
 }

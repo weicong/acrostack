@@ -1,43 +1,35 @@
-import { useAntdForm, validators } from "@acrostack/tanstack-form-antd";
-import { Card, Input, Slider, Space, Typography, message } from "antd";
+import { useAntdForm } from "@acrostack/tanstack-form-antd";
+import { Card, Input, Space, Typography, message } from "antd";
 
 const { Text } = Typography;
 
 type AdvancedFormValues = {
   projectName: string;
   slug: string;
-  budget: number | null;
-  status: "draft" | "active" | "archived";
-  publishWindow: [string, string] | null;
+  budget: string;
+  status: string;
+  publishStart: string;
+  publishEnd: string;
   isPublic: boolean;
 };
 
 export function EditableTable() {
-  const {
-    form,
-    Form,
-    FormField,
-    TextField,
-    NumberField,
-    SelectField,
-    RangePickerField,
-    SwitchField,
-    SubmitButton,
-    ResetButton,
-  } = useAntdForm<AdvancedFormValues>({
-    defaultValues: {
-      projectName: "AcroStack Demo",
-      slug: "acrostack-demo",
-      budget: 5000,
-      status: "active",
-      publishWindow: ["2026-05-01", "2026-05-15"],
-      isPublic: true,
-    },
-    onSubmit: async ({ value }: { value: AdvancedFormValues }) => {
-      console.log("Advanced form submitted:", value);
-      message.success("Advanced form saved successfully! Check console for data.");
-    },
-  });
+  const { Form, Field, Subscribe, TextField, CheckboxField, SubmitButton, ResetButton } =
+    useAntdForm<AdvancedFormValues>({
+      defaultValues: {
+        projectName: "AcroStack Demo",
+        slug: "acrostack-demo",
+        budget: "5000",
+        status: "active",
+        publishStart: "2026-05-01",
+        publishEnd: "2026-05-15",
+        isPublic: true,
+      },
+      onSubmit: async ({ value }) => {
+        console.log("Advanced form submitted:", value);
+        message.success("Advanced form saved successfully! Check console for data.");
+      },
+    });
 
   return (
     <Card title="Advanced Custom Field Demo" variant="borderless">
@@ -47,10 +39,29 @@ export function EditableTable() {
             name="projectName"
             label="Project Name"
             placeholder="Enter project name"
-            validators={validators.required("Project name is required")}
+            validators={{
+              onBlur: ({ value }) => {
+                if (!value) {
+                  return "Project name is required";
+                }
+
+                return undefined;
+              },
+            }}
           />
 
-          <FormField name="slug" validators={validators.required("Slug is required")}>
+          <Field
+            name="slug"
+            validators={{
+              onBlur: ({ value }) => {
+                if (!value) {
+                  return "Slug is required";
+                }
+
+                return undefined;
+              },
+            }}
+          >
             {(field) => (
               <div>
                 <div style={{ marginBottom: 8, color: "rgba(0, 0, 0, 0.88)" }}>Project Slug</div>
@@ -71,7 +82,7 @@ export function EditableTable() {
                     /projects/
                   </span>
                   <Input
-                    value={(field.state.value as string | undefined) ?? ""}
+                    value={field.state.value ?? ""}
                     onChange={(event) => field.handleChange(event.target.value as never)}
                     onBlur={() => field.handleBlur()}
                     placeholder="project-slug"
@@ -79,58 +90,21 @@ export function EditableTable() {
                 </Space.Compact>
               </div>
             )}
-          </FormField>
+          </Field>
 
-          <NumberField
-            name="budget"
-            label="Budget"
-            min={0}
-            addonAfter="USD"
-            validators={validators.required("Budget is required")}
-          />
+          <TextField name="budget" label="Budget" placeholder="Enter budget in USD" />
 
-          <FormField name="budget">
-            {(field) => (
-              <div>
-                <div style={{ marginBottom: 8, color: "rgba(0, 0, 0, 0.88)" }}>Budget Slider</div>
-                <Slider
-                  min={0}
-                  max={10000}
-                  step={100}
-                  value={(field.state.value as number | null | undefined) ?? 0}
-                  onChange={(value) => field.handleChange(value as never)}
-                  onChangeComplete={() => field.handleBlur()}
-                />
-              </div>
-            )}
-          </FormField>
+          <TextField name="status" label="Status" placeholder="draft / active / archived" />
 
-          <SelectField
-            name="status"
-            label="Status"
-            options={[
-              { label: "Draft", value: "draft" },
-              { label: "Active", value: "active" },
-              { label: "Archived", value: "archived" },
-            ]}
-            validators={validators.required("Status is required")}
-          />
+          <TextField name="publishStart" label="Publish Start" placeholder="YYYY-MM-DD" />
 
-          <RangePickerField
-            name="publishWindow"
-            label="Publish Window"
-            displayFormat="YYYY/MM/DD"
-            validators={validators.required("Publish window is required")}
-          />
+          <TextField name="publishEnd" label="Publish End" placeholder="YYYY-MM-DD" />
 
-          <SwitchField
-            name="isPublic"
-            label="Public Visibility"
-            checkedText="Public"
-            uncheckedText="Private"
-          />
+          <CheckboxField name="isPublic" label="Public Visibility">
+            Public project
+          </CheckboxField>
 
-          <form.Subscribe selector={(state: any) => state.values as AdvancedFormValues}>
+          <Subscribe selector={(state: any) => state.values as AdvancedFormValues}>
             {(values) => (
               <div
                 style={{
@@ -146,7 +120,7 @@ export function EditableTable() {
                 </pre>
               </div>
             )}
-          </form.Subscribe>
+          </Subscribe>
 
           <Space>
             <SubmitButton size="large">Submit Advanced Form</SubmitButton>
