@@ -1,7 +1,6 @@
 import { Space, Tabs, Typography } from "antd";
 import { Basic } from "./demos/Basic";
 import { CRUD } from "./demos/CRUD";
-import { EditableTable } from "./demos/EditableTable";
 
 const { Title, Text } = Typography;
 
@@ -14,11 +13,12 @@ export default function App() {
         style={{ display: "flex", maxWidth: 1000, margin: "0 auto" }}
       >
         <header>
-          <Title level={2}>Ant Design x TanStack Form Demo</Title>
+          <Title level={2}>`@acrostack/tanstack-form-antd` 示例</Title>
           <Text type="secondary">
-            This demo showcases the <code>@acrostack/tanstack-form-antd</code> adapter built around
-            a single <code>useAntdForm</code> entry. It keeps TanStack Form as the source of truth
-            while exposing the current field set, view mode, and escape hatches for custom bindings.
+            这个站点展示当前版本的 <code>@acrostack/tanstack-form-antd</code> 适配层。它围绕单一
+            <code>useAntdForm</code> 入口构建，以 TanStack Form 作为状态和校验的唯一来源，当前内建
+            <code>TextField</code> 和 <code>CheckboxField</code>，支持 <code>view</code> /
+            <code>disabled</code> 模式，并保留基于 <code>validators</code> 的类型推导能力。
           </Text>
         </header>
 
@@ -27,17 +27,12 @@ export default function App() {
           items={[
             {
               key: "basic",
-              label: "Basic Form",
+              label: "基础用法",
               children: <Basic />,
             },
             {
-              key: "advanced",
-              label: "Custom Field",
-              children: <EditableTable />,
-            },
-            {
               key: "crud",
-              label: "CRUD Table",
+              label: "CRUD 示例",
               children: <CRUD />,
             },
           ]}

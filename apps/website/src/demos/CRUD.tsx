@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAntdForm } from "@acrostack/tanstack-form-antd";
-import { Button, Card, Modal, Popconfirm, Space, Table, Tag, message } from "antd";
+import { Button, Card, Modal, Popconfirm, Space, Table, Tag, Typography, message } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 type UserRecord = {
@@ -20,6 +20,8 @@ type UserModalFormProps = {
   onCancel: () => void;
 };
 
+const { Text } = Typography;
+
 function UserModalForm(props: UserModalFormProps) {
   const { Form, TextField, CheckboxField, SubmitButton, ResetButton } = useAntdForm<UserFormValues>(
     {
@@ -33,14 +35,18 @@ function UserModalForm(props: UserModalFormProps) {
   return (
     <Form layout="vertical">
       <Space orientation="vertical" style={{ width: "100%" }} size="middle">
+        <Text type="secondary">
+          这个弹窗表单使用当前内建字段集，并保持 TanStack validators 作为唯一校验来源。
+        </Text>
+
         <TextField
           name="name"
-          label="Full Name"
-          placeholder="Enter full name"
+          label="姓名"
+          placeholder="请输入姓名"
           validators={{
             onBlur: ({ value }) => {
               if (!value) {
-                return "Name is required";
+                return "请输入姓名";
               }
 
               return undefined;
@@ -49,16 +55,16 @@ function UserModalForm(props: UserModalFormProps) {
         />
         <TextField
           name="email"
-          label="Email Address"
-          placeholder="Enter email address"
+          label="邮箱"
+          placeholder="请输入邮箱"
           validators={{
             onBlur: ({ value }) => {
               if (!value) {
-                return "Email is required";
+                return "请输入邮箱";
               }
 
               if (!value.includes("@")) {
-                return "Invalid email format";
+                return "邮箱格式不正确";
               }
 
               return undefined;
@@ -67,26 +73,26 @@ function UserModalForm(props: UserModalFormProps) {
         />
         <TextField
           name="role"
-          label="Role"
-          placeholder="Enter role"
+          label="角色"
+          placeholder="请输入角色"
           validators={{
             onBlur: ({ value }) => {
               if (!value) {
-                return "Role is required";
+                return "请输入角色";
               }
 
               return undefined;
             },
           }}
         />
-        <CheckboxField name="active" label="Status">
-          Active user
+        <CheckboxField name="active" label="状态">
+          启用用户
         </CheckboxField>
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}>
-          <Button onClick={props.onCancel}>Cancel</Button>
-          <ResetButton>Reset</ResetButton>
-          <SubmitButton>{props.editingId ? "Update" : "Create"}</SubmitButton>
+          <Button onClick={props.onCancel}>取消</Button>
+          <ResetButton>重置</ResetButton>
+          <SubmitButton>{props.editingId ? "更新" : "创建"}</SubmitButton>
         </div>
       </Space>
     </Form>
@@ -97,16 +103,16 @@ export function CRUD() {
   const [data, setData] = useState<UserRecord[]>([
     {
       id: "1",
-      name: "John Doe",
+      name: "张三",
       email: "john@example.com",
-      role: "admin",
+      role: "管理员",
       active: true,
     },
     {
       id: "2",
-      name: "Jane Smith",
+      name: "李四",
       email: "jane@example.com",
-      role: "user",
+      role: "普通用户",
       active: false,
     },
   ]);
@@ -115,7 +121,7 @@ export function CRUD() {
   const [initialValues, setInitialValues] = useState<UserFormValues>({
     name: "",
     email: "",
-    role: "user",
+    role: "普通用户",
     active: true,
   });
 
@@ -133,7 +139,7 @@ export function CRUD() {
       setInitialValues({
         name: "",
         email: "",
-        role: "user",
+        role: "普通用户",
         active: true,
       });
     }
@@ -143,50 +149,47 @@ export function CRUD() {
   const handleSubmitValue = (value: UserFormValues) => {
     if (editingId) {
       setData((prev) => prev.map((item) => (item.id === editingId ? { ...item, ...value } : item)));
-      message.success("User updated successfully");
+      message.success("用户更新成功");
     } else {
       setData((prev) => [...prev, { ...value, id: Date.now().toString() }]);
-      message.success("User created successfully");
+      message.success("用户创建成功");
     }
     setIsModalOpen(false);
   };
 
   const handleDelete = (id: string) => {
     setData((prev) => prev.filter((item) => item.id !== id));
-    message.success("User deleted");
+    message.success("用户已删除");
   };
 
   const columns = [
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "姓名", dataIndex: "name", key: "name" },
+    { title: "邮箱", dataIndex: "email", key: "email" },
     {
-      title: "Role",
+      title: "角色",
       dataIndex: "role",
       key: "role",
-      render: (role: UserRecord["role"]) => <Tag color="blue">{role.toUpperCase()}</Tag>,
+      render: (role: UserRecord["role"]) => <Tag color="blue">{role}</Tag>,
     },
     {
-      title: "Status",
+      title: "状态",
       dataIndex: "active",
       key: "active",
       render: (active: UserRecord["active"]) => (
-        <Tag color={active ? "green" : "volcano"}>{active ? "ACTIVE" : "INACTIVE"}</Tag>
+        <Tag color={active ? "green" : "volcano"}>{active ? "启用" : "停用"}</Tag>
       ),
     },
     {
-      title: "Action",
+      title: "操作",
       key: "action",
       render: (_: unknown, record: UserRecord) => (
         <Space size="middle">
           <Button type="link" icon={<EditOutlined />} onClick={() => showModal(record)}>
-            Edit
+            编辑
           </Button>
-          <Popconfirm
-            title="Are you sure to delete this user?"
-            onConfirm={() => handleDelete(record.id)}
-          >
+          <Popconfirm title="确认删除这个用户吗？" onConfirm={() => handleDelete(record.id)}>
             <Button type="link" danger icon={<DeleteOutlined />}>
-              Delete
+              删除
             </Button>
           </Popconfirm>
         </Space>
@@ -196,18 +199,18 @@ export function CRUD() {
 
   return (
     <Card
-      title="User Management CRUD"
+      title="内建字段 CRUD 示例"
       variant="borderless"
       extra={
         <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
-          Add User
+          新增用户
         </Button>
       }
     >
       <Table columns={columns} dataSource={data} rowKey="id" pagination={false} />
 
       <Modal
-        title={editingId ? "Edit User" : "Add User"}
+        title={editingId ? "编辑用户" : "新增用户"}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}

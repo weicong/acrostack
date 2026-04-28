@@ -6,15 +6,13 @@
 
 ## 安装
 
-```bash
-vp add @acrostack/tanstack-form-antd antd
-```
-
-如果你的项目没有安装 `@tanstack/react-form`，也需要一并安装：
+当前 `@tanstack/react-form` 是 `peer dependency`，因此需要和包一起安装：
 
 ```bash
 vp add @acrostack/tanstack-form-antd @tanstack/react-form antd
 ```
+
+如果不是 Vite+ 项目，可用等价的包管理器安装相同依赖。
 
 ## 基础示例
 
@@ -44,8 +42,11 @@ export function Example() {
         label="用户名"
         placeholder="请输入用户名"
         validators={{
-          onChange: ({ value }) => {
-            if (!value) return "请输入用户名";
+          onBlur: ({ value }) => {
+            if (!value) {
+              return "请输入用户名";
+            }
+
             return undefined;
           },
         }}
@@ -56,8 +57,7 @@ export function Example() {
         label="协议"
         validators={{
           onChange: ({ value }) => {
-            if (!value) return "请先同意协议";
-            return undefined;
+            return value ? undefined : "请先同意协议";
           },
         }}
       >
@@ -70,6 +70,49 @@ export function Example() {
   );
 }
 ```
+
+## 类型推导
+
+字段组件的 `name` 会约束可用字段路径，`validators` 会根据 `name` 自动推导 `value` 类型。
+
+```tsx
+type Values = {
+  name: string;
+  agree: boolean;
+};
+
+const form = useAntdForm<Values>({
+  defaultValues: {
+    name: "",
+    agree: false,
+  },
+});
+
+<form.TextField
+  name="name"
+  validators={{
+    onBlur: ({ value }) => {
+      value.toUpperCase();
+      return undefined;
+    },
+  }}
+/>;
+
+<form.CheckboxField
+  name="agree"
+  validators={{
+    onChange: ({ value }) => {
+      return value ? undefined : "请先同意协议";
+    },
+  }}
+/>;
+```
+
+上面的例子里：
+
+- `TextField` 的 `value` 会推导为 `string`
+- `CheckboxField` 的 `value` 会推导为 `boolean`
+- 如果传入不存在的 `name`，TypeScript 会报错
 
 ## 模式
 
@@ -95,7 +138,10 @@ export function Example() {
     label="用户名"
     validators={{
       onChange: ({ value }) => {
-        if (!value) return "请输入用户名";
+        if (!value) {
+          return "请输入用户名";
+        }
+
         return undefined;
       },
     }}
@@ -131,17 +177,9 @@ export function Example() {
 />
 ```
 
-## 设计原则
-
-- 不使用 Ant Design Form store
-- 不使用 Ant Design `rules`
-- 校验逻辑统一使用 TanStack Form `validators`
-- Ant Design 只负责 UI 布局、视觉样式和控件展示
-- `Field` 作为高级逃生口保留
-
 ## 当前实现
 
-第一版已提供：
+当前已提供：
 
 - `useAntdForm`
 - `Form`
@@ -149,3 +187,22 @@ export function Example() {
 - `CheckboxField`
 - `SubmitButton`
 - `ResetButton`
+
+当前未内建、但会作为后续扩展方向：
+
+- `SelectField`
+- `DatePickerField`
+- `NumberField`
+- `SwitchField`
+- `RadioGroupField`
+- `TextAreaField`
+- `PasswordField`
+- `UploadField`
+
+## 设计原则
+
+- 不使用 Ant Design Form store
+- 不使用 Ant Design `rules`
+- 校验逻辑统一使用 TanStack Form `validators`
+- Ant Design 只负责 UI 布局、视觉样式和控件展示
+- `Field` 作为高级逃生口保留

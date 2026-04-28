@@ -20,41 +20,46 @@ export function Basic() {
     useAntdForm<UserProfile>({
       defaultValues: {
         basicInfo: {
-          firstName: "Ant",
-          lastName: "Gravity",
-          role: "admin",
+          firstName: "张",
+          lastName: "三",
+          role: "管理员",
         },
-        bio: "Coding assistant powered by DeepMind.",
+        bio: "一个使用 TanStack Form 和 Ant Design 构建的演示表单。",
         notifications: true,
       },
       onSubmit: async ({ value }) => {
-        console.log("Submitted values:", value);
-        message.success("Form submitted successfully! Check console for details.");
+        console.log("提交结果:", value);
+        message.success("表单提交成功，可在控制台查看详情。");
       },
     });
 
   return (
     <Card
-      title="User Profile Form"
+      title="内建字段与预览模式"
       variant="borderless"
       extra={
         <Space>
-          <span>Preview Mode:</span>
+          <span>预览模式：</span>
           <Switch checked={preview} onChange={setPreview} />
         </Space>
       }
     >
       <Form layout="vertical" mode={preview ? "view" : "edit"}>
         <Space orientation="vertical" style={{ width: "100%" }} size="middle">
+          <Text type="secondary">
+            这个示例使用内建的 `TextField` 和 `CheckboxField`，同时演示嵌套字段路径，以及
+            `validators` 根据 `name` 自动推导 `value` 类型。
+          </Text>
+
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <TextField
               name="basicInfo.firstName"
-              label="First Name"
-              placeholder="Enter first name"
+              label="名"
+              placeholder="请输入名"
               validators={{
                 onBlur: ({ value }) => {
                   if (!value) {
-                    return "First name is required";
+                    return "请输入名";
                   }
 
                   return undefined;
@@ -63,12 +68,12 @@ export function Basic() {
             />
             <TextField
               name="basicInfo.lastName"
-              label="Last Name"
-              placeholder="Enter last name"
+              label="姓"
+              placeholder="请输入姓"
               validators={{
                 onBlur: ({ value }) => {
                   if (!value) {
-                    return "Last name is required";
+                    return "请输入姓";
                   }
 
                   return undefined;
@@ -79,12 +84,12 @@ export function Basic() {
 
           <TextField
             name="basicInfo.role"
-            label="Role"
-            placeholder="Enter role"
+            label="角色"
+            placeholder="请输入角色"
             validators={{
               onBlur: ({ value }) => {
                 if (!value) {
-                  return "Role is required";
+                  return "请输入角色";
                 }
 
                 return undefined;
@@ -94,12 +99,12 @@ export function Basic() {
 
           <TextField
             name="bio"
-            label="Biography"
-            placeholder="Tell us about yourself..."
+            label="简介"
+            placeholder="请输入个人简介"
             validators={{
               onChange: ({ value }) => {
                 if (value.length > 120) {
-                  return "Biography must be under 120 characters";
+                  return "个人简介不能超过 120 个字符";
                 }
 
                 return undefined;
@@ -107,8 +112,8 @@ export function Basic() {
             }}
           />
 
-          <CheckboxField name="notifications" label="Notifications">
-            Enable notifications
+          <CheckboxField name="notifications" label="通知设置">
+            开启通知
           </CheckboxField>
 
           <Divider style={{ margin: 0 }} />
@@ -123,14 +128,15 @@ export function Basic() {
                   border: "1px dashed #d9d9d9",
                 }}
               >
-                <Text strong>Live Preview Name:</Text> {basicInfo.firstName} {basicInfo.lastName}
+                <Text strong>实时预览姓名：</Text>
+                {basicInfo.firstName} {basicInfo.lastName}
               </div>
             )}
           </Subscribe>
 
           <Space>
-            <SubmitButton size="large">Save Profile</SubmitButton>
-            <ResetButton size="large">Reset</ResetButton>
+            <SubmitButton size="large">保存资料</SubmitButton>
+            <ResetButton size="large">重置</ResetButton>
           </Space>
         </Space>
       </Form>
