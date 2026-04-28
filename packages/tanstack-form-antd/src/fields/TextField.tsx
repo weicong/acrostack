@@ -26,7 +26,7 @@ export function createTextField<TValues>(
       return (
         <Input
           {...inputProps}
-          value={field.state.value ?? ""}
+          value={(field.state.value ?? "") as string}
           disabled={config.disabled || inputProps.disabled}
           onChange={(event) => {
             field.handleChange(event.target.value as never);

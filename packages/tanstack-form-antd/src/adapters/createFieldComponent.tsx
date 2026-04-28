@@ -2,17 +2,23 @@ import type { MutableRefObject, ReactNode } from "react";
 import { FormItem } from "../components/FormItem";
 import { PreviewValue } from "../components/PreviewValue";
 import { getContextOrThrow, type InternalFormContextValue } from "../context/InternalFormContext";
-import type { BaseFieldProps } from "../types";
+import type {
+  BaseFieldProps,
+  FieldApiFor,
+  FieldPath,
+  FieldPathValue,
+  FormStateLike,
+} from "../types";
 import { getFieldError, normalizeFieldValidators } from "../utils/getFieldError";
 
 type CreateFieldComponentOptions<TValues, TProps extends BaseFieldProps<TValues, any>> = {
   renderEdit: (params: {
-    field: any;
+    field: FieldApiFor<TValues, Extract<TProps["name"], FieldPath<TValues>>>;
     props: TProps;
     config: InternalFormContextValue<TValues>["config"];
   }) => ReactNode;
   formatter?: (
-    value: any,
+    value: FieldPathValue<TValues, Extract<TProps["name"], FieldPath<TValues>>>,
     props: TProps,
     config: InternalFormContextValue<TValues>["config"],
   ) => ReactNode;
@@ -34,12 +40,13 @@ export function createFieldComponent<TValues, TProps extends BaseFieldProps<TVal
         name={props.name}
         validators={normalizeFieldValidators(props.validators) as never}
       >
-        {(field: any) => (
-          <form.Subscribe selector={(state: any) => state.isSubmitted}>
-            {(submitted: boolean) => {
+        {(field) => (
+          <form.Subscribe selector={(state: FormStateLike<TValues>) => state.isSubmitted}>
+            {(submitted: FormStateLike<TValues>["isSubmitted"]) => {
               if (mode === "preview") {
                 const formatter = options.formatter
-                  ? (value: any) => options.formatter?.(value, props, config)
+                  ? (value: FieldPathValue<TValues, Extract<TProps["name"], FieldPath<TValues>>>) =>
+                      options.formatter?.(value, props, config)
                   : undefined;
 
                 return (
@@ -49,10 +56,15 @@ export function createFieldComponent<TValues, TProps extends BaseFieldProps<TVal
                     formItemProps={props.formItemProps}
                   >
                     <PreviewValue
-                      value={field.state.value}
+                      value={
+                        field.state.value as FieldPathValue<
+                          TValues,
+                          Extract<TProps["name"], FieldPath<TValues>>
+                        >
+                      }
                       emptyText={emptyText}
-                      renderPreview={props.renderPreview as never}
-                      formatter={formatter as never}
+                      renderPreview={props.renderPreview}
+                      formatter={formatter}
                       className={props.previewClassName}
                       style={props.previewStyle}
                     />
@@ -74,7 +86,7 @@ export function createFieldComponent<TValues, TProps extends BaseFieldProps<TVal
                   isValidating={field.state.meta.isValidating}
                   formItemProps={props.formItemProps}
                 >
-                  {options.renderEdit({ field, props, config })}
+                  {options.renderEdit({ field: field as never, props, config })}
                 </FormItem>
               );
             }}

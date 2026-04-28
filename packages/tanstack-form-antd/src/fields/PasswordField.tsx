@@ -3,6 +3,7 @@ import { Input } from "antd";
 import { createFieldComponent } from "../adapters/createFieldComponent";
 import type { InternalFormContextValue } from "../context/InternalFormContext";
 import type { BoundPasswordFieldComponent, PasswordFieldProps } from "../types";
+import { toDisplayText } from "../utils/toDisplayText";
 
 export function createPasswordField<TValues>(
   contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
@@ -27,7 +28,7 @@ export function createPasswordField<TValues>(
       return (
         <Input.Password
           {...passwordProps}
-          value={field.state.value ?? ""}
+          value={(field.state.value ?? "") as string}
           disabled={config.disabled || passwordProps.disabled}
           onChange={(event) => {
             field.handleChange(event.target.value as never);
@@ -42,9 +43,9 @@ export function createPasswordField<TValues>(
     },
     formatter: (value, props) => {
       if (props.maskPreview === false) {
-        return value;
+        return toDisplayText(value);
       }
-      return typeof value === "string" && value.length > 0 ? "******" : value;
+      return typeof value === "string" && value.length > 0 ? "******" : toDisplayText(value);
     },
   });
 }

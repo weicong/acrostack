@@ -26,7 +26,7 @@ export function createTextAreaField<TValues>(
       return (
         <Input.TextArea
           {...textAreaProps}
-          value={field.state.value ?? ""}
+          value={(field.state.value ?? "") as string}
           disabled={config.disabled || textAreaProps.disabled}
           onChange={(event) => {
             field.handleChange(event.target.value as never);

@@ -8,13 +8,17 @@ type InternalFormItemProps = {
   required?: boolean;
   error?: ReactNode;
   isValidating?: boolean;
-  formItemProps?: Omit<FormItemProps, "name" | "rules" | "children">;
+  formItemProps?: Omit<
+    FormItemProps,
+    "children" | "help" | "label" | "name" | "required" | "rules" | "validateStatus"
+  >;
   children: ReactNode;
 };
 
 export function FormItem(props: InternalFormItemProps) {
   return (
     <AntdForm.Item
+      {...props.formItemProps}
       label={props.label}
       required={props.required}
       validateStatus={getValidateStatus({
@@ -22,7 +26,6 @@ export function FormItem(props: InternalFormItemProps) {
         isValidating: props.isValidating,
       })}
       help={props.error}
-      {...props.formItemProps}
     >
       {props.children}
     </AntdForm.Item>

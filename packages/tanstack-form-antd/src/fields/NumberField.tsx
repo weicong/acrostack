@@ -28,7 +28,7 @@ export function createNumberField<TValues>(
         <InputNumber
           {...numberProps}
           style={{ width: "100%", ...style }}
-          value={field.state.value ?? null}
+          value={(field.state.value ?? null) as number | null}
           disabled={config.disabled || numberProps.disabled}
           onChange={(value) => {
             field.handleChange((value ?? null) as never);

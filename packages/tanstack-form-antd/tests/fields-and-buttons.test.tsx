@@ -29,7 +29,7 @@ function DemoForm(props: {
       firstName: "",
       notifications: false,
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value }: { value: DemoValues }) => {
       setSubmitCount((count) => count + 1);
       props.onSubmitValue?.(value);
     },
@@ -61,6 +61,49 @@ function DemoForm(props: {
       </Form>
       <div data-testid="submit-count">{submitCount}</div>
     </>
+  );
+}
+
+function PreviewForm() {
+  const { Form, TextField } = useAntdForm<DemoValues>({
+    mode: "preview",
+    defaultValues: {
+      firstName: "Alice",
+      notifications: true,
+    },
+  });
+
+  return (
+    <Form layout="vertical">
+      <TextField
+        name="firstName"
+        label="First Name"
+        renderPreview={(value) => `${value} (${value.length})`}
+      />
+    </Form>
+  );
+}
+
+function ErrorFormItemOverrideForm() {
+  const { Form, TextField } = useAntdForm<DemoValues>({
+    showErrorWhen: "touched",
+    defaultValues: {
+      firstName: "",
+      notifications: false,
+    },
+  });
+
+  return (
+    <Form layout="vertical">
+      <TextField
+        name="firstName"
+        label="First Name"
+        validators={{
+          onBlur: validators.required("First name is required"),
+        }}
+        formItemProps={{ help: "Custom help" } as never}
+      />
+    </Form>
   );
 }
 
@@ -116,6 +159,25 @@ describe("tanstack-form-antd field bridge", () => {
     });
 
     expect((input as HTMLInputElement).value).toBe("Alice");
+  });
+
+  test("uses renderPreview with formatted value in preview mode", () => {
+    render(<PreviewForm />);
+
+    expect(screen.getByText("Alice (5)")).toBeTruthy();
+  });
+
+  test("keeps internal error state ahead of formItemProps overrides", async () => {
+    render(<ErrorFormItemOverrideForm />);
+
+    const input = screen.getByRole("textbox");
+    fireEvent.blur(input);
+
+    await waitFor(() => {
+      expect(screen.getByText("First name is required")).toBeTruthy();
+    });
+
+    expect(screen.queryByText("Custom help")).toBeNull();
   });
 
   test("submits current field values", async () => {

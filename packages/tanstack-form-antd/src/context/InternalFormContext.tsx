@@ -1,6 +1,5 @@
 import type { MutableRefObject, ReactNode } from "react";
-import { useForm } from "@tanstack/react-form";
-import type { FormMode, ShowErrorWhen } from "../types";
+import type { FormApi, FormMode, ShowErrorWhen } from "../types";
 
 export type InternalFormConfig = {
   mode: FormMode;
@@ -12,7 +11,7 @@ export type InternalFormConfig = {
 };
 
 export type InternalFormContextValue<_TValues> = {
-  form: ReturnType<typeof useForm>;
+  form: FormApi;
   config: InternalFormConfig;
 };
 

@@ -9,6 +9,7 @@ import type {
   SwitchProps,
 } from "antd";
 import type { TextAreaProps } from "antd/es/input";
+import type { FieldValidatorsLike } from "./form";
 import type { FormMode, ShowErrorWhen } from "./form";
 import type { FieldPath, FieldPathByValue, FieldPathValue } from "./path";
 
@@ -28,10 +29,13 @@ export type BaseFieldProps<TValues, TName extends FieldPath<TValues> = FieldPath
   emptyText?: ReactNode;
   showErrorWhen?: ShowErrorWhen;
   renderPreview?: RenderPreview<FieldPathValue<TValues, TName>>;
-  formItemProps?: Omit<FormItemProps, "name" | "rules" | "children">;
+  formItemProps?: Omit<
+    FormItemProps,
+    "children" | "help" | "label" | "name" | "required" | "rules" | "validateStatus"
+  >;
   previewClassName?: string;
   previewStyle?: CSSProperties;
-  validators?: unknown;
+  validators?: FieldValidatorsLike<TValues, TName>;
 };
 
 type TextFieldName<TValues> = FieldPathByValue<TValues, string | null | undefined>;

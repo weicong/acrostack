@@ -1,7 +1,7 @@
 import type { MutableRefObject } from "react";
 import { Button } from "antd";
 import { getContextOrThrow, type InternalFormContextValue } from "../context/InternalFormContext";
-import type { BoundSubmitButtonComponent, SubmitButtonProps } from "../types";
+import type { BoundSubmitButtonComponent, FormStateLike, SubmitButtonProps } from "../types";
 
 export function createSubmitButton<TValues>(
   contextRef: MutableRefObject<InternalFormContextValue<TValues> | null>,
@@ -21,7 +21,7 @@ export function createSubmitButton<TValues>(
 
     return (
       <form.Subscribe
-        selector={(state: any) => ({
+        selector={(state: FormStateLike<TValues>) => ({
           canSubmit: state.canSubmit,
           isSubmitting: state.isSubmitting,
         })}

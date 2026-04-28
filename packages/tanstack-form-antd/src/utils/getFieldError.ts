@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { ShowErrorWhen } from "../types";
+import type { FieldPath, FieldValidatorsLike, FormStateLike, ShowErrorWhen } from "../types";
 import { toDisplayText } from "./toDisplayText";
 
 function normalizeError(error: unknown): ReactNode | undefined {
@@ -15,7 +15,9 @@ function normalizeError(error: unknown): ReactNode | undefined {
   return toDisplayText(error);
 }
 
-export function normalizeFieldValidators(validators: unknown): unknown {
+export function normalizeFieldValidators<TValues, TName extends FieldPath<TValues>>(
+  validators?: FieldValidatorsLike<TValues, TName>,
+) {
   if (typeof validators === "function") {
     return { onChange: validators };
   }
@@ -29,7 +31,7 @@ export function getFieldError(params: {
     isDirty?: boolean;
   };
   showErrorWhen: ShowErrorWhen;
-  submitted: boolean;
+  submitted: FormStateLike<unknown>["isSubmitted"];
 }): ReactNode | undefined {
   const errors = Array.isArray(params.meta.errors) ? params.meta.errors : [];
   const hasError = errors.length > 0;

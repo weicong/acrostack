@@ -13,21 +13,61 @@ import type {
   BoundTextAreaFieldComponent,
   BoundTextFieldComponent,
 } from "./field";
-import type { FieldPath } from "./path";
+import type { FieldPath, FieldPathValue } from "./path";
 
 export type FormMode = "edit" | "preview";
 export type ShowErrorWhen = "touched" | "dirty" | "submitted" | "touchedOrSubmitted" | "always";
 export type FormApi = ReturnType<typeof useForm>;
+export type FormStateLike<_TValues> = {
+  canSubmit: boolean;
+  isSubmitted: boolean;
+  isSubmitting: boolean;
+};
+
+export type FieldValidatorFn<TValue> = (params: { value: TValue }) => unknown;
+export type AsyncFieldValidatorFn<TValue> = (params: { value: TValue }) => Promise<unknown>;
+
+export type FieldApiFor<TValues, TName extends FieldPath<TValues>> = {
+  state: {
+    value: FieldPathValue<TValues, TName>;
+    meta: {
+      errors?: unknown[];
+      isTouched?: boolean;
+      isDirty?: boolean;
+      isValidating?: boolean;
+    };
+  };
+  handleChange: (value: FieldPathValue<TValues, TName>) => void;
+  handleBlur: () => void;
+};
+
+export type FieldValidatorObject<TValue> = {
+  onMount?: FieldValidatorFn<TValue>;
+  onChange?: FieldValidatorFn<TValue>;
+  onChangeAsync?: AsyncFieldValidatorFn<TValue>;
+  onBlur?: FieldValidatorFn<TValue>;
+  onBlurAsync?: AsyncFieldValidatorFn<TValue>;
+  onSubmit?: FieldValidatorFn<TValue>;
+  onSubmitAsync?: AsyncFieldValidatorFn<TValue>;
+  onDynamic?: FieldValidatorFn<TValue>;
+  onDynamicAsync?: AsyncFieldValidatorFn<TValue>;
+  onChangeListenTo?: string[];
+  onBlurListenTo?: string[];
+};
+
+export type FieldValidatorsLike<TValues, TName extends FieldPath<TValues>> =
+  | FieldValidatorFn<FieldPathValue<TValues, TName>>
+  | FieldValidatorObject<FieldPathValue<TValues, TName>>;
 
 export type BoundFormProps = Omit<AntdFormProps, "form" | "onFinish"> & {
   onSubmitSuccess?: () => void | Promise<void>;
   onSubmitError?: (error: unknown) => void | Promise<void>;
 };
 
-export type FormFieldProps<TValues> = {
-  name: FieldPath<TValues>;
-  validators?: unknown;
-  children: (field: any) => ReactNode;
+export type FormFieldProps<TValues, TName extends FieldPath<TValues> = FieldPath<TValues>> = {
+  name: TName;
+  validators?: FieldValidatorsLike<TValues, TName>;
+  children: (field: FieldApiFor<TValues, TName>) => ReactNode;
 };
 
 export type SubmitButtonProps = Omit<ButtonProps, "htmlType"> & {
