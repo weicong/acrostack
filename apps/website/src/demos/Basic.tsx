@@ -57,7 +57,7 @@ export function Basic() {
       }
     >
       <Form layout="vertical">
-        <Space direction="vertical" style={{ width: "100%" }} size="middle">
+        <Space orientation="vertical" style={{ width: "100%" }} size="middle">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <TextField
               name="basicInfo.firstName"

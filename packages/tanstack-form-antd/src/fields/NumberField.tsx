@@ -1,5 +1,5 @@
 import type { MutableRefObject } from "react";
-import { InputNumber } from "antd";
+import { InputNumber, Space } from "antd";
 import { createFieldComponent } from "../adapters/createFieldComponent";
 import type { InternalFormContextValue } from "../context/InternalFormContext";
 import type { BoundNumberFieldComponent, NumberFieldProps } from "../types";
@@ -20,11 +20,13 @@ export function createNumberField<TValues>(
         previewClassName: _previewClassName,
         previewStyle: _previewStyle,
         validators: _validators,
+        addonBefore,
+        addonAfter,
         style,
         ...numberProps
       } = props;
 
-      return (
+      const control = (
         <InputNumber
           {...numberProps}
           style={{ width: "100%", ...style }}
@@ -39,6 +41,50 @@ export function createNumberField<TValues>(
             numberProps.onBlur?.(event);
           }}
         />
+      );
+
+      if (addonBefore == null && addonAfter == null) {
+        return control;
+      }
+
+      return (
+        <Space.Compact style={{ width: "100%" }}>
+          {addonBefore == null ? null : (
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "0 11px",
+                background: "#fafafa",
+                border: "1px solid #d9d9d9",
+                borderRight: 0,
+                borderRadius: "6px 0 0 6px",
+                color: "rgba(0, 0, 0, 0.88)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {addonBefore}
+            </span>
+          )}
+          {control}
+          {addonAfter == null ? null : (
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "0 11px",
+                background: "#fafafa",
+                border: "1px solid #d9d9d9",
+                borderLeft: 0,
+                borderRadius: "0 6px 6px 0",
+                color: "rgba(0, 0, 0, 0.88)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {addonAfter}
+            </span>
+          )}
+        </Space.Compact>
       );
     },
   });

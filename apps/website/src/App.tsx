@@ -9,7 +9,7 @@ export default function App() {
   return (
     <div style={{ padding: 40, background: "#f0f2f5", minHeight: "100vh" }}>
       <Space
-        direction="vertical"
+        orientation="vertical"
         size="large"
         style={{ display: "flex", maxWidth: 1000, margin: "0 auto" }}
       >

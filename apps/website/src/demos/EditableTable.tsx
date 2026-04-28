@@ -42,7 +42,7 @@ export function EditableTable() {
   return (
     <Card title="Advanced Custom Field Demo" variant="borderless">
       <Form layout="vertical">
-        <Space direction="vertical" style={{ width: "100%" }} size="large">
+        <Space orientation="vertical" style={{ width: "100%" }} size="large">
           <TextField
             name="projectName"
             label="Project Name"
@@ -54,13 +54,29 @@ export function EditableTable() {
             {(field) => (
               <div>
                 <div style={{ marginBottom: 8, color: "rgba(0, 0, 0, 0.88)" }}>Project Slug</div>
-                <Input
-                  addonBefore="/projects/"
-                  value={field.state.value ?? ""}
-                  onChange={(event) => field.handleChange(event.target.value)}
-                  onBlur={() => field.handleBlur()}
-                  placeholder="project-slug"
-                />
+                <Space.Compact style={{ width: "100%" }}>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "0 11px",
+                      background: "#fafafa",
+                      border: "1px solid #d9d9d9",
+                      borderRight: 0,
+                      borderRadius: "6px 0 0 6px",
+                      color: "rgba(0, 0, 0, 0.88)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    /projects/
+                  </span>
+                  <Input
+                    value={(field.state.value as string | undefined) ?? ""}
+                    onChange={(event) => field.handleChange(event.target.value as never)}
+                    onBlur={() => field.handleBlur()}
+                    placeholder="project-slug"
+                  />
+                </Space.Compact>
               </div>
             )}
           </FormField>
@@ -81,8 +97,8 @@ export function EditableTable() {
                   min={0}
                   max={10000}
                   step={100}
-                  value={field.state.value ?? 0}
-                  onChange={(value) => field.handleChange(value)}
+                  value={(field.state.value as number | null | undefined) ?? 0}
+                  onChange={(value) => field.handleChange(value as never)}
                   onChangeComplete={() => field.handleBlur()}
                 />
               </div>

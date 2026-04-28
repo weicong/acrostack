@@ -30,7 +30,7 @@ function UserModalForm(props: UserModalFormProps) {
 
   return (
     <Form layout="vertical">
-      <Space direction="vertical" style={{ width: "100%" }} size="middle">
+      <Space orientation="vertical" style={{ width: "100%" }} size="middle">
         <TextField
           name="name"
           label="Full Name"
