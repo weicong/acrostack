@@ -5,9 +5,9 @@ import { createFormComponent } from "./components/Form";
 import { createResetButtonComponent } from "./components/ResetButton";
 import { createSubmitButtonComponent } from "./components/SubmitButton";
 import { createTextFieldComponent } from "./components/TextField";
-import type { AntdFormApi, AntdFormOptions, AnyFormValues } from "./types";
+import type { AntdFormApi, AntdFormOptions, ObjectFormValues } from "./types";
 
-export function useAntdForm<TFormValues extends AnyFormValues>(
+export function useAntdForm<TFormValues extends ObjectFormValues>(
   options?: AntdFormOptions<TFormValues>,
 ): AntdFormApi<TFormValues> {
   const form = useForm<

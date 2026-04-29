@@ -1,9 +1,9 @@
 import { Button } from "antd";
 import { useAntdFormContext } from "../context";
-import type { AntdFormApi, AnyFormValues, ResetButtonProps } from "../types";
+import type { AntdFormApi, ObjectFormValues, ResetButtonProps } from "../types";
 import { isActionDisabled } from "../utils/mode";
 
-export function createResetButtonComponent<TFormValues extends AnyFormValues>(
+export function createResetButtonComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ) {
   return function ResetButton(props: ResetButtonProps) {

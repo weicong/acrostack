@@ -2,7 +2,7 @@ import { Checkbox, Form as AntdForm } from "antd";
 import { useAntdFormContext } from "../context";
 import type {
   AntdFormApi,
-  AnyFormValues,
+  ObjectFormValues,
   CheckboxFieldName,
   CheckboxFieldComponent,
   CheckboxFieldProps,
@@ -12,7 +12,7 @@ import { normalizeFieldErrors, shouldShowFieldError } from "../utils/errors";
 import { resolveFieldMode } from "../utils/mode";
 import { buildValidationProps, getCheckboxViewValue } from "../utils/props";
 
-export function createCheckboxFieldComponent<TFormValues extends AnyFormValues>(
+export function createCheckboxFieldComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ): CheckboxFieldComponent<TFormValues> {
   return function CheckboxField<TName extends CheckboxFieldName<TFormValues>>(

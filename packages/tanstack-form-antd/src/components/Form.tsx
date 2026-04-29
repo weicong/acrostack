@@ -1,8 +1,8 @@
 import { Form as AntdForm } from "antd";
-import type { AntdFormApi, AntdFormProps, AnyFormValues } from "../types";
+import type { AntdFormApi, AntdFormProps, ObjectFormValues } from "../types";
 import { AntdFormContext } from "../context";
 
-export function createFormComponent<TFormValues extends AnyFormValues>(
+export function createFormComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ) {
   return function FormComponent(props: AntdFormProps) {

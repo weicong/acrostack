@@ -205,7 +205,7 @@ export type {
 ### 基础类型
 
 ```ts
-export type AnyFormValues = object;
+export type ObjectFormValues = object;
 
 export type FormMode = "edit" | "view" | "disabled";
 
@@ -235,10 +235,10 @@ export type SafeFormItemProps = Omit<
 字段名和值通过 TanStack 的 `DeepKeys` / `DeepValue` 建立映射：
 
 ```ts
-export type FieldName<TFormValues extends AnyFormValues> = DeepKeys<TFormValues>;
+export type FieldName<TFormValues extends ObjectFormValues> = DeepKeys<TFormValues>;
 
 export type FieldValue<
-  TFormValues extends AnyFormValues,
+  TFormValues extends ObjectFormValues,
   TName extends FieldName<TFormValues>,
 > = DeepValue<TFormValues, TName>;
 ```
@@ -251,7 +251,7 @@ export type FieldValue<
 
 ```ts
 export type AntdFieldValidators<
-  TFormValues extends AnyFormValues,
+  TFormValues extends ObjectFormValues,
   TName extends FieldName<TFormValues>,
 > = {
   onMount?: FieldValidateOrFn<TFormValues, TName, FieldValue<TFormValues, TName>>;
@@ -314,7 +314,7 @@ const form = useAntdForm<Values>({
 
 ```ts
 export interface TextFieldProps<
-  TFormValues extends AnyFormValues,
+  TFormValues extends ObjectFormValues,
   TName extends FieldName<TFormValues> = FieldName<TFormValues>,
 >
   extends
@@ -327,7 +327,7 @@ export interface TextFieldProps<
 }
 
 export interface CheckboxFieldProps<
-  TFormValues extends AnyFormValues,
+  TFormValues extends ObjectFormValues,
   TName extends FieldName<TFormValues> = FieldName<TFormValues>,
 >
   extends
@@ -345,11 +345,11 @@ export interface CheckboxFieldProps<
 为了让 JSX 使用时 `name` 和 `validators` 保持关联，当前实现额外定义了按字段名分发的组件 props：
 
 ```ts
-export type TextFieldComponentProps<TFormValues extends AnyFormValues> = {
+export type TextFieldComponentProps<TFormValues extends ObjectFormValues> = {
   [TName in FieldName<TFormValues>]: TextFieldProps<TFormValues, TName>;
 }[FieldName<TFormValues>];
 
-export type CheckboxFieldComponentProps<TFormValues extends AnyFormValues> = {
+export type CheckboxFieldComponentProps<TFormValues extends ObjectFormValues> = {
   [TName in FieldName<TFormValues>]: CheckboxFieldProps<TFormValues, TName>;
 }[FieldName<TFormValues>];
 ```
@@ -369,7 +369,7 @@ export type CheckboxFieldComponentProps<TFormValues extends AnyFormValues> = {
 ### 当前实现
 
 ```tsx
-export function useAntdForm<TFormValues extends AnyFormValues>(
+export function useAntdForm<TFormValues extends ObjectFormValues>(
   options?: AntdFormOptions<TFormValues>,
 ): AntdFormApi<TFormValues> {
   const form = useForm<
@@ -480,7 +480,7 @@ export function isActionDisabled(context: AntdFormContextValue, disabled?: boole
 ### 当前行为
 
 ```tsx
-export function createFormComponent<TFormValues extends AnyFormValues>(
+export function createFormComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ) {
   return function FormComponent(props: AntdFormProps) {

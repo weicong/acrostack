@@ -2,7 +2,7 @@ import { Form as AntdForm, Input } from "antd";
 import { useAntdFormContext } from "../context";
 import type {
   AntdFormApi,
-  AnyFormValues,
+  ObjectFormValues,
   FieldValue,
   TextFieldName,
   TypedTextFieldComponent,
@@ -12,7 +12,7 @@ import { normalizeFieldErrors, shouldShowFieldError } from "../utils/errors";
 import { resolveFieldMode } from "../utils/mode";
 import { buildValidationProps, getTextViewValue } from "../utils/props";
 
-export function createTextFieldComponent<TFormValues extends AnyFormValues>(
+export function createTextFieldComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ): TypedTextFieldComponent<TFormValues> {
   return function TextField<TName extends TextFieldName<TFormValues>>(

@@ -1,9 +1,9 @@
 import { Button } from "antd";
 import { useAntdFormContext } from "../context";
-import type { AntdFormApi, AnyFormValues, SubmitButtonProps } from "../types";
+import type { AntdFormApi, ObjectFormValues, SubmitButtonProps } from "../types";
 import { isActionDisabled } from "../utils/mode";
 
-export function createSubmitButtonComponent<TFormValues extends AnyFormValues>(
+export function createSubmitButtonComponent<TFormValues extends ObjectFormValues>(
   form: AntdFormApi<TFormValues>,
 ) {
   return function SubmitButton(props: SubmitButtonProps) {
