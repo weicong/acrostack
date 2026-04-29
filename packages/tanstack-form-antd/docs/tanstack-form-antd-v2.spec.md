@@ -247,7 +247,7 @@ export type FieldValue<
 
 这是最近补齐的重点。
 
-当前实现不再使用过宽的 `FieldValidators<..., any>`，而是按事件拆分为：
+当前实现不再使用过宽的 `FieldValidators`，而是按事件拆分为：
 
 ```ts
 export type AntdFieldValidators<
@@ -372,7 +372,20 @@ export type CheckboxFieldComponentProps<TFormValues extends AnyFormValues> = {
 export function useAntdForm<TFormValues extends AnyFormValues>(
   options?: AntdFormOptions<TFormValues>,
 ): AntdFormApi<TFormValues> {
-  const form = useForm<TFormValues, any, any, any, any, any, any, any, any, any, any, any>(options);
+  const form = useForm<
+    TFormValues,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  >(options);
 
   const components = useMemo(
     () => ({
@@ -604,7 +617,7 @@ buildValidationProps(showError, errorMessage);
   disabled={resolved.disabled}
   readOnly={resolved.readOnly}
   onChange={(event) => {
-    field.handleChange(event.target.value as any);
+    field.handleChange(event.target.value as FieldValue<TFormValues, TName>);
   }}
   onBlur={() => {
     field.handleBlur();
@@ -632,7 +645,7 @@ buildValidationProps(showError, errorMessage);
   checked={Boolean(field.state.value)}
   disabled={resolved.disabled}
   onChange={(event) => {
-    field.handleChange(event.target.checked as any);
+    field.handleChange(event.target.checked as FieldValue<TFormValues, TName>);
   }}
   onBlur={() => {
     field.handleBlur();
@@ -770,7 +783,7 @@ vp run build
 - 仅内建 `TextField` 和 `CheckboxField`
 - `TextField` 当前使用 `Input`，未拆分 `Password`、`TextArea` 等变体
 - `CheckboxField` 面向布尔值场景，未覆盖 checkbox group
-- `useAntdForm` 内部仍依赖部分 `any` 来适配 TanStack 复杂泛型
+- 字段组件当前通过字段值类型约束 `name`，以避免把字符串控件绑定到非字符串字段，或把复选框绑定到非布尔字段
 
 后续扩展方向：
 

@@ -3,8 +3,10 @@ import { useAntdFormContext } from "../context";
 import type {
   AntdFormApi,
   AnyFormValues,
+  CheckboxFieldName,
   CheckboxFieldComponent,
-  CheckboxFieldComponentProps,
+  CheckboxFieldProps,
+  FieldValue,
 } from "../types";
 import { normalizeFieldErrors, shouldShowFieldError } from "../utils/errors";
 import { resolveFieldMode } from "../utils/mode";
@@ -13,7 +15,9 @@ import { buildValidationProps, getCheckboxViewValue } from "../utils/props";
 export function createCheckboxFieldComponent<TFormValues extends AnyFormValues>(
   form: AntdFormApi<TFormValues>,
 ): CheckboxFieldComponent<TFormValues> {
-  return function CheckboxField(props: CheckboxFieldComponentProps<TFormValues>) {
+  return function CheckboxField<TName extends CheckboxFieldName<TFormValues>>(
+    props: CheckboxFieldProps<TFormValues, TName>,
+  ) {
     const {
       name,
       label,
@@ -82,7 +86,7 @@ export function createCheckboxFieldComponent<TFormValues extends AnyFormValues>(
                     checked={Boolean(field.state.value)}
                     disabled={resolved.disabled}
                     onChange={(event) => {
-                      field.handleChange(event.target.checked as any);
+                      field.handleChange(event.target.checked as FieldValue<TFormValues, TName>);
                     }}
                     onBlur={() => {
                       field.handleBlur();

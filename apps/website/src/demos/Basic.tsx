@@ -118,7 +118,7 @@ export function Basic() {
 
           <Divider style={{ margin: 0 }} />
 
-          <Subscribe selector={(state: any) => state.values.basicInfo as UserProfile["basicInfo"]}>
+          <Subscribe selector={(state) => state.values.basicInfo}>
             {(basicInfo) => (
               <div
                 style={{

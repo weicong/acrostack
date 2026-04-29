@@ -50,6 +50,20 @@ export type FieldValue<
   TName extends FieldName<TFormValues>,
 > = DeepValue<TFormValues, TName>;
 
+export type FieldNameByValue<TFormValues extends AnyFormValues, TValue> = {
+  [TName in FieldName<TFormValues>]: FieldValue<TFormValues, TName> extends TValue ? TName : never;
+}[FieldName<TFormValues>];
+
+export type TextFieldName<TFormValues extends AnyFormValues> = FieldNameByValue<
+  TFormValues,
+  string | null | undefined
+>;
+
+export type CheckboxFieldName<TFormValues extends AnyFormValues> = FieldNameByValue<
+  TFormValues,
+  boolean | null | undefined
+>;
+
 export type AntdFieldValidators<
   TFormValues extends AnyFormValues,
   TName extends FieldName<TFormValues>,
@@ -76,7 +90,7 @@ export interface AntdFormProps extends Omit<AntdBaseFormProps, "form" | "onFinis
 
 export interface TextFieldProps<
   TFormValues extends AnyFormValues,
-  TName extends FieldName<TFormValues> = FieldName<TFormValues>,
+  TName extends TextFieldName<TFormValues> = TextFieldName<TFormValues>,
 >
   extends
     BaseFieldProps,
@@ -89,7 +103,7 @@ export interface TextFieldProps<
 
 export interface CheckboxFieldProps<
   TFormValues extends AnyFormValues,
-  TName extends FieldName<TFormValues> = FieldName<TFormValues>,
+  TName extends CheckboxFieldName<TFormValues> = CheckboxFieldName<TFormValues>,
 >
   extends
     BaseFieldProps,
@@ -107,39 +121,54 @@ export interface SubmitButtonProps extends ButtonProps {
 export interface ResetButtonProps extends ButtonProps {}
 
 export type AnyReactFormApi<TFormValues extends AnyFormValues = AnyFormValues> =
-  ReactFormExtendedApi<TFormValues, any, any, any, any, any, any, any, any, any, any, any>;
+  ReactFormExtendedApi<
+    TFormValues,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  >;
 
 export type AntdFormOptions<TFormValues extends AnyFormValues = AnyFormValues> = FormOptions<
   TFormValues,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined
 >;
 
 export type TextFieldComponent<TFormValues extends AnyFormValues> = <
-  TName extends FieldName<TFormValues>,
+  TName extends TextFieldName<TFormValues>,
 >(
   props: TextFieldProps<TFormValues, TName>,
 ) => ReactNode;
 
 export type TextFieldComponentProps<TFormValues extends AnyFormValues> = {
-  [TName in FieldName<TFormValues>]: TextFieldProps<TFormValues, TName>;
-}[FieldName<TFormValues>];
+  [TName in TextFieldName<TFormValues>]: TextFieldProps<TFormValues, TName>;
+}[TextFieldName<TFormValues>];
 
 export type CheckboxFieldComponentProps<TFormValues extends AnyFormValues> = {
-  [TName in FieldName<TFormValues>]: CheckboxFieldProps<TFormValues, TName>;
-}[FieldName<TFormValues>];
+  [TName in CheckboxFieldName<TFormValues>]: CheckboxFieldProps<TFormValues, TName>;
+}[CheckboxFieldName<TFormValues>];
 
-export type CheckboxFieldComponent<TFormValues extends AnyFormValues> = (
-  props: CheckboxFieldComponentProps<TFormValues>,
+export type CheckboxFieldComponent<TFormValues extends AnyFormValues> = <
+  TName extends CheckboxFieldName<TFormValues>,
+>(
+  props: CheckboxFieldProps<TFormValues, TName>,
 ) => ReactNode;
 
 export type TypedTextFieldComponent<TFormValues extends AnyFormValues> = (

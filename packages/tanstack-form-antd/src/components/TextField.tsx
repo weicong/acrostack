@@ -3,7 +3,8 @@ import { useAntdFormContext } from "../context";
 import type {
   AntdFormApi,
   AnyFormValues,
-  FieldName,
+  FieldValue,
+  TextFieldName,
   TypedTextFieldComponent,
   TextFieldProps,
 } from "../types";
@@ -14,7 +15,7 @@ import { buildValidationProps, getTextViewValue } from "../utils/props";
 export function createTextFieldComponent<TFormValues extends AnyFormValues>(
   form: AntdFormApi<TFormValues>,
 ): TypedTextFieldComponent<TFormValues> {
-  return function TextField<TName extends FieldName<TFormValues>>(
+  return function TextField<TName extends TextFieldName<TFormValues>>(
     props: TextFieldProps<TFormValues, TName>,
   ) {
     const {
@@ -87,7 +88,7 @@ export function createTextFieldComponent<TFormValues extends AnyFormValues>(
                     disabled={resolved.disabled}
                     readOnly={resolved.readOnly}
                     onChange={(event) => {
-                      field.handleChange(event.target.value as any);
+                      field.handleChange(event.target.value as FieldValue<TFormValues, TName>);
                     }}
                     onBlur={() => {
                       field.handleBlur();

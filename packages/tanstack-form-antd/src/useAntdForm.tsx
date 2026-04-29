@@ -10,7 +10,20 @@ import type { AntdFormApi, AntdFormOptions, AnyFormValues } from "./types";
 export function useAntdForm<TFormValues extends AnyFormValues>(
   options?: AntdFormOptions<TFormValues>,
 ): AntdFormApi<TFormValues> {
-  const form = useForm<TFormValues, any, any, any, any, any, any, any, any, any, any, any>(options);
+  const form = useForm<
+    TFormValues,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  >(options);
 
   const components = useMemo(
     () => ({
