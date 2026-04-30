@@ -184,20 +184,32 @@ const form = useAntdForm<Values>({
 - `useAntdForm`
 - `Form`
 - `TextField`
+- `TextAreaField`
+- `PasswordField`
 - `CheckboxField`
+- `CheckboxGroupField`
+- `NumberField`
+- `SelectField`
+- `SwitchField`
+- `RadioGroupField`
+- `DatePickerField`
+- `DateRangePickerField`
+- `TimePickerField`
+- `TimeRangeField`
+- `TreeSelectField`
+- `CascaderField`
+- `TransferField`
+- `UploadField`
 - `SubmitButton`
 - `ResetButton`
 
 当前未内建、但会作为后续扩展方向：
 
-- `SelectField`
-- `DatePickerField`
-- `NumberField`
-- `SwitchField`
-- `RadioGroupField`
-- `TextAreaField`
-- `PasswordField`
-- `UploadField`
+- `AutoCompleteField`
+- `MentionsField`
+- `SliderField`
+- `RateField`
+- `ColorPickerField`
 
 ## 设计原则
 

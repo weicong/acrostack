@@ -1,3 +1,17 @@
+import {
+  Cascader,
+  Checkbox,
+  DatePicker,
+  Input,
+  InputNumber,
+  Radio,
+  Select,
+  Switch as AntdSwitch,
+  TimePicker,
+  Transfer,
+  TreeSelect,
+  Upload,
+} from "antd";
 import type {
   ButtonProps,
   CheckboxProps,
@@ -13,7 +27,8 @@ import type {
   FormOptions,
   ReactFormExtendedApi,
 } from "@tanstack/react-form";
-import type { ComponentType, FormEventHandler, ReactNode } from "react";
+import type { Dayjs } from "dayjs";
+import type { ComponentProps, ComponentType, FormEventHandler, Key, ReactNode } from "react";
 
 /**
  * 表单值的基础约束。当前适配层只处理对象形态的表单值。
@@ -61,6 +76,11 @@ export interface BaseFieldProps {
   errorDisplayMode?: ErrorDisplayMode;
 }
 
+type FieldControlProps<TProps, TRemovedKeys extends keyof any = never> = Omit<
+  TProps,
+  keyof BaseFieldProps | TRemovedKeys
+>;
+
 /**
  * 基于 TanStack 的 DeepKeys / DeepValue 建立字段路径和值类型的映射关系。
  */
@@ -86,6 +106,80 @@ export type TextFieldName<TFormValues extends ObjectFormValues> = FieldNameByVal
 export type CheckboxFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
   TFormValues,
   boolean | null | undefined
+>;
+
+export type NumberFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  number | null | undefined
+>;
+
+export type SelectFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  string | number | Array<string | number> | null | undefined
+>;
+
+export type RadioGroupFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  string | number | boolean | null | undefined
+>;
+
+export type DatePickerFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  Dayjs | null | undefined
+>;
+
+export type CheckboxGroupFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  Array<string | number | boolean> | null | undefined
+>;
+
+export type TimePickerFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  Dayjs | null | undefined
+>;
+
+export type RangePickerFieldValue = [Dayjs | null, Dayjs | null];
+
+export type DateRangePickerFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  RangePickerFieldValue | null | undefined
+>;
+
+export type TimeRangeFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  RangePickerFieldValue | null | undefined
+>;
+
+export type TreeSelectFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  string | number | Array<string | number> | null | undefined
+>;
+
+export type CascaderFieldValue =
+  | Array<string | number>
+  | Array<Array<string | number>>
+  | null
+  | undefined;
+
+export type CascaderFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  CascaderFieldValue
+>;
+
+export type TransferFieldValue = Key[];
+
+export type TransferFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  TransferFieldValue | null | undefined
+>;
+
+type UploadBaseProps = ComponentProps<typeof Upload>;
+
+export type UploadFieldValue = NonNullable<UploadBaseProps["fileList"]>;
+
+export type UploadFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  UploadFieldValue | null | undefined
 >;
 
 /**
@@ -127,7 +221,7 @@ export interface TextFieldProps<
 >
   extends
     BaseFieldProps,
-    Omit<InputProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> {
+    FieldControlProps<InputProps, "name" | "value" | "defaultValue" | "onChange" | "onBlur"> {
   name: TName;
   validators?: AntdFieldValidators<TFormValues, TName>;
   disabled?: boolean;
@@ -143,10 +237,235 @@ export interface CheckboxFieldProps<
 >
   extends
     BaseFieldProps,
-    Omit<CheckboxProps, "name" | "checked" | "defaultChecked" | "onChange" | "onBlur"> {
+    FieldControlProps<
+      CheckboxProps,
+      "name" | "checked" | "defaultChecked" | "onChange" | "onBlur"
+    > {
   name: TName;
   validators?: AntdFieldValidators<TFormValues, TName>;
   children?: ReactNode;
+  disabled?: boolean;
+}
+
+export interface TextAreaFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TextFieldName<TFormValues> = TextFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Input.TextArea>,
+      "name" | "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface PasswordFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TextFieldName<TFormValues> = TextFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Input.Password>,
+      "name" | "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface NumberFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends NumberFieldName<TFormValues> = NumberFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof InputNumber>,
+      "name" | "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface SelectFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends SelectFieldName<TFormValues> = SelectFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Select>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface SwitchFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends CheckboxFieldName<TFormValues> = CheckboxFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof AntdSwitch>,
+      "checked" | "defaultChecked" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface RadioGroupFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends RadioGroupFieldName<TFormValues> = RadioGroupFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Radio.Group>,
+      "name" | "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface DatePickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends DatePickerFieldName<TFormValues> = DatePickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface UploadFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends UploadFieldName<TFormValues> = UploadFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<UploadBaseProps, "fileList" | "defaultFileList" | "onChange"> {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface CheckboxGroupFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends CheckboxGroupFieldName<TFormValues> = CheckboxGroupFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Checkbox.Group>,
+      "name" | "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface TimePickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TimePickerFieldName<TFormValues> = TimePickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof TimePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface DateRangePickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends DateRangePickerFieldName<TFormValues> = DateRangePickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker.RangePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface TimeRangeFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TimeRangeFieldName<TFormValues> = TimeRangeFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof TimePicker.RangePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface TreeSelectFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TreeSelectFieldName<TFormValues> = TreeSelectFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof TreeSelect>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface CascaderFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends CascaderFieldName<TFormValues> = CascaderFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Cascader>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface TransferFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends TransferFieldName<TFormValues> = TransferFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<ComponentProps<typeof Transfer>, "targetKeys" | "onChange"> {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
   disabled?: boolean;
 }
 
@@ -216,6 +535,66 @@ export type CheckboxFieldComponentProps<TFormValues extends ObjectFormValues> = 
   [TName in CheckboxFieldName<TFormValues>]: CheckboxFieldProps<TFormValues, TName>;
 }[CheckboxFieldName<TFormValues>];
 
+export type TextAreaFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TextFieldName<TFormValues>]: TextAreaFieldProps<TFormValues, TName>;
+}[TextFieldName<TFormValues>];
+
+export type PasswordFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TextFieldName<TFormValues>]: PasswordFieldProps<TFormValues, TName>;
+}[TextFieldName<TFormValues>];
+
+export type NumberFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in NumberFieldName<TFormValues>]: NumberFieldProps<TFormValues, TName>;
+}[NumberFieldName<TFormValues>];
+
+export type SelectFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in SelectFieldName<TFormValues>]: SelectFieldProps<TFormValues, TName>;
+}[SelectFieldName<TFormValues>];
+
+export type SwitchFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in CheckboxFieldName<TFormValues>]: SwitchFieldProps<TFormValues, TName>;
+}[CheckboxFieldName<TFormValues>];
+
+export type RadioGroupFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in RadioGroupFieldName<TFormValues>]: RadioGroupFieldProps<TFormValues, TName>;
+}[RadioGroupFieldName<TFormValues>];
+
+export type DatePickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in DatePickerFieldName<TFormValues>]: DatePickerFieldProps<TFormValues, TName>;
+}[DatePickerFieldName<TFormValues>];
+
+export type UploadFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in UploadFieldName<TFormValues>]: UploadFieldProps<TFormValues, TName>;
+}[UploadFieldName<TFormValues>];
+
+export type CheckboxGroupFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in CheckboxGroupFieldName<TFormValues>]: CheckboxGroupFieldProps<TFormValues, TName>;
+}[CheckboxGroupFieldName<TFormValues>];
+
+export type TimePickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TimePickerFieldName<TFormValues>]: TimePickerFieldProps<TFormValues, TName>;
+}[TimePickerFieldName<TFormValues>];
+
+export type DateRangePickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in DateRangePickerFieldName<TFormValues>]: DateRangePickerFieldProps<TFormValues, TName>;
+}[DateRangePickerFieldName<TFormValues>];
+
+export type TimeRangeFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TimeRangeFieldName<TFormValues>]: TimeRangeFieldProps<TFormValues, TName>;
+}[TimeRangeFieldName<TFormValues>];
+
+export type TreeSelectFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TreeSelectFieldName<TFormValues>]: TreeSelectFieldProps<TFormValues, TName>;
+}[TreeSelectFieldName<TFormValues>];
+
+export type CascaderFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in CascaderFieldName<TFormValues>]: CascaderFieldProps<TFormValues, TName>;
+}[CascaderFieldName<TFormValues>];
+
+export type TransferFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in TransferFieldName<TFormValues>]: TransferFieldProps<TFormValues, TName>;
+}[TransferFieldName<TFormValues>];
+
 export type CheckboxFieldComponent<TFormValues extends ObjectFormValues> = <
   TName extends CheckboxFieldName<TFormValues>,
 >(
@@ -224,6 +603,144 @@ export type CheckboxFieldComponent<TFormValues extends ObjectFormValues> = <
 
 export type TypedTextFieldComponent<TFormValues extends ObjectFormValues> = (
   props: TextFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TypedTextAreaFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: TextAreaFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TypedPasswordFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: PasswordFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type NumberFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends NumberFieldName<TFormValues>,
+>(
+  props: NumberFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedNumberFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: NumberFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type SelectFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends SelectFieldName<TFormValues>,
+>(
+  props: SelectFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedSelectFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: SelectFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type SwitchFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends CheckboxFieldName<TFormValues>,
+>(
+  props: SwitchFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedSwitchFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: SwitchFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type RadioGroupFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends RadioGroupFieldName<TFormValues>,
+>(
+  props: RadioGroupFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedRadioGroupFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: RadioGroupFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type DatePickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends DatePickerFieldName<TFormValues>,
+>(
+  props: DatePickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedDatePickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: DatePickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type UploadFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends UploadFieldName<TFormValues>,
+>(
+  props: UploadFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedUploadFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: UploadFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type CheckboxGroupFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends CheckboxGroupFieldName<TFormValues>,
+>(
+  props: CheckboxGroupFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedCheckboxGroupFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: CheckboxGroupFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TimePickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends TimePickerFieldName<TFormValues>,
+>(
+  props: TimePickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedTimePickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: TimePickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type DateRangePickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends DateRangePickerFieldName<TFormValues>,
+>(
+  props: DateRangePickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedDateRangePickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: DateRangePickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TimeRangeFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends TimeRangeFieldName<TFormValues>,
+>(
+  props: TimeRangeFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedTimeRangeFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: TimeRangeFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TreeSelectFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends TreeSelectFieldName<TFormValues>,
+>(
+  props: TreeSelectFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedTreeSelectFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: TreeSelectFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type CascaderFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends CascaderFieldName<TFormValues>,
+>(
+  props: CascaderFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedCascaderFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: CascaderFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type TransferFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends TransferFieldName<TFormValues>,
+>(
+  props: TransferFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedTransferFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: TransferFieldComponentProps<TFormValues>,
 ) => ReactNode;
 
 /**
@@ -235,7 +752,22 @@ export type AntdFormApi<TFormValues extends ObjectFormValues = ObjectFormValues>
     Field: BaseFormApi<TFormValues>["Field"];
     Form: ComponentType<AntdFormProps>;
     TextField: TypedTextFieldComponent<TFormValues>;
+    TextAreaField: TypedTextAreaFieldComponent<TFormValues>;
+    PasswordField: TypedPasswordFieldComponent<TFormValues>;
     CheckboxField: CheckboxFieldComponent<TFormValues>;
+    NumberField: TypedNumberFieldComponent<TFormValues>;
+    SelectField: TypedSelectFieldComponent<TFormValues>;
+    SwitchField: TypedSwitchFieldComponent<TFormValues>;
+    RadioGroupField: TypedRadioGroupFieldComponent<TFormValues>;
+    DatePickerField: TypedDatePickerFieldComponent<TFormValues>;
+    UploadField: TypedUploadFieldComponent<TFormValues>;
+    CheckboxGroupField: TypedCheckboxGroupFieldComponent<TFormValues>;
+    TimePickerField: TypedTimePickerFieldComponent<TFormValues>;
+    DateRangePickerField: TypedDateRangePickerFieldComponent<TFormValues>;
+    TimeRangeField: TypedTimeRangeFieldComponent<TFormValues>;
+    TreeSelectField: TypedTreeSelectFieldComponent<TFormValues>;
+    CascaderField: TypedCascaderFieldComponent<TFormValues>;
+    TransferField: TypedTransferFieldComponent<TFormValues>;
     SubmitButton: ComponentType<SubmitButtonProps>;
     ResetButton: ComponentType<ResetButtonProps>;
   };

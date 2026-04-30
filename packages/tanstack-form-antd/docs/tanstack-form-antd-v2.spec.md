@@ -18,21 +18,33 @@
 - `useAntdForm`
 - `Form`
 - `TextField`
+- `TextAreaField`
+- `PasswordField`
 - `CheckboxField`
+- `CheckboxGroupField`
+- `NumberField`
+- `SelectField`
+- `SwitchField`
+- `RadioGroupField`
+- `DatePickerField`
+- `DateRangePickerField`
+- `TimePickerField`
+- `TimeRangeField`
+- `TreeSelectField`
+- `CascaderField`
+- `TransferField`
+- `UploadField`
 - `SubmitButton`
 - `ResetButton`
 - `Field` 逃生口透传
 
 当前未实现、但类型和架构上保留扩展空间的能力：
 
-- `SelectField`
-- `DatePickerField`
-- `NumberField`
-- `SwitchField`
-- `RadioGroupField`
-- `TextAreaField`
-- `PasswordField`
-- `UploadField`
+- `AutoCompleteField`
+- `MentionsField`
+- `SliderField`
+- `RateField`
+- `ColorPickerField`
 
 ## 三、核心原则
 
