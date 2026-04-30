@@ -199,7 +199,7 @@ export function CRUD() {
 
   return (
     <Card
-      title="内建字段 CRUD 示例"
+      title="CRUD 示例"
       variant="borderless"
       extra={
         <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>

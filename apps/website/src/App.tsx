@@ -1,7 +1,6 @@
 import { Space, Tabs, Typography } from "antd";
 import { Basic } from "./demos/Basic";
 import { CRUD } from "./demos/CRUD";
-import { Modes } from "./demos/Modes";
 
 const { Title, Text } = Typography;
 
@@ -27,13 +26,8 @@ export default function App() {
           items={[
             {
               key: "basic",
-              label: "字段总览",
+              label: "基本用法",
               children: <Basic />,
-            },
-            {
-              key: "modes",
-              label: "模式与校验",
-              children: <Modes />,
             },
             {
               key: "crud",
