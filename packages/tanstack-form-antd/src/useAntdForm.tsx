@@ -1,16 +1,21 @@
 import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
+import { createAutoCompleteFieldComponent } from "./components/AutoCompleteField";
 import { createCascaderFieldComponent } from "./components/CascaderField";
 import { createCheckboxFieldComponent } from "./components/CheckboxField";
 import { createCheckboxGroupFieldComponent } from "./components/CheckboxGroupField";
+import { createColorPickerFieldComponent } from "./components/ColorPickerField";
 import { createDatePickerFieldComponent } from "./components/DatePickerField";
 import { createDateRangePickerFieldComponent } from "./components/DateRangePickerField";
 import { createFormComponent } from "./components/Form";
+import { createMentionsFieldComponent } from "./components/MentionsField";
 import { createNumberFieldComponent } from "./components/NumberField";
 import { createPasswordFieldComponent } from "./components/PasswordField";
 import { createRadioGroupFieldComponent } from "./components/RadioGroupField";
+import { createRateFieldComponent } from "./components/RateField";
 import { createResetButtonComponent } from "./components/ResetButton";
 import { createSelectFieldComponent } from "./components/SelectField";
+import { createSliderFieldComponent } from "./components/SliderField";
 import { createSubmitButtonComponent } from "./components/SubmitButton";
 import { createSwitchFieldComponent } from "./components/SwitchField";
 import { createTextAreaFieldComponent } from "./components/TextAreaField";
@@ -44,11 +49,15 @@ export function useAntdForm<TFormValues extends ObjectFormValues>(
     () => ({
       Form: createFormComponent(form as AntdFormApi<TFormValues>),
       TextField: createTextFieldComponent(form as AntdFormApi<TFormValues>),
+      AutoCompleteField: createAutoCompleteFieldComponent(form as AntdFormApi<TFormValues>),
+      MentionsField: createMentionsFieldComponent(form as AntdFormApi<TFormValues>),
       TextAreaField: createTextAreaFieldComponent(form as AntdFormApi<TFormValues>),
       PasswordField: createPasswordFieldComponent(form as AntdFormApi<TFormValues>),
       CheckboxField: createCheckboxFieldComponent(form as AntdFormApi<TFormValues>),
       CheckboxGroupField: createCheckboxGroupFieldComponent(form as AntdFormApi<TFormValues>),
       NumberField: createNumberFieldComponent(form as AntdFormApi<TFormValues>),
+      SliderField: createSliderFieldComponent(form as AntdFormApi<TFormValues>),
+      RateField: createRateFieldComponent(form as AntdFormApi<TFormValues>),
       SelectField: createSelectFieldComponent(form as AntdFormApi<TFormValues>),
       SwitchField: createSwitchFieldComponent(form as AntdFormApi<TFormValues>),
       RadioGroupField: createRadioGroupFieldComponent(form as AntdFormApi<TFormValues>),
@@ -59,6 +68,7 @@ export function useAntdForm<TFormValues extends ObjectFormValues>(
       TreeSelectField: createTreeSelectFieldComponent(form as AntdFormApi<TFormValues>),
       CascaderField: createCascaderFieldComponent(form as AntdFormApi<TFormValues>),
       TransferField: createTransferFieldComponent(form as AntdFormApi<TFormValues>),
+      ColorPickerField: createColorPickerFieldComponent(form as AntdFormApi<TFormValues>),
       UploadField: createUploadFieldComponent(form as AntdFormApi<TFormValues>),
       SubmitButton: createSubmitButtonComponent(form as AntdFormApi<TFormValues>),
       ResetButton: createResetButtonComponent(form as AntdFormApi<TFormValues>),

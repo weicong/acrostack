@@ -18,12 +18,17 @@
 - `useAntdForm`
 - `Form`
 - `TextField`
+- `AutoCompleteField`
+- `MentionsField`
 - `TextAreaField`
 - `PasswordField`
 - `CheckboxField`
 - `CheckboxGroupField`
 - `NumberField`
+- `SliderField`
+- `RateField`
 - `SelectField`
+- `ColorPickerField`
 - `SwitchField`
 - `RadioGroupField`
 - `DatePickerField`
@@ -40,11 +45,11 @@
 
 当前未实现、但类型和架构上保留扩展空间的能力：
 
-- `AutoCompleteField`
-- `MentionsField`
-- `SliderField`
-- `RateField`
-- `ColorPickerField`
+- `OtpField`
+- `DateTimePickerField`
+- `MonthPickerField`
+- `WeekPickerField`
+- `QuarterPickerField`
 
 ## 三、核心原则
 

@@ -1,11 +1,16 @@
 import {
+  AutoComplete,
   Cascader,
   Checkbox,
+  ColorPicker,
   DatePicker,
   Input,
   InputNumber,
+  Mentions,
   Radio,
+  Rate,
   Select,
+  Slider,
   Switch as AntdSwitch,
   TimePicker,
   Transfer,
@@ -180,6 +185,25 @@ export type UploadFieldValue = NonNullable<UploadBaseProps["fileList"]>;
 export type UploadFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
   TFormValues,
   UploadFieldValue | null | undefined
+>;
+
+export type AutoCompleteFieldName<TFormValues extends ObjectFormValues> =
+  TextFieldName<TFormValues>;
+
+export type MentionsFieldName<TFormValues extends ObjectFormValues> = TextFieldName<TFormValues>;
+
+export type SliderFieldValue = number | [number, number];
+
+export type SliderFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  SliderFieldValue | null | undefined
+>;
+
+export type RateFieldName<TFormValues extends ObjectFormValues> = NumberFieldName<TFormValues>;
+
+export type ColorPickerFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  string | null | undefined
 >;
 
 /**
@@ -469,6 +493,76 @@ export interface TransferFieldProps<
   disabled?: boolean;
 }
 
+export interface AutoCompleteFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends AutoCompleteFieldName<TFormValues> = AutoCompleteFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof AutoComplete>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface MentionsFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends MentionsFieldName<TFormValues> = MentionsFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Mentions>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface SliderFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends SliderFieldName<TFormValues> = SliderFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<ComponentProps<typeof Slider>, "value" | "defaultValue" | "onChange"> {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface RateFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends RateFieldName<TFormValues> = RateFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<ComponentProps<typeof Rate>, "value" | "defaultValue" | "onChange"> {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface ColorPickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends ColorPickerFieldName<TFormValues> = ColorPickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof ColorPicker>,
+      "value" | "defaultValue" | "onChange" | "onChangeComplete"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
 /**
  * 提交按钮额外支持“提交时自动 loading”。
  */
@@ -594,6 +688,26 @@ export type CascaderFieldComponentProps<TFormValues extends ObjectFormValues> = 
 export type TransferFieldComponentProps<TFormValues extends ObjectFormValues> = {
   [TName in TransferFieldName<TFormValues>]: TransferFieldProps<TFormValues, TName>;
 }[TransferFieldName<TFormValues>];
+
+export type AutoCompleteFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in AutoCompleteFieldName<TFormValues>]: AutoCompleteFieldProps<TFormValues, TName>;
+}[AutoCompleteFieldName<TFormValues>];
+
+export type MentionsFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in MentionsFieldName<TFormValues>]: MentionsFieldProps<TFormValues, TName>;
+}[MentionsFieldName<TFormValues>];
+
+export type SliderFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in SliderFieldName<TFormValues>]: SliderFieldProps<TFormValues, TName>;
+}[SliderFieldName<TFormValues>];
+
+export type RateFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in RateFieldName<TFormValues>]: RateFieldProps<TFormValues, TName>;
+}[RateFieldName<TFormValues>];
+
+export type ColorPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in ColorPickerFieldName<TFormValues>]: ColorPickerFieldProps<TFormValues, TName>;
+}[ColorPickerFieldName<TFormValues>];
 
 export type CheckboxFieldComponent<TFormValues extends ObjectFormValues> = <
   TName extends CheckboxFieldName<TFormValues>,
@@ -743,6 +857,56 @@ export type TypedTransferFieldComponent<TFormValues extends ObjectFormValues> = 
   props: TransferFieldComponentProps<TFormValues>,
 ) => ReactNode;
 
+export type AutoCompleteFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends AutoCompleteFieldName<TFormValues>,
+>(
+  props: AutoCompleteFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedAutoCompleteFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: AutoCompleteFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type MentionsFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends MentionsFieldName<TFormValues>,
+>(
+  props: MentionsFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedMentionsFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: MentionsFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type SliderFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends SliderFieldName<TFormValues>,
+>(
+  props: SliderFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedSliderFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: SliderFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type RateFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends RateFieldName<TFormValues>,
+>(
+  props: RateFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedRateFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: RateFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type ColorPickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends ColorPickerFieldName<TFormValues>,
+>(
+  props: ColorPickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedColorPickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: ColorPickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
 /**
  * 最终对外暴露的组合 API：TanStack 原始能力 + 绑定好的 AntD 适配组件。
  */
@@ -768,6 +932,11 @@ export type AntdFormApi<TFormValues extends ObjectFormValues = ObjectFormValues>
     TreeSelectField: TypedTreeSelectFieldComponent<TFormValues>;
     CascaderField: TypedCascaderFieldComponent<TFormValues>;
     TransferField: TypedTransferFieldComponent<TFormValues>;
+    AutoCompleteField: TypedAutoCompleteFieldComponent<TFormValues>;
+    MentionsField: TypedMentionsFieldComponent<TFormValues>;
+    SliderField: TypedSliderFieldComponent<TFormValues>;
+    RateField: TypedRateFieldComponent<TFormValues>;
+    ColorPickerField: TypedColorPickerFieldComponent<TFormValues>;
     SubmitButton: ComponentType<SubmitButtonProps>;
     ResetButton: ComponentType<ResetButtonProps>;
   };

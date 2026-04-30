@@ -8,11 +8,16 @@ import { useAntdForm } from "../src/index.ts";
 type UploadFileList = NonNullable<ComponentProps<typeof Upload>["fileList"]>;
 
 interface Values {
+  keyword: string;
+  assignee: string;
   bio: string;
   password: string;
   tags: string[];
   age: number;
+  progress: number;
+  score: number;
   category: string;
+  themeColor: string;
   enabled: boolean;
   level: string;
   birthday: ReturnType<typeof dayjs> | null;
@@ -28,11 +33,16 @@ interface Values {
 function ExtendedFieldsViewExample() {
   const form = useAntdForm<Values>({
     defaultValues: {
+      keyword: "杭州",
+      assignee: "@weicong",
       bio: "多行简介",
       password: "secret-123",
       tags: ["研发", "前端"],
       age: 28,
+      progress: 75,
+      score: 4.5,
       category: "admin",
+      themeColor: "#1677ff",
       enabled: true,
       level: "high",
       birthday: dayjs("2024-05-20"),
@@ -55,11 +65,16 @@ function ExtendedFieldsViewExample() {
 
   return (
     <form.Form layout="vertical" mode="view">
+      <form.AutoCompleteField name="keyword" label="关键词" />
+      <form.MentionsField name="assignee" label="负责人" />
       <form.TextAreaField name="bio" label="简介" />
       <form.PasswordField name="password" label="密码" />
       <form.CheckboxGroupField name="tags" label="标签" />
       <form.NumberField name="age" label="年龄" />
+      <form.SliderField name="progress" label="进度" />
+      <form.RateField name="score" label="评分" />
       <form.SelectField name="category" label="分类" />
+      <form.ColorPickerField name="themeColor" label="主题色" />
       <form.SwitchField name="enabled" label="开关" />
       <form.RadioGroupField name="level" label="等级" />
       <form.DatePickerField name="birthday" label="生日" />
@@ -77,11 +92,16 @@ function ExtendedFieldsViewExample() {
 test("extended fields render view values for built-in antd form components", () => {
   render(<ExtendedFieldsViewExample />);
 
+  expect(screen.getByText("杭州")).toBeTruthy();
+  expect(screen.getByText("@weicong")).toBeTruthy();
   expect(screen.getByText("多行简介")).toBeTruthy();
   expect(screen.getByText("secret-123")).toBeTruthy();
   expect(screen.getByText("研发、前端")).toBeTruthy();
   expect(screen.getByText("28")).toBeTruthy();
+  expect(screen.getByText("75")).toBeTruthy();
+  expect(screen.getByText("4.5")).toBeTruthy();
   expect(screen.getByText("admin")).toBeTruthy();
+  expect(screen.getByText("#1677ff")).toBeTruthy();
   expect(screen.getByText("是")).toBeTruthy();
   expect(screen.getByText("high")).toBeTruthy();
   expect(screen.getByText("2024-05-20")).toBeTruthy();

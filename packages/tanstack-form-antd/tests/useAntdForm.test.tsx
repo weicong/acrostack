@@ -26,11 +26,15 @@ test("useAntdForm returns TanStack form api and bound antd components", () => {
   expect(result.current.Field).toBe(result.current.form.Field);
   expect(typeof result.current.Form).toBe("function");
   expect(typeof result.current.TextField).toBe("function");
+  expect(typeof result.current.AutoCompleteField).toBe("function");
+  expect(typeof result.current.MentionsField).toBe("function");
   expect(typeof result.current.TextAreaField).toBe("function");
   expect(typeof result.current.PasswordField).toBe("function");
   expect(typeof result.current.CheckboxField).toBe("function");
   expect(typeof result.current.CheckboxGroupField).toBe("function");
   expect(typeof result.current.NumberField).toBe("function");
+  expect(typeof result.current.SliderField).toBe("function");
+  expect(typeof result.current.RateField).toBe("function");
   expect(typeof result.current.SelectField).toBe("function");
   expect(typeof result.current.SwitchField).toBe("function");
   expect(typeof result.current.RadioGroupField).toBe("function");
@@ -41,6 +45,7 @@ test("useAntdForm returns TanStack form api and bound antd components", () => {
   expect(typeof result.current.TreeSelectField).toBe("function");
   expect(typeof result.current.CascaderField).toBe("function");
   expect(typeof result.current.TransferField).toBe("function");
+  expect(typeof result.current.ColorPickerField).toBe("function");
   expect(typeof result.current.UploadField).toBe("function");
   expect(typeof result.current.SubmitButton).toBe("function");
   expect(typeof result.current.ResetButton).toBe("function");

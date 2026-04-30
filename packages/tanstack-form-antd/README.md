@@ -184,12 +184,17 @@ const form = useAntdForm<Values>({
 - `useAntdForm`
 - `Form`
 - `TextField`
+- `AutoCompleteField`
+- `MentionsField`
 - `TextAreaField`
 - `PasswordField`
 - `CheckboxField`
 - `CheckboxGroupField`
 - `NumberField`
+- `SliderField`
+- `RateField`
 - `SelectField`
+- `ColorPickerField`
 - `SwitchField`
 - `RadioGroupField`
 - `DatePickerField`
@@ -205,11 +210,11 @@ const form = useAntdForm<Values>({
 
 当前未内建、但会作为后续扩展方向：
 
-- `AutoCompleteField`
-- `MentionsField`
-- `SliderField`
-- `RateField`
-- `ColorPickerField`
+- `OtpField`
+- `DateTimePickerField`
+- `MonthPickerField`
+- `WeekPickerField`
+- `QuarterPickerField`
 
 ## 设计原则
 
