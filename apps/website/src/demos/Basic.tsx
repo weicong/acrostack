@@ -1,5 +1,5 @@
 import { useAntdForm } from "@acrostack/tanstack-form-antd";
-import { Button, Card, Col, Divider, Row, Space, Typography, Upload, message } from "antd";
+import { Button, Card, Col, Collapse, Row, Space, Typography, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import type { ComponentProps } from "react";
@@ -9,6 +9,7 @@ const { Paragraph, Text } = Typography;
 type UploadFileList = NonNullable<ComponentProps<typeof Upload>["fileList"]>;
 
 type ShowcaseValues = {
+  username: string;
   keyword: string;
   searchKeyword: string;
   assignee: string;
@@ -74,6 +75,7 @@ const transferData = [
 export function Basic() {
   const form = useAntdForm<ShowcaseValues>({
     defaultValues: {
+      username: "weicong",
       keyword: "杭州",
       searchKeyword: "杭州西湖",
       assignee: "@weicong",
@@ -124,185 +126,261 @@ export function Basic() {
             集中展示所有内建字段组件，便于快速查看 API 和视觉效果。CRUD 示例位于独立标签页。
           </Paragraph>
 
-          <Row gutter={16}>
-            <Col span={8}>
-              <form.AutoCompleteField
-                name="keyword"
-                label="AutoComplete"
-                options={[{ value: "杭州" }, { value: "上海" }, { value: "北京" }]}
-              />
-            </Col>
-            <Col span={8}>
-              <form.SearchField name="searchKeyword" label="Search" placeholder="搜索关键词" />
-            </Col>
-            <Col span={8}>
-              <form.OtpField name="otpCode" label="OTP" length={6} />
-            </Col>
-          </Row>
+          <Collapse
+            defaultActiveKey={["text", "selection", "date", "other"]}
+            items={[
+              {
+                key: "text",
+                label: "文本输入类",
+                children: (
+                  <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.TextField
+                          name="username"
+                          label="TextField"
+                          placeholder="请输入用户名"
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.SearchField
+                          name="searchKeyword"
+                          label="SearchField"
+                          placeholder="搜索关键词"
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.PasswordField
+                          name="password"
+                          label="PasswordField"
+                          placeholder="请输入密码"
+                        />
+                      </Col>
+                    </Row>
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <form.MentionsField
-                name="assignee"
-                label="Mentions"
-                options={[{ value: "weicong", label: "weicong" }]}
-              />
-            </Col>
-            <Col span={12}>
-              <form.PasswordField name="password" label="Password" placeholder="请输入密码" />
-            </Col>
-          </Row>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.AutoCompleteField
+                          name="keyword"
+                          label="AutoCompleteField"
+                          options={[{ value: "杭州" }, { value: "上海" }, { value: "北京" }]}
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.MentionsField
+                          name="assignee"
+                          label="MentionsField"
+                          options={[{ value: "weicong", label: "weicong" }]}
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.OtpField name="otpCode" label="OtpField" length={6} />
+                      </Col>
+                    </Row>
 
-          <form.TextAreaField name="bio" label="TextArea" autoSize={{ minRows: 3, maxRows: 5 }} />
+                    <form.TextAreaField
+                      name="bio"
+                      label="TextAreaField"
+                      autoSize={{ minRows: 3, maxRows: 5 }}
+                    />
+                  </Space>
+                ),
+              },
+              {
+                key: "selection",
+                label: "选择类",
+                children: (
+                  <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.SelectField
+                          name="category"
+                          label="SelectField"
+                          options={[
+                            { label: "管理员", value: "admin" },
+                            { label: "编辑", value: "editor" },
+                            { label: "访客", value: "guest" },
+                          ]}
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.TreeSelectField
+                          name="department"
+                          label="TreeSelectField"
+                          treeData={departmentTree}
+                          treeDefaultExpandAll
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.SegmentedField
+                          name="viewMode"
+                          label="SegmentedField"
+                          options={[
+                            { label: "月", value: "month" },
+                            { label: "周", value: "week" },
+                            { label: "年", value: "year" },
+                          ]}
+                        />
+                      </Col>
+                    </Row>
 
-          <Divider style={{ margin: 0 }} />
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <form.CascaderField
+                          name="location"
+                          label="CascaderField"
+                          options={regionOptions}
+                        />
+                      </Col>
+                      <Col span={12}>
+                        <form.TransferField
+                          name="permissions"
+                          label="TransferField"
+                          dataSource={transferData}
+                          render={(item) => item.title ?? ""}
+                          styles={{ section: { width: 220, height: 180 } }}
+                        />
+                      </Col>
+                    </Row>
+                  </Space>
+                ),
+              },
+              {
+                key: "checkbox-radio",
+                label: "复选与单选类",
+                children: (
+                  <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.CheckboxField name="agree" label="CheckboxField">
+                          我同意协议
+                        </form.CheckboxField>
+                      </Col>
+                      <Col span={8}>
+                        <form.SwitchField name="enabled" label="SwitchField" />
+                      </Col>
+                      <Col span={8}>
+                        <form.RateField name="score" label="RateField" allowHalf />
+                      </Col>
+                    </Row>
 
-          <Row gutter={16}>
-            <Col span={8}>
-              <form.CheckboxField name="agree" label="Checkbox">
-                我同意协议
-              </form.CheckboxField>
-            </Col>
-            <Col span={8}>
-              <form.SwitchField name="enabled" label="Switch" />
-            </Col>
-            <Col span={8}>
-              <form.RateField name="score" label="Rate" allowHalf />
-            </Col>
-          </Row>
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <form.CheckboxGroupField
+                          name="tags"
+                          label="CheckboxGroupField"
+                          options={[
+                            { label: "React", value: "react" },
+                            { label: "TypeScript", value: "typescript" },
+                            { label: "Ant Design", value: "antd" },
+                          ]}
+                        />
+                      </Col>
+                      <Col span={12}>
+                        <form.RadioGroupField
+                          name="level"
+                          label="RadioGroupField"
+                          options={[
+                            { label: "高", value: "high" },
+                            { label: "中", value: "medium" },
+                            { label: "低", value: "low" },
+                          ]}
+                        />
+                      </Col>
+                    </Row>
+                  </Space>
+                ),
+              },
+              {
+                key: "number",
+                label: "数值与颜色类",
+                children: (
+                  <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.NumberField
+                          name="age"
+                          label="NumberField"
+                          min={0}
+                          max={100}
+                          style={{ width: "100%" }}
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.SliderField name="progress" label="SliderField" min={0} max={100} />
+                      </Col>
+                      <Col span={8}>
+                        <form.ColorPickerField name="themeColor" label="ColorPickerField" />
+                      </Col>
+                    </Row>
+                  </Space>
+                ),
+              },
+              {
+                key: "date",
+                label: "日期与时间类",
+                children: (
+                  <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <form.DatePickerField name="birthday" label="DatePickerField" />
+                      </Col>
+                      <Col span={8}>
+                        <form.DateTimePickerField
+                          name="appointmentAt"
+                          label="DateTimePickerField"
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <form.TimePickerField name="availableAt" label="TimePickerField" />
+                      </Col>
+                    </Row>
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <form.CheckboxGroupField
-                name="tags"
-                label="CheckboxGroup"
-                options={[
-                  { label: "React", value: "react" },
-                  { label: "TypeScript", value: "typescript" },
-                  { label: "Ant Design", value: "antd" },
-                ]}
-              />
-            </Col>
-            <Col span={12}>
-              <form.RadioGroupField
-                name="level"
-                label="RadioGroup"
-                options={[
-                  { label: "高", value: "high" },
-                  { label: "中", value: "medium" },
-                  { label: "低", value: "low" },
-                ]}
-              />
-            </Col>
-          </Row>
+                    <Row gutter={16}>
+                      <Col span={6}>
+                        <form.MonthPickerField name="billingMonth" label="MonthPickerField" />
+                      </Col>
+                      <Col span={6}>
+                        <form.WeekPickerField name="sprintWeek" label="WeekPickerField" />
+                      </Col>
+                      <Col span={6}>
+                        <form.QuarterPickerField name="fiscalQuarter" label="QuarterPickerField" />
+                      </Col>
+                      <Col span={6}>
+                        <form.YearPickerField name="archiveYear" label="YearPickerField" />
+                      </Col>
+                    </Row>
 
-          <Row gutter={16}>
-            <Col span={8}>
-              <form.NumberField
-                name="age"
-                label="InputNumber"
-                min={0}
-                max={100}
-                style={{ width: "100%" }}
-              />
-            </Col>
-            <Col span={8}>
-              <form.SliderField name="progress" label="Slider" min={0} max={100} />
-            </Col>
-            <Col span={8}>
-              <form.ColorPickerField name="themeColor" label="ColorPicker" />
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={8}>
-              <form.SelectField
-                name="category"
-                label="Select"
-                options={[
-                  { label: "管理员", value: "admin" },
-                  { label: "编辑", value: "editor" },
-                  { label: "访客", value: "guest" },
-                ]}
-              />
-            </Col>
-            <Col span={8}>
-              <form.SegmentedField
-                name="viewMode"
-                label="Segmented"
-                options={[
-                  { label: "月", value: "month" },
-                  { label: "周", value: "week" },
-                  { label: "年", value: "year" },
-                ]}
-              />
-            </Col>
-            <Col span={8}>
-              <form.TreeSelectField
-                name="department"
-                label="TreeSelect"
-                treeData={departmentTree}
-                treeDefaultExpandAll
-              />
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={12}>
-              <form.CascaderField name="location" label="Cascader" options={regionOptions} />
-            </Col>
-            <Col span={12}>
-              <form.TransferField
-                name="permissions"
-                label="Transfer"
-                dataSource={transferData}
-                render={(item) => item.title ?? ""}
-                styles={{ section: { width: 220, height: 180 } }}
-              />
-            </Col>
-          </Row>
-
-          <Divider style={{ margin: 0 }} />
-
-          <Row gutter={16}>
-            <Col span={8}>
-              <form.DatePickerField name="birthday" label="DatePicker" />
-            </Col>
-            <Col span={8}>
-              <form.DateTimePickerField name="appointmentAt" label="DateTimePicker" />
-            </Col>
-            <Col span={8}>
-              <form.TimePickerField name="availableAt" label="TimePicker" />
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={6}>
-              <form.MonthPickerField name="billingMonth" label="MonthPicker" />
-            </Col>
-            <Col span={6}>
-              <form.WeekPickerField name="sprintWeek" label="WeekPicker" />
-            </Col>
-            <Col span={6}>
-              <form.QuarterPickerField name="fiscalQuarter" label="QuarterPicker" />
-            </Col>
-            <Col span={6}>
-              <form.YearPickerField name="archiveYear" label="YearPicker" />
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={12}>
-              <form.DateRangePickerField name="activeDateRange" label="DateRangePicker" />
-            </Col>
-            <Col span={12}>
-              <form.TimeRangeField name="activeTimeRange" label="TimeRangePicker" />
-            </Col>
-          </Row>
-
-          <form.UploadField name="attachments" label="Upload" beforeUpload={() => false} multiple>
-            <Button icon={<UploadOutlined />}>选择文件</Button>
-          </form.UploadField>
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <form.DateRangePickerField
+                          name="activeDateRange"
+                          label="DateRangePickerField"
+                        />
+                      </Col>
+                      <Col span={12}>
+                        <form.TimeRangeField name="activeTimeRange" label="TimeRangeField" />
+                      </Col>
+                    </Row>
+                  </Space>
+                ),
+              },
+              {
+                key: "other",
+                label: "文件上传类",
+                children: (
+                  <form.UploadField
+                    name="attachments"
+                    label="UploadField"
+                    beforeUpload={() => false}
+                    multiple
+                  >
+                    <Button icon={<UploadOutlined />}>选择文件</Button>
+                  </form.UploadField>
+                ),
+              },
+            ]}
+          />
 
           <div
             style={{
