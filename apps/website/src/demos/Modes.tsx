@@ -64,7 +64,7 @@ export function Modes() {
       <form.Form layout="vertical" mode={mode} errorDisplayMode={errorDisplayMode}>
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            这个示例专门演示 `Form mode` 和 `errorDisplayMode` 对字段交互与错误展示的影响。
+            演示表单模式（编辑/查看/禁用）和错误展示策略如何影响字段的交互行为。
           </Paragraph>
 
           <Row gutter={16}>

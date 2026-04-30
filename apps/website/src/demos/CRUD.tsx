@@ -36,7 +36,7 @@ function UserModalForm(props: UserModalFormProps) {
     <Form layout="vertical">
       <Space orientation="vertical" style={{ width: "100%" }} size="middle">
         <Text type="secondary">
-          这个弹窗表单使用当前内建字段集，并保持 TanStack validators 作为唯一校验来源。
+          演示表单在弹窗中的使用，校验逻辑完全由 TanStack Form 的 validators 驱动。
         </Text>
 
         <TextField
@@ -103,15 +103,15 @@ export function CRUD() {
   const [data, setData] = useState<UserRecord[]>([
     {
       id: "1",
-      name: "张三",
-      email: "john@example.com",
+      name: "王小明",
+      email: "xiaoming.wang@example.com",
       role: "管理员",
       active: true,
     },
     {
       id: "2",
-      name: "李四",
-      email: "jane@example.com",
+      name: "李华",
+      email: "hua.li@example.com",
       role: "普通用户",
       active: false,
     },

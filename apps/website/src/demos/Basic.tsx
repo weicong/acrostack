@@ -78,7 +78,7 @@ export function Basic() {
       searchKeyword: "杭州西湖",
       assignee: "@weicong",
       otpCode: "123456",
-      bio: "这个 demo 用来集中展示 tanstack-form-antd 当前内建的表单字段。",
+      bio: "展示 TanStack Form 与 Ant Design 的深度集成能力。",
       password: "secret-123",
       agree: true,
       tags: ["react", "typescript"],
@@ -121,8 +121,7 @@ export function Basic() {
       <form.Form layout="vertical">
         <Space orientation="vertical" size="large" style={{ width: "100%" }}>
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            这个页面集中展示当前版本内建的字段组件，便于快速对照 API 和视觉效果。`CRUD`
-            示例保留在单独标签页，不在这里混合。
+            集中展示所有内建字段组件，便于快速查看 API 和视觉效果。CRUD 示例位于独立标签页。
           </Paragraph>
 
           <Row gutter={16}>

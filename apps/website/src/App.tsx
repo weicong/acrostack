@@ -14,12 +14,11 @@ export default function App() {
         style={{ display: "flex", maxWidth: 1000, margin: "0 auto" }}
       >
         <header>
-          <Title level={2}>`@acrostack/tanstack-form-antd` 示例</Title>
+          <Title level={2}>TanStack Form × Ant Design 集成示例</Title>
           <Text type="secondary">
-            这个站点展示当前版本的 <code>@acrostack/tanstack-form-antd</code>。所有 demo 都围绕单一
-            <code>useAntdForm</code> 入口构建，以 TanStack Form 作为状态和校验唯一来源，并演示当前
-            已内建的文本、选择、日期时间、上传与高级选择字段组件。现有 <code>CRUD</code>{" "}
-            示例单独保留。
+            展示 <code>@acrostack/tanstack-form-antd</code> 的完整能力。所有示例围绕{" "}
+            <code>useAntdForm</code> 构建，以 TanStack Form
+            作为状态和校验的唯一来源，演示文本、选择、日期时间、上传等内建字段组件。
           </Text>
         </header>
 
