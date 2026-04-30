@@ -10,6 +10,7 @@ import {
   Radio,
   Rate,
   Select,
+  Segmented,
   Slider,
   Switch as AntdSwitch,
   TimePicker,
@@ -204,6 +205,30 @@ export type RateFieldName<TFormValues extends ObjectFormValues> = NumberFieldNam
 export type ColorPickerFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
   TFormValues,
   string | null | undefined
+>;
+
+export type OtpFieldName<TFormValues extends ObjectFormValues> = TextFieldName<TFormValues>;
+
+export type SearchFieldName<TFormValues extends ObjectFormValues> = TextFieldName<TFormValues>;
+
+export type DateTimePickerFieldName<TFormValues extends ObjectFormValues> =
+  DatePickerFieldName<TFormValues>;
+
+export type MonthPickerFieldName<TFormValues extends ObjectFormValues> =
+  DatePickerFieldName<TFormValues>;
+
+export type WeekPickerFieldName<TFormValues extends ObjectFormValues> =
+  DatePickerFieldName<TFormValues>;
+
+export type QuarterPickerFieldName<TFormValues extends ObjectFormValues> =
+  DatePickerFieldName<TFormValues>;
+
+export type YearPickerFieldName<TFormValues extends ObjectFormValues> =
+  DatePickerFieldName<TFormValues>;
+
+export type SegmentedFieldName<TFormValues extends ObjectFormValues> = FieldNameByValue<
+  TFormValues,
+  string | number | null | undefined
 >;
 
 /**
@@ -563,6 +588,124 @@ export interface ColorPickerFieldProps<
   disabled?: boolean;
 }
 
+export interface OtpFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends OtpFieldName<TFormValues> = OtpFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Input.OTP>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface SearchFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends SearchFieldName<TFormValues> = SearchFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof Input.Search>,
+      "value" | "defaultValue" | "onChange" | "onBlur"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+  readOnly?: boolean;
+}
+
+export interface DateTimePickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends DateTimePickerFieldName<TFormValues> = DateTimePickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur" | "picker" | "showTime"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface MonthPickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends MonthPickerFieldName<TFormValues> = MonthPickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur" | "picker"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface WeekPickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends WeekPickerFieldName<TFormValues> = WeekPickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur" | "picker"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface QuarterPickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends QuarterPickerFieldName<TFormValues> = QuarterPickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur" | "picker"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface YearPickerFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends YearPickerFieldName<TFormValues> = YearPickerFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<
+      ComponentProps<typeof DatePicker>,
+      "value" | "defaultValue" | "onChange" | "onBlur" | "picker"
+    > {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
+export interface SegmentedFieldProps<
+  TFormValues extends ObjectFormValues,
+  TName extends SegmentedFieldName<TFormValues> = SegmentedFieldName<TFormValues>,
+>
+  extends
+    BaseFieldProps,
+    FieldControlProps<ComponentProps<typeof Segmented>, "value" | "defaultValue" | "onChange"> {
+  name: TName;
+  validators?: AntdFieldValidators<TFormValues, TName>;
+  disabled?: boolean;
+}
+
 /**
  * 提交按钮额外支持“提交时自动 loading”。
  */
@@ -708,6 +851,38 @@ export type RateFieldComponentProps<TFormValues extends ObjectFormValues> = {
 export type ColorPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
   [TName in ColorPickerFieldName<TFormValues>]: ColorPickerFieldProps<TFormValues, TName>;
 }[ColorPickerFieldName<TFormValues>];
+
+export type OtpFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in OtpFieldName<TFormValues>]: OtpFieldProps<TFormValues, TName>;
+}[OtpFieldName<TFormValues>];
+
+export type SearchFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in SearchFieldName<TFormValues>]: SearchFieldProps<TFormValues, TName>;
+}[SearchFieldName<TFormValues>];
+
+export type DateTimePickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in DateTimePickerFieldName<TFormValues>]: DateTimePickerFieldProps<TFormValues, TName>;
+}[DateTimePickerFieldName<TFormValues>];
+
+export type MonthPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in MonthPickerFieldName<TFormValues>]: MonthPickerFieldProps<TFormValues, TName>;
+}[MonthPickerFieldName<TFormValues>];
+
+export type WeekPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in WeekPickerFieldName<TFormValues>]: WeekPickerFieldProps<TFormValues, TName>;
+}[WeekPickerFieldName<TFormValues>];
+
+export type QuarterPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in QuarterPickerFieldName<TFormValues>]: QuarterPickerFieldProps<TFormValues, TName>;
+}[QuarterPickerFieldName<TFormValues>];
+
+export type YearPickerFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in YearPickerFieldName<TFormValues>]: YearPickerFieldProps<TFormValues, TName>;
+}[YearPickerFieldName<TFormValues>];
+
+export type SegmentedFieldComponentProps<TFormValues extends ObjectFormValues> = {
+  [TName in SegmentedFieldName<TFormValues>]: SegmentedFieldProps<TFormValues, TName>;
+}[SegmentedFieldName<TFormValues>];
 
 export type CheckboxFieldComponent<TFormValues extends ObjectFormValues> = <
   TName extends CheckboxFieldName<TFormValues>,
@@ -907,6 +1082,86 @@ export type TypedColorPickerFieldComponent<TFormValues extends ObjectFormValues>
   props: ColorPickerFieldComponentProps<TFormValues>,
 ) => ReactNode;
 
+export type OtpFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends OtpFieldName<TFormValues>,
+>(
+  props: OtpFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedOtpFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: OtpFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type SearchFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends SearchFieldName<TFormValues>,
+>(
+  props: SearchFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedSearchFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: SearchFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type DateTimePickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends DateTimePickerFieldName<TFormValues>,
+>(
+  props: DateTimePickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedDateTimePickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: DateTimePickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type MonthPickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends MonthPickerFieldName<TFormValues>,
+>(
+  props: MonthPickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedMonthPickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: MonthPickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type WeekPickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends WeekPickerFieldName<TFormValues>,
+>(
+  props: WeekPickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedWeekPickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: WeekPickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type QuarterPickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends QuarterPickerFieldName<TFormValues>,
+>(
+  props: QuarterPickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedQuarterPickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: QuarterPickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type YearPickerFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends YearPickerFieldName<TFormValues>,
+>(
+  props: YearPickerFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedYearPickerFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: YearPickerFieldComponentProps<TFormValues>,
+) => ReactNode;
+
+export type SegmentedFieldComponent<TFormValues extends ObjectFormValues> = <
+  TName extends SegmentedFieldName<TFormValues>,
+>(
+  props: SegmentedFieldProps<TFormValues, TName>,
+) => ReactNode;
+
+export type TypedSegmentedFieldComponent<TFormValues extends ObjectFormValues> = (
+  props: SegmentedFieldComponentProps<TFormValues>,
+) => ReactNode;
+
 /**
  * 最终对外暴露的组合 API：TanStack 原始能力 + 绑定好的 AntD 适配组件。
  */
@@ -934,9 +1189,17 @@ export type AntdFormApi<TFormValues extends ObjectFormValues = ObjectFormValues>
     TransferField: TypedTransferFieldComponent<TFormValues>;
     AutoCompleteField: TypedAutoCompleteFieldComponent<TFormValues>;
     MentionsField: TypedMentionsFieldComponent<TFormValues>;
+    SearchField: TypedSearchFieldComponent<TFormValues>;
     SliderField: TypedSliderFieldComponent<TFormValues>;
     RateField: TypedRateFieldComponent<TFormValues>;
     ColorPickerField: TypedColorPickerFieldComponent<TFormValues>;
+    OtpField: TypedOtpFieldComponent<TFormValues>;
+    DateTimePickerField: TypedDateTimePickerFieldComponent<TFormValues>;
+    MonthPickerField: TypedMonthPickerFieldComponent<TFormValues>;
+    WeekPickerField: TypedWeekPickerFieldComponent<TFormValues>;
+    QuarterPickerField: TypedQuarterPickerFieldComponent<TFormValues>;
+    YearPickerField: TypedYearPickerFieldComponent<TFormValues>;
+    SegmentedField: TypedSegmentedFieldComponent<TFormValues>;
     SubmitButton: ComponentType<SubmitButtonProps>;
     ResetButton: ComponentType<ResetButtonProps>;
   };

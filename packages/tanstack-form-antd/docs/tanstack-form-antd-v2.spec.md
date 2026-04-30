@@ -20,6 +20,8 @@
 - `TextField`
 - `AutoCompleteField`
 - `MentionsField`
+- `SearchField`
+- `OtpField`
 - `TextAreaField`
 - `PasswordField`
 - `CheckboxField`
@@ -28,10 +30,16 @@
 - `SliderField`
 - `RateField`
 - `SelectField`
+- `SegmentedField`
 - `ColorPickerField`
 - `SwitchField`
 - `RadioGroupField`
 - `DatePickerField`
+- `DateTimePickerField`
+- `MonthPickerField`
+- `WeekPickerField`
+- `QuarterPickerField`
+- `YearPickerField`
 - `DateRangePickerField`
 - `TimePickerField`
 - `TimeRangeField`
@@ -45,11 +53,9 @@
 
 当前未实现、但类型和架构上保留扩展空间的能力：
 
-- `OtpField`
-- `DateTimePickerField`
-- `MonthPickerField`
-- `WeekPickerField`
-- `QuarterPickerField`
+- `RangeTimePickerFieldWithSeconds`
+- `DualListTreeTransferField`
+- 更细粒度的 Upload 派生字段（如 Dragger 专用适配）
 
 ## 三、核心原则
 

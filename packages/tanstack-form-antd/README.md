@@ -186,6 +186,8 @@ const form = useAntdForm<Values>({
 - `TextField`
 - `AutoCompleteField`
 - `MentionsField`
+- `SearchField`
+- `OtpField`
 - `TextAreaField`
 - `PasswordField`
 - `CheckboxField`
@@ -194,10 +196,16 @@ const form = useAntdForm<Values>({
 - `SliderField`
 - `RateField`
 - `SelectField`
+- `SegmentedField`
 - `ColorPickerField`
 - `SwitchField`
 - `RadioGroupField`
 - `DatePickerField`
+- `DateTimePickerField`
+- `MonthPickerField`
+- `WeekPickerField`
+- `QuarterPickerField`
+- `YearPickerField`
 - `DateRangePickerField`
 - `TimePickerField`
 - `TimeRangeField`
@@ -210,11 +218,9 @@ const form = useAntdForm<Values>({
 
 当前未内建、但会作为后续扩展方向：
 
-- `OtpField`
-- `DateTimePickerField`
-- `MonthPickerField`
-- `WeekPickerField`
-- `QuarterPickerField`
+- `RangeTimePickerFieldWithSeconds`
+- `DualListTreeTransferField`
+- 更细粒度的 Upload 派生字段（如 Dragger 专用适配）
 
 ## 设计原则
 

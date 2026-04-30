@@ -28,6 +28,8 @@ test("useAntdForm returns TanStack form api and bound antd components", () => {
   expect(typeof result.current.TextField).toBe("function");
   expect(typeof result.current.AutoCompleteField).toBe("function");
   expect(typeof result.current.MentionsField).toBe("function");
+  expect(typeof result.current.SearchField).toBe("function");
+  expect(typeof result.current.OtpField).toBe("function");
   expect(typeof result.current.TextAreaField).toBe("function");
   expect(typeof result.current.PasswordField).toBe("function");
   expect(typeof result.current.CheckboxField).toBe("function");
@@ -36,9 +38,15 @@ test("useAntdForm returns TanStack form api and bound antd components", () => {
   expect(typeof result.current.SliderField).toBe("function");
   expect(typeof result.current.RateField).toBe("function");
   expect(typeof result.current.SelectField).toBe("function");
+  expect(typeof result.current.SegmentedField).toBe("function");
   expect(typeof result.current.SwitchField).toBe("function");
   expect(typeof result.current.RadioGroupField).toBe("function");
   expect(typeof result.current.DatePickerField).toBe("function");
+  expect(typeof result.current.DateTimePickerField).toBe("function");
+  expect(typeof result.current.MonthPickerField).toBe("function");
+  expect(typeof result.current.WeekPickerField).toBe("function");
+  expect(typeof result.current.QuarterPickerField).toBe("function");
+  expect(typeof result.current.YearPickerField).toBe("function");
   expect(typeof result.current.DateRangePickerField).toBe("function");
   expect(typeof result.current.TimePickerField).toBe("function");
   expect(typeof result.current.TimeRangeField).toBe("function");

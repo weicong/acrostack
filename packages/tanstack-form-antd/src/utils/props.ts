@@ -60,6 +60,15 @@ export function getDateTimeViewValue(value: unknown, format = "YYYY-MM-DD HH:mm:
   return getTextViewValue(value);
 }
 
+export function getQuarterViewValue(value: unknown): string {
+  if (isObject(value) && typeof value.year === "function" && typeof value.month === "function") {
+    const quarter = Math.floor(value.month() / 3) + 1;
+    return `${value.year()}-Q${quarter}`;
+  }
+
+  return getTextViewValue(value);
+}
+
 export function getRangeViewValue(
   value: unknown,
   itemFormatter: (item: unknown) => string = getTextViewValue,
