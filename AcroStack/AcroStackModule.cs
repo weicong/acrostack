@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
 using AcroStack.Data;
 using AcroStack.Localization;
 using AcroStack.HealthChecks;
+using AcroStack.Swagger;
 using Volo.Abp.Domain.Entities.Events.Distributed;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Validation.AspNetCore;
@@ -36,7 +35,6 @@ using Volo.Abp.MultiTenancy;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.PermissionManagement.Identity;
-using Volo.Abp.SettingManagement;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.Validation.Localization;
@@ -57,8 +55,6 @@ using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
 using Volo.Abp.Studio.Client.AspNetCore;
-
-using Microsoft.Extensions.Hosting;
 
 namespace AcroStack;
 
@@ -183,7 +179,7 @@ public class AcroStackModule : AbpModule
         ConfigureMultiTenancy();
         ConfigureUrls(configuration);
         ConfigureHealthChecks(context);
-        ConfigureSwagger(context.Services, configuration);
+        ConfigureSwagger(context);
         ConfigureAutoApiControllers();
         ConfigureLocalization();
         ConfigureCors(context, configuration);
@@ -324,20 +320,9 @@ public class AcroStackModule : AbpModule
         });
     }
 
-    private void ConfigureSwagger(IServiceCollection services, IConfiguration configuration)
+    private void ConfigureSwagger(ServiceConfigurationContext context)
     {
-        services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"]!,
-            new Dictionary<string, string>
-            {
-                {"AcroStack", "AcroStack API"}
-            },
-            options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "AcroStack API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
-            });
+        context.Services.AddAcroStackSwagger();
     }
 
     private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
