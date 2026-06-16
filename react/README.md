@@ -1,11 +1,11 @@
 # AcroStack - React UI
 
-This project was scaffolded with [Vite](https://vite.dev/) + [React](https://react.dev/) + [TypeScript](https://www.typescript.org/).
+This project uses [Vite+](https://viteplus.dev/) — the unified web toolchain (Vite, Rolldown, Vitest, Oxlint, Oxfmt, tsdown, Vite Task) alongside [React](https://react.dev/) and [TypeScript](https://www.typescript.org/).
 
 ## Prerequisites
 
-- [Node.js 20.19+ or 22.12+](https://nodejs.org/)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- Install the `vp` CLI ([instructions](https://viteplus.dev/guide/#install-vp))
+- Node.js is managed automatically by `vp env`; no manual installation required
 
 ### Start the backend
 
@@ -16,7 +16,7 @@ Before running the React application, make sure your backend API is running:
 ## Setup
 
 ```bash
-npm install
+vp install
 ```
 
 ## Environment Variables
@@ -29,14 +29,14 @@ Create `.env.development` (or use the generated defaults):
 
 **Important:** `VITE_API_URL` and `VITE_AUTH_URL` must match your backend. The template replaces placeholders during solution generation; if you use a different port, update `.env.development` accordingly.
 
-Restart the Vite dev server after changing `.env.development`—the proxy target is read at startup.
+Restart the dev server after changing `.env.development`—the proxy target is read at startup.
 
-For production builds, set these before `npm run build` or configure at deploy time via `dynamic-env.json`.
+For production builds, set these before `vp build` or configure at deploy time via `dynamic-env.json`.
 
 ## Development
 
 ```bash
-npm run dev
+vp dev
 ```
 
 The app runs at `http://localhost:5173`. All API requests (GET, POST, PUT, DELETE) go to `http://localhost:5173/api/...`; Vite proxies them transparently to the backend. The same applies to `/connect` (OAuth) and `/getEnvConfig`. The Network tab will show `localhost:5173` as the request URL—this is expected; the proxy forwards to the backend.
@@ -49,7 +49,7 @@ To regenerate TypeScript API client from the backend (e.g. after adding new app 
 2. Run:
 
 ```bash
-npm run generate-proxy
+vp run generate-proxy
 ```
 
 This uses `abp generate-proxy -t js` against the running API. The script URL in `package.json` is configured for the solution's API port.
@@ -57,7 +57,7 @@ This uses `abp generate-proxy -t js` against the running API. The script URL in 
 ## Build
 
 ```bash
-npm run build
+vp build
 ```
 
 Output: `dist/`
@@ -65,7 +65,7 @@ Output: `dist/`
 ## Preview Production Build
 
 ```bash
-npm run preview
+vp preview
 ```
 
 ## Docker
@@ -73,7 +73,7 @@ npm run preview
 Build the Docker image (from `react/` directory):
 
 ```bash
-npm run build
+vp build
 docker build -t acrostack/react:latest .
 ```
 
@@ -82,22 +82,23 @@ For local pre-built assets: `docker build -f Dockerfile.local -t acrostack/react
 ## Tests
 
 ```bash
-npm run test        # watch mode
-npm run test:run    # single run
+vp test          # watch mode
+vp test run      # single run
 ```
 
 ## Scripts
 
-| Script           | Description                      |
-| ---------------- | -------------------------------- |
-| `dev`            | Start Vite dev server            |
-| `build`          | TypeScript + Vite production     |
-| `preview`        | Preview production build         |
-| `test`           | Run Vitest (watch)               |
-| `test:run`       | Run Vitest once                  |
-| `generate-proxy` | Generate API client from backend |
-| `lint`           | ESLint                           |
-| `format`         | Prettier format                  |
+| Script           | Description                         |
+| ---------------- | ----------------------------------- |
+| `dev`            | `vp dev` — start Vite dev server    |
+| `build`          | `vp build` — production build       |
+| `preview`        | `vp preview` — preview build        |
+| `check`          | `vp check` — format, lint, type     |
+| `test`           | `vp test` — Vitest (watch)          |
+| `test:run`       | `vp test run` — Vitest once         |
+| `generate-proxy` | Generate API client from backend    |
+| `lint`           | `vp lint` — Oxlint                  |
+| `fmt`            | `vp fmt` — Oxfmt                    |
 
 ## Environment Configuration
 
@@ -114,7 +115,7 @@ The web server's `/getEnvConfig` endpoint is configured by default to serve the 
 ## Additional Resources
 
 - [ABP Documentation](https://abp.io/docs/latest)
-- [Vite Documentation](https://vite.dev/guide/)
+- [Vite+ Documentation](https://viteplus.dev/guide/)
 - [React Documentation](https://react.dev/)
 - [TanStack Router](https://tanstack.com/router)
 - [TanStack Query](https://tanstack.com/query)
