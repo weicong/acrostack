@@ -18,8 +18,8 @@ function copyDynamicEnv(): PluginOption {
 
 export default defineConfig(({ mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd(), "");
-  const apiUrl = env.VITE_API_URL ?? "http://localhost:44320";
-  const authUrl = env.VITE_AUTH_URL ?? env.VITE_API_URL ?? "http://localhost:44320";
+  const apiUrl = env.VITE_API_URL ?? "https://localhost:44320";
+  const authUrl = env.VITE_AUTH_URL ?? env.VITE_API_URL ?? "https://localhost:44320";
 
   return {
     plugins: [copyDynamicEnv(), react()],

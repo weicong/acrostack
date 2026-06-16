@@ -6,7 +6,7 @@
     "logoUrl": ""
   },
   "oAuthConfig": {
-    "issuer": "http://localhost:44320/",
+    "issuer": "https://localhost:44320/",
     "redirectUri": "http://localhost:5173",
     "requireHttps": "false",
     "clientId": "AcroStack_App",
@@ -17,7 +17,7 @@
   },
   "apis": {
     "default": {
-      "url": "http://localhost:44320",
+      "url": "https://localhost:44320",
       "rootNamespace": "AcroStack"
     }
   }

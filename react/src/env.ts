@@ -4,8 +4,8 @@
  * - 44320 for the API and Auth Server port
  * - AcroStack is replaced with the actual project name
  */
-const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:44320";
-const authUrl = import.meta.env.VITE_AUTH_URL ?? "http://localhost:44320";
+const apiUrl = import.meta.env.VITE_API_URL ?? "https://localhost:44320";
+const authUrl = import.meta.env.VITE_AUTH_URL ?? "https://localhost:44320";
 
 export const env = {
   apiUrl,

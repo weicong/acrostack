@@ -11,27 +11,26 @@
     },
     "AcroStack": {
       "type": "dotnet-project",
-      "launchUrl": "http://localhost:44320",
+      "launchUrl": "https://localhost:44320",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
       "path": "../../AcroStack/AcroStack.csproj",
       "execution": {
         "order": 1
       }
-    }
-  },
+    }  },
   "tasks": {
-    "Initialize Solution": {
+    "Initialize Solution":{
       "behaviour": 2,
-      "startCommand": "./initialize-solution.ps1",
+      "startCommand": "./initialize-solution.ps1", 
       "workingDirectory": "../scripts",
       "shortDescription": "Installs required UI libraries, creates required certificates and seeds the database."
     },
-    "Migrate Database": {
+    "Migrate Database":{
       "behaviour": 0,
       "startCommand": "./migrate-database.ps1",
       "workingDirectory": "../scripts",
       "shortDescription": "Migrates the database to the latest version."
     }
-  }
+  } 
 }
