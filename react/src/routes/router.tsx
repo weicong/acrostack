@@ -114,7 +114,13 @@ const booksRoute = createRoute({
   beforeLoad: createPermissionGuard("AcroStack.Books"),
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, forbiddenRoute, accountRoute, identityRoute, booksRoute]);
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  forbiddenRoute,
+  accountRoute,
+  identityRoute,
+  booksRoute,
+]);
 
 export const router = createRouter({
   routeTree,

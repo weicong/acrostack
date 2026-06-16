@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vite-plus/test";
+import { describe, it, expect, vi, beforeEach } from "vite-plus/test";
 import axios from "axios";
-import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import type { InternalAxiosRequestConfig } from "axios";
 
 const mockGetUser = vi.fn();
 const mockSigninRedirect = vi.fn();
@@ -135,7 +135,6 @@ describe("axios interceptors", () => {
     });
 
     it("redirects to /403 on 403 response", async () => {
-      const originalHref = window.location.href;
       const error = {
         response: { status: 403 },
         config: {},

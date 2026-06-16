@@ -45,6 +45,6 @@ export const userManager = new Proxy({} as OidcUserManager, {
         "userManager not initialized. Call initUserManager() after loadRuntimeConfig() in main.tsx.",
       );
     }
-    return (instance as Record<string | symbol, unknown>)[prop];
+    return (instance as unknown as Record<string | symbol, unknown>)[prop];
   },
 });

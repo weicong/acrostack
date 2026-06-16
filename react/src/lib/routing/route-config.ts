@@ -3,7 +3,7 @@
  * Used by router and Sidebar; each item may have requiredPolicy for permission checks.
  */
 import type { LucideIcon } from "lucide-react";
-import { Home, BookOpen, Users, ShieldCheck } from "lucide-react";
+import { Home, BookOpen, Users } from "lucide-react";
 
 export interface RouteConfigItem {
   path: string;

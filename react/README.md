@@ -88,17 +88,17 @@ vp test run      # single run
 
 ## Scripts
 
-| Script           | Description                         |
-| ---------------- | ----------------------------------- |
-| `dev`            | `vp dev` — start Vite dev server    |
-| `build`          | `vp build` — production build       |
-| `preview`        | `vp preview` — preview build        |
-| `check`          | `vp check` — format, lint, type     |
-| `test`           | `vp test` — Vitest (watch)          |
-| `test:run`       | `vp test run` — Vitest once         |
-| `generate-proxy` | Generate API client from backend    |
-| `lint`           | `vp lint` — Oxlint                  |
-| `fmt`            | `vp fmt` — Oxfmt                    |
+| Script           | Description                      |
+| ---------------- | -------------------------------- |
+| `dev`            | `vp dev` — start Vite dev server |
+| `build`          | `vp build` — production build    |
+| `preview`        | `vp preview` — preview build     |
+| `check`          | `vp check` — format, lint, type  |
+| `test`           | `vp test` — Vitest (watch)       |
+| `test:run`       | `vp test run` — Vitest once      |
+| `generate-proxy` | Generate API client from backend |
+| `lint`           | `vp lint` — Oxlint               |
+| `fmt`            | `vp fmt` — Oxfmt                 |
 
 ## Environment Configuration
 

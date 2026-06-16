@@ -85,7 +85,7 @@ export function BooksPage() {
   const createMutation = useMutation({
     mutationFn: createBook,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["books"] });
+      void queryClient.invalidateQueries({ queryKey: ["books"] });
       setIsFormOpen(false);
       toast.success(t("AbpUi::SavedSuccessfully"));
     },
@@ -96,7 +96,7 @@ export function BooksPage() {
     mutationFn: ({ id, input }: { id: string; input: CreateUpdateBookDto }) =>
       updateBook(id, input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["books"] });
+      void queryClient.invalidateQueries({ queryKey: ["books"] });
       setIsFormOpen(false);
       setEditingBook(null);
       toast.success(t("AbpUi::SavedSuccessfully"));
@@ -107,7 +107,7 @@ export function BooksPage() {
   const deleteMutation = useMutation({
     mutationFn: deleteBook,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["books"] });
+      void queryClient.invalidateQueries({ queryKey: ["books"] });
       toast.success(t("AbpUi::DeletedSuccessfully"));
     },
     onError: () => toast.error(t("AbpUi::Error")),

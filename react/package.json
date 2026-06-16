@@ -6,10 +6,8 @@
   "scripts": {
     "dev": "vp dev",
     "build": "vp build",
-    "check": "vp check",
-    "lint": "vp lint",
-    "fmt": "vp fmt",
     "preview": "vp preview",
+    "check": "vp check --fix",
     "test": "vp test",
     "test:run": "vp test run",
     "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320"

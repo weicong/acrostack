@@ -24,7 +24,7 @@ function getInitialLanguage() {
 const initialLanguage = getInitialLanguage();
 setDocumentLanguage(initialLanguage);
 
-i18n.use(initReactI18next).init({
+void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
   },

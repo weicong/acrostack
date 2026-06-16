@@ -72,7 +72,7 @@ describe("AuthContext", () => {
       AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
       useAuth: mockUseAuth,
       login: mockLogin,
-    } as ReturnType<typeof userManagerModule.getAuthClient>);
+    } as unknown as ReturnType<typeof userManagerModule.getAuthClient>);
   });
 
   it("renders children via authClient.AuthProvider", () => {

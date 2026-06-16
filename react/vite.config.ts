@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, loadEnv } from "vite-plus";
+import { defineConfig, loadEnv, type PluginOption, type UserConfig } from "vite-plus";
 import react from "@vitejs/plugin-react";
 
-function copyDynamicEnv() {
+function copyDynamicEnv(): PluginOption {
   return {
     name: "copy-dynamic-env",
     buildStart() {
@@ -16,8 +16,7 @@ function copyDynamicEnv() {
   };
 }
 
-// https://vite.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd(), "");
   const apiUrl = env.VITE_API_URL ?? "http://localhost:44320";
   const authUrl = env.VITE_AUTH_URL ?? env.VITE_API_URL ?? "http://localhost:44320";
@@ -62,11 +61,11 @@ export default defineConfig(({ mode }) => {
       },
       globals: true,
     },
+    fmt: {},
     lint: {
-      options: {
-        typeAware: true,
-        typeCheck: true,
-      },
+      jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+      rules: { "vite-plus/prefer-vite-plus-imports": "error" },
+      options: { typeAware: true, typeCheck: true },
     },
   };
 });
