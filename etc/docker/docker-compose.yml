@@ -24,7 +24,7 @@ services:
       - ASPNETCORE_URLS=https://+:8081;http://+:8080;
       - Kestrel__Certificates__Default__Path=/app/certs/localhost.pfx
       - Kestrel__Certificates__Default__Password=91f91912-5ab0-49df-8166-23377efaf3cc
-      - App__SelfUrl=https://localhost:44320
+      - App__SelfUrl=http://localhost:44320
       - App__ReactUrl=http://localhost:5173
       - App_CorsOrigins=http://localhost:5173
       - App__RedirectAllowedUrls=http://localhost:5173
