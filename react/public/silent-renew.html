@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Silent Renew</title>
+    <script src="https://cdn.jsdelivr.net/npm/oidc-client-ts@3.0.1/dist/browser/oidc-client-ts.min.js"></script>
+  </head>
+  <body>
+    <script>
+      (function () {
+        var config = {
+          authority: "https://localhost:/",
+          client_id: "AcroStack_App",
+          redirect_uri: window.location.origin + "/silent-renew.html",
+          scope: "offline_access AcroStack",
+          response_type: "code",
+        };
+        new Oidc.UserManager(config).signinSilentCallback();
+      })();
+    </script>
+  </body>
+</html>

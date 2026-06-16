@@ -1,0 +1,24 @@
+{
+  "culture": "en",
+  "texts": {
+    "AppName": "AcroStack",
+    "Welcome_Title": "Welcome",
+    "Welcome_Text": "This is a minimalist, single layer application startup template for the ABP Framework.",
+    "Menu:Home": "Home",
+    "Menu:Books": "Books",
+    "AppUser:Users": "Users",
+    "Permission:Books": "Books",
+    "Permission:Books.Create": "Create",
+    "Permission:Books.Edit": "Edit",
+    "Permission:Books.Delete": "Delete",
+    "Enum:BookType.Undefined": "Undefined",
+    "Enum:BookType.Adventure": "Adventure",
+    "Enum:BookType.Biography": "Biography",
+    "Enum:BookType.Dystopia": "Dystopia",
+    "Enum:BookType.Fantastic": "Fantastic",
+    "Enum:BookType.Horror": "Horror",
+    "Enum:BookType.Science": "Science",
+    "Enum:BookType.ScienceFiction": "Science Fiction",
+    "Enum:BookType.Poetry": "Poetry"
+  }
+}

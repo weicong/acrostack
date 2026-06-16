@@ -1,0 +1,25 @@
+{
+  "production": true,
+  "application": {
+    "baseUrl":"http://localhost:5173",
+    "name": "AcroStack",
+    "logoUrl": ""
+  },
+  "oAuthConfig": {
+    "issuer": "https://localhost:44320/",
+    "redirectUri": "http://localhost:5173",
+    "clientId": "AcroStack_App",
+    "responseType": "code",
+    "scope": "offline_access openid profile email phone AcroStack"
+  },
+  "apis": {
+    "default": {
+      "url": "https://localhost:44320",
+      "rootNamespace": "AcroStack"
+    },
+    "AbpAccountPublic": {
+      "url": "https://localhost:44320",
+      "rootNamespace": "AbpAccountPublic"
+    }
+  }
+}
