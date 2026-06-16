@@ -25,7 +25,6 @@ export default defineConfig(({ mode }): UserConfig => {
     plugins: [copyDynamicEnv(), react()],
     resolve: {
       dedupe: ["react", "react-dom"],
-      preserveSymlinks: true,
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
