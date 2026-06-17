@@ -1,5 +1,12 @@
+import {
+  Globe20Regular,
+  ArrowExit20Regular,
+  Navigation20Regular,
+  WeatherMoon20Regular,
+  WeatherSunny20Regular,
+  Desktop20Regular,
+} from "@fluentui/react-icons";
 import { useEffect, useMemo, useState } from "react";
-import { Globe, LogIn, Menu, Moon, Sun, Monitor } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -82,12 +89,22 @@ function ThemeToggle() {
         ? t("AbpSettingManagement::Theme.Dark", "Dark")
         : t("AbpSettingManagement::Theme.System", "System");
 
-  const Icon = theme === "system" ? Monitor : resolvedTheme === "light" ? Sun : Moon;
+  const Icon =
+    theme === "system"
+      ? Desktop20Regular
+      : resolvedTheme === "light"
+        ? WeatherSunny20Regular
+        : WeatherMoon20Regular;
 
   return (
-    <Button variant="ghost" size="icon" onClick={cycleTheme} aria-label={label} title={label}>
-      <Icon className="size-5" />
-    </Button>
+    <Button
+      variant="subtle"
+      size="small"
+      onClick={cycleTheme}
+      aria-label={label}
+      title={label}
+      icon={<Icon />}
+    ></Button>
   );
 }
 
@@ -182,7 +199,6 @@ function LanguageSwitcher() {
         i18n.addResourceBundle(culture, "translation", translations, true, true);
       }
     } catch {
-      // Ignore localization fetch failures and still switch the UI culture.
     } finally {
       persistLanguageSelection(culture);
       await i18n.changeLanguage(culture);
@@ -192,27 +208,22 @@ function LanguageSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Button
-          variant="ghost"
-          size="icon"
+          variant="subtle"
+          size="small"
           disabled={isChanging}
           aria-label={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
           title={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
-        >
-          <Globe className="size-5" />
-        </Button>
+          icon={<Globe20Regular />}
+        />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent>
         {languages.map((language) => {
           const culture = getLanguageCulture(language);
 
           return (
-            <DropdownMenuItem
-              key={culture}
-              onClick={() => void changeLanguage(culture)}
-              className={culture === currentCulture ? "bg-accent" : ""}
-            >
+            <DropdownMenuItem key={culture} onClick={() => void changeLanguage(culture)}>
               {getLanguageLabel(language)}
             </DropdownMenuItem>
           );
@@ -227,28 +238,39 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { isAuthenticated, isLoading, login } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center gap-4 border-b border-border bg-background px-4">
+    <header
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        display: "flex",
+        height: "3.5rem",
+        alignItems: "center",
+        gap: "1rem",
+        borderBottom: "1px solid var(--colorNeutralStroke1)",
+        background: "var(--colorNeutralBackground1)",
+        padding: "0 1rem",
+      }}
+    >
       <Button
-        variant="ghost"
-        size="icon"
-        className="lg:hidden"
+        variant="subtle"
+        size="small"
+        style={{ display: "none" }}
         onClick={onMenuClick}
         aria-label={t("Menu:Menu")}
-      >
-        <Menu className="size-5" />
-      </Button>
-      <div className="flex flex-1 items-center gap-2">
-        <span className="font-semibold">AcroStack</span>
+        icon={<Navigation20Regular />}
+      />
+      <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <span style={{ fontWeight: 600 }}>AcroStack</span>
       </div>
-      <div className="flex items-center gap-2">
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <LanguageSwitcher />
         <ThemeToggle />
         {!isLoading &&
           (isAuthenticated ? (
             <UserMenu />
           ) : (
-            <Button size="sm" onClick={() => void login()}>
-              <LogIn className="size-4" />
+            <Button size="small" onClick={() => void login()} icon={<ArrowExit20Regular />}>
               {t("AbpAccount::Login")}
             </Button>
           ))}

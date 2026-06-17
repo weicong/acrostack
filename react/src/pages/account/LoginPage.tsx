@@ -5,10 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth/AuthContext";
 
-/**
- * Login page. Redirects to OAuth auth server for sign-in.
- * For non-tiered: HostWithIds serves both API and Auth; redirect goes to /connect/authorize.
- */
 export function LoginPage() {
   const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
@@ -29,9 +25,16 @@ export function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-center py-4">
+          <div style={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}>
             <div
-              className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"
+              style={{
+                width: "2rem",
+                height: "2rem",
+                border: "2px solid var(--colorBrandStroke1)",
+                borderTopColor: "transparent",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
               aria-hidden
             />
           </div>
@@ -50,9 +53,9 @@ export function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button asChild>
-            <Link to="/">{t("AbpUi::BackToTheApplication")}</Link>
-          </Button>
+          <Link to="/">
+            <Button>{t("AbpUi::BackToTheApplication")}</Button>
+          </Link>
         </CardContent>
       </Card>
     );
@@ -66,28 +69,36 @@ export function LoginPage() {
           {t("AbpAccount::LoginSubtitle", "Sign in to your account")}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <Button className="w-full" onClick={() => void login()}>
-          {t("AbpAccount::Login")}
-        </Button>
-        <div className="space-y-2 text-center text-sm text-muted-foreground">
-          <p>
-            <Link
-              to="/account/forgot-password"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-            >
-              {t("AbpAccount::ForgotPassword")}
-            </Link>
-          </p>
-          <p>
-            {t("AbpAccount::DontHaveAnAccount", "Don't have an account?")}{" "}
-            <Link
-              to="/account/register"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-            >
-              {t("AbpAccount::Register")}
-            </Link>
-          </p>
+      <CardContent>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <Button style={{ width: "100%" }} onClick={() => void login()}>
+            {t("AbpAccount::Login")}
+          </Button>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              color: "var(--colorNeutralForeground3)",
+            }}
+          >
+            <p>
+              <Link
+                to="/account/forgot-password"
+                style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
+              >
+                {t("AbpAccount::ForgotPassword")}
+              </Link>
+            </p>
+            <p>
+              {t("AbpAccount::DontHaveAnAccount", "Don't have an account?")}{" "}
+              <Link
+                to="/account/register"
+                style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
+              >
+                {t("AbpAccount::Register")}
+              </Link>
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>

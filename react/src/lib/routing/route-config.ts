@@ -1,46 +1,32 @@
-/**
- * Central route and menu configuration.
- * Used by router and Sidebar; each item may have requiredPolicy for permission checks.
- */
-import type { LucideIcon } from "lucide-react";
-import { Home, BookOpen, Users } from "lucide-react";
+import type { ComponentType } from "react";
+import { Home20Regular, Book20Regular, People20Regular } from "@fluentui/react-icons";
 
 export interface RouteConfigItem {
   path: string;
   nameKey: string;
-  icon?: LucideIcon;
+  icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   order?: number;
-  /** External destination (URL or resolver function) when item should not use SPA routing */
   externalHref?: string | (() => string);
-  /** Anchor target for external destinations (defaults to "_self") */
   externalTarget?: "_self" | "_blank";
-  /** Anchor rel value for external destinations */
   externalRel?: string;
-  /** ABP permission policy (supports compound: "A || B", "A && B") */
   requiredPolicy?: string;
-  /** When true, only show when authenticated (no specific policy) */
   requiresAuth?: boolean;
-  /** Nested sub-menu items rendered as collapsible children in the sidebar */
   children?: RouteConfigItem[];
 }
 
-/**
- * Application menu/route items. Order determines display order.
- * Items with requiredPolicy are hidden when the user lacks that permission.
- */
 export const routeConfig: RouteConfigItem[] = [
-  { path: "/", nameKey: "Menu:Home", icon: Home, order: 1 },
+  { path: "/", nameKey: "Menu:Home", icon: Home20Regular, order: 1 },
   {
     path: "/books",
     nameKey: "Menu:Books",
-    icon: BookOpen,
+    icon: Book20Regular,
     order: 3,
     requiredPolicy: "AcroStack.Books",
   },
   {
     path: "/identity/users",
     nameKey: "AbpIdentity::Users",
-    icon: Users,
+    icon: People20Regular,
     order: 5,
     requiredPolicy: "AbpIdentity.Users",
   },

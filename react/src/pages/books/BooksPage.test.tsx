@@ -22,8 +22,25 @@ vi.mock("@/lib/api/books", () => ({
   ],
 }));
 
-vi.mock("sonner", () => ({
-  toast: { success: vi.fn(), error: vi.fn() },
+vi.mock("@fluentui/react-components", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@fluentui/react-components")>();
+  return {
+    ...actual,
+    useToastController: () => ({ dispatchToast: vi.fn() }),
+    useId: () => "test-toaster",
+    Toaster: () => null,
+  };
+});
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: "en" },
+  }),
+}));
+
+vi.mock("@/lib/auth/permissions", () => ({
+  usePermissions: () => ({ isGranted: () => true }),
 }));
 
 function createQueryClient() {
@@ -75,7 +92,7 @@ describe("BooksPage", () => {
   it("shows loading state while fetching", () => {
     vi.mocked(booksApi.getBooks).mockReturnValue(new Promise(() => {}));
     renderPage();
-    expect(screen.getByText(/please wait/i)).toBeInTheDocument();
+    expect(screen.getByText("AbpAccount::PleaseWait")).toBeInTheDocument();
   });
 
   it("renders book table with data", async () => {
@@ -120,11 +137,8 @@ describe("BooksPage", () => {
       expect(screen.getByText("Test Book")).toBeInTheDocument();
     });
 
-    const editButtons = screen.getAllByText(/edit/i);
-    expect(editButtons.length).toBeGreaterThanOrEqual(1);
-
-    const deleteButtons = screen.getAllByText(/delete/i);
-    expect(deleteButtons.length).toBeGreaterThanOrEqual(1);
+    const actionButtons = screen.getAllByText("AbpUi::Actions");
+    expect(actionButtons.length).toBeGreaterThanOrEqual(1);
   });
 
   it("calls deleteBook when delete is confirmed", async () => {
@@ -136,11 +150,29 @@ describe("BooksPage", () => {
       expect(screen.getByText("Test Book")).toBeInTheDocument();
     });
 
-    const deleteButtons = screen.getAllByText(/delete/i);
-    fireEvent.click(deleteButtons[0]);
+    const actionButtons = screen.getAllByText("AbpUi::Actions");
+    fireEvent.click(actionButtons[0]);
 
     await waitFor(() => {
-      expect(booksApi.deleteBook).toHaveBeenCalledWith("1");
+      expect(screen.getByText("AbpUi::Delete")).toBeInTheDocument();
+    });
+
+    const deleteItems = screen.getAllByText("AbpUi::Delete");
+    fireEvent.click(deleteItems[0]);
+
+    await waitFor(() => {
+      expect(screen.getByText("::AreYouSureToDelete")).toBeInTheDocument();
+    });
+
+    const confirmButtons = screen
+      .getAllByRole("button")
+      .filter((btn) => btn.textContent?.includes("AbpUi::Delete"));
+    if (confirmButtons.length > 0) {
+      fireEvent.click(confirmButtons[confirmButtons.length - 1]);
+    }
+
+    await waitFor(() => {
+      expect(booksApi.deleteBook).toHaveBeenCalledWith("1", expect.anything());
     });
   });
 

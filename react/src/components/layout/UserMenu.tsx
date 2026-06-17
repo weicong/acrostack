@@ -1,4 +1,9 @@
-import { LogOut, Settings, Monitor, User } from "lucide-react";
+import {
+  SignOut20Regular,
+  Settings20Regular,
+  Desktop20Regular,
+  Person20Regular,
+} from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
@@ -30,54 +35,79 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Button
-          variant="ghost"
-          className="flex items-center gap-2 px-2"
+          variant="subtle"
+          icon={<Person20Regular />}
           aria-label={displayName ?? t("AbpAccount::MyAccount")}
         >
-          <User className="size-4 shrink-0" />
           {displayName && (
-            <span className="hidden max-w-32 truncate text-sm sm:inline">{displayName}</span>
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "8rem",
+                fontSize: "0.875rem",
+              }}
+            >
+              {displayName}
+            </span>
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
+      <DropdownMenuContent>
+        <DropdownMenuLabel>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
             {displayFullName && (
-              <p className="text-sm font-medium leading-none">{displayFullName}</p>
-            )}
-            {displayName && displayFullName !== displayName && (
-              <p className="text-xs leading-none text-muted-foreground">{displayName}</p>
+              <p style={{ fontSize: "0.875rem", fontWeight: 500 }}>{displayFullName}</p>
             )}
             {displayEmailAddress && (
-              <p className="text-xs leading-none text-muted-foreground">{displayEmailAddress}</p>
+              <p style={{ fontSize: "0.75rem", color: "var(--colorNeutralForeground3)" }}>
+                {displayEmailAddress}
+              </p>
             )}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <a href={getBackendAccountUrl("/account/manage")}>
-            <Settings className="size-4" />
+        <DropdownMenuItem>
+          <a
+            href={getBackendAccountUrl("/account/manage")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Settings20Regular />
             {t("AbpAccount::MyAccount")}
           </a>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <a href={getBackendAccountUrl("/account/sessions")}>
-            <Monitor className="size-4" />
+        <DropdownMenuItem>
+          <a
+            href={getBackendAccountUrl("/account/sessions")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Desktop20Regular />
             {t("AbpAccount::Sessions")}
           </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="cursor-pointer text-destructive focus:text-destructive"
+          style={{ color: "var(--colorPaletteRedForeground3)" }}
           onSelect={(e) => {
             e.preventDefault();
             void logout();
           }}
         >
-          <LogOut className="size-4" />
+          <SignOut20Regular />
           {t("AbpAccount::Logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>

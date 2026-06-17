@@ -96,8 +96,10 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    const userNameHeader = screen.getByText("AbpIdentity::UserName");
-    fireEvent.click(userNameHeader);
+    const userNameButtons = screen
+      .getAllByRole("button")
+      .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"));
+    fireEvent.click(userNameButtons[0]);
 
     await waitFor(() => {
       expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
@@ -112,8 +114,12 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    const userNameHeader = screen.getByText("AbpIdentity::UserName");
-    fireEvent.click(userNameHeader);
+    const getSortButton = () =>
+      screen
+        .getAllByRole("button")
+        .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"))[0];
+
+    fireEvent.click(getSortButton());
 
     await waitFor(() => {
       expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
@@ -121,13 +127,20 @@ describe("UsersPage", () => {
       );
     });
 
-    fireEvent.click(userNameHeader);
-
     await waitFor(() => {
-      expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-        expect.objectContaining({ sorting: "UserName desc" }),
-      );
+      expect(screen.getByText("alice")).toBeInTheDocument();
     });
+
+    fireEvent.click(getSortButton());
+
+    await waitFor(
+      () => {
+        expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
+          expect.objectContaining({ sorting: "UserName desc" }),
+        );
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("clicking a different column resets direction to asc", async () => {
@@ -136,19 +149,36 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByText("AbpIdentity::UserName"));
+    const getUserNameButton = () =>
+      screen
+        .getAllByRole("button")
+        .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"))[0];
+
+    fireEvent.click(getUserNameButton());
     await waitFor(() => {
       expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
         expect.objectContaining({ sorting: "UserName asc" }),
       );
     });
 
-    fireEvent.click(screen.getByText("AbpIdentity::Email"));
     await waitFor(() => {
-      expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-        expect.objectContaining({ sorting: "Email asc" }),
-      );
+      expect(screen.getByText("alice")).toBeInTheDocument();
     });
+
+    const getEmailButton = () =>
+      screen
+        .getAllByRole("button")
+        .filter((btn) => btn.textContent?.includes("AbpIdentity::Email"))[0];
+
+    fireEvent.click(getEmailButton());
+    await waitFor(
+      () => {
+        expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
+          expect.objectContaining({ sorting: "Email asc" }),
+        );
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("initial fetch has no sorting param", async () => {

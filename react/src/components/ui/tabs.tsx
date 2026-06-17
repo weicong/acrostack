@@ -1,33 +1,35 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import { TabList as FluentTabList, Tab as FluentTab } from "@fluentui/react-components";
+import { type ReactNode } from "react";
 
 interface TabsContextValue {
   value: string;
   onValueChange: (value: string) => void;
 }
 
-const TabsContext = React.createContext<TabsContextValue | null>(null);
+import { createContext, useContext, useCallback, useState } from "react";
+
+const TabsContext = createContext<TabsContextValue | null>(null);
 
 interface TabsProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-  children: React.ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
-function Tabs({
+export function Tabs({
   value: controlledValue,
   defaultValue,
   onValueChange,
   children,
-  className,
+  className: _className,
 }: TabsProps) {
-  const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue ?? "");
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? "");
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
 
-  const handleValueChange = React.useCallback(
+  const handleValueChange = useCallback(
     (v: string) => {
       if (!isControlled) setUncontrolledValue(v);
       onValueChange?.(v);
@@ -37,67 +39,51 @@ function Tabs({
 
   return (
     <TabsContext.Provider value={{ value, onValueChange: handleValueChange }}>
-      <div className={className}>{children}</div>
+      <div>{children}</div>
     </TabsContext.Provider>
   );
 }
 
-interface TabsListProps {
-  children: React.ReactNode;
+export function TabsList({
+  children,
+  className: _className,
+}: {
+  children?: ReactNode;
   className?: string;
-}
-
-function TabsList({ children, className }: TabsListProps) {
+}) {
+  const ctx = useContext(TabsContext);
   return (
-    <div
-      className={cn(
-        "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
-        className,
-      )}
+    <FluentTabList
+      selectedValue={ctx?.value}
+      onTabSelect={(_, data) => ctx?.onValueChange(data.value as string)}
     >
       {children}
-    </div>
+    </FluentTabList>
   );
 }
 
-interface TabsTriggerProps {
+export function TabsTrigger({
+  value,
+  children,
+  className: _className,
+}: {
   value: string;
-  children: React.ReactNode;
+  children?: ReactNode;
   className?: string;
+}) {
+  return <FluentTab value={value}>{children}</FluentTab>;
 }
 
-function TabsTrigger({ value, children, className }: TabsTriggerProps) {
-  const ctx = React.useContext(TabsContext);
-  if (!ctx) return null;
-
-  const isActive = ctx.value === value;
-
-  return (
-    <button
-      type="button"
-      className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-        isActive ? "bg-background text-foreground shadow" : "hover:text-foreground",
-        className,
-      )}
-      onClick={() => ctx.onValueChange(value)}
-    >
-      {children}
-    </button>
-  );
-}
-
-interface TabsContentProps {
+export function TabsContent({
+  value,
+  children,
+  className: _className,
+}: {
   value: string;
-  children: React.ReactNode;
+  children?: ReactNode;
   className?: string;
-}
-
-function TabsContent({ value, children, className }: TabsContentProps) {
-  const ctx = React.useContext(TabsContext);
+}) {
+  const ctx = useContext(TabsContext);
   if (!ctx || ctx.value !== value) return null;
-
-  return <div className={cn("mt-2", className)}>{children}</div>;
+  return <div>{children}</div>;
 }
-
-export { Tabs, TabsList, TabsTrigger, TabsContent };

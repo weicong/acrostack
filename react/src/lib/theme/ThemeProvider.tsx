@@ -1,4 +1,10 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  FluentProvider,
+  webLightTheme,
+  webDarkTheme,
+  type Theme as FluentTheme,
+} from "@fluentui/react-components";
 
 export type Theme = "light" | "dark" | "system";
 
@@ -20,12 +26,6 @@ function resolveTheme(theme: Theme): "light" | "dark" {
   return theme === "system" ? getSystemPreference() : theme;
 }
 
-function applyTheme(theme: Theme) {
-  const root = document.documentElement;
-  root.classList.toggle("dark", resolveTheme(theme) === "dark");
-}
-
-/** Set at template generation from wizard "React theme mode" (system | light | dark). */
 const TEMPLATE_THEME_STYLE = "";
 
 function clampStoredTheme(stored: Theme | null, themeStyle: string): Theme {
@@ -44,15 +44,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     clampStoredTheme(localStorage.getItem(STORAGE_KEY) as Theme | null, TEMPLATE_THEME_STYLE),
   );
 
-  useEffect(() => {
-    applyTheme(theme);
+  const resolvedTheme = resolveTheme(theme);
 
+  useEffect(() => {
     if (theme !== "system") {
       return;
     }
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => applyTheme("system");
+    const handleChange = () => setThemeState((prev) => prev);
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [theme]);
@@ -62,9 +62,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(next);
   }
 
+  const fluentTheme: FluentTheme = resolvedTheme === "dark" ? webDarkTheme : webLightTheme;
+
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme: resolveTheme(theme), setTheme }}>
-      {children}
+    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+      <FluentProvider theme={fluentTheme}>{children}</FluentProvider>
     </ThemeContext.Provider>
   );
 }

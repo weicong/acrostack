@@ -1,6 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import {
+  ChevronUp20Regular,
+  ChevronDown20Regular,
+  ChevronUpDown20Regular,
+} from "@fluentui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,11 +35,11 @@ const SORTABLE_COLUMNS: { field: string; labelKey: string }[] = [
 
 function SortIcon({ field, sort }: { field: string; sort: SortState | null }) {
   if (!sort || sort.field !== field)
-    return <ChevronsUpDown className="ml-1 inline h-3.5 w-3.5 opacity-50" />;
+    return <ChevronUpDown20Regular style={{ marginLeft: "0.25rem", opacity: 0.5 }} />;
   return sort.direction === "asc" ? (
-    <ChevronUp className="ml-1 inline h-3.5 w-3.5" />
+    <ChevronUp20Regular style={{ marginLeft: "0.25rem" }} />
   ) : (
-    <ChevronDown className="ml-1 inline h-3.5 w-3.5" />
+    <ChevronDown20Regular style={{ marginLeft: "0.25rem" }} />
   );
 }
 
@@ -78,29 +82,30 @@ export function UsersPage() {
   const users = data?.items ?? [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("AbpIdentity::Users")}</h1>
-          <p className="mt-1 text-muted-foreground">{t("AbpIdentity::UserDescription")}</p>
+          <h1 style={{ fontSize: "1.875rem", fontWeight: 700 }}>{t("AbpIdentity::Users")}</h1>
+          <p style={{ marginTop: "0.25rem", color: "var(--colorNeutralForeground3)" }}>
+            {t("AbpIdentity::UserDescription")}
+          </p>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <div className="flex gap-4 items-center flex-wrap">
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <Input
               placeholder={t("AbpIdentity::Search")}
               value={searchDraft}
               onChange={(e) => setSearchDraft(e.target.value)}
               onKeyDown={handleSearchKeyDown}
-              className="max-w-xs"
             />
-            <Button variant="outline" size="sm" onClick={handleSearch}>
+            <Button variant="outline" size="small" onClick={handleSearch}>
               {t("AbpIdentity::Search")}
             </Button>
-            <div className="ml-auto">
-              <Button variant="outline" size="sm">
+            <div style={{ marginLeft: "auto" }}>
+              <Button variant="outline" size="small">
                 {t("Users::ManageUsersAndRoles")}
               </Button>
             </div>
@@ -108,19 +113,23 @@ export function UsersPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className="text-muted-foreground">{t("AbpAccount::PleaseWait")}</p>
+            <p style={{ color: "var(--colorNeutralForeground3)" }}>{t("AbpAccount::PleaseWait")}</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
                   {SORTABLE_COLUMNS.map(({ field, labelKey }) => (
-                    <TableHead
-                      key={field}
-                      className="cursor-pointer select-none"
-                      onClick={() => handleSort(field)}
-                    >
-                      {t(labelKey)}
-                      <SortIcon field={field} sort={sort} />
+                    <TableHead key={field} style={{ cursor: "pointer", userSelect: "none" }}>
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleSort(field)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSort(field)}
+                        style={{ display: "inline-flex", alignItems: "center" }}
+                      >
+                        {t(labelKey)}
+                        <SortIcon field={field} sort={sort} />
+                      </div>
                     </TableHead>
                   ))}
                   <TableHead>{t("AbpIdentity::Status")}</TableHead>
@@ -129,7 +138,7 @@ export function UsersPage() {
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.userName}</TableCell>
+                    <TableCell>{user.userName}</TableCell>
                     <TableCell>{user.email ?? "-"}</TableCell>
                     <TableCell>{user.phoneNumber ?? "-"}</TableCell>
                     <TableCell>
@@ -151,11 +160,33 @@ export function UsersPage() {
 
 function UserStatusBadge({ user, t }: { user: AppUserDto; t: (key: string) => string }) {
   return user.isActive !== false ? (
-    <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        borderRadius: "9999px",
+        background: "#dcfce7",
+        padding: "0.125rem 0.5rem",
+        fontSize: "0.625rem",
+        fontWeight: 500,
+        color: "#15803d",
+      }}
+    >
       {t("AbpIdentity::Active")}
     </span>
   ) : (
-    <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700">
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        borderRadius: "9999px",
+        background: "#fee2e2",
+        padding: "0.125rem 0.5rem",
+        fontSize: "0.625rem",
+        fontWeight: 500,
+        color: "#b91c1c",
+      }}
+    >
       {t("AbpIdentity::NotActive")}
     </span>
   );

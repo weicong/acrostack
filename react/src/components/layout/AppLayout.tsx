@@ -7,26 +7,42 @@ export function AppLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-svh flex-col overflow-hidden">
+    <div style={{ display: "flex", height: "100vh", flexDirection: "column", overflow: "hidden" }}>
       <Header onMenuClick={() => setMobileMenuOpen(true)} />
-      <div className="flex min-h-0 flex-1 overflow-hidden">
+      <div style={{ display: "flex", minHeight: 0, flex: 1, overflow: "hidden" }}>
         <div
-          className={`
-            fixed inset-0 z-40 bg-black/50 lg:hidden
-            ${mobileMenuOpen ? "block" : "hidden"}
-          `}
+          style={{
+            position: mobileMenuOpen ? "fixed" : undefined,
+            inset: mobileMenuOpen ? 0 : undefined,
+            zIndex: 40,
+            background: "rgba(0,0,0,0.5)",
+            display: mobileMenuOpen ? "block" : "none",
+          }}
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden="true"
         />
         <aside
-          className={`
-            fixed left-0 top-0 z-50 flex h-full min-h-0 w-56 shrink-0 flex-col overflow-hidden border-r border-border bg-background transition-transform lg:static lg:min-h-0 lg:translate-x-0 lg:self-stretch
-            ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-          `}
+          style={{
+            position: mobileMenuOpen ? "fixed" : "static",
+            left: 0,
+            top: 0,
+            zIndex: 50,
+            display: "flex",
+            height: "100%",
+            minHeight: 0,
+            width: "14rem",
+            flexShrink: 0,
+            flexDirection: "column",
+            overflow: "hidden",
+            borderRight: "1px solid var(--colorNeutralStroke1)",
+            background: "var(--colorNeutralBackground1)",
+            transform: mobileMenuOpen ? "translateX(0)" : "translateX(0)",
+            transition: "transform 0.2s",
+          }}
         >
           <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
         </aside>
-        <main className="flex-1 overflow-auto p-6">
+        <main style={{ flex: 1, overflow: "auto", padding: "1.5rem" }}>
           <Outlet />
         </main>
       </div>

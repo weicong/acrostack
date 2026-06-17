@@ -2,16 +2,24 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-muted/30 px-4 py-3">
-      <div className="flex justify-center text-sm text-muted-foreground">
+    <footer
+      style={{
+        borderTop: "1px solid var(--colorNeutralStroke1)",
+        background: "var(--colorNeutralBackground3)",
+        padding: "0.75rem 1rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "0.875rem",
+          color: "var(--colorNeutralForeground3)",
+        }}
+      >
         <span>
-          {currentYear}© by{" "}
-          <a
-            href="https://volosoft.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-foreground"
-          >
+          {currentYear}&copy; by{" "}
+          <a href="https://volosoft.com/" target="_blank" rel="noreferrer">
             Volosoft
           </a>
         </span>

@@ -74,9 +74,9 @@ export function ResetPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button asChild>
-            <Link to="/account/forgot-password">{t("AbpAccount::SendPasswordResetCode")}</Link>
-          </Button>
+          <Link to="/account/forgot-password">
+            <Button>{t("AbpAccount::SendPasswordResetCode")}</Button>
+          </Link>
         </CardContent>
       </Card>
     );
@@ -91,13 +91,25 @@ export function ResetPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+        >
           {errors.root && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive" role="alert">
+            <div
+              style={{
+                borderRadius: "0.375rem",
+                background: "var(--colorPaletteRedBackground1)",
+                padding: "0.75rem",
+                fontSize: "0.875rem",
+                color: "var(--colorPaletteRedForeground3)",
+              }}
+              role="alert"
+            >
               {errors.root.message}
             </div>
           )}
-          <div className="space-y-2">
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Label htmlFor="password">{t("AbpAccount::Password")}</Label>
             <Input
               id="password"
@@ -106,12 +118,12 @@ export function ResetPasswordPage() {
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">
+              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
                 {t(errors.password.message as "AbpAccount::PasswordMustBeAtLeast6Characters")}
               </p>
             )}
           </div>
-          <div className="space-y-2">
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Label htmlFor="confirmPassword">{t("AbpAccount::ConfirmPassword")}</Label>
             <Input
               id="confirmPassword"
@@ -120,18 +132,24 @@ export function ResetPasswordPage() {
               {...register("confirmPassword")}
             />
             {errors.confirmPassword && (
-              <p className="text-sm text-destructive">
+              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
                 {t(errors.confirmPassword.message as "AbpAccount::PasswordsDoNotMatch")}
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
             {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::ResetPassword")}
           </Button>
-          <p className="text-center text-sm text-muted-foreground">
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              color: "var(--colorNeutralForeground3)",
+            }}
+          >
             <Link
               to="/account/login"
-              className="font-medium text-primary underline-offset-4 hover:underline"
+              style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
             >
               {t("AbpAccount::Login")}
             </Link>

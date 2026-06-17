@@ -1,137 +1,81 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import {
+  Dialog as FluentDialog,
+  DialogTrigger as FluentDialogTrigger,
+  DialogSurface as FluentDialogSurface,
+  DialogBody as FluentDialogBody,
+  DialogTitle as FluentDialogTitle,
+  DialogActions as FluentDialogActions,
+  DialogContent as FluentDialogContent,
+} from "@fluentui/react-components";
+import { type ReactElement, type ReactNode } from "react";
 
-interface DialogContextValue {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-const DialogContext = React.createContext<DialogContextValue | null>(null);
-
-interface DialogProps {
+export interface DialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  children: React.ReactNode;
+  children: ReactElement | [ReactElement, ReactElement];
 }
 
-function Dialog({ open: controlledOpen, onOpenChange, children }: DialogProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
-  const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : uncontrolledOpen;
-  const setOpen = React.useCallback(
-    (value: boolean) => {
-      if (!isControlled) setUncontrolledOpen(value);
-      onOpenChange?.(value);
-    },
-    [isControlled, onOpenChange],
-  );
-
+export function Dialog({ open, onOpenChange, children }: DialogProps) {
   return (
-    <DialogContext.Provider value={{ open, onOpenChange: setOpen }}>
-      {children}
-    </DialogContext.Provider>
+    <FluentDialog open={open} onOpenChange={(_, data) => onOpenChange?.(data.open)}>
+      {children as ReactElement}
+    </FluentDialog>
   );
 }
 
-interface DialogTriggerProps {
+export interface DialogTriggerProps {
   asChild?: boolean;
-  children: React.ReactNode;
+  children: ReactElement;
   onClick?: () => void;
 }
 
-function DialogTrigger({ children, onClick }: DialogTriggerProps) {
-  const ctx = React.useContext(DialogContext);
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={() => {
-        ctx?.onOpenChange(true);
-        onClick?.();
-      }}
-      onKeyDown={(e) => e.key === "Enter" && ctx?.onOpenChange(true)}
-    >
-      {children}
-    </div>
-  );
+export function DialogTrigger({ children }: DialogTriggerProps) {
+  return <FluentDialogTrigger>{children}</FluentDialogTrigger>;
 }
 
-interface DialogContentProps {
-  children: React.ReactNode;
+export interface DialogContentProps {
+  children?: ReactNode;
   className?: string;
   onClose?: () => void;
 }
 
-function DialogContent({ children, className, onClose }: DialogContentProps) {
-  const ctx = React.useContext(DialogContext);
-
-  if (!ctx?.open) return null;
-
+export function DialogContent({
+  children,
+  className: _className,
+  onClose: _onClose,
+}: DialogContentProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="fixed inset-0 bg-black/50"
-        aria-hidden
-        onClick={() => {
-          ctx.onOpenChange(false);
-          onClose?.();
-        }}
-      />
-      <div
-        role="dialog"
-        className={cn(
-          "relative z-50 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-background p-6 shadow-lg",
-          className,
-        )}
-      >
-        {children}
-      </div>
-    </div>
+    <FluentDialogSurface>
+      <FluentDialogBody>{children}</FluentDialogBody>
+    </FluentDialogSurface>
   );
 }
 
-interface DialogHeaderProps {
-  children: React.ReactNode;
+export interface DialogHeaderProps {
+  children?: ReactNode;
   className?: string;
 }
 
-function DialogHeader({ children, className }: DialogHeaderProps) {
-  return (
-    <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}>
-      {children}
-    </div>
-  );
+export function DialogHeader({ children, className: _className }: DialogHeaderProps) {
+  return <div style={{ marginBottom: "0.75rem" }}>{children}</div>;
 }
 
-interface DialogTitleProps {
-  children: React.ReactNode;
+export interface DialogTitleProps {
+  children?: ReactNode;
   className?: string;
 }
 
-function DialogTitle({ children, className }: DialogTitleProps) {
-  return (
-    <h2 className={cn("text-lg font-semibold leading-none tracking-tight", className)}>
-      {children}
-    </h2>
-  );
+export function DialogTitle({ children, className: _className }: DialogTitleProps) {
+  return <FluentDialogTitle>{children}</FluentDialogTitle>;
 }
 
-interface DialogFooterProps {
-  children: React.ReactNode;
+export interface DialogFooterProps {
+  children?: ReactNode;
   className?: string;
 }
 
-function DialogFooter({ children, className }: DialogFooterProps) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+export function DialogFooter({ children, className: _className }: DialogFooterProps) {
+  return <FluentDialogActions>{children}</FluentDialogActions>;
 }
 
-export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter };
+export { FluentDialogContent as DialogDescription };

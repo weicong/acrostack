@@ -32,16 +32,24 @@ function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        {description && (
+          <p style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            {description}
+          </p>
+        )}
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
             {cancelLabel}
           </Button>
-          <Button variant={variant} onClick={onConfirm} disabled={isPending}>
+          <Button
+            variant={variant === "destructive" ? "destructive" : "default"}
+            onClick={onConfirm}
+            disabled={isPending}
+          >
             {confirmLabel}
           </Button>
         </DialogFooter>

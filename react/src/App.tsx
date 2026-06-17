@@ -20,7 +20,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router} />
-          <Toaster position="bottom-right" richColors closeButton />
+          <Toaster />
         </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>

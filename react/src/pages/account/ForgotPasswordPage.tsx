@@ -60,9 +60,9 @@ export function ForgotPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button asChild>
-            <Link to="/account/login">{t("AbpAccount::Login")}</Link>
-          </Button>
+          <Link to="/account/login">
+            <Button>{t("AbpAccount::Login")}</Button>
+          </Link>
         </CardContent>
       </Card>
     );
@@ -80,28 +80,46 @@ export function ForgotPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+        >
           {errors.root && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive" role="alert">
+            <div
+              style={{
+                borderRadius: "0.375rem",
+                background: "var(--colorPaletteRedBackground1)",
+                padding: "0.75rem",
+                fontSize: "0.875rem",
+                color: "var(--colorPaletteRedForeground3)",
+              }}
+              role="alert"
+            >
               {errors.root.message}
             </div>
           )}
-          <div className="space-y-2">
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Label htmlFor="email">{t("AbpAccount::EmailAddress")}</Label>
             <Input id="email" type="email" autoComplete="email" {...register("email")} />
             {errors.email && (
-              <p className="text-sm text-destructive">
+              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
                 {t(errors.email.message as "AbpAccount::InvalidEmailAddress")}
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
             {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::Submit")}
           </Button>
-          <p className="text-center text-sm text-muted-foreground">
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              color: "var(--colorNeutralForeground3)",
+            }}
+          >
             <Link
               to="/account/login"
-              className="font-medium text-primary underline-offset-4 hover:underline"
+              style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
             >
               {t("AbpUi::BackToTheApplication")}
             </Link>

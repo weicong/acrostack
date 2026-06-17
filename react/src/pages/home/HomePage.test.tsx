@@ -25,7 +25,7 @@ describe("HomePage", () => {
 
     render(<HomePage />);
     expect(screen.getByText("Welcome")).toBeInTheDocument();
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("ABP React UI")).toBeInTheDocument();
   });
 
   it("renders login prompt when not authenticated", () => {

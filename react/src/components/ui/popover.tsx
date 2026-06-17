@@ -1,30 +1,19 @@
-import * as React from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
+import {
+  Popover as FluentPopover,
+  PopoverTrigger as FluentPopoverTrigger,
+  PopoverSurface as FluentPopoverSurface,
+} from "@fluentui/react-components";
+import { forwardRef, type ReactNode } from "react";
 
-const Popover = PopoverPrimitive.Root;
+export const Popover = FluentPopover;
+export const PopoverTrigger = FluentPopoverTrigger;
 
-const PopoverTrigger = PopoverPrimitive.Trigger;
+export const PopoverAnchor = ({ children }: { children?: ReactNode }) => <>{children}</>;
 
-const PopoverAnchor = PopoverPrimitive.Anchor;
-
-const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
->(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
-    <PopoverPrimitive.Content
-      ref={ref}
-      align={align}
-      sideOffset={sideOffset}
-      className={cn(
-        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none",
-        className,
-      )}
-      {...props}
-    />
-  </PopoverPrimitive.Portal>
+export const PopoverContent = forwardRef<
+  HTMLDivElement,
+  { children?: ReactNode; className?: string; align?: string; sideOffset?: number }
+>(({ children, className: _className, align: _align, sideOffset: _sideOffset }, ref) => (
+  <FluentPopoverSurface ref={ref}>{children}</FluentPopoverSurface>
 ));
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
-
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };
+PopoverContent.displayName = "PopoverContent";

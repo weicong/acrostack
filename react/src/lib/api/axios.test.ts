@@ -65,7 +65,7 @@ describe("axios interceptors", () => {
       mockGetUser.mockResolvedValue(null);
 
       const config = {
-        headers: axios.defaults.headers.common,
+        headers: { ...axios.defaults.headers.common, Authorization: undefined },
         baseURL: "",
       } as any as InternalAxiosRequestConfig;
 

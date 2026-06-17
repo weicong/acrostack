@@ -20,9 +20,18 @@ import { authGuard, createPermissionGuard } from "@/lib/routing/guards";
 const rootRoute = createRootRoute({
   component: RootLayout,
   notFoundComponent: () => (
-    <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">404</h1>
-      <p className="text-muted-foreground">Page not found</p>
+    <div
+      style={{
+        display: "flex",
+        minHeight: "50vh",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1rem",
+      }}
+    >
+      <h1 style={{ fontSize: "1.5rem", fontWeight: 700 }}>404</h1>
+      <p style={{ color: "var(--colorNeutralForeground3)" }}>Page not found</p>
     </div>
   ),
 });

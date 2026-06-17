@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronDown20Regular, ChevronRight20Regular, Open20Regular } from "@fluentui/react-icons";
 import { routeConfig, type RouteConfigItem } from "@/lib/routing/route-config";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
+import type { ComponentType } from "react";
 
 interface SidebarProps {
   onNavigate?: () => void;
@@ -84,7 +84,9 @@ export function Sidebar({ onNavigate }: SidebarProps) {
   };
 
   const renderItem = (item: RouteConfigItem, depth: number) => {
-    const Icon = item.icon;
+    const Icon = item.icon as
+      | ComponentType<{ className?: string; style?: React.CSSProperties }>
+      | undefined;
     const externalHref =
       typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
     const visibleChildren = item.children?.filter(isItemVisible);
@@ -102,23 +104,37 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         <div key={item.path}>
           <button
             onClick={() => toggleExpanded(item.path)}
-            className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              highlight
-                ? "text-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-            )}
+            style={{
+              display: "flex",
+              width: "100%",
+              alignItems: "center",
+              gap: "0.75rem",
+              padding: "0.5rem 0.75rem",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              borderRadius: "0.5rem",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+              color: highlight ? "var(--colorBrandForeground1)" : "var(--colorNeutralForeground3)",
+            }}
           >
-            {Icon && <Icon className="size-4 shrink-0" />}
-            <span className="flex-1 text-left">{t(item.nameKey)}</span>
-            {isExpanded ? (
-              <ChevronDown className="size-4 shrink-0" />
-            ) : (
-              <ChevronRight className="size-4 shrink-0" />
-            )}
+            {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
+            <span style={{ flex: 1, textAlign: "left" }}>{t(item.nameKey)}</span>
+            {isExpanded ? <ChevronDown20Regular /> : <ChevronRight20Regular />}
           </button>
           {isExpanded && (
-            <div className="ml-4 mt-1 flex flex-col gap-1 border-l border-border pl-3">
+            <div
+              style={{
+                marginLeft: "1rem",
+                marginTop: "0.25rem",
+                borderLeft: "1px solid var(--colorNeutralStroke1)",
+                paddingLeft: "0.75rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.25rem",
+              }}
+            >
               {visibleChildren.map((child) => renderItem(child, depth + 1))}
             </div>
           )}
@@ -138,11 +154,21 @@ export function Sidebar({ onNavigate }: SidebarProps) {
             target={item.externalTarget}
             rel={item.externalRel}
             onClick={onNavigate}
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              padding: "0.5rem 0.75rem",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              borderRadius: "0.5rem",
+              textDecoration: "none",
+              color: "var(--colorNeutralForeground3)",
+            }}
           >
-            {Icon && <Icon className="size-4 shrink-0" />}
-            <span className="flex-1">{t(item.nameKey)}</span>
-            <ExternalLink className="size-3.5 shrink-0 opacity-70" />
+            {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
+            <span style={{ flex: 1 }}>{t(item.nameKey)}</span>
+            <Open20Regular style={{ opacity: 0.7 }} />
           </a>
         );
       }
@@ -152,14 +178,22 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           key={item.path}
           to={item.path}
           onClick={onNavigate}
-          className={cn(
-            "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-            isActive
-              ? "bg-primary text-primary-foreground"
-              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-          )}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            padding: "0.5rem 0.75rem",
+            fontSize: "0.875rem",
+            fontWeight: 500,
+            borderRadius: "0.5rem",
+            textDecoration: "none",
+            background: isActive ? "var(--colorBrandBackground)" : "transparent",
+            color: isActive
+              ? "var(--colorNeutralForegroundOnBrand)"
+              : "var(--colorNeutralForeground3)",
+          }}
         >
-          {Icon && <Icon className="size-4 shrink-0" />}
+          {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
           {t(item.nameKey)}
         </Link>
       );
@@ -175,10 +209,19 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           target={item.externalTarget}
           rel={item.externalRel}
           onClick={onNavigate}
-          className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.375rem 0.75rem",
+            fontSize: "0.875rem",
+            borderRadius: "0.5rem",
+            textDecoration: "none",
+            color: "var(--colorNeutralForeground3)",
+          }}
         >
-          <span className="flex-1">{t(item.nameKey)}</span>
-          <ExternalLink className="size-3.5 shrink-0 opacity-70" />
+          <span style={{ flex: 1 }}>{t(item.nameKey)}</span>
+          <Open20Regular style={{ opacity: 0.7 }} />
         </a>
       );
     }
@@ -188,12 +231,17 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         key={item.path}
         to={item.path}
         onClick={onNavigate}
-        className={cn(
-          "rounded-lg px-3 py-1.5 text-sm transition-colors",
-          isActive
-            ? "bg-primary text-primary-foreground font-medium"
-            : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-        )}
+        style={{
+          padding: "0.375rem 0.75rem",
+          fontSize: "0.875rem",
+          borderRadius: "0.5rem",
+          textDecoration: "none",
+          fontWeight: isActive ? 600 : 400,
+          background: isActive ? "var(--colorBrandBackground)" : "transparent",
+          color: isActive
+            ? "var(--colorNeutralForegroundOnBrand)"
+            : "var(--colorNeutralForeground3)",
+        }}
       >
         {t(item.nameKey)}
       </Link>
@@ -201,8 +249,29 @@ export function Sidebar({ onNavigate }: SidebarProps) {
   };
 
   return (
-    <nav className="flex h-full min-h-0 flex-1 flex-col border-r border-border bg-muted/30 p-4">
-      <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto pr-1">
+    <nav
+      style={{
+        display: "flex",
+        height: "100%",
+        minHeight: 0,
+        flex: 1,
+        flexDirection: "column",
+        borderRight: "1px solid var(--colorNeutralStroke1)",
+        background: "var(--colorNeutralBackground3)",
+        padding: "1rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          minHeight: 0,
+          flex: 1,
+          flexDirection: "column",
+          gap: "0.25rem",
+          overflowY: "auto",
+          paddingRight: "0.25rem",
+        }}
+      >
         {visibleItems.map((item) => renderItem(item, 0))}
       </div>
     </nav>

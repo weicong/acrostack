@@ -1,18 +1,17 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import {
+  Label as FluentLabel,
+  type LabelProps as FluentLabelProps,
+} from "@fluentui/react-components";
+import { forwardRef } from "react";
 
-export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+export type LabelProps = Omit<FluentLabelProps, "className"> & {
+  className?: string;
+};
 
-const Label = React.forwardRef<HTMLLabelElement, LabelProps>(({ className, ...props }, ref) => (
-  <label
-    ref={ref}
-    className={cn(
-      "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-      className,
-    )}
-    {...props}
-  />
-));
+export const Label = forwardRef<HTMLLabelElement, LabelProps>(
+  ({ className: _className, ...props }, ref) => {
+    return <FluentLabel ref={ref} {...props} />;
+  },
+);
+
 Label.displayName = "Label";
-
-export { Label };
