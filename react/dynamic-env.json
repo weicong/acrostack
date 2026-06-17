@@ -1,0 +1,24 @@
+{
+  "production": "true",
+  "application": {
+    "baseUrl": "http://localhost:5173",
+    "name": "AcroStack",
+    "logoUrl": ""
+  },
+  "oAuthConfig": {
+    "issuer": "https://localhost:44317/",
+    "redirectUri": "http://localhost:5173",
+    "requireHttps": "false",
+    "clientId": "AcroStack_App",
+    "responseType": "code",
+    "scope": "offline_access AcroStack",
+    "strictDiscoveryDocumentValidation": false,
+    "skipIssuerCheck": true
+  },
+  "apis": {
+    "default": {
+      "url": "https://localhost:44317",
+      "rootNamespace": "AcroStack"
+    }
+  }
+}

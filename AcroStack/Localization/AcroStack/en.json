@@ -1,0 +1,12 @@
+{
+  "culture": "en",
+  "texts": {
+    "AppName": "AcroStack",
+    "Welcome_Title": "Welcome",
+    "Welcome_Text": "This is a minimalist, single layer application startup template for the ABP Framework.",
+    "Menu:Home": "Home"
+    ,
+    "AppUser:Users": "Users",
+    "Permission:AdminConsole.Customization": "Customization"
+  }
+}

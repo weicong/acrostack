@@ -1,0 +1,50 @@
+{
+  "template": "app-nolayers",
+  "imports": {
+    "Volo.Abp.BasicTheme": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/31/2026 15:28:43 +00:00"
+    }
+  },
+  "packages": {
+    "AcroStack": {
+      "path": "AcroStack/AcroStack.abppkg"
+    }
+  }
+}
