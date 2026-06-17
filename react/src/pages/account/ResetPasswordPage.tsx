@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { accountApi } from "@/lib/api/account";
+import { useAppForm } from "@/components/form/app-form";
+import { useState } from "react";
 
 const resetPasswordSchema = z
   .object({
@@ -19,47 +19,39 @@ const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
-
 export function ResetPasswordPage() {
   const { t } = useTranslation();
   const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
   const userId = params.get("userId") ?? params.get("cid") ?? "";
   const resetToken =
     params.get("resetToken") ?? params.get("token") ?? params.get("resetCode") ?? "";
+  const [rootError, setRootError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
+  const form = useAppForm({
     defaultValues: { password: "", confirmPassword: "" },
+    validators: {
+      onChange: resetPasswordSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        await accountApi.resetPassword({
+          userId,
+          resetToken,
+          password: value.password,
+        });
+        window.location.href = "/account/login";
+      } catch (err: unknown) {
+        const msg =
+          err && typeof err === "object" && "response" in err
+            ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
+                ?.error?.message
+            : undefined;
+        setRootError(msg ?? t("AbpAccount::ResetPasswordFailed", "Failed to reset password"));
+      }
+    },
   });
 
   const isInvalidLink = !userId || !resetToken;
-
-  const onSubmit = async (data: ResetPasswordFormData) => {
-    try {
-      await accountApi.resetPassword({
-        userId,
-        resetToken,
-        password: data.password,
-      });
-      window.location.href = "/account/login";
-    } catch (err: unknown) {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
-              ?.error?.message
-          : undefined;
-      setError("root", {
-        type: "manual",
-        message: msg ?? t("AbpAccount::ResetPasswordFailed", "Failed to reset password"),
-      });
-    }
-  };
 
   if (isInvalidLink) {
     return (
@@ -92,10 +84,14 @@ export function ResetPasswordPage() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
-          {errors.root && (
+          {rootError && (
             <div
               style={{
                 borderRadius: "0.375rem",
@@ -106,40 +102,74 @@ export function ResetPasswordPage() {
               }}
               role="alert"
             >
-              {errors.root.message}
+              {rootError}
             </div>
           )}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <Label htmlFor="password">{t("AbpAccount::Password")}</Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                {t(errors.password.message as "AbpAccount::PasswordMustBeAtLeast6Characters")}
-              </p>
+          <form.AppField
+            name="password"
+            children={(field) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <Label htmlFor="password">{t("AbpAccount::Password")}</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
+                    {t(
+                      String(
+                        field.state.meta.errors
+                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                          .join(", "),
+                      ) as "AbpAccount::PasswordMustBeAtLeast6Characters",
+                    )}
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <Label htmlFor="confirmPassword">{t("AbpAccount::ConfirmPassword")}</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                {t(errors.confirmPassword.message as "AbpAccount::PasswordsDoNotMatch")}
-              </p>
+          />
+          <form.AppField
+            name="confirmPassword"
+            validators={{
+              onChangeListenTo: ["password"],
+            }}
+            children={(field) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <Label htmlFor="confirmPassword">{t("AbpAccount::ConfirmPassword")}</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
+                    {t(
+                      String(
+                        field.state.meta.errors
+                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                          .join(", "),
+                      ) as "AbpAccount::PasswordsDoNotMatch",
+                    )}
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-          <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
-            {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::ResetPassword")}
-          </Button>
+          />
+          <form.Subscribe
+            selector={(state) => state.isSubmitting}
+            children={(isSubmitting) => (
+              <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
+                {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::ResetPassword")}
+              </Button>
+            )}
+          />
           <p
             style={{
               textAlign: "center",

@@ -39,11 +39,10 @@ import {
 } from "@/lib/api/books";
 import { useState } from "react";
 import { usePermissions } from "@/lib/auth/permissions";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useToastController, Toaster, useId } from "@fluentui/react-components";
+import { useAppForm } from "@/components/form/app-form";
 import { z } from "zod";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { useToastController, Toaster, useId } from "@fluentui/react-components";
 
 const bookSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -51,8 +50,6 @@ const bookSchema = z.object({
   publishDate: z.string().min(1, "Required"),
   price: z.number().min(0),
 });
-
-type BookFormData = z.infer<typeof bookSchema>;
 
 export function BooksPage() {
   const { t } = useTranslation();
@@ -113,19 +110,34 @@ export function BooksPage() {
     onError: () => showToast(t("AbpUi::Error"), "error"),
   });
 
-  const form = useForm<BookFormData>({
-    resolver: zodResolver(bookSchema),
+  const form = useAppForm({
     defaultValues: {
       name: "",
       type: 0,
       publishDate: "",
       price: 0,
     },
+    validators: {
+      onChange: bookSchema,
+    },
+    onSubmit: ({ value }) => {
+      const input: CreateUpdateBookDto = {
+        name: value.name,
+        type: value.type as CreateUpdateBookDto["type"],
+        publishDate: value.publishDate,
+        price: value.price,
+      };
+      if (editingBook) {
+        updateMutation.mutate({ id: editingBook.id, input });
+      } else {
+        createMutation.mutate(input);
+      }
+    },
   });
 
   const openCreate = () => {
     setEditingBook(null);
-    form.reset({ name: "", type: 0, publishDate: "", price: 0 });
+    form.reset();
     setIsFormOpen(true);
   };
 
@@ -138,20 +150,6 @@ export function BooksPage() {
       price: book.price ?? 0,
     });
     setIsFormOpen(true);
-  };
-
-  const onSubmit = (values: BookFormData) => {
-    const input: CreateUpdateBookDto = {
-      name: values.name,
-      type: values.type as CreateUpdateBookDto["type"],
-      publishDate: values.publishDate,
-      price: values.price,
-    };
-    if (editingBook) {
-      updateMutation.mutate({ id: editingBook.id, input });
-    } else {
-      createMutation.mutate(input);
-    }
   };
 
   const handleDelete = (id: string) => {
@@ -290,29 +288,54 @@ export function BooksPage() {
 
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
           <DialogContent>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                void form.handleSubmit();
+              }}
+            >
               <DialogHeader>
                 <DialogTitle>{editingBook ? t("AbpIdentity::Edit") : t("::NewBook")}</DialogTitle>
               </DialogHeader>
               <div style={{ display: "grid", gap: "1rem", padding: "1rem 0" }}>
-                <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" {...form.register("name")} placeholder="Book name" />
-                  {form.formState.errors.name && (
-                    <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                      {form.formState.errors.name.message}
-                    </p>
+                <form.AppField
+                  name="name"
+                  children={(field) => (
+                    <div style={{ display: "grid", gap: "0.5rem" }}>
+                      <Label htmlFor="name">Name</Label>
+                      <Input
+                        id="name"
+                        placeholder="Book name"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                      />
+                      {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            color: "var(--colorPaletteRedForeground3)",
+                          }}
+                        >
+                          {String(
+                            field.state.meta.errors
+                              .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                              .join(", "),
+                          )}
+                        </p>
+                      )}
+                    </div>
                   )}
-                </div>
-                <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <Label htmlFor="type">Type</Label>
-                  <Controller
-                    name="type"
-                    control={form.control}
-                    render={({ field }) => (
+                />
+                <form.AppField
+                  name="type"
+                  children={(field) => (
+                    <div style={{ display: "grid", gap: "0.5rem" }}>
+                      <Label htmlFor="type">Type</Label>
                       <Select
-                        value={String(field.value ?? 0)}
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={String(field.state.value ?? 0)}
+                        onValueChange={(value) => field.handleChange(Number(value))}
                       >
                         {bookTypeOptions.map((opt) => (
                           <SelectItem key={opt.value} value={String(opt.value)}>
@@ -320,50 +343,90 @@ export function BooksPage() {
                           </SelectItem>
                         ))}
                       </Select>
-                    )}
-                  />
-                </div>
-                <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <Label htmlFor="publishDate">Publish Date</Label>
-                  <Controller
-                    name="publishDate"
-                    control={form.control}
-                    render={({ field }) => (
-                      <DatePicker id="publishDate" value={field.value} onChange={field.onChange} />
-                    )}
-                  />
-                  {form.formState.errors.publishDate && (
-                    <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                      {form.formState.errors.publishDate.message}
-                    </p>
+                    </div>
                   )}
-                </div>
-                <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <Label htmlFor="price">Price</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    min={0}
-                    step={0.01}
-                    {...form.register("price", { valueAsNumber: true })}
-                  />
-                  {form.formState.errors.price && (
-                    <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                      {form.formState.errors.price.message}
-                    </p>
+                />
+                <form.AppField
+                  name="publishDate"
+                  children={(field) => (
+                    <div style={{ display: "grid", gap: "0.5rem" }}>
+                      <Label htmlFor="publishDate">Publish Date</Label>
+                      <DatePicker
+                        id="publishDate"
+                        value={field.state.value}
+                        onChange={(value: string) => field.handleChange(value)}
+                      />
+                      {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            color: "var(--colorPaletteRedForeground3)",
+                          }}
+                        >
+                          {String(
+                            field.state.meta.errors
+                              .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                              .join(", "),
+                          )}
+                        </p>
+                      )}
+                    </div>
                   )}
-                </div>
+                />
+                <form.AppField
+                  name="price"
+                  children={(field) => (
+                    <div style={{ display: "grid", gap: "0.5rem" }}>
+                      <Label htmlFor="price">Price</Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        min={0}
+                        step={0.01}
+                        value={String(field.state.value)}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                      />
+                      {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            color: "var(--colorPaletteRedForeground3)",
+                          }}
+                        >
+                          {String(
+                            field.state.meta.errors
+                              .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                              .join(", "),
+                          )}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                />
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)}>
                   {t("AbpUi::Cancel")}
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                >
-                  {t("AbpAccount::Save")}
-                </Button>
+                <form.Subscribe
+                  selector={(state) => [state.canSubmit, state.isSubmitting]}
+                  children={([canSubmit, isSubmitting]) => (
+                    <Button
+                      type="submit"
+                      disabled={
+                        !canSubmit ||
+                        isSubmitting ||
+                        createMutation.isPending ||
+                        updateMutation.isPending
+                      }
+                    >
+                      {isSubmitting || createMutation.isPending || updateMutation.isPending
+                        ? t("AbpAccount::PleaseWait")
+                        : t("AbpAccount::Save")}
+                    </Button>
+                  )}
+                />
               </DialogFooter>
             </form>
           </DialogContent>

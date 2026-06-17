@@ -1,51 +1,44 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { accountApi } from "@/lib/api/account";
+import { useAppForm } from "@/components/form/app-form";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),
 });
 
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
-
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
   const [sent, setSent] = useState(false);
+  const [rootError, setRootError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
+  const form = useAppForm({
     defaultValues: { email: "" },
+    validators: {
+      onChange: forgotPasswordSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        await accountApi.sendPasswordResetCode({ email: value.email });
+        setSent(true);
+      } catch (err: unknown) {
+        const msg =
+          err && typeof err === "object" && "response" in err
+            ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
+                ?.error?.message
+            : undefined;
+        setRootError(
+          msg ?? t("AbpAccount::SendPasswordResetCodeFailed", "Failed to send reset code"),
+        );
+      }
+    },
   });
-
-  const onSubmit = async (data: ForgotPasswordFormData) => {
-    try {
-      await accountApi.sendPasswordResetCode({ email: data.email });
-      setSent(true);
-    } catch (err: unknown) {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
-              ?.error?.message
-          : undefined;
-      setError("root", {
-        type: "manual",
-        message: msg ?? t("AbpAccount::SendPasswordResetCodeFailed", "Failed to send reset code"),
-      });
-    }
-  };
 
   if (sent) {
     return (
@@ -81,10 +74,14 @@ export function ForgotPasswordPage() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
-          {errors.root && (
+          {rootError && (
             <div
               style={{
                 borderRadius: "0.375rem",
@@ -95,21 +92,44 @@ export function ForgotPasswordPage() {
               }}
               role="alert"
             >
-              {errors.root.message}
+              {rootError}
             </div>
           )}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <Label htmlFor="email">{t("AbpAccount::EmailAddress")}</Label>
-            <Input id="email" type="email" autoComplete="email" {...register("email")} />
-            {errors.email && (
-              <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                {t(errors.email.message as "AbpAccount::InvalidEmailAddress")}
-              </p>
+          <form.AppField
+            name="email"
+            children={(field) => (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <Label htmlFor="email">{t("AbpAccount::EmailAddress")}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
+                    {t(
+                      String(
+                        field.state.meta.errors
+                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
+                          .join(", "),
+                      ) as "AbpAccount::InvalidEmailAddress",
+                    )}
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-          <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
-            {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::Submit")}
-          </Button>
+          />
+          <form.Subscribe
+            selector={(state) => state.isSubmitting}
+            children={(isSubmitting) => (
+              <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
+                {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::Submit")}
+              </Button>
+            )}
+          />
           <p
             style={{
               textAlign: "center",
