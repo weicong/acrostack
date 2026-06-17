@@ -10,7 +10,7 @@
     "check": "vp check --fix",
     "test": "vp test",
     "test:run": "vp test run",
-    "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320"
+    "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../AcroStack"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
