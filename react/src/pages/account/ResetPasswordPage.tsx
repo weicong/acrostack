@@ -2,11 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { accountApi } from "@/lib/api/account";
-import { useAppForm } from "@/components/form/app-form";
+import { useAppForm } from "@/components/form";
 import { useState } from "react";
 
 const resetPasswordSchema = z
@@ -108,28 +106,10 @@ export function ResetPasswordPage() {
           <form.AppField
             name="password"
             children={(field) => (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <Label htmlFor="password">{t("AbpAccount::Password")}</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete="new-password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                    {t(
-                      String(
-                        field.state.meta.errors
-                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
-                          .join(", "),
-                      ) as "AbpAccount::PasswordMustBeAtLeast6Characters",
-                    )}
-                  </p>
-                )}
-              </div>
+              <field.TextField
+                label={t("AbpAccount::Password")}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
             )}
           />
           <form.AppField
@@ -138,38 +118,15 @@ export function ResetPasswordPage() {
               onChangeListenTo: ["password"],
             }}
             children={(field) => (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <Label htmlFor="confirmPassword">{t("AbpAccount::ConfirmPassword")}</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                    {t(
-                      String(
-                        field.state.meta.errors
-                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
-                          .join(", "),
-                      ) as "AbpAccount::PasswordsDoNotMatch",
-                    )}
-                  </p>
-                )}
-              </div>
+              <field.TextField
+                label={t("AbpAccount::ConfirmPassword")}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
             )}
           />
-          <form.Subscribe
-            selector={(state) => state.isSubmitting}
-            children={(isSubmitting) => (
-              <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
-                {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::ResetPassword")}
-              </Button>
-            )}
-          />
+          <form.AppForm>
+            <form.SubmitButton label={t("AbpAccount::ResetPassword")} style={{ width: "100%" }} />
+          </form.AppForm>
           <p
             style={{
               textAlign: "center",

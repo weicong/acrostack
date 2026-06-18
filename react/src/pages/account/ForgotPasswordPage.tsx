@@ -3,11 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { accountApi } from "@/lib/api/account";
-import { useAppForm } from "@/components/form/app-form";
+import { useAppForm } from "@/components/form";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),
@@ -98,38 +96,15 @@ export function ForgotPasswordPage() {
           <form.AppField
             name="email"
             children={(field) => (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <Label htmlFor="email">{t("AbpAccount::EmailAddress")}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p style={{ fontSize: "0.875rem", color: "var(--colorPaletteRedForeground3)" }}>
-                    {t(
-                      String(
-                        field.state.meta.errors
-                          .map((e) => (typeof e === "string" ? e : JSON.stringify(e)))
-                          .join(", "),
-                      ) as "AbpAccount::InvalidEmailAddress",
-                    )}
-                  </p>
-                )}
-              </div>
+              <field.TextField
+                label={t("AbpAccount::EmailAddress")}
+                inputProps={{ type: "email", autoComplete: "email" }}
+              />
             )}
           />
-          <form.Subscribe
-            selector={(state) => state.isSubmitting}
-            children={(isSubmitting) => (
-              <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting}>
-                {isSubmitting ? t("AbpAccount::PleaseWait") : t("AbpAccount::Submit")}
-              </Button>
-            )}
-          />
+          <form.AppForm>
+            <form.SubmitButton label={t("AbpAccount::Submit")} style={{ width: "100%" }} />
+          </form.AppForm>
           <p
             style={{
               textAlign: "center",
