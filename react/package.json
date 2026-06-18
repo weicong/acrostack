@@ -19,31 +19,31 @@
     "@fluentui/react-icons": "^2.0.316",
     "@tanstack/react-form": "^1.33.0",
     "@tanstack/react-query": "^5.101.0",
-    "@tanstack/react-router": "^1.170.15",
-    "@volo/abp-app-config": "~10.4.1",
-    "@volo/abp-oidc-auth": "~10.4.1",
-    "@volo/abp-react-app-config": "~10.4.1",
-    "@volo/abp-react-oidc-auth": "~10.4.1",
+    "@tanstack/react-router": "^1.170.16",
+    "@volo/abp-app-config": "^10.4.1",
+    "@volo/abp-oidc-auth": "^10.4.1",
+    "@volo/abp-react-app-config": "^10.4.1",
+    "@volo/abp-react-oidc-auth": "^10.4.1",
     "axios": "^1.18.0",
     "date-fns": "^4.4.0",
-    "i18next": "^24.2.0",
+    "i18next": "^26.3.1",
     "oidc-client-ts": "^3.5.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-i18next": "^15.2.0",
-    "zod": "^3.24.1"
+    "react-i18next": "^17.0.8",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^24.13.2",
+    "@types/node": "^25.9.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
-    "jsdom": "^25.0.1",
-    "typescript": "~5.9.3",
-    "vite-plus": "^0.1.24"
+    "jsdom": "^29.1.1",
+    "typescript": "^6.0.3",
+    "vite-plus": "^0.2.1"
   },
   "packageManager": "pnpm@11.7.0"
 }
