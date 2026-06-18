@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, loadEnv, type PluginOption, type UserConfig } from "vite-plus";
+import { defineConfig, loadEnv } from "vite-plus";
 import react from "@vitejs/plugin-react";
 
-function copyDynamicEnv(): PluginOption {
+function copyDynamicEnv() {
   return {
     name: "copy-dynamic-env",
     buildStart() {
@@ -16,7 +16,7 @@ function copyDynamicEnv(): PluginOption {
   };
 }
 
-export default defineConfig(({ mode }): UserConfig => {
+export default defineConfig((({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const apiUrl = env.VITE_API_URL ?? "https://localhost:44320";
   const authUrl = env.VITE_AUTH_URL ?? env.VITE_API_URL ?? "https://localhost:44320";
@@ -67,4 +67,4 @@ export default defineConfig(({ mode }): UserConfig => {
       options: { typeAware: true, typeCheck: true },
     },
   };
-});
+}) as Parameters<typeof defineConfig>[0]);
