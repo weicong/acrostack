@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader } from "@fluentui/react-components";
 import { accountApi } from "@/lib/api/account";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useAppForm } from "@/components/form";
@@ -55,13 +55,17 @@ export function RegisterPage() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("AbpAccount::Register")}</CardTitle>
-        <CardDescription>
-          {t("AbpAccount::RegisterSubtitle", "Create a new account")}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      <CardHeader
+        header={
+          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Register")}</span>
+        }
+        description={
+          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            {t("AbpAccount::RegisterSubtitle", "Create a new account")}
+          </span>
+        }
+      />
+      <div style={{ padding: "0 1.5rem 1.5rem" }}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -142,7 +146,7 @@ export function RegisterPage() {
             </Link>
           </p>
         </form>
-      </CardContent>
+      </div>
     </Card>
   );
 }

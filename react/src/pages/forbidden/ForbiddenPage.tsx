@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
+import { Button } from "@fluentui/react-components";
 import { ShieldError20Regular } from "@fluentui/react-icons";
 
 export function ForbiddenPage() {

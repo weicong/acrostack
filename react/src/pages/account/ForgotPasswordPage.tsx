@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button, Card, CardHeader } from "@fluentui/react-components";
 import { accountApi } from "@/lib/api/account";
 import { useAppForm } from "@/components/form";
 
@@ -41,36 +40,48 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t("AbpAccount::ForgotPassword")}</CardTitle>
-          <CardDescription>
-            {t(
-              "AbpAccount::PasswordResetMailSentMessage",
-              "If the email address exists, we have sent a password reset link.",
-            )}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardHeader
+          header={
+            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
+              {t("AbpAccount::ForgotPassword")}
+            </span>
+          }
+          description={
+            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+              {t(
+                "AbpAccount::PasswordResetMailSentMessage",
+                "If the email address exists, we have sent a password reset link.",
+              )}
+            </span>
+          }
+        />
+        <div style={{ padding: "0 1.5rem 1.5rem" }}>
           <Link to="/account/login">
             <Button>{t("AbpAccount::Login")}</Button>
           </Link>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("AbpAccount::ForgotPassword")}</CardTitle>
-        <CardDescription>
-          {t(
-            "AbpAccount::SendPasswordResetCode_Information",
-            "Enter your email address and we will send you a link to reset your password.",
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      <CardHeader
+        header={
+          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
+            {t("AbpAccount::ForgotPassword")}
+          </span>
+        }
+        description={
+          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            {t(
+              "AbpAccount::SendPasswordResetCode_Information",
+              "Enter your email address and we will send you a link to reset your password.",
+            )}
+          </span>
+        }
+      />
+      <div style={{ padding: "0 1.5rem 1.5rem" }}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -120,7 +131,7 @@ export function ForgotPasswordPage() {
             </Link>
           </p>
         </form>
-      </CardContent>
+      </div>
     </Card>
   );
 }

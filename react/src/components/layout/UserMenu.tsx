@@ -6,14 +6,13 @@ import {
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+  Button,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuItem,
+  MenuDivider,
+} from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useCurrentUser } from "@/lib/auth/permissions";
 import { getBackendAccountUrl } from "@/lib/runtimeConfig";
@@ -34,10 +33,10 @@ export function UserMenu() {
   const displayEmailAddress = currentUser?.email ?? user?.email;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
+    <Menu>
+      <MenuTrigger>
         <Button
-          variant="subtle"
+          appearance="subtle"
           icon={<Person20Regular />}
           aria-label={displayName ?? t("AbpAccount::MyAccount")}
         >
@@ -54,22 +53,27 @@ export function UserMenu() {
             </span>
           )}
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-            {displayFullName && (
-              <p style={{ fontSize: "0.875rem", fontWeight: 500 }}>{displayFullName}</p>
-            )}
-            {displayEmailAddress && (
-              <p style={{ fontSize: "0.75rem", color: "var(--colorNeutralForeground3)" }}>
-                {displayEmailAddress}
-              </p>
-            )}
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+      </MenuTrigger>
+      <MenuPopover>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.25rem",
+            padding: "0.375rem 0.5rem",
+          }}
+        >
+          {displayFullName && (
+            <p style={{ fontSize: "0.875rem", fontWeight: 500 }}>{displayFullName}</p>
+          )}
+          {displayEmailAddress && (
+            <p style={{ fontSize: "0.75rem", color: "var(--colorNeutralForeground3)" }}>
+              {displayEmailAddress}
+            </p>
+          )}
+        </div>
+        <MenuDivider />
+        <MenuItem>
           <a
             href={getBackendAccountUrl("/account/manage")}
             style={{
@@ -83,8 +87,8 @@ export function UserMenu() {
             <Settings20Regular />
             {t("AbpAccount::MyAccount")}
           </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
+        </MenuItem>
+        <MenuItem>
           <a
             href={getBackendAccountUrl("/account/sessions")}
             style={{
@@ -98,9 +102,9 @@ export function UserMenu() {
             <Desktop20Regular />
             {t("AbpAccount::Sessions")}
           </a>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
+        </MenuItem>
+        <MenuDivider />
+        <MenuItem
           style={{ color: "var(--colorPaletteRedForeground3)" }}
           onSelect={(e) => {
             e.preventDefault();
@@ -109,8 +113,8 @@ export function UserMenu() {
         >
           <SignOut20Regular />
           {t("AbpAccount::Logout")}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </MenuItem>
+      </MenuPopover>
+    </Menu>
   );
 }

@@ -5,17 +5,15 @@ import {
   ChevronDown20Regular,
   ChevronUpDown20Regular,
 } from "@fluentui/react-icons";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button, Card, CardHeader, Input } from "@fluentui/react-components";
 import {
-  Table,
+  Table as FluentTable,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
+  TableHeaderCell,
   TableRow,
-} from "@/components/ui/table";
+} from "@fluentui/react-components";
 import { getAppUsers, type AppUserDto, type GetAppUsersInput } from "@/lib/api/appUsers";
 import { useState } from "react";
 
@@ -93,66 +91,73 @@ export function UsersPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-            <Input
-              placeholder={t("AbpIdentity::Search")}
-              value={searchDraft}
-              onChange={(e) => setSearchDraft(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
-            />
-            <Button variant="outline" size="small" onClick={handleSearch}>
-              {t("AbpIdentity::Search")}
-            </Button>
-            <div style={{ marginLeft: "auto" }}>
-              <Button variant="outline" size="small">
-                {t("Users::ManageUsersAndRoles")}
+        <CardHeader
+          header={
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
+              <Input
+                placeholder={t("AbpIdentity::Search")}
+                value={searchDraft}
+                onChange={(e) => setSearchDraft(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+              />
+              <Button appearance="outline" size="small" onClick={handleSearch}>
+                {t("AbpIdentity::Search")}
               </Button>
+              <div style={{ marginLeft: "auto" }}>
+                <Button appearance="outline" size="small">
+                  {t("Users::ManageUsersAndRoles")}
+                </Button>
+              </div>
             </div>
-          </div>
-        </CardHeader>
-        <CardContent>
+          }
+        />
+        <div style={{ padding: "0 1.5rem 1.5rem" }}>
           {isLoading ? (
             <p style={{ color: "var(--colorNeutralForeground3)" }}>{t("AbpAccount::PleaseWait")}</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  {SORTABLE_COLUMNS.map(({ field, labelKey }) => (
-                    <TableHead key={field} style={{ cursor: "pointer", userSelect: "none" }}>
-                      <div
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => handleSort(field)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSort(field)}
-                        style={{ display: "inline-flex", alignItems: "center" }}
+            <div style={{ width: "100%", overflowX: "auto" }}>
+              <FluentTable>
+                <TableHeader>
+                  <TableRow>
+                    {SORTABLE_COLUMNS.map(({ field, labelKey }) => (
+                      <TableHeaderCell
+                        key={field}
+                        style={{ cursor: "pointer", userSelect: "none" }}
                       >
-                        {t(labelKey)}
-                        <SortIcon field={field} sort={sort} />
-                      </div>
-                    </TableHead>
-                  ))}
-                  <TableHead>{t("AbpIdentity::Status")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.userName}</TableCell>
-                    <TableCell>{user.email ?? "-"}</TableCell>
-                    <TableCell>{user.phoneNumber ?? "-"}</TableCell>
-                    <TableCell>
-                      {`${user.name ?? ""} ${user.surname ?? ""}`.trim() || "-"}
-                    </TableCell>
-                    <TableCell>
-                      <UserStatusBadge user={user} t={t} />
-                    </TableCell>
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => handleSort(field)}
+                          onKeyDown={(e) => e.key === "Enter" && handleSort(field)}
+                          style={{ display: "inline-flex", alignItems: "center" }}
+                        >
+                          {t(labelKey)}
+                          <SortIcon field={field} sort={sort} />
+                        </div>
+                      </TableHeaderCell>
+                    ))}
+                    <TableHeaderCell>{t("AbpIdentity::Status")}</TableHeaderCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>{user.userName}</TableCell>
+                      <TableCell>{user.email ?? "-"}</TableCell>
+                      <TableCell>{user.phoneNumber ?? "-"}</TableCell>
+                      <TableCell>
+                        {`${user.name ?? ""} ${user.surname ?? ""}`.trim() || "-"}
+                      </TableCell>
+                      <TableCell>
+                        <UserStatusBadge user={user} t={t} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </FluentTable>
+            </div>
           )}
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

@@ -8,13 +8,7 @@ import {
 } from "@fluentui/react-icons";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button, Menu, MenuTrigger, MenuPopover, MenuItem } from "@fluentui/react-components";
 import { appConfig, fetchAppConfig, fetchAppLocalization } from "@/lib/auth/permissions";
 import { persistLanguageSelection } from "@/lib/i18n/i18n";
 import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
@@ -98,7 +92,7 @@ function ThemeToggle() {
 
   return (
     <Button
-      variant="subtle"
+      appearance="subtle"
       size="small"
       onClick={cycleTheme}
       aria-label={label}
@@ -207,29 +201,29 @@ function LanguageSwitcher() {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
+    <Menu>
+      <MenuTrigger>
         <Button
-          variant="subtle"
+          appearance="subtle"
           size="small"
           disabled={isChanging}
           aria-label={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
           title={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
           icon={<Globe20Regular />}
         />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      </MenuTrigger>
+      <MenuPopover>
         {languages.map((language) => {
           const culture = getLanguageCulture(language);
 
           return (
-            <DropdownMenuItem key={culture} onClick={() => void changeLanguage(culture)}>
+            <MenuItem key={culture} onClick={() => void changeLanguage(culture)}>
               {getLanguageLabel(language)}
-            </DropdownMenuItem>
+            </MenuItem>
           );
         })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </MenuPopover>
+    </Menu>
   );
 }
 
@@ -253,7 +247,7 @@ export function Header({ onMenuClick }: HeaderProps) {
       }}
     >
       <Button
-        variant="subtle"
+        appearance="subtle"
         size="small"
         style={{ display: "none" }}
         onClick={onMenuClick}

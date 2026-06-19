@@ -10,7 +10,6 @@ type DatePickerProps = {
   onChange: (value: string) => void;
   placeholder?: string;
   withTime?: boolean;
-  className?: string;
   disabled?: boolean;
 };
 
@@ -39,7 +38,6 @@ export function DatePicker({
   onChange,
   placeholder,
   withTime = false,
-  className: _className,
   disabled = false,
 }: DatePickerProps) {
   const selectedDate = parseDateValue(value, withTime) ?? null;

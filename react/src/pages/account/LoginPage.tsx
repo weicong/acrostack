@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button, Card, CardHeader } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 
 export function LoginPage() {
@@ -18,13 +17,17 @@ export function LoginPage() {
   if (isLoading) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t("AbpAccount::Login")}</CardTitle>
-          <CardDescription>
-            {t("AbpAccount::LoginSubtitle", "Redirecting to sign in...")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardHeader
+          header={
+            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
+          }
+          description={
+            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+              {t("AbpAccount::LoginSubtitle", "Redirecting to sign in...")}
+            </span>
+          }
+        />
+        <div style={{ padding: "0 1.5rem 1.5rem" }}>
           <div style={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}>
             <div
               style={{
@@ -38,7 +41,7 @@ export function LoginPage() {
               aria-hidden
             />
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }
@@ -46,30 +49,38 @@ export function LoginPage() {
   if (isAuthenticated) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t("AbpAccount::Login")}</CardTitle>
-          <CardDescription>
-            {t("AbpAccount::AlreadyLoggedIn", "You are already logged in.")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardHeader
+          header={
+            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
+          }
+          description={
+            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+              {t("AbpAccount::AlreadyLoggedIn", "You are already logged in.")}
+            </span>
+          }
+        />
+        <div style={{ padding: "0 1.5rem 1.5rem" }}>
           <Link to="/">
             <Button>{t("AbpUi::BackToTheApplication")}</Button>
           </Link>
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("AbpAccount::Login")}</CardTitle>
-        <CardDescription>
-          {t("AbpAccount::LoginSubtitle", "Sign in to your account")}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      <CardHeader
+        header={
+          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
+        }
+        description={
+          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            {t("AbpAccount::LoginSubtitle", "Sign in to your account")}
+          </span>
+        }
+      />
+      <div style={{ padding: "0 1.5rem 1.5rem" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <Button style={{ width: "100%" }} onClick={() => void login()}>
             {t("AbpAccount::Login")}
@@ -100,7 +111,7 @@ export function LoginPage() {
             </p>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
+import { Button } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 
 export function HomePage() {
@@ -39,7 +39,7 @@ export function HomePage() {
           rel="noreferrer"
           style={{ marginTop: "1rem", display: "inline-block" }}
         >
-          <Button variant="outline">React UI Documentation</Button>
+          <Button appearance="outline">React UI Documentation</Button>
         </a>
       </div>
     </div>
