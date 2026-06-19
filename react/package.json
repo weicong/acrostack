@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "tsc && vp build",
     "preview": "vp preview",
     "check": "vp check --fix",
     "test": "vp test",
@@ -47,8 +47,14 @@
     "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^29.1.1",
     "kubb": "5.0.0-beta.64",
-    "typescript": "^6.0.3",
-    "vite-plus": "^0.2.1"
+    "typescript": "~6.0.2",
+    "vite-plus": "catalog:"
   },
-  "packageManager": "pnpm@11.8.0"
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.8.0",
+      "onFail": "download"
+    }
+  }
 }

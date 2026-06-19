@@ -1,9 +1,30 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "include": ["src"],
   "compilerOptions": {
+    "target": "es2023",
+    "jsx": "react-jsx",
+    "module": "esnext",
     "paths": {
+      "#/*": ["./src/*"],
       "@/*": ["./src/*"]
-    }
+    },
+    "lib": ["ES2023", "DOM"],
+    "types": ["vite-plus/client"],
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
   }
 }
