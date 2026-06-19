@@ -47,6 +47,11 @@ export default defineConfig((({ mode }) => {
           changeOrigin: true,
           secure: false,
         },
+        "/swagger": {
+          target: apiUrl,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
     test: {

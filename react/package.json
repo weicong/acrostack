@@ -10,6 +10,7 @@
     "check": "vp check --fix",
     "test": "vp test",
     "test:run": "vp test run",
+    "generate-api": "kubb generate",
     "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../AcroStack"
   },
   "dependencies": {
@@ -34,6 +35,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@kubb/plugin-client": "5.0.0-beta.64",
+    "@kubb/plugin-react-query": "5.0.0-beta.64",
+    "@kubb/plugin-ts": "5.0.0-beta.64",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -42,6 +46,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^29.1.1",
+    "kubb": "5.0.0-beta.64",
     "typescript": "^6.0.3",
     "vite-plus": "^0.2.1"
   },
