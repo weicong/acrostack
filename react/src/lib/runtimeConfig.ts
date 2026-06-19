@@ -89,7 +89,8 @@ export function getApiBaseUrl(): string {
   const openBrace = "\u007b";
   const isFullUrl = isAbsoluteHttpUrl(apiUrl) && !apiUrl.includes(openBrace + openBrace);
   if (isFullUrl) {
-    return stripTrailingSlash(apiUrl) + "/api";
+    // return stripTrailingSlash(apiUrl) + "/api";
+    return stripTrailingSlash(apiUrl);
   }
   if (import.meta.env.DEV) {
     return "/api";
