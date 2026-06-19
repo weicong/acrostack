@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useQuery } from "@tanstack/react-query";
 import {
   ChevronUp20Regular,
   ChevronDown20Regular,
@@ -14,7 +13,7 @@ import {
   TableHeaderCell,
   TableRow,
 } from "@fluentui/react-components";
-import { appUserGetList } from "@/api/clients/appUser/appUserGetList";
+import { useAppUserGetList } from "@/api/hooks/appUser/useAppUserGetList";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import { useState } from "react";
 
@@ -66,16 +65,11 @@ export function UsersPage() {
     if (e.key === "Enter") handleSearch();
   };
 
-  const queryParams = {
-    MaxResultCount: 100,
-    SkipCount: 0,
+  const { data, isLoading } = useAppUserGetList({
     Filter: appliedFilter || undefined,
     Sorting: sort ? `${sort.field} ${sort.direction}` : undefined,
-  };
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["app", "users", queryParams],
-    queryFn: () => appUserGetList(queryParams),
+    SkipCount: 0,
+    MaxResultCount: 100,
   });
 
   const users = data?.items ?? [];

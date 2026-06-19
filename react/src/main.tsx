@@ -8,8 +8,8 @@ import { setupHttpClientInterceptors } from "@/lib/httpClient";
 
 async function bootstrap() {
   await loadRuntimeConfig();
-  setupHttpClientInterceptors();
   initUserManager();
+  setupHttpClientInterceptors();
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <App />
