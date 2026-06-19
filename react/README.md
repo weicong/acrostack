@@ -111,10 +111,3 @@ docker build -t acrostack/react:latest .
 
 For local pre-built assets: `docker build -f Dockerfile.local -t acrostack/react:local .`
 
-## Additional Resources
-
-- [ABP React UI Documentation](https://abp.io/docs/latest/framework/ui/react)
-- [ABP Documentation](https://abp.io/docs/latest)
-- [Vite+ Documentation](https://viteplus.dev/guide/)
-- [React Documentation](https://react.dev/)
-- [Fluent UI React Components](https://react.fluentui.dev/)
