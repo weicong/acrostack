@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vite-plus/test";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UsersPage } from "./UsersPage";
-import * as appUsersApi from "@/lib/api/appUsers";
+import * as appUsersApi from "@/api/clients/appUser/appUserGetList";
 
 vi.mock("@/lib/i18n/i18n", () => ({ default: {} }));
 
-vi.mock("@/lib/api/appUsers", () => ({
-  getAppUsers: vi.fn(),
+vi.mock("@/api/clients/appUser/appUserGetList", () => ({
+  appUserGetList: vi.fn(),
 }));
 
 vi.mock("react-i18next", () => ({
@@ -56,11 +56,11 @@ function renderPage() {
 describe("UsersPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(appUsersApi.getAppUsers).mockResolvedValue(MOCK_USERS as any);
+    vi.mocked(appUsersApi.appUserGetList).mockResolvedValue(MOCK_USERS as any);
   });
 
   it("shows loading state while fetching", () => {
-    vi.mocked(appUsersApi.getAppUsers).mockReturnValue(new Promise(() => {}));
+    vi.mocked(appUsersApi.appUserGetList).mockReturnValue(new Promise(() => {}));
     renderPage();
     expect(screen.getByText(/AbpAccount::PleaseWait/i)).toBeInTheDocument();
   });
@@ -102,8 +102,8 @@ describe("UsersPage", () => {
     fireEvent.click(userNameButtons[0]);
 
     await waitFor(() => {
-      expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-        expect.objectContaining({ sorting: "UserName asc" }),
+      expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+        expect.objectContaining({ Sorting: "UserName asc" }),
       );
     });
   });
@@ -122,8 +122,8 @@ describe("UsersPage", () => {
     fireEvent.click(getSortButton());
 
     await waitFor(() => {
-      expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-        expect.objectContaining({ sorting: "UserName asc" }),
+      expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+        expect.objectContaining({ Sorting: "UserName asc" }),
       );
     });
 
@@ -135,8 +135,8 @@ describe("UsersPage", () => {
 
     await waitFor(
       () => {
-        expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-          expect.objectContaining({ sorting: "UserName desc" }),
+        expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+          expect.objectContaining({ Sorting: "UserName desc" }),
         );
       },
       { timeout: 5000 },
@@ -156,8 +156,8 @@ describe("UsersPage", () => {
 
     fireEvent.click(getUserNameButton());
     await waitFor(() => {
-      expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-        expect.objectContaining({ sorting: "UserName asc" }),
+      expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+        expect.objectContaining({ Sorting: "UserName asc" }),
       );
     });
 
@@ -173,8 +173,8 @@ describe("UsersPage", () => {
     fireEvent.click(getEmailButton());
     await waitFor(
       () => {
-        expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-          expect.objectContaining({ sorting: "Email asc" }),
+        expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+          expect.objectContaining({ Sorting: "Email asc" }),
         );
       },
       { timeout: 5000 },
@@ -186,8 +186,8 @@ describe("UsersPage", () => {
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
-    expect(appUsersApi.getAppUsers).toHaveBeenCalledWith(
-      expect.objectContaining({ sorting: undefined }),
+    expect(appUsersApi.appUserGetList).toHaveBeenCalledWith(
+      expect.objectContaining({ Sorting: undefined }),
     );
   });
 });

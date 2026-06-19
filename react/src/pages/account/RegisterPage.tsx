@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Card, CardHeader } from "@fluentui/react-components";
-import { accountApi } from "@/lib/api/account";
+import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useAppForm } from "@/components/form";
 import { useState } from "react";
@@ -36,7 +36,8 @@ export function RegisterPage() {
     },
     onSubmit: async ({ value }) => {
       try {
-        await accountApi.register({
+        await accountRegister({
+          appName: "React",
           userName: value.userName,
           emailAddress: value.emailAddress,
           password: value.password,

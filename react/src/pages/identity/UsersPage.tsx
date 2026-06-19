@@ -14,7 +14,8 @@ import {
   TableHeaderCell,
   TableRow,
 } from "@fluentui/react-components";
-import { getAppUsers, type AppUserDto, type GetAppUsersInput } from "@/lib/api/appUsers";
+import { appUserGetList } from "@/api/clients/appUser/appUserGetList";
+import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import { useState } from "react";
 
 type SortDirection = "asc" | "desc";
@@ -65,16 +66,16 @@ export function UsersPage() {
     if (e.key === "Enter") handleSearch();
   };
 
-  const queryParams: GetAppUsersInput = {
-    maxResultCount: 100,
-    skipCount: 0,
-    filter: appliedFilter || undefined,
-    sorting: sort ? `${sort.field} ${sort.direction}` : undefined,
+  const queryParams = {
+    MaxResultCount: 100,
+    SkipCount: 0,
+    Filter: appliedFilter || undefined,
+    Sorting: sort ? `${sort.field} ${sort.direction}` : undefined,
   };
 
   const { data, isLoading } = useQuery({
     queryKey: ["app", "users", queryParams],
-    queryFn: () => getAppUsers(queryParams),
+    queryFn: () => appUserGetList(queryParams),
   });
 
   const users = data?.items ?? [];
@@ -163,7 +164,13 @@ export function UsersPage() {
   );
 }
 
-function UserStatusBadge({ user, t }: { user: AppUserDto; t: (key: string) => string }) {
+function UserStatusBadge({
+  user,
+  t,
+}: {
+  user: AcroStackAppUsersAppUserDto;
+  t: (key: string) => string;
+}) {
   return user.isActive !== false ? (
     <span
       style={{

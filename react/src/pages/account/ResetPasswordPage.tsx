@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button, Card, CardHeader } from "@fluentui/react-components";
-import { accountApi } from "@/lib/api/account";
+import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
 import { useAppForm } from "@/components/form";
 import { useState } from "react";
 
@@ -31,7 +31,7 @@ export function ResetPasswordPage() {
     },
     onSubmit: async ({ value }) => {
       try {
-        await accountApi.resetPassword({
+        await accountResetPassword({
           userId,
           resetToken,
           password: value.password,

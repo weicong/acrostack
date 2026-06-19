@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button, Card, CardHeader } from "@fluentui/react-components";
-import { accountApi } from "@/lib/api/account";
+import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
 import { useAppForm } from "@/components/form";
 
 const forgotPasswordSchema = z.object({
@@ -22,7 +22,7 @@ export function ForgotPasswordPage() {
     },
     onSubmit: async ({ value }) => {
       try {
-        await accountApi.sendPasswordResetCode({ email: value.email });
+        await accountSendPasswordResetCode({ appName: "React", email: value.email });
         setSent(true);
       } catch (err: unknown) {
         const msg =
