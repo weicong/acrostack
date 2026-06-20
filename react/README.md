@@ -4,21 +4,21 @@ The React SPA for the AcroStack ABP solution, built with [Vite+](https://viteplu
 
 ## Technology Stack
 
-| Technology | Purpose |
-|---|---|
-| [Vite+](https://viteplus.dev/) | Unified toolchain (Vite, Rolldown, Vitest, Oxlint, Oxfmt) |
-| [React](https://react.dev/) 19 | UI framework |
-| [TypeScript](https://www.typescript.org/) 6 | Language |
-| [TanStack Router](https://tanstack.com/router) | Client-side routing |
-| [TanStack Query](https://tanstack.com/query) | Server state and API request orchestration |
-| [TanStack Form](https://tanstack.com/form) | Form state management |
-| [Fluent UI React](https://react.fluentui.dev/) v9 | Component library |
-| [Axios](https://axios-http.com/) | HTTP client |
-| [OIDC](https://openid.net/connect/) (oidc-client-ts) | Authentication against the ABP Auth Server |
-| [i18next](https://www.i18next.com/) | Internationalization |
-| [Zod](https://zod.dev/) | Schema validation |
-| [Kubb](https://kubb.dev/) | API client code generation from Swagger |
-| [Vitest](https://vitest.dev/) | Unit testing |
+| Technology                                           | Purpose                                                   |
+| ---------------------------------------------------- | --------------------------------------------------------- |
+| [Vite+](https://viteplus.dev/)                       | Unified toolchain (Vite, Rolldown, Vitest, Oxlint, Oxfmt) |
+| [React](https://react.dev/) 19                       | UI framework                                              |
+| [TypeScript](https://www.typescript.org/) 6          | Language                                                  |
+| [TanStack Router](https://tanstack.com/router)       | Client-side routing                                       |
+| [TanStack Query](https://tanstack.com/query)         | Server state and API request orchestration                |
+| [TanStack Form](https://tanstack.com/form)           | Form state management                                     |
+| [Fluent UI React](https://react.fluentui.dev/) v9    | Component library                                         |
+| [Axios](https://axios-http.com/)                     | HTTP client                                               |
+| [OIDC](https://openid.net/connect/) (oidc-client-ts) | Authentication against the ABP Auth Server                |
+| [i18next](https://www.i18next.com/)                  | Internationalization                                      |
+| [Zod](https://zod.dev/)                              | Schema validation                                         |
+| [Kubb](https://kubb.dev/)                            | API client code generation from Swagger                   |
+| [Vitest](https://vitest.dev/)                        | Unit testing                                              |
 
 ABP-specific packages: [`@volo/abp-app-config`](https://www.npmjs.com/package/@volo/abp-app-config), [`@volo/abp-oidc-auth`](https://www.npmjs.com/package/@volo/abp-oidc-auth), [`@volo/abp-react-app-config`](https://www.npmjs.com/package/@volo/abp-react-app-config), [`@volo/abp-react-oidc-auth`](https://www.npmjs.com/package/@volo/abp-react-oidc-auth).
 
@@ -67,23 +67,23 @@ The app runs at `http://localhost:5173`. API requests are proxied to the backend
 
 ## Development
 
-| Script | Description |
-|---|---|
-| `dev` | `vp dev` — start Vite dev server |
-| `build` | `tsc && vp build` — type check + production build |
-| `preview` | `vp preview` — preview production build |
-| `generate-api` | `kubb generate` — regenerate API client from Swagger |
+| Script           | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| `dev`            | `vp dev` — start Vite dev server                     |
+| `build`          | `tsc && vp build` — type check + production build    |
+| `preview`        | `vp preview` — preview production build              |
+| `generate-api`   | `kubb generate` — regenerate API client from Swagger |
 | `generate-proxy` | `abp generate-proxy -t js` — ABP JS proxy generation |
 
 See `AGENTS.md` for `check`, `test`, `lint`, and `fmt` commands.
 
 ## Environment Variables
 
-| Variable | Purpose | Default (dev) |
-|---|---|---|
-| `VITE_API_URL` | Backend API URL | `https://localhost:44320` |
-| `VITE_AUTH_URL` | Auth/OIDC issuer URL | `https://localhost:44320` |
-| `VITE_APP_URL` | App URL for OAuth redirect | `http://localhost:5173` |
+| Variable        | Purpose                    | Default (dev)             |
+| --------------- | -------------------------- | ------------------------- |
+| `VITE_API_URL`  | Backend API URL            | `https://localhost:44320` |
+| `VITE_AUTH_URL` | Auth/OIDC issuer URL       | `https://localhost:44320` |
+| `VITE_APP_URL`  | App URL for OAuth redirect | `http://localhost:5173`   |
 
 Configure in `.env.development`. Restart the dev server after changes — the proxy target is read at startup.
 
@@ -110,4 +110,3 @@ docker build -t acrostack/react:latest .
 ```
 
 For local pre-built assets: `docker build -f Dockerfile.local -t acrostack/react:local .`
-

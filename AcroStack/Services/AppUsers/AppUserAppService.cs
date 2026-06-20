@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
@@ -34,13 +35,14 @@ public class AppUserAppService : ApplicationService, IAppUserAppService
                 (u.Surname != null && u.Surname.ToLower().Contains(filter)));
         }
 
-        var totalCount = queryable.Count();
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
 
-        var users = queryable
-            .OrderBy(u => u.UserName)
-            .Skip(input.SkipCount)
-            .Take(input.MaxResultCount)
-            .ToList();
+        var users = await AsyncExecuter.ToListAsync(
+            queryable
+                .OrderBy(input.Sorting.IsNullOrWhiteSpace() ? "UserName" : input.Sorting)
+                .Skip(input.SkipCount)
+                .Take(input.MaxResultCount)
+        );
 
         return new PagedResultDto<AppUserDto>(totalCount, ObjectMapper.Map<List<AppUser>, List<AppUserDto>>(users));
     }

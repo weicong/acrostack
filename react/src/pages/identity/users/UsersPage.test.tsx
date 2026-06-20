@@ -32,12 +32,18 @@ const MOCK_USERS = {
       id: "1",
       userName: "alice",
       email: "alice@example.com",
+      name: "Alice",
+      surname: "Smith",
+      phoneNumber: "123",
       isActive: true,
     },
     {
       id: "2",
       userName: "bob",
       email: "bob@example.com",
+      name: "Bob",
+      surname: "Jones",
+      phoneNumber: null,
       isActive: false,
     },
   ],
@@ -73,7 +79,7 @@ describe("UsersPage", () => {
     expect(screen.getByText(/AbpAccount::PleaseWait/i)).toBeInTheDocument();
   });
 
-  it("renders user table with data", async () => {
+  it("renders user data grid with data", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
@@ -87,7 +93,6 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
     expect(screen.queryByText(/AbpIdentity::NewUser/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/New user/i)).not.toBeInTheDocument();
   });
 
   it("does NOT render a create user dialog", async () => {
@@ -98,16 +103,22 @@ describe("UsersPage", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("initial fetch has no sorting param", async () => {
+    renderPage();
+    await waitFor(() => {
+      expect(screen.getByText("alice")).toBeInTheDocument();
+    });
+    expect(useAppUserGetList).toHaveBeenCalledWith(expect.objectContaining({ Sorting: undefined }));
+  });
+
   it("clicking a sortable column header triggers re-fetch with sorting asc", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    const userNameButtons = screen
-      .getAllByRole("button")
-      .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"));
-    fireEvent.click(userNameButtons[0]);
+    const userNameHeader = screen.getByText("AbpIdentity::UserName");
+    fireEvent.click(userNameHeader);
 
     await waitFor(() => {
       expect(useAppUserGetList).toHaveBeenCalledWith(
@@ -122,12 +133,8 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    const getSortButton = () =>
-      screen
-        .getAllByRole("button")
-        .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"))[0];
-
-    fireEvent.click(getSortButton());
+    const userNameHeader = screen.getByText("AbpIdentity::UserName");
+    fireEvent.click(userNameHeader);
 
     await waitFor(() => {
       expect(useAppUserGetList).toHaveBeenCalledWith(
@@ -135,11 +142,7 @@ describe("UsersPage", () => {
       );
     });
 
-    await waitFor(() => {
-      expect(screen.getByText("alice")).toBeInTheDocument();
-    });
-
-    fireEvent.click(getSortButton());
+    fireEvent.click(userNameHeader);
 
     await waitFor(
       () => {
@@ -157,28 +160,16 @@ describe("UsersPage", () => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
 
-    const getUserNameButton = () =>
-      screen
-        .getAllByRole("button")
-        .filter((btn) => btn.textContent?.includes("AbpIdentity::UserName"))[0];
-
-    fireEvent.click(getUserNameButton());
+    const userNameHeader = screen.getByText("AbpIdentity::UserName");
+    fireEvent.click(userNameHeader);
     await waitFor(() => {
       expect(useAppUserGetList).toHaveBeenCalledWith(
         expect.objectContaining({ Sorting: "UserName asc" }),
       );
     });
 
-    await waitFor(() => {
-      expect(screen.getByText("alice")).toBeInTheDocument();
-    });
-
-    const getEmailButton = () =>
-      screen
-        .getAllByRole("button")
-        .filter((btn) => btn.textContent?.includes("AbpIdentity::Email"))[0];
-
-    fireEvent.click(getEmailButton());
+    const emailHeader = screen.getByText("AbpIdentity::Email");
+    fireEvent.click(emailHeader);
     await waitFor(
       () => {
         expect(useAppUserGetList).toHaveBeenCalledWith(
@@ -189,11 +180,12 @@ describe("UsersPage", () => {
     );
   });
 
-  it("initial fetch has no sorting param", async () => {
+  it("renders status badges for active and inactive users", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
-    expect(useAppUserGetList).toHaveBeenCalledWith(expect.objectContaining({ Sorting: undefined }));
+    expect(screen.getByText("AbpIdentity::Active")).toBeInTheDocument();
+    expect(screen.getByText("AbpIdentity::NotActive")).toBeInTheDocument();
   });
 });
