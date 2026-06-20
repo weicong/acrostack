@@ -26,6 +26,7 @@ export function UsersPage() {
   });
   const [pageIndex, setPageIndex] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(DEFAULT_PAGE_SIZE);
+  const [filter, setFilter] = React.useState("");
 
   const onSortChange: DataGridProps["onSortChange"] = (_e, nextSortState) => {
     setSortState(nextSortState);
@@ -37,9 +38,15 @@ export function UsersPage() {
     setPageIndex(0);
   };
 
+  const onFilterChange = (nextFilter: string) => {
+    setFilter(nextFilter);
+    setPageIndex(0);
+  };
+
   const sortingParam = `${COLUMN_ID_TO_API_FIELD[sortState.sortColumn ?? ""] ?? sortState.sortColumn ?? ""} ${sortState.sortDirection === "ascending" ? "asc" : "desc"}`;
 
   const query = useAppUserGetList({
+    Filter: filter || undefined,
     Sorting: sortingParam,
     SkipCount: pageIndex * pageSize,
     MaxResultCount: pageSize,
@@ -51,7 +58,7 @@ export function UsersPage() {
   return (
     <div>
       <h1 id="users-heading">{t("AbpIdentity::Users")}</h1>
-      <UserFilters />
+      <UserFilters onFilterChange={onFilterChange} />
       <UserTable
         users={query.data?.items ?? []}
         sortState={sortState}
