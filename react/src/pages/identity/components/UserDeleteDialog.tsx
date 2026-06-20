@@ -8,6 +8,7 @@ import {
   DialogSurface,
   DialogTitle,
   DialogTrigger,
+  makeStyles,
   useId,
 } from "@fluentui/react-components";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
@@ -20,6 +21,12 @@ type UserDeleteDialogProps = {
   isPending?: boolean;
 };
 
+const useStyles = makeStyles({
+  deleteButton: {
+    color: "var(--colorPaletteRedForeground3)",
+  },
+});
+
 export function UserDeleteDialog({
   open,
   onOpenChange,
@@ -29,6 +36,7 @@ export function UserDeleteDialog({
 }: UserDeleteDialogProps) {
   const { t } = useTranslation();
   const dialogId = useId("user-delete-");
+  const styles = useStyles();
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
@@ -42,7 +50,7 @@ export function UserDeleteDialog({
             <DialogTrigger disableButtonEnhancement>
               <Button
                 appearance="primary"
-                style={{ color: "var(--colorPaletteRedForeground3)" }}
+                className={styles.deleteButton}
                 onClick={onConfirm}
                 disabled={isPending}
               >

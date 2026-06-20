@@ -5,6 +5,7 @@ import {
   DataGridHeader,
   DataGridHeaderCell,
   DataGridRow,
+  makeStyles,
 } from "@fluentui/react-components";
 import type { DataGridProps } from "@fluentui/react-components";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
@@ -20,6 +21,12 @@ type UserTableProps = {
   ariaLabelledBy?: string;
 };
 
+const useStyles = makeStyles({
+  grid: {
+    minWidth: "600px",
+  },
+});
+
 export function UserTable({
   users,
   sortState,
@@ -28,6 +35,7 @@ export function UserTable({
   ariaLabelledBy,
 }: UserTableProps) {
   const columns = useUserColumns(onDelete);
+  const styles = useStyles();
 
   return (
     <DataGrid
@@ -38,7 +46,7 @@ export function UserTable({
       onSortChange={onSortChange}
       getRowId={(item) => item.id ?? ""}
       aria-labelledby={ariaLabelledBy}
-      style={{ minWidth: "600px" }}
+      className={styles.grid}
     >
       <DataGridHeader>
         <DataGridRow>

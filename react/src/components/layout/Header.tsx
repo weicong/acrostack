@@ -8,7 +8,15 @@ import {
 } from "@fluentui/react-icons";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Menu, MenuTrigger, MenuPopover, MenuItem } from "@fluentui/react-components";
+import {
+  Button,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuItem,
+  makeStyles,
+  Text,
+} from "@fluentui/react-components";
 import { appConfig, fetchAppConfig, fetchAppLocalization } from "@/lib/auth/permissions";
 import { persistLanguageSelection } from "@/lib/i18n/i18n";
 import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
@@ -227,37 +235,54 @@ function LanguageSwitcher() {
   );
 }
 
+const useStyles = makeStyles({
+  header: {
+    position: "sticky",
+    top: 0,
+    zIndex: 50,
+    display: "flex",
+    height: "3.5rem",
+    alignItems: "center",
+    gap: "1rem",
+    borderBottom: "1px solid var(--colorNeutralStroke1)",
+    background: "var(--colorNeutralBackground1)",
+    padding: "0 1rem",
+  },
+  mobileMenuBtn: {
+    display: "none",
+  },
+  titleArea: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  actions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+});
+
 export function Header({ onMenuClick }: HeaderProps) {
   const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
+  const styles = useStyles();
 
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        display: "flex",
-        height: "3.5rem",
-        alignItems: "center",
-        gap: "1rem",
-        borderBottom: "1px solid var(--colorNeutralStroke1)",
-        background: "var(--colorNeutralBackground1)",
-        padding: "0 1rem",
-      }}
-    >
+    <header className={styles.header}>
       <Button
         appearance="subtle"
         size="small"
-        style={{ display: "none" }}
+        className={styles.mobileMenuBtn}
         onClick={onMenuClick}
         aria-label={t("Menu:Menu")}
         icon={<Navigation20Regular />}
       />
-      <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <span style={{ fontWeight: 600 }}>AcroStack</span>
+      <div className={styles.titleArea}>
+        <Text weight="semibold">AcroStack</Text>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <div className={styles.actions}>
         <LanguageSwitcher />
         <ThemeToggle />
         {!isLoading &&

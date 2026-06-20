@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Button, Card, CardHeader } from "@fluentui/react-components";
+import { Button, Card, CardHeader, makeStyles, Text } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
 import { useAppForm } from "@/components/form";
 import { useState } from "react";
@@ -16,6 +16,31 @@ const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+const useStyles = makeStyles({
+  body: {
+    padding: "0 1.5rem 1.5rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  errorAlert: {
+    borderRadius: "0.375rem",
+    background: "var(--colorPaletteRedBackground1)",
+    padding: "0.75rem",
+    fontSize: "0.875rem",
+    color: "var(--colorPaletteRedForeground3)",
+  },
+  fullWidthButton: {
+    width: "100%",
+  },
+  link: {
+    fontWeight: 500,
+    color: "var(--colorBrandForegroundLink)",
+  },
+});
+
 export function ResetPasswordPage() {
   const { t } = useTranslation();
   const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
@@ -23,6 +48,7 @@ export function ResetPasswordPage() {
   const resetToken =
     params.get("resetToken") ?? params.get("token") ?? params.get("resetCode") ?? "";
   const [rootError, setRootError] = useState<string | null>(null);
+  const styles = useStyles();
 
   const form = useAppForm({
     defaultValues: { password: "", confirmPassword: "" },
@@ -54,21 +80,17 @@ export function ResetPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={
-            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
-              {t("AbpAccount::ResetPassword")}
-            </span>
-          }
+          header={<Text weight="semibold">{t("AbpAccount::ResetPassword")}</Text>}
           description={
-            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            <Text size={200}>
               {t(
                 "AbpAccount::InvalidPasswordResetToken",
                 "This password reset link is invalid or has expired.",
               )}
-            </span>
+            </Text>
           }
         />
-        <div style={{ padding: "0 1.5rem 1.5rem" }}>
+        <div className={styles.body}>
           <Link to="/account/forgot-password">
             <Button>{t("AbpAccount::SendPasswordResetCode")}</Button>
           </Link>
@@ -80,37 +102,24 @@ export function ResetPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={
-          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
-            {t("AbpAccount::ResetPassword")}
-          </span>
-        }
+        header={<Text weight="semibold">{t("AbpAccount::ResetPassword")}</Text>}
         description={
-          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+          <Text size={200}>
             {t("AbpAccount::ResetPassword_Information", "Enter your new password")}
-          </span>
+          </Text>
         }
       />
-      <div style={{ padding: "0 1.5rem 1.5rem" }}>
+      <div className={styles.body}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             void form.handleSubmit();
           }}
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          className={styles.form}
         >
           {rootError && (
-            <div
-              style={{
-                borderRadius: "0.375rem",
-                background: "var(--colorPaletteRedBackground1)",
-                padding: "0.75rem",
-                fontSize: "0.875rem",
-                color: "var(--colorPaletteRedForeground3)",
-              }}
-              role="alert"
-            >
+            <div className={styles.errorAlert} role="alert">
               {rootError}
             </div>
           )}
@@ -136,22 +145,16 @@ export function ResetPasswordPage() {
             )}
           />
           <form.AppForm>
-            <form.SubmitButton label={t("AbpAccount::ResetPassword")} style={{ width: "100%" }} />
+            <form.SubmitButton
+              label={t("AbpAccount::ResetPassword")}
+              className={styles.fullWidthButton}
+            />
           </form.AppForm>
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "var(--colorNeutralForeground3)",
-            }}
-          >
-            <Link
-              to="/account/login"
-              style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
-            >
+          <Text as="p" size={200} align="center" block>
+            <Link to="/account/login" className={styles.link}>
               {t("AbpAccount::Login")}
             </Link>
-          </p>
+          </Text>
         </form>
       </div>
     </Card>

@@ -1,4 +1,12 @@
-import { Button, Input, Select, Text, Tooltip, Divider } from "@fluentui/react-components";
+import {
+  Button,
+  Input,
+  Select,
+  Text,
+  Tooltip,
+  Divider,
+  makeStyles,
+} from "@fluentui/react-components";
 import {
   ChevronLeftRegular,
   ChevronRightRegular,
@@ -8,6 +16,42 @@ import {
 import { useState } from "react";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+
+const useStyles = makeStyles({
+  bar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBlock: "var(--spacingVerticalS)",
+    userSelect: "none",
+  },
+  infoGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--spacingHorizontalM)",
+  },
+  mutedText: {
+    color: "var(--colorNeutralForeground3)",
+  },
+  pageSizeSelect: {
+    width: "var(--spacingHorizontalXXXL)",
+  },
+  controlsGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--spacingHorizontalXS)",
+  },
+  ellipsis: {
+    paddingInline: "var(--spacingHorizontalXS)",
+    color: "var(--colorNeutralForeground3)",
+  },
+  divider: {
+    height: "var(--spacingVerticalL)",
+  },
+  jumpInput: {
+    width: "var(--spacingHorizontalXXL)",
+  },
+});
 
 type PaginationBarProps = {
   pageIndex: number;
@@ -46,22 +90,15 @@ export function PaginationBar({
   const currentPage = pageIndex + 1;
   const pages = getPageRange(currentPage, pageCount);
   const [jumpValue, setJumpValue] = useState("");
+  const styles = useStyles();
 
   const startItem = total === 0 ? 0 : pageIndex * pageSize + 1;
   const endItem = Math.min((pageIndex + 1) * pageSize, total);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingBlock: "var(--spacingVerticalS)",
-        userSelect: "none",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--spacingHorizontalM)" }}>
-        <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
+    <div className={styles.bar}>
+      <div className={styles.infoGroup}>
+        <Text size={200} className={styles.mutedText}>
           {startItem}-{endItem} / {total}
         </Text>
         {onPageSizeChange && (
@@ -69,7 +106,7 @@ export function PaginationBar({
             value={String(pageSize)}
             onChange={(_, data) => onPageSizeChange(Number(data.value))}
             size="small"
-            style={{ width: "var(--spacingHorizontalXXXL)" }}
+            className={styles.pageSizeSelect}
           >
             {PAGE_SIZE_OPTIONS.map((size) => (
               <option key={size} value={String(size)}>
@@ -80,7 +117,7 @@ export function PaginationBar({
         )}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--spacingHorizontalXS)" }}>
+      <div className={styles.controlsGroup}>
         <Tooltip content="首页" relationship="label">
           <Button
             appearance="subtle"
@@ -102,14 +139,7 @@ export function PaginationBar({
 
         {pages.map((page, i) =>
           page === "..." ? (
-            <Text
-              key={`ellipsis-${i}`}
-              size={200}
-              style={{
-                paddingInline: "var(--spacingHorizontalXS)",
-                color: "var(--colorNeutralForeground3)",
-              }}
-            >
+            <Text key={`ellipsis-${i}`} size={200} className={styles.ellipsis}>
               ...
             </Text>
           ) : (
@@ -145,13 +175,13 @@ export function PaginationBar({
 
         {pageCount > 1 && (
           <>
-            <Divider vertical style={{ height: "var(--spacingVerticalL)" }} />
-            <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
+            <Divider vertical className={styles.divider} />
+            <Text size={200} className={styles.mutedText}>
               跳至
             </Text>
             <Input
               size="small"
-              style={{ width: "var(--spacingHorizontalXXL)" }}
+              className={styles.jumpInput}
               value={jumpValue}
               onChange={(_, data) => setJumpValue(data.value)}
               onKeyDown={(e) => {
@@ -164,7 +194,7 @@ export function PaginationBar({
                 }
               }}
             />
-            <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
+            <Text size={200} className={styles.mutedText}>
               页
             </Text>
           </>

@@ -1,12 +1,31 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Button, Card, CardHeader } from "@fluentui/react-components";
+import { Button, Card, CardHeader, makeStyles, Spinner, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
+
+const useStyles = makeStyles({
+  body: {
+    padding: "0 1.5rem 1.5rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  fullWidthButton: {
+    width: "100%",
+  },
+  link: {
+    fontWeight: 500,
+    color: "var(--colorBrandForegroundLink)",
+  },
+});
 
 export function LoginPage() {
   const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
+  const styles = useStyles();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -18,29 +37,13 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={
-            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
-          }
+          header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
           description={
-            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
-              {t("AbpAccount::LoginSubtitle", "Redirecting to sign in...")}
-            </span>
+            <Text size={200}>{t("AbpAccount::LoginSubtitle", "Redirecting to sign in...")}</Text>
           }
         />
-        <div style={{ padding: "0 1.5rem 1.5rem" }}>
-          <div style={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}>
-            <div
-              style={{
-                width: "2rem",
-                height: "2rem",
-                border: "2px solid var(--colorBrandStroke1)",
-                borderTopColor: "transparent",
-                borderRadius: "50%",
-                animation: "spin 1s linear infinite",
-              }}
-              aria-hidden
-            />
-          </div>
+        <div className={styles.body}>
+          <Spinner />
         </div>
       </Card>
     );
@@ -50,16 +53,12 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={
-            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
-          }
+          header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
           description={
-            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
-              {t("AbpAccount::AlreadyLoggedIn", "You are already logged in.")}
-            </span>
+            <Text size={200}>{t("AbpAccount::AlreadyLoggedIn", "You are already logged in.")}</Text>
           }
         />
-        <div style={{ padding: "0 1.5rem 1.5rem" }}>
+        <div className={styles.body}>
           <Link to="/">
             <Button>{t("AbpUi::BackToTheApplication")}</Button>
           </Link>
@@ -71,45 +70,27 @@ export function LoginPage() {
   return (
     <Card>
       <CardHeader
-        header={
-          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Login")}</span>
-        }
+        header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
         description={
-          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
-            {t("AbpAccount::LoginSubtitle", "Sign in to your account")}
-          </span>
+          <Text size={200}>{t("AbpAccount::LoginSubtitle", "Sign in to your account")}</Text>
         }
       />
-      <div style={{ padding: "0 1.5rem 1.5rem" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button style={{ width: "100%" }} onClick={() => void login()}>
+      <div className={styles.body}>
+        <div className={styles.form}>
+          <Button className={styles.fullWidthButton} onClick={() => void login()}>
             {t("AbpAccount::Login")}
           </Button>
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "var(--colorNeutralForeground3)",
-            }}
-          >
-            <p>
-              <Link
-                to="/account/forgot-password"
-                style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
-              >
-                {t("AbpAccount::ForgotPassword")}
-              </Link>
-            </p>
-            <p>
-              {t("AbpAccount::DontHaveAnAccount", "Don't have an account?")}{" "}
-              <Link
-                to="/account/register"
-                style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
-              >
-                {t("AbpAccount::Register")}
-              </Link>
-            </p>
-          </div>
+          <Text as="p" size={200} align="center" block>
+            <Link to="/account/forgot-password" className={styles.link}>
+              {t("AbpAccount::ForgotPassword")}
+            </Link>
+          </Text>
+          <Text as="p" size={200} align="center" block>
+            {t("AbpAccount::DontHaveAnAccount", "Don't have an account?")}{" "}
+            <Link to="/account/register" className={styles.link}>
+              {t("AbpAccount::Register")}
+            </Link>
+          </Text>
         </div>
       </div>
     </Card>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Button, Card, CardHeader } from "@fluentui/react-components";
+import { Button, Card, CardHeader, makeStyles, Text } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
 import { useAppForm } from "@/components/form";
 
@@ -10,10 +10,36 @@ const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),
 });
 
+const useStyles = makeStyles({
+  body: {
+    padding: "0 1.5rem 1.5rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  errorAlert: {
+    borderRadius: "0.375rem",
+    background: "var(--colorPaletteRedBackground1)",
+    padding: "0.75rem",
+    fontSize: "0.875rem",
+    color: "var(--colorPaletteRedForeground3)",
+  },
+  fullWidthButton: {
+    width: "100%",
+  },
+  link: {
+    fontWeight: 500,
+    color: "var(--colorBrandForegroundLink)",
+  },
+});
+
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
   const [sent, setSent] = useState(false);
   const [rootError, setRootError] = useState<string | null>(null);
+  const styles = useStyles();
 
   const form = useAppForm({
     defaultValues: { email: "" },
@@ -41,21 +67,17 @@ export function ForgotPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={
-            <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
-              {t("AbpAccount::ForgotPassword")}
-            </span>
-          }
+          header={<Text weight="semibold">{t("AbpAccount::ForgotPassword")}</Text>}
           description={
-            <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+            <Text size={200}>
               {t(
                 "AbpAccount::PasswordResetMailSentMessage",
                 "If the email address exists, we have sent a password reset link.",
               )}
-            </span>
+            </Text>
           }
         />
-        <div style={{ padding: "0 1.5rem 1.5rem" }}>
+        <div className={styles.body}>
           <Link to="/account/login">
             <Button>{t("AbpAccount::Login")}</Button>
           </Link>
@@ -67,40 +89,27 @@ export function ForgotPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={
-          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>
-            {t("AbpAccount::ForgotPassword")}
-          </span>
-        }
+        header={<Text weight="semibold">{t("AbpAccount::ForgotPassword")}</Text>}
         description={
-          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
+          <Text size={200}>
             {t(
               "AbpAccount::SendPasswordResetCode_Information",
               "Enter your email address and we will send you a link to reset your password.",
             )}
-          </span>
+          </Text>
         }
       />
-      <div style={{ padding: "0 1.5rem 1.5rem" }}>
+      <div className={styles.body}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             void form.handleSubmit();
           }}
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          className={styles.form}
         >
           {rootError && (
-            <div
-              style={{
-                borderRadius: "0.375rem",
-                background: "var(--colorPaletteRedBackground1)",
-                padding: "0.75rem",
-                fontSize: "0.875rem",
-                color: "var(--colorPaletteRedForeground3)",
-              }}
-              role="alert"
-            >
+            <div className={styles.errorAlert} role="alert">
               {rootError}
             </div>
           )}
@@ -114,22 +123,13 @@ export function ForgotPasswordPage() {
             )}
           />
           <form.AppForm>
-            <form.SubmitButton label={t("AbpAccount::Submit")} style={{ width: "100%" }} />
+            <form.SubmitButton label={t("AbpAccount::Submit")} className={styles.fullWidthButton} />
           </form.AppForm>
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "var(--colorNeutralForeground3)",
-            }}
-          >
-            <Link
-              to="/account/login"
-              style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
-            >
+          <Text as="p" size={200} align="center" block>
+            <Link to="/account/login" className={styles.link}>
               {t("AbpUi::BackToTheApplication")}
             </Link>
-          </p>
+          </Text>
         </form>
       </div>
     </Card>

@@ -5,6 +5,7 @@ import {
   redirect,
   Outlet,
 } from "@tanstack/react-router";
+import { makeStyles, Text } from "@fluentui/react-components";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { HomePage } from "@/pages/home/HomePage";
 import { ForbiddenPage } from "@/pages/forbidden/ForbiddenPage";
@@ -17,23 +18,34 @@ import { UsersPage } from "@/pages/identity/UsersPage";
 import { BooksPage } from "@/pages/books/BooksPage";
 import { authGuard, createPermissionGuard } from "@/lib/routing/guards";
 
+const useNotFoundStyles = makeStyles({
+  root: {
+    display: "flex",
+    minHeight: "50vh",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "1rem",
+  },
+});
+
+function NotFoundComponent() {
+  const styles = useNotFoundStyles();
+  return (
+    <div className={styles.root}>
+      <Text as="h1" size={700} weight="bold">
+        404
+      </Text>
+      <Text as="p" block>
+        Page not found
+      </Text>
+    </div>
+  );
+}
+
 const rootRoute = createRootRoute({
   component: RootLayout,
-  notFoundComponent: () => (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "50vh",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "1rem",
-      }}
-    >
-      <h1 style={{ fontSize: "1.5rem", fontWeight: 700 }}>404</h1>
-      <p style={{ color: "var(--colorNeutralForeground3)" }}>Page not found</p>
-    </div>
-  ),
+  notFoundComponent: NotFoundComponent,
 });
 
 const indexRoute = createRoute({

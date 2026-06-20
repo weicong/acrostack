@@ -7,8 +7,15 @@ import {
   DialogSurface,
   DialogTitle,
   DialogTrigger,
+  makeStyles,
   useId,
 } from "@fluentui/react-components";
+
+const useStyles = makeStyles({
+  destructive: {
+    color: "var(--colorPaletteRedForeground3)",
+  },
+});
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -34,6 +41,7 @@ function ConfirmDialog({
   isPending = false,
 }: ConfirmDialogProps) {
   const dialogId = useId("confirm-");
+  const styles = useStyles();
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
@@ -47,11 +55,7 @@ function ConfirmDialog({
                 appearance="primary"
                 disabled={isPending}
                 onClick={onConfirm}
-                style={
-                  variant === "destructive"
-                    ? { color: "var(--colorPaletteRedForeground3)" }
-                    : undefined
-                }
+                className={variant === "destructive" ? styles.destructive : undefined}
               >
                 {confirmLabel}
               </Button>

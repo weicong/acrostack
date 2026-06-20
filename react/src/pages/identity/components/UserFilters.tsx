@@ -1,7 +1,15 @@
-import { Input, Button } from "@fluentui/react-components";
+import { Input, Button, makeStyles } from "@fluentui/react-components";
 import { SearchRegular, DismissRegular } from "@fluentui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+
+const useStyles = makeStyles({
+  toolbar: {
+    display: "flex",
+    gap: "var(--spacingHorizontalS)",
+    marginBlockEnd: "var(--spacingVerticalS)",
+  },
+});
 
 type UserFiltersProps = {
   onFilterChange: (filter: string) => void;
@@ -11,6 +19,7 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState("");
   const [applied, setApplied] = useState("");
+  const styles = useStyles();
 
   const handleSearch = () => {
     const trimmed = draft.trim();
@@ -25,13 +34,7 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "var(--spacingHorizontalS)",
-        marginBlockEnd: "var(--spacingVerticalS)",
-      }}
-    >
+    <div className={styles.toolbar}>
       <Input
         placeholder={t("AbpIdentity::Search")}
         value={draft}

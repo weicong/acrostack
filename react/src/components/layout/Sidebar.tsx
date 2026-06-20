@@ -1,11 +1,123 @@
 import { useState, useEffect } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { makeStyles } from "@fluentui/react-components";
 import { ChevronDown20Regular, ChevronRight20Regular, Open20Regular } from "@fluentui/react-icons";
 import { routeConfig, type RouteConfigItem } from "@/lib/routing/route-config";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 import type { ComponentType } from "react";
+
+const useStyles = makeStyles({
+  nav: {
+    display: "flex",
+    height: "100%",
+    minHeight: "0",
+    flex: 1,
+    flexDirection: "column",
+    borderRight: "1px solid var(--colorNeutralStroke1)",
+    background: "var(--colorNeutralBackground3)",
+    padding: "1rem",
+  },
+  navInner: {
+    display: "flex",
+    minHeight: "0",
+    flex: 1,
+    flexDirection: "column",
+    gap: "0.25rem",
+    overflowY: "auto",
+    paddingRight: "0.25rem",
+  },
+  groupButton: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    gap: "0.75rem",
+    padding: "0.5rem 0.75rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    borderRadius: "0.5rem",
+    border: "none",
+    background: "none",
+    cursor: "pointer",
+  },
+  groupButtonActive: {
+    color: "var(--colorBrandForeground1)",
+  },
+  groupButtonInactive: {
+    color: "var(--colorNeutralForeground3)",
+  },
+  groupIcon: {
+    width: "1rem",
+    height: "1rem",
+    flexShrink: 0,
+  },
+  groupLabel: {
+    flex: 1,
+    textAlign: "left",
+  },
+  childrenContainer: {
+    marginLeft: "1rem",
+    marginTop: "0.25rem",
+    borderLeft: "1px solid var(--colorNeutralStroke1)",
+    paddingLeft: "0.75rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  linkDepth0: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    padding: "0.5rem 0.75rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    borderRadius: "0.5rem",
+    textDecoration: "none",
+  },
+  linkDepth0Active: {
+    background: "var(--colorBrandBackground)",
+    color: "var(--colorNeutralForegroundOnBrand)",
+  },
+  linkDepth0Inactive: {
+    background: "transparent",
+    color: "var(--colorNeutralForeground3)",
+  },
+  linkDepth0External: {
+    color: "var(--colorNeutralForeground3)",
+  },
+  linkChild: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    padding: "0.375rem 0.75rem",
+    fontSize: "0.875rem",
+    borderRadius: "0.5rem",
+    textDecoration: "none",
+  },
+  linkChildExternal: {
+    color: "var(--colorNeutralForeground3)",
+  },
+  linkChildActive: {
+    fontWeight: 600,
+    background: "var(--colorBrandBackground)",
+    color: "var(--colorNeutralForegroundOnBrand)",
+  },
+  linkChildInactive: {
+    fontWeight: 400,
+    background: "transparent",
+    color: "var(--colorNeutralForeground3)",
+  },
+  externalIcon: {
+    opacity: 0.7,
+  },
+  linkLabel: {
+    flex: 1,
+  },
+  linkChildLabel: {
+    flex: 1,
+  },
+});
 
 interface SidebarProps {
   onNavigate?: () => void;
@@ -91,6 +203,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
     const visibleChildren = item.children?.filter(isItemVisible);
     const hasChildren = visibleChildren && visibleChildren.length > 0;
+    const styles = useStyles();
 
     if (item.children && !hasChildren) {
       return null;
@@ -104,37 +217,14 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         <div key={item.path}>
           <button
             onClick={() => toggleExpanded(item.path)}
-            style={{
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
-              gap: "0.75rem",
-              padding: "0.5rem 0.75rem",
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              borderRadius: "0.5rem",
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-              color: highlight ? "var(--colorBrandForeground1)" : "var(--colorNeutralForeground3)",
-            }}
+            className={`${styles.groupButton} ${highlight ? styles.groupButtonActive : styles.groupButtonInactive}`}
           >
-            {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
-            <span style={{ flex: 1, textAlign: "left" }}>{t(item.nameKey)}</span>
+            {Icon && <Icon className={styles.groupIcon} />}
+            <span className={styles.groupLabel}>{t(item.nameKey)}</span>
             {isExpanded ? <ChevronDown20Regular /> : <ChevronRight20Regular />}
           </button>
           {isExpanded && (
-            <div
-              style={{
-                marginLeft: "1rem",
-                marginTop: "0.25rem",
-                borderLeft: "1px solid var(--colorNeutralStroke1)",
-                paddingLeft: "0.75rem",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.25rem",
-              }}
-            >
+            <div className={styles.childrenContainer}>
               {visibleChildren.map((child) => renderItem(child, depth + 1))}
             </div>
           )}
@@ -154,21 +244,11 @@ export function Sidebar({ onNavigate }: SidebarProps) {
             target={item.externalTarget}
             rel={item.externalRel}
             onClick={onNavigate}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              padding: "0.5rem 0.75rem",
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              borderRadius: "0.5rem",
-              textDecoration: "none",
-              color: "var(--colorNeutralForeground3)",
-            }}
+            className={`${styles.linkDepth0} ${styles.linkDepth0External}`}
           >
-            {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
-            <span style={{ flex: 1 }}>{t(item.nameKey)}</span>
-            <Open20Regular style={{ opacity: 0.7 }} />
+            {Icon && <Icon className={styles.groupIcon} />}
+            <span className={styles.linkLabel}>{t(item.nameKey)}</span>
+            <Open20Regular className={styles.externalIcon} />
           </a>
         );
       }
@@ -178,22 +258,9 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           key={item.path}
           to={item.path}
           onClick={onNavigate}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.75rem",
-            padding: "0.5rem 0.75rem",
-            fontSize: "0.875rem",
-            fontWeight: 500,
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-            background: isActive ? "var(--colorBrandBackground)" : "transparent",
-            color: isActive
-              ? "var(--colorNeutralForegroundOnBrand)"
-              : "var(--colorNeutralForeground3)",
-          }}
+          className={`${styles.linkDepth0} ${isActive ? styles.linkDepth0Active : styles.linkDepth0Inactive}`}
         >
-          {Icon && <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />}
+          {Icon && <Icon className={styles.groupIcon} />}
           {t(item.nameKey)}
         </Link>
       );
@@ -209,19 +276,10 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           target={item.externalTarget}
           rel={item.externalRel}
           onClick={onNavigate}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            padding: "0.375rem 0.75rem",
-            fontSize: "0.875rem",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-            color: "var(--colorNeutralForeground3)",
-          }}
+          className={`${styles.linkChild} ${styles.linkChildExternal}`}
         >
-          <span style={{ flex: 1 }}>{t(item.nameKey)}</span>
-          <Open20Regular style={{ opacity: 0.7 }} />
+          <span className={styles.linkChildLabel}>{t(item.nameKey)}</span>
+          <Open20Regular className={styles.externalIcon} />
         </a>
       );
     }
@@ -231,49 +289,18 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         key={item.path}
         to={item.path}
         onClick={onNavigate}
-        style={{
-          padding: "0.375rem 0.75rem",
-          fontSize: "0.875rem",
-          borderRadius: "0.5rem",
-          textDecoration: "none",
-          fontWeight: isActive ? 600 : 400,
-          background: isActive ? "var(--colorBrandBackground)" : "transparent",
-          color: isActive
-            ? "var(--colorNeutralForegroundOnBrand)"
-            : "var(--colorNeutralForeground3)",
-        }}
+        className={`${styles.linkChild} ${isActive ? styles.linkChildActive : styles.linkChildInactive}`}
       >
         {t(item.nameKey)}
       </Link>
     );
   };
 
+  const styles = useStyles();
+
   return (
-    <nav
-      style={{
-        display: "flex",
-        height: "100%",
-        minHeight: 0,
-        flex: 1,
-        flexDirection: "column",
-        borderRight: "1px solid var(--colorNeutralStroke1)",
-        background: "var(--colorNeutralBackground3)",
-        padding: "1rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          minHeight: 0,
-          flex: 1,
-          flexDirection: "column",
-          gap: "0.25rem",
-          overflowY: "auto",
-          paddingRight: "0.25rem",
-        }}
-      >
-        {visibleItems.map((item) => renderItem(item, 0))}
-      </div>
+    <nav className={styles.nav}>
+      <div className={styles.navInner}>{visibleItems.map((item) => renderItem(item, 0))}</div>
     </nav>
   );
 }

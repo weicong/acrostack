@@ -12,15 +12,43 @@ import {
   MenuPopover,
   MenuItem,
   MenuDivider,
+  makeStyles,
+  Text,
 } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useCurrentUser } from "@/lib/auth/permissions";
 import { getBackendAccountUrl } from "@/lib/runtimeConfig";
 
+const useStyles = makeStyles({
+  userName: {
+    maxWidth: "8rem",
+  },
+  userInfo: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+    padding: "0.375rem 0.5rem",
+  },
+  email: {
+    color: "var(--colorNeutralForeground3)",
+  },
+  menuLink: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    textDecoration: "none",
+    color: "inherit",
+  },
+  logoutItem: {
+    color: "var(--colorPaletteRedForeground3)",
+  },
+});
+
 export function UserMenu() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const currentUser = useCurrentUser();
+  const styles = useStyles();
 
   const displayName =
     currentUser?.userName ??
@@ -41,71 +69,41 @@ export function UserMenu() {
           aria-label={displayName ?? t("AbpAccount::MyAccount")}
         >
           {displayName && (
-            <span
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                maxWidth: "8rem",
-                fontSize: "0.875rem",
-              }}
-            >
+            <Text truncate className={styles.userName}>
               {displayName}
-            </span>
+            </Text>
           )}
         </Button>
       </MenuTrigger>
       <MenuPopover>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.25rem",
-            padding: "0.375rem 0.5rem",
-          }}
-        >
+        <div className={styles.userInfo}>
           {displayFullName && (
-            <p style={{ fontSize: "0.875rem", fontWeight: 500 }}>{displayFullName}</p>
+            <Text weight="medium" block>
+              {displayFullName}
+            </Text>
           )}
           {displayEmailAddress && (
-            <p style={{ fontSize: "0.75rem", color: "var(--colorNeutralForeground3)" }}>
+            <Text size={200} className={styles.email} block>
               {displayEmailAddress}
-            </p>
+            </Text>
           )}
         </div>
         <MenuDivider />
         <MenuItem>
-          <a
-            href={getBackendAccountUrl("/account/manage")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
+          <a href={getBackendAccountUrl("/account/manage")} className={styles.menuLink}>
             <Settings20Regular />
             {t("AbpAccount::MyAccount")}
           </a>
         </MenuItem>
         <MenuItem>
-          <a
-            href={getBackendAccountUrl("/account/sessions")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
+          <a href={getBackendAccountUrl("/account/sessions")} className={styles.menuLink}>
             <Desktop20Regular />
             {t("AbpAccount::Sessions")}
           </a>
         </MenuItem>
         <MenuDivider />
         <MenuItem
-          style={{ color: "var(--colorPaletteRedForeground3)" }}
+          className={styles.logoutItem}
           onSelect={(e) => {
             e.preventDefault();
             void logout();

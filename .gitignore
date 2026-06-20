@@ -272,3 +272,7 @@ AcroStack/Logs/*
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*
+
+# AI assistants
+.codeartsdoer/
+.trae/

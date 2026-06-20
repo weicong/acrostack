@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Card, CardHeader } from "@fluentui/react-components";
+import { Card, CardHeader, makeStyles, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useAppForm } from "@/components/form";
@@ -19,10 +19,36 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
+const useStyles = makeStyles({
+  body: {
+    padding: "0 1.5rem 1.5rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  errorAlert: {
+    borderRadius: "0.375rem",
+    background: "var(--colorPaletteRedBackground1)",
+    padding: "0.75rem",
+    fontSize: "0.875rem",
+    color: "var(--colorPaletteRedForeground3)",
+  },
+  fullWidthButton: {
+    width: "100%",
+  },
+  link: {
+    fontWeight: 500,
+    color: "var(--colorBrandForegroundLink)",
+  },
+});
+
 export function RegisterPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
   const [rootError, setRootError] = useState<string | null>(null);
+  const styles = useStyles();
 
   const form = useAppForm({
     defaultValues: {
@@ -57,35 +83,22 @@ export function RegisterPage() {
   return (
     <Card>
       <CardHeader
-        header={
-          <span style={{ fontWeight: 600, fontSize: "1.125rem" }}>{t("AbpAccount::Register")}</span>
-        }
+        header={<Text weight="semibold">{t("AbpAccount::Register")}</Text>}
         description={
-          <span style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
-            {t("AbpAccount::RegisterSubtitle", "Create a new account")}
-          </span>
+          <Text size={200}>{t("AbpAccount::RegisterSubtitle", "Create a new account")}</Text>
         }
       />
-      <div style={{ padding: "0 1.5rem 1.5rem" }}>
+      <div className={styles.body}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             void form.handleSubmit();
           }}
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          className={styles.form}
         >
           {rootError && (
-            <div
-              style={{
-                borderRadius: "0.375rem",
-                background: "var(--colorPaletteRedBackground1)",
-                padding: "0.75rem",
-                fontSize: "0.875rem",
-                color: "var(--colorPaletteRedForeground3)",
-              }}
-              role="alert"
-            >
+            <div className={styles.errorAlert} role="alert">
               {rootError}
             </div>
           )}
@@ -129,23 +142,17 @@ export function RegisterPage() {
             )}
           />
           <form.AppForm>
-            <form.SubmitButton label={t("AbpAccount::Register")} style={{ width: "100%" }} />
+            <form.SubmitButton
+              label={t("AbpAccount::Register")}
+              className={styles.fullWidthButton}
+            />
           </form.AppForm>
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "var(--colorNeutralForeground3)",
-            }}
-          >
+          <Text as="p" size={200} align="center" block>
             {t("AbpAccount::AlreadyHaveAnAccount", "Already have an account?")}{" "}
-            <Link
-              to="/account/login"
-              style={{ fontWeight: 500, color: "var(--colorBrandForegroundLink)" }}
-            >
+            <Link to="/account/login" className={styles.link}>
               {t("AbpAccount::Login")}
             </Link>
-          </p>
+          </Text>
         </form>
       </div>
     </Card>
