@@ -13,7 +13,7 @@ import { RegisterPage } from "@/pages/account/RegisterPage";
 import { ForgotPasswordPage } from "@/pages/account/ForgotPasswordPage";
 import { ResetPasswordPage } from "@/pages/account/ResetPasswordPage";
 import { IdentityLayout } from "@/components/identity/IdentityLayout";
-import { UsersPage } from "@/pages/identity/users/UsersPage";
+import { UsersPage } from "@/pages/identity/UsersPage";
 import { BooksPage } from "@/pages/books/BooksPage";
 import { authGuard, createPermissionGuard } from "@/lib/routing/guards";
 

@@ -2,7 +2,8 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import type { DataGridProps } from "@fluentui/react-components";
 import { useAppUserGetList } from "@/api/hooks/appUser/useAppUserGetList";
-import { UsersDataGrid } from "./UsersDataGrid";
+import { UserFilters } from "./components/UserFilters";
+import { UserTable } from "./components/UserTable";
 
 const PAGE_SIZE = 100;
 
@@ -38,7 +39,8 @@ export function UsersPage() {
   return (
     <div>
       <h1 id="users-heading">{t("AbpIdentity::Users")}</h1>
-      <UsersDataGrid
+      <UserFilters />
+      <UserTable
         users={query.data?.items ?? []}
         sortState={sortState}
         onSortChange={onSortChange}

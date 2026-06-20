@@ -1,17 +1,6 @@
 import { useTranslation } from "react-i18next";
-import {
-  Avatar,
-  Badge,
-  DataGrid,
-  DataGridBody,
-  DataGridCell,
-  DataGridHeader,
-  DataGridHeaderCell,
-  DataGridRow,
-  TableCellLayout,
-  createTableColumn,
-} from "@fluentui/react-components";
-import type { DataGridProps, TableColumnDefinition } from "@fluentui/react-components";
+import { Avatar, Badge, TableCellLayout, createTableColumn } from "@fluentui/react-components";
+import type { TableColumnDefinition } from "@fluentui/react-components";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
@@ -34,7 +23,7 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   );
 }
 
-function useUserColumns() {
+export function useUserColumns() {
   const { t } = useTranslation();
 
   return [
@@ -75,46 +64,4 @@ function useUserColumns() {
       renderCell: (item) => <UserStatusBadge isActive={item.isActive} />,
     }),
   ] as TableColumnDefinition<UserItem>[];
-}
-
-type UsersDataGridProps = {
-  users: UserItem[];
-  sortState: Parameters<NonNullable<DataGridProps["onSortChange"]>>[1];
-  onSortChange: DataGridProps["onSortChange"];
-  ariaLabelledBy?: string;
-};
-
-export function UsersDataGrid({
-  users,
-  sortState,
-  onSortChange,
-  ariaLabelledBy,
-}: UsersDataGridProps) {
-  const columns = useUserColumns();
-
-  return (
-    <DataGrid
-      items={users}
-      columns={columns}
-      sortable
-      sortState={sortState}
-      onSortChange={onSortChange}
-      getRowId={(item) => item.id ?? ""}
-      aria-labelledby={ariaLabelledBy}
-      style={{ minWidth: "600px" }}
-    >
-      <DataGridHeader>
-        <DataGridRow>
-          {({ renderHeaderCell }) => <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>}
-        </DataGridRow>
-      </DataGridHeader>
-      <DataGridBody<UserItem>>
-        {({ item, rowId }) => (
-          <DataGridRow<UserItem> key={rowId}>
-            {({ renderCell }) => <DataGridCell>{renderCell(item)}</DataGridCell>}
-          </DataGridRow>
-        )}
-      </DataGridBody>
-    </DataGrid>
-  );
 }
