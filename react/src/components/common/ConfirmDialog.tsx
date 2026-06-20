@@ -3,8 +3,11 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
+  DialogContent,
   DialogSurface,
   DialogTitle,
+  DialogTrigger,
+  useId,
 } from "@fluentui/react-components";
 
 interface ConfirmDialogProps {
@@ -30,32 +33,34 @@ function ConfirmDialog({
   onConfirm,
   isPending = false,
 }: ConfirmDialogProps) {
+  const dialogId = useId("confirm-");
+
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface>
+      <DialogSurface aria-labelledby={`${dialogId}-title`} aria-describedby={`${dialogId}-content`}>
         <DialogBody>
-          <DialogTitle>{title}</DialogTitle>
-          {description && (
-            <p style={{ fontSize: "0.875rem", color: "var(--colorNeutralForeground3)" }}>
-              {description}
-            </p>
-          )}
+          <DialogTitle id={`${dialogId}-title`}>{title}</DialogTitle>
+          {description && <DialogContent id={`${dialogId}-content`}>{description}</DialogContent>}
           <DialogActions>
-            <Button appearance="secondary" onClick={() => onOpenChange(false)} disabled={isPending}>
-              {cancelLabel}
-            </Button>
-            <Button
-              appearance={variant === "destructive" ? "primary" : "primary"}
-              style={
-                variant === "destructive"
-                  ? { color: "var(--colorPaletteRedForeground3)" }
-                  : undefined
-              }
-              onClick={onConfirm}
-              disabled={isPending}
-            >
-              {confirmLabel}
-            </Button>
+            <DialogTrigger disableButtonEnhancement>
+              <Button
+                appearance="primary"
+                disabled={isPending}
+                onClick={onConfirm}
+                style={
+                  variant === "destructive"
+                    ? { color: "var(--colorPaletteRedForeground3)" }
+                    : undefined
+                }
+              >
+                {confirmLabel}
+              </Button>
+            </DialogTrigger>
+            <DialogTrigger disableButtonEnhancement>
+              <Button appearance="secondary" disabled={isPending}>
+                {cancelLabel}
+              </Button>
+            </DialogTrigger>
           </DialogActions>
         </DialogBody>
       </DialogSurface>
