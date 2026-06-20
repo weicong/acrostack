@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, loadEnv } from "vite-plus";
 import react from "@vitejs/plugin-react";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 function copyDynamicEnv() {
   return {
@@ -22,7 +23,16 @@ export default defineConfig((({ mode }) => {
   const authUrl = env.VITE_AUTH_URL ?? env.VITE_API_URL ?? "https://localhost:44320";
 
   return {
-    plugins: [copyDynamicEnv(), react()],
+    plugins: [
+      tanstackRouter({
+        target: "react",
+        autoCodeSplitting: true,
+        routesDirectory: "./src/routes",
+        generatedRouteTree: "./src/routeTree.gen.ts",
+      }),
+      copyDynamicEnv(),
+      react(),
+    ],
     resolve: {
       dedupe: ["react", "react-dom"],
       alias: {

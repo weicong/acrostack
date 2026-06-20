@@ -195,6 +195,8 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     });
   };
 
+  const styles = useStyles();
+
   const renderItem = (item: RouteConfigItem, depth: number) => {
     const Icon = item.icon as
       | ComponentType<{ className?: string; style?: React.CSSProperties }>
@@ -203,7 +205,6 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
     const visibleChildren = item.children?.filter(isItemVisible);
     const hasChildren = visibleChildren && visibleChildren.length > 0;
-    const styles = useStyles();
 
     if (item.children && !hasChildren) {
       return null;
@@ -295,8 +296,6 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       </Link>
     );
   };
-
-  const styles = useStyles();
 
   return (
     <nav className={styles.nav}>

@@ -1,0 +1,9 @@
+import { createRoute } from "@tanstack/react-router";
+import { Route as accountRoute } from "./route";
+import { ResetPasswordPage } from "@/pages/account/ResetPasswordPage";
+
+export const Route = createRoute({
+  getParentRoute: () => accountRoute,
+  path: "/reset-password",
+  component: ResetPasswordPage,
+});

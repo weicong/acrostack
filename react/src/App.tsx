@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RouterProvider } from "@tanstack/react-router";
-import { router } from "@/routes/router";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from "@/routeTree.gen";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { Toaster } from "@fluentui/react-components";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
@@ -13,6 +13,14 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
   return (
