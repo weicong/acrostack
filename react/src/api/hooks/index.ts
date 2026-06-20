@@ -46,6 +46,11 @@ export {
   useAccountVerifyPasswordResetToken,
 } from "./account/useAccountVerifyPasswordResetToken.ts";
 export {
+  appUserDeleteMutationKey,
+  appUserDeleteMutationOptions,
+  useAppUserDelete,
+} from "./appUser/useAppUserDelete.ts";
+export {
   appUserGetListQueryKey,
   appUserGetListQueryOptions,
   useAppUserGetList,

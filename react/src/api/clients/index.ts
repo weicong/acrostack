@@ -15,6 +15,7 @@ export { accountResetPassword } from "./account/accountResetPassword.ts";
 export { accountSendPasswordResetCode } from "./account/accountSendPasswordResetCode.ts";
 export { accountVerifyPasswordResetToken } from "./account/accountVerifyPasswordResetToken.ts";
 export { appUser } from "./appUser/appUser.ts";
+export { appUserDelete } from "./appUser/appUserDelete.ts";
 export { appUserGetList } from "./appUser/appUserGetList.ts";
 export { book } from "./book/book.ts";
 export { bookCreate } from "./book/bookCreate.ts";

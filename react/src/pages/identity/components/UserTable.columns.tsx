@@ -1,6 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { Avatar, Badge, TableCellLayout, createTableColumn } from "@fluentui/react-components";
+import {
+  Avatar,
+  Badge,
+  Button,
+  TableCellLayout,
+  createTableColumn,
+} from "@fluentui/react-components";
 import type { TableColumnDefinition } from "@fluentui/react-components";
+import { DeleteRegular } from "@fluentui/react-icons";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
@@ -23,7 +30,7 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   );
 }
 
-export function useUserColumns() {
+export function useUserColumns(onDelete?: (user: UserItem) => void) {
   const { t } = useTranslation();
 
   return [
@@ -63,5 +70,22 @@ export function useUserColumns() {
       renderHeaderCell: () => t("AbpIdentity::Status"),
       renderCell: (item) => <UserStatusBadge isActive={item.isActive} />,
     }),
+    ...(onDelete
+      ? [
+          createTableColumn<UserItem>({
+            columnId: "actions",
+            renderHeaderCell: () => t("AbpIdentity::Actions"),
+            renderCell: (item) => (
+              <Button
+                appearance="subtle"
+                size="small"
+                icon={<DeleteRegular />}
+                onClick={() => onDelete(item)}
+                aria-label={t("AbpIdentity::Delete")}
+              />
+            ),
+          }),
+        ]
+      : []),
   ] as TableColumnDefinition<UserItem>[];
 }

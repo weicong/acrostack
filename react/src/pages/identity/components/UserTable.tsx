@@ -16,11 +16,18 @@ type UserTableProps = {
   users: UserItem[];
   sortState: Parameters<NonNullable<DataGridProps["onSortChange"]>>[1];
   onSortChange: DataGridProps["onSortChange"];
+  onDelete?: (user: UserItem) => void;
   ariaLabelledBy?: string;
 };
 
-export function UserTable({ users, sortState, onSortChange, ariaLabelledBy }: UserTableProps) {
-  const columns = useUserColumns();
+export function UserTable({
+  users,
+  sortState,
+  onSortChange,
+  onDelete,
+  ariaLabelledBy,
+}: UserTableProps) {
+  const columns = useUserColumns(onDelete);
 
   return (
     <DataGrid

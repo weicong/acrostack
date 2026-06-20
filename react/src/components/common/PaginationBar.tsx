@@ -1,4 +1,4 @@
-import { Button, Input, Select, Text, Tooltip } from "@fluentui/react-components";
+import { Button, Input, Select, Text, Tooltip, Divider } from "@fluentui/react-components";
 import {
   ChevronLeftRegular,
   ChevronRightRegular,
@@ -56,11 +56,11 @@ export function PaginationBar({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "8px 0",
+        paddingBlock: "var(--spacingVerticalS)",
         userSelect: "none",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--spacingHorizontalM)" }}>
         <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
           {startItem}-{endItem} / {total}
         </Text>
@@ -69,7 +69,7 @@ export function PaginationBar({
             value={String(pageSize)}
             onChange={(_, data) => onPageSizeChange(Number(data.value))}
             size="small"
-            style={{ width: 100 }}
+            style={{ width: "var(--spacingHorizontalXXXL)" }}
           >
             {PAGE_SIZE_OPTIONS.map((size) => (
               <option key={size} value={String(size)}>
@@ -80,7 +80,7 @@ export function PaginationBar({
         )}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--spacingHorizontalXS)" }}>
         <Tooltip content="首页" relationship="label">
           <Button
             appearance="subtle"
@@ -105,7 +105,10 @@ export function PaginationBar({
             <Text
               key={`ellipsis-${i}`}
               size={200}
-              style={{ padding: "0 4px", color: "var(--colorNeutralForeground3)" }}
+              style={{
+                paddingInline: "var(--spacingHorizontalXS)",
+                color: "var(--colorNeutralForeground3)",
+              }}
             >
               ...
             </Text>
@@ -115,7 +118,6 @@ export function PaginationBar({
               appearance={page === currentPage ? "primary" : "subtle"}
               size="small"
               onClick={() => onPageChange(page - 1)}
-              style={{ minWidth: 32, fontWeight: page === currentPage ? 700 : 400 }}
             >
               {page}
             </Button>
@@ -142,13 +144,14 @@ export function PaginationBar({
         </Tooltip>
 
         {pageCount > 1 && (
-          <div style={{ display: "flex", alignItems: "center", gap: 4, marginLeft: 8 }}>
+          <>
+            <Divider vertical style={{ height: "var(--spacingVerticalL)" }} />
             <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
               跳至
             </Text>
             <Input
               size="small"
-              style={{ width: 52 }}
+              style={{ width: "var(--spacingHorizontalXXL)" }}
               value={jumpValue}
               onChange={(_, data) => setJumpValue(data.value)}
               onKeyDown={(e) => {
@@ -164,7 +167,7 @@ export function PaginationBar({
             <Text size={200} style={{ color: "var(--colorNeutralForeground3)" }}>
               页
             </Text>
-          </div>
+          </>
         )}
       </div>
     </div>

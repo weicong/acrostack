@@ -25,7 +25,13 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
   };
 
   return (
-    <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "var(--spacingHorizontalS)",
+        marginBlockEnd: "var(--spacingVerticalS)",
+      }}
+    >
       <Input
         placeholder={t("AbpIdentity::Search")}
         value={draft}

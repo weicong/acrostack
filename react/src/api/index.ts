@@ -324,6 +324,38 @@ export type { AcroStackEntitiesBooksBookType } from "./models/acroStack/entities
 export type { AcroStackServicesDtosBooksBookDto } from "./models/acroStack/services/dtos/books/BookDto.ts";
 export type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "./models/acroStack/services/dtos/books/CreateUpdateBookDto.ts";
 export type {
+  AppUserDeletePathId,
+  AppUserDeleteRequestConfig,
+  AppUserDeleteResponse,
+  AppUserDeleteResponses,
+  AppUserDeleteStatus200,
+  AppUserDeleteStatus204,
+  AppUserDeleteStatus400,
+  AppUserDeleteStatus400Json,
+  AppUserDeleteStatus400Json2,
+  AppUserDeleteStatus400Plain,
+  AppUserDeleteStatus401,
+  AppUserDeleteStatus401Json,
+  AppUserDeleteStatus401Json2,
+  AppUserDeleteStatus401Plain,
+  AppUserDeleteStatus403,
+  AppUserDeleteStatus403Json,
+  AppUserDeleteStatus403Json2,
+  AppUserDeleteStatus403Plain,
+  AppUserDeleteStatus404,
+  AppUserDeleteStatus404Json,
+  AppUserDeleteStatus404Json2,
+  AppUserDeleteStatus404Plain,
+  AppUserDeleteStatus500,
+  AppUserDeleteStatus500Json,
+  AppUserDeleteStatus500Json2,
+  AppUserDeleteStatus500Plain,
+  AppUserDeleteStatus501,
+  AppUserDeleteStatus501Json,
+  AppUserDeleteStatus501Json2,
+  AppUserDeleteStatus501Plain,
+} from "./models/appUser/AppUserDelete.ts";
+export type {
   AppUserGetListQueryFilter,
   AppUserGetListQueryMaxResultCount,
   AppUserGetListQuerySkipCount,
@@ -2542,6 +2574,7 @@ export { accountResetPassword } from "./clients/account/accountResetPassword.ts"
 export { accountSendPasswordResetCode } from "./clients/account/accountSendPasswordResetCode.ts";
 export { accountVerifyPasswordResetToken } from "./clients/account/accountVerifyPasswordResetToken.ts";
 export { appUser } from "./clients/appUser/appUser.ts";
+export { appUserDelete } from "./clients/appUser/appUserDelete.ts";
 export { appUserGetList } from "./clients/appUser/appUserGetList.ts";
 export { book } from "./clients/book/book.ts";
 export { bookCreate } from "./clients/book/bookCreate.ts";
@@ -2659,6 +2692,11 @@ export {
   accountVerifyPasswordResetTokenMutationOptions,
   useAccountVerifyPasswordResetToken,
 } from "./hooks/account/useAccountVerifyPasswordResetToken.ts";
+export {
+  appUserDeleteMutationKey,
+  appUserDeleteMutationOptions,
+  useAppUserDelete,
+} from "./hooks/appUser/useAppUserDelete.ts";
 export {
   appUserGetListQueryKey,
   appUserGetListQueryOptions,

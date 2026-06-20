@@ -46,4 +46,10 @@ public class AppUserAppService : ApplicationService, IAppUserAppService
 
         return new PagedResultDto<AppUserDto>(totalCount, ObjectMapper.Map<List<AppUser>, List<AppUserDto>>(users));
     }
+
+    [Authorize(IdentityPermissions.Users.Delete)]
+    public async Task DeleteAsync(Guid id)
+    {
+        await _appUserRepository.DeleteAsync(id);
+    }
 }
