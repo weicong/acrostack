@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 import type { DataGridProps } from "@fluentui/react-components";
 import { useAppUserGetList } from "@/api/hooks/appUser/useAppUserGetList";
@@ -14,22 +14,20 @@ const COLUMN_ID_TO_API_FIELD: Record<string, string> = {
   isActive: "IsActive",
 };
 
-type SortState = Parameters<NonNullable<DataGridProps["onSortChange"]>>[1];
-
 export function UsersPage() {
   const { t } = useTranslation();
-  const [sortState, setSortState] = useState<SortState | undefined>();
+  const [sortState, setSortState] = React.useState<
+    Parameters<NonNullable<DataGridProps["onSortChange"]>>[1]
+  >({
+    sortColumn: "userName",
+    sortDirection: "ascending",
+  });
 
-  const onSortChange = useCallback<NonNullable<DataGridProps["onSortChange"]>>(
-    (_e, nextSortState) => {
-      setSortState(nextSortState);
-    },
-    [],
-  );
+  const onSortChange: DataGridProps["onSortChange"] = (_e, nextSortState) => {
+    setSortState(nextSortState);
+  };
 
-  const sortingParam = sortState
-    ? `${COLUMN_ID_TO_API_FIELD[sortState.sortColumn ?? ""] ?? sortState.sortColumn ?? ""} ${sortState.sortDirection === "ascending" ? "asc" : "desc"}`
-    : undefined;
+  const sortingParam = `${COLUMN_ID_TO_API_FIELD[sortState.sortColumn ?? ""] ?? sortState.sortColumn ?? ""} ${sortState.sortDirection === "ascending" ? "asc" : "desc"}`;
 
   const query = useAppUserGetList({
     Sorting: sortingParam,
@@ -40,10 +38,8 @@ export function UsersPage() {
   return (
     <div>
       <h1 id="users-heading">{t("AbpIdentity::Users")}</h1>
-      <p>{t("AbpIdentity::UserDescription")}</p>
       <UsersDataGrid
         users={query.data?.items ?? []}
-        isLoading={query.isLoading}
         sortState={sortState}
         onSortChange={onSortChange}
         ariaLabelledBy="users-heading"

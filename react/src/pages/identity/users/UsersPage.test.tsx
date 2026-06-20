@@ -69,14 +69,14 @@ describe("UsersPage", () => {
     } as any);
   });
 
-  it("shows loading state while fetching", () => {
+  it("renders data grid even while loading", () => {
     vi.mocked(useAppUserGetList).mockReturnValue({
       data: undefined,
       isLoading: true,
       error: null,
     } as any);
     renderPage();
-    expect(screen.getByText(/AbpAccount::PleaseWait/i)).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 
   it("renders user data grid with data", async () => {
@@ -103,12 +103,14 @@ describe("UsersPage", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("initial fetch has no sorting param", async () => {
+  it("initial fetch has default sorting by userName asc", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
-    expect(useAppUserGetList).toHaveBeenCalledWith(expect.objectContaining({ Sorting: undefined }));
+    expect(useAppUserGetList).toHaveBeenCalledWith(
+      expect.objectContaining({ Sorting: "UserName asc" }),
+    );
   });
 
   it("clicking a sortable column header triggers re-fetch with sorting asc", async () => {

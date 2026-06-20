@@ -10,12 +10,13 @@ import {
   DataGridRow,
   TableCellLayout,
   createTableColumn,
-  Spinner,
 } from "@fluentui/react-components";
 import type { DataGridProps, TableColumnDefinition } from "@fluentui/react-components";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
+
+const preserveServerOrder = (_a: UserItem, _b: UserItem) => 0;
 
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   const { t } = useTranslation();
@@ -32,8 +33,6 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
     </Badge>
   );
 }
-
-const preserveServerOrder = (_a: UserItem, _b: UserItem) => 0;
 
 function useUserColumns() {
   const { t } = useTranslation();
@@ -80,29 +79,18 @@ function useUserColumns() {
 
 type UsersDataGridProps = {
   users: UserItem[];
-  isLoading: boolean;
-  sortState: Parameters<NonNullable<DataGridProps["onSortChange"]>>[1] | undefined;
-  onSortChange: NonNullable<DataGridProps["onSortChange"]>;
+  sortState: Parameters<NonNullable<DataGridProps["onSortChange"]>>[1];
+  onSortChange: DataGridProps["onSortChange"];
   ariaLabelledBy?: string;
 };
 
 export function UsersDataGrid({
   users,
-  isLoading,
   sortState,
   onSortChange,
   ariaLabelledBy,
 }: UsersDataGridProps) {
-  const { t } = useTranslation();
   const columns = useUserColumns();
-
-  if (isLoading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", padding: "2rem" }}>
-        <Spinner size="medium" label={t("AbpAccount::PleaseWait")} />
-      </div>
-    );
-  }
 
   return (
     <DataGrid
@@ -112,7 +100,6 @@ export function UsersDataGrid({
       sortState={sortState}
       onSortChange={onSortChange}
       getRowId={(item) => item.id ?? ""}
-      focusMode="composite"
       aria-labelledby={ariaLabelledBy}
       style={{ minWidth: "600px" }}
     >
