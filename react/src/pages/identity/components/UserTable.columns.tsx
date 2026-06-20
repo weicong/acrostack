@@ -40,6 +40,12 @@ export function useUserColumns() {
       ),
     }),
     createTableColumn<UserItem>({
+      columnId: "name",
+      compare: preserveServerOrder,
+      renderHeaderCell: () => t("AbpIdentity::DisplayName"),
+      renderCell: (item) => `${item.name ?? ""} ${item.surname ?? ""}`.trim() || "-",
+    }),
+    createTableColumn<UserItem>({
       columnId: "email",
       compare: preserveServerOrder,
       renderHeaderCell: () => t("AbpIdentity::Email"),
@@ -50,12 +56,6 @@ export function useUserColumns() {
       compare: preserveServerOrder,
       renderHeaderCell: () => t("AbpIdentity::PhoneNumber"),
       renderCell: (item) => item.phoneNumber ?? "-",
-    }),
-    createTableColumn<UserItem>({
-      columnId: "name",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::Name"),
-      renderCell: (item) => `${item.name ?? ""} ${item.surname ?? ""}`.trim() || "-",
     }),
     createTableColumn<UserItem>({
       columnId: "isActive",
