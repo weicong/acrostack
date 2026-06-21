@@ -1,5 +1,5 @@
 import { Input, Button, makeStyles } from "@fluentui/react-components";
-import { SearchRegular, DismissRegular } from "@fluentui/react-icons";
+import { AddRegular, SearchRegular, DismissRegular } from "@fluentui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,14 +8,19 @@ const useStyles = makeStyles({
     display: "flex",
     gap: "var(--spacingHorizontalS)",
     marginBlockEnd: "var(--spacingVerticalS)",
+    alignItems: "center",
+  },
+  spacer: {
+    flex: 1,
   },
 });
 
 type UserFiltersProps = {
   onFilterChange: (filter: string) => void;
+  onCreateClick?: () => void;
 };
 
-export function UserFilters({ onFilterChange }: UserFiltersProps) {
+export function UserFilters({ onFilterChange, onCreateClick }: UserFiltersProps) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState("");
   const [applied, setApplied] = useState("");
@@ -55,6 +60,12 @@ export function UserFilters({ onFilterChange }: UserFiltersProps) {
       {applied && (
         <Button appearance="subtle" size="small" icon={<DismissRegular />} onClick={handleReset}>
           {t("AbpIdentity::Reset")}
+        </Button>
+      )}
+      <div className={styles.spacer} />
+      {onCreateClick && (
+        <Button appearance="primary" icon={<AddRegular />} onClick={onCreateClick}>
+          {t("AbpIdentity::NewUser")}
         </Button>
       )}
     </div>

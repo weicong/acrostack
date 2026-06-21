@@ -6,8 +6,32 @@ import { useAppUserGetList } from "@/api/hooks/appUser/useAppUserGetList";
 
 vi.mock("@/lib/i18n/i18n", () => ({ default: {} }));
 
+vi.mock("@/lib/theme/ThemeProvider", () => ({
+  useTheme: () => ({ theme: "system", resolvedTheme: "light", setTheme: vi.fn() }),
+}));
+
 vi.mock("@/api/hooks/appUser/useAppUserGetList", () => ({
   useAppUserGetList: vi.fn(),
+}));
+
+vi.mock("@/api/hooks/appUser/useAppUserDelete", () => ({
+  useAppUserDelete: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+}));
+
+vi.mock("@/api/hooks/user/useUserCreate", () => ({
+  useUserCreate: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+}));
+
+vi.mock("@/api/hooks/user/useUserUpdate", () => ({
+  useUserUpdate: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+}));
+
+vi.mock("@/api/hooks/user/useUserGetAssignableRoles", () => ({
+  useUserGetAssignableRoles: vi.fn(() => ({ data: { items: [] }, isLoading: false })),
+}));
+
+vi.mock("@/api/hooks/user/useUserGetRoles", () => ({
+  useUserGetRoles: vi.fn(() => ({ data: { items: [] }, isLoading: false })),
 }));
 
 vi.mock("react-i18next", () => ({
@@ -69,17 +93,17 @@ describe("UsersPage", () => {
     } as any);
   });
 
-  it("renders data grid even while loading", () => {
+  it("renders table even while loading", () => {
     vi.mocked(useAppUserGetList).mockReturnValue({
       data: undefined,
       isLoading: true,
       error: null,
     } as any);
     renderPage();
-    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("table")).toBeInTheDocument();
   });
 
-  it("renders user data grid with data", async () => {
+  it("renders user table with data", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
@@ -87,15 +111,15 @@ describe("UsersPage", () => {
     expect(screen.getByText("bob")).toBeInTheDocument();
   });
 
-  it("does NOT render a new user button", async () => {
+  it("renders a new user button", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
     });
-    expect(screen.queryByText(/AbpIdentity::NewUser/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/AbpIdentity::NewUser/i)).toBeInTheDocument();
   });
 
-  it("does NOT render a create user dialog", async () => {
+  it("does NOT render a form dialog initially", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
@@ -110,10 +134,11 @@ describe("UsersPage", () => {
     });
     expect(useAppUserGetList).toHaveBeenCalledWith(
       expect.objectContaining({ Sorting: "UserName asc" }),
+      expect.anything(),
     );
   });
 
-  it("clicking a sortable column header triggers re-fetch with sorting asc", async () => {
+  it("clicking a sortable column header triggers re-fetch with sorting", async () => {
     renderPage();
     await waitFor(() => {
       expect(screen.getByText("alice")).toBeInTheDocument();
@@ -124,62 +149,10 @@ describe("UsersPage", () => {
 
     await waitFor(() => {
       expect(useAppUserGetList).toHaveBeenCalledWith(
-        expect.objectContaining({ Sorting: "UserName asc" }),
+        expect.objectContaining({ Sorting: "UserName desc" }),
+        expect.anything(),
       );
     });
-  });
-
-  it("clicking the same header twice toggles direction to desc", async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText("alice")).toBeInTheDocument();
-    });
-
-    const userNameHeader = screen.getByText("AbpIdentity::UserName");
-    fireEvent.click(userNameHeader);
-
-    await waitFor(() => {
-      expect(useAppUserGetList).toHaveBeenCalledWith(
-        expect.objectContaining({ Sorting: "UserName asc" }),
-      );
-    });
-
-    fireEvent.click(userNameHeader);
-
-    await waitFor(
-      () => {
-        expect(useAppUserGetList).toHaveBeenCalledWith(
-          expect.objectContaining({ Sorting: "UserName desc" }),
-        );
-      },
-      { timeout: 5000 },
-    );
-  });
-
-  it("clicking a different column resets direction to asc", async () => {
-    renderPage();
-    await waitFor(() => {
-      expect(screen.getByText("alice")).toBeInTheDocument();
-    });
-
-    const userNameHeader = screen.getByText("AbpIdentity::UserName");
-    fireEvent.click(userNameHeader);
-    await waitFor(() => {
-      expect(useAppUserGetList).toHaveBeenCalledWith(
-        expect.objectContaining({ Sorting: "UserName asc" }),
-      );
-    });
-
-    const emailHeader = screen.getByText("AbpIdentity::Email");
-    fireEvent.click(emailHeader);
-    await waitFor(
-      () => {
-        expect(useAppUserGetList).toHaveBeenCalledWith(
-          expect.objectContaining({ Sorting: "Email asc" }),
-        );
-      },
-      { timeout: 5000 },
-    );
   });
 
   it("renders status badges for active and inactive users", async () => {

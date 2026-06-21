@@ -1,13 +1,4 @@
-import {
-  DataGrid,
-  DataGridBody,
-  DataGridCell,
-  DataGridHeader,
-  DataGridHeaderCell,
-  DataGridRow,
-  makeStyles,
-} from "@fluentui/react-components";
-import type { DataGridProps } from "@fluentui/react-components";
+import DataTable, { type TableColumn, type SortOrder } from "react-data-table-component";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import { useUserColumns } from "./UserTable.columns";
 
@@ -15,51 +6,51 @@ type UserItem = AcroStackAppUsersAppUserDto;
 
 type UserTableProps = {
   users: UserItem[];
-  sortState: Parameters<NonNullable<DataGridProps["onSortChange"]>>[1];
-  onSortChange: DataGridProps["onSortChange"];
+  loading: boolean;
+  totalRows: number;
+  resetPage: boolean;
+  defaultSortFieldId: string;
+  defaultSortAsc: boolean;
+  onPageChange: (page: number) => void;
+  onPerPageChange: (perPage: number, page: number) => void;
+  onSort: (column: TableColumn<UserItem>, sortDirection: SortOrder) => void;
   onDelete?: (user: UserItem) => void;
-  ariaLabelledBy?: string;
+  onEdit?: (user: UserItem) => void;
 };
-
-const useStyles = makeStyles({
-  grid: {
-    minWidth: "600px",
-  },
-});
 
 export function UserTable({
   users,
-  sortState,
-  onSortChange,
+  loading,
+  totalRows,
+  resetPage,
+  defaultSortFieldId,
+  defaultSortAsc,
+  onPageChange,
+  onPerPageChange,
+  onSort,
   onDelete,
-  ariaLabelledBy,
+  onEdit,
 }: UserTableProps) {
-  const columns = useUserColumns(onDelete);
-  const styles = useStyles();
+  const columns = useUserColumns(onDelete, onEdit);
 
   return (
-    <DataGrid
-      items={users}
+    <DataTable
       columns={columns}
-      sortable
-      sortState={sortState}
-      onSortChange={onSortChange}
-      getRowId={(item) => item.id ?? ""}
-      aria-labelledby={ariaLabelledBy}
-      className={styles.grid}
-    >
-      <DataGridHeader>
-        <DataGridRow>
-          {({ renderHeaderCell }) => <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>}
-        </DataGridRow>
-      </DataGridHeader>
-      <DataGridBody<UserItem>>
-        {({ item, rowId }) => (
-          <DataGridRow<UserItem> key={rowId}>
-            {({ renderCell }) => <DataGridCell>{renderCell(item)}</DataGridCell>}
-          </DataGridRow>
-        )}
-      </DataGridBody>
-    </DataGrid>
+      data={users}
+      progressPending={loading}
+      pagination
+      paginationServer
+      paginationTotalRows={totalRows}
+      paginationResetDefaultPage={resetPage}
+      paginationPerPage={10}
+      paginationRowsPerPageOptions={[10, 20, 50, 100]}
+      onChangePage={onPageChange}
+      onChangeRowsPerPage={onPerPageChange}
+      sortServer
+      defaultSortFieldId={defaultSortFieldId}
+      defaultSortAsc={defaultSortAsc}
+      onSort={onSort}
+      highlightOnHover
+    />
   );
 }

@@ -1,18 +1,10 @@
 import { useTranslation } from "react-i18next";
-import {
-  Avatar,
-  Badge,
-  Button,
-  TableCellLayout,
-  createTableColumn,
-} from "@fluentui/react-components";
-import type { TableColumnDefinition } from "@fluentui/react-components";
-import { DeleteRegular } from "@fluentui/react-icons";
+import { Avatar, Badge, Button } from "@fluentui/react-components";
+import { DeleteRegular, EditRegular } from "@fluentui/react-icons";
+import type { TableColumn } from "react-data-table-component";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
-
-const preserveServerOrder = (_a: UserItem, _b: UserItem) => 0;
 
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   const { t } = useTranslation();
@@ -30,62 +22,89 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   );
 }
 
-export function useUserColumns(onDelete?: (user: UserItem) => void) {
+export function useUserColumns(
+  onDelete?: (user: UserItem) => void,
+  onEdit?: (user: UserItem) => void,
+): TableColumn<UserItem>[] {
   const { t } = useTranslation();
 
-  return [
-    createTableColumn<UserItem>({
-      columnId: "userName",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::UserName"),
-      renderCell: (item) => (
-        <TableCellLayout
-          media={<Avatar aria-label={item.userName ?? ""} name={item.userName ?? ""} size={24} />}
-        >
-          {item.userName ?? "-"}
-        </TableCellLayout>
+  const columns: TableColumn<UserItem>[] = [
+    {
+      id: "userName",
+      name: t("AbpIdentity::UserName"),
+      sortable: true,
+      sortField: "UserName",
+      selector: (row) => row.userName ?? "",
+      cell: (row) => (
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Avatar aria-label={row.userName ?? ""} name={row.userName ?? ""} size={24} />
+          <span>{row.userName ?? "-"}</span>
+        </div>
       ),
-    }),
-    createTableColumn<UserItem>({
-      columnId: "name",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::DisplayName"),
-      renderCell: (item) => `${item.name ?? ""} ${item.surname ?? ""}`.trim() || "-",
-    }),
-    createTableColumn<UserItem>({
-      columnId: "email",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::Email"),
-      renderCell: (item) => item.email ?? "-",
-    }),
-    createTableColumn<UserItem>({
-      columnId: "phoneNumber",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::PhoneNumber"),
-      renderCell: (item) => item.phoneNumber ?? "-",
-    }),
-    createTableColumn<UserItem>({
-      columnId: "isActive",
-      compare: preserveServerOrder,
-      renderHeaderCell: () => t("AbpIdentity::Status"),
-      renderCell: (item) => <UserStatusBadge isActive={item.isActive} />,
-    }),
-    ...(onDelete
-      ? [
-          createTableColumn<UserItem>({
-            columnId: "actions",
-            renderHeaderCell: () => t("AbpIdentity::Actions"),
-            renderCell: (item) => (
-              <Button
-                appearance="subtle"
-                size="small"
-                icon={<DeleteRegular />}
-                onClick={() => onDelete(item)}
-                aria-label={t("AbpIdentity::Delete")}
-              />
-            ),
-          }),
-        ]
-      : []),
-  ] as TableColumnDefinition<UserItem>[];
+    },
+    {
+      id: "name",
+      name: t("AbpIdentity::DisplayName"),
+      sortable: true,
+      sortField: "Name",
+      selector: (row) => `${row.name ?? ""} ${row.surname ?? ""}`.trim(),
+      cell: (row) => `${row.name ?? ""} ${row.surname ?? ""}`.trim() || "-",
+    },
+    {
+      id: "email",
+      name: t("AbpIdentity::Email"),
+      sortable: true,
+      sortField: "Email",
+      selector: (row) => row.email ?? "",
+      cell: (row) => row.email ?? "-",
+    },
+    {
+      id: "phoneNumber",
+      name: t("AbpIdentity::PhoneNumber"),
+      sortable: true,
+      sortField: "PhoneNumber",
+      selector: (row) => row.phoneNumber ?? "",
+      cell: (row) => row.phoneNumber ?? "-",
+    },
+    {
+      id: "isActive",
+      name: t("AbpIdentity::Status"),
+      sortable: true,
+      sortField: "IsActive",
+      selector: (row) => (row.isActive ? 1 : 0),
+      cell: (row) => <UserStatusBadge isActive={row.isActive} />,
+    },
+  ];
+
+  if (onDelete || onEdit) {
+    columns.push({
+      id: "actions",
+      name: t("AbpIdentity::Actions"),
+      button: true,
+      cell: (row) => (
+        <div style={{ display: "flex", gap: "0.25rem" }}>
+          {onEdit && (
+            <Button
+              appearance="subtle"
+              size="small"
+              icon={<EditRegular />}
+              onClick={() => onEdit(row)}
+              aria-label={t("AbpIdentity::Edit")}
+            />
+          )}
+          {onDelete && (
+            <Button
+              appearance="subtle"
+              size="small"
+              icon={<DeleteRegular />}
+              onClick={() => onDelete(row)}
+              aria-label={t("AbpIdentity::Delete")}
+            />
+          )}
+        </div>
+      ),
+    });
+  }
+
+  return columns;
 }
