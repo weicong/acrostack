@@ -7,15 +7,8 @@ import {
   DialogSurface,
   DialogTitle,
   DialogTrigger,
-  makeStyles,
   useId,
 } from "@fluentui/react-components";
-
-const useStyles = makeStyles({
-  destructive: {
-    color: "var(--colorPaletteRedForeground3)",
-  },
-});
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -36,12 +29,10 @@ function ConfirmDialog({
   description,
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
-  variant = "default",
   onConfirm,
   isPending = false,
 }: ConfirmDialogProps) {
   const dialogId = useId("confirm-");
-  const styles = useStyles();
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
@@ -51,12 +42,7 @@ function ConfirmDialog({
           {description && <DialogContent id={`${dialogId}-content`}>{description}</DialogContent>}
           <DialogActions>
             <DialogTrigger disableButtonEnhancement>
-              <Button
-                appearance="primary"
-                disabled={isPending}
-                onClick={onConfirm}
-                className={variant === "destructive" ? styles.destructive : undefined}
-              >
+              <Button appearance="primary" disabled={isPending} onClick={onConfirm}>
                 {confirmLabel}
               </Button>
             </DialogTrigger>
