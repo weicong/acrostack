@@ -2,11 +2,20 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { keepPreviousData } from "@tanstack/react-query";
 import DataTable, { type TableColumn, SortOrder } from "react-data-table-component";
-import { Avatar, Badge } from "@fluentui/react-components";
+import { Avatar, Badge, SearchBox, makeStyles } from "@fluentui/react-components";
 import { useAppUserGetList } from "@/api/hooks/appUser/useAppUserGetList";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
+
+const useStyles = makeStyles({
+  toolbar: {
+    display: "flex",
+    gap: "var(--spacingHorizontalS)",
+    marginBlockEnd: "var(--spacingVerticalS)",
+    alignItems: "center",
+  },
+});
 
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   const { t } = useTranslation();
@@ -25,21 +34,31 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
 }
 
 export function UsersPage() {
+  const styles = useStyles();
   const { t } = useTranslation();
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [sortField, setSortField] = useState("UserName");
   const [sortDir, setSortDir] = useState<SortOrder>(SortOrder.ASC);
+  const [filter, setFilter] = useState("");
+  const [resetPage, setResetPage] = useState(false);
 
   const { data, isLoading } = useAppUserGetList(
     {
+      Filter: filter || undefined,
       Sorting: `${sortField} ${sortDir}`,
       SkipCount: (page - 1) * perPage,
       MaxResultCount: perPage,
     },
     { query: { placeholderData: keepPreviousData } },
   );
+
+  const handleSearch = (value: string) => {
+    setFilter(value);
+    setPage(1);
+    setResetPage((prev) => !prev);
+  };
 
   const columns: TableColumn<UserItem>[] = [
     {
@@ -91,6 +110,13 @@ export function UsersPage() {
 
   return (
     <div>
+      <div className={styles.toolbar}>
+        <SearchBox
+          placeholder={t("AbpIdentity::Search")}
+          value={filter}
+          onChange={(_, d) => handleSearch(d.value)}
+        />
+      </div>
       <DataTable
         columns={columns}
         data={data?.items ?? []}
@@ -98,12 +124,15 @@ export function UsersPage() {
         pagination
         paginationServer
         paginationTotalRows={Number(data?.totalCount ?? 0)}
+        paginationResetDefaultPage={resetPage}
         onChangePage={setPage}
         onChangeRowsPerPage={(pp) => {
           setPerPage(pp);
           setPage(1);
         }}
         sortServer
+        defaultSortFieldId="userName"
+        defaultSortAsc
         onSort={(col, dir) => {
           setSortField(col.sortField ?? String(col.id));
           setSortDir(dir);
