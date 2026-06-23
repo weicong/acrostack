@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Avatar, Button, Badge, makeStyles, tokens } from "@fluentui/react-components";
+import { Avatar, Button, Badge, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
 import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
@@ -23,7 +23,9 @@ type UserItem = AcroStackAppUsersAppUserDto;
 const useStyles = makeStyles({
   toolbar: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
   },
   userNameCell: {
     display: "flex",
@@ -149,7 +151,7 @@ function useUsersTable(onEdit: (user: UserItem) => void, onDelete: (id: string) 
     pageCount: query.pageCount,
   });
 
-  return { table, query };
+  return { table, query, tableState };
 }
 
 export function UsersPage() {
@@ -194,11 +196,26 @@ export function UsersPage() {
     );
   }, [deleteUserId, deleteMutation, queryClient]);
 
-  const { table, query } = useUsersTable(handleEdit, handleDelete);
+  const { table, query, tableState } = useUsersTable(handleEdit, handleDelete);
+
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      tableState.state.onGlobalFilterChange(searchValue);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
   return (
     <>
       <div className={styles.toolbar}>
+        <SearchBox
+          placeholder={t("AbpUi::Search")}
+          value={searchValue}
+          onChange={(_, data) => setSearchValue(data.value)}
+          appearance="outline"
+        />
         <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
           {t("AbpIdentity::NewUser")}
         </Button>
