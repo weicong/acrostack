@@ -25,7 +25,10 @@ export interface ComboboxFieldProps {
 }
 
 /**
- * A combobox (searchable dropdown) field bound to a TanStack Form field of type `string`.
+ * A combobox (searchable dropdown) field bound to a TanStack Form field.
+ *
+ * Supports both single-select (`string`) and multiselect (`string[] | null`)
+ * via the `comboboxProps.multiselect` flag.
  */
 export function ComboboxField({
   label,
@@ -35,11 +38,35 @@ export function ComboboxField({
   comboboxProps,
   fieldProps,
 }: ComboboxFieldProps) {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string | string[] | null>();
   const errorMsg = getErrorMessage(field.state.meta);
+  const isMultiselect = !!comboboxProps?.multiselect;
 
-  // Find the display text for the current value
-  const selectedOption = options.find((o) => o.value === field.state.value);
+  const selectedOptions = isMultiselect
+    ? Array.isArray(field.state.value)
+      ? field.state.value
+      : []
+    : field.state.value
+      ? [field.state.value as string]
+      : [];
+
+  const displayValue = isMultiselect
+    ? options
+        .filter((o) => selectedOptions.includes(o.value))
+        .map((o) => o.label)
+        .join(", ")
+    : (options.find((o) => o.value === field.state.value)?.label ?? "");
+
+  const handleSelect = (
+    _e: React.SyntheticEvent,
+    data: { optionValue?: string; selectedOptions: string[] },
+  ) => {
+    if (isMultiselect) {
+      field.handleChange(data.selectedOptions);
+    } else {
+      field.handleChange(data.optionValue ?? "");
+    }
+  };
 
   return (
     <Field
@@ -50,9 +77,9 @@ export function ComboboxField({
       {...fieldProps}
     >
       <Combobox
-        value={selectedOption?.label ?? ""}
-        selectedOptions={field.state.value ? [field.state.value] : []}
-        onOptionSelect={(_e, data) => field.handleChange(data.optionValue ?? "")}
+        value={displayValue}
+        selectedOptions={selectedOptions}
+        onOptionSelect={handleSelect}
         onBlur={field.handleBlur}
         placeholder={placeholder}
         {...comboboxProps}
