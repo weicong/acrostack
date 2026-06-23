@@ -1,35 +1,21 @@
 import { useTranslation } from "react-i18next";
-import { AgGridReact } from "ag-grid-react";
-import type { ColDef, GetRowIdParams, ICellRendererParams } from "ag-grid-enterprise";
+import { useMemo } from "react";
 import { Avatar, Badge, makeStyles } from "@fluentui/react-components";
+import type { ColumnDef } from "@tanstack/react-table";
 import { appUserGetListQueryOptions } from "@/api/hooks/appUser/useAppUserGetList";
-import { agGridTheme, useAgGridDatasource } from "@/components/ag-grid";
+import { useDataTableState } from "@/components/data-table/useDataTableState";
+import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
+import { useDataTable } from "@/components/data-table/useDataTable";
+import { DataTable } from "@/components/data-table/DataTable";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 
 type UserItem = AcroStackAppUsersAppUserDto;
 
 const useStyles = makeStyles({
-  toolbar: {
-    display: "flex",
-    gap: "var(--spacingHorizontalS)",
-    marginBlockEnd: "var(--spacingVerticalS)",
-    alignItems: "center",
-  },
-  spacer: {
-    flex: 1,
-  },
-  gridContainer: {
-    height: "600px",
-    width: "100%",
-  },
   userNameCell: {
     display: "flex",
     alignItems: "center",
     gap: "0.5rem",
-  },
-  actionsCell: {
-    display: "flex",
-    gap: "0.25rem",
   },
 });
 
@@ -49,82 +35,89 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   );
 }
 
-export function UsersPage() {
-  const styles = useStyles();
+function useUsersTable() {
   const { t } = useTranslation();
+  const styles = useStyles();
 
-  const datasource = useAgGridDatasource(appUserGetListQueryOptions);
+  const tableState = useDataTableState({
+    sorting: [{ id: "userName", desc: false }],
+  });
 
-  const columnDefs: ColDef<UserItem>[] = [
-    {
-      colId: "UserName",
-      field: "userName",
-      headerName: t("AbpIdentity::UserName"),
-      cellRenderer: (params: ICellRendererParams<UserItem>) => {
-        const userName = params.data?.userName ?? "";
-        return (
-          <div className={styles.userNameCell}>
-            <Avatar aria-label={userName} name={userName} size={24} />
-            <span>{userName || "-"}</span>
-          </div>
-        );
+  const query = useDataTableQuery<UserItem, AbpGridParams>({
+    queryOptions: appUserGetListQueryOptions,
+    sorting: tableState.state.sorting,
+    pagination: tableState.state.pagination,
+    globalFilter: tableState.state.globalFilter,
+  });
+
+  const columns = useMemo<ColumnDef<UserItem>[]>(
+    () => [
+      {
+        id: "userName",
+        accessorKey: "userName",
+        header: t("AbpIdentity::UserName"),
+        cell: (info) => {
+          const userName = (info.getValue() as string) ?? "";
+          return (
+            <div className={styles.userNameCell}>
+              <Avatar aria-label={userName} name={userName} size={24} />
+              <span>{userName || "-"}</span>
+            </div>
+          );
+        },
       },
-    },
-    {
-      colId: "Name",
-      headerName: t("AbpIdentity::DisplayName"),
-      valueGetter: (params) => {
-        const data = params.data;
-        return `${data?.name ?? ""} ${data?.surname ?? ""}`.trim();
+      {
+        id: "displayName",
+        header: t("AbpIdentity::DisplayName"),
+        accessorFn: (row) => {
+          return `${row.name ?? ""} ${row.surname ?? ""}`.trim() || "-";
+        },
       },
-      valueFormatter: (params) => (params.value ? String(params.value) : "-"),
-    },
-    {
-      colId: "Email",
-      field: "email",
-      headerName: t("AbpIdentity::Email"),
-      valueFormatter: (params) => (params.value ? String(params.value) : "-"),
-    },
-    {
-      colId: "PhoneNumber",
-      field: "phoneNumber",
-      headerName: t("AbpIdentity::PhoneNumber"),
-      valueFormatter: (params) => (params.value ? String(params.value) : "-"),
-    },
-    {
-      colId: "IsActive",
-      field: "isActive",
-      headerName: t("AbpIdentity::Status"),
-      cellRenderer: (params: ICellRendererParams<UserItem>) => (
-        <UserStatusBadge isActive={params.data?.isActive} />
-      ),
-    },
-  ];
+      {
+        id: "email",
+        accessorKey: "email",
+        header: t("AbpIdentity::Email"),
+        cell: (info) => (info.getValue() as string) || "-",
+      },
+      {
+        id: "phoneNumber",
+        accessorKey: "phoneNumber",
+        header: t("AbpIdentity::PhoneNumber"),
+        cell: (info) => (info.getValue() as string) || "-",
+      },
+      {
+        id: "isActive",
+        accessorKey: "isActive",
+        header: t("AbpIdentity::Status"),
+        cell: (info) => <UserStatusBadge isActive={info.getValue() as boolean | undefined} />,
+      },
+    ],
+    [t, styles.userNameCell],
+  );
 
-  const defaultColDef: ColDef<UserItem> = {
-    sortable: true,
-    resizable: true,
-    suppressMovable: true,
-  };
+  const table = useDataTable({
+    data: query.data,
+    columns,
+    rowCount: query.totalCount,
+    getRowId: (row) => row.id ?? "",
+    state: tableState.state,
+    manualPagination: true,
+    manualSorting: true,
+    pageCount: query.pageCount,
+  });
 
-  const getRowId = (params: GetRowIdParams<UserItem>) => params.data.id ?? "";
+  return { table, query, tableState };
+}
+
+export function UsersPage() {
+  const { table, query } = useUsersTable();
 
   return (
-    <div className={styles.gridContainer}>
-      <AgGridReact<UserItem>
-        theme={agGridTheme}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        rowModelType="serverSide"
-        serverSideDatasource={datasource}
-        getRowId={getRowId}
-        pagination
-        paginationPageSize={10}
-        paginationPageSizeSelector={[10, 25, 50, 100]}
-        initialState={{
-          sort: { sortModel: [{ colId: "UserName", sort: "asc" }] },
-        }}
-      />
-    </div>
+    <DataTable
+      table={table}
+      isLoading={query.isLoading}
+      isError={query.isError}
+      errorMessage={query.error ? String(query.error) : undefined}
+    />
   );
 }

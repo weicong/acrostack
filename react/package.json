@@ -21,6 +21,7 @@
     "@tanstack/react-form": "^1.33.0",
     "@tanstack/react-query": "^5.101.0",
     "@tanstack/react-router": "^1.170.16",
+    "@tanstack/react-table": "^8.21.3",
     "@volo/abp-app-config": "^10.4.1",
     "@volo/abp-oidc-auth": "^10.4.1",
     "@volo/abp-react-app-config": "^10.4.1",
