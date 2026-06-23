@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -20,6 +20,8 @@ import { useUserGetRoles } from "@/api/hooks/user/useUserGetRoles";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import { z } from "zod";
 
+// ── Types ───────────────────────────────────────────────────────────
+
 export type UserFormUser = Pick<
   AcroStackAppUsersAppUserDto,
   "id" | "userName" | "name" | "surname" | "email" | "phoneNumber" | "isActive"
@@ -37,6 +39,42 @@ export function toFormUser(dto: AcroStackAppUsersAppUserDto): UserFormUser {
   };
 }
 
+// ── Schemas ─────────────────────────────────────────────────────────
+
+const baseFields = {
+  userName: z.string().min(1).max(256),
+  name: z.string().max(64).nullable(),
+  surname: z.string().max(64).nullable(),
+  email: z.string().min(1).max(256).email(),
+  phoneNumber: z.string().max(16).nullable(),
+  isActive: z.boolean(),
+  lockoutEnabled: z.boolean(),
+  roleNames: z.array(z.string()).nullable(),
+};
+
+const createSchema = z.object({
+  ...baseFields,
+  password: z.string().min(1).max(128),
+});
+
+const updateSchema = z.object({
+  ...baseFields,
+  password: z.string().max(128).nullable(),
+  concurrencyStamp: z.string().nullable(),
+});
+
+// ── Styles ──────────────────────────────────────────────────────────
+
+const useStyles = makeStyles({
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--spacingVerticalM)",
+  },
+});
+
+// ── Props ───────────────────────────────────────────────────────────
+
 type UserFormDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -44,68 +82,67 @@ type UserFormDialogProps = {
   onSuccess: () => void;
 };
 
-const createSchema = z.object({
-  userName: z.string().min(1).max(256),
-  name: z.string().max(64).nullable(),
-  surname: z.string().max(64).nullable(),
-  email: z.string().min(1).max(256).email(),
-  phoneNumber: z.string().max(16).nullable(),
-  isActive: z.boolean(),
-  lockoutEnabled: z.boolean(),
-  roleNames: z.array(z.string()).nullable(),
-  password: z.string().min(1).max(128),
-});
-
-const updateSchema = z.object({
-  userName: z.string().min(1).max(256),
-  name: z.string().max(64).nullable(),
-  surname: z.string().max(64).nullable(),
-  email: z.string().min(1).max(256).email(),
-  phoneNumber: z.string().max(16).nullable(),
-  isActive: z.boolean(),
-  lockoutEnabled: z.boolean(),
-  roleNames: z.array(z.string()).nullable(),
-  password: z.string().max(128).nullable(),
-  concurrencyStamp: z.string().nullable(),
-});
-
-const useStyles = makeStyles({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "var(--spacingHorizontalM)",
-  },
-});
+// ── Dialog Wrapper ──────────────────────────────────────────────────
 
 export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserFormDialogProps) {
   const { t } = useTranslation();
   const dialogId = useId("user-form-");
+  const isEdit = !!user;
+
+  return (
+    <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
+      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+        <DialogBody>
+          <DialogTitle id={`${dialogId}-title`}>
+            {isEdit ? t("AbpIdentity::Edit") : t("AbpIdentity::NewUser")}
+          </DialogTitle>
+          <DialogContent>
+            {open && (
+              <UserFormContent key={user?.id ?? "create"} user={user} onSuccess={onSuccess} />
+            )}
+          </DialogContent>
+        </DialogBody>
+      </DialogSurface>
+    </Dialog>
+  );
+}
+
+// ── Form Content ────────────────────────────────────────────────────
+
+function UserFormContent({ user, onSuccess }: { user?: UserFormUser; onSuccess: () => void }) {
+  const { t } = useTranslation();
   const styles = useStyles();
   const isEdit = !!user;
 
   const createMutation = useUserCreate();
   const updateMutation = useUserUpdate();
+  const isPending = createMutation.isPending || updateMutation.isPending;
 
   const assignableRolesQuery = useUserGetAssignableRoles();
   const userRolesQuery = useUserGetRoles(isEdit ? user.id : undefined);
 
-  const roleOptions: ComboboxOption[] =
-    assignableRolesQuery.data?.items?.map((role) => ({
-      value: role.name ?? "",
-      label: role.name ?? "",
-    })) ?? [];
+  const roleOptions: ComboboxOption[] = useMemo(
+    () =>
+      assignableRolesQuery.data?.items?.map((role) => ({
+        value: role.name ?? "",
+        label: role.name ?? "",
+      })) ?? [],
+    [assignableRolesQuery.data],
+  );
 
-  const currentRoleNames: string[] =
-    userRolesQuery.data?.items?.map((role) => role.name ?? "").filter(Boolean) ?? [];
+  const currentRoleNames: string[] = useMemo(
+    () => userRolesQuery.data?.items?.map((role) => role.name ?? "").filter(Boolean) ?? [],
+    [userRolesQuery.data],
+  );
 
   const form = useAppForm({
     defaultValues: {
-      userName: "",
-      name: "" as string | null,
-      surname: "" as string | null,
-      email: "",
-      phoneNumber: "" as string | null,
-      isActive: true,
+      userName: user?.userName ?? "",
+      name: user?.name ?? null,
+      surname: user?.surname ?? null,
+      email: user?.email ?? "",
+      phoneNumber: user?.phoneNumber ?? null,
+      isActive: user?.isActive ?? true,
       lockoutEnabled: false,
       roleNames: null as string[] | null,
       password: "" as string | null,
@@ -120,19 +157,23 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
       },
     },
     onSubmit: ({ value }) => {
+      const base = {
+        userName: value.userName,
+        name: value.name,
+        surname: value.surname,
+        email: value.email,
+        phoneNumber: value.phoneNumber,
+        isActive: value.isActive,
+        lockoutEnabled: value.lockoutEnabled,
+        roleNames: value.roleNames,
+      };
+
       if (isEdit && user?.id) {
         updateMutation.mutate(
           {
             id: user.id,
             data: {
-              userName: value.userName,
-              name: value.name,
-              surname: value.surname,
-              email: value.email,
-              phoneNumber: value.phoneNumber,
-              isActive: value.isActive,
-              lockoutEnabled: value.lockoutEnabled,
-              roleNames: value.roleNames,
+              ...base,
               password: value.password || undefined,
               concurrencyStamp: value.concurrencyStamp ?? undefined,
             },
@@ -140,132 +181,84 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
           { onSuccess },
         );
       } else {
-        createMutation.mutate(
-          {
-            data: {
-              userName: value.userName,
-              name: value.name,
-              surname: value.surname,
-              email: value.email,
-              phoneNumber: value.phoneNumber,
-              isActive: value.isActive,
-              lockoutEnabled: value.lockoutEnabled,
-              roleNames: value.roleNames,
-              password: value.password!,
-            },
-          },
-          { onSuccess },
-        );
+        createMutation.mutate({ data: { ...base, password: value.password! } }, { onSuccess });
       }
     },
   });
 
-  const isPending = createMutation.isPending || updateMutation.isPending;
-
   useEffect(() => {
-    if (!open) return;
-    form.reset();
-    if (user) {
-      form.setFieldValue("userName", user.userName ?? "");
-      form.setFieldValue("name", user.name ?? null);
-      form.setFieldValue("surname", user.surname ?? null);
-      form.setFieldValue("email", user.email ?? "");
-      form.setFieldValue("phoneNumber", user.phoneNumber ?? null);
-      form.setFieldValue("isActive", user.isActive ?? true);
-      form.setFieldValue("lockoutEnabled", false);
-      form.setFieldValue("concurrencyStamp", null);
-      form.setFieldValue("password", null);
-    }
-  }, [open, user]);
-
-  useEffect(() => {
-    if (open && isEdit && currentRoleNames.length > 0) {
+    if (isEdit && currentRoleNames.length > 0) {
       form.setFieldValue("roleNames", currentRoleNames);
     }
-  }, [open, isEdit, currentRoleNames]);
+  }, [isEdit, currentRoleNames]);
 
   return (
-    <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
-        <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("AbpIdentity::Edit") : t("AbpIdentity::NewUser")}
-          </DialogTitle>
-          <DialogContent>
-            <form.AppForm>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void form.handleSubmit();
-                }}
-                className={styles.form}
-              >
-                <form.AppField
-                  name="userName"
-                  children={(field) => (
-                    <field.TextField label={t("AbpIdentity::UserName")} required />
-                  )}
-                />
-                <form.AppField
-                  name="name"
-                  children={(field) => <field.TextField label={t("AbpIdentity::DisplayName")} />}
-                />
-                <form.AppField
-                  name="surname"
-                  children={(field) => <field.TextField label={t("AbpIdentity::Surname")} />}
-                />
-                <form.AppField
-                  name="email"
-                  children={(field) => <field.TextField label={t("AbpIdentity::Email")} required />}
-                />
-                <form.AppField
-                  name="phoneNumber"
-                  children={(field) => <field.TextField label={t("AbpIdentity::PhoneNumber")} />}
-                />
-                <form.AppField
-                  name="password"
-                  children={(field) => (
-                    <field.TextField
-                      label={t("AbpIdentity::Password")}
-                      required={!isEdit}
-                      inputProps={{ type: "password" }}
-                    />
-                  )}
-                />
-                <form.AppField
-                  name="roleNames"
-                  children={(field) => (
-                    <field.ComboboxField
-                      label={t("AbpIdentity::Roles")}
-                      options={roleOptions}
-                      placeholder={t("AbpIdentity::SelectRole")}
-                      comboboxProps={{ multiselect: true }}
-                    />
-                  )}
-                />
-                <form.AppField
-                  name="isActive"
-                  children={(field) => <field.SwitchField label={t("AbpIdentity::Active")} />}
-                />
-                <form.AppField
-                  name="lockoutEnabled"
-                  children={(field) => (
-                    <field.SwitchField label={t("AbpIdentity::LockoutEnabled")} />
-                  )}
-                />
-                <DialogActions>
-                  <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
-                  <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="secondary" disabled={isPending}>
-                      {t("AbpUi::Cancel")}
-                    </Button>
-                  </DialogTrigger>
-                </DialogActions>
-              </form>
-            </form.AppForm>
-          </DialogContent>
-        </DialogBody>
-      </DialogSurface>
-    </Dialog>
+    <form.AppForm>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void form.handleSubmit();
+        }}
+        className={styles.form}
+      >
+        <form.AppField
+          name="userName"
+          children={(field) => <field.TextField label={t("AbpIdentity::UserName")} required />}
+        />
+        <form.AppField
+          name="name"
+          children={(field) => <field.TextField label={t("AbpIdentity::DisplayName")} />}
+        />
+        <form.AppField
+          name="surname"
+          children={(field) => <field.TextField label={t("AbpIdentity::Surname")} />}
+        />
+        <form.AppField
+          name="email"
+          children={(field) => <field.TextField label={t("AbpIdentity::Email")} required />}
+        />
+        <form.AppField
+          name="phoneNumber"
+          children={(field) => <field.TextField label={t("AbpIdentity::PhoneNumber")} />}
+        />
+        <form.AppField
+          name="password"
+          children={(field) => (
+            <field.TextField
+              label={t("AbpIdentity::Password")}
+              required={!isEdit}
+              inputProps={{ type: "password" }}
+            />
+          )}
+        />
+        <form.AppField
+          name="roleNames"
+          children={(field) => (
+            <field.ComboboxField
+              label={t("AbpIdentity::Roles")}
+              options={roleOptions}
+              placeholder={t("AbpIdentity::SelectRole")}
+              comboboxProps={{ multiselect: true }}
+            />
+          )}
+        />
+        <form.AppField
+          name="isActive"
+          children={(field) => <field.SwitchField label={t("AbpIdentity::Active")} />}
+        />
+        <form.AppField
+          name="lockoutEnabled"
+          children={(field) => <field.SwitchField label={t("AbpIdentity::LockoutEnabled")} />}
+        />
+        <DialogActions>
+          <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+          <DialogTrigger disableButtonEnhancement>
+            <Button appearance="secondary" disabled={isPending}>
+              {t("AbpUi::Cancel")}
+            </Button>
+          </DialogTrigger>
+        </DialogActions>
+      </form>
+    </form.AppForm>
   );
 }
