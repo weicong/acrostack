@@ -49,13 +49,13 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
       {
         id: "name",
         accessorKey: "name",
-        header: t("BookStore::Name"),
+        header: t("BookStore:Name"),
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "type",
         accessorKey: "type",
-        header: t("BookStore::Type"),
+        header: t("BookStore:Type"),
         cell: (info) => {
           const type = info.getValue() as number | undefined;
           const label = bookTypeOptions.find((o) => o.value === type)?.key;
@@ -65,7 +65,7 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
       {
         id: "publishDate",
         accessorKey: "publishDate",
-        header: t("BookStore::PublishDate"),
+        header: t("BookStore:PublishDate"),
         cell: (info) => {
           const date = info.getValue() as string | undefined;
           return date ? format(new Date(date), "yyyy-MM-dd") : "-";
@@ -74,7 +74,7 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
       {
         id: "price",
         accessorKey: "price",
-        header: t("BookStore::Price"),
+        header: t("BookStore:Price"),
         cell: (info) => {
           const price = info.getValue() as number | undefined;
           return price != null ? price.toFixed(2) : "-";
@@ -174,7 +174,7 @@ export function BooksPage() {
     <>
       <div className={styles.toolbar}>
         <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-          {t("BookStore::NewBook")}
+          {t("BookStore:NewBook")}
         </Button>
       </div>
 

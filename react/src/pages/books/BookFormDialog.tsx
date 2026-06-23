@@ -33,7 +33,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("BookStore::EditBook") : t("BookStore::NewBook")}
+            {isEdit ? t("BookStore:EditBook") : t("BookStore:NewBook")}
           </DialogTitle>
           <DialogContent>
             {open && (

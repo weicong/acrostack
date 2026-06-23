@@ -81,14 +81,14 @@ export function BookForm({ book, onSuccess, footer }: BookFormProps) {
       >
         <form.AppField
           name="name"
-          children={(field) => <field.TextField label={t("BookStore::Name")} required />}
+          children={(field) => <field.TextField label={t("BookStore:Name")} required />}
         />
         <form.AppField
           name="type"
           children={(field) => (
-            <field.SelectField label={t("BookStore::Type")} required>
+            <field.SelectField label={t("BookStore:Type")} required>
               <option value="" disabled>
-                {t("BookStore::SelectType")}
+                {t("BookStore:SelectType")}
               </option>
               {bookTypeOptions.map((o) => (
                 <option key={o.value} value={String(o.value)}>
@@ -101,13 +101,13 @@ export function BookForm({ book, onSuccess, footer }: BookFormProps) {
         <form.AppField
           name="publishDate"
           children={(field) => (
-            <field.DatePickerField label={t("BookStore::PublishDate")} required />
+            <field.DatePickerField label={t("BookStore:PublishDate")} required />
           )}
         />
         <form.AppField
           name="price"
           children={(field) => (
-            <field.NumberField label={t("BookStore::Price")} required min={0} step={0.01} />
+            <field.NumberField label={t("BookStore:Price")} required min={0} step={0.01} />
           )}
         />
         <div className={styles.actions}>
