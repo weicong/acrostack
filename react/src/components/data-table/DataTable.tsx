@@ -16,10 +16,10 @@ import {
   mergeClasses,
 } from "@fluentui/react-components";
 import {
-  ChevronDoubleLeft20Regular,
-  ChevronLeft20Regular,
-  ChevronRight20Regular,
-  ChevronDoubleRight20Regular,
+  ChevronLeftFilled,
+  ArrowNextFilled,
+  ArrowPreviousFilled,
+  ChevronRightFilled,
 } from "@fluentui/react-icons";
 
 const useStyles = makeStyles({
@@ -298,7 +298,7 @@ function DataTable<TData>({
             <Button
               appearance="subtle"
               shape="circular"
-              icon={<ChevronDoubleLeft20Regular />}
+              icon={<ArrowPreviousFilled />}
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
               aria-label="First page"
@@ -306,7 +306,7 @@ function DataTable<TData>({
             <Button
               appearance="subtle"
               shape="circular"
-              icon={<ChevronLeft20Regular />}
+              icon={<ChevronLeftFilled />}
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
               aria-label="Previous page"
@@ -323,7 +323,7 @@ function DataTable<TData>({
             <Button
               appearance="subtle"
               shape="circular"
-              icon={<ChevronRight20Regular />}
+              icon={<ChevronRightFilled />}
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
               aria-label="Next page"
@@ -331,7 +331,7 @@ function DataTable<TData>({
             <Button
               appearance="subtle"
               shape="circular"
-              icon={<ChevronDoubleRight20Regular />}
+              icon={<ArrowNextFilled />}
               onClick={() => table.setPageIndex(pageCount - 1)}
               disabled={!table.getCanNextPage()}
               aria-label="Last page"
