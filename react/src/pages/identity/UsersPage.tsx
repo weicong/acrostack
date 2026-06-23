@@ -15,7 +15,8 @@ import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
-import { UserFormDialog, toFormUser, type UserFormUser } from "./UserFormDialog";
+import { UserFormDialog } from "./UserFormDialog";
+import { toFormUser, type UserFormUser } from "./user-types";
 
 type UserItem = AcroStackAppUsersAppUserDto;
 
