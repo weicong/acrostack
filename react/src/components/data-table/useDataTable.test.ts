@@ -307,7 +307,7 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result } = renderHook(() =>
+    const { result: _result } = renderHook(() =>
       useDataTableQuery({
         queryOptions,
         sorting: [{ id: "name", desc: false }],
@@ -330,7 +330,7 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result } = renderHook(() =>
+    const { result: _result } = renderHook(() =>
       useDataTableQuery({
         queryOptions,
         sorting: [],
