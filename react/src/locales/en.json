@@ -1,5 +1,13 @@
 {
   "::AppName": "AcroStack",
+  "DataTable::PerPage": "/ page",
+  "DataTable::PageInfo": "Page {{current}} of {{total}}",
+  "DataTable::RowsPerPage": "Rows per page",
+  "DataTable::FirstPage": "First page",
+  "DataTable::PreviousPage": "Previous page",
+  "DataTable::GoToPage": "Go to page",
+  "DataTable::NextPage": "Next page",
+  "DataTable::LastPage": "Last page",
   "::ChoosePhoto": "Choose Photo",
   "::Dark": "Dark",
   "::Date": "Date",

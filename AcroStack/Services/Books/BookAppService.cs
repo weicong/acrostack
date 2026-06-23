@@ -32,6 +32,12 @@ public class BookAppService : ApplicationService, IBookAppService
     public async Task<PagedResultDto<BookDto>> GetListAsync(PagedAndSortedResultRequestDto input)
     {
         var queryable = await _repository.GetQueryableAsync();
+
+        if (!input.Filter.IsNullOrWhiteSpace())
+        {
+            queryable = queryable.Where(x => x.Name.Contains(input.Filter!));
+        }
+
         var query = queryable
             .OrderBy(input.Sorting.IsNullOrWhiteSpace() ? "Name" : input.Sorting)
             .Skip(input.SkipCount)

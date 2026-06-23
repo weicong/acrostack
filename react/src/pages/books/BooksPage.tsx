@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, makeStyles, tokens } from "@fluentui/react-components";
+import { Button, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
 import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -22,7 +22,9 @@ type BookItem = AcroStackServicesDtosBooksBookDto;
 const useStyles = makeStyles({
   toolbar: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
   },
   actionsCell: {
     display: "flex",
@@ -42,6 +44,7 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
     queryOptions: bookGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
+    globalFilter: tableState.state.globalFilter,
   });
 
   const columns = useMemo<ColumnDef<BookItem>[]>(
@@ -123,7 +126,7 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
     pageCount: query.pageCount,
   });
 
-  return { table, query };
+  return { table, query, tableState };
 }
 
 export function BooksPage() {
@@ -168,11 +171,26 @@ export function BooksPage() {
     );
   }, [deleteBookId, deleteMutation, queryClient]);
 
-  const { table, query } = useBooksTable(handleEdit, handleDelete);
+  const { table, query, tableState } = useBooksTable(handleEdit, handleDelete);
+
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      tableState.state.onGlobalFilterChange(searchValue);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
   return (
     <>
       <div className={styles.toolbar}>
+        <SearchBox
+          placeholder={t("AbpUi::Search")}
+          value={searchValue}
+          onChange={(_, data) => setSearchValue(data.value)}
+          appearance="outline"
+        />
         <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
           {t("BookStore:NewBook")}
         </Button>

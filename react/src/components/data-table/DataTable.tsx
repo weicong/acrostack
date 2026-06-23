@@ -1,5 +1,6 @@
 import { flexRender } from "@tanstack/react-table";
 import type { Table } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import {
   Table as FluentTable,
   TableHeader,
@@ -112,6 +113,7 @@ function DataTable<TData>({
   onRowClick,
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData>) {
+  const { t } = useTranslation();
   const styles = useStyles();
 
   const rows = table.getRowModel().rows;
@@ -280,18 +282,18 @@ function DataTable<TData>({
               onChange={(e) => {
                 table.setPageSize(Number(e.currentTarget.value));
               }}
-              aria-label="Rows per page"
+              aria-label={t("DataTable::RowsPerPage")}
             >
               {pageSizeOptions.map((size) => (
                 <option key={size} value={size}>
-                  {size} / page
+                  {size} {t("DataTable::PerPage")}
                 </option>
               ))}
             </Select>
           </div>
 
           <Text size={200}>
-            Page {currentPageIndex + 1} of {pageCount}
+            {t("DataTable::PageInfo", { current: currentPageIndex + 1, total: pageCount })}
           </Text>
 
           <div className={styles.paginationControls}>
@@ -301,7 +303,7 @@ function DataTable<TData>({
               icon={<ArrowPreviousFilled />}
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
-              aria-label="First page"
+              aria-label={t("DataTable::FirstPage")}
             />
             <Button
               appearance="subtle"
@@ -309,7 +311,7 @@ function DataTable<TData>({
               icon={<ChevronLeftFilled />}
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              aria-label="Previous page"
+              aria-label={t("DataTable::PreviousPage")}
             />
 
             <Input
@@ -317,7 +319,7 @@ function DataTable<TData>({
               appearance="underline"
               placeholder={`${currentPageIndex + 1}`}
               onKeyDown={handlePageJump}
-              aria-label="Go to page"
+              aria-label={t("DataTable::GoToPage")}
             />
 
             <Button
@@ -326,7 +328,7 @@ function DataTable<TData>({
               icon={<ChevronRightFilled />}
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              aria-label="Next page"
+              aria-label={t("DataTable::NextPage")}
             />
             <Button
               appearance="subtle"
@@ -334,7 +336,7 @@ function DataTable<TData>({
               icon={<ArrowNextFilled />}
               onClick={() => table.setPageIndex(pageCount - 1)}
               disabled={!table.getCanNextPage()}
-              aria-label="Last page"
+              aria-label={t("DataTable::LastPage")}
             />
           </div>
         </div>
