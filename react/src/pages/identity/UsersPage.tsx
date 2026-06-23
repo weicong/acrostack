@@ -1,41 +1,57 @@
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { Avatar, Badge, makeStyles } from "@fluentui/react-components";
+import { useQueryClient } from "@tanstack/react-query";
+import { Avatar, Button, Badge, makeStyles, tokens } from "@fluentui/react-components";
+import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import type { ColumnDef } from "@tanstack/react-table";
-import { appUserGetListQueryOptions } from "@/api/hooks/appUser/useAppUserGetList";
+import {
+  appUserGetListQueryOptions,
+  appUserGetListQueryKey,
+} from "@/api/hooks/appUser/useAppUserGetList";
+import { useUserDelete } from "@/api/hooks/user/useUserDelete";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
+import { UserFormDialog, toFormUser, type UserFormUser } from "./UserFormDialog";
 
 type UserItem = AcroStackAppUsersAppUserDto;
 
 const useStyles = makeStyles({
+  toolbar: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
   userNameCell: {
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
+    gap: tokens.spacingHorizontalS,
+  },
+  actionsCell: {
+    display: "flex",
+    gap: tokens.spacingHorizontalXS,
   },
 });
 
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   const { t } = useTranslation();
-  if (isActive !== false) {
+  if (isActive === false) {
     return (
-      <Badge appearance="filled" color="success" size="small">
-        {t("AbpIdentity::Active")}
+      <Badge appearance="filled" color="danger" size="small">
+        {t("AbpIdentity::NotActive")}
       </Badge>
     );
   }
   return (
-    <Badge appearance="filled" color="danger" size="small">
-      {t("AbpIdentity::NotActive")}
+    <Badge appearance="filled" color="success" size="small">
+      {t("AbpIdentity::Active")}
     </Badge>
   );
 }
 
-function useUsersTable() {
+function useUsersTable(onEdit: (user: UserItem) => void, onDelete: (id: string) => void) {
   const { t } = useTranslation();
   const styles = useStyles();
 
@@ -69,9 +85,7 @@ function useUsersTable() {
       {
         id: "displayName",
         header: t("AbpIdentity::DisplayName"),
-        accessorFn: (row) => {
-          return `${row.name ?? ""} ${row.surname ?? ""}`.trim() || "-";
-        },
+        accessorFn: (row) => `${row.name ?? ""} ${row.surname ?? ""}`.trim() || "-",
       },
       {
         id: "email",
@@ -91,33 +105,130 @@ function useUsersTable() {
         header: t("AbpIdentity::Status"),
         cell: (info) => <UserStatusBadge isActive={info.getValue() as boolean | undefined} />,
       },
+      {
+        id: "actions",
+        header: "",
+        cell: (info) => (
+          <div className={styles.actionsCell}>
+            <Button
+              size="small"
+              appearance="subtle"
+              icon={<Edit20Regular />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(info.row.original);
+              }}
+              aria-label={t("AbpUi::Edit")}
+            />
+            <Button
+              size="small"
+              appearance="subtle"
+              icon={<Delete20Regular />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(info.row.original.id!);
+              }}
+              aria-label={t("AbpUi::Delete")}
+            />
+          </div>
+        ),
+      },
     ],
-    [t, styles.userNameCell],
+    [t, styles.userNameCell, styles.actionsCell, onEdit, onDelete],
   );
 
   const table = useDataTable({
     data: query.data,
     columns,
     rowCount: query.totalCount,
-    getRowId: (row) => row.id ?? "",
+    getRowId: (row) => row.id!,
     state: tableState.state,
     manualPagination: true,
     manualSorting: true,
     pageCount: query.pageCount,
   });
 
-  return { table, query, tableState };
+  return { table, query };
 }
 
 export function UsersPage() {
-  const { table, query } = useUsersTable();
+  const { t } = useTranslation();
+  const styles = useStyles();
+  const queryClient = useQueryClient();
+  const deleteMutation = useUserDelete();
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [formUser, setFormUser] = useState<UserFormUser | undefined>();
+  const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+
+  const handleCreate = useCallback(() => {
+    setFormUser(undefined);
+    setFormOpen(true);
+  }, []);
+
+  const handleEdit = useCallback((user: UserItem) => {
+    setFormUser(toFormUser(user));
+    setFormOpen(true);
+  }, []);
+
+  const handleDelete = useCallback((id: string) => {
+    setDeleteUserId(id);
+  }, []);
+
+  const handleFormSuccess = useCallback(() => {
+    setFormOpen(false);
+    void queryClient.invalidateQueries({ queryKey: appUserGetListQueryKey() });
+  }, [queryClient]);
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (!deleteUserId) return;
+    deleteMutation.mutate(
+      { id: deleteUserId },
+      {
+        onSuccess: () => {
+          setDeleteUserId(null);
+          void queryClient.invalidateQueries({ queryKey: appUserGetListQueryKey() });
+        },
+      },
+    );
+  }, [deleteUserId, deleteMutation, queryClient]);
+
+  const { table, query } = useUsersTable(handleEdit, handleDelete);
 
   return (
-    <DataTable
-      table={table}
-      isLoading={query.isLoading}
-      isError={query.isError}
-      errorMessage={query.error ? String(query.error) : undefined}
-    />
+    <>
+      <div className={styles.toolbar}>
+        <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
+          {t("AbpIdentity::NewUser")}
+        </Button>
+      </div>
+
+      <DataTable
+        table={table}
+        isLoading={query.isLoading}
+        isError={query.isError}
+        errorMessage={query.error ? String(query.error) : undefined}
+      />
+
+      <UserFormDialog
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        user={formUser}
+        onSuccess={handleFormSuccess}
+      />
+
+      <ConfirmDialog
+        open={deleteUserId !== null}
+        onOpenChange={(open) => {
+          if (!open) setDeleteUserId(null);
+        }}
+        title={t("AbpUi::AreYouSure")}
+        description={t("AbpUi::ItemWillBeDeleted")}
+        confirmLabel={t("AbpUi::Delete")}
+        variant="destructive"
+        onConfirm={handleDeleteConfirm}
+        isPending={deleteMutation.isPending}
+      />
+    </>
   );
 }
