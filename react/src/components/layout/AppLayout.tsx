@@ -1,45 +1,40 @@
 import { useState } from "react";
 import { Outlet } from "@tanstack/react-router";
-import { makeStyles } from "@fluentui/react-components";
+import { makeStyles, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
+import { Footer } from "./Footer";
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
+    display: "grid",
     height: "100vh",
-    flexDirection: "column",
     overflow: "hidden",
-  },
-  body: {
-    display: "flex",
-    minHeight: "0",
-    flex: 1,
-    overflow: "hidden",
-  },
-  overlay: {
-    zIndex: 40,
-    background: "rgba(0,0,0,0.5)",
+    // Left column = sidebar (fixed width), right column = header/main/footer stack
+    gridTemplateColumns: "auto 1fr",
+    gridTemplateRows: "1fr",
   },
   sidebar: {
-    zIndex: 50,
+    gridColumn: "1",
+    gridRow: "1 / span 1",
     display: "flex",
-    height: "100%",
-    minHeight: "0",
-    width: "14rem",
-    flexShrink: 0,
     flexDirection: "column",
+    minHeight: 0,
+    height: "100%",
+    width: "16rem",
+    flexShrink: 0,
     overflow: "hidden",
-    borderRight: "1px solid var(--colorNeutralStroke1)",
-    background: "var(--colorNeutralBackground1)",
-    transition: "transform 0.2s",
-    // Mobile (≤768px): sidebar is a slide-in drawer, hidden off-canvas by default
+    borderRight: `1px solid ${tokens.colorNeutralStroke1}`,
+    background: tokens.colorNeutralBackground1,
+    // Mobile (≤768px): sidebar becomes an off-canvas drawer
     "@media (max-width: 768px)": {
       position: "fixed",
       left: 0,
       top: 0,
       bottom: 0,
+      zIndex: 50,
       transform: "translateX(-100%)",
+      transition: "transform 0.2s ease",
     },
   },
   sidebarOpen: {
@@ -47,10 +42,29 @@ const useStyles = makeStyles({
       transform: "translateX(0)",
     },
   },
+  overlay: {
+    display: "none",
+    "@media (max-width: 768px)": {
+      display: "block",
+      position: "fixed",
+      inset: 0,
+      zIndex: 40,
+      background: "rgba(0,0,0,0.5)",
+    },
+  },
+  // Right column: header / main / footer stacked vertically
+  right: {
+    gridColumn: "2",
+    gridRow: "1 / span 1",
+    display: "grid",
+    gridTemplateRows: "auto 1fr auto",
+    minHeight: 0,
+    overflow: "hidden",
+  },
   main: {
-    flex: 1,
+    minHeight: 0,
     overflow: "auto",
-    padding: "1.5rem",
+    padding: tokens.spacingHorizontalXL,
   },
 });
 
@@ -60,24 +74,21 @@ export function AppLayout() {
 
   return (
     <div className={styles.root}>
-      <Header onMenuClick={() => setMobileMenuOpen(true)} />
-      <div className={styles.body}>
-        <div
-          className={styles.overlay}
-          style={{
-            position: mobileMenuOpen ? "fixed" : undefined,
-            inset: mobileMenuOpen ? 0 : undefined,
-            display: mobileMenuOpen ? "block" : "none",
-          }}
-          onClick={() => setMobileMenuOpen(false)}
-          aria-hidden="true"
-        />
-        <aside className={`${styles.sidebar} ${mobileMenuOpen ? styles.sidebarOpen : ""}`}>
-          <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
-        </aside>
+      <div
+        className={styles.overlay}
+        style={{ display: mobileMenuOpen ? undefined : "none" }}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+      <aside className={`${styles.sidebar} ${mobileMenuOpen ? styles.sidebarOpen : ""}`}>
+        <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
+      </aside>
+      <div className={styles.right}>
+        <Header onMenuClick={() => setMobileMenuOpen(true)} />
         <main className={styles.main}>
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );

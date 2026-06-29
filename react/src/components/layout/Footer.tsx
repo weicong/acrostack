@@ -1,15 +1,15 @@
-import { makeStyles, Text } from "@fluentui/react-components";
+import { makeStyles, Text, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
   footer: {
-    borderTop: "1px solid var(--colorNeutralStroke1)",
-    background: "var(--colorNeutralBackground3)",
-    padding: "0.75rem 1rem",
+    borderTop: `1px solid ${tokens.colorNeutralStroke1}`,
+    background: tokens.colorNeutralBackground3,
+    padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL}`,
   },
   content: {
     display: "flex",
     justifyContent: "center",
-    color: "var(--colorNeutralForeground3)",
+    color: tokens.colorNeutralForeground3,
   },
 });
 

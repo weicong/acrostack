@@ -1,121 +1,29 @@
-import { useState, useEffect } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "@fluentui/react-components";
-import { ChevronDown20Regular, ChevronRight20Regular, Open20Regular } from "@fluentui/react-icons";
+import { makeStyles, tokens } from "@fluentui/react-components";
+import { Open20Regular } from "@fluentui/react-icons";
+import {
+  NavDrawer,
+  NavDrawerBody,
+  NavItem,
+  NavCategory,
+  NavCategoryItem,
+  NavSubItemGroup,
+  NavSubItem,
+  AppItem,
+  type OnNavItemSelectData,
+} from "@fluentui/react-components";
 import { routeConfig, type RouteConfigItem } from "@/lib/routing/route-config";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
-import type { ComponentType } from "react";
 
 const useStyles = makeStyles({
-  nav: {
-    display: "flex",
-    height: "100%",
-    minHeight: "0",
-    flex: 1,
-    flexDirection: "column",
-    borderRight: "1px solid var(--colorNeutralStroke1)",
-    background: "var(--colorNeutralBackground3)",
-    padding: "1rem",
-  },
-  navInner: {
-    display: "flex",
-    minHeight: "0",
-    flex: 1,
-    flexDirection: "column",
-    gap: "0.25rem",
-    overflowY: "auto",
-    paddingRight: "0.25rem",
-  },
-  groupButton: {
-    display: "flex",
+  root: {
     width: "100%",
-    alignItems: "center",
-    gap: "0.75rem",
-    padding: "0.5rem 0.75rem",
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    borderRadius: "0.5rem",
-    border: "none",
-    background: "none",
-    cursor: "pointer",
-  },
-  groupButtonActive: {
-    color: "var(--colorBrandForeground1)",
-  },
-  groupButtonInactive: {
-    color: "var(--colorNeutralForeground3)",
-  },
-  groupIcon: {
-    width: "1rem",
-    height: "1rem",
-    flexShrink: 0,
-  },
-  groupLabel: {
-    flex: 1,
-    textAlign: "left",
-  },
-  childrenContainer: {
-    marginLeft: "1rem",
-    marginTop: "0.25rem",
-    borderLeft: "1px solid var(--colorNeutralStroke1)",
-    paddingLeft: "0.75rem",
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.25rem",
-  },
-  linkDepth0: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.75rem",
-    padding: "0.5rem 0.75rem",
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    borderRadius: "0.5rem",
-    textDecoration: "none",
-  },
-  linkDepth0Active: {
-    background: "var(--colorBrandBackground)",
-    color: "var(--colorNeutralForegroundOnBrand)",
-  },
-  linkDepth0Inactive: {
-    background: "transparent",
-    color: "var(--colorNeutralForeground3)",
-  },
-  linkDepth0External: {
-    color: "var(--colorNeutralForeground3)",
-  },
-  linkChild: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.5rem",
-    padding: "0.375rem 0.75rem",
-    fontSize: "0.875rem",
-    borderRadius: "0.5rem",
-    textDecoration: "none",
-  },
-  linkChildExternal: {
-    color: "var(--colorNeutralForeground3)",
-  },
-  linkChildActive: {
-    fontWeight: 600,
-    background: "var(--colorBrandBackground)",
-    color: "var(--colorNeutralForegroundOnBrand)",
-  },
-  linkChildInactive: {
-    fontWeight: 400,
-    background: "transparent",
-    color: "var(--colorNeutralForeground3)",
-  },
-  externalIcon: {
-    opacity: 0.7,
-  },
-  linkLabel: {
-    flex: 1,
-  },
-  linkChildLabel: {
-    flex: 1,
+    height: "100%",
+    minWidth: 0,
+    background: tokens.colorNeutralBackground1,
   },
 });
 
@@ -123,12 +31,19 @@ interface SidebarProps {
   onNavigate?: () => void;
 }
 
+function isActivePath(pathname: string, itemPath: string): boolean {
+  if (itemPath === "/") return pathname === "/";
+  return pathname === itemPath || pathname.startsWith(itemPath + "/");
+}
+
 export function Sidebar({ onNavigate }: SidebarProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const { isGranted } = usePermissions();
   const { isAuthenticated } = useAuth();
+  const styles = useStyles();
 
   const isItemVisible = (item: RouteConfigItem) => {
     if (item.requiresAuth && !isAuthenticated) return false;
@@ -137,169 +52,125 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     return isGranted(item.requiredPolicy);
   };
 
-  const visibleItems = routeConfig
-    .filter(isItemVisible)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const visibleItems = useMemo(
+    () => routeConfig.filter(isItemVisible).sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isAuthenticated, isGranted],
+  );
 
-  const isDescendantActive = (item: RouteConfigItem): boolean =>
-    item.children?.some(
-      (child) =>
-        isItemVisible(child) &&
-        (pathname === child.path ||
-          pathname.startsWith(child.path + "/") ||
-          isDescendantActive(child)),
-    ) ?? false;
-
-  const collectExpandedPaths = (items: RouteConfigItem[], set: Set<string>) => {
-    for (const item of items) {
-      if (isDescendantActive(item)) {
-        set.add(item.path);
-      }
+  // Determine the selected NavItem value based on current pathname
+  const selectedValue = useMemo(() => {
+    for (const item of visibleItems) {
       const visibleChildren = item.children?.filter(isItemVisible);
       if (visibleChildren) {
-        collectExpandedPaths(visibleChildren, set);
-      }
-    }
-  };
-
-  const [expanded, setExpanded] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    collectExpandedPaths(visibleItems, initial);
-    return initial;
-  });
-
-  useEffect(() => {
-    setExpanded((prev) => {
-      const toAdd = new Set<string>();
-      collectExpandedPaths(visibleItems, toAdd);
-      let changed = false;
-      for (const path of toAdd) {
-        if (!prev.has(path)) {
-          changed = true;
-          break;
+        for (const child of visibleChildren) {
+          if (isActivePath(pathname, child.path)) return child.path;
         }
       }
-      if (!changed) return prev;
-      const next = new Set(prev);
-      for (const path of toAdd) next.add(path);
-      return next;
-    });
-  }, [pathname]);
-
-  const toggleExpanded = (path: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(path)) next.delete(path);
-      else next.add(path);
-      return next;
-    });
-  };
-
-  const styles = useStyles();
-
-  const renderItem = (item: RouteConfigItem, depth: number) => {
-    const Icon = item.icon as
-      | ComponentType<{ className?: string; style?: React.CSSProperties }>
-      | undefined;
-    const externalHref =
-      typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
-    const visibleChildren = item.children?.filter(isItemVisible);
-    const hasChildren = visibleChildren && visibleChildren.length > 0;
-
-    if (item.children && !hasChildren) {
-      return null;
+      if (isActivePath(pathname, item.path)) return item.path;
     }
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, visibleItems]);
 
-    if (hasChildren) {
-      const isExpanded = expanded.has(item.path);
-      const highlight = isDescendantActive(item);
-
-      return (
-        <div key={item.path}>
-          <button
-            onClick={() => toggleExpanded(item.path)}
-            className={`${styles.groupButton} ${highlight ? styles.groupButtonActive : styles.groupButtonInactive}`}
-          >
-            {Icon && <Icon className={styles.groupIcon} />}
-            <span className={styles.groupLabel}>{t(item.nameKey)}</span>
-            {isExpanded ? <ChevronDown20Regular /> : <ChevronRight20Regular />}
-          </button>
-          {isExpanded && (
-            <div className={styles.childrenContainer}>
-              {visibleChildren.map((child) => renderItem(child, depth + 1))}
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    if (depth === 0) {
-      const isActive =
-        pathname === item.path || (item.path !== "/" && pathname.startsWith(item.path));
-
-      if (externalHref) {
-        return (
-          <a
-            key={item.path}
-            href={externalHref}
-            target={item.externalTarget}
-            rel={item.externalRel}
-            onClick={onNavigate}
-            className={`${styles.linkDepth0} ${styles.linkDepth0External}`}
-          >
-            {Icon && <Icon className={styles.groupIcon} />}
-            <span className={styles.linkLabel}>{t(item.nameKey)}</span>
-            <Open20Regular className={styles.externalIcon} />
-          </a>
-        );
+  // Determine which categories should show as selected (when a child is active but category is collapsed)
+  const selectedCategoryValue = useMemo(() => {
+    for (const item of visibleItems) {
+      const visibleChildren = item.children?.filter(isItemVisible);
+      if (visibleChildren && visibleChildren.some((c) => isActivePath(pathname, c.path))) {
+        return item.path;
       }
-
-      return (
-        <Link
-          key={item.path}
-          to={item.path}
-          onClick={onNavigate}
-          className={`${styles.linkDepth0} ${isActive ? styles.linkDepth0Active : styles.linkDepth0Inactive}`}
-        >
-          {Icon && <Icon className={styles.groupIcon} />}
-          {t(item.nameKey)}
-        </Link>
-      );
     }
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, visibleItems]);
 
-    const isActive = pathname === item.path || pathname.startsWith(item.path + "/");
+  const handleNavItemSelect = (_: unknown, data: OnNavItemSelectData) => {
+    const value = data.value;
+    if (!value) return;
+
+    // Find the matching route config item to check for external links
+    const findItem = (items: RouteConfigItem[]): RouteConfigItem | undefined => {
+      for (const item of items) {
+        if (item.path === value) return item;
+        const found = item.children ? findItem(item.children) : undefined;
+        if (found) return found;
+      }
+      return undefined;
+    };
+
+    const matched = findItem(visibleItems);
+    if (!matched) return;
+
+    const externalHref =
+      typeof matched.externalHref === "function" ? matched.externalHref() : matched.externalHref;
 
     if (externalHref) {
-      return (
-        <a
-          key={item.path}
-          href={externalHref}
-          target={item.externalTarget}
-          rel={item.externalRel}
-          onClick={onNavigate}
-          className={`${styles.linkChild} ${styles.linkChildExternal}`}
-        >
-          <span className={styles.linkChildLabel}>{t(item.nameKey)}</span>
-          <Open20Regular className={styles.externalIcon} />
-        </a>
-      );
+      window.open(externalHref, matched.externalTarget ?? "_blank", matched.externalRel)?.focus();
+    } else {
+      void navigate({ to: matched.path });
     }
 
-    return (
-      <Link
-        key={item.path}
-        to={item.path}
-        onClick={onNavigate}
-        className={`${styles.linkChild} ${isActive ? styles.linkChildActive : styles.linkChildInactive}`}
-      >
-        {t(item.nameKey)}
-      </Link>
-    );
+    onNavigate?.();
   };
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.navInner}>{visibleItems.map((item) => renderItem(item, 0))}</div>
-    </nav>
+    <NavDrawer
+      className={styles.root}
+      type="inline"
+      open
+      selectedValue={selectedValue}
+      selectedCategoryValue={selectedCategoryValue}
+      onNavItemSelect={handleNavItemSelect}
+      multiple
+      defaultOpenCategories={visibleItems
+        .filter((item) =>
+          item.children?.filter(isItemVisible).some((c) => isActivePath(pathname, c.path)),
+        )
+        .map((item) => item.path)}
+    >
+      <NavDrawerBody>
+        <AppItem>AcroStack</AppItem>
+        {visibleItems.map((item) => {
+          const Icon = item.icon;
+          const visibleChildren = item.children?.filter(isItemVisible);
+          const hasChildren = visibleChildren && visibleChildren.length > 0;
+
+          if (item.children && !hasChildren) {
+            return null;
+          }
+
+          if (hasChildren) {
+            return (
+              <NavCategory key={item.path} value={item.path}>
+                <NavCategoryItem icon={Icon ? <Icon /> : undefined}>
+                  {t(item.nameKey)}
+                </NavCategoryItem>
+                <NavSubItemGroup>
+                  {visibleChildren.map((child) => (
+                    <NavSubItem key={child.path} value={child.path}>
+                      {t(child.nameKey)}
+                    </NavSubItem>
+                  ))}
+                </NavSubItemGroup>
+              </NavCategory>
+            );
+          }
+
+          const externalHref =
+            typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
+
+          return (
+            <NavItem
+              key={item.path}
+              value={item.path}
+              icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
+            >
+              {t(item.nameKey)}
+            </NavItem>
+          );
+        })}
+      </NavDrawerBody>
+    </NavDrawer>
   );
 }

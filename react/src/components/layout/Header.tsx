@@ -14,6 +14,7 @@ import {
   MenuTrigger,
   MenuPopover,
   MenuItem,
+  tokens,
   makeStyles,
   Text,
 } from "@fluentui/react-components";
@@ -238,16 +239,13 @@ function LanguageSwitcher() {
 
 const useStyles = makeStyles({
   header: {
-    position: "sticky",
-    top: 0,
-    zIndex: 50,
     display: "flex",
     height: "3.5rem",
     alignItems: "center",
-    gap: "1rem",
-    borderBottom: "1px solid var(--colorNeutralStroke1)",
-    background: "var(--colorNeutralBackground1)",
-    padding: "0 1rem",
+    gap: tokens.spacingHorizontalS,
+    borderBottom: `1px solid ${tokens.colorNeutralStroke1}`,
+    background: tokens.colorNeutralBackground1,
+    padding: `0 ${tokens.spacingHorizontalL}`,
   },
   mobileMenuBtn: {
     display: "none",
@@ -259,12 +257,12 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
+    gap: tokens.spacingHorizontalXS,
   },
   actions: {
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
+    gap: tokens.spacingHorizontalXS,
   },
 });
 
