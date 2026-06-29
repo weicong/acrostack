@@ -29,13 +29,18 @@ public class BookAppService : ApplicationService, IBookAppService
         return ObjectMapper.Map<Book, BookDto>(book);
     }
 
-    public async Task<PagedResultDto<BookDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+    public async Task<PagedResultDto<BookDto>> GetListAsync(BookGetListInput input)
     {
         var queryable = await _repository.GetQueryableAsync();
 
         if (!input.Filter.IsNullOrWhiteSpace())
         {
             queryable = queryable.Where(x => x.Name.Contains(input.Filter!));
+        }
+
+        if (input.Type.HasValue)
+        {
+            queryable = queryable.Where(x => x.Type == input.Type.Value);
         }
 
         var query = queryable

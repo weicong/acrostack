@@ -200,7 +200,8 @@ function LanguageSwitcher() {
       if (Object.keys(translations).length > 0) {
         i18n.addResourceBundle(culture, "translation", translations, true, true);
       }
-    } catch {
+    } catch (err) {
+      console.error(`[i18n] Failed to load resources for culture "${culture}":`, err);
     } finally {
       persistLanguageSelection(culture);
       await i18n.changeLanguage(culture);
@@ -250,6 +251,9 @@ const useStyles = makeStyles({
   },
   mobileMenuBtn: {
     display: "none",
+    "@media (max-width: 768px)": {
+      display: "inline-flex",
+    },
   },
   titleArea: {
     flex: 1,

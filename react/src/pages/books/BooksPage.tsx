@@ -1,8 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { Button, SearchBox, Select, makeStyles, tokens } from "@fluentui/react-components";
+import {
+  Add20Regular,
+  Edit20Regular,
+  Delete20Regular,
+  Search20Regular,
+  ArrowReset20Regular,
+} from "@fluentui/react-icons";
 import { format } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
 import { bookGetListQueryOptions, bookGetListQueryKey } from "@/api/hooks/book/useBookGetList";
@@ -16,6 +23,7 @@ import type { AcroStackServicesDtosBooksBookDto } from "@/api/models/acroStack/s
 import { BookFormDialog } from "./BookFormDialog";
 import { toFormBook, type BookFormBook } from "./book-types";
 import { bookTypeOptions } from "./bookTypeOptions";
+import { Route } from "@/routes/books";
 
 type BookItem = AcroStackServicesDtosBooksBookDto;
 
@@ -26,13 +34,23 @@ const useStyles = makeStyles({
     alignItems: "center",
     gap: tokens.spacingHorizontalM,
   },
+  filters: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+  },
   actionsCell: {
     display: "flex",
     gap: tokens.spacingHorizontalXS,
   },
 });
 
-function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) => void) {
+function useBooksTable(
+  onEdit: (book: BookItem) => void,
+  onDelete: (id: string) => void,
+  searchQuery: string,
+  typeFilter?: number,
+) {
   const { t } = useTranslation();
   const styles = useStyles();
 
@@ -40,11 +58,14 @@ function useBooksTable(onEdit: (book: BookItem) => void, onDelete: (id: string) 
     sorting: [{ id: "name", desc: false }],
   });
 
+  const extraParams = useMemo(() => (typeFilter != null ? { Type: typeFilter } : {}), [typeFilter]);
+
   const query = useDataTableQuery<BookItem, AbpGridParams>({
     queryOptions: bookGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
-    globalFilter: tableState.state.globalFilter,
+    globalFilter: searchQuery || undefined,
+    extraParams: extraParams as Record<string, unknown>,
   });
 
   const columns = useMemo<ColumnDef<BookItem>[]>(
@@ -134,6 +155,8 @@ export function BooksPage() {
   const styles = useStyles();
   const queryClient = useQueryClient();
   const deleteMutation = useBookDelete();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const searchParams = Route.useSearch();
 
   const [formOpen, setFormOpen] = useState(false);
   const [formBook, setFormBook] = useState<BookFormBook | undefined>();
@@ -171,26 +194,60 @@ export function BooksPage() {
     );
   }, [deleteBookId, deleteMutation, queryClient]);
 
-  const { table, query, tableState } = useBooksTable(handleEdit, handleDelete);
+  const [searchInput, setSearchInput] = useState(searchParams.q);
+  const [typeFilter, setTypeFilter] = useState<number | undefined>(searchParams.type);
 
-  const [searchValue, setSearchValue] = useState("");
+  const { table, query } = useBooksTable(
+    handleEdit,
+    handleDelete,
+    searchParams.q,
+    searchParams.type,
+  );
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      tableState.state.onGlobalFilterChange(searchValue);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchValue]);
+  const handleSearch = useCallback(() => {
+    void navigate({ search: { q: searchInput, type: typeFilter } });
+  }, [navigate, searchInput, typeFilter]);
+
+  const handleReset = useCallback(() => {
+    setSearchInput("");
+    setTypeFilter(undefined);
+    void navigate({ search: { q: "", type: undefined } });
+  }, [navigate]);
 
   return (
     <>
       <div className={styles.toolbar}>
-        <SearchBox
-          placeholder={t("AbpUi::Search")}
-          value={searchValue}
-          onChange={(_, data) => setSearchValue(data.value)}
-          appearance="outline"
-        />
+        <div className={styles.filters}>
+          <SearchBox
+            placeholder={t("AbpUi::Search")}
+            value={searchInput}
+            onChange={(_, data) => setSearchInput(data.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
+            appearance="outline"
+          />
+          <Select
+            appearance="outline"
+            value={typeFilter != null ? String(typeFilter) : ""}
+            onChange={(_, data) => setTypeFilter(data.value ? Number(data.value) : undefined)}
+          >
+            <option value="">{t("BookStore:AllTypes")}</option>
+            {bookTypeOptions
+              .filter((o) => o.value !== 0)
+              .map((o) => (
+                <option key={o.value} value={String(o.value)}>
+                  {t(o.key)}
+                </option>
+              ))}
+          </Select>
+          <Button appearance="primary" icon={<Search20Regular />} onClick={handleSearch}>
+            {t("AbpUi::Search")}
+          </Button>
+          <Button appearance="secondary" icon={<ArrowReset20Regular />} onClick={handleReset}>
+            {t("AbpUi::Reset")}
+          </Button>
+        </div>
         <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
           {t("BookStore:NewBook")}
         </Button>

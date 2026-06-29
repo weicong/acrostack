@@ -33,6 +33,19 @@ const useStyles = makeStyles({
     borderRight: "1px solid var(--colorNeutralStroke1)",
     background: "var(--colorNeutralBackground1)",
     transition: "transform 0.2s",
+    // Mobile (≤768px): sidebar is a slide-in drawer, hidden off-canvas by default
+    "@media (max-width: 768px)": {
+      position: "fixed",
+      left: 0,
+      top: 0,
+      bottom: 0,
+      transform: "translateX(-100%)",
+    },
+  },
+  sidebarOpen: {
+    "@media (max-width: 768px)": {
+      transform: "translateX(0)",
+    },
   },
   main: {
     flex: 1,
@@ -59,15 +72,7 @@ export function AppLayout() {
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden="true"
         />
-        <aside
-          className={styles.sidebar}
-          style={{
-            position: mobileMenuOpen ? "fixed" : "static",
-            left: 0,
-            top: 0,
-            transform: mobileMenuOpen ? "translateX(0)" : "translateX(0)",
-          }}
-        >
+        <aside className={`${styles.sidebar} ${mobileMenuOpen ? styles.sidebarOpen : ""}`}>
           <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
         </aside>
         <main className={styles.main}>

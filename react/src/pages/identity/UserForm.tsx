@@ -68,10 +68,10 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
       email: user?.email ?? "",
       phoneNumber: user?.phoneNumber ?? null,
       isActive: user?.isActive ?? true,
-      lockoutEnabled: false,
+      lockoutEnabled: user?.lockoutEnabled ?? false,
       roleNames: null as string[] | null,
       password: "" as string | null,
-      concurrencyStamp: null as string | null,
+      concurrencyStamp: (user?.concurrencyStamp ?? null) as string | null,
     },
     validators: {
       onChange: ({ value }) => {

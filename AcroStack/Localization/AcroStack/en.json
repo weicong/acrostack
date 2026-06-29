@@ -18,6 +18,7 @@
     "BookStore:NewBook": "New Book",
     "BookStore:EditBook": "Edit Book",
     "BookStore:SelectType": "Select a type",
+    "BookStore:AllTypes": "All types",
     "Enum:BookType.Undefined": "Undefined",
     "Enum:BookType.Adventure": "Adventure",
     "Enum:BookType.Biography": "Biography",
@@ -26,6 +27,7 @@
     "Enum:BookType.Horror": "Horror",
     "Enum:BookType.Science": "Science",
     "Enum:BookType.ScienceFiction": "Science Fiction",
-    "Enum:BookType.Poetry": "Poetry"
+    "Enum:BookType.Poetry": "Poetry",
+    "AbpUi::Reset": "Reset"
   }
 }

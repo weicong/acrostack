@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from "vite-plus/test";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createElement, type ReactNode } from "react";
 import { useDataTableState } from "./useDataTableState";
 import { useDataTable } from "./useDataTable";
 import { useDataTableQuery } from "./useDataTableQuery";
@@ -301,19 +303,29 @@ describe("useDataTableQuery", () => {
     totalCount: 2,
   };
 
+  function createWrapper() {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    return ({ children }: { children: ReactNode }) =>
+      createElement(QueryClientProvider, { client: queryClient }, children);
+  }
+
   it("builds correct params from sorting and pagination", () => {
     const queryOptions = vi.fn().mockReturnValue({
       queryKey: ["test"],
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result: _result } = renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [{ id: "name", desc: false }],
-        pagination: { pageIndex: 1, pageSize: 20 },
-        globalFilter: "search",
-      }),
+    const { result: _result } = renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [{ id: "name", desc: false }],
+          pagination: { pageIndex: 1, pageSize: 20 },
+          globalFilter: "search",
+        }),
+      { wrapper: createWrapper() },
     );
 
     expect(queryOptions).toHaveBeenCalled();
@@ -330,12 +342,14 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result: _result } = renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [],
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
+    const { result: _result } = renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [],
+          pagination: { pageIndex: 0, pageSize: 10 },
+        }),
+      { wrapper: createWrapper() },
     );
 
     const params = queryOptions.mock.calls[0][0];
@@ -348,33 +362,39 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result } = renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [],
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
+    const { result } = renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [],
+          pagination: { pageIndex: 0, pageSize: 10 },
+        }),
+      { wrapper: createWrapper() },
     );
 
     expect(result.current.refetch).toBeDefined();
     expect(typeof result.current.refetch).toBe("function");
   });
 
-  it("computes pageCount correctly", () => {
+  it("computes pageCount correctly", async () => {
     const queryOptions = vi.fn().mockReturnValue({
       queryKey: ["test"],
       queryFn: () => Promise.resolve({ items: [], totalCount: 100 }),
     });
 
-    const { result } = renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [],
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
+    const { result } = renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [],
+          pagination: { pageIndex: 0, pageSize: 10 },
+        }),
+      { wrapper: createWrapper() },
     );
 
-    expect(result.current.pageCount).toBe(10);
+    await waitFor(() => {
+      expect(result.current.pageCount).toBe(10);
+    });
   });
 
   it("respects keepPreviousData option", () => {
@@ -383,15 +403,16 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    const { result } = renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [],
-        pagination: { pageIndex: 0, pageSize: 10 },
-        keepPreviousData: false,
-      }),
+    const { result } = renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [],
+          pagination: { pageIndex: 0, pageSize: 10 },
+          keepPreviousData: false,
+        }),
+      { wrapper: createWrapper() },
     );
-
     expect(result.current).toBeDefined();
   });
 
@@ -401,13 +422,15 @@ describe("useDataTableQuery", () => {
       queryFn: () => Promise.resolve(mockResult),
     });
 
-    renderHook(() =>
-      useDataTableQuery({
-        queryOptions,
-        sorting: [],
-        pagination: { pageIndex: 0, pageSize: 10 },
-        extraParams: { Filter: "overridden" } as any,
-      }),
+    renderHook(
+      () =>
+        useDataTableQuery({
+          queryOptions,
+          sorting: [],
+          pagination: { pageIndex: 0, pageSize: 10 },
+          extraParams: { Filter: "overridden" } as any,
+        }),
+      { wrapper: createWrapper() },
     );
 
     const params = queryOptions.mock.calls[0][0];

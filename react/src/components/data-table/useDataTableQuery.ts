@@ -52,11 +52,12 @@ function useDataTableQuery<TData, TParams extends AbpGridParams>(
   const params = useMemo<TParams>(
     () =>
       ({
-        ...extraParams,
+        // Defaults first, then extraParams so callers can override Filter/Sorting/etc.
         Sorting: buildSortingString(sorting),
         Filter: globalFilter || undefined,
         SkipCount: pageIndex * pageSize,
         MaxResultCount: pageSize,
+        ...extraParams,
       }) as TParams,
     [extraParams, sorting, globalFilter, pageIndex, pageSize],
   );

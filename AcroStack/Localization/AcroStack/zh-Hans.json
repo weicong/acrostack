@@ -18,6 +18,7 @@
     "BookStore:NewBook": "新增图书",
     "BookStore:EditBook": "编辑图书",
     "BookStore:SelectType": "请选择类型",
+    "BookStore:AllTypes": "全部类型",
     "AbpIdentity::UserName": "用户名",
     "AbpIdentity::DisplayName": "显示名称",
     "AbpIdentity::Surname": "姓氏",
@@ -56,6 +57,7 @@
     "Enum:BookType.Horror": "恐怖",
     "Enum:BookType.Science": "科学",
     "Enum:BookType.ScienceFiction": "科幻",
-    "Enum:BookType.Poetry": "诗歌"
+    "Enum:BookType.Poetry": "诗歌",
+    "AbpUi::Reset": "重置"
   }
 }

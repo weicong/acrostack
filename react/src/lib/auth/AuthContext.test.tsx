@@ -8,6 +8,7 @@ const mockHandleSigninCallback = vi.fn();
 const mockSubscribe = vi.fn();
 const mockLogin = vi.fn();
 const mockUseAuth = vi.fn();
+const mockGetUser = vi.fn().mockResolvedValue(null);
 
 vi.mock("./userManager", () => {
   const AuthProviderMock = ({ children }: { children: React.ReactNode }) => <>{children}</>;
@@ -18,11 +19,14 @@ vi.mock("./userManager", () => {
     AuthProvider: AuthProviderMock,
     useAuth: () => mockUseAuth(),
     login: (...args: unknown[]) => mockLogin(...args),
+    getUserManager: () => ({
+      getUser: (...args: unknown[]) => mockGetUser(...args),
+    }),
   };
 
   return {
     userManager: {
-      getUser: vi.fn().mockResolvedValue(null),
+      getUser: (...args: unknown[]) => mockGetUser(...args),
     },
     getAuthClient: vi.fn(() => mockClient),
   };
@@ -30,10 +34,12 @@ vi.mock("./userManager", () => {
 
 const mockFetchAppConfig = vi.fn();
 const mockAppConfigClear = vi.fn();
+const mockAppConfigGetSnapshot = vi.fn();
 
 vi.mock("./permissions", () => ({
   appConfig: {
     clear: (...args: unknown[]) => mockAppConfigClear(...args),
+    getSnapshot: (...args: unknown[]) => mockAppConfigGetSnapshot(...args),
   },
   fetchAppConfig: (...args: unknown[]) => mockFetchAppConfig(...args),
 }));
@@ -57,6 +63,8 @@ describe("AuthContext", () => {
     mockHandleSigninCallback.mockResolvedValue(null);
     mockSubscribe.mockReturnValue(() => {});
     mockLogin.mockResolvedValue(undefined);
+    mockGetUser.mockResolvedValue(null);
+    mockAppConfigGetSnapshot.mockReturnValue({ initialized: true, loading: false });
     mockUseAuth.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
@@ -72,6 +80,9 @@ describe("AuthContext", () => {
       AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
       useAuth: mockUseAuth,
       login: mockLogin,
+      getUserManager: () => ({
+        getUser: (...args: unknown[]) => mockGetUser(...args),
+      }),
     } as unknown as ReturnType<typeof userManagerModule.getAuthClient>);
   });
 
