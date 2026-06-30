@@ -26,6 +26,8 @@ import { useAuth } from "@/lib/auth/AuthContext";
 
 interface HeaderProps {
   onMenuClick?: () => void;
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
 interface LocalizationLanguage {
@@ -258,6 +260,12 @@ const useStyles = makeStyles({
       display: "inline-flex",
     },
   },
+  collapseBtn: {
+    display: "inline-flex",
+    "@media (max-width: 768px)": {
+      display: "none",
+    },
+  },
   titleArea: {
     flex: 1,
     display: "flex",
@@ -271,7 +279,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function Header({ onMenuClick }: HeaderProps) {
+export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps) {
   const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
   const styles = useStyles();
@@ -284,6 +292,16 @@ export function Header({ onMenuClick }: HeaderProps) {
         className={styles.mobileMenuBtn}
         onClick={onMenuClick}
         aria-label={t("Menu:Menu")}
+        icon={<Navigation20Regular />}
+      />
+      <Button
+        appearance="subtle"
+        size="small"
+        className={styles.collapseBtn}
+        onClick={onToggleCollapse}
+        aria-label={
+          collapsed ? t("Menu:Expand", "Expand sidebar") : t("Menu:Collapse", "Collapse sidebar")
+        }
         icon={<Navigation20Regular />}
       />
       <div className={styles.titleArea}>

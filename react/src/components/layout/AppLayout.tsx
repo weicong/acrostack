@@ -49,6 +49,10 @@ const useStyles = makeStyles({
       transform: "translateX(0)",
     },
   },
+  sidebarCollapsed: {
+    width: "52px",
+    minWidth: "52px",
+  },
   overlay: {
     display: "none",
     "@media (max-width: 768px)": {
@@ -77,7 +81,16 @@ const useStyles = makeStyles({
 
 export function AppLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const styles = useStyles();
+
+  const sidebarClass = [
+    styles.sidebar,
+    mobileMenuOpen ? styles.sidebarOpen : "",
+    collapsed ? styles.sidebarCollapsed : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={styles.root}>
@@ -88,10 +101,14 @@ export function AppLayout() {
         aria-hidden="true"
       />
       <div className={styles.header}>
-        <Header onMenuClick={() => setMobileMenuOpen(true)} />
+        <Header
+          onMenuClick={() => setMobileMenuOpen(true)}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed((c) => !c)}
+        />
       </div>
-      <aside className={`${styles.sidebar} ${mobileMenuOpen ? styles.sidebarOpen : ""}`}>
-        <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
+      <aside className={sidebarClass}>
+        <Sidebar onNavigate={() => setMobileMenuOpen(false)} collapsed={collapsed} />
       </aside>
       <main className={styles.content}>
         <Outlet />

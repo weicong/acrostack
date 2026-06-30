@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "@fluentui/react-components";
+import { makeStyles, mergeClasses } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
 import {
   NavDrawer,
@@ -11,7 +11,6 @@ import {
   NavCategoryItem,
   NavSubItemGroup,
   NavSubItem,
-  AppItem,
   type OnNavItemSelectData,
 } from "@fluentui/react-components";
 import { routeConfig, type RouteConfigItem } from "@/lib/routing/route-config";
@@ -24,10 +23,15 @@ const useStyles = makeStyles({
     height: "100%",
     minWidth: 0,
   },
+  collapsed: {
+    width: "52px",
+    minWidth: "52px",
+  },
 });
 
 interface SidebarProps {
   onNavigate?: () => void;
+  collapsed?: boolean;
 }
 
 function isActivePath(pathname: string, itemPath: string): boolean {
@@ -35,7 +39,7 @@ function isActivePath(pathname: string, itemPath: string): boolean {
   return pathname === itemPath || pathname.startsWith(itemPath + "/");
 }
 
-export function Sidebar({ onNavigate }: SidebarProps) {
+export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routerState = useRouterState();
@@ -115,7 +119,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
 
   return (
     <NavDrawer
-      className={styles.root}
+      className={mergeClasses(styles.root, collapsed ? styles.collapsed : "")}
       type="inline"
       open
       selectedValue={selectedValue}
@@ -129,7 +133,6 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         .map((item) => item.path)}
     >
       <NavDrawerBody>
-        <AppItem>AcroStack</AppItem>
         {visibleItems.map((item) => {
           const Icon = item.icon;
           const visibleChildren = item.children?.filter(isItemVisible);
@@ -140,6 +143,13 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           }
 
           if (hasChildren) {
+            // When collapsed, render as a plain NavItem with icon only (no expandable category)
+            if (collapsed) {
+              return (
+                <NavItem key={item.path} value={item.path} icon={Icon ? <Icon /> : undefined} />
+              );
+            }
+
             return (
               <NavCategory key={item.path} value={item.path}>
                 <NavCategoryItem icon={Icon ? <Icon /> : undefined}>
@@ -165,7 +175,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
               value={item.path}
               icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
             >
-              {t(item.nameKey)}
+              {!collapsed && t(item.nameKey)}
             </NavItem>
           );
         })}
