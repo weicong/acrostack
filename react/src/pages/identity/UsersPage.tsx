@@ -24,9 +24,22 @@ type UserItem = AcroStackAppUsersAppUserDto;
 const useStyles = makeStyles({
   toolbar: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
     gap: tokens.spacingHorizontalM,
+  },
+  filters: {
+    display: "flex",
+    flex: 1,
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    minWidth: 0,
+  },
+  actionButtons: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
   },
   userNameCell: {
     display: "flex",
@@ -211,15 +224,19 @@ export function UsersPage() {
   return (
     <PageLayout title={t("AbpIdentity::Users")}>
       <div className={styles.toolbar}>
-        <SearchBox
-          placeholder={t("AbpUi::Search")}
-          value={searchValue}
-          onChange={(_, data) => setSearchValue(data.value)}
-          appearance="outline"
-        />
-        <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-          {t("AbpIdentity::NewUser")}
-        </Button>
+        <div className={styles.filters}>
+          <SearchBox
+            placeholder={t("AbpUi::Search")}
+            value={searchValue}
+            onChange={(_, data) => setSearchValue(data.value)}
+            appearance="outline"
+          />
+        </div>
+        <div className={styles.actionButtons}>
+          <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
+            {t("AbpIdentity::NewUser")}
+          </Button>
+        </div>
       </div>
 
       <DataTable

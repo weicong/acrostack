@@ -31,11 +31,19 @@ type BookItem = AcroStackServicesDtosBooksBookDto;
 const useStyles = makeStyles({
   toolbar: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
     gap: tokens.spacingHorizontalM,
   },
   filters: {
+    display: "flex",
+    flex: 1,
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    minWidth: 0,
+  },
+  actionButtons: {
     display: "flex",
     alignItems: "center",
     gap: tokens.spacingHorizontalS,
@@ -215,6 +223,8 @@ export function BooksPage() {
     void navigate({ search: { q: "", type: undefined } });
   }, [navigate]);
 
+  const isFilterDirty = searchInput !== "" || typeFilter !== undefined;
+
   return (
     <PageLayout title={t("Menu:Books")}>
       <div className={styles.toolbar}>
@@ -242,16 +252,20 @@ export function BooksPage() {
                 </option>
               ))}
           </Select>
-          <Button appearance="primary" icon={<Search20Regular />} onClick={handleSearch}>
+          <Button appearance="secondary" icon={<Search20Regular />} onClick={handleSearch}>
             {t("AbpUi::Search")}
           </Button>
-          <Button appearance="secondary" icon={<ArrowReset20Regular />} onClick={handleReset}>
-            {t("AbpUi::Reset")}
+          {isFilterDirty && (
+            <Button appearance="subtle" icon={<ArrowReset20Regular />} onClick={handleReset}>
+              {t("AbpUi::Reset")}
+            </Button>
+          )}
+        </div>
+        <div className={styles.actionButtons}>
+          <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
+            {t("BookStore:NewBook")}
           </Button>
         </div>
-        <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-          {t("BookStore:NewBook")}
-        </Button>
       </div>
 
       <DataTable
