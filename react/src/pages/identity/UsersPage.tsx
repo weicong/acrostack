@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { Avatar, Button, Badge, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
 import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { PageLayout } from "@/components/layout/PageLayout";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   appUserGetListQueryOptions,
@@ -208,7 +209,7 @@ export function UsersPage() {
   }, [searchValue]);
 
   return (
-    <>
+    <PageLayout title={t("AbpIdentity::Users")}>
       <div className={styles.toolbar}>
         <SearchBox
           placeholder={t("AbpUi::Search")}
@@ -247,6 +248,6 @@ export function UsersPage() {
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}
       />
-    </>
+    </PageLayout>
   );
 }

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, SearchBox, Select, makeStyles, tokens } from "@fluentui/react-components";
+import { PageLayout } from "@/components/layout/PageLayout";
 import {
   Add20Regular,
   Edit20Regular,
@@ -215,7 +216,7 @@ export function BooksPage() {
   }, [navigate]);
 
   return (
-    <>
+    <PageLayout title={t("Menu:Books")}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
@@ -279,6 +280,6 @@ export function BooksPage() {
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}
       />
-    </>
+    </PageLayout>
   );
 }

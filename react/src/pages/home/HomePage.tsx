@@ -1,13 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Button, Card, makeStyles, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.5rem",
-  },
   loginActions: {
     marginTop: "1rem",
     display: "flex",
@@ -26,17 +22,12 @@ export function HomePage() {
   const styles = useStyles();
 
   return (
-    <div className={styles.root}>
-      <div>
-        <Text as="h1" size={900} weight="bold">
-          {t("Welcome")}
-        </Text>
-        {!isAuthenticated && (
-          <div className={styles.loginActions}>
-            <Button onClick={navigateToLogin}>{t("AbpAccount::Login")}</Button>
-          </div>
-        )}
-      </div>
+    <PageLayout title={t("Welcome")}>
+      {!isAuthenticated && (
+        <div className={styles.loginActions}>
+          <Button onClick={navigateToLogin}>{t("AbpAccount::Login")}</Button>
+        </div>
+      )}
 
       <Card>
         <Text as="h2" size={600} weight="semibold">
@@ -56,6 +47,6 @@ export function HomePage() {
           <Button appearance="outline">React UI Documentation</Button>
         </a>
       </Card>
-    </div>
+    </PageLayout>
   );
 }
