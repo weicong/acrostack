@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { makeStyles, tokens } from "@fluentui/react-components";
+import { makeStyles } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
 import {
   NavDrawer,
@@ -23,7 +23,6 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
     minWidth: 0,
-    background: tokens.colorNeutralBackground1,
   },
 });
 

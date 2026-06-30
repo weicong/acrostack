@@ -10,13 +10,20 @@ const useStyles = makeStyles({
     display: "grid",
     height: "100vh",
     overflow: "hidden",
-    // Left column = sidebar (fixed width), right column = header/main/footer stack
+    // Grid: 2 columns x 3 rows
+    // Col 1 = sidebar, Col 2 = content
+    // Row 1 = title bar (full width), Row 2 = sidebar + content, Row 3 = status bar (full width)
     gridTemplateColumns: "auto 1fr",
-    gridTemplateRows: "1fr",
+    gridTemplateRows: "auto 1fr auto",
+  },
+  // Title bar — full width, top row
+  header: {
+    gridColumn: "1 / -1",
+    gridRow: "1",
   },
   sidebar: {
     gridColumn: "1",
-    gridRow: "1 / span 1",
+    gridRow: "2",
     display: "flex",
     flexDirection: "column",
     minHeight: 0,
@@ -52,19 +59,19 @@ const useStyles = makeStyles({
       background: "rgba(0,0,0,0.5)",
     },
   },
-  // Right column: header / main / footer stacked vertically
-  right: {
+  // Main content area — right column, middle row
+  content: {
     gridColumn: "2",
-    gridRow: "1 / span 1",
-    display: "grid",
-    gridTemplateRows: "auto 1fr auto",
-    minHeight: 0,
-    overflow: "hidden",
-  },
-  main: {
+    gridRow: "2",
     minHeight: 0,
     overflow: "auto",
     padding: tokens.spacingHorizontalXL,
+    background: tokens.colorNeutralBackground1,
+  },
+  // Status bar — full width, bottom row
+  footer: {
+    gridColumn: "1 / -1",
+    gridRow: "3",
   },
 });
 
@@ -80,14 +87,16 @@ export function AppLayout() {
         onClick={() => setMobileMenuOpen(false)}
         aria-hidden="true"
       />
+      <div className={styles.header}>
+        <Header onMenuClick={() => setMobileMenuOpen(true)} />
+      </div>
       <aside className={`${styles.sidebar} ${mobileMenuOpen ? styles.sidebarOpen : ""}`}>
         <Sidebar onNavigate={() => setMobileMenuOpen(false)} />
       </aside>
-      <div className={styles.right}>
-        <Header onMenuClick={() => setMobileMenuOpen(true)} />
-        <main className={styles.main}>
-          <Outlet />
-        </main>
+      <main className={styles.content}>
+        <Outlet />
+      </main>
+      <div className={styles.footer}>
         <Footer />
       </div>
     </div>

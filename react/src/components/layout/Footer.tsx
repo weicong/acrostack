@@ -2,14 +2,31 @@ import { makeStyles, Text, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
   footer: {
-    borderTop: `1px solid ${tokens.colorNeutralStroke1}`,
-    background: tokens.colorNeutralBackground3,
-    padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalL}`,
-  },
-  content: {
     display: "flex",
-    justifyContent: "center",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "32px",
+    padding: `0 ${tokens.spacingHorizontalL}`,
+    // Word status bar style: thin, darker background, subtle top border
+    background: tokens.colorNeutralBackground2,
+    borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
     color: tokens.colorNeutralForeground3,
+    fontSize: tokens.fontSizeBase200,
+  },
+  left: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+  },
+  right: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+  },
+  separator: {
+    width: "1px",
+    height: "12px",
+    background: tokens.colorNeutralStroke2,
   },
 });
 
@@ -19,13 +36,13 @@ export function Footer() {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.content}>
-        <Text size={200}>
-          {currentYear}&copy; by{" "}
-          <a href="https://volosoft.com/" target="_blank" rel="noreferrer">
-            Volosoft
-          </a>
-        </Text>
+      <div className={styles.left}>
+        <Text size={200}>{currentYear}&copy; AcroStack</Text>
+      </div>
+      <div className={styles.right}>
+        <Text size={200}>ABP React UI</Text>
+        <div className={styles.separator} />
+        <Text size={200}>v1.0</Text>
       </div>
     </footer>
   );

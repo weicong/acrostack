@@ -243,9 +243,14 @@ const useStyles = makeStyles({
     height: "3.5rem",
     alignItems: "center",
     gap: tokens.spacingHorizontalS,
-    borderBottom: `1px solid ${tokens.colorNeutralStroke1}`,
-    background: tokens.colorNeutralBackground1,
+    // Word-style blue title bar background
+    background: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
     padding: `0 ${tokens.spacingHorizontalL}`,
+    // Ensure all buttons/icons in the header use the inverted foreground color
+    "& button": {
+      color: tokens.colorNeutralForegroundOnBrand,
+    },
   },
   mobileMenuBtn: {
     display: "none",
@@ -257,7 +262,7 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    gap: tokens.spacingHorizontalXS,
+    gap: tokens.spacingHorizontalS,
   },
   actions: {
     display: "flex",
