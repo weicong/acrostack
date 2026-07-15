@@ -13,12 +13,8 @@ vi.mock("@/lib/auth/userManager", () => ({
 
 const mockFetchAppConfig = vi.fn();
 const mockIsPolicyGranted = vi.fn();
-const mockGetSnapshot = vi.fn();
 
 vi.mock("@/lib/auth/permissions", () => ({
-  appConfig: {
-    getSnapshot: () => mockGetSnapshot(),
-  },
   fetchAppConfig: (...args: unknown[]) => mockFetchAppConfig(...args),
   isPolicyGranted: (...args: unknown[]) => mockIsPolicyGranted(...args),
 }));
@@ -31,12 +27,21 @@ vi.mock("@tanstack/react-router", () => ({
   },
 }));
 
+const mockEnsureQueryData = vi.fn();
+
+vi.mock("@/lib/queryClient", () => ({
+  queryClient: {
+    ensureQueryData: (...args: unknown[]) => mockEnsureQueryData(...args),
+  },
+}));
+
 const CONTEXT: GuardContext = { location: { href: "/dashboard" } };
 
 describe("guards", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGetSnapshot.mockReturnValue({ initialized: true, loading: false });
+    // By default, ensureQueryData resolves immediately (data already cached)
+    mockEnsureQueryData.mockResolvedValue(true);
   });
 
   describe("authGuard", () => {
@@ -101,22 +106,33 @@ describe("guards", () => {
       expect(mockIsPolicyGranted).toHaveBeenCalledWith("AbpIdentity.Users");
     });
 
-    it("fetches app config when snapshot is not initialized and not loading", async () => {
+    it("fetches app config via ensureQueryData when cache is empty", async () => {
       mockGetUser.mockResolvedValue({ expired: false, access_token: "token-abc" });
-      mockGetSnapshot.mockReturnValue({ initialized: false, loading: false });
       mockFetchAppConfig.mockResolvedValue(undefined);
       mockIsPolicyGranted.mockReturnValue(true);
+
+      // Simulate cache miss: ensureQueryData calls the queryFn
+      mockEnsureQueryData.mockImplementation(async (opts: { queryFn: () => Promise<unknown> }) => {
+        return opts.queryFn();
+      });
 
       const guard = createPermissionGuard("Some.Permission");
       await guard(CONTEXT);
 
+      expect(mockEnsureQueryData).toHaveBeenCalledWith(
+        expect.objectContaining({
+          queryKey: ["abp-app-config"],
+        }),
+      );
       expect(mockFetchAppConfig).toHaveBeenCalledWith("token-abc");
     });
 
-    it("skips fetching app config when snapshot is already initialized", async () => {
+    it("skips fetching app config when ensureQueryData resolves from cache", async () => {
       mockGetUser.mockResolvedValue({ expired: false, access_token: "token-abc" });
-      mockGetSnapshot.mockReturnValue({ initialized: true, loading: false });
       mockIsPolicyGranted.mockReturnValue(true);
+
+      // ensureQueryData resolves immediately (cache hit), queryFn not called
+      mockEnsureQueryData.mockResolvedValue(true);
 
       const guard = createPermissionGuard("Some.Permission");
       await guard(CONTEXT);

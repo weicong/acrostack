@@ -3,8 +3,9 @@
  * Use in TanStack Router beforeLoad.
  */
 import { redirect } from "@tanstack/react-router";
+import { queryClient } from "@/lib/queryClient";
 import { userManager } from "@/lib/auth/userManager";
-import { appConfig, fetchAppConfig, isPolicyGranted } from "@/lib/auth/permissions";
+import { fetchAppConfig, isPolicyGranted } from "@/lib/auth/permissions";
 
 export interface GuardContext {
   location: { href: string };
@@ -32,11 +33,17 @@ export function createPermissionGuard(requiredPolicy: string) {
   return async (context: GuardContext) => {
     await authGuard(context);
 
-    const snapshot = appConfig.getSnapshot() as { initialized?: boolean } | null;
-    if (!snapshot?.initialized) {
-      const user = await userManager.getUser();
-      await fetchAppConfig(user?.access_token ?? null);
-    }
+    // Use ensureQueryData to avoid duplicate fetch requests.
+    // Query deduplication is handled by TanStack Query.
+    await queryClient.ensureQueryData({
+      queryKey: ["abp-app-config"],
+      queryFn: async () => {
+        const user = await userManager.getUser();
+        await fetchAppConfig(user?.access_token ?? null);
+        return true;
+      },
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    });
 
     if (!isPolicyGranted(requiredPolicy)) throw redirect({ to: "/403" });
   };

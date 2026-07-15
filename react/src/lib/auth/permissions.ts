@@ -4,11 +4,7 @@
  */
 import { createAbpReactAppConfig } from "@volo/abp-react-app-config";
 import { getApiUrl } from "@/lib/runtimeConfig";
-
-function getTenantId(): string | null {
-  if (typeof window === "undefined") return null;
-  return sessionStorage.getItem("abp_tenant_id");
-}
+import { getTenantId } from "@/lib/tenant";
 
 function evaluatePolicy(policies: Record<string, boolean>, policy: string): boolean {
   const hasPolicy = (p: string) => policies[p.trim()] === true;

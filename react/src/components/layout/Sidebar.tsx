@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useMemo, useCallback } from "react";
+import { useNavigate, useRouterState, useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { makeStyles, mergeClasses } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
@@ -13,7 +13,7 @@ import {
   NavSubItem,
   type OnNavItemSelectData,
 } from "@fluentui/react-components";
-import { routeConfig, type RouteConfigItem } from "@/lib/routing/route-config";
+import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-menu-types";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 
@@ -42,74 +42,82 @@ function isActivePath(pathname: string, itemPath: string): boolean {
 export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const router = useRouter();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const { isGranted } = usePermissions();
   const { isAuthenticated } = useAuth();
   const styles = useStyles();
 
-  const isItemVisible = (item: RouteConfigItem) => {
-    if (item.requiresAuth && !isAuthenticated) return false;
-    if (!item.requiredPolicy) return true;
-    if (!isAuthenticated) return false;
-    return isGranted(item.requiredPolicy);
-  };
+  // Derive menu items from router.routesById (single source of truth)
+  const allMenuRoutes = useMemo(() => {
+    const routes = Object.values(router.routesById).filter((r) => r.staticData?.menu != null);
+    return routes.map((r) => ({
+      path: r.path,
+      menu: r.staticData!.menu as RouteMenuConfig,
+    }));
+  }, [router.routesById]);
+
+  const isItemVisible = useCallback(
+    (menu: RouteMenuConfig | RouteMenuConfigChild) => {
+      if (menu.requiresAuth && !isAuthenticated) return false;
+      if (!menu.requiredPolicy) return true;
+      if (!isAuthenticated) return false;
+      return isGranted(menu.requiredPolicy);
+    },
+    [isAuthenticated, isGranted],
+  );
 
   const visibleItems = useMemo(
-    () => routeConfig.filter(isItemVisible).sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isAuthenticated, isGranted],
+    () =>
+      allMenuRoutes
+        .filter(({ menu }) => isItemVisible(menu))
+        .sort((a, b) => (a.menu.order ?? 0) - (b.menu.order ?? 0)),
+    [allMenuRoutes, isItemVisible],
   );
 
   // Determine the selected NavItem value based on current pathname
   const selectedValue = useMemo(() => {
-    for (const item of visibleItems) {
-      const visibleChildren = item.children?.filter(isItemVisible);
+    for (const { path, menu } of visibleItems) {
+      const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
       if (visibleChildren) {
         for (const child of visibleChildren) {
-          if (isActivePath(pathname, child.path)) return child.path;
+          if (isActivePath(pathname, path + child.path)) return child.path;
         }
       }
-      if (isActivePath(pathname, item.path)) return item.path;
+      if (isActivePath(pathname, path)) return path;
     }
     return undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, visibleItems]);
+  }, [pathname, visibleItems, isItemVisible]);
 
   // Determine which categories should show as selected (when a child is active but category is collapsed)
   const selectedCategoryValue = useMemo(() => {
-    for (const item of visibleItems) {
-      const visibleChildren = item.children?.filter(isItemVisible);
-      if (visibleChildren && visibleChildren.some((c) => isActivePath(pathname, c.path))) {
-        return item.path;
+    for (const { path, menu } of visibleItems) {
+      const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
+      if (visibleChildren && visibleChildren.some((c) => isActivePath(pathname, path + c.path))) {
+        return path;
       }
     }
     return undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, visibleItems]);
+  }, [pathname, visibleItems, isItemVisible]);
 
   const handleNavItemSelect = (_: unknown, data: OnNavItemSelectData) => {
     const value = data.value;
     if (!value) return;
 
-    // Find the matching route config item to check for external links
-    const findItem = (items: RouteConfigItem[]): RouteConfigItem | undefined => {
-      for (const item of items) {
-        if (item.path === value) return item;
-        const found = item.children ? findItem(item.children) : undefined;
-        if (found) return found;
-      }
-      return undefined;
-    };
-
-    const matched = findItem(visibleItems);
+    // Find the matching menu route
+    const matched = visibleItems.find(({ path }) => path === value);
     if (!matched) return;
 
     const externalHref =
-      typeof matched.externalHref === "function" ? matched.externalHref() : matched.externalHref;
+      typeof matched.menu.externalHref === "function"
+        ? matched.menu.externalHref()
+        : matched.menu.externalHref;
 
     if (externalHref) {
-      window.open(externalHref, matched.externalTarget ?? "_blank", matched.externalRel)?.focus();
+      window
+        .open(externalHref, matched.menu.externalTarget ?? "_blank", matched.menu.externalRel)
+        ?.focus();
     } else {
       void navigate({ to: matched.path });
     }
@@ -127,37 +135,37 @@ export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
       onNavItemSelect={handleNavItemSelect}
       multiple
       defaultOpenCategories={visibleItems
-        .filter((item) =>
-          item.children?.filter(isItemVisible).some((c) => isActivePath(pathname, c.path)),
+        .filter(({ path, menu }) =>
+          menu.children
+            ?.filter((child) => isItemVisible(child))
+            .some((c) => isActivePath(pathname, path + c.path)),
         )
-        .map((item) => item.path)}
+        .map(({ path }) => path)}
     >
       <NavDrawerBody>
-        {visibleItems.map((item) => {
-          const Icon = item.icon;
-          const visibleChildren = item.children?.filter(isItemVisible);
+        {visibleItems.map(({ path, menu }) => {
+          const Icon = menu.icon;
+          const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
           const hasChildren = visibleChildren && visibleChildren.length > 0;
 
-          if (item.children && !hasChildren) {
+          if (menu.children && !hasChildren) {
             return null;
           }
 
           if (hasChildren) {
             // When collapsed, render as a plain NavItem with icon only (no expandable category)
             if (collapsed) {
-              return (
-                <NavItem key={item.path} value={item.path} icon={Icon ? <Icon /> : undefined} />
-              );
+              return <NavItem key={path} value={path} icon={Icon ? <Icon /> : undefined} />;
             }
 
             return (
-              <NavCategory key={item.path} value={item.path}>
+              <NavCategory key={path} value={path}>
                 <NavCategoryItem icon={Icon ? <Icon /> : undefined}>
-                  {t(item.nameKey)}
+                  {t(menu.nameKey)}
                 </NavCategoryItem>
                 <NavSubItemGroup>
                   {visibleChildren.map((child) => (
-                    <NavSubItem key={child.path} value={child.path}>
+                    <NavSubItem key={path + child.path} value={path + child.path}>
                       {t(child.nameKey)}
                     </NavSubItem>
                   ))}
@@ -167,15 +175,15 @@ export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
           }
 
           const externalHref =
-            typeof item.externalHref === "function" ? item.externalHref() : item.externalHref;
+            typeof menu.externalHref === "function" ? menu.externalHref() : menu.externalHref;
 
           return (
             <NavItem
-              key={item.path}
-              value={item.path}
+              key={path}
+              value={path}
               icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
             >
-              {!collapsed && t(item.nameKey)}
+              {!collapsed && t(menu.nameKey)}
             </NavItem>
           );
         })}

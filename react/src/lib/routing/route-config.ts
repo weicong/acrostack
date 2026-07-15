@@ -1,3 +1,8 @@
+/**
+ * @deprecated This file is deprecated. Menu configuration has been moved to route staticData.
+ * See @/lib/routing/route-menu-types for the new type definition.
+ * Use router.staticData.menu instead (see routes/books.tsx for example).
+ */
 import type { ComponentType } from "react";
 import { Home20Regular, Book20Regular, People20Regular } from "@fluentui/react-icons";
 

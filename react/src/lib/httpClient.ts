@@ -1,37 +1,18 @@
 /**
  * Axios instance with ABP auth interceptors.
  * - Request: Bearer token, __tenant (multi-tenancy), X-Requested-With, Accept-Language, Content-Type
- * - Response: 401 → redirect to login, 403 → redirect to forbidden (unless skip403Redirect is set)
+ * - Response: 401 → redirect to login, 403 → router.navigate to forbidden (via event bus)
  * - baseURL: Resolved from runtimeConfig (dynamic-env.json) at request time
  */
 import { axiosInstance } from "@kubb/plugin-client/clients/axios";
 import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
+import { getTenantId } from "@/lib/tenant";
+import { emitRouteEvent } from "@/lib/routing/routeEvents";
 import i18n from "@/lib/i18n/i18n";
 
-/** ABP sessionStorage key for current tenant (set by tenant switch). */
-const ABP_TENANT_KEY = "abp_tenant_id";
-
-/**
- * Gets the current tenant ID for multi-tenancy.
- * Used when user has switched tenant; otherwise backend resolves from token.
- */
-function getTenantId(): string | null {
-  if (typeof window === "undefined") return null;
-  return sessionStorage.getItem(ABP_TENANT_KEY);
-}
-
-/**
- * Sets the current tenant ID (call from tenant switch component).
- */
-export function setTenantId(tenantId: string | null): void {
-  if (typeof window === "undefined") return;
-  if (tenantId) {
-    sessionStorage.setItem(ABP_TENANT_KEY, tenantId);
-  } else {
-    sessionStorage.removeItem(ABP_TENANT_KEY);
-  }
-}
+// Re-export setTenantId for backward compatibility
+export { setTenantId } from "@/lib/tenant";
 
 export function setupHttpClientInterceptors() {
   axiosInstance.interceptors.request.use(async (config) => {
@@ -67,7 +48,7 @@ export function setupHttpClientInterceptors() {
       }
 
       if (status === 403) {
-        window.location.href = "/403";
+        emitRouteEvent({ type: "403", to: "/403" });
         return Promise.reject(new Error("Forbidden"));
       }
 
