@@ -14,18 +14,18 @@ const booksSearchSchema = z.object({
 
 export type BooksSearch = z.infer<typeof booksSearchSchema>;
 
+/** Menu metadata for this route (consumed by Sidebar via menuRoutes.ts). */
+export const menu: RouteMenuConfig = {
+  nameKey: "Menu:Books",
+  icon: Book20Regular,
+  order: 3,
+  requiredPolicy: "AcroStack.Books",
+};
+
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/books",
   validateSearch: booksSearchSchema,
   component: BooksPage,
   beforeLoad: createPermissionGuard("AcroStack.Books"),
-  staticData: {
-    menu: {
-      nameKey: "Menu:Books",
-      icon: Book20Regular,
-      order: 3,
-      requiredPolicy: "AcroStack.Books",
-    } satisfies RouteMenuConfig,
-  },
 });

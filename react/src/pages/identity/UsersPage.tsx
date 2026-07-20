@@ -15,11 +15,10 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import { UserFormDialog } from "./UserFormDialog";
-import { toFormUser, type UserFormUser } from "./user-types";
+import { toFormUser, type UserFormUser, type UserListItem } from "./user-types";
 
-type UserItem = AcroStackAppUsersAppUserDto;
+type UserItem = UserListItem;
 
 const useStyles = makeStyles({
   toolbar: {

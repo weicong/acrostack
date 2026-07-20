@@ -1,6 +1,10 @@
 import type { AcroStackAppUsersAppUserDto } from "@/api/models/acroStack/appUsers/AppUserDto";
 import type { VoloAbpIdentityIdentityUserDto } from "@/api/models/volo/abp/identity/IdentityUserDto";
 
+/** List item as returned by the user list endpoint. Feature-local alias so
+ * pages don't depend on the generated (Kubb) type name directly. */
+export type UserListItem = AcroStackAppUsersAppUserDto;
+
 /**
  * Form-level user shape. Includes `concurrencyStamp` and `lockoutEnabled`
  * (needed by the update endpoint) which the list DTO does not expose —

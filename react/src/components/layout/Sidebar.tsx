@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { useNavigate, useRouterState, useRouter } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { makeStyles, mergeClasses } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
@@ -14,6 +14,7 @@ import {
   type OnNavItemSelectData,
 } from "@fluentui/react-components";
 import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-menu-types";
+import { menuRoutes } from "@/lib/routing/menuRoutes";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 
@@ -42,21 +43,14 @@ function isActivePath(pathname: string, itemPath: string): boolean {
 export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const router = useRouter();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const { isGranted } = usePermissions();
   const { isAuthenticated } = useAuth();
   const styles = useStyles();
 
-  // Derive menu items from router.routesById (single source of truth)
-  const allMenuRoutes = useMemo(() => {
-    const routes = Object.values(router.routesById).filter((r) => r.staticData?.menu != null);
-    return routes.map((r) => ({
-      path: r.path,
-      menu: r.staticData!.menu as RouteMenuConfig,
-    }));
-  }, [router.routesById]);
+  // Menu routes are collected from route files via menuRoutes.ts (single source of truth).
+  const allMenuRoutes = menuRoutes;
 
   const isItemVisible = useCallback(
     (menu: RouteMenuConfig | RouteMenuConfigChild) => {
@@ -105,8 +99,20 @@ export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
     const value = data.value;
     if (!value) return;
 
-    // Find the matching menu route
-    const matched = visibleItems.find(({ path }) => path === value);
+    // value is an absolute path. Search both top-level items and their children.
+    type Matched = { path: string; menu: RouteMenuConfig | RouteMenuConfigChild };
+    let matched: Matched | undefined;
+    for (const item of visibleItems) {
+      if (item.path === value) {
+        matched = item;
+        break;
+      }
+      const child = item.menu.children?.find((c) => item.path + c.path === value);
+      if (child) {
+        matched = { path: item.path + child.path, menu: child };
+        break;
+      }
+    }
     if (!matched) return;
 
     const externalHref =

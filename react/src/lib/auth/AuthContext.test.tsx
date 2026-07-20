@@ -32,7 +32,8 @@ vi.mock("./userManager", () => {
   };
 });
 
-const mockFetchAppConfig = vi.fn();
+const mockEnsureAppConfig = vi.fn();
+const mockInvalidateAppConfig = vi.fn();
 const mockAppConfigClear = vi.fn();
 const mockAppConfigGetSnapshot = vi.fn();
 
@@ -41,7 +42,12 @@ vi.mock("./permissions", () => ({
     clear: (...args: unknown[]) => mockAppConfigClear(...args),
     getSnapshot: (...args: unknown[]) => mockAppConfigGetSnapshot(...args),
   },
-  fetchAppConfig: (...args: unknown[]) => mockFetchAppConfig(...args),
+  ensureAppConfig: (...args: unknown[]) => mockEnsureAppConfig(...args),
+  invalidateAppConfig: (...args: unknown[]) => mockInvalidateAppConfig(...args),
+}));
+
+vi.mock("@/lib/queryClient", () => ({
+  queryClient: {},
 }));
 
 function TestConsumer() {
@@ -131,7 +137,7 @@ describe("AuthContext", () => {
     expect(mockHandleSigninCallback).not.toHaveBeenCalled();
   });
 
-  it("calls fetchAppConfig when userLoaded event with isAuthenticated=true is received", async () => {
+  it("loads app config via ensureAppConfig when userLoaded event with isAuthenticated=true is received", async () => {
     let capturedCallback: ((event: unknown) => Promise<void>) | null = null;
     mockSubscribe.mockImplementation((cb: (event: unknown) => Promise<void>) => {
       capturedCallback = cb;
@@ -154,7 +160,7 @@ describe("AuthContext", () => {
       });
     });
 
-    expect(mockFetchAppConfig).toHaveBeenCalledWith("token-abc");
+    expect(mockEnsureAppConfig).toHaveBeenCalled();
   });
 
   it("calls appConfig.clear when userUnloaded event is received", async () => {
@@ -177,6 +183,7 @@ describe("AuthContext", () => {
     });
 
     expect(mockAppConfigClear).toHaveBeenCalled();
+    expect(mockInvalidateAppConfig).toHaveBeenCalled();
   });
 
   it("useAuth delegates to authClient.useAuth and adds navigateToLogin", () => {

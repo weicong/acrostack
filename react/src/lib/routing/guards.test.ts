@@ -11,11 +11,11 @@ vi.mock("@/lib/auth/userManager", () => ({
   },
 }));
 
-const mockFetchAppConfig = vi.fn();
+const mockEnsureAppConfig = vi.fn();
 const mockIsPolicyGranted = vi.fn();
 
 vi.mock("@/lib/auth/permissions", () => ({
-  fetchAppConfig: (...args: unknown[]) => mockFetchAppConfig(...args),
+  ensureAppConfig: (...args: unknown[]) => mockEnsureAppConfig(...args),
   isPolicyGranted: (...args: unknown[]) => mockIsPolicyGranted(...args),
 }));
 
@@ -27,12 +27,8 @@ vi.mock("@tanstack/react-router", () => ({
   },
 }));
 
-const mockEnsureQueryData = vi.fn();
-
 vi.mock("@/lib/queryClient", () => ({
-  queryClient: {
-    ensureQueryData: (...args: unknown[]) => mockEnsureQueryData(...args),
-  },
+  queryClient: { __id: "test-query-client" },
 }));
 
 const CONTEXT: GuardContext = { location: { href: "/dashboard" } };
@@ -40,8 +36,8 @@ const CONTEXT: GuardContext = { location: { href: "/dashboard" } };
 describe("guards", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // By default, ensureQueryData resolves immediately (data already cached)
-    mockEnsureQueryData.mockResolvedValue(true);
+    // By default, ensureAppConfig resolves immediately.
+    mockEnsureAppConfig.mockResolvedValue(undefined);
   });
 
   describe("authGuard", () => {
@@ -106,38 +102,25 @@ describe("guards", () => {
       expect(mockIsPolicyGranted).toHaveBeenCalledWith("AbpIdentity.Users");
     });
 
-    it("fetches app config via ensureQueryData when cache is empty", async () => {
-      mockGetUser.mockResolvedValue({ expired: false, access_token: "token-abc" });
-      mockFetchAppConfig.mockResolvedValue(undefined);
+    it("loads app config via ensureAppConfig before checking policy", async () => {
+      mockGetUser.mockResolvedValue({ expired: false });
       mockIsPolicyGranted.mockReturnValue(true);
-
-      // Simulate cache miss: ensureQueryData calls the queryFn
-      mockEnsureQueryData.mockImplementation(async (opts: { queryFn: () => Promise<unknown> }) => {
-        return opts.queryFn();
-      });
 
       const guard = createPermissionGuard("Some.Permission");
       await guard(CONTEXT);
 
-      expect(mockEnsureQueryData).toHaveBeenCalledWith(
-        expect.objectContaining({
-          queryKey: ["abp-app-config"],
-        }),
+      expect(mockEnsureAppConfig).toHaveBeenCalledWith(
+        expect.objectContaining({ __id: "test-query-client" }),
       );
-      expect(mockFetchAppConfig).toHaveBeenCalledWith("token-abc");
     });
 
-    it("skips fetching app config when ensureQueryData resolves from cache", async () => {
-      mockGetUser.mockResolvedValue({ expired: false, access_token: "token-abc" });
-      mockIsPolicyGranted.mockReturnValue(true);
-
-      // ensureQueryData resolves immediately (cache hit), queryFn not called
-      mockEnsureQueryData.mockResolvedValue(true);
+    it("does not check policy when app config loading fails", async () => {
+      mockGetUser.mockResolvedValue({ expired: false });
+      mockEnsureAppConfig.mockRejectedValue(new Error("network"));
 
       const guard = createPermissionGuard("Some.Permission");
-      await guard(CONTEXT);
-
-      expect(mockFetchAppConfig).not.toHaveBeenCalled();
+      await expect(guard(CONTEXT)).rejects.toThrow("network");
+      expect(mockIsPolicyGranted).not.toHaveBeenCalled();
     });
   });
 });

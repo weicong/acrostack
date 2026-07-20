@@ -4,15 +4,14 @@ import { HomePage } from "@/pages/home/HomePage";
 import { type RouteMenuConfig } from "@/lib/routing/route-menu-types";
 import { Home20Regular } from "@fluentui/react-icons";
 
+export const menu: RouteMenuConfig = {
+  nameKey: "Menu:Home",
+  icon: Home20Regular,
+  order: 1,
+};
+
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: HomePage,
-  staticData: {
-    menu: {
-      nameKey: "Menu:Home",
-      icon: Home20Regular,
-      order: 1,
-    } satisfies RouteMenuConfig,
-  },
 });

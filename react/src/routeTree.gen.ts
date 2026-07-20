@@ -9,22 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as BooksRouteImport } from './routes/books'
-import { Route as R403RouteImport } from './routes/403'
-import { Route as IdentityRouteRouteImport } from './routes/identity/route'
-import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as IdentityIndexRouteImport } from './routes/identity/index'
+import { Route as R403RouteImport } from './routes/403'
+import { Route as AccountRouteRouteImport } from './routes/account/route'
+import { Route as BooksRouteImport } from './routes/books'
+import { Route as IdentityRouteRouteImport } from './routes/identity/route'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
-import { Route as IdentityUsersRouteImport } from './routes/identity/users'
-import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
-import { Route as AccountRegisterRouteImport } from './routes/account/register'
-import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
+import { Route as AccountLoginRouteImport } from './routes/account/login'
+import { Route as AccountRegisterRouteImport } from './routes/account/register'
+import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
+import { Route as IdentityIndexRouteImport } from './routes/identity/index'
+import { Route as IdentityUsersRouteImport } from './routes/identity/users'
 
-const BooksRoute = BooksRouteImport.update({
-  id: '/books',
-  path: '/books',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const R403Route = R403RouteImport.update({
@@ -32,44 +32,29 @@ const R403Route = R403RouteImport.update({
   path: '/403',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IdentityRouteRoute = IdentityRouteRouteImport.update({
-  id: '/identity',
-  path: '/identity',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
   id: '/account',
   path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BooksRoute = BooksRouteImport.update({
+  id: '/books',
+  path: '/books',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IdentityIndexRoute = IdentityIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => IdentityRouteRoute,
+const IdentityRouteRoute = IdentityRouteRouteImport.update({
+  id: '/identity',
+  path: '/identity',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const IdentityUsersRoute = IdentityUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => IdentityRouteRoute,
-} as any)
-const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
-const AccountRegisterRoute = AccountRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
+const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => AccountRouteRoute,
 } as any)
 const AccountLoginRoute = AccountLoginRouteImport.update({
@@ -77,10 +62,25 @@ const AccountLoginRoute = AccountLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => AccountRouteRoute,
+} as any)
+const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
+const IdentityIndexRoute = IdentityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => IdentityRouteRoute,
+} as any)
+const IdentityUsersRoute = IdentityUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => IdentityRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -177,11 +177,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/books': {
-      id: '/books'
-      path: '/books'
-      fullPath: '/books'
-      preLoaderRoute: typeof BooksRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/403': {
@@ -191,13 +191,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof R403RouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/identity': {
-      id: '/identity'
-      path: '/identity'
-      fullPath: '/identity'
-      preLoaderRoute: typeof IdentityRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -205,19 +198,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/books': {
+      id: '/books'
+      path: '/books'
+      fullPath: '/books'
+      preLoaderRoute: typeof BooksRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/identity/': {
-      id: '/identity/'
-      path: '/'
-      fullPath: '/identity/'
-      preLoaderRoute: typeof IdentityIndexRouteImport
-      parentRoute: typeof IdentityRouteRoute
+    '/identity': {
+      id: '/identity'
+      path: '/identity'
+      fullPath: '/identity'
+      preLoaderRoute: typeof IdentityRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/account/': {
       id: '/account/'
@@ -226,25 +219,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/identity/users': {
-      id: '/identity/users'
-      path: '/users'
-      fullPath: '/identity/users'
-      preLoaderRoute: typeof IdentityUsersRouteImport
-      parentRoute: typeof IdentityRouteRoute
-    }
-    '/account/reset-password': {
-      id: '/account/reset-password'
-      path: '/reset-password'
-      fullPath: '/account/reset-password'
-      preLoaderRoute: typeof AccountResetPasswordRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
-    '/account/register': {
-      id: '/account/register'
-      path: '/register'
-      fullPath: '/account/register'
-      preLoaderRoute: typeof AccountRegisterRouteImport
+    '/account/forgot-password': {
+      id: '/account/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/account/forgot-password'
+      preLoaderRoute: typeof AccountForgotPasswordRouteImport
       parentRoute: typeof AccountRouteRoute
     }
     '/account/login': {
@@ -254,12 +233,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountLoginRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/account/forgot-password': {
-      id: '/account/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/account/forgot-password'
-      preLoaderRoute: typeof AccountForgotPasswordRouteImport
+    '/account/register': {
+      id: '/account/register'
+      path: '/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
       parentRoute: typeof AccountRouteRoute
+    }
+    '/account/reset-password': {
+      id: '/account/reset-password'
+      path: '/reset-password'
+      fullPath: '/account/reset-password'
+      preLoaderRoute: typeof AccountResetPasswordRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
+    '/identity/': {
+      id: '/identity/'
+      path: '/'
+      fullPath: '/identity/'
+      preLoaderRoute: typeof IdentityIndexRouteImport
+      parentRoute: typeof IdentityRouteRoute
+    }
+    '/identity/users': {
+      id: '/identity/users'
+      path: '/users'
+      fullPath: '/identity/users'
+      preLoaderRoute: typeof IdentityUsersRouteImport
+      parentRoute: typeof IdentityRouteRoute
     }
   }
 }

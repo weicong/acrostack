@@ -20,13 +20,12 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import type { AcroStackServicesDtosBooksBookDto } from "@/api/models/acroStack/services/dtos/books/BookDto";
 import { BookFormDialog } from "./BookFormDialog";
-import { toFormBook, type BookFormBook } from "./book-types";
+import { toFormBook, type BookFormBook, type BookListItem } from "./book-types";
 import { bookTypeOptions } from "./bookTypeOptions";
 import { Route } from "@/routes/books";
 
-type BookItem = AcroStackServicesDtosBooksBookDto;
+type BookItem = BookListItem;
 
 const useStyles = makeStyles({
   toolbar: {

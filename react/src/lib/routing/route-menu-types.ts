@@ -1,7 +1,7 @@
 /**
- * Menu metadata for TanStack Router staticData.
- * Attach this to route staticData to define menu appearance.
- * Sidebar will derive the menu from router.routesById.
+ * Menu metadata types for route files.
+ * Each route file exports a `menu` constant of type RouteMenuConfig.
+ * menuRoutes.ts collects them, and Sidebar derives the menu from there.
  */
 import type { ComponentType } from "react";
 
@@ -44,18 +44,4 @@ export interface RouteMenuConfigChild {
   externalTarget?: "_self" | "_blank";
   /** Rel attribute for external links. */
   externalRel?: string;
-}
-
-/**
- * Extend TanStack Router's Register module to include menu config.
- * This provides type safety when using route.staticData.menu.
- */
-declare module "@tanstack/react-router" {
-  interface Register {
-    route: {
-      staticData?: {
-        menu?: RouteMenuConfig;
-      };
-    };
-  }
 }

@@ -1,4 +1,7 @@
 import type { AcroStackServicesDtosBooksBookDto } from "@/api/models/acroStack/services/dtos/books/BookDto";
+/** List/detail item as returned by the book list endpoint. Feature-local alias
+ * so pages don't depend on the generated (Kubb) type name directly. */
+export type BookListItem = AcroStackServicesDtosBooksBookDto;
 
 export type BookFormBook = Pick<
   AcroStackServicesDtosBooksBookDto,

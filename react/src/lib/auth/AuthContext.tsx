@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { getAuthClient } from "./userManager";
-import { fetchAppConfig, appConfig } from "./permissions";
+import { ensureAppConfig, invalidateAppConfig, appConfig } from "./permissions";
+import { queryClient } from "@/lib/queryClient";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const authClient = getAuthClient();
@@ -18,14 +19,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch app config on user load (initial session or new login)
-  // TanStack Query's ensureQueryData (used in guards) will deduplicate requests.
+  // Fetch app config on user load (initial session or new login).
+  // Goes through the same ensureAppConfig path as guards, so both share the
+  // TanStack Query cache and requests are deduplicated per tenant.
+  // Subscribe once on mount. authClient is a stable singleton from
+  // getAuthClient(), so it is intentionally excluded from the dep array.
   useEffect(() => {
     return authClient.subscribe(async (event) => {
       if (event.eventName === "userLoaded" && event.isAuthenticated) {
-        await fetchAppConfig(event.user?.access_token ?? null);
+        await ensureAppConfig(queryClient);
       }
-      if (event.eventName === "userUnloaded") appConfig.clear();
+      if (event.eventName === "userUnloaded") {
+        appConfig.clear();
+        invalidateAppConfig(queryClient);
+      }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
