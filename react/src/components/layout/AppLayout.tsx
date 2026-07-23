@@ -4,26 +4,33 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
+import { ImpersonationBanner } from "./ImpersonationBanner";
 
 const useStyles = makeStyles({
   root: {
     display: "grid",
     height: "100vh",
     overflow: "hidden",
-    // Grid: 2 columns x 3 rows
+    // Grid: 2 columns x 4 rows
     // Col 1 = sidebar, Col 2 = content
-    // Row 1 = title bar (full width), Row 2 = sidebar + content, Row 3 = status bar (full width)
+    // Row 1 = title bar (full width), Row 2 = impersonation banner (full width, conditional),
+    // Row 3 = sidebar + content, Row 4 = status bar (full width)
     gridTemplateColumns: "auto 1fr",
-    gridTemplateRows: "auto 1fr auto",
+    gridTemplateRows: "auto auto 1fr auto",
   },
   // Title bar — full width, top row
   header: {
     gridColumn: "1 / -1",
     gridRow: "1",
   },
+  // Impersonation banner — full width, second row. Rendered only while impersonating.
+  banner: {
+    gridColumn: "1 / -1",
+    gridRow: "2",
+  },
   sidebar: {
     gridColumn: "1",
-    gridRow: "2",
+    gridRow: "3",
     display: "flex",
     flexDirection: "column",
     minHeight: 0,
@@ -64,10 +71,10 @@ const useStyles = makeStyles({
       display: "none",
     },
   },
-  // Main content area — right column, middle row
+  // Main content area — right column, third row
   content: {
     gridColumn: "2",
-    gridRow: "2",
+    gridRow: "3",
     minHeight: 0,
     overflow: "auto",
     padding: tokens.spacingHorizontalXL,
@@ -76,7 +83,7 @@ const useStyles = makeStyles({
   // Status bar — full width, bottom row
   footer: {
     gridColumn: "1 / -1",
-    gridRow: "3",
+    gridRow: "4",
   },
 });
 
@@ -125,6 +132,9 @@ export function AppLayout() {
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((c) => !c)}
         />
+      </div>
+      <div className={styles.banner}>
+        <ImpersonationBanner />
       </div>
       <aside className={sidebarClass}>
         <Sidebar

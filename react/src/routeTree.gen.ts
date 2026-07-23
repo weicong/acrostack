@@ -14,6 +14,7 @@ import { Route as R403RouteImport } from './routes/403'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as IdentityRouteRouteImport } from './routes/identity/route'
+import { Route as TenantsRouteImport } from './routes/tenants'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
 import { Route as AccountLoginRouteImport } from './routes/account/login'
@@ -45,6 +46,11 @@ const BooksRoute = BooksRouteImport.update({
 const IdentityRouteRoute = IdentityRouteRouteImport.update({
   id: '/identity',
   path: '/identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenantsRoute = TenantsRouteImport.update({
+  id: '/tenants',
+  path: '/tenants',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/identity': typeof IdentityRouteRouteWithChildren
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/identity': typeof IdentityRouteRouteWithChildren
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/identity'
     | '/403'
     | '/books'
+    | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/'
     | '/403'
     | '/books'
+    | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/identity'
     | '/403'
     | '/books'
+    | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   IdentityRouteRoute: typeof IdentityRouteRouteWithChildren
   R403Route: typeof R403Route
   BooksRoute: typeof BooksRoute
+  TenantsRoute: typeof TenantsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/identity'
       fullPath: '/identity'
       preLoaderRoute: typeof IdentityRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tenants': {
+      id: '/tenants'
+      path: '/tenants'
+      fullPath: '/tenants'
+      preLoaderRoute: typeof TenantsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/': {
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   IdentityRouteRoute: IdentityRouteRouteWithChildren,
   R403Route: R403Route,
   BooksRoute: BooksRoute,
+  TenantsRoute: TenantsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

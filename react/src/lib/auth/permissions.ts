@@ -92,6 +92,11 @@ interface CurrentUser {
   userName?: string;
   name?: string;
   email?: string;
+  tenantId?: string | null;
+  impersonatorUserId?: string | null;
+  impersonatorTenantId?: string | null;
+  impersonatorUserName?: string | null;
+  impersonatorTenantName?: string | null;
 }
 
 interface AppConfigSnapshot {

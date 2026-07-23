@@ -16,6 +16,7 @@
 import { menu as homeMenu } from "@/routes/index";
 import { menu as booksMenu } from "@/routes/books";
 import { menu as identityUsersMenu } from "@/routes/identity/users";
+import { menu as tenantsMenu } from "@/routes/tenants";
 import type { RouteMenuConfig } from "./route-menu-types";
 
 export interface MenuRoute {
@@ -28,5 +29,6 @@ export interface MenuRoute {
 export const menuRoutes: MenuRoute[] = [
   { path: "/", menu: homeMenu },
   { path: "/books", menu: booksMenu },
+  { path: "/tenants", menu: tenantsMenu },
   { path: "/identity/users", menu: identityUsersMenu },
 ];

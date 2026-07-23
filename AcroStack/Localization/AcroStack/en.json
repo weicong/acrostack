@@ -11,6 +11,7 @@
     "Permission:Books.Create": "Create",
     "Permission:Books.Edit": "Edit",
     "Permission:Books.Delete": "Delete",
+    "Permission:Impersonation": "Impersonation",
     "BookStore:Name": "Name",
     "BookStore:Type": "Type",
     "BookStore:PublishDate": "Publish Date",

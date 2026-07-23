@@ -2,7 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { Avatar, Button, Badge, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import {
+  Add20Regular,
+  Edit20Regular,
+  Delete20Regular,
+  PersonArrowLeft20Regular,
+} from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
@@ -15,6 +20,8 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
+import { impersonateUser } from "@/lib/auth/impersonation";
 import { UserFormDialog } from "./UserFormDialog";
 import { toFormUser, type UserFormUser, type UserListItem } from "./user-types";
 
@@ -67,7 +74,13 @@ function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   );
 }
 
-function useUsersTable(onEdit: (user: UserItem) => void, onDelete: (id: string) => void) {
+function useUsersTable(
+  onEdit: (user: UserItem) => void,
+  onDelete: (id: string) => void,
+  onImpersonate: (user: UserItem) => void,
+  canImpersonate: boolean,
+  currentUserId?: string,
+) {
   const { t } = useTranslation();
   const styles = useStyles();
 
@@ -124,33 +137,59 @@ function useUsersTable(onEdit: (user: UserItem) => void, onDelete: (id: string) 
       {
         id: "actions",
         header: "",
-        cell: (info) => (
-          <div className={styles.actionsCell}>
-            <Button
-              size="small"
-              appearance="subtle"
-              icon={<Edit20Regular />}
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(info.row.original);
-              }}
-              aria-label={t("AbpUi::Edit")}
-            />
-            <Button
-              size="small"
-              appearance="subtle"
-              icon={<Delete20Regular />}
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(info.row.original.id!);
-              }}
-              aria-label={t("AbpUi::Delete")}
-            />
-          </div>
-        ),
+        cell: (info) => {
+          const row = info.row.original;
+          const canImpersonateRow = canImpersonate && !!row.id && row.id !== currentUserId;
+          return (
+            <div className={styles.actionsCell}>
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<Edit20Regular />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(row);
+                }}
+                aria-label={t("AbpUi::Edit")}
+              />
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<Delete20Regular />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(row.id!);
+                }}
+                aria-label={t("AbpUi::Delete")}
+              />
+              {canImpersonateRow && (
+                <Button
+                  size="small"
+                  appearance="subtle"
+                  icon={<PersonArrowLeft20Regular />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onImpersonate(row);
+                  }}
+                  aria-label={t("AbpIdentity::Permission:Impersonation")}
+                  title={t("AbpIdentity::Permission:Impersonation")}
+                />
+              )}
+            </div>
+          );
+        },
       },
     ],
-    [t, styles.userNameCell, styles.actionsCell, onEdit, onDelete],
+    [
+      t,
+      styles.userNameCell,
+      styles.actionsCell,
+      onEdit,
+      onDelete,
+      onImpersonate,
+      canImpersonate,
+      currentUserId,
+    ],
   );
 
   const table = useDataTable({
@@ -172,6 +211,9 @@ export function UsersPage() {
   const styles = useStyles();
   const queryClient = useQueryClient();
   const deleteMutation = useUserDelete();
+  const { isGranted } = usePermissions();
+  const currentUser = useCurrentUser();
+  const canImpersonate = isGranted("AbpIdentity.Users.Impersonation");
 
   const [formOpen, setFormOpen] = useState(false);
   const [formUser, setFormUser] = useState<UserFormUser | undefined>();
@@ -189,6 +231,13 @@ export function UsersPage() {
 
   const handleDelete = useCallback((id: string) => {
     setDeleteUserId(id);
+  }, []);
+
+  const handleImpersonate = useCallback((user: UserItem) => {
+    if (!user.id) return;
+    void impersonateUser(user.id).catch((err: unknown) => {
+      console.error("[impersonation] failed:", err);
+    });
   }, []);
 
   const handleFormSuccess = useCallback(() => {
@@ -209,7 +258,13 @@ export function UsersPage() {
     );
   }, [deleteUserId, deleteMutation, queryClient]);
 
-  const { table, query, tableState } = useUsersTable(handleEdit, handleDelete);
+  const { table, query, tableState } = useUsersTable(
+    handleEdit,
+    handleDelete,
+    handleImpersonate,
+    canImpersonate,
+    currentUser?.id,
+  );
 
   const [searchValue, setSearchValue] = useState("");
 

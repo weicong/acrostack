@@ -11,6 +11,7 @@
     "Permission:Books.Create": "创建",
     "Permission:Books.Edit": "编辑",
     "Permission:Books.Delete": "删除",
+    "Permission:Impersonation": "模拟登录",
     "BookStore:Name": "书名",
     "BookStore:Type": "类型",
     "BookStore:PublishDate": "出版日期",
