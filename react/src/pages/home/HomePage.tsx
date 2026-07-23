@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
-import { Button, Card, makeStyles, Text } from "@fluentui/react-components";
+import { Button, Card, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 const useStyles = makeStyles({
   loginActions: {
-    marginTop: "1rem",
+    marginTop: tokens.spacingVerticalM,
     display: "flex",
     flexDirection: "column",
-    gap: "0.5rem",
+    gap: tokens.spacingVerticalS,
   },
   docLink: {
-    marginTop: "1rem",
+    marginTop: tokens.spacingVerticalM,
     display: "inline-block",
   },
 });

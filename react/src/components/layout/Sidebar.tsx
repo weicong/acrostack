@@ -33,6 +33,7 @@ const useStyles = makeStyles({
 interface SidebarProps {
   onNavigate?: () => void;
   collapsed?: boolean;
+  onExpand?: () => void;
 }
 
 function isActivePath(pathname: string, itemPath: string): boolean {
@@ -40,7 +41,7 @@ function isActivePath(pathname: string, itemPath: string): boolean {
   return pathname === itemPath || pathname.startsWith(itemPath + "/");
 }
 
-export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
+export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routerState = useRouterState();
@@ -161,7 +162,17 @@ export function Sidebar({ onNavigate, collapsed }: SidebarProps) {
           if (hasChildren) {
             // When collapsed, render as a plain NavItem with icon only (no expandable category)
             if (collapsed) {
-              return <NavItem key={path} value={path} icon={Icon ? <Icon /> : undefined} />;
+              return (
+                <NavItem
+                  key={path}
+                  value={path}
+                  icon={Icon ? <Icon /> : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onExpand?.();
+                  }}
+                />
+              );
             }
 
             return (

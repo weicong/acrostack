@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "@tanstack/react-router";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
@@ -50,17 +50,18 @@ const useStyles = makeStyles({
     },
   },
   sidebarCollapsed: {
-    width: "52px",
-    minWidth: "52px",
+    "@media (min-width: 769px)": {
+      width: "52px",
+      minWidth: "52px",
+    },
   },
   overlay: {
-    display: "none",
-    "@media (max-width: 768px)": {
-      display: "block",
-      position: "fixed",
-      inset: 0,
-      zIndex: 40,
-      background: "rgba(0,0,0,0.5)",
+    position: "fixed",
+    inset: 0,
+    zIndex: 40,
+    background: "rgba(0,0,0,0.5)",
+    "@media (min-width: 769px)": {
+      display: "none",
     },
   },
   // Main content area — right column, middle row
@@ -79,10 +80,28 @@ const useStyles = makeStyles({
   },
 });
 
+const SIDEBAR_COLLAPSED_KEY = "acrostack:sidebar-collapsed";
+
 export function AppLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
   const styles = useStyles();
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(collapsed));
+    } catch {
+      // ignore
+    }
+  }, [collapsed]);
+
+  const handleOverlayClick = useCallback(() => setMobileMenuOpen(false), []);
 
   const sidebarClass = [
     styles.sidebar,
@@ -97,7 +116,7 @@ export function AppLayout() {
       <div
         className={styles.overlay}
         style={{ display: mobileMenuOpen ? undefined : "none" }}
-        onClick={() => setMobileMenuOpen(false)}
+        onClick={handleOverlayClick}
         aria-hidden="true"
       />
       <div className={styles.header}>
@@ -108,7 +127,11 @@ export function AppLayout() {
         />
       </div>
       <aside className={sidebarClass}>
-        <Sidebar onNavigate={() => setMobileMenuOpen(false)} collapsed={collapsed} />
+        <Sidebar
+          onNavigate={() => setMobileMenuOpen(false)}
+          collapsed={collapsed}
+          onExpand={() => setCollapsed(false)}
+        />
       </aside>
       <main className={styles.content}>
         <Outlet />

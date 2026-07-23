@@ -1,24 +1,32 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Button, Card, CardHeader, makeStyles, Spinner, Text } from "@fluentui/react-components";
+import {
+  Button,
+  Card,
+  CardHeader,
+  makeStyles,
+  Spinner,
+  tokens,
+  Text,
+} from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 
 const useStyles = makeStyles({
   body: {
-    padding: "0 1.5rem 1.5rem",
+    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "1rem",
+    gap: tokens.spacingVerticalM,
   },
   fullWidthButton: {
     width: "100%",
   },
   link: {
     fontWeight: 500,
-    color: "var(--colorBrandForegroundLink)",
+    color: tokens.colorBrandForegroundLink,
   },
 });
 

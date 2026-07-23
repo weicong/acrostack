@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { Button, Card, CardHeader, makeStyles, Text } from "@fluentui/react-components";
+import { Button, Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
 import { useAppForm } from "@/components/form";
 
@@ -12,26 +12,26 @@ const forgotPasswordSchema = z.object({
 
 const useStyles = makeStyles({
   body: {
-    padding: "0 1.5rem 1.5rem",
+    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "1rem",
+    gap: tokens.spacingVerticalM,
   },
   errorAlert: {
-    borderRadius: "0.375rem",
-    background: "var(--colorPaletteRedBackground1)",
-    padding: "0.75rem",
+    borderRadius: tokens.borderRadiusMedium,
+    background: tokens.colorPaletteRedBackground1,
+    padding: tokens.spacingVerticalS,
     fontSize: "0.875rem",
-    color: "var(--colorPaletteRedForeground3)",
+    color: tokens.colorPaletteRedForeground3,
   },
   fullWidthButton: {
     width: "100%",
   },
   link: {
     fontWeight: 500,
-    color: "var(--colorBrandForegroundLink)",
+    color: tokens.colorBrandForegroundLink,
   },
 });
 

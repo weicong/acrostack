@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { makeStyles, Text } from "@fluentui/react-components";
+import { makeStyles, tokens, Text } from "@fluentui/react-components";
 import type { ReactNode } from "react";
 
 const useStyles = makeStyles({
@@ -10,16 +10,16 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    background: "var(--colorNeutralBackground3)",
-    padding: "1rem",
+    background: tokens.colorNeutralBackground3,
+    padding: tokens.spacingHorizontalM,
   },
   container: {
     width: "100%",
     maxWidth: "28rem",
   },
   backLink: {
-    marginTop: "1.5rem",
-    color: "var(--colorNeutralForeground3)",
+    marginTop: tokens.spacingVerticalL,
+    color: tokens.colorNeutralForeground3,
   },
 });
 

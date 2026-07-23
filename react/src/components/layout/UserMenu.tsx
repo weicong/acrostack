@@ -13,6 +13,7 @@ import {
   MenuItem,
   MenuDivider,
   makeStyles,
+  tokens,
   Text,
 } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
@@ -26,21 +27,21 @@ const useStyles = makeStyles({
   userInfo: {
     display: "flex",
     flexDirection: "column",
-    gap: "0.25rem",
-    padding: "0.375rem 0.5rem",
+    gap: tokens.spacingVerticalXXS,
+    padding: `${tokens.spacingVerticalXXS} ${tokens.spacingHorizontalS}`,
   },
   email: {
-    color: "var(--colorNeutralForeground3)",
+    color: tokens.colorNeutralForeground3,
   },
   menuLink: {
     display: "flex",
     alignItems: "center",
-    gap: "0.5rem",
+    gap: tokens.spacingHorizontalXS,
     textDecoration: "none",
     color: "inherit",
   },
   logoutItem: {
-    color: "var(--colorPaletteRedForeground3)",
+    color: tokens.colorPaletteRedForeground3,
   },
 });
 
