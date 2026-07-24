@@ -1,7 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { HomePage } from "@/pages/home/HomePage";
-import { type RouteMenuConfig } from "@/lib/routing/route-menu-types";
+import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Home20Regular } from "@fluentui/react-icons";
 
 export const menu: RouteMenuConfig = {

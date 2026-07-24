@@ -1,7 +1,7 @@
 /**
  * Menu metadata types for route files.
  * Each route file exports a `menu` constant of type RouteMenuConfig.
- * menuRoutes.ts collects them, and Sidebar derives the menu from there.
+ * route-config.ts collects them, and Sidebar derives the menu from there.
  */
 import type { ComponentType } from "react";
 

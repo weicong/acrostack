@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Route as rootRoute } from "./__root";
 import { BooksPage } from "@/pages/books/BooksPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
-import { type RouteMenuConfig } from "@/lib/routing/route-menu-types";
+import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Book20Regular } from "@fluentui/react-icons";
 
 const booksSearchSchema = z.object({
@@ -14,7 +14,7 @@ const booksSearchSchema = z.object({
 
 export type BooksSearch = z.infer<typeof booksSearchSchema>;
 
-/** Menu metadata for this route (consumed by Sidebar via menuRoutes.ts). */
+/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:Books",
   icon: Book20Regular,

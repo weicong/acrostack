@@ -1,10 +1,10 @@
 /**
- * Central registry of menu routes.
+ * Central registry of route menu configuration.
  *
- * Each route file exports a `menu` constant with its menu metadata
- * (nameKey, icon, order, requiredPolicy). This file collects them into
- * a single array so the Sidebar can derive the menu without duplicating
- * metadata.
+ * Mirrors ABP's `src/lib/routing/route-config.ts` convention: each route
+ * file exports a `menu` constant with its menu metadata (nameKey, icon,
+ * order, requiredPolicy). This file collects them into a single array so
+ * the Sidebar can derive the menu without duplicating metadata.
  *
  * Menu items are grouped to mirror the ABP Commercial administration menu
  * structure:
@@ -41,7 +41,7 @@ import {
   ShieldKeyhole20Regular,
   Channel20Regular,
 } from "@fluentui/react-icons";
-import type { RouteMenuConfig, RouteMenuConfigChild } from "./route-menu-types";
+import type { RouteMenuConfig, RouteMenuConfigChild } from "./route-config-types";
 
 export interface MenuRoute {
   /** Absolute path of the route (e.g. "/books", "/identity/users"). */

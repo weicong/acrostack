@@ -2,10 +2,10 @@ import { createRoute } from "@tanstack/react-router";
 import { Route as identityRoute } from "./route";
 import { UsersPage } from "@/pages/identity/UsersPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
-import { type RouteMenuConfig } from "@/lib/routing/route-menu-types";
+import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { People20Regular } from "@fluentui/react-icons";
 
-/** Menu metadata for this route (consumed by Sidebar via menuRoutes.ts). */
+/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
   nameKey: "AbpIdentity::Users",
   icon: People20Regular,

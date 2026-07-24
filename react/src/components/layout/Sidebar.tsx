@@ -13,8 +13,8 @@ import {
   NavSubItem,
   type OnNavItemSelectData,
 } from "@fluentui/react-components";
-import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-menu-types";
-import { menuRoutes } from "@/lib/routing/menuRoutes";
+import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-config-types";
+import { menuRoutes } from "@/lib/routing/route-config";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 
@@ -50,7 +50,7 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
   const { isAuthenticated } = useAuth();
   const styles = useStyles();
 
-  // Menu routes are collected from route files via menuRoutes.ts (single source of truth).
+  // Menu routes are collected from route files via route-config.ts (single source of truth).
   const allMenuRoutes = menuRoutes;
 
   const isItemVisible = useCallback(
