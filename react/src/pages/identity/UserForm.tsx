@@ -63,15 +63,15 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
   const form = useAppForm({
     defaultValues: {
       userName: user?.userName ?? "",
-      name: user?.name ?? null,
-      surname: user?.surname ?? null,
+      name: user?.name ?? "",
+      surname: user?.surname ?? "",
       email: user?.email ?? "",
-      phoneNumber: user?.phoneNumber ?? null,
+      phoneNumber: user?.phoneNumber ?? "",
       isActive: user?.isActive ?? true,
       lockoutEnabled: user?.lockoutEnabled ?? false,
-      roleNames: null as string[] | null,
-      password: "" as string | null,
-      concurrencyStamp: (user?.concurrencyStamp ?? null) as string | null,
+      roleNames: [] as string[],
+      password: "",
+      concurrencyStamp: user?.concurrencyStamp ?? "",
     },
     validators: {
       onChange: ({ value }) => {
@@ -80,12 +80,13 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
       },
     },
     onSubmit: ({ value }) => {
+      // Convert empty strings back to null for nullable fields (ABP API contract).
       const base = {
         userName: value.userName,
-        name: value.name,
-        surname: value.surname,
+        name: value.name || null,
+        surname: value.surname || null,
         email: value.email,
-        phoneNumber: value.phoneNumber,
+        phoneNumber: value.phoneNumber || null,
         isActive: value.isActive,
         lockoutEnabled: value.lockoutEnabled,
         roleNames: value.roleNames,
@@ -98,7 +99,7 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
             data: {
               ...base,
               password: value.password || undefined,
-              concurrencyStamp: value.concurrencyStamp ?? undefined,
+              concurrencyStamp: value.concurrencyStamp || undefined,
             },
           },
           { onSuccess },

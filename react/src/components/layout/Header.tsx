@@ -132,7 +132,7 @@ function LanguageSwitcher() {
   }, [getAccessToken, snapshot.initialized, snapshot.loading]);
 
   useEffect(() => {
-    if (!currentCulture || i18n.hasResourceBundle(currentCulture, "translation")) {
+    if (!currentCulture) {
       return;
     }
 
@@ -141,7 +141,7 @@ function LanguageSwitcher() {
     void getAccessToken()
       .then((token) => fetchAppLocalization(currentCulture, token))
       .then((localizationData) => {
-        if (disposed || i18n.hasResourceBundle(currentCulture, "translation")) {
+        if (disposed) {
           return;
         }
 
@@ -150,6 +150,9 @@ function LanguageSwitcher() {
           return;
         }
 
+        // Deep merge and overwrite: server-side localization is the source of truth.
+        // Client-side en.json only provides initial fallback for app-specific keys
+        // (e.g. DataTable::*) before the server payload arrives.
         i18n.addResourceBundle(currentCulture, "translation", translations, true, true);
         void i18n.changeLanguage(currentCulture);
       })
@@ -182,7 +185,7 @@ function LanguageSwitcher() {
   const currentLanguage = languages.find(
     (language) => getLanguageCulture(language) === currentCulture,
   );
-  const languageLabel = t("::Language", "Language");
+  const languageLabel = t("Language");
 
   if (languages.length <= 1) {
     return null;

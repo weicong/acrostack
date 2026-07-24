@@ -46,7 +46,7 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
       name: role?.name ?? "",
       isDefault: role?.isDefault ?? false,
       isPublic: role?.isPublic ?? true,
-      concurrencyStamp: (role?.concurrencyStamp ?? null) as string | null,
+      concurrencyStamp: role?.concurrencyStamp ?? "",
     },
     validators: {
       onChange: ({ value }) => {
@@ -67,7 +67,7 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
             id: role.id,
             data: {
               ...base,
-              concurrencyStamp: value.concurrencyStamp ?? undefined,
+              concurrencyStamp: value.concurrencyStamp || undefined,
             },
           },
           { onSuccess },

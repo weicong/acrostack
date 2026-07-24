@@ -67,10 +67,10 @@ function ProfileFormCard() {
     defaultValues: {
       userName: profile?.userName ?? "",
       email: profile?.email ?? "",
-      name: (profile?.name ?? null) as string | null,
-      surname: (profile?.surname ?? null) as string | null,
-      phoneNumber: (profile?.phoneNumber ?? null) as string | null,
-      concurrencyStamp: (profile?.concurrencyStamp ?? null) as string | null,
+      name: profile?.name ?? "",
+      surname: profile?.surname ?? "",
+      phoneNumber: profile?.phoneNumber ?? "",
+      concurrencyStamp: profile?.concurrencyStamp ?? "",
     },
     validators: {
       onChange: ({ value }) => {
@@ -84,10 +84,10 @@ function ProfileFormCard() {
           data: {
             userName: value.userName,
             email: value.email,
-            name: value.name,
-            surname: value.surname,
-            phoneNumber: value.phoneNumber,
-            concurrencyStamp: value.concurrencyStamp ?? undefined,
+            name: value.name || null,
+            surname: value.surname || null,
+            phoneNumber: value.phoneNumber || null,
+            concurrencyStamp: value.concurrencyStamp || undefined,
           },
         },
         {
