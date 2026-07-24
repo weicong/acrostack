@@ -75,6 +75,8 @@
     "Gdpr:ExportDescription": "Download a JSON file containing your personal data (profile, roles, claims).",
     "Gdpr:DeleteMyAccount": "Delete My Account",
     "Gdpr:DeleteDescription": "Permanently delete your account and associated personal data. This action cannot be undone.",
-    "Gdpr:DeleteConfirmation": "Are you sure you want to permanently delete your account? This action cannot be undone."
+    "Gdpr:DeleteConfirmation": "Are you sure you want to permanently delete your account? This action cannot be undone.",
+    "Menu:OpenIddict": "OpenIddict",
+    "Menu:SaaS": "SaaS"
   }
 }

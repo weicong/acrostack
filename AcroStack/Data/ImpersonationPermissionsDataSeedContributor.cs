@@ -28,9 +28,9 @@ public class ImpersonationPermissionsDataSeedContributor
     [UnitOfWork]
     public virtual async Task SeedAsync(DataSeedContext context)
     {
-        // Admin role is host-scoped when seeding with tenantId == null.
-        // Tenant impersonation is only available to host users, so we grant
-        // both permissions at the host level.
+        // Host-only permissions: tenant impersonation, global audit logs,
+        // background jobs, OpenIddict management, and SaaS edition management
+        // are host-scoped features (mirrors ABP Commercial Pro module scoping).
         if (context.TenantId == null)
         {
             await _permissionManager.SetForRoleAsync(
@@ -38,13 +38,6 @@ public class ImpersonationPermissionsDataSeedContributor
 
             await _permissionManager.SetForRoleAsync(
                 "admin", "AbpTenantManagement.Tenants.Impersonation", true);
-
-            // Identity Claims management (mirrors ABP Commercial Identity Pro).
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.IdentityClaims.UserClaims", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.IdentityClaims.RoleClaims", true);
 
             // Audit Logging (mirrors ABP Commercial AuditLogging Pro).
             await _permissionManager.SetForRoleAsync(
@@ -79,23 +72,32 @@ public class ImpersonationPermissionsDataSeedContributor
 
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.SaaS.Editions.Delete", true);
-
-            // File Management (mirrors ABP Commercial File Management Pro).
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.FileManagement", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.FileManagement.Upload", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.FileManagement.Download", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.FileManagement.Delete", true);
-
-            // GDPR (mirrors ABP Commercial GDPR Pro).
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.Gdpr", true);
         }
+
+        // Tenant-available permissions: granted to the admin role at both
+        // host and tenant levels so tenant admins can also use these features.
+        // Identity Claims management (mirrors ABP Commercial Identity Pro).
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.IdentityClaims.UserClaims", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.IdentityClaims.RoleClaims", true);
+
+        // File Management (mirrors ABP Commercial File Management Pro).
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.FileManagement", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.FileManagement.Upload", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.FileManagement.Download", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.FileManagement.Delete", true);
+
+        // GDPR (mirrors ABP Commercial GDPR Pro).
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.Gdpr", true);
     }
 }
