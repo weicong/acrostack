@@ -13,7 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as BooksRouteImport } from './routes/books'
+import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as IdentityRouteRouteImport } from './routes/identity/route'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TenantsRouteImport } from './routes/tenants'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
@@ -21,6 +24,8 @@ import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
 import { Route as IdentityIndexRouteImport } from './routes/identity/index'
+import { Route as IdentityPermissionsRouteImport } from './routes/identity/permissions'
+import { Route as IdentityRolesRouteImport } from './routes/identity/roles'
 import { Route as IdentityUsersRouteImport } from './routes/identity/users'
 
 const IndexRoute = IndexRouteImport.update({
@@ -43,9 +48,24 @@ const BooksRoute = BooksRouteImport.update({
   path: '/books',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IdentityRouteRoute = IdentityRouteRouteImport.update({
   id: '/identity',
   path: '/identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TenantsRoute = TenantsRouteImport.update({
@@ -83,6 +103,16 @@ const IdentityIndexRoute = IdentityIndexRouteImport.update({
   path: '/',
   getParentRoute: () => IdentityRouteRoute,
 } as any)
+const IdentityPermissionsRoute = IdentityPermissionsRouteImport.update({
+  id: '/permissions',
+  path: '/permissions',
+  getParentRoute: () => IdentityRouteRoute,
+} as any)
+const IdentityRolesRoute = IdentityRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => IdentityRouteRoute,
+} as any)
 const IdentityUsersRoute = IdentityUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -95,11 +125,16 @@ export interface FileRoutesByFullPath {
   '/identity': typeof IdentityRouteRouteWithChildren
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/identity/permissions': typeof IdentityPermissionsRoute
+  '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/account/': typeof AccountIndexRoute
   '/identity/': typeof IdentityIndexRoute
@@ -108,11 +143,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/identity/permissions': typeof IdentityPermissionsRoute
+  '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/account': typeof AccountIndexRoute
   '/identity': typeof IdentityIndexRoute
@@ -124,11 +164,16 @@ export interface FileRoutesById {
   '/identity': typeof IdentityRouteRouteWithChildren
   '/403': typeof R403Route
   '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/identity/permissions': typeof IdentityPermissionsRoute
+  '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/account/': typeof AccountIndexRoute
   '/identity/': typeof IdentityIndexRoute
@@ -141,11 +186,16 @@ export interface FileRouteTypes {
     | '/identity'
     | '/403'
     | '/books'
+    | '/features'
+    | '/profile'
+    | '/settings'
     | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/identity/permissions'
+    | '/identity/roles'
     | '/identity/users'
     | '/account/'
     | '/identity/'
@@ -154,11 +204,16 @@ export interface FileRouteTypes {
     | '/'
     | '/403'
     | '/books'
+    | '/features'
+    | '/profile'
+    | '/settings'
     | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/identity/permissions'
+    | '/identity/roles'
     | '/identity/users'
     | '/account'
     | '/identity'
@@ -169,11 +224,16 @@ export interface FileRouteTypes {
     | '/identity'
     | '/403'
     | '/books'
+    | '/features'
+    | '/profile'
+    | '/settings'
     | '/tenants'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/identity/permissions'
+    | '/identity/roles'
     | '/identity/users'
     | '/account/'
     | '/identity/'
@@ -185,6 +245,9 @@ export interface RootRouteChildren {
   IdentityRouteRoute: typeof IdentityRouteRouteWithChildren
   R403Route: typeof R403Route
   BooksRoute: typeof BooksRoute
+  FeaturesRoute: typeof FeaturesRoute
+  ProfileRoute: typeof ProfileRoute
+  SettingsRoute: typeof SettingsRoute
   TenantsRoute: typeof TenantsRoute
 }
 
@@ -218,11 +281,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/identity': {
       id: '/identity'
       path: '/identity'
       fullPath: '/identity'
       preLoaderRoute: typeof IdentityRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tenants': {
@@ -274,6 +358,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IdentityIndexRouteImport
       parentRoute: typeof IdentityRouteRoute
     }
+    '/identity/permissions': {
+      id: '/identity/permissions'
+      path: '/permissions'
+      fullPath: '/identity/permissions'
+      preLoaderRoute: typeof IdentityPermissionsRouteImport
+      parentRoute: typeof IdentityRouteRoute
+    }
+    '/identity/roles': {
+      id: '/identity/roles'
+      path: '/roles'
+      fullPath: '/identity/roles'
+      preLoaderRoute: typeof IdentityRolesRouteImport
+      parentRoute: typeof IdentityRouteRoute
+    }
     '/identity/users': {
       id: '/identity/users'
       path: '/users'
@@ -305,11 +403,15 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 )
 
 interface IdentityRouteRouteChildren {
+  IdentityPermissionsRoute: typeof IdentityPermissionsRoute
+  IdentityRolesRoute: typeof IdentityRolesRoute
   IdentityUsersRoute: typeof IdentityUsersRoute
   IdentityIndexRoute: typeof IdentityIndexRoute
 }
 
 const IdentityRouteRouteChildren: IdentityRouteRouteChildren = {
+  IdentityPermissionsRoute: IdentityPermissionsRoute,
+  IdentityRolesRoute: IdentityRolesRoute,
   IdentityUsersRoute: IdentityUsersRoute,
   IdentityIndexRoute: IdentityIndexRoute,
 }
@@ -324,6 +426,9 @@ const rootRouteChildren: RootRouteChildren = {
   IdentityRouteRoute: IdentityRouteRouteWithChildren,
   R403Route: R403Route,
   BooksRoute: BooksRoute,
+  FeaturesRoute: FeaturesRoute,
+  ProfileRoute: ProfileRoute,
+  SettingsRoute: SettingsRoute,
   TenantsRoute: TenantsRoute,
 }
 export const routeTree = rootRouteImport

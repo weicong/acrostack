@@ -16,7 +16,12 @@
 import { menu as homeMenu } from "@/routes/index";
 import { menu as booksMenu } from "@/routes/books";
 import { menu as identityUsersMenu } from "@/routes/identity/users";
+import { menu as identityRolesMenu } from "@/routes/identity/roles";
+import { menu as identityPermissionsMenu } from "@/routes/identity/permissions";
 import { menu as tenantsMenu } from "@/routes/tenants";
+import { menu as profileMenu } from "@/routes/profile";
+import { menu as featuresMenu } from "@/routes/features";
+import { menu as settingsMenu } from "@/routes/settings";
 import type { RouteMenuConfig } from "./route-menu-types";
 
 export interface MenuRoute {
@@ -29,6 +34,11 @@ export interface MenuRoute {
 export const menuRoutes: MenuRoute[] = [
   { path: "/", menu: homeMenu },
   { path: "/books", menu: booksMenu },
+  { path: "/profile", menu: profileMenu },
   { path: "/tenants", menu: tenantsMenu },
   { path: "/identity/users", menu: identityUsersMenu },
+  { path: "/identity/roles", menu: identityRolesMenu },
+  { path: "/identity/permissions", menu: identityPermissionsMenu },
+  { path: "/features", menu: featuresMenu },
+  { path: "/settings", menu: settingsMenu },
 ];

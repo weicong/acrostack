@@ -92,7 +92,10 @@ async function extractImpersonationError(response: Response): Promise<string> {
     }
   }
 
-  return i18n.t("AbpAccount::Volo.Account:ImpersonateError") || `Impersonation failed (${response.status})`;
+  return (
+    i18n.t("AbpAccount::Volo.Account:ImpersonateError") ||
+    `Impersonation failed (${response.status})`
+  );
 }
 
 /**
