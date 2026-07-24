@@ -6,9 +6,11 @@
  * same <c>Impersonation</c> grant type at <c>/connect/token</c> (see
  * <c>ImpersonationGrantHandler</c>), mirroring ABP Account Pro's API.
  *
- * The impersonated JWT embeds <c>impersonator_token</c> /
- * <c>impersonator_userid</c> claims so the original admin session can be
- * restored via {@link backToMyAccount}.
+ * The impersonated JWT embeds ABP's official impersonator claims
+ * (<c>impersonator_userid</c>, <c>impersonator_tenantid</c>,
+ * <c>impersonator_username</c>) plus a project-specific
+ * <c>impersonator_token</c> claim (the original admin's access token) so
+ * the SPA can restore the admin session via {@link backToMyAccount}.
  *
  * Flow:
  * 1. Admin clicks "Impersonate" → {@link impersonateUser} calls
@@ -18,13 +20,14 @@
  *    OAuth2 token response JSON.
  * 3. The new token is stored via <c>userManager.storeUser</c> and the page
  *    reloads so the SPA re-initialises with the impersonated session.
- * 4. While impersonating, the JWT contains <c>impersonator_token</c> /
- *    <c>impersonator_userid</c> claims; {@link useImpersonationState}
- *    exposes them so the layout can show a "Back to my account" banner.
- * 5. {@link backToMyAccount} reads the <c>impersonator_token</c> claim and
- *    restores it as the active session.
+ * 4. While impersonating, the ABP <c>application-configuration</c> API
+ *    exposes the impersonator claims via <c>currentUser.impersonatorUserId</c>
+ *    etc.; {@link useImpersonationState} reads them to show a banner.
+ * 5. {@link backToMyAccount} reads <c>impersonator_token</c> from the JWT
+ *    and restores it as the active session.
  */
 import { User } from "oidc-client-ts";
+import i18n from "i18next";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
@@ -46,6 +49,69 @@ interface TokenResponse {
   token_type?: string;
   expires_in?: number;
   scope?: string;
+}
+
+/** Standard OAuth2 error response (RFC 6749 §5.2). */
+interface OAuth2ErrorResponse {
+  error?: string;
+  error_description?: string;
+  error_uri?: string;
+}
+
+/**
+ * Parses a failed `/connect/token` response into a readable error message.
+ *
+ * The backend returns ABP localization resource keys (e.g.
+ * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) as the OAuth2
+ * <c>error_description</c> for known impersonation errors. We detect this
+ * pattern and translate via i18next (<c>AbpAccount::Volo.Account:XXX</c>).
+ * For unknown errors we fall back to the raw description or HTTP status.
+ */
+async function extractImpersonationError(response: Response): Promise<string> {
+  let rawBody: string | undefined;
+  try {
+    rawBody = await response.text();
+  } catch {
+    // ignore — fall through to statusText
+  }
+
+  if (rawBody) {
+    try {
+      const parsed = JSON.parse(rawBody) as OAuth2ErrorResponse;
+      if (parsed.error_description) {
+        return localizeImpersonationError(parsed.error_description);
+      }
+      if (parsed.error) {
+        return localizeImpersonationError(parsed.error);
+      }
+    } catch {
+      // Not JSON — fall back to raw body if non-empty.
+      if (rawBody.trim()) {
+        return rawBody.trim();
+      }
+    }
+  }
+
+  return (
+    i18n.t("AbpAccount::Volo.Account:ImpersonateError") ||
+    `Impersonation failed (${response.status})`
+  );
+}
+
+/**
+ * Translates an ABP localization resource key (e.g.
+ * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) into the current
+ * language. Keys are prefixed with <c>AbpAccount::</c> to match the
+ * en.json resource structure. Non-key strings are returned as-is.
+ */
+function localizeImpersonationError(description: string): string {
+  if (description.startsWith("Volo.Account:")) {
+    const key = `AbpAccount::${description}`;
+    const translated = i18n.t(key);
+    // i18next returns the key itself when no translation is found.
+    return translated === key ? description : translated;
+  }
+  return description;
 }
 
 /**
@@ -92,9 +158,17 @@ export function useImpersonationState(): ImpersonationState {
  * Calls the /connect/token endpoint with the custom <c>Impersonation</c>
  * grant type (matching ABP Account Pro's API), stores the resulting token
  * as the active OIDC user session, then reloads the page.
+ *
+ * @param params Form parameters to send (e.g. `{ user_id }` or `{ tenant_id }`).
+ * @param options.sendTenantHeader When `true` (default), sends the current
+ *   sessionStorage tenant ID as the `__tenant` header so the backend
+ *   resolves the target user in the correct tenant. Set to `false` for
+ *   tenant impersonation, where the caller is a host user and the backend
+ *   switches tenant internally via `ICurrentTenant.Change`.
  */
 async function callImpersonationEndpoint(
   params: Record<string, string>,
+  options: { sendTenantHeader?: boolean } = {},
 ): Promise<void> {
   const user = await userManager.getUser();
   if (!user?.access_token) {
@@ -111,8 +185,10 @@ async function callImpersonationEndpoint(
     "Content-Type": "application/x-www-form-urlencoded",
     Authorization: `Bearer ${user.access_token}`,
   };
-  const tenantId = getTenantId();
-  if (tenantId) headers.__tenant = tenantId;
+  if (options.sendTenantHeader !== false) {
+    const tenantId = getTenantId();
+    if (tenantId) headers.__tenant = tenantId;
+  }
 
   const baseUrl = getApiBaseUrl().replace(/\/$/, "");
   const response = await fetch(`${baseUrl}/connect/token`, {
@@ -122,14 +198,7 @@ async function callImpersonationEndpoint(
   });
 
   if (!response.ok) {
-    let detail = response.statusText;
-    try {
-      const errorBody = await response.text();
-      if (errorBody) detail = errorBody;
-    } catch {
-      // ignore
-    }
-    throw new Error(`Impersonation failed (${response.status}): ${detail}`);
+    throw new Error(await extractImpersonationError(response));
   }
 
   const token = (await response.json()) as TokenResponse;
@@ -168,15 +237,19 @@ export async function impersonateUser(userId: string): Promise<void> {
  * Impersonates the admin user of the specified tenant via the
  * <c>Impersonation</c> custom grant type.
  * Host admins only — the backend rejects tenant impersonation for tenant users.
+ *
+ * The <c>__tenant</c> header is intentionally NOT sent: the caller is a host
+ * user and the backend switches tenant internally via
+ * <c>ICurrentTenant.Change(tenantId)</c> while resolving the target admin.
  */
 export async function impersonateTenant(tenantId: string): Promise<void> {
-  await callImpersonationEndpoint({ tenant_id: tenantId });
+  await callImpersonationEndpoint({ tenant_id: tenantId }, { sendTenantHeader: false });
 }
 
 /**
- * Reads <c>impersonator_token</c> from the current session's JWT and restores
- * it as the active user, effectively exiting impersonation. Throws if not
- * currently impersonating or the impersonator token is missing.
+ * Reads <c>impersonator_token</c> from the current session's JWT profile and
+ * restores it as the active user, effectively exiting impersonation.
+ * Throws if not currently impersonating or the impersonator token is missing.
  */
 export async function backToMyAccount(): Promise<void> {
   const user = await userManager.getUser();
@@ -184,8 +257,8 @@ export async function backToMyAccount(): Promise<void> {
     throw new Error("Not authenticated");
   }
 
-  const payload = decodeJwtPayload(user.access_token);
-  const impersonatorToken = payload[CLAIM_IMPERSONATOR_TOKEN] as string | undefined;
+  // user.profile is the decoded JWT payload (populated by oidc-client-ts).
+  const impersonatorToken = user.profile[CLAIM_IMPERSONATOR_TOKEN] as string | undefined;
   if (!impersonatorToken) {
     throw new Error("Not currently impersonating");
   }

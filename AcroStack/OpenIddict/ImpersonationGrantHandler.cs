@@ -39,9 +39,11 @@ namespace AcroStack.OpenIddict;
 /// (impersonates the tenant's <c>admin</c> user)</item>
 /// </list>
 ///
-/// <para>The impersonated JWT embeds <c>impersonator_token</c> /
-/// <c>impersonator_userid</c> claims so the original admin session can be
-/// restored via <c>backToMyAccount</c>.</para>
+/// <para>The impersonated JWT embeds ABP's official impersonator claims
+/// (<c>AbpClaimTypes.ImpersonatorUserId</c>, <c>ImpersonatorTenantId</c>,
+/// <c>ImpersonatorUserName</c>) plus a project-specific <c>impersonator_token</c>
+/// claim so the SPA can restore the original admin session via
+/// <c>backToMyAccount</c>.</para>
 /// </summary>
 public class ImpersonationGrantHandler
     : IOpenIddictServerHandler<HandleTokenRequestContext>, IScopedDependency
@@ -50,6 +52,34 @@ public class ImpersonationGrantHandler
     /// (matches ABP Pro's <c>"Impersonation"</c> grant type).</summary>
     public const string GrantType = "Impersonation";
 
+    /// <summary>
+    /// Custom claim used to embed the original admin's access token in the
+    /// impersonated JWT, so the SPA can restore the admin session via
+    /// <c>backToMyAccount</c> without a server-side session.
+    ///
+    /// <para><b>Architecture decision — why not server-side tracking?</b></para>
+    /// <para>ABP Account Pro uses a server-side <c>ImpersonationSession</c> table
+    /// to track the original admin session and restore it via a dedicated API.
+    /// That approach is more secure (no token embedded in JWT) but requires:
+    /// a new entity/table, a session cleanup background job, a REST endpoint
+    /// for "back to my account", and audit logging infrastructure.</para>
+    ///
+    /// <para>This project embeds the admin access token directly in the JWT
+    /// as a trade-off for simplicity. Security considerations:</para>
+    /// <list type="bullet">
+    /// <item>The embedded token has the same short lifetime as a normal access
+    /// token (typically 1 hour). If it expires during impersonation,
+    /// <c>backToMyAccount</c> will fail and the user must re-login.</item>
+    /// <item>The JWT is signed, so the embedded token cannot be tampered with.</item>
+    /// <item>Only callers with the impersonation permission can trigger this
+    /// flow, limiting exposure to privileged users.</item>
+    /// <item>The JWT may be larger than usual; avoid logging full tokens.</item>
+    /// </list>
+    /// <para>To migrate to server-side tracking later, replace this claim with
+    /// a session ID and add a <c>POST /api/impersonation/back</c> endpoint.</para>
+    /// </summary>
+    public const string ImpersonatorTokenClaimType = "impersonator_token";
+
     private readonly IdentityUserManager _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IOpenIddictScopeManager _scopeManager;
@@ -57,8 +87,10 @@ public class ImpersonationGrantHandler
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IPermissionChecker _permissionChecker;
     private readonly ICurrentPrincipalAccessor _currentPrincipalAccessor;
+    private readonly IAbpClaimsPrincipalFactory _claimsPrincipalFactory;
     private readonly OpenIddictServerOptions _serverOptions;
     private readonly IOpenIddictServerDispatcher _dispatcher;
+    private readonly ImpersonationOptions _impersonationOptions;
 
     public ImpersonationGrantHandler(
         IdentityUserManager userManager,
@@ -68,8 +100,10 @@ public class ImpersonationGrantHandler
         IHttpContextAccessor httpContextAccessor,
         IPermissionChecker permissionChecker,
         ICurrentPrincipalAccessor currentPrincipalAccessor,
+        IAbpClaimsPrincipalFactory claimsPrincipalFactory,
         IOptions<OpenIddictServerOptions> serverOptions,
-        IOpenIddictServerDispatcher dispatcher)
+        IOpenIddictServerDispatcher dispatcher,
+        IOptions<ImpersonationOptions> impersonationOptions)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -78,8 +112,10 @@ public class ImpersonationGrantHandler
         _httpContextAccessor = httpContextAccessor;
         _permissionChecker = permissionChecker;
         _currentPrincipalAccessor = currentPrincipalAccessor;
+        _claimsPrincipalFactory = claimsPrincipalFactory;
         _serverOptions = serverOptions.Value;
         _dispatcher = dispatcher;
+        _impersonationOptions = impersonationOptions.Value;
     }
 
     public async ValueTask HandleAsync(HandleTokenRequestContext context)
@@ -137,6 +173,18 @@ public class ImpersonationGrantHandler
             return;
         }
 
+        // --- Reject nested impersonation ---
+        // ABP Account Pro disallows impersonating while already impersonating
+        // (see AbpAccountResources "NestedImpersonationIsNotAllowed").
+        if (adminPrincipal.FindFirst(AbpClaimTypes.ImpersonatorUserId) != null)
+        {
+            context.Reject(
+                error: "invalid_grant",
+                description: "Volo.Account:NestedImpersonationIsNotAllowed",
+                uri: null);
+            return;
+        }
+
         // --- Authorize the caller ---
         // Ensure ICurrentUser/IPermissionChecker see the admin's principal.
         bool isGranted;
@@ -148,7 +196,9 @@ public class ImpersonationGrantHandler
         {
             context.Reject(
                 error: "invalid_grant",
-                description: "Caller does not have the impersonation permission.",
+                description: isTenantImpersonation
+                    ? "Volo.Account:RequirePermissionToImpersonateTenant"
+                    : "Volo.Account:RequirePermissionToImpersonateUser",
                 uri: null);
             return;
         }
@@ -158,7 +208,7 @@ public class ImpersonationGrantHandler
         {
             context.Reject(
                 error: "invalid_grant",
-                description: "Tenant impersonation is only available to host users.",
+                description: "Volo.Account:ImpersonateTenantOnlyAvailableForHost",
                 uri: null);
             return;
         }
@@ -180,13 +230,13 @@ public class ImpersonationGrantHandler
             targetTenantId = tenantId;
             using (_currentTenant.Change(tenantId))
             {
-                targetUser = await _userManager.FindByNameAsync("admin");
+                targetUser = await _userManager.FindByNameAsync(_impersonationOptions.TenantAdminUserName);
             }
             if (targetUser == null)
             {
                 context.Reject(
                     error: "invalid_grant",
-                    description: "Target tenant has no 'admin' user.",
+                    description: $"Target tenant has no '{_impersonationOptions.TenantAdminUserName}' user.",
                     uri: null);
                 return;
             }
@@ -220,7 +270,7 @@ public class ImpersonationGrantHandler
         {
             context.Reject(
                 error: "invalid_grant",
-                description: "Cannot impersonate yourself.",
+                description: "Volo.Account:YouCanNotImpersonateYourself",
                 uri: null);
             return;
         }
@@ -289,28 +339,46 @@ public class ImpersonationGrantHandler
             principal.SetClaim(OpenIddictConstants.Claims.ClientId, clientId);
         }
 
+        // Add ABP dynamic claims (role, email, phone_number, etc.).
+        // This is normally done by ABP's built-in OpenIddict token request handler,
+        // but since we bypass it (via context.HandleRequest()), we must call it
+        // ourselves. Without this, the JWT lacks "role" claims, so
+        // ICurrentUser.Roles is empty and IPermissionChecker returns no grants —
+        // the SPA sidebar collapses to just the homepage.
+        // CreateDynamicAsync reads ICurrentPrincipalAccessor, so we temporarily
+        // install the impersonated principal before calling.
+        using (_currentPrincipalAccessor.Change(principal))
+        {
+            principal = await _claimsPrincipalFactory.CreateDynamicAsync(principal);
+        }
+
         // Embed impersonator claims so the SPA can restore the original session.
+        // Uses ABP's official AbpClaimTypes so ICurrentUser.FindImpersonator* and
+        // the application-configuration currentUser DTO populate correctly.
+        // The non-standard "impersonator_token" claim is our SPA-specific extension
+        // to support client-side session restoration (see backToMyAccount).
+        // Added AFTER AddDynamicClaimsAsync so they are not stripped by it.
         var adminUserId = adminPrincipal.FindFirst(AbpClaimTypes.UserId)?.Value;
         if (principal.Identity is ClaimsIdentity identity)
         {
-            identity.AddClaim(new Claim("impersonator_token", adminToken));
+            identity.AddClaim(new Claim(ImpersonatorTokenClaimType, adminToken));
 
             if (!string.IsNullOrWhiteSpace(adminUserId))
             {
-                identity.AddClaim(new Claim("impersonator_userid", adminUserId));
+                identity.AddClaim(new Claim(AbpClaimTypes.ImpersonatorUserId, adminUserId));
             }
 
             var adminTenantId = adminPrincipal.FindFirst(AbpClaimTypes.TenantId)?.Value;
             if (!string.IsNullOrWhiteSpace(adminTenantId))
             {
-                identity.AddClaim(new Claim("impersonator_tenantid", adminTenantId));
+                identity.AddClaim(new Claim(AbpClaimTypes.ImpersonatorTenantId, adminTenantId));
             }
 
             var adminUserName = adminPrincipal.FindFirst(AbpClaimTypes.UserName)?.Value
                 ?? adminPrincipal.FindFirst(OpenIddictConstants.Claims.PreferredUsername)?.Value;
             if (!string.IsNullOrWhiteSpace(adminUserName))
             {
-                identity.AddClaim(new Claim("impersonator_username", adminUserName));
+                identity.AddClaim(new Claim(AbpClaimTypes.ImpersonatorUserName, adminUserName));
             }
         }
 
@@ -337,6 +405,10 @@ public class ImpersonationGrantHandler
     /// The inbound JWT claim type map is cleared so that original claim names
     /// (e.g. <c>sub</c>, <c>role</c>, <c>preferred_username</c>) are preserved
     /// — matching what ABP's <see cref="AbpClaimTypes"/> expects.
+    /// Audience is validated against <see cref="ImpersonationOptions.TokenAudience"/>
+    /// to reject tokens issued for a different resource. Issuer validation is
+    /// skipped because OpenIddict in development may use the request URL as the
+    /// issuer, which is not known at configuration time.
     /// </remarks>
     private ClaimsPrincipal? ValidateAccessToken(string token)
     {
@@ -361,7 +433,8 @@ public class ImpersonationGrantHandler
             var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateAudience = true,
+                ValidAudience = _impersonationOptions.TokenAudience,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKeys = signingKeys,

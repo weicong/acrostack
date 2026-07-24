@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
+import {
+  Button,
+  SearchBox,
+  makeStyles,
+  tokens,
+  useToastController,
+} from "@fluentui/react-components";
 import { PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -106,17 +112,23 @@ export function TenantsPage() {
   const styles = useStyles();
   const { isGranted } = usePermissions();
   const currentUser = useCurrentUser();
+  const { dispatchToast } = useToastController();
 
   // Tenant impersonation is host-only: a tenant user cannot impersonate another tenant.
   const isHostUser = !currentUser?.tenantId;
   const canImpersonate = isHostUser && isGranted("AbpTenantManagement.Tenants.Impersonation");
 
-  const handleImpersonate = useCallback((tenant: TenantItem) => {
-    if (!tenant.id) return;
-    void impersonateTenant(tenant.id).catch((err: unknown) => {
-      console.error("[impersonation] failed:", err);
-    });
-  }, []);
+  const handleImpersonate = useCallback(
+    (tenant: TenantItem) => {
+      if (!tenant.id) return;
+      void impersonateTenant(tenant.id).catch((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[impersonation] failed:", err);
+        dispatchToast(message, { intent: "error" });
+      });
+    },
+    [dispatchToast],
+  );
 
   const { table, query, tableState } = useTenantsTable(handleImpersonate, canImpersonate);
 

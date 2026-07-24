@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Button, makeStyles, tokens, Text, useToastController } from "@fluentui/react-components";
 import { PersonArrowBack20Regular } from "@fluentui/react-icons";
 import { useImpersonationState, backToMyAccount } from "@/lib/auth/impersonation";
-import { useCurrentUser } from "@/lib/auth/permissions";
 
 const useStyles = makeStyles({
   root: {
@@ -29,30 +28,29 @@ const useStyles = makeStyles({
 export function ImpersonationBanner() {
   const { t } = useTranslation();
   const state = useImpersonationState();
-  const currentUser = useCurrentUser();
+  const { dispatchToast } = useToastController();
   const [isRestoring, setIsRestoring] = useState(false);
   const styles = useStyles();
 
   if (!state.isImpersonating) return null;
-
-  const impersonatedAs = currentUser?.userName ?? currentUser?.name ?? t("AbpAccount::User");
 
   const impersonatorLabel =
     state.impersonatorUserName ??
     (state.impersonatorTenantId ? t("AbpTenantManagement::Tenant") : t("AbpAccount::User"));
 
   // AbpAccount::BackToMyAccount = "Back to: {0}" — names the impersonator.
-  const message = t("AbpAccount::BackToMyAccount", {
-    impersonator: impersonatorLabel,
-    impersonated: impersonatedAs,
-  });
+  // The .NET-style {0} placeholder is resolved by the dotNetPlaceholder
+  // post-processor (see @/lib/i18n/i18n.ts).
+  const message = t("AbpAccount::BackToMyAccount", { "0": impersonatorLabel });
 
   async function handleBack() {
     setIsRestoring(true);
     try {
       await backToMyAccount();
     } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
       console.error("[impersonation] back to my account failed:", err);
+      dispatchToast(msg, { intent: "error" });
       setIsRestoring(false);
     }
   }

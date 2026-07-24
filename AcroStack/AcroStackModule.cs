@@ -214,6 +214,9 @@ public class AcroStackModule : AbpModule
             options.AutoEventSelectors.Add<Volo.Abp.Identity.IdentityUser>();
             options.EtoMappings.Add<Volo.Abp.Identity.IdentityUser, AppUsers.AppIdentityUserEto>();
         });
+
+        // Configure impersonation options (mirrors ABP Account Pro's AbpAccountOptions).
+        Configure<ImpersonationOptions>(configuration.GetSection("Impersonation"));
     }
 
 

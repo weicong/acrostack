@@ -1,7 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Avatar, Button, Badge, SearchBox, makeStyles, tokens } from "@fluentui/react-components";
+import {
+  Avatar,
+  Button,
+  Badge,
+  SearchBox,
+  makeStyles,
+  tokens,
+  useToastController,
+} from "@fluentui/react-components";
 import {
   Add20Regular,
   Edit20Regular,
@@ -213,6 +221,7 @@ export function UsersPage() {
   const deleteMutation = useUserDelete();
   const { isGranted } = usePermissions();
   const currentUser = useCurrentUser();
+  const { dispatchToast } = useToastController();
   const canImpersonate = isGranted("AbpIdentity.Users.Impersonation");
 
   const [formOpen, setFormOpen] = useState(false);
@@ -233,12 +242,17 @@ export function UsersPage() {
     setDeleteUserId(id);
   }, []);
 
-  const handleImpersonate = useCallback((user: UserItem) => {
-    if (!user.id) return;
-    void impersonateUser(user.id).catch((err: unknown) => {
-      console.error("[impersonation] failed:", err);
-    });
-  }, []);
+  const handleImpersonate = useCallback(
+    (user: UserItem) => {
+      if (!user.id) return;
+      void impersonateUser(user.id).catch((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[impersonation] failed:", err);
+        dispatchToast(message, { intent: "error" });
+      });
+    },
+    [dispatchToast],
+  );
 
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
