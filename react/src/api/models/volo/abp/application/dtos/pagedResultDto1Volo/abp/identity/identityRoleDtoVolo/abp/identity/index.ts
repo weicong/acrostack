@@ -1,3 +1,3 @@
 /* oxlint-disable */
 
-export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";

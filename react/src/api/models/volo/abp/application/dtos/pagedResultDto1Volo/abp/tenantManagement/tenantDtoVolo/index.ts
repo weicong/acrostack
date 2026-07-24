@@ -1,3 +1,3 @@
 /* oxlint-disable */
 
-export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./abp/tenantManagement/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./abp/tenantManagement/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";

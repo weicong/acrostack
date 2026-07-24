@@ -9,7 +9,7 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { Add20Regular, Edit20Regular, Delete20Regular, Tag20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import type { ColumnDef } from "@tanstack/react-table";
 import { roleGetListQueryOptions, roleGetListQueryKey } from "@/api/hooks/role/useRoleGetList";
@@ -19,7 +19,9 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { usePermissions } from "@/lib/auth/permissions";
 import { RoleFormDialog } from "./RoleFormDialog";
+import { RoleClaimsDialog } from "./RoleClaimsDialog";
 import { toFormRole, type RoleFormRole, type RoleItem } from "./role-types";
 
 type RoleItemRow = RoleItem;
@@ -50,7 +52,12 @@ const useStyles = makeStyles({
   },
 });
 
-function useRolesTable(onEdit: (role: RoleItemRow) => void, onDelete: (id: string) => void) {
+function useRolesTable(
+  onEdit: (role: RoleItemRow) => void,
+  onDelete: (id: string) => void,
+  onManageClaims: (role: RoleItemRow) => void,
+  canManageClaims: boolean,
+) {
   const { t } = useTranslation();
   const styles = useStyles();
 
@@ -118,6 +125,7 @@ function useRolesTable(onEdit: (role: RoleItemRow) => void, onDelete: (id: strin
         cell: (info) => {
           const row = info.row.original;
           const isStatic = row.isStatic === true;
+          const canManageClaimsRow = canManageClaims && !!row.id;
           return (
             <div className={styles.actionsCell}>
               <Button
@@ -141,12 +149,25 @@ function useRolesTable(onEdit: (role: RoleItemRow) => void, onDelete: (id: strin
                 }}
                 aria-label={t("AbpUi::Delete")}
               />
+              {canManageClaimsRow && (
+                <Button
+                  size="small"
+                  appearance="subtle"
+                  icon={<Tag20Regular />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onManageClaims(row);
+                  }}
+                  aria-label={t("AbpIdentity::Claims")}
+                  title={t("AbpIdentity::Claims")}
+                />
+              )}
             </div>
           );
         },
       },
     ],
-    [t, styles.actionsCell, onEdit, onDelete],
+    [t, styles.actionsCell, onEdit, onDelete, onManageClaims, canManageClaims],
   );
 
   const table = useDataTable({
@@ -169,10 +190,13 @@ export function RolesPage() {
   const queryClient = useQueryClient();
   const deleteMutation = useRoleDelete();
   const { dispatchToast } = useToastController();
+  const { isGranted } = usePermissions();
+  const canManageRoleClaims = isGranted("AcroStack.IdentityClaims.RoleClaims");
 
   const [formOpen, setFormOpen] = useState(false);
   const [formRole, setFormRole] = useState<RoleFormRole | undefined>();
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
+  const [claimsRole, setClaimsRole] = useState<RoleItemRow | null>(null);
 
   const handleCreate = useCallback(() => {
     setFormRole(undefined);
@@ -186,6 +210,10 @@ export function RolesPage() {
 
   const handleDelete = useCallback((id: string) => {
     setDeleteRoleId(id);
+  }, []);
+
+  const handleManageClaims = useCallback((role: RoleItemRow) => {
+    setClaimsRole(role);
   }, []);
 
   const handleFormSuccess = useCallback(() => {
@@ -211,7 +239,12 @@ export function RolesPage() {
     );
   }, [deleteRoleId, deleteMutation, queryClient, dispatchToast, t]);
 
-  const { table, query, tableState } = useRolesTable(handleEdit, handleDelete);
+  const { table, query, tableState } = useRolesTable(
+    handleEdit,
+    handleDelete,
+    handleManageClaims,
+    canManageRoleClaims,
+  );
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -252,6 +285,15 @@ export function RolesPage() {
         onOpenChange={setFormOpen}
         role={formRole}
         onSuccess={handleFormSuccess}
+      />
+
+      <RoleClaimsDialog
+        open={claimsRole !== null}
+        onOpenChange={(open) => {
+          if (!open) setClaimsRole(null);
+        }}
+        roleId={claimsRole?.id}
+        roleName={claimsRole?.name}
       />
 
       <ConfirmDialog

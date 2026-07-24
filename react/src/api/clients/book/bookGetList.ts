@@ -3,6 +3,8 @@
 import client from "@kubb/plugin-client/clients/axios";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
 import type {
+  BookGetListQueryFilter,
+  BookGetListQueryType,
   BookGetListQuerySorting,
   BookGetListQuerySkipCount,
   BookGetListQueryMaxResultCount,
@@ -26,6 +28,8 @@ function getBookGetListUrl() {
  */
 export async function bookGetList(
   params?: {
+    Filter?: BookGetListQueryFilter;
+    Type?: BookGetListQueryType;
     Sorting?: BookGetListQuerySorting;
     SkipCount?: BookGetListQuerySkipCount;
     MaxResultCount?: BookGetListQueryMaxResultCount;

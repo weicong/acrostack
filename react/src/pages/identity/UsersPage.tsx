@@ -15,6 +15,7 @@ import {
   Edit20Regular,
   Delete20Regular,
   PersonArrowLeft20Regular,
+  Tag20Regular,
 } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -31,6 +32,7 @@ import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
 import { impersonateUser } from "@/lib/auth/impersonation";
 import { UserFormDialog } from "./UserFormDialog";
+import { UserClaimsDialog } from "./UserClaimsDialog";
 import { toFormUser, type UserFormUser, type UserListItem } from "./user-types";
 
 type UserItem = UserListItem;
@@ -86,7 +88,9 @@ function useUsersTable(
   onEdit: (user: UserItem) => void,
   onDelete: (id: string) => void,
   onImpersonate: (user: UserItem) => void,
+  onManageClaims: (user: UserItem) => void,
   canImpersonate: boolean,
+  canManageClaims: boolean,
   currentUserId?: string,
 ) {
   const { t } = useTranslation();
@@ -148,6 +152,7 @@ function useUsersTable(
         cell: (info) => {
           const row = info.row.original;
           const canImpersonateRow = canImpersonate && !!row.id && row.id !== currentUserId;
+          const canManageClaimsRow = canManageClaims && !!row.id;
           return (
             <div className={styles.actionsCell}>
               <Button
@@ -183,6 +188,19 @@ function useUsersTable(
                   title={t("AbpIdentity::Permission:Impersonation")}
                 />
               )}
+              {canManageClaimsRow && (
+                <Button
+                  size="small"
+                  appearance="subtle"
+                  icon={<Tag20Regular />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onManageClaims(row);
+                  }}
+                  aria-label={t("AbpIdentity::Claims")}
+                  title={t("AbpIdentity::Claims")}
+                />
+              )}
             </div>
           );
         },
@@ -195,7 +213,9 @@ function useUsersTable(
       onEdit,
       onDelete,
       onImpersonate,
+      onManageClaims,
       canImpersonate,
+      canManageClaims,
       currentUserId,
     ],
   );
@@ -223,10 +243,12 @@ export function UsersPage() {
   const currentUser = useCurrentUser();
   const { dispatchToast } = useToastController();
   const canImpersonate = isGranted("AbpIdentity.Users.Impersonation");
+  const canManageUserClaims = isGranted("AcroStack.IdentityClaims.UserClaims");
 
   const [formOpen, setFormOpen] = useState(false);
   const [formUser, setFormUser] = useState<UserFormUser | undefined>();
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [claimsUser, setClaimsUser] = useState<UserItem | null>(null);
 
   const handleCreate = useCallback(() => {
     setFormUser(undefined);
@@ -254,6 +276,10 @@ export function UsersPage() {
     [dispatchToast],
   );
 
+  const handleManageClaims = useCallback((user: UserItem) => {
+    setClaimsUser(user);
+  }, []);
+
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     void queryClient.invalidateQueries({ queryKey: appUserGetListQueryKey() });
@@ -276,7 +302,9 @@ export function UsersPage() {
     handleEdit,
     handleDelete,
     handleImpersonate,
+    handleManageClaims,
     canImpersonate,
+    canManageUserClaims,
     currentUser?.id,
   );
 
@@ -319,6 +347,15 @@ export function UsersPage() {
         onOpenChange={setFormOpen}
         user={formUser}
         onSuccess={handleFormSuccess}
+      />
+
+      <UserClaimsDialog
+        open={claimsUser !== null}
+        onOpenChange={(open) => {
+          if (!open) setClaimsUser(null);
+        }}
+        userId={claimsUser?.id}
+        userName={claimsUser?.userName}
       />
 
       <ConfirmDialog

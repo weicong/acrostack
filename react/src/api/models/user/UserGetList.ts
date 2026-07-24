@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 import type { RoleGetListExtraProperties } from "../RoleGetListExtraProperties.ts";
-import type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -34,19 +34,19 @@ export type UserGetListQueryExtraProperties = RoleGetListExtraProperties | undef
  * @type object
  */
 export type UserGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type UserGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type UserGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
 
 export type UserGetListStatus200 =
   | UserGetListStatus200Plain

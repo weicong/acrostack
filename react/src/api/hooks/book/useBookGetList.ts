@@ -8,6 +8,8 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import type {
+  BookGetListQueryFilter,
+  BookGetListQueryType,
   BookGetListQuerySorting,
   BookGetListQuerySkipCount,
   BookGetListQueryMaxResultCount,
@@ -23,6 +25,8 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { bookGetList } from "../../clients/book/bookGetList.ts";
 
 export const bookGetListQueryKey = (params?: {
+  Filter?: BookGetListQueryFilter;
+  Type?: BookGetListQueryType;
   Sorting?: BookGetListQuerySorting;
   SkipCount?: BookGetListQuerySkipCount;
   MaxResultCount?: BookGetListQueryMaxResultCount;
@@ -32,6 +36,8 @@ type BookGetListQueryKey = ReturnType<typeof bookGetListQueryKey>;
 
 export function bookGetListQueryOptions(
   params?: {
+    Filter?: BookGetListQueryFilter;
+    Type?: BookGetListQueryType;
     Sorting?: BookGetListQuerySorting;
     SkipCount?: BookGetListQuerySkipCount;
     MaxResultCount?: BookGetListQueryMaxResultCount;
@@ -68,6 +74,8 @@ export function useBookGetList<
   TQueryKey extends QueryKey = BookGetListQueryKey,
 >(
   params?: {
+    Filter?: BookGetListQueryFilter;
+    Type?: BookGetListQueryType;
     Sorting?: BookGetListQuerySorting;
     SkipCount?: BookGetListQuerySkipCount;
     MaxResultCount?: BookGetListQueryMaxResultCount;

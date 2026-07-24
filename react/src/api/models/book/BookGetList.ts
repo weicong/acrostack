@@ -1,7 +1,20 @@
 /* oxlint-disable */
 
+import type { AcroStackEntitiesBooksBookType } from "../acroStack/entities/books/BookType.ts";
 import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/books/BookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+
+/**
+ * @type string | undefined
+ */
+export type BookGetListQueryFilter = string | undefined;
+
+/**
+ * @description
+ * Format: `int32`
+ * @type integer | undefined
+ */
+export type BookGetListQueryType = AcroStackEntitiesBooksBookType | undefined;
 
 /**
  * @type string | undefined
@@ -175,6 +188,8 @@ export type BookGetListRequestConfig = {
    * @type object | undefined
    */
   queryParams?: {
+    Filter?: BookGetListQueryFilter;
+    Type?: BookGetListQueryType;
     Sorting?: BookGetListQuerySorting;
     SkipCount?: BookGetListQuerySkipCount;
     MaxResultCount?: BookGetListQueryMaxResultCount;

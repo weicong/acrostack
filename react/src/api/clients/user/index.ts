@@ -4,6 +4,7 @@ export { user } from "./user.ts";
 export { userCreate } from "./userCreate.ts";
 export { userDelete } from "./userDelete.ts";
 export { userFindByEmail } from "./userFindByEmail.ts";
+export { userFindById } from "./userFindById.ts";
 export { userFindByUsername } from "./userFindByUsername.ts";
 export { userGet } from "./userGet.ts";
 export { userGetAssignableRoles } from "./userGetAssignableRoles.ts";

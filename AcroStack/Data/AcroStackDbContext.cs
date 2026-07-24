@@ -12,6 +12,8 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using AcroStack.AppUsers;
 using AcroStack.Entities.Books;
+using AcroStack.Entities.SaaS;
+using AcroStack.Entities.FileManagement;
 
 namespace AcroStack.Data;
 
@@ -19,6 +21,9 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>
 {
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Book> Books { get; set; }
+    public DbSet<Edition> Editions { get; set; }
+    public DbSet<FileFolder> FileFolders { get; set; }
+    public DbSet<FileEntry> FileEntries { get; set; }
 
     public const string DbTablePrefix = "App";
     public const string DbSchema = null;
@@ -63,6 +68,32 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>
             b.ToTable(DbTablePrefix + "Books", DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
+
+        builder.Entity<Edition>(b =>
+        {
+            b.ToTable(DbTablePrefix + "Editions", DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.DisplayName).IsRequired().HasMaxLength(256);
+            b.HasIndex(x => x.DisplayName);
+        });
+
+        builder.Entity<FileFolder>(b =>
+        {
+            b.ToTable(DbTablePrefix + "FileFolders", DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(256);
+            b.HasIndex(x => new { x.ParentId, x.Name });
+        });
+
+        builder.Entity<FileEntry>(b =>
+        {
+            b.ToTable(DbTablePrefix + "FileEntries", DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(256);
+            b.Property(x => x.BlobName).IsRequired().HasMaxLength(128);
+            b.Property(x => x.ContentType).HasMaxLength(128);
+            b.HasIndex(x => x.FolderId);
         });
     }
 }

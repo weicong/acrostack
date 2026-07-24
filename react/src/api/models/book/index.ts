@@ -104,9 +104,11 @@ export type {
   BookGetStatus501Plain,
 } from "./BookGet.ts";
 export type {
+  BookGetListQueryFilter,
   BookGetListQueryMaxResultCount,
   BookGetListQuerySkipCount,
   BookGetListQuerySorting,
+  BookGetListQueryType,
   BookGetListRequestConfig,
   BookGetListResponse,
   BookGetListResponses,

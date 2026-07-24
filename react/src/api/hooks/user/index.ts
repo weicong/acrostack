@@ -16,6 +16,11 @@ export {
   userFindByEmailQueryOptions,
 } from "./useUserFindByEmail.ts";
 export {
+  useUserFindById,
+  userFindByIdQueryKey,
+  userFindByIdQueryOptions,
+} from "./useUserFindById.ts";
+export {
   useUserFindByUsername,
   userFindByUsernameQueryKey,
   userFindByUsernameQueryOptions,

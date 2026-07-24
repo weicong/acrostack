@@ -5,6 +5,10 @@ using System.Linq;
 using AcroStack.AppUsers;
 using AcroStack.Entities.Books;
 using AcroStack.Services.Dtos.Books;
+using AcroStack.Entities.SaaS;
+using AcroStack.Services.Dtos.SaaS;
+using AcroStack.Entities.FileManagement;
+using AcroStack.Services.Dtos.FileManagement;
 using Volo.Abp.Identity;
 
 namespace AcroStack.ObjectMapping;
@@ -49,4 +53,44 @@ public partial class AcroStackBookDtoToCreateUpdateBookDtoMapper : MapperBase<Bo
     public override partial CreateUpdateBookDto Map(BookDto source);
 
     public override partial void Map(BookDto source, CreateUpdateBookDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class AcroStackEditionToEditionDtoMapper : MapperBase<Edition, EditionDto>
+{
+    public override partial EditionDto Map(Edition source);
+
+    public override partial void Map(Edition source, EditionDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class AcroStackCreateUpdateEditionDtoToEditionMapper : MapperBase<CreateUpdateEditionDto, Edition>
+{
+    public override partial Edition Map(CreateUpdateEditionDto source);
+
+    public override partial void Map(CreateUpdateEditionDto source, Edition destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class AcroStackFileFolderToFileFolderDtoMapper : MapperBase<FileFolder, FileFolderDto>
+{
+    public override partial FileFolderDto Map(FileFolder source);
+
+    public override partial void Map(FileFolder source, FileFolderDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class AcroStackCreateFileFolderDtoToFileFolderMapper : MapperBase<CreateFileFolderDto, FileFolder>
+{
+    public override partial FileFolder Map(CreateFileFolderDto source);
+
+    public override partial void Map(CreateFileFolderDto source, FileFolder destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class AcroStackFileEntryToFileEntryDtoMapper : MapperBase<FileEntry, FileEntryDto>
+{
+    public override partial FileEntryDto Map(FileEntry source);
+
+    public override partial void Map(FileEntry source, FileEntryDto destination);
 }

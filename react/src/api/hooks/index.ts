@@ -56,6 +56,31 @@ export {
   useAppUserGetList,
 } from "./appUser/useAppUserGetList.ts";
 export {
+  auditLogGetQueryKey,
+  auditLogGetQueryOptions,
+  useAuditLogGet,
+} from "./auditLog/useAuditLogGet.ts";
+export {
+  auditLogGetListQueryKey,
+  auditLogGetListQueryOptions,
+  useAuditLogGetList,
+} from "./auditLog/useAuditLogGetList.ts";
+export {
+  backgroundJobDeleteMutationKey,
+  backgroundJobDeleteMutationOptions,
+  useBackgroundJobDelete,
+} from "./backgroundJob/useBackgroundJobDelete.ts";
+export {
+  backgroundJobGetQueryKey,
+  backgroundJobGetQueryOptions,
+  useBackgroundJobGet,
+} from "./backgroundJob/useBackgroundJobGet.ts";
+export {
+  backgroundJobGetListQueryKey,
+  backgroundJobGetListQueryOptions,
+  useBackgroundJobGetList,
+} from "./backgroundJob/useBackgroundJobGetList.ts";
+export {
   bookCreateMutationKey,
   bookCreateMutationOptions,
   useBookCreate,
@@ -112,6 +137,46 @@ export {
   useFeaturesUpdate,
 } from "./features/useFeaturesUpdate.ts";
 export {
+  identityRoleClaimCreateMutationKey,
+  identityRoleClaimCreateMutationOptions,
+  useIdentityRoleClaimCreate,
+} from "./identityRoleClaim/useIdentityRoleClaimCreate.ts";
+export {
+  identityRoleClaimDeleteMutationKey,
+  identityRoleClaimDeleteMutationOptions,
+  useIdentityRoleClaimDelete,
+} from "./identityRoleClaim/useIdentityRoleClaimDelete.ts";
+export {
+  identityRoleClaimGetListQueryKey,
+  identityRoleClaimGetListQueryOptions,
+  useIdentityRoleClaimGetList,
+} from "./identityRoleClaim/useIdentityRoleClaimGetList.ts";
+export {
+  identityRoleClaimUpdateMutationKey,
+  identityRoleClaimUpdateMutationOptions,
+  useIdentityRoleClaimUpdate,
+} from "./identityRoleClaim/useIdentityRoleClaimUpdate.ts";
+export {
+  identityUserClaimCreateMutationKey,
+  identityUserClaimCreateMutationOptions,
+  useIdentityUserClaimCreate,
+} from "./identityUserClaim/useIdentityUserClaimCreate.ts";
+export {
+  identityUserClaimDeleteMutationKey,
+  identityUserClaimDeleteMutationOptions,
+  useIdentityUserClaimDelete,
+} from "./identityUserClaim/useIdentityUserClaimDelete.ts";
+export {
+  identityUserClaimGetListQueryKey,
+  identityUserClaimGetListQueryOptions,
+  useIdentityUserClaimGetList,
+} from "./identityUserClaim/useIdentityUserClaimGetList.ts";
+export {
+  identityUserClaimUpdateMutationKey,
+  identityUserClaimUpdateMutationOptions,
+  useIdentityUserClaimUpdate,
+} from "./identityUserClaim/useIdentityUserClaimUpdate.ts";
+export {
   loginCheckPasswordMutationKey,
   loginCheckPasswordMutationOptions,
   useLoginCheckPassword,
@@ -126,6 +191,36 @@ export {
   loginLogoutQueryOptions,
   useLoginLogout,
 } from "./login/useLoginLogout.ts";
+export {
+  openIddictApplicationDeleteMutationKey,
+  openIddictApplicationDeleteMutationOptions,
+  useOpenIddictApplicationDelete,
+} from "./openIddictApplication/useOpenIddictApplicationDelete.ts";
+export {
+  openIddictApplicationGetQueryKey,
+  openIddictApplicationGetQueryOptions,
+  useOpenIddictApplicationGet,
+} from "./openIddictApplication/useOpenIddictApplicationGet.ts";
+export {
+  openIddictApplicationGetListQueryKey,
+  openIddictApplicationGetListQueryOptions,
+  useOpenIddictApplicationGetList,
+} from "./openIddictApplication/useOpenIddictApplicationGetList.ts";
+export {
+  openIddictScopeDeleteMutationKey,
+  openIddictScopeDeleteMutationOptions,
+  useOpenIddictScopeDelete,
+} from "./openIddictScope/useOpenIddictScopeDelete.ts";
+export {
+  openIddictScopeGetQueryKey,
+  openIddictScopeGetQueryOptions,
+  useOpenIddictScopeGet,
+} from "./openIddictScope/useOpenIddictScopeGet.ts";
+export {
+  openIddictScopeGetListQueryKey,
+  openIddictScopeGetListQueryOptions,
+  useOpenIddictScopeGetList,
+} from "./openIddictScope/useOpenIddictScopeGetList.ts";
 export {
   permissionsDeleteResourceMutationKey,
   permissionsDeleteResourceMutationOptions,
@@ -283,6 +378,11 @@ export {
   userFindByEmailQueryKey,
   userFindByEmailQueryOptions,
 } from "./user/useUserFindByEmail.ts";
+export {
+  useUserFindById,
+  userFindByIdQueryKey,
+  userFindByIdQueryOptions,
+} from "./user/useUserFindById.ts";
 export {
   useUserFindByUsername,
   userFindByUsernameQueryKey,

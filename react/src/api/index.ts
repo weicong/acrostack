@@ -321,8 +321,19 @@ export type {
 } from "./models/account/AccountVerifyPasswordResetToken.ts";
 export type { AcroStackAppUsersAppUserDto } from "./models/acroStack/appUsers/AppUserDto.ts";
 export type { AcroStackEntitiesBooksBookType } from "./models/acroStack/entities/books/BookType.ts";
+export type { AcroStackServicesDtosAuditLoggingAuditLogActionDto } from "./models/acroStack/services/dtos/auditLogging/AuditLogActionDto.ts";
+export type { AcroStackServicesDtosAuditLoggingAuditLogDto } from "./models/acroStack/services/dtos/auditLogging/AuditLogDto.ts";
+export type { AcroStackServicesDtosAuditLoggingEntityChangeDto } from "./models/acroStack/services/dtos/auditLogging/EntityChangeDto.ts";
+export type { AcroStackServicesDtosAuditLoggingEntityChangeFieldDto } from "./models/acroStack/services/dtos/auditLogging/EntityChangeFieldDto.ts";
+export type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto } from "./models/acroStack/services/dtos/backgroundJobs/BackgroundJobDto.ts";
 export type { AcroStackServicesDtosBooksBookDto } from "./models/acroStack/services/dtos/books/BookDto.ts";
 export type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "./models/acroStack/services/dtos/books/CreateUpdateBookDto.ts";
+export type { AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto } from "./models/acroStack/services/dtos/identityClaims/CreateIdentityRoleClaimDto.ts";
+export type { AcroStackServicesDtosIdentityClaimsCreateIdentityUserClaimDto } from "./models/acroStack/services/dtos/identityClaims/CreateIdentityUserClaimDto.ts";
+export type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "./models/acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
+export type { AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto } from "./models/acroStack/services/dtos/identityClaims/UpdateIdentityClaimDto.ts";
+export type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "./models/acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
+export type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto } from "./models/acroStack/services/dtos/openIddictManagement/OpenIddictScopeDto.ts";
 export type {
   AppUserDeletePathId,
   AppUserDeleteRequestConfig,
@@ -392,6 +403,191 @@ export type {
   AppUserGetListStatus501Json2,
   AppUserGetListStatus501Plain,
 } from "./models/appUser/AppUserGetList.ts";
+export type {
+  AuditLogGetPathId,
+  AuditLogGetRequestConfig,
+  AuditLogGetResponse,
+  AuditLogGetResponses,
+  AuditLogGetStatus200,
+  AuditLogGetStatus200Json,
+  AuditLogGetStatus200Json2,
+  AuditLogGetStatus200Plain,
+  AuditLogGetStatus400,
+  AuditLogGetStatus400Json,
+  AuditLogGetStatus400Json2,
+  AuditLogGetStatus400Plain,
+  AuditLogGetStatus401,
+  AuditLogGetStatus401Json,
+  AuditLogGetStatus401Json2,
+  AuditLogGetStatus401Plain,
+  AuditLogGetStatus403,
+  AuditLogGetStatus403Json,
+  AuditLogGetStatus403Json2,
+  AuditLogGetStatus403Plain,
+  AuditLogGetStatus404,
+  AuditLogGetStatus404Json,
+  AuditLogGetStatus404Json2,
+  AuditLogGetStatus404Plain,
+  AuditLogGetStatus500,
+  AuditLogGetStatus500Json,
+  AuditLogGetStatus500Json2,
+  AuditLogGetStatus500Plain,
+  AuditLogGetStatus501,
+  AuditLogGetStatus501Json,
+  AuditLogGetStatus501Json2,
+  AuditLogGetStatus501Plain,
+} from "./models/auditLog/AuditLogGet.ts";
+export type {
+  AuditLogGetListQueryEndTime,
+  AuditLogGetListQueryFilter,
+  AuditLogGetListQueryHasException,
+  AuditLogGetListQueryHttpMethod,
+  AuditLogGetListQueryHttpStatusCode,
+  AuditLogGetListQueryMaxResultCount,
+  AuditLogGetListQuerySkipCount,
+  AuditLogGetListQuerySorting,
+  AuditLogGetListQueryStartTime,
+  AuditLogGetListQueryUrl,
+  AuditLogGetListQueryUserId,
+  AuditLogGetListRequestConfig,
+  AuditLogGetListResponse,
+  AuditLogGetListResponses,
+  AuditLogGetListStatus200,
+  AuditLogGetListStatus200Json,
+  AuditLogGetListStatus200Json2,
+  AuditLogGetListStatus200Plain,
+  AuditLogGetListStatus400,
+  AuditLogGetListStatus400Json,
+  AuditLogGetListStatus400Json2,
+  AuditLogGetListStatus400Plain,
+  AuditLogGetListStatus401,
+  AuditLogGetListStatus401Json,
+  AuditLogGetListStatus401Json2,
+  AuditLogGetListStatus401Plain,
+  AuditLogGetListStatus403,
+  AuditLogGetListStatus403Json,
+  AuditLogGetListStatus403Json2,
+  AuditLogGetListStatus403Plain,
+  AuditLogGetListStatus404,
+  AuditLogGetListStatus404Json,
+  AuditLogGetListStatus404Json2,
+  AuditLogGetListStatus404Plain,
+  AuditLogGetListStatus500,
+  AuditLogGetListStatus500Json,
+  AuditLogGetListStatus500Json2,
+  AuditLogGetListStatus500Plain,
+  AuditLogGetListStatus501,
+  AuditLogGetListStatus501Json,
+  AuditLogGetListStatus501Json2,
+  AuditLogGetListStatus501Plain,
+} from "./models/auditLog/AuditLogGetList.ts";
+export type {
+  BackgroundJobDeletePathId,
+  BackgroundJobDeleteRequestConfig,
+  BackgroundJobDeleteResponse,
+  BackgroundJobDeleteResponses,
+  BackgroundJobDeleteStatus200,
+  BackgroundJobDeleteStatus204,
+  BackgroundJobDeleteStatus400,
+  BackgroundJobDeleteStatus400Json,
+  BackgroundJobDeleteStatus400Json2,
+  BackgroundJobDeleteStatus400Plain,
+  BackgroundJobDeleteStatus401,
+  BackgroundJobDeleteStatus401Json,
+  BackgroundJobDeleteStatus401Json2,
+  BackgroundJobDeleteStatus401Plain,
+  BackgroundJobDeleteStatus403,
+  BackgroundJobDeleteStatus403Json,
+  BackgroundJobDeleteStatus403Json2,
+  BackgroundJobDeleteStatus403Plain,
+  BackgroundJobDeleteStatus404,
+  BackgroundJobDeleteStatus404Json,
+  BackgroundJobDeleteStatus404Json2,
+  BackgroundJobDeleteStatus404Plain,
+  BackgroundJobDeleteStatus500,
+  BackgroundJobDeleteStatus500Json,
+  BackgroundJobDeleteStatus500Json2,
+  BackgroundJobDeleteStatus500Plain,
+  BackgroundJobDeleteStatus501,
+  BackgroundJobDeleteStatus501Json,
+  BackgroundJobDeleteStatus501Json2,
+  BackgroundJobDeleteStatus501Plain,
+} from "./models/backgroundJob/BackgroundJobDelete.ts";
+export type {
+  BackgroundJobGetPathId,
+  BackgroundJobGetRequestConfig,
+  BackgroundJobGetResponse,
+  BackgroundJobGetResponses,
+  BackgroundJobGetStatus200,
+  BackgroundJobGetStatus200Json,
+  BackgroundJobGetStatus200Json2,
+  BackgroundJobGetStatus200Plain,
+  BackgroundJobGetStatus400,
+  BackgroundJobGetStatus400Json,
+  BackgroundJobGetStatus400Json2,
+  BackgroundJobGetStatus400Plain,
+  BackgroundJobGetStatus401,
+  BackgroundJobGetStatus401Json,
+  BackgroundJobGetStatus401Json2,
+  BackgroundJobGetStatus401Plain,
+  BackgroundJobGetStatus403,
+  BackgroundJobGetStatus403Json,
+  BackgroundJobGetStatus403Json2,
+  BackgroundJobGetStatus403Plain,
+  BackgroundJobGetStatus404,
+  BackgroundJobGetStatus404Json,
+  BackgroundJobGetStatus404Json2,
+  BackgroundJobGetStatus404Plain,
+  BackgroundJobGetStatus500,
+  BackgroundJobGetStatus500Json,
+  BackgroundJobGetStatus500Json2,
+  BackgroundJobGetStatus500Plain,
+  BackgroundJobGetStatus501,
+  BackgroundJobGetStatus501Json,
+  BackgroundJobGetStatus501Json2,
+  BackgroundJobGetStatus501Plain,
+} from "./models/backgroundJob/BackgroundJobGet.ts";
+export type {
+  BackgroundJobGetListQueryEndCreationTime,
+  BackgroundJobGetListQueryFilter,
+  BackgroundJobGetListQueryIsAbandoned,
+  BackgroundJobGetListQueryJobName,
+  BackgroundJobGetListQueryMaxResultCount,
+  BackgroundJobGetListQuerySkipCount,
+  BackgroundJobGetListQuerySorting,
+  BackgroundJobGetListQueryStartCreationTime,
+  BackgroundJobGetListRequestConfig,
+  BackgroundJobGetListResponse,
+  BackgroundJobGetListResponses,
+  BackgroundJobGetListStatus200,
+  BackgroundJobGetListStatus200Json,
+  BackgroundJobGetListStatus200Json2,
+  BackgroundJobGetListStatus200Plain,
+  BackgroundJobGetListStatus400,
+  BackgroundJobGetListStatus400Json,
+  BackgroundJobGetListStatus400Json2,
+  BackgroundJobGetListStatus400Plain,
+  BackgroundJobGetListStatus401,
+  BackgroundJobGetListStatus401Json,
+  BackgroundJobGetListStatus401Json2,
+  BackgroundJobGetListStatus401Plain,
+  BackgroundJobGetListStatus403,
+  BackgroundJobGetListStatus403Json,
+  BackgroundJobGetListStatus403Json2,
+  BackgroundJobGetListStatus403Plain,
+  BackgroundJobGetListStatus404,
+  BackgroundJobGetListStatus404Json,
+  BackgroundJobGetListStatus404Json2,
+  BackgroundJobGetListStatus404Plain,
+  BackgroundJobGetListStatus500,
+  BackgroundJobGetListStatus500Json,
+  BackgroundJobGetListStatus500Json2,
+  BackgroundJobGetListStatus500Plain,
+  BackgroundJobGetListStatus501,
+  BackgroundJobGetListStatus501Json,
+  BackgroundJobGetListStatus501Json2,
+  BackgroundJobGetListStatus501Plain,
+} from "./models/backgroundJob/BackgroundJobGetList.ts";
 export type {
   BookCreateData,
   BookCreateJson2Data,
@@ -496,9 +692,11 @@ export type {
   BookGetStatus501Plain,
 } from "./models/book/BookGet.ts";
 export type {
+  BookGetListQueryFilter,
   BookGetListQueryMaxResultCount,
   BookGetListQuerySkipCount,
   BookGetListQuerySorting,
+  BookGetListQueryType,
   BookGetListRequestConfig,
   BookGetListResponse,
   BookGetListResponses,
@@ -809,6 +1007,288 @@ export type {
   FeaturesUpdateStatus501Plain,
 } from "./models/features/FeaturesUpdate.ts";
 export type {
+  IdentityRoleClaimCreateData,
+  IdentityRoleClaimCreateJson2Data,
+  IdentityRoleClaimCreateJson3Data,
+  IdentityRoleClaimCreateJsonData,
+  IdentityRoleClaimCreateRequestConfig,
+  IdentityRoleClaimCreateResponse,
+  IdentityRoleClaimCreateResponses,
+  IdentityRoleClaimCreateStatus200,
+  IdentityRoleClaimCreateStatus200Json,
+  IdentityRoleClaimCreateStatus200Json2,
+  IdentityRoleClaimCreateStatus200Plain,
+  IdentityRoleClaimCreateStatus400,
+  IdentityRoleClaimCreateStatus400Json,
+  IdentityRoleClaimCreateStatus400Json2,
+  IdentityRoleClaimCreateStatus400Plain,
+  IdentityRoleClaimCreateStatus401,
+  IdentityRoleClaimCreateStatus401Json,
+  IdentityRoleClaimCreateStatus401Json2,
+  IdentityRoleClaimCreateStatus401Plain,
+  IdentityRoleClaimCreateStatus403,
+  IdentityRoleClaimCreateStatus403Json,
+  IdentityRoleClaimCreateStatus403Json2,
+  IdentityRoleClaimCreateStatus403Plain,
+  IdentityRoleClaimCreateStatus404,
+  IdentityRoleClaimCreateStatus404Json,
+  IdentityRoleClaimCreateStatus404Json2,
+  IdentityRoleClaimCreateStatus404Plain,
+  IdentityRoleClaimCreateStatus500,
+  IdentityRoleClaimCreateStatus500Json,
+  IdentityRoleClaimCreateStatus500Json2,
+  IdentityRoleClaimCreateStatus500Plain,
+  IdentityRoleClaimCreateStatus501,
+  IdentityRoleClaimCreateStatus501Json,
+  IdentityRoleClaimCreateStatus501Json2,
+  IdentityRoleClaimCreateStatus501Plain,
+} from "./models/identityRoleClaim/IdentityRoleClaimCreate.ts";
+export type {
+  IdentityRoleClaimDeletePathId,
+  IdentityRoleClaimDeleteRequestConfig,
+  IdentityRoleClaimDeleteResponse,
+  IdentityRoleClaimDeleteResponses,
+  IdentityRoleClaimDeleteStatus200,
+  IdentityRoleClaimDeleteStatus204,
+  IdentityRoleClaimDeleteStatus400,
+  IdentityRoleClaimDeleteStatus400Json,
+  IdentityRoleClaimDeleteStatus400Json2,
+  IdentityRoleClaimDeleteStatus400Plain,
+  IdentityRoleClaimDeleteStatus401,
+  IdentityRoleClaimDeleteStatus401Json,
+  IdentityRoleClaimDeleteStatus401Json2,
+  IdentityRoleClaimDeleteStatus401Plain,
+  IdentityRoleClaimDeleteStatus403,
+  IdentityRoleClaimDeleteStatus403Json,
+  IdentityRoleClaimDeleteStatus403Json2,
+  IdentityRoleClaimDeleteStatus403Plain,
+  IdentityRoleClaimDeleteStatus404,
+  IdentityRoleClaimDeleteStatus404Json,
+  IdentityRoleClaimDeleteStatus404Json2,
+  IdentityRoleClaimDeleteStatus404Plain,
+  IdentityRoleClaimDeleteStatus500,
+  IdentityRoleClaimDeleteStatus500Json,
+  IdentityRoleClaimDeleteStatus500Json2,
+  IdentityRoleClaimDeleteStatus500Plain,
+  IdentityRoleClaimDeleteStatus501,
+  IdentityRoleClaimDeleteStatus501Json,
+  IdentityRoleClaimDeleteStatus501Json2,
+  IdentityRoleClaimDeleteStatus501Plain,
+} from "./models/identityRoleClaim/IdentityRoleClaimDelete.ts";
+export type {
+  IdentityRoleClaimGetListQueryRoleId,
+  IdentityRoleClaimGetListRequestConfig,
+  IdentityRoleClaimGetListResponse,
+  IdentityRoleClaimGetListResponses,
+  IdentityRoleClaimGetListStatus200,
+  IdentityRoleClaimGetListStatus200Json,
+  IdentityRoleClaimGetListStatus200Json2,
+  IdentityRoleClaimGetListStatus200Plain,
+  IdentityRoleClaimGetListStatus400,
+  IdentityRoleClaimGetListStatus400Json,
+  IdentityRoleClaimGetListStatus400Json2,
+  IdentityRoleClaimGetListStatus400Plain,
+  IdentityRoleClaimGetListStatus401,
+  IdentityRoleClaimGetListStatus401Json,
+  IdentityRoleClaimGetListStatus401Json2,
+  IdentityRoleClaimGetListStatus401Plain,
+  IdentityRoleClaimGetListStatus403,
+  IdentityRoleClaimGetListStatus403Json,
+  IdentityRoleClaimGetListStatus403Json2,
+  IdentityRoleClaimGetListStatus403Plain,
+  IdentityRoleClaimGetListStatus404,
+  IdentityRoleClaimGetListStatus404Json,
+  IdentityRoleClaimGetListStatus404Json2,
+  IdentityRoleClaimGetListStatus404Plain,
+  IdentityRoleClaimGetListStatus500,
+  IdentityRoleClaimGetListStatus500Json,
+  IdentityRoleClaimGetListStatus500Json2,
+  IdentityRoleClaimGetListStatus500Plain,
+  IdentityRoleClaimGetListStatus501,
+  IdentityRoleClaimGetListStatus501Json,
+  IdentityRoleClaimGetListStatus501Json2,
+  IdentityRoleClaimGetListStatus501Plain,
+} from "./models/identityRoleClaim/IdentityRoleClaimGetList.ts";
+export type {
+  IdentityRoleClaimUpdateData,
+  IdentityRoleClaimUpdateJson2Data,
+  IdentityRoleClaimUpdateJson3Data,
+  IdentityRoleClaimUpdateJsonData,
+  IdentityRoleClaimUpdatePathId,
+  IdentityRoleClaimUpdateRequestConfig,
+  IdentityRoleClaimUpdateResponse,
+  IdentityRoleClaimUpdateResponses,
+  IdentityRoleClaimUpdateStatus200,
+  IdentityRoleClaimUpdateStatus200Json,
+  IdentityRoleClaimUpdateStatus200Json2,
+  IdentityRoleClaimUpdateStatus200Plain,
+  IdentityRoleClaimUpdateStatus400,
+  IdentityRoleClaimUpdateStatus400Json,
+  IdentityRoleClaimUpdateStatus400Json2,
+  IdentityRoleClaimUpdateStatus400Plain,
+  IdentityRoleClaimUpdateStatus401,
+  IdentityRoleClaimUpdateStatus401Json,
+  IdentityRoleClaimUpdateStatus401Json2,
+  IdentityRoleClaimUpdateStatus401Plain,
+  IdentityRoleClaimUpdateStatus403,
+  IdentityRoleClaimUpdateStatus403Json,
+  IdentityRoleClaimUpdateStatus403Json2,
+  IdentityRoleClaimUpdateStatus403Plain,
+  IdentityRoleClaimUpdateStatus404,
+  IdentityRoleClaimUpdateStatus404Json,
+  IdentityRoleClaimUpdateStatus404Json2,
+  IdentityRoleClaimUpdateStatus404Plain,
+  IdentityRoleClaimUpdateStatus500,
+  IdentityRoleClaimUpdateStatus500Json,
+  IdentityRoleClaimUpdateStatus500Json2,
+  IdentityRoleClaimUpdateStatus500Plain,
+  IdentityRoleClaimUpdateStatus501,
+  IdentityRoleClaimUpdateStatus501Json,
+  IdentityRoleClaimUpdateStatus501Json2,
+  IdentityRoleClaimUpdateStatus501Plain,
+} from "./models/identityRoleClaim/IdentityRoleClaimUpdate.ts";
+export type {
+  IdentityUserClaimCreateData,
+  IdentityUserClaimCreateJson2Data,
+  IdentityUserClaimCreateJson3Data,
+  IdentityUserClaimCreateJsonData,
+  IdentityUserClaimCreateRequestConfig,
+  IdentityUserClaimCreateResponse,
+  IdentityUserClaimCreateResponses,
+  IdentityUserClaimCreateStatus200,
+  IdentityUserClaimCreateStatus200Json,
+  IdentityUserClaimCreateStatus200Json2,
+  IdentityUserClaimCreateStatus200Plain,
+  IdentityUserClaimCreateStatus400,
+  IdentityUserClaimCreateStatus400Json,
+  IdentityUserClaimCreateStatus400Json2,
+  IdentityUserClaimCreateStatus400Plain,
+  IdentityUserClaimCreateStatus401,
+  IdentityUserClaimCreateStatus401Json,
+  IdentityUserClaimCreateStatus401Json2,
+  IdentityUserClaimCreateStatus401Plain,
+  IdentityUserClaimCreateStatus403,
+  IdentityUserClaimCreateStatus403Json,
+  IdentityUserClaimCreateStatus403Json2,
+  IdentityUserClaimCreateStatus403Plain,
+  IdentityUserClaimCreateStatus404,
+  IdentityUserClaimCreateStatus404Json,
+  IdentityUserClaimCreateStatus404Json2,
+  IdentityUserClaimCreateStatus404Plain,
+  IdentityUserClaimCreateStatus500,
+  IdentityUserClaimCreateStatus500Json,
+  IdentityUserClaimCreateStatus500Json2,
+  IdentityUserClaimCreateStatus500Plain,
+  IdentityUserClaimCreateStatus501,
+  IdentityUserClaimCreateStatus501Json,
+  IdentityUserClaimCreateStatus501Json2,
+  IdentityUserClaimCreateStatus501Plain,
+} from "./models/identityUserClaim/IdentityUserClaimCreate.ts";
+export type {
+  IdentityUserClaimDeletePathId,
+  IdentityUserClaimDeleteRequestConfig,
+  IdentityUserClaimDeleteResponse,
+  IdentityUserClaimDeleteResponses,
+  IdentityUserClaimDeleteStatus200,
+  IdentityUserClaimDeleteStatus204,
+  IdentityUserClaimDeleteStatus400,
+  IdentityUserClaimDeleteStatus400Json,
+  IdentityUserClaimDeleteStatus400Json2,
+  IdentityUserClaimDeleteStatus400Plain,
+  IdentityUserClaimDeleteStatus401,
+  IdentityUserClaimDeleteStatus401Json,
+  IdentityUserClaimDeleteStatus401Json2,
+  IdentityUserClaimDeleteStatus401Plain,
+  IdentityUserClaimDeleteStatus403,
+  IdentityUserClaimDeleteStatus403Json,
+  IdentityUserClaimDeleteStatus403Json2,
+  IdentityUserClaimDeleteStatus403Plain,
+  IdentityUserClaimDeleteStatus404,
+  IdentityUserClaimDeleteStatus404Json,
+  IdentityUserClaimDeleteStatus404Json2,
+  IdentityUserClaimDeleteStatus404Plain,
+  IdentityUserClaimDeleteStatus500,
+  IdentityUserClaimDeleteStatus500Json,
+  IdentityUserClaimDeleteStatus500Json2,
+  IdentityUserClaimDeleteStatus500Plain,
+  IdentityUserClaimDeleteStatus501,
+  IdentityUserClaimDeleteStatus501Json,
+  IdentityUserClaimDeleteStatus501Json2,
+  IdentityUserClaimDeleteStatus501Plain,
+} from "./models/identityUserClaim/IdentityUserClaimDelete.ts";
+export type {
+  IdentityUserClaimGetListQueryUserId,
+  IdentityUserClaimGetListRequestConfig,
+  IdentityUserClaimGetListResponse,
+  IdentityUserClaimGetListResponses,
+  IdentityUserClaimGetListStatus200,
+  IdentityUserClaimGetListStatus200Json,
+  IdentityUserClaimGetListStatus200Json2,
+  IdentityUserClaimGetListStatus200Plain,
+  IdentityUserClaimGetListStatus400,
+  IdentityUserClaimGetListStatus400Json,
+  IdentityUserClaimGetListStatus400Json2,
+  IdentityUserClaimGetListStatus400Plain,
+  IdentityUserClaimGetListStatus401,
+  IdentityUserClaimGetListStatus401Json,
+  IdentityUserClaimGetListStatus401Json2,
+  IdentityUserClaimGetListStatus401Plain,
+  IdentityUserClaimGetListStatus403,
+  IdentityUserClaimGetListStatus403Json,
+  IdentityUserClaimGetListStatus403Json2,
+  IdentityUserClaimGetListStatus403Plain,
+  IdentityUserClaimGetListStatus404,
+  IdentityUserClaimGetListStatus404Json,
+  IdentityUserClaimGetListStatus404Json2,
+  IdentityUserClaimGetListStatus404Plain,
+  IdentityUserClaimGetListStatus500,
+  IdentityUserClaimGetListStatus500Json,
+  IdentityUserClaimGetListStatus500Json2,
+  IdentityUserClaimGetListStatus500Plain,
+  IdentityUserClaimGetListStatus501,
+  IdentityUserClaimGetListStatus501Json,
+  IdentityUserClaimGetListStatus501Json2,
+  IdentityUserClaimGetListStatus501Plain,
+} from "./models/identityUserClaim/IdentityUserClaimGetList.ts";
+export type {
+  IdentityUserClaimUpdateData,
+  IdentityUserClaimUpdateJson2Data,
+  IdentityUserClaimUpdateJson3Data,
+  IdentityUserClaimUpdateJsonData,
+  IdentityUserClaimUpdatePathId,
+  IdentityUserClaimUpdateRequestConfig,
+  IdentityUserClaimUpdateResponse,
+  IdentityUserClaimUpdateResponses,
+  IdentityUserClaimUpdateStatus200,
+  IdentityUserClaimUpdateStatus200Json,
+  IdentityUserClaimUpdateStatus200Json2,
+  IdentityUserClaimUpdateStatus200Plain,
+  IdentityUserClaimUpdateStatus400,
+  IdentityUserClaimUpdateStatus400Json,
+  IdentityUserClaimUpdateStatus400Json2,
+  IdentityUserClaimUpdateStatus400Plain,
+  IdentityUserClaimUpdateStatus401,
+  IdentityUserClaimUpdateStatus401Json,
+  IdentityUserClaimUpdateStatus401Json2,
+  IdentityUserClaimUpdateStatus401Plain,
+  IdentityUserClaimUpdateStatus403,
+  IdentityUserClaimUpdateStatus403Json,
+  IdentityUserClaimUpdateStatus403Json2,
+  IdentityUserClaimUpdateStatus403Plain,
+  IdentityUserClaimUpdateStatus404,
+  IdentityUserClaimUpdateStatus404Json,
+  IdentityUserClaimUpdateStatus404Json2,
+  IdentityUserClaimUpdateStatus404Plain,
+  IdentityUserClaimUpdateStatus500,
+  IdentityUserClaimUpdateStatus500Json,
+  IdentityUserClaimUpdateStatus500Json2,
+  IdentityUserClaimUpdateStatus500Plain,
+  IdentityUserClaimUpdateStatus501,
+  IdentityUserClaimUpdateStatus501Json,
+  IdentityUserClaimUpdateStatus501Json2,
+  IdentityUserClaimUpdateStatus501Plain,
+} from "./models/identityUserClaim/IdentityUserClaimUpdate.ts";
+export type {
   LoginCheckPasswordData,
   LoginCheckPasswordJson2Data,
   LoginCheckPasswordJson3Data,
@@ -913,6 +1393,212 @@ export type {
   LoginLogoutStatus501Json2,
   LoginLogoutStatus501Plain,
 } from "./models/login/LoginLogout.ts";
+export type {
+  OpenIddictApplicationDeletePathId,
+  OpenIddictApplicationDeleteRequestConfig,
+  OpenIddictApplicationDeleteResponse,
+  OpenIddictApplicationDeleteResponses,
+  OpenIddictApplicationDeleteStatus200,
+  OpenIddictApplicationDeleteStatus204,
+  OpenIddictApplicationDeleteStatus400,
+  OpenIddictApplicationDeleteStatus400Json,
+  OpenIddictApplicationDeleteStatus400Json2,
+  OpenIddictApplicationDeleteStatus400Plain,
+  OpenIddictApplicationDeleteStatus401,
+  OpenIddictApplicationDeleteStatus401Json,
+  OpenIddictApplicationDeleteStatus401Json2,
+  OpenIddictApplicationDeleteStatus401Plain,
+  OpenIddictApplicationDeleteStatus403,
+  OpenIddictApplicationDeleteStatus403Json,
+  OpenIddictApplicationDeleteStatus403Json2,
+  OpenIddictApplicationDeleteStatus403Plain,
+  OpenIddictApplicationDeleteStatus404,
+  OpenIddictApplicationDeleteStatus404Json,
+  OpenIddictApplicationDeleteStatus404Json2,
+  OpenIddictApplicationDeleteStatus404Plain,
+  OpenIddictApplicationDeleteStatus500,
+  OpenIddictApplicationDeleteStatus500Json,
+  OpenIddictApplicationDeleteStatus500Json2,
+  OpenIddictApplicationDeleteStatus500Plain,
+  OpenIddictApplicationDeleteStatus501,
+  OpenIddictApplicationDeleteStatus501Json,
+  OpenIddictApplicationDeleteStatus501Json2,
+  OpenIddictApplicationDeleteStatus501Plain,
+} from "./models/openIddictApplication/OpenIddictApplicationDelete.ts";
+export type {
+  OpenIddictApplicationGetPathId,
+  OpenIddictApplicationGetRequestConfig,
+  OpenIddictApplicationGetResponse,
+  OpenIddictApplicationGetResponses,
+  OpenIddictApplicationGetStatus200,
+  OpenIddictApplicationGetStatus200Json,
+  OpenIddictApplicationGetStatus200Json2,
+  OpenIddictApplicationGetStatus200Plain,
+  OpenIddictApplicationGetStatus400,
+  OpenIddictApplicationGetStatus400Json,
+  OpenIddictApplicationGetStatus400Json2,
+  OpenIddictApplicationGetStatus400Plain,
+  OpenIddictApplicationGetStatus401,
+  OpenIddictApplicationGetStatus401Json,
+  OpenIddictApplicationGetStatus401Json2,
+  OpenIddictApplicationGetStatus401Plain,
+  OpenIddictApplicationGetStatus403,
+  OpenIddictApplicationGetStatus403Json,
+  OpenIddictApplicationGetStatus403Json2,
+  OpenIddictApplicationGetStatus403Plain,
+  OpenIddictApplicationGetStatus404,
+  OpenIddictApplicationGetStatus404Json,
+  OpenIddictApplicationGetStatus404Json2,
+  OpenIddictApplicationGetStatus404Plain,
+  OpenIddictApplicationGetStatus500,
+  OpenIddictApplicationGetStatus500Json,
+  OpenIddictApplicationGetStatus500Json2,
+  OpenIddictApplicationGetStatus500Plain,
+  OpenIddictApplicationGetStatus501,
+  OpenIddictApplicationGetStatus501Json,
+  OpenIddictApplicationGetStatus501Json2,
+  OpenIddictApplicationGetStatus501Plain,
+} from "./models/openIddictApplication/OpenIddictApplicationGet.ts";
+export type {
+  OpenIddictApplicationGetListQueryFilter,
+  OpenIddictApplicationGetListQueryMaxResultCount,
+  OpenIddictApplicationGetListQuerySkipCount,
+  OpenIddictApplicationGetListQuerySorting,
+  OpenIddictApplicationGetListRequestConfig,
+  OpenIddictApplicationGetListResponse,
+  OpenIddictApplicationGetListResponses,
+  OpenIddictApplicationGetListStatus200,
+  OpenIddictApplicationGetListStatus200Json,
+  OpenIddictApplicationGetListStatus200Json2,
+  OpenIddictApplicationGetListStatus200Plain,
+  OpenIddictApplicationGetListStatus400,
+  OpenIddictApplicationGetListStatus400Json,
+  OpenIddictApplicationGetListStatus400Json2,
+  OpenIddictApplicationGetListStatus400Plain,
+  OpenIddictApplicationGetListStatus401,
+  OpenIddictApplicationGetListStatus401Json,
+  OpenIddictApplicationGetListStatus401Json2,
+  OpenIddictApplicationGetListStatus401Plain,
+  OpenIddictApplicationGetListStatus403,
+  OpenIddictApplicationGetListStatus403Json,
+  OpenIddictApplicationGetListStatus403Json2,
+  OpenIddictApplicationGetListStatus403Plain,
+  OpenIddictApplicationGetListStatus404,
+  OpenIddictApplicationGetListStatus404Json,
+  OpenIddictApplicationGetListStatus404Json2,
+  OpenIddictApplicationGetListStatus404Plain,
+  OpenIddictApplicationGetListStatus500,
+  OpenIddictApplicationGetListStatus500Json,
+  OpenIddictApplicationGetListStatus500Json2,
+  OpenIddictApplicationGetListStatus500Plain,
+  OpenIddictApplicationGetListStatus501,
+  OpenIddictApplicationGetListStatus501Json,
+  OpenIddictApplicationGetListStatus501Json2,
+  OpenIddictApplicationGetListStatus501Plain,
+} from "./models/openIddictApplication/OpenIddictApplicationGetList.ts";
+export type {
+  OpenIddictScopeDeletePathId,
+  OpenIddictScopeDeleteRequestConfig,
+  OpenIddictScopeDeleteResponse,
+  OpenIddictScopeDeleteResponses,
+  OpenIddictScopeDeleteStatus200,
+  OpenIddictScopeDeleteStatus204,
+  OpenIddictScopeDeleteStatus400,
+  OpenIddictScopeDeleteStatus400Json,
+  OpenIddictScopeDeleteStatus400Json2,
+  OpenIddictScopeDeleteStatus400Plain,
+  OpenIddictScopeDeleteStatus401,
+  OpenIddictScopeDeleteStatus401Json,
+  OpenIddictScopeDeleteStatus401Json2,
+  OpenIddictScopeDeleteStatus401Plain,
+  OpenIddictScopeDeleteStatus403,
+  OpenIddictScopeDeleteStatus403Json,
+  OpenIddictScopeDeleteStatus403Json2,
+  OpenIddictScopeDeleteStatus403Plain,
+  OpenIddictScopeDeleteStatus404,
+  OpenIddictScopeDeleteStatus404Json,
+  OpenIddictScopeDeleteStatus404Json2,
+  OpenIddictScopeDeleteStatus404Plain,
+  OpenIddictScopeDeleteStatus500,
+  OpenIddictScopeDeleteStatus500Json,
+  OpenIddictScopeDeleteStatus500Json2,
+  OpenIddictScopeDeleteStatus500Plain,
+  OpenIddictScopeDeleteStatus501,
+  OpenIddictScopeDeleteStatus501Json,
+  OpenIddictScopeDeleteStatus501Json2,
+  OpenIddictScopeDeleteStatus501Plain,
+} from "./models/openIddictScope/OpenIddictScopeDelete.ts";
+export type {
+  OpenIddictScopeGetPathId,
+  OpenIddictScopeGetRequestConfig,
+  OpenIddictScopeGetResponse,
+  OpenIddictScopeGetResponses,
+  OpenIddictScopeGetStatus200,
+  OpenIddictScopeGetStatus200Json,
+  OpenIddictScopeGetStatus200Json2,
+  OpenIddictScopeGetStatus200Plain,
+  OpenIddictScopeGetStatus400,
+  OpenIddictScopeGetStatus400Json,
+  OpenIddictScopeGetStatus400Json2,
+  OpenIddictScopeGetStatus400Plain,
+  OpenIddictScopeGetStatus401,
+  OpenIddictScopeGetStatus401Json,
+  OpenIddictScopeGetStatus401Json2,
+  OpenIddictScopeGetStatus401Plain,
+  OpenIddictScopeGetStatus403,
+  OpenIddictScopeGetStatus403Json,
+  OpenIddictScopeGetStatus403Json2,
+  OpenIddictScopeGetStatus403Plain,
+  OpenIddictScopeGetStatus404,
+  OpenIddictScopeGetStatus404Json,
+  OpenIddictScopeGetStatus404Json2,
+  OpenIddictScopeGetStatus404Plain,
+  OpenIddictScopeGetStatus500,
+  OpenIddictScopeGetStatus500Json,
+  OpenIddictScopeGetStatus500Json2,
+  OpenIddictScopeGetStatus500Plain,
+  OpenIddictScopeGetStatus501,
+  OpenIddictScopeGetStatus501Json,
+  OpenIddictScopeGetStatus501Json2,
+  OpenIddictScopeGetStatus501Plain,
+} from "./models/openIddictScope/OpenIddictScopeGet.ts";
+export type {
+  OpenIddictScopeGetListQueryFilter,
+  OpenIddictScopeGetListQueryMaxResultCount,
+  OpenIddictScopeGetListQuerySkipCount,
+  OpenIddictScopeGetListQuerySorting,
+  OpenIddictScopeGetListRequestConfig,
+  OpenIddictScopeGetListResponse,
+  OpenIddictScopeGetListResponses,
+  OpenIddictScopeGetListStatus200,
+  OpenIddictScopeGetListStatus200Json,
+  OpenIddictScopeGetListStatus200Json2,
+  OpenIddictScopeGetListStatus200Plain,
+  OpenIddictScopeGetListStatus400,
+  OpenIddictScopeGetListStatus400Json,
+  OpenIddictScopeGetListStatus400Json2,
+  OpenIddictScopeGetListStatus400Plain,
+  OpenIddictScopeGetListStatus401,
+  OpenIddictScopeGetListStatus401Json,
+  OpenIddictScopeGetListStatus401Json2,
+  OpenIddictScopeGetListStatus401Plain,
+  OpenIddictScopeGetListStatus403,
+  OpenIddictScopeGetListStatus403Json,
+  OpenIddictScopeGetListStatus403Json2,
+  OpenIddictScopeGetListStatus403Plain,
+  OpenIddictScopeGetListStatus404,
+  OpenIddictScopeGetListStatus404Json,
+  OpenIddictScopeGetListStatus404Json2,
+  OpenIddictScopeGetListStatus404Plain,
+  OpenIddictScopeGetListStatus500,
+  OpenIddictScopeGetListStatus500Json,
+  OpenIddictScopeGetListStatus500Json2,
+  OpenIddictScopeGetListStatus500Plain,
+  OpenIddictScopeGetListStatus501,
+  OpenIddictScopeGetListStatus501Json,
+  OpenIddictScopeGetListStatus501Json2,
+  OpenIddictScopeGetListStatus501Plain,
+} from "./models/openIddictScope/OpenIddictScopeGetList.ts";
 export type {
   PermissionsDeleteResourceQueryProviderKey,
   PermissionsDeleteResourceQueryProviderName,
@@ -2066,6 +2752,40 @@ export type {
   UserFindByEmailStatus501Plain,
 } from "./models/user/UserFindByEmail.ts";
 export type {
+  UserFindByIdPathId,
+  UserFindByIdRequestConfig,
+  UserFindByIdResponse,
+  UserFindByIdResponses,
+  UserFindByIdStatus200,
+  UserFindByIdStatus200Json,
+  UserFindByIdStatus200Json2,
+  UserFindByIdStatus200Plain,
+  UserFindByIdStatus400,
+  UserFindByIdStatus400Json,
+  UserFindByIdStatus400Json2,
+  UserFindByIdStatus400Plain,
+  UserFindByIdStatus401,
+  UserFindByIdStatus401Json,
+  UserFindByIdStatus401Json2,
+  UserFindByIdStatus401Plain,
+  UserFindByIdStatus403,
+  UserFindByIdStatus403Json,
+  UserFindByIdStatus403Json2,
+  UserFindByIdStatus403Plain,
+  UserFindByIdStatus404,
+  UserFindByIdStatus404Json,
+  UserFindByIdStatus404Json2,
+  UserFindByIdStatus404Plain,
+  UserFindByIdStatus500,
+  UserFindByIdStatus500Json,
+  UserFindByIdStatus500Json2,
+  UserFindByIdStatus500Plain,
+  UserFindByIdStatus501,
+  UserFindByIdStatus501Json,
+  UserFindByIdStatus501Json2,
+  UserFindByIdStatus501Plain,
+} from "./models/user/UserFindById.ts";
+export type {
   UserFindByUsernamePathUserName,
   UserFindByUsernameRequestConfig,
   UserFindByUsernameResponse,
@@ -2463,13 +3183,17 @@ export type { VoloAbpAccountVerifyPasswordResetTokenInput } from "./models/volo/
 export type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from "./models/volo/abp/account/web/areas/account/controllers/models/AbpLoginResult.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsLoginResultType } from "./models/volo/abp/account/web/areas/account/controllers/models/LoginResultType.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from "./models/volo/abp/account/web/areas/account/controllers/models/UserLoginInfo.ts";
-export type { VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
-export type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10400CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10400CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/AppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosAuditLoggingAuditLogDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/auditLogging/AuditLogDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgroundJobsBackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/backgroundJobs/BackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/books/BookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
-export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
-export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
-export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10400CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/tenantManagement/tenantDtoVolo/abp/tenantManagement/application/ContractsVersion10400CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/tenantManagement/tenantDtoVolo/abp/tenantManagement/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationAuthConfigurationDto } from "./models/volo/abp/aspNetCore/mvc/applicationConfigurations/ApplicationAuthConfigurationDto.ts";
 export type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationConfigurationDto } from "./models/volo/abp/aspNetCore/mvc/applicationConfigurations/ApplicationConfigurationDto.ts";
 export type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationGlobalFeatureConfigurationDto } from "./models/volo/abp/aspNetCore/mvc/applicationConfigurations/ApplicationGlobalFeatureConfigurationDto.ts";
@@ -2576,6 +3300,13 @@ export { accountVerifyPasswordResetToken } from "./clients/account/accountVerify
 export { appUser } from "./clients/appUser/appUser.ts";
 export { appUserDelete } from "./clients/appUser/appUserDelete.ts";
 export { appUserGetList } from "./clients/appUser/appUserGetList.ts";
+export { auditLog } from "./clients/auditLog/auditLog.ts";
+export { auditLogGet } from "./clients/auditLog/auditLogGet.ts";
+export { auditLogGetList } from "./clients/auditLog/auditLogGetList.ts";
+export { backgroundJob } from "./clients/backgroundJob/backgroundJob.ts";
+export { backgroundJobDelete } from "./clients/backgroundJob/backgroundJobDelete.ts";
+export { backgroundJobGet } from "./clients/backgroundJob/backgroundJobGet.ts";
+export { backgroundJobGetList } from "./clients/backgroundJob/backgroundJobGetList.ts";
 export { book } from "./clients/book/book.ts";
 export { bookCreate } from "./clients/book/bookCreate.ts";
 export { bookDelete } from "./clients/book/bookDelete.ts";
@@ -2592,10 +3323,28 @@ export { features } from "./clients/features/features.ts";
 export { featuresDelete } from "./clients/features/featuresDelete.ts";
 export { featuresGet } from "./clients/features/featuresGet.ts";
 export { featuresUpdate } from "./clients/features/featuresUpdate.ts";
+export { identityRoleClaim } from "./clients/identityRoleClaim/identityRoleClaim.ts";
+export { identityRoleClaimCreate } from "./clients/identityRoleClaim/identityRoleClaimCreate.ts";
+export { identityRoleClaimDelete } from "./clients/identityRoleClaim/identityRoleClaimDelete.ts";
+export { identityRoleClaimGetList } from "./clients/identityRoleClaim/identityRoleClaimGetList.ts";
+export { identityRoleClaimUpdate } from "./clients/identityRoleClaim/identityRoleClaimUpdate.ts";
+export { identityUserClaim } from "./clients/identityUserClaim/identityUserClaim.ts";
+export { identityUserClaimCreate } from "./clients/identityUserClaim/identityUserClaimCreate.ts";
+export { identityUserClaimDelete } from "./clients/identityUserClaim/identityUserClaimDelete.ts";
+export { identityUserClaimGetList } from "./clients/identityUserClaim/identityUserClaimGetList.ts";
+export { identityUserClaimUpdate } from "./clients/identityUserClaim/identityUserClaimUpdate.ts";
 export { login } from "./clients/login/login.ts";
 export { loginCheckPassword } from "./clients/login/loginCheckPassword.ts";
 export { loginLogin } from "./clients/login/loginLogin.ts";
 export { loginLogout } from "./clients/login/loginLogout.ts";
+export { openIddictApplication } from "./clients/openIddictApplication/openIddictApplication.ts";
+export { openIddictApplicationDelete } from "./clients/openIddictApplication/openIddictApplicationDelete.ts";
+export { openIddictApplicationGet } from "./clients/openIddictApplication/openIddictApplicationGet.ts";
+export { openIddictApplicationGetList } from "./clients/openIddictApplication/openIddictApplicationGetList.ts";
+export { openIddictScope } from "./clients/openIddictScope/openIddictScope.ts";
+export { openIddictScopeDelete } from "./clients/openIddictScope/openIddictScopeDelete.ts";
+export { openIddictScopeGet } from "./clients/openIddictScope/openIddictScopeGet.ts";
+export { openIddictScopeGetList } from "./clients/openIddictScope/openIddictScopeGetList.ts";
 export { permissions } from "./clients/permissions/permissions.ts";
 export { permissionsDeleteResource } from "./clients/permissions/permissionsDeleteResource.ts";
 export { permissionsGet } from "./clients/permissions/permissionsGet.ts";
@@ -2635,6 +3384,7 @@ export { user } from "./clients/user/user.ts";
 export { userCreate } from "./clients/user/userCreate.ts";
 export { userDelete } from "./clients/user/userDelete.ts";
 export { userFindByEmail } from "./clients/user/userFindByEmail.ts";
+export { userFindById } from "./clients/user/userFindById.ts";
 export { userFindByUsername } from "./clients/user/userFindByUsername.ts";
 export { userGet } from "./clients/user/userGet.ts";
 export { userGetAssignableRoles } from "./clients/user/userGetAssignableRoles.ts";
@@ -2703,6 +3453,31 @@ export {
   useAppUserGetList,
 } from "./hooks/appUser/useAppUserGetList.ts";
 export {
+  auditLogGetQueryKey,
+  auditLogGetQueryOptions,
+  useAuditLogGet,
+} from "./hooks/auditLog/useAuditLogGet.ts";
+export {
+  auditLogGetListQueryKey,
+  auditLogGetListQueryOptions,
+  useAuditLogGetList,
+} from "./hooks/auditLog/useAuditLogGetList.ts";
+export {
+  backgroundJobDeleteMutationKey,
+  backgroundJobDeleteMutationOptions,
+  useBackgroundJobDelete,
+} from "./hooks/backgroundJob/useBackgroundJobDelete.ts";
+export {
+  backgroundJobGetQueryKey,
+  backgroundJobGetQueryOptions,
+  useBackgroundJobGet,
+} from "./hooks/backgroundJob/useBackgroundJobGet.ts";
+export {
+  backgroundJobGetListQueryKey,
+  backgroundJobGetListQueryOptions,
+  useBackgroundJobGetList,
+} from "./hooks/backgroundJob/useBackgroundJobGetList.ts";
+export {
   bookCreateMutationKey,
   bookCreateMutationOptions,
   useBookCreate,
@@ -2759,6 +3534,46 @@ export {
   useFeaturesUpdate,
 } from "./hooks/features/useFeaturesUpdate.ts";
 export {
+  identityRoleClaimCreateMutationKey,
+  identityRoleClaimCreateMutationOptions,
+  useIdentityRoleClaimCreate,
+} from "./hooks/identityRoleClaim/useIdentityRoleClaimCreate.ts";
+export {
+  identityRoleClaimDeleteMutationKey,
+  identityRoleClaimDeleteMutationOptions,
+  useIdentityRoleClaimDelete,
+} from "./hooks/identityRoleClaim/useIdentityRoleClaimDelete.ts";
+export {
+  identityRoleClaimGetListQueryKey,
+  identityRoleClaimGetListQueryOptions,
+  useIdentityRoleClaimGetList,
+} from "./hooks/identityRoleClaim/useIdentityRoleClaimGetList.ts";
+export {
+  identityRoleClaimUpdateMutationKey,
+  identityRoleClaimUpdateMutationOptions,
+  useIdentityRoleClaimUpdate,
+} from "./hooks/identityRoleClaim/useIdentityRoleClaimUpdate.ts";
+export {
+  identityUserClaimCreateMutationKey,
+  identityUserClaimCreateMutationOptions,
+  useIdentityUserClaimCreate,
+} from "./hooks/identityUserClaim/useIdentityUserClaimCreate.ts";
+export {
+  identityUserClaimDeleteMutationKey,
+  identityUserClaimDeleteMutationOptions,
+  useIdentityUserClaimDelete,
+} from "./hooks/identityUserClaim/useIdentityUserClaimDelete.ts";
+export {
+  identityUserClaimGetListQueryKey,
+  identityUserClaimGetListQueryOptions,
+  useIdentityUserClaimGetList,
+} from "./hooks/identityUserClaim/useIdentityUserClaimGetList.ts";
+export {
+  identityUserClaimUpdateMutationKey,
+  identityUserClaimUpdateMutationOptions,
+  useIdentityUserClaimUpdate,
+} from "./hooks/identityUserClaim/useIdentityUserClaimUpdate.ts";
+export {
   loginCheckPasswordMutationKey,
   loginCheckPasswordMutationOptions,
   useLoginCheckPassword,
@@ -2773,6 +3588,36 @@ export {
   loginLogoutQueryOptions,
   useLoginLogout,
 } from "./hooks/login/useLoginLogout.ts";
+export {
+  openIddictApplicationDeleteMutationKey,
+  openIddictApplicationDeleteMutationOptions,
+  useOpenIddictApplicationDelete,
+} from "./hooks/openIddictApplication/useOpenIddictApplicationDelete.ts";
+export {
+  openIddictApplicationGetQueryKey,
+  openIddictApplicationGetQueryOptions,
+  useOpenIddictApplicationGet,
+} from "./hooks/openIddictApplication/useOpenIddictApplicationGet.ts";
+export {
+  openIddictApplicationGetListQueryKey,
+  openIddictApplicationGetListQueryOptions,
+  useOpenIddictApplicationGetList,
+} from "./hooks/openIddictApplication/useOpenIddictApplicationGetList.ts";
+export {
+  openIddictScopeDeleteMutationKey,
+  openIddictScopeDeleteMutationOptions,
+  useOpenIddictScopeDelete,
+} from "./hooks/openIddictScope/useOpenIddictScopeDelete.ts";
+export {
+  openIddictScopeGetQueryKey,
+  openIddictScopeGetQueryOptions,
+  useOpenIddictScopeGet,
+} from "./hooks/openIddictScope/useOpenIddictScopeGet.ts";
+export {
+  openIddictScopeGetListQueryKey,
+  openIddictScopeGetListQueryOptions,
+  useOpenIddictScopeGetList,
+} from "./hooks/openIddictScope/useOpenIddictScopeGetList.ts";
 export {
   permissionsDeleteResourceMutationKey,
   permissionsDeleteResourceMutationOptions,
@@ -2934,6 +3779,11 @@ export {
   userFindByEmailQueryKey,
   userFindByEmailQueryOptions,
 } from "./hooks/user/useUserFindByEmail.ts";
+export {
+  useUserFindById,
+  userFindByIdQueryKey,
+  userFindByIdQueryOptions,
+} from "./hooks/user/useUserFindById.ts";
 export {
   useUserFindByUsername,
   userFindByUsernameQueryKey,

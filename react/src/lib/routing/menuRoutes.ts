@@ -22,6 +22,13 @@ import { menu as tenantsMenu } from "@/routes/tenants";
 import { menu as profileMenu } from "@/routes/profile";
 import { menu as featuresMenu } from "@/routes/features";
 import { menu as settingsMenu } from "@/routes/settings";
+import { menu as auditLogsMenu } from "@/routes/audit-logs";
+import { menu as backgroundJobsMenu } from "@/routes/background-jobs";
+import { menu as openIddictApplicationsMenu } from "@/routes/openiddict/applications";
+import { menu as openIddictScopesMenu } from "@/routes/openiddict/scopes";
+import { menu as saasEditionsMenu } from "@/routes/saas/editions";
+import { menu as fileManagementMenu } from "@/routes/file-management";
+import { menu as gdprMenu } from "@/routes/gdpr";
 import type { RouteMenuConfig } from "./route-menu-types";
 
 export interface MenuRoute {
@@ -41,4 +48,11 @@ export const menuRoutes: MenuRoute[] = [
   { path: "/identity/permissions", menu: identityPermissionsMenu },
   { path: "/features", menu: featuresMenu },
   { path: "/settings", menu: settingsMenu },
+  { path: "/audit-logs", menu: auditLogsMenu },
+  { path: "/background-jobs", menu: backgroundJobsMenu },
+  { path: "/openiddict/applications", menu: openIddictApplicationsMenu },
+  { path: "/openiddict/scopes", menu: openIddictScopesMenu },
+  { path: "/saas/editions", menu: saasEditionsMenu },
+  { path: "/file-management", menu: fileManagementMenu },
+  { path: "/gdpr", menu: gdprMenu },
 ];
