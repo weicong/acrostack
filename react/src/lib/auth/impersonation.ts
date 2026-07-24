@@ -2,20 +2,19 @@
  * User & tenant impersonation utilities.
  *
  * The open-source ABP Account OpenIddict module does NOT ship the
- * /connect/impersonateuser or /connect/impersonatetenant endpoints (those
- * are commercial Pro features). Instead, the backend exposes custom API
- * endpoints at <c>POST /api/impersonation/user</c> and
- * <c>POST /api/impersonation/tenant</c> (see
- * <c>AcroStack.Controllers.ImpersonationController</c>) which issue a new
- * access token for the target user/tenant via OpenIddict's SignIn result.
+ * impersonation feature (commercial Pro only). The backend implements the
+ * same <c>Impersonation</c> grant type at <c>/connect/token</c> (see
+ * <c>ImpersonationGrantHandler</c>), mirroring ABP Account Pro's API.
  *
  * The impersonated JWT embeds <c>impersonator_token</c> /
  * <c>impersonator_userid</c> claims so the original admin session can be
  * restored via {@link backToMyAccount}.
  *
  * Flow:
- * 1. Admin clicks "Impersonate" → {@link impersonateUser} POSTs to the API.
- * 2. The backend issues a new access token and returns it as a standard
+ * 1. Admin clicks "Impersonate" → {@link impersonateUser} calls
+ *    <c>/connect/token</c> with <c>grant_type=Impersonation</c>.
+ * 2. The backend validates the admin's bearer token, checks permissions,
+ *    and issues a new access token for the target user as a standard
  *    OAuth2 token response JSON.
  * 3. The new token is stored via <c>userManager.storeUser</c> and the page
  *    reloads so the SPA re-initialises with the impersonated session.
@@ -26,7 +25,7 @@
  *    restores it as the active session.
  */
 import { User } from "oidc-client-ts";
-import { getApiBaseUrl } from "@/lib/runtimeConfig";
+import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
 import { useCurrentUser } from "@/lib/auth/permissions";
@@ -90,30 +89,36 @@ export function useImpersonationState(): ImpersonationState {
 }
 
 /**
- * Calls the backend impersonation API and stores the resulting token as the
- * active OIDC user session, then reloads the page.
+ * Calls the /connect/token endpoint with the custom <c>Impersonation</c>
+ * grant type (matching ABP Account Pro's API), stores the resulting token
+ * as the active OIDC user session, then reloads the page.
  */
 async function callImpersonationEndpoint(
-  path: string,
-  body: Record<string, unknown>,
+  params: Record<string, string>,
 ): Promise<void> {
   const user = await userManager.getUser();
   if (!user?.access_token) {
     throw new Error("Not authenticated");
   }
 
+  const formBody = new URLSearchParams({
+    grant_type: "Impersonation",
+    client_id: getOAuthConfig().clientId,
+    ...params,
+  });
+
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+    "Content-Type": "application/x-www-form-urlencoded",
     Authorization: `Bearer ${user.access_token}`,
   };
   const tenantId = getTenantId();
   if (tenantId) headers.__tenant = tenantId;
 
   const baseUrl = getApiBaseUrl().replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}${path}`, {
+  const response = await fetch(`${baseUrl}/connect/token`, {
     method: "POST",
     headers,
-    body: JSON.stringify(body),
+    body: formBody.toString(),
   });
 
   if (!response.ok) {
@@ -151,19 +156,21 @@ async function callImpersonationEndpoint(
 }
 
 /**
- * Impersonates the specified user by calling the backend API endpoint.
+ * Impersonates the specified user by requesting a new access token via the
+ * <c>Impersonation</c> custom grant type at <c>/connect/token</c>.
  * The caller must hold the <c>AbpIdentity.Users.Impersonation</c> permission.
  */
 export async function impersonateUser(userId: string): Promise<void> {
-  await callImpersonationEndpoint("/api/impersonation/user", { userId });
+  await callImpersonationEndpoint({ user_id: userId });
 }
 
 /**
- * Impersonates the admin user of the specified tenant.
+ * Impersonates the admin user of the specified tenant via the
+ * <c>Impersonation</c> custom grant type.
  * Host admins only — the backend rejects tenant impersonation for tenant users.
  */
 export async function impersonateTenant(tenantId: string): Promise<void> {
-  await callImpersonationEndpoint("/api/impersonation/tenant", { tenantId });
+  await callImpersonationEndpoint({ tenant_id: tenantId });
 }
 
 /**

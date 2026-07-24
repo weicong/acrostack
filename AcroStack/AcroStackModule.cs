@@ -7,7 +7,10 @@ using AcroStack.HealthChecks;
 using AcroStack.Swagger;
 using Volo.Abp.Domain.Entities.Events.Distributed;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OpenIddict.Server;
 using OpenIddict.Validation.AspNetCore;
+using AcroStack.OpenIddict;
+using static OpenIddict.Server.OpenIddictServerEvents;
 using Volo.Abp;
 using Volo.Abp.Studio;
 using Volo.Abp.Uow;
@@ -135,6 +138,19 @@ public class AcroStackModule : AbpModule
                 options.UseLocalServer();
                 options.UseAspNetCore();
             });
+        });
+
+        // Register the custom Impersonation grant type at the /connect/token endpoint,
+        // mirroring ABP Account Pro's "Impersonation" grant type.
+        // The open-source ABP Account module does not ship impersonation endpoints,
+        // so we handle it via an OpenIddict custom flow (see ImpersonationGrantHandler).
+        PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
+        {
+            serverBuilder.AllowCustomFlow(ImpersonationGrantHandler.GrantType);
+
+            serverBuilder.AddEventHandler<HandleTokenRequestContext>(cfg =>
+                cfg.UseScopedHandler<ImpersonationGrantHandler>()
+                   .SetOrder(0));
         });
 
         if (!hostingEnvironment.IsDevelopment())
