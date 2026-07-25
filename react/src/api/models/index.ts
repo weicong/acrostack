@@ -330,12 +330,18 @@ export type { AcroStackServicesDtosAuditLoggingEntityChangeFieldDto } from "./ac
 export type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto } from "./acroStack/services/dtos/backgroundJobs/BackgroundJobDto.ts";
 export type { AcroStackServicesDtosBooksBookDto } from "./acroStack/services/dtos/books/BookDto.ts";
 export type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "./acroStack/services/dtos/books/CreateUpdateBookDto.ts";
+export type { AcroStackServicesDtosFileManagementCreateFileFolderDto } from "./acroStack/services/dtos/fileManagement/CreateFileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementFileEntryDto } from "./acroStack/services/dtos/fileManagement/FileEntryDto.ts";
+export type { AcroStackServicesDtosFileManagementFileFolderDto } from "./acroStack/services/dtos/fileManagement/FileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementRenameDto } from "./acroStack/services/dtos/fileManagement/RenameDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto } from "./acroStack/services/dtos/identityClaims/CreateIdentityRoleClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityUserClaimDto } from "./acroStack/services/dtos/identityClaims/CreateIdentityUserClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "./acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto } from "./acroStack/services/dtos/identityClaims/UpdateIdentityClaimDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "./acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto } from "./acroStack/services/dtos/openIddictManagement/OpenIddictScopeDto.ts";
+export type { AcroStackServicesDtosSaaSCreateUpdateEditionDto } from "./acroStack/services/dtos/saaS/CreateUpdateEditionDto.ts";
+export type { AcroStackServicesDtosSaaSEditionDto } from "./acroStack/services/dtos/saaS/EditionDto.ts";
 export type {
   AppUserDeletePathId,
   AppUserDeleteRequestConfig,
@@ -801,6 +807,184 @@ export type {
   DynamicClaimsRefreshStatus501Plain,
 } from "./dynamicClaims/DynamicClaimsRefresh.ts";
 export type {
+  EditionCreateData,
+  EditionCreateJson2Data,
+  EditionCreateJson3Data,
+  EditionCreateJsonData,
+  EditionCreateRequestConfig,
+  EditionCreateResponse,
+  EditionCreateResponses,
+  EditionCreateStatus200,
+  EditionCreateStatus200Json,
+  EditionCreateStatus200Json2,
+  EditionCreateStatus200Plain,
+  EditionCreateStatus400,
+  EditionCreateStatus400Json,
+  EditionCreateStatus400Json2,
+  EditionCreateStatus400Plain,
+  EditionCreateStatus401,
+  EditionCreateStatus401Json,
+  EditionCreateStatus401Json2,
+  EditionCreateStatus401Plain,
+  EditionCreateStatus403,
+  EditionCreateStatus403Json,
+  EditionCreateStatus403Json2,
+  EditionCreateStatus403Plain,
+  EditionCreateStatus404,
+  EditionCreateStatus404Json,
+  EditionCreateStatus404Json2,
+  EditionCreateStatus404Plain,
+  EditionCreateStatus500,
+  EditionCreateStatus500Json,
+  EditionCreateStatus500Json2,
+  EditionCreateStatus500Plain,
+  EditionCreateStatus501,
+  EditionCreateStatus501Json,
+  EditionCreateStatus501Json2,
+  EditionCreateStatus501Plain,
+} from "./edition/EditionCreate.ts";
+export type {
+  EditionDeletePathId,
+  EditionDeleteRequestConfig,
+  EditionDeleteResponse,
+  EditionDeleteResponses,
+  EditionDeleteStatus200,
+  EditionDeleteStatus204,
+  EditionDeleteStatus400,
+  EditionDeleteStatus400Json,
+  EditionDeleteStatus400Json2,
+  EditionDeleteStatus400Plain,
+  EditionDeleteStatus401,
+  EditionDeleteStatus401Json,
+  EditionDeleteStatus401Json2,
+  EditionDeleteStatus401Plain,
+  EditionDeleteStatus403,
+  EditionDeleteStatus403Json,
+  EditionDeleteStatus403Json2,
+  EditionDeleteStatus403Plain,
+  EditionDeleteStatus404,
+  EditionDeleteStatus404Json,
+  EditionDeleteStatus404Json2,
+  EditionDeleteStatus404Plain,
+  EditionDeleteStatus500,
+  EditionDeleteStatus500Json,
+  EditionDeleteStatus500Json2,
+  EditionDeleteStatus500Plain,
+  EditionDeleteStatus501,
+  EditionDeleteStatus501Json,
+  EditionDeleteStatus501Json2,
+  EditionDeleteStatus501Plain,
+} from "./edition/EditionDelete.ts";
+export type {
+  EditionGetPathId,
+  EditionGetRequestConfig,
+  EditionGetResponse,
+  EditionGetResponses,
+  EditionGetStatus200,
+  EditionGetStatus200Json,
+  EditionGetStatus200Json2,
+  EditionGetStatus200Plain,
+  EditionGetStatus400,
+  EditionGetStatus400Json,
+  EditionGetStatus400Json2,
+  EditionGetStatus400Plain,
+  EditionGetStatus401,
+  EditionGetStatus401Json,
+  EditionGetStatus401Json2,
+  EditionGetStatus401Plain,
+  EditionGetStatus403,
+  EditionGetStatus403Json,
+  EditionGetStatus403Json2,
+  EditionGetStatus403Plain,
+  EditionGetStatus404,
+  EditionGetStatus404Json,
+  EditionGetStatus404Json2,
+  EditionGetStatus404Plain,
+  EditionGetStatus500,
+  EditionGetStatus500Json,
+  EditionGetStatus500Json2,
+  EditionGetStatus500Plain,
+  EditionGetStatus501,
+  EditionGetStatus501Json,
+  EditionGetStatus501Json2,
+  EditionGetStatus501Plain,
+} from "./edition/EditionGet.ts";
+export type {
+  EditionGetListQueryFilter,
+  EditionGetListQueryMaxResultCount,
+  EditionGetListQuerySkipCount,
+  EditionGetListQuerySorting,
+  EditionGetListRequestConfig,
+  EditionGetListResponse,
+  EditionGetListResponses,
+  EditionGetListStatus200,
+  EditionGetListStatus200Json,
+  EditionGetListStatus200Json2,
+  EditionGetListStatus200Plain,
+  EditionGetListStatus400,
+  EditionGetListStatus400Json,
+  EditionGetListStatus400Json2,
+  EditionGetListStatus400Plain,
+  EditionGetListStatus401,
+  EditionGetListStatus401Json,
+  EditionGetListStatus401Json2,
+  EditionGetListStatus401Plain,
+  EditionGetListStatus403,
+  EditionGetListStatus403Json,
+  EditionGetListStatus403Json2,
+  EditionGetListStatus403Plain,
+  EditionGetListStatus404,
+  EditionGetListStatus404Json,
+  EditionGetListStatus404Json2,
+  EditionGetListStatus404Plain,
+  EditionGetListStatus500,
+  EditionGetListStatus500Json,
+  EditionGetListStatus500Json2,
+  EditionGetListStatus500Plain,
+  EditionGetListStatus501,
+  EditionGetListStatus501Json,
+  EditionGetListStatus501Json2,
+  EditionGetListStatus501Plain,
+} from "./edition/EditionGetList.ts";
+export type {
+  EditionUpdateData,
+  EditionUpdateJson2Data,
+  EditionUpdateJson3Data,
+  EditionUpdateJsonData,
+  EditionUpdatePathId,
+  EditionUpdateRequestConfig,
+  EditionUpdateResponse,
+  EditionUpdateResponses,
+  EditionUpdateStatus200,
+  EditionUpdateStatus200Json,
+  EditionUpdateStatus200Json2,
+  EditionUpdateStatus200Plain,
+  EditionUpdateStatus400,
+  EditionUpdateStatus400Json,
+  EditionUpdateStatus400Json2,
+  EditionUpdateStatus400Plain,
+  EditionUpdateStatus401,
+  EditionUpdateStatus401Json,
+  EditionUpdateStatus401Json2,
+  EditionUpdateStatus401Plain,
+  EditionUpdateStatus403,
+  EditionUpdateStatus403Json,
+  EditionUpdateStatus403Json2,
+  EditionUpdateStatus403Plain,
+  EditionUpdateStatus404,
+  EditionUpdateStatus404Json,
+  EditionUpdateStatus404Json2,
+  EditionUpdateStatus404Plain,
+  EditionUpdateStatus500,
+  EditionUpdateStatus500Json,
+  EditionUpdateStatus500Json2,
+  EditionUpdateStatus500Plain,
+  EditionUpdateStatus501,
+  EditionUpdateStatus501Json,
+  EditionUpdateStatus501Json2,
+  EditionUpdateStatus501Plain,
+} from "./edition/EditionUpdate.ts";
+export type {
   EmailSettingsGetRequestConfig,
   EmailSettingsGetResponse,
   EmailSettingsGetResponses,
@@ -1008,6 +1192,97 @@ export type {
   FeaturesUpdateStatus501Json2,
   FeaturesUpdateStatus501Plain,
 } from "./features/FeaturesUpdate.ts";
+export type {
+  FileManagementCreateFolderData,
+  FileManagementCreateFolderJson2Data,
+  FileManagementCreateFolderJson3Data,
+  FileManagementCreateFolderJsonData,
+  FileManagementCreateFolderRequestConfig,
+  FileManagementCreateFolderResponse,
+  FileManagementCreateFolderResponses,
+  FileManagementCreateFolderStatus200,
+  FileManagementCreateFolderStatus200Json,
+  FileManagementCreateFolderStatus200Json2,
+  FileManagementCreateFolderStatus200Plain,
+} from "./fileManagement/FileManagementCreateFolder.ts";
+export type {
+  FileManagementDeleteFilePathId,
+  FileManagementDeleteFileRequestConfig,
+  FileManagementDeleteFileResponse,
+  FileManagementDeleteFileResponses,
+  FileManagementDeleteFileStatus200,
+} from "./fileManagement/FileManagementDeleteFile.ts";
+export type {
+  FileManagementDeleteFolderPathId,
+  FileManagementDeleteFolderRequestConfig,
+  FileManagementDeleteFolderResponse,
+  FileManagementDeleteFolderResponses,
+  FileManagementDeleteFolderStatus200,
+} from "./fileManagement/FileManagementDeleteFolder.ts";
+export type {
+  FileManagementDownloadFilePathId,
+  FileManagementDownloadFileRequestConfig,
+  FileManagementDownloadFileResponse,
+  FileManagementDownloadFileResponses,
+  FileManagementDownloadFileStatus200,
+} from "./fileManagement/FileManagementDownloadFile.ts";
+export type {
+  FileManagementGetFilesQueryFolderId,
+  FileManagementGetFilesRequestConfig,
+  FileManagementGetFilesResponse,
+  FileManagementGetFilesResponses,
+  FileManagementGetFilesStatus200,
+  FileManagementGetFilesStatus200Json,
+  FileManagementGetFilesStatus200Json2,
+  FileManagementGetFilesStatus200Plain,
+} from "./fileManagement/FileManagementGetFiles.ts";
+export type {
+  FileManagementGetFoldersQueryParentId,
+  FileManagementGetFoldersRequestConfig,
+  FileManagementGetFoldersResponse,
+  FileManagementGetFoldersResponses,
+  FileManagementGetFoldersStatus200,
+  FileManagementGetFoldersStatus200Json,
+  FileManagementGetFoldersStatus200Json2,
+  FileManagementGetFoldersStatus200Plain,
+} from "./fileManagement/FileManagementGetFolders.ts";
+export type {
+  FileManagementRenameFolderData,
+  FileManagementRenameFolderJson2Data,
+  FileManagementRenameFolderJson3Data,
+  FileManagementRenameFolderJsonData,
+  FileManagementRenameFolderPathId,
+  FileManagementRenameFolderRequestConfig,
+  FileManagementRenameFolderResponse,
+  FileManagementRenameFolderResponses,
+  FileManagementRenameFolderStatus200,
+  FileManagementRenameFolderStatus200Json,
+  FileManagementRenameFolderStatus200Json2,
+  FileManagementRenameFolderStatus200Plain,
+} from "./fileManagement/FileManagementRenameFolder.ts";
+export type {
+  FileManagementUploadFileData,
+  FileManagementUploadFileQueryFolderId,
+  FileManagementUploadFileRequestConfig,
+  FileManagementUploadFileResponse,
+  FileManagementUploadFileResponses,
+  FileManagementUploadFileStatus200,
+  FileManagementUploadFileStatus200Json,
+  FileManagementUploadFileStatus200Json2,
+  FileManagementUploadFileStatus200Plain,
+} from "./fileManagement/FileManagementUploadFile.ts";
+export type {
+  GdprDeleteMyAccountRequestConfig,
+  GdprDeleteMyAccountResponse,
+  GdprDeleteMyAccountResponses,
+  GdprDeleteMyAccountStatus200,
+} from "./gdpr/GdprDeleteMyAccount.ts";
+export type {
+  GdprExportRequestConfig,
+  GdprExportResponse,
+  GdprExportResponses,
+  GdprExportStatus200,
+} from "./gdpr/GdprExport.ts";
 export type {
   IdentityRoleClaimCreateData,
   IdentityRoleClaimCreateJson2Data,
@@ -3185,6 +3460,8 @@ export type { VoloAbpAccountVerifyPasswordResetTokenInput } from "./volo/abp/acc
 export type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from "./volo/abp/account/web/areas/account/controllers/models/AbpLoginResult.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsLoginResultType } from "./volo/abp/account/web/areas/account/controllers/models/LoginResultType.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from "./volo/abp/account/web/areas/account/controllers/models/UserLoginInfo.ts";
+export type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileEntryDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/fileManagement/FileEntryDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileFolderDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/fileManagement/FileFolderDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/listResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/AppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
@@ -3193,6 +3470,7 @@ export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgrou
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/books/BookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosSaaSEditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/saaS/EditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./volo/abp/application/dtos/pagedResultDto1Volo/abp/tenantManagement/tenantDtoVolo/abp/tenantManagement/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";

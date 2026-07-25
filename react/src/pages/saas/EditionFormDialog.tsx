@@ -13,7 +13,9 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
-import { useEditionCreate, useEditionUpdate, type EditionDto } from "@/lib/saas/editionsApi";
+import { useEditionCreate } from "@/api/hooks/edition/useEditionCreate";
+import { useEditionUpdate } from "@/api/hooks/edition/useEditionUpdate";
+import type { AcroStackServicesDtosSaaSEditionDto as EditionDto } from "@/api/models/acroStack/services/dtos/saaS/EditionDto";
 import { editionSchema, type EditionFormValues } from "./edition-schemas";
 
 // ── Props ───────────────────────────────────────────────────────────
@@ -85,15 +87,18 @@ export function EditionFormDialog({
           },
         );
       } else {
-        createMutation.mutate(payload, {
-          onSuccess: () => {
-            dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
-            onSuccess();
+        createMutation.mutate(
+          { data: payload },
+          {
+            onSuccess: () => {
+              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              onSuccess();
+            },
+            onError: (err) => {
+              dispatchToast(String(err), { intent: "error" });
+            },
           },
-          onError: (err) => {
-            dispatchToast(String(err), { intent: "error" });
-          },
-        });
+        );
       }
     },
   });

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,15 +26,20 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import {
-  fileFoldersQueryOptions,
-  fileEntriesQueryOptions,
-  useCreateFolder,
-  useDeleteFolder,
-  useUploadFile,
-  useDeleteFile,
-  getFileDownloadUrl,
-  type FileFolderDto,
-} from "@/lib/file-management/fileManagementApi";
+  useFileManagementGetFolders,
+  fileManagementGetFoldersQueryKey,
+} from "@/api/hooks/fileManagement/useFileManagementGetFolders";
+import {
+  useFileManagementGetFiles,
+  fileManagementGetFilesQueryKey,
+} from "@/api/hooks/fileManagement/useFileManagementGetFiles";
+import { useFileManagementCreateFolder } from "@/api/hooks/fileManagement/useFileManagementCreateFolder";
+import { useFileManagementDeleteFolder } from "@/api/hooks/fileManagement/useFileManagementDeleteFolder";
+import { useFileManagementUploadFile } from "@/api/hooks/fileManagement/useFileManagementUploadFile";
+import { useFileManagementDeleteFile } from "@/api/hooks/fileManagement/useFileManagementDeleteFile";
+import { fileManagementDownloadFile } from "@/api/clients/fileManagement/fileManagementDownloadFile";
+import type { AcroStackServicesDtosFileManagementFileFolderDto as FileFolderDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileFolderDto";
+import type { AcroStackServicesDtosFileManagementFileEntryDto as FileEntryDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileEntryDto";
 
 const useStyles = makeStyles({
   toolbar: {
@@ -114,6 +119,7 @@ export function FileManagementPage() {
   const styles = useStyles();
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
+  const queryClient = useQueryClient();
 
   const canUpload = isGranted("AcroStack.FileManagement.Upload");
   const canDownload = isGranted("AcroStack.FileManagement.Download");
@@ -129,13 +135,17 @@ export function FileManagementPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const foldersQuery = useQuery(fileFoldersQueryOptions(currentFolderId));
-  const filesQuery = useQuery(fileEntriesQueryOptions(currentFolderId));
+  const foldersQuery = useFileManagementGetFolders(
+    currentFolderId ? { parentId: currentFolderId } : undefined,
+  );
+  const filesQuery = useFileManagementGetFiles(
+    currentFolderId ? { folderId: currentFolderId } : undefined,
+  );
 
-  const createFolderMutation = useCreateFolder();
-  const deleteFolderMutation = useDeleteFolder();
-  const deleteFileMutation = useDeleteFile();
-  const uploadFileMutation = useUploadFile();
+  const createFolderMutation = useFileManagementCreateFolder();
+  const deleteFolderMutation = useFileManagementDeleteFolder();
+  const deleteFileMutation = useFileManagementDeleteFile();
+  const uploadFileMutation = useFileManagementUploadFile();
 
   const handleOpenFolder = useCallback(
     (folder: FileFolderDto) => {
@@ -163,25 +173,30 @@ export function FileManagementPage() {
     const name = newFolderName.trim();
     if (!name) return;
     createFolderMutation.mutate(
-      { name, parentId: currentFolderId },
+      { data: { name, parentId: currentFolderId } },
       {
         onSuccess: () => {
+          void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
           setNewFolderName("");
           dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
     );
-  }, [newFolderName, currentFolderId, createFolderMutation, dispatchToast, t]);
+  }, [newFolderName, currentFolderId, createFolderMutation, queryClient, dispatchToast, t]);
 
   const handleFileSelected = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
       uploadFileMutation.mutate(
-        { file, folderId: currentFolderId },
+        {
+          data: { file },
+          params: currentFolderId ? { folderId: currentFolderId } : undefined,
+        },
         {
           onSuccess: () => {
+            void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
             dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
@@ -191,33 +206,62 @@ export function FileManagementPage() {
         },
       );
     },
-    [currentFolderId, uploadFileMutation, dispatchToast, t],
+    [currentFolderId, uploadFileMutation, queryClient, dispatchToast, t],
   );
 
   const handleDeleteFolderConfirm = useCallback(() => {
     if (!deleteFolderId) return;
-    deleteFolderMutation.mutate(deleteFolderId, {
-      onSuccess: () => {
-        setDeleteFolderId(null);
-        dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+    deleteFolderMutation.mutate(
+      { id: deleteFolderId },
+      {
+        onSuccess: () => {
+          void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
+          void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
+          setDeleteFolderId(null);
+          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+        },
+        onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
-      onError: (err) => dispatchToast(String(err), { intent: "error" }),
-    });
-  }, [deleteFolderId, deleteFolderMutation, dispatchToast, t]);
+    );
+  }, [deleteFolderId, deleteFolderMutation, queryClient, dispatchToast, t]);
 
   const handleDeleteFileConfirm = useCallback(() => {
     if (!deleteFileId) return;
-    deleteFileMutation.mutate(deleteFileId, {
-      onSuccess: () => {
-        setDeleteFileId(null);
-        dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+    deleteFileMutation.mutate(
+      { id: deleteFileId },
+      {
+        onSuccess: () => {
+          void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
+          setDeleteFileId(null);
+          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+        },
+        onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
-      onError: (err) => dispatchToast(String(err), { intent: "error" }),
-    });
-  }, [deleteFileId, deleteFileMutation, dispatchToast, t]);
+    );
+  }, [deleteFileId, deleteFileMutation, queryClient, dispatchToast, t]);
 
-  const folders = foldersQuery.data ?? [];
-  const files = filesQuery.data ?? [];
+  const handleDownloadFile = useCallback(
+    async (file: FileEntryDto) => {
+      if (!file.id) return;
+      try {
+        const blob = await fileManagementDownloadFile(file.id, { responseType: "blob" });
+        const url = window.URL.createObjectURL(blob as Blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name ?? "download";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        dispatchToast(String(err), { intent: "error" });
+      }
+    },
+    [dispatchToast],
+  );
+
+  const folders = foldersQuery.data?.items ?? [];
+  const files = filesQuery.data?.items ?? [];
   const isEmpty = folders.length === 0 && files.length === 0;
 
   const folderItems = useMemo(
@@ -254,10 +298,12 @@ export function FileManagementPage() {
         <div key={f.id} className={styles.item} title={f.name ?? ""}>
           <Document20Regular className={styles.itemIcon} />
           <span className={styles.itemName}>{f.name}</span>
-          <span className={styles.itemMeta}>{formatBytes(f.byteSize)}</span>
+          <span className={styles.itemMeta}>
+            {formatBytes(f.byteSize != null ? Number(f.byteSize) : undefined)}
+          </span>
           {canDownload && f.id && (
             <FluentLink
-              href={getFileDownloadUrl(f.id)}
+              onClick={() => void handleDownloadFile(f)}
               aria-label={t("FileManagement:Download")}
               title={t("FileManagement:Download")}
             >
@@ -284,6 +330,7 @@ export function FileManagementPage() {
       canDownload,
       canDelete,
       t,
+      handleDownloadFile,
     ],
   );
 

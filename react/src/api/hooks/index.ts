@@ -107,6 +107,31 @@ export {
   useDynamicClaimsRefresh,
 } from "./dynamicClaims/useDynamicClaimsRefresh.ts";
 export {
+  editionCreateMutationKey,
+  editionCreateMutationOptions,
+  useEditionCreate,
+} from "./edition/useEditionCreate.ts";
+export {
+  editionDeleteMutationKey,
+  editionDeleteMutationOptions,
+  useEditionDelete,
+} from "./edition/useEditionDelete.ts";
+export {
+  editionGetQueryKey,
+  editionGetQueryOptions,
+  useEditionGet,
+} from "./edition/useEditionGet.ts";
+export {
+  editionGetListQueryKey,
+  editionGetListQueryOptions,
+  useEditionGetList,
+} from "./edition/useEditionGetList.ts";
+export {
+  editionUpdateMutationKey,
+  editionUpdateMutationOptions,
+  useEditionUpdate,
+} from "./edition/useEditionUpdate.ts";
+export {
   emailSettingsGetQueryKey,
   emailSettingsGetQueryOptions,
   useEmailSettingsGet,
@@ -136,6 +161,52 @@ export {
   featuresUpdateMutationOptions,
   useFeaturesUpdate,
 } from "./features/useFeaturesUpdate.ts";
+export {
+  fileManagementCreateFolderMutationKey,
+  fileManagementCreateFolderMutationOptions,
+  useFileManagementCreateFolder,
+} from "./fileManagement/useFileManagementCreateFolder.ts";
+export {
+  fileManagementDeleteFileMutationKey,
+  fileManagementDeleteFileMutationOptions,
+  useFileManagementDeleteFile,
+} from "./fileManagement/useFileManagementDeleteFile.ts";
+export {
+  fileManagementDeleteFolderMutationKey,
+  fileManagementDeleteFolderMutationOptions,
+  useFileManagementDeleteFolder,
+} from "./fileManagement/useFileManagementDeleteFolder.ts";
+export {
+  fileManagementDownloadFileQueryKey,
+  fileManagementDownloadFileQueryOptions,
+  useFileManagementDownloadFile,
+} from "./fileManagement/useFileManagementDownloadFile.ts";
+export {
+  fileManagementGetFilesQueryKey,
+  fileManagementGetFilesQueryOptions,
+  useFileManagementGetFiles,
+} from "./fileManagement/useFileManagementGetFiles.ts";
+export {
+  fileManagementGetFoldersQueryKey,
+  fileManagementGetFoldersQueryOptions,
+  useFileManagementGetFolders,
+} from "./fileManagement/useFileManagementGetFolders.ts";
+export {
+  fileManagementRenameFolderMutationKey,
+  fileManagementRenameFolderMutationOptions,
+  useFileManagementRenameFolder,
+} from "./fileManagement/useFileManagementRenameFolder.ts";
+export {
+  fileManagementUploadFileMutationKey,
+  fileManagementUploadFileMutationOptions,
+  useFileManagementUploadFile,
+} from "./fileManagement/useFileManagementUploadFile.ts";
+export {
+  gdprDeleteMyAccountMutationKey,
+  gdprDeleteMyAccountMutationOptions,
+  useGdprDeleteMyAccount,
+} from "./gdpr/useGdprDeleteMyAccount.ts";
+export { gdprExportQueryKey, gdprExportQueryOptions, useGdprExport } from "./gdpr/useGdprExport.ts";
 export {
   identityRoleClaimCreateMutationKey,
   identityRoleClaimCreateMutationOptions,

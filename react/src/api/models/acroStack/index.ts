@@ -9,9 +9,15 @@ export type { AcroStackServicesDtosAuditLoggingEntityChangeFieldDto } from "./se
 export type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto } from "./services/dtos/backgroundJobs/BackgroundJobDto.ts";
 export type { AcroStackServicesDtosBooksBookDto } from "./services/dtos/books/BookDto.ts";
 export type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "./services/dtos/books/CreateUpdateBookDto.ts";
+export type { AcroStackServicesDtosFileManagementCreateFileFolderDto } from "./services/dtos/fileManagement/CreateFileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementFileEntryDto } from "./services/dtos/fileManagement/FileEntryDto.ts";
+export type { AcroStackServicesDtosFileManagementFileFolderDto } from "./services/dtos/fileManagement/FileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementRenameDto } from "./services/dtos/fileManagement/RenameDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto } from "./services/dtos/identityClaims/CreateIdentityRoleClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityUserClaimDto } from "./services/dtos/identityClaims/CreateIdentityUserClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "./services/dtos/identityClaims/IdentityClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto } from "./services/dtos/identityClaims/UpdateIdentityClaimDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "./services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto } from "./services/dtos/openIddictManagement/OpenIddictScopeDto.ts";
+export type { AcroStackServicesDtosSaaSCreateUpdateEditionDto } from "./services/dtos/saaS/CreateUpdateEditionDto.ts";
+export type { AcroStackServicesDtosSaaSEditionDto } from "./services/dtos/saaS/EditionDto.ts";

@@ -18,7 +18,8 @@ import {
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { userManager } from "@/lib/auth/userManager";
-import { exportMyData, useDeleteMyAccount } from "@/lib/gdpr/gdprApi";
+import { gdprExport } from "@/api/clients/gdpr";
+import { useGdprDeleteMyAccount } from "@/api/hooks/gdpr";
 
 const useStyles = makeStyles({
   card: {
@@ -43,14 +44,22 @@ export function GdprPage() {
   const { t } = useTranslation();
   const styles = useStyles();
   const { dispatchToast } = useToastController();
-  const deleteMutation = useDeleteMyAccount();
+  const deleteMutation = useGdprDeleteMyAccount();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExport = useCallback(async () => {
     setIsExporting(true);
     try {
-      await exportMyData();
+      const blob = await gdprExport({ responseType: "blob" });
+      const url = window.URL.createObjectURL(blob as Blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "personal-data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
       dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
     } catch (err) {
       dispatchToast(String(err), { intent: "error" });

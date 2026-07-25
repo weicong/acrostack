@@ -21,9 +21,9 @@ import { usePermissions } from "@/lib/auth/permissions";
 import {
   editionGetListQueryOptions,
   editionGetListQueryKey,
-  useEditionDelete,
-  type EditionDto,
-} from "@/lib/saas/editionsApi";
+} from "@/api/hooks/edition/useEditionGetList";
+import { useEditionDelete } from "@/api/hooks/edition/useEditionDelete";
+import type { AcroStackServicesDtosSaaSEditionDto as EditionDto } from "@/api/models/acroStack/services/dtos/saaS/EditionDto";
 import { EditionFormDialog } from "./EditionFormDialog";
 
 type EditionItem = EditionDto;
@@ -96,22 +96,28 @@ export function EditionsPage() {
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     setEditingEdition(undefined);
-  }, []);
+    void queryClient.invalidateQueries({
+      queryKey: editionGetListQueryKey(),
+    });
+  }, [queryClient]);
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteEditionId) return;
-    deleteMutation.mutate(deleteEditionId, {
-      onSuccess: () => {
-        setDeleteEditionId(null);
-        void queryClient.invalidateQueries({
-          queryKey: editionGetListQueryKey(),
-        });
-        dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+    deleteMutation.mutate(
+      { id: deleteEditionId },
+      {
+        onSuccess: () => {
+          setDeleteEditionId(null);
+          void queryClient.invalidateQueries({
+            queryKey: editionGetListQueryKey(),
+          });
+          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+        },
+        onError: (err) => {
+          dispatchToast(String(err), { intent: "error" });
+        },
       },
-      onError: (err) => {
-        dispatchToast(String(err), { intent: "error" });
-      },
-    });
+    );
   }, [deleteEditionId, deleteMutation, queryClient, dispatchToast, t]);
 
   const columns = useMemo<ColumnDef<EditionItem>[]>(

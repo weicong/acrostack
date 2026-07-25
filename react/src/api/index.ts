@@ -328,12 +328,18 @@ export type { AcroStackServicesDtosAuditLoggingEntityChangeFieldDto } from "./mo
 export type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto } from "./models/acroStack/services/dtos/backgroundJobs/BackgroundJobDto.ts";
 export type { AcroStackServicesDtosBooksBookDto } from "./models/acroStack/services/dtos/books/BookDto.ts";
 export type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "./models/acroStack/services/dtos/books/CreateUpdateBookDto.ts";
+export type { AcroStackServicesDtosFileManagementCreateFileFolderDto } from "./models/acroStack/services/dtos/fileManagement/CreateFileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementFileEntryDto } from "./models/acroStack/services/dtos/fileManagement/FileEntryDto.ts";
+export type { AcroStackServicesDtosFileManagementFileFolderDto } from "./models/acroStack/services/dtos/fileManagement/FileFolderDto.ts";
+export type { AcroStackServicesDtosFileManagementRenameDto } from "./models/acroStack/services/dtos/fileManagement/RenameDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto } from "./models/acroStack/services/dtos/identityClaims/CreateIdentityRoleClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsCreateIdentityUserClaimDto } from "./models/acroStack/services/dtos/identityClaims/CreateIdentityUserClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "./models/acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
 export type { AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto } from "./models/acroStack/services/dtos/identityClaims/UpdateIdentityClaimDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "./models/acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
 export type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto } from "./models/acroStack/services/dtos/openIddictManagement/OpenIddictScopeDto.ts";
+export type { AcroStackServicesDtosSaaSCreateUpdateEditionDto } from "./models/acroStack/services/dtos/saaS/CreateUpdateEditionDto.ts";
+export type { AcroStackServicesDtosSaaSEditionDto } from "./models/acroStack/services/dtos/saaS/EditionDto.ts";
 export type {
   AppUserDeletePathId,
   AppUserDeleteRequestConfig,
@@ -799,6 +805,184 @@ export type {
   DynamicClaimsRefreshStatus501Plain,
 } from "./models/dynamicClaims/DynamicClaimsRefresh.ts";
 export type {
+  EditionCreateData,
+  EditionCreateJson2Data,
+  EditionCreateJson3Data,
+  EditionCreateJsonData,
+  EditionCreateRequestConfig,
+  EditionCreateResponse,
+  EditionCreateResponses,
+  EditionCreateStatus200,
+  EditionCreateStatus200Json,
+  EditionCreateStatus200Json2,
+  EditionCreateStatus200Plain,
+  EditionCreateStatus400,
+  EditionCreateStatus400Json,
+  EditionCreateStatus400Json2,
+  EditionCreateStatus400Plain,
+  EditionCreateStatus401,
+  EditionCreateStatus401Json,
+  EditionCreateStatus401Json2,
+  EditionCreateStatus401Plain,
+  EditionCreateStatus403,
+  EditionCreateStatus403Json,
+  EditionCreateStatus403Json2,
+  EditionCreateStatus403Plain,
+  EditionCreateStatus404,
+  EditionCreateStatus404Json,
+  EditionCreateStatus404Json2,
+  EditionCreateStatus404Plain,
+  EditionCreateStatus500,
+  EditionCreateStatus500Json,
+  EditionCreateStatus500Json2,
+  EditionCreateStatus500Plain,
+  EditionCreateStatus501,
+  EditionCreateStatus501Json,
+  EditionCreateStatus501Json2,
+  EditionCreateStatus501Plain,
+} from "./models/edition/EditionCreate.ts";
+export type {
+  EditionDeletePathId,
+  EditionDeleteRequestConfig,
+  EditionDeleteResponse,
+  EditionDeleteResponses,
+  EditionDeleteStatus200,
+  EditionDeleteStatus204,
+  EditionDeleteStatus400,
+  EditionDeleteStatus400Json,
+  EditionDeleteStatus400Json2,
+  EditionDeleteStatus400Plain,
+  EditionDeleteStatus401,
+  EditionDeleteStatus401Json,
+  EditionDeleteStatus401Json2,
+  EditionDeleteStatus401Plain,
+  EditionDeleteStatus403,
+  EditionDeleteStatus403Json,
+  EditionDeleteStatus403Json2,
+  EditionDeleteStatus403Plain,
+  EditionDeleteStatus404,
+  EditionDeleteStatus404Json,
+  EditionDeleteStatus404Json2,
+  EditionDeleteStatus404Plain,
+  EditionDeleteStatus500,
+  EditionDeleteStatus500Json,
+  EditionDeleteStatus500Json2,
+  EditionDeleteStatus500Plain,
+  EditionDeleteStatus501,
+  EditionDeleteStatus501Json,
+  EditionDeleteStatus501Json2,
+  EditionDeleteStatus501Plain,
+} from "./models/edition/EditionDelete.ts";
+export type {
+  EditionGetPathId,
+  EditionGetRequestConfig,
+  EditionGetResponse,
+  EditionGetResponses,
+  EditionGetStatus200,
+  EditionGetStatus200Json,
+  EditionGetStatus200Json2,
+  EditionGetStatus200Plain,
+  EditionGetStatus400,
+  EditionGetStatus400Json,
+  EditionGetStatus400Json2,
+  EditionGetStatus400Plain,
+  EditionGetStatus401,
+  EditionGetStatus401Json,
+  EditionGetStatus401Json2,
+  EditionGetStatus401Plain,
+  EditionGetStatus403,
+  EditionGetStatus403Json,
+  EditionGetStatus403Json2,
+  EditionGetStatus403Plain,
+  EditionGetStatus404,
+  EditionGetStatus404Json,
+  EditionGetStatus404Json2,
+  EditionGetStatus404Plain,
+  EditionGetStatus500,
+  EditionGetStatus500Json,
+  EditionGetStatus500Json2,
+  EditionGetStatus500Plain,
+  EditionGetStatus501,
+  EditionGetStatus501Json,
+  EditionGetStatus501Json2,
+  EditionGetStatus501Plain,
+} from "./models/edition/EditionGet.ts";
+export type {
+  EditionGetListQueryFilter,
+  EditionGetListQueryMaxResultCount,
+  EditionGetListQuerySkipCount,
+  EditionGetListQuerySorting,
+  EditionGetListRequestConfig,
+  EditionGetListResponse,
+  EditionGetListResponses,
+  EditionGetListStatus200,
+  EditionGetListStatus200Json,
+  EditionGetListStatus200Json2,
+  EditionGetListStatus200Plain,
+  EditionGetListStatus400,
+  EditionGetListStatus400Json,
+  EditionGetListStatus400Json2,
+  EditionGetListStatus400Plain,
+  EditionGetListStatus401,
+  EditionGetListStatus401Json,
+  EditionGetListStatus401Json2,
+  EditionGetListStatus401Plain,
+  EditionGetListStatus403,
+  EditionGetListStatus403Json,
+  EditionGetListStatus403Json2,
+  EditionGetListStatus403Plain,
+  EditionGetListStatus404,
+  EditionGetListStatus404Json,
+  EditionGetListStatus404Json2,
+  EditionGetListStatus404Plain,
+  EditionGetListStatus500,
+  EditionGetListStatus500Json,
+  EditionGetListStatus500Json2,
+  EditionGetListStatus500Plain,
+  EditionGetListStatus501,
+  EditionGetListStatus501Json,
+  EditionGetListStatus501Json2,
+  EditionGetListStatus501Plain,
+} from "./models/edition/EditionGetList.ts";
+export type {
+  EditionUpdateData,
+  EditionUpdateJson2Data,
+  EditionUpdateJson3Data,
+  EditionUpdateJsonData,
+  EditionUpdatePathId,
+  EditionUpdateRequestConfig,
+  EditionUpdateResponse,
+  EditionUpdateResponses,
+  EditionUpdateStatus200,
+  EditionUpdateStatus200Json,
+  EditionUpdateStatus200Json2,
+  EditionUpdateStatus200Plain,
+  EditionUpdateStatus400,
+  EditionUpdateStatus400Json,
+  EditionUpdateStatus400Json2,
+  EditionUpdateStatus400Plain,
+  EditionUpdateStatus401,
+  EditionUpdateStatus401Json,
+  EditionUpdateStatus401Json2,
+  EditionUpdateStatus401Plain,
+  EditionUpdateStatus403,
+  EditionUpdateStatus403Json,
+  EditionUpdateStatus403Json2,
+  EditionUpdateStatus403Plain,
+  EditionUpdateStatus404,
+  EditionUpdateStatus404Json,
+  EditionUpdateStatus404Json2,
+  EditionUpdateStatus404Plain,
+  EditionUpdateStatus500,
+  EditionUpdateStatus500Json,
+  EditionUpdateStatus500Json2,
+  EditionUpdateStatus500Plain,
+  EditionUpdateStatus501,
+  EditionUpdateStatus501Json,
+  EditionUpdateStatus501Json2,
+  EditionUpdateStatus501Plain,
+} from "./models/edition/EditionUpdate.ts";
+export type {
   EmailSettingsGetRequestConfig,
   EmailSettingsGetResponse,
   EmailSettingsGetResponses,
@@ -1006,6 +1190,97 @@ export type {
   FeaturesUpdateStatus501Json2,
   FeaturesUpdateStatus501Plain,
 } from "./models/features/FeaturesUpdate.ts";
+export type {
+  FileManagementCreateFolderData,
+  FileManagementCreateFolderJson2Data,
+  FileManagementCreateFolderJson3Data,
+  FileManagementCreateFolderJsonData,
+  FileManagementCreateFolderRequestConfig,
+  FileManagementCreateFolderResponse,
+  FileManagementCreateFolderResponses,
+  FileManagementCreateFolderStatus200,
+  FileManagementCreateFolderStatus200Json,
+  FileManagementCreateFolderStatus200Json2,
+  FileManagementCreateFolderStatus200Plain,
+} from "./models/fileManagement/FileManagementCreateFolder.ts";
+export type {
+  FileManagementDeleteFilePathId,
+  FileManagementDeleteFileRequestConfig,
+  FileManagementDeleteFileResponse,
+  FileManagementDeleteFileResponses,
+  FileManagementDeleteFileStatus200,
+} from "./models/fileManagement/FileManagementDeleteFile.ts";
+export type {
+  FileManagementDeleteFolderPathId,
+  FileManagementDeleteFolderRequestConfig,
+  FileManagementDeleteFolderResponse,
+  FileManagementDeleteFolderResponses,
+  FileManagementDeleteFolderStatus200,
+} from "./models/fileManagement/FileManagementDeleteFolder.ts";
+export type {
+  FileManagementDownloadFilePathId,
+  FileManagementDownloadFileRequestConfig,
+  FileManagementDownloadFileResponse,
+  FileManagementDownloadFileResponses,
+  FileManagementDownloadFileStatus200,
+} from "./models/fileManagement/FileManagementDownloadFile.ts";
+export type {
+  FileManagementGetFilesQueryFolderId,
+  FileManagementGetFilesRequestConfig,
+  FileManagementGetFilesResponse,
+  FileManagementGetFilesResponses,
+  FileManagementGetFilesStatus200,
+  FileManagementGetFilesStatus200Json,
+  FileManagementGetFilesStatus200Json2,
+  FileManagementGetFilesStatus200Plain,
+} from "./models/fileManagement/FileManagementGetFiles.ts";
+export type {
+  FileManagementGetFoldersQueryParentId,
+  FileManagementGetFoldersRequestConfig,
+  FileManagementGetFoldersResponse,
+  FileManagementGetFoldersResponses,
+  FileManagementGetFoldersStatus200,
+  FileManagementGetFoldersStatus200Json,
+  FileManagementGetFoldersStatus200Json2,
+  FileManagementGetFoldersStatus200Plain,
+} from "./models/fileManagement/FileManagementGetFolders.ts";
+export type {
+  FileManagementRenameFolderData,
+  FileManagementRenameFolderJson2Data,
+  FileManagementRenameFolderJson3Data,
+  FileManagementRenameFolderJsonData,
+  FileManagementRenameFolderPathId,
+  FileManagementRenameFolderRequestConfig,
+  FileManagementRenameFolderResponse,
+  FileManagementRenameFolderResponses,
+  FileManagementRenameFolderStatus200,
+  FileManagementRenameFolderStatus200Json,
+  FileManagementRenameFolderStatus200Json2,
+  FileManagementRenameFolderStatus200Plain,
+} from "./models/fileManagement/FileManagementRenameFolder.ts";
+export type {
+  FileManagementUploadFileData,
+  FileManagementUploadFileQueryFolderId,
+  FileManagementUploadFileRequestConfig,
+  FileManagementUploadFileResponse,
+  FileManagementUploadFileResponses,
+  FileManagementUploadFileStatus200,
+  FileManagementUploadFileStatus200Json,
+  FileManagementUploadFileStatus200Json2,
+  FileManagementUploadFileStatus200Plain,
+} from "./models/fileManagement/FileManagementUploadFile.ts";
+export type {
+  GdprDeleteMyAccountRequestConfig,
+  GdprDeleteMyAccountResponse,
+  GdprDeleteMyAccountResponses,
+  GdprDeleteMyAccountStatus200,
+} from "./models/gdpr/GdprDeleteMyAccount.ts";
+export type {
+  GdprExportRequestConfig,
+  GdprExportResponse,
+  GdprExportResponses,
+  GdprExportStatus200,
+} from "./models/gdpr/GdprExport.ts";
 export type {
   IdentityRoleClaimCreateData,
   IdentityRoleClaimCreateJson2Data,
@@ -3183,6 +3458,8 @@ export type { VoloAbpAccountVerifyPasswordResetTokenInput } from "./models/volo/
 export type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from "./models/volo/abp/account/web/areas/account/controllers/models/AbpLoginResult.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsLoginResultType } from "./models/volo/abp/account/web/areas/account/controllers/models/LoginResultType.ts";
 export type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from "./models/volo/abp/account/web/areas/account/controllers/models/UserLoginInfo.ts";
+export type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileEntryDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/fileManagement/FileEntryDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileFolderDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/fileManagement/FileFolderDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/AppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
@@ -3191,6 +3468,7 @@ export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgrou
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/books/BookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosSaaSEditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/saaS/EditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
 export type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./models/volo/abp/application/dtos/pagedResultDto1Volo/abp/tenantManagement/tenantDtoVolo/abp/tenantManagement/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
@@ -3315,6 +3593,12 @@ export { bookGetList } from "./clients/book/bookGetList.ts";
 export { bookUpdate } from "./clients/book/bookUpdate.ts";
 export { dynamicClaims } from "./clients/dynamicClaims/dynamicClaims.ts";
 export { dynamicClaimsRefresh } from "./clients/dynamicClaims/dynamicClaimsRefresh.ts";
+export { edition } from "./clients/edition/edition.ts";
+export { editionCreate } from "./clients/edition/editionCreate.ts";
+export { editionDelete } from "./clients/edition/editionDelete.ts";
+export { editionGet } from "./clients/edition/editionGet.ts";
+export { editionGetList } from "./clients/edition/editionGetList.ts";
+export { editionUpdate } from "./clients/edition/editionUpdate.ts";
 export { emailSettings } from "./clients/emailSettings/emailSettings.ts";
 export { emailSettingsGet } from "./clients/emailSettings/emailSettingsGet.ts";
 export { emailSettingsSendTestEmail } from "./clients/emailSettings/emailSettingsSendTestEmail.ts";
@@ -3323,6 +3607,18 @@ export { features } from "./clients/features/features.ts";
 export { featuresDelete } from "./clients/features/featuresDelete.ts";
 export { featuresGet } from "./clients/features/featuresGet.ts";
 export { featuresUpdate } from "./clients/features/featuresUpdate.ts";
+export { fileManagement } from "./clients/fileManagement/fileManagement.ts";
+export { fileManagementCreateFolder } from "./clients/fileManagement/fileManagementCreateFolder.ts";
+export { fileManagementDeleteFile } from "./clients/fileManagement/fileManagementDeleteFile.ts";
+export { fileManagementDeleteFolder } from "./clients/fileManagement/fileManagementDeleteFolder.ts";
+export { fileManagementDownloadFile } from "./clients/fileManagement/fileManagementDownloadFile.ts";
+export { fileManagementGetFiles } from "./clients/fileManagement/fileManagementGetFiles.ts";
+export { fileManagementGetFolders } from "./clients/fileManagement/fileManagementGetFolders.ts";
+export { fileManagementRenameFolder } from "./clients/fileManagement/fileManagementRenameFolder.ts";
+export { fileManagementUploadFile } from "./clients/fileManagement/fileManagementUploadFile.ts";
+export { gdpr } from "./clients/gdpr/gdpr.ts";
+export { gdprDeleteMyAccount } from "./clients/gdpr/gdprDeleteMyAccount.ts";
+export { gdprExport } from "./clients/gdpr/gdprExport.ts";
 export { identityRoleClaim } from "./clients/identityRoleClaim/identityRoleClaim.ts";
 export { identityRoleClaimCreate } from "./clients/identityRoleClaim/identityRoleClaimCreate.ts";
 export { identityRoleClaimDelete } from "./clients/identityRoleClaim/identityRoleClaimDelete.ts";
@@ -3504,6 +3800,31 @@ export {
   useDynamicClaimsRefresh,
 } from "./hooks/dynamicClaims/useDynamicClaimsRefresh.ts";
 export {
+  editionCreateMutationKey,
+  editionCreateMutationOptions,
+  useEditionCreate,
+} from "./hooks/edition/useEditionCreate.ts";
+export {
+  editionDeleteMutationKey,
+  editionDeleteMutationOptions,
+  useEditionDelete,
+} from "./hooks/edition/useEditionDelete.ts";
+export {
+  editionGetQueryKey,
+  editionGetQueryOptions,
+  useEditionGet,
+} from "./hooks/edition/useEditionGet.ts";
+export {
+  editionGetListQueryKey,
+  editionGetListQueryOptions,
+  useEditionGetList,
+} from "./hooks/edition/useEditionGetList.ts";
+export {
+  editionUpdateMutationKey,
+  editionUpdateMutationOptions,
+  useEditionUpdate,
+} from "./hooks/edition/useEditionUpdate.ts";
+export {
   emailSettingsGetQueryKey,
   emailSettingsGetQueryOptions,
   useEmailSettingsGet,
@@ -3533,6 +3854,56 @@ export {
   featuresUpdateMutationOptions,
   useFeaturesUpdate,
 } from "./hooks/features/useFeaturesUpdate.ts";
+export {
+  fileManagementCreateFolderMutationKey,
+  fileManagementCreateFolderMutationOptions,
+  useFileManagementCreateFolder,
+} from "./hooks/fileManagement/useFileManagementCreateFolder.ts";
+export {
+  fileManagementDeleteFileMutationKey,
+  fileManagementDeleteFileMutationOptions,
+  useFileManagementDeleteFile,
+} from "./hooks/fileManagement/useFileManagementDeleteFile.ts";
+export {
+  fileManagementDeleteFolderMutationKey,
+  fileManagementDeleteFolderMutationOptions,
+  useFileManagementDeleteFolder,
+} from "./hooks/fileManagement/useFileManagementDeleteFolder.ts";
+export {
+  fileManagementDownloadFileQueryKey,
+  fileManagementDownloadFileQueryOptions,
+  useFileManagementDownloadFile,
+} from "./hooks/fileManagement/useFileManagementDownloadFile.ts";
+export {
+  fileManagementGetFilesQueryKey,
+  fileManagementGetFilesQueryOptions,
+  useFileManagementGetFiles,
+} from "./hooks/fileManagement/useFileManagementGetFiles.ts";
+export {
+  fileManagementGetFoldersQueryKey,
+  fileManagementGetFoldersQueryOptions,
+  useFileManagementGetFolders,
+} from "./hooks/fileManagement/useFileManagementGetFolders.ts";
+export {
+  fileManagementRenameFolderMutationKey,
+  fileManagementRenameFolderMutationOptions,
+  useFileManagementRenameFolder,
+} from "./hooks/fileManagement/useFileManagementRenameFolder.ts";
+export {
+  fileManagementUploadFileMutationKey,
+  fileManagementUploadFileMutationOptions,
+  useFileManagementUploadFile,
+} from "./hooks/fileManagement/useFileManagementUploadFile.ts";
+export {
+  gdprDeleteMyAccountMutationKey,
+  gdprDeleteMyAccountMutationOptions,
+  useGdprDeleteMyAccount,
+} from "./hooks/gdpr/useGdprDeleteMyAccount.ts";
+export {
+  gdprExportQueryKey,
+  gdprExportQueryOptions,
+  useGdprExport,
+} from "./hooks/gdpr/useGdprExport.ts";
 export {
   identityRoleClaimCreateMutationKey,
   identityRoleClaimCreateMutationOptions,
