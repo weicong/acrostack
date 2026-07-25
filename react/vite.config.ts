@@ -29,6 +29,9 @@ export default defineConfig((({ mode }) => {
         autoCodeSplitting: true,
         routesDirectory: "./src/routes",
         generatedRouteTree: "./src/routeTree.gen.ts",
+        // route-config.ts files are module menu configs (not routes), so exclude
+        // them from TanStack Router's file-based route generation.
+        routeFileIgnorePattern: "route-config\\.ts$",
       }),
       copyDynamicEnv(),
       react(),

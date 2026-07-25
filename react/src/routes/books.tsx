@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Route as rootRoute } from "./__root";
 import { BooksPage } from "@/pages/books/BooksPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
-import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
+import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Book20Regular } from "@fluentui/react-icons";
 
 const booksSearchSchema = z.object({
@@ -21,6 +21,8 @@ export const menu: RouteMenuConfig = {
   order: 3,
   requiredPolicy: "AcroStack.Books",
 };
+
+export const routeConfig: MenuRoute[] = [{ path: "/books", menu }];
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,

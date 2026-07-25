@@ -2,7 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { AuditLogsPage } from "@/pages/audit-logs/AuditLogsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
-import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
+import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { History20Regular } from "@fluentui/react-icons";
 
 export const menu: RouteMenuConfig = {
@@ -11,6 +11,8 @@ export const menu: RouteMenuConfig = {
   order: 10,
   requiredPolicy: "AcroStack.AuditLogging",
 };
+
+export const routeConfig: MenuRoute[] = [{ path: "/audit-logs", menu }];
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
