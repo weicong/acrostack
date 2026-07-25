@@ -1,4 +1,4 @@
-import { makeStyles, Text, tokens } from "@fluentui/react-components";
+import { Divider, makeStyles, Text, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
   footer: {
@@ -23,11 +23,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     gap: tokens.spacingHorizontalM,
   },
-  separator: {
-    width: "1px",
-    height: "12px",
-    background: tokens.colorNeutralStroke2,
-  },
 });
 
 export function Footer() {
@@ -41,7 +36,7 @@ export function Footer() {
       </div>
       <div className={styles.right}>
         <Text size={200}>ABP React UI</Text>
-        <div className={styles.separator} />
+        <Divider vertical />
         <Text size={200}>v1.0</Text>
       </div>
     </footer>

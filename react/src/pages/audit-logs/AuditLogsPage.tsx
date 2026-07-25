@@ -65,6 +65,16 @@ const useStyles = makeStyles({
     minWidth: "40px",
     textAlign: "center",
   },
+  exceptions: {
+    whiteSpace: "pre-wrap",
+    color: tokens.colorPaletteRedForeground1,
+  },
+  originalValue: {
+    color: tokens.colorPaletteRedForeground1,
+  },
+  newValue: {
+    color: tokens.colorPaletteGreenForeground1,
+  },
 });
 
 function statusBadgeColor(
@@ -267,10 +277,7 @@ export function AuditLogsPage() {
               {selectedLog.exceptions && (
                 <>
                   <Text weight="semibold">{t("AbpAuditLogging::Exceptions")}</Text>
-                  <Text
-                    size={200}
-                    style={{ whiteSpace: "pre-wrap", color: tokens.colorPaletteRedForeground1 }}
-                  >
+                  <Text size={200} className={styles.exceptions}>
                     {selectedLog.exceptions}
                   </Text>
                 </>
@@ -290,13 +297,11 @@ export function AuditLogsPage() {
                         <div key={pidx} className={styles.propertyChange}>
                           <Text size={200}>
                             {pc.propertyName}:{" "}
-                            <Text style={{ color: tokens.colorPaletteRedForeground1 }}>
+                            <Text className={styles.originalValue}>
                               {pc.originalValue ?? "null"}
                             </Text>
                             {" → "}
-                            <Text style={{ color: tokens.colorPaletteGreenForeground1 }}>
-                              {pc.newValue ?? "null"}
-                            </Text>
+                            <Text className={styles.newValue}>{pc.newValue ?? "null"}</Text>
                           </Text>
                         </div>
                       ))}

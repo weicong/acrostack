@@ -28,6 +28,9 @@ const useStyles = makeStyles({
   cardHeader: {
     alignItems: "flex-start",
   },
+  cardPreviewInner: {
+    padding: tokens.spacingHorizontalM,
+  },
   description: {
     color: tokens.colorNeutralForeground3,
     marginTop: tokens.spacingVerticalXS,
@@ -89,7 +92,7 @@ export function GdprPage() {
     <PageLayout title={t("Gdpr:Title")}>
       <Card className={styles.card}>
         <CardPreview>
-          <div style={{ padding: tokens.spacingHorizontalM }}>
+          <div className={styles.cardPreviewInner}>
             <Document20Regular fontSize={28} />
           </div>
         </CardPreview>
@@ -112,7 +115,7 @@ export function GdprPage() {
 
       <Card className={styles.card}>
         <CardPreview>
-          <div style={{ padding: tokens.spacingHorizontalM }}>
+          <div className={styles.cardPreviewInner}>
             <PersonDelete20Regular fontSize={28} />
           </div>
         </CardPreview>

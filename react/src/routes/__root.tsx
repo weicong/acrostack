@@ -1,5 +1,5 @@
 import { createRootRoute } from "@tanstack/react-router";
-import { makeStyles, Text } from "@fluentui/react-components";
+import { makeStyles, Text, tokens } from "@fluentui/react-components";
 import { RootLayout } from "@/components/layout/RootLayout";
 
 const useNotFoundStyles = makeStyles({
@@ -9,7 +9,7 @@ const useNotFoundStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: "1rem",
+    gap: tokens.spacingVerticalL,
   },
 });
 
