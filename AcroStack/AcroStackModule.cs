@@ -203,6 +203,9 @@ public class AcroStackModule : AbpModule
         ConfigureVirtualFiles(hostingEnvironment);
         ConfigureEfCore(context);
 
+        // SignalR for the Chat module (real-time messaging).
+        context.Services.AddSignalR();
+
         if (hostingEnvironment.IsDevelopment())
         {
             context.Services.AddRazorPages()
@@ -433,6 +436,21 @@ public class AcroStackModule : AbpModule
         app.UseAbpStudioLink();
         app.UseAbpSecurityHeaders();
         app.UseCors();
+
+        // SignalR cannot set Authorization header for WebSocket/SSE transports,
+        // so the access token is sent as a query string. Move it to the header
+        // for the chat hub path so the ABP/OpenIddict auth middleware picks it up.
+        app.Use(async (httpContext, next) =>
+        {
+            var accessToken = httpContext.Request.Query["access_token"];
+            var path = httpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/signalr-hubs/chat"))
+            {
+                httpContext.Request.Headers["Authorization"] = "Bearer " + accessToken;
+            }
+            await next();
+        });
+
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
@@ -454,6 +472,9 @@ public class AcroStackModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints();
+        app.UseConfiguredEndpoints(endpoints =>
+        {
+            endpoints.MapHub<AcroStack.Hubs.ChatHub>("/signalr-hubs/chat");
+        });
     }
 }

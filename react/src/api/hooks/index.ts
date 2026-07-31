@@ -81,6 +81,62 @@ export {
   useBackgroundJobGetList,
 } from "./backgroundJob/useBackgroundJobGetList.ts";
 export {
+  blogCreateMutationKey,
+  blogCreateMutationOptions,
+  useBlogCreate,
+} from "./blog/useBlogCreate.ts";
+export {
+  blogDeleteMutationKey,
+  blogDeleteMutationOptions,
+  useBlogDelete,
+} from "./blog/useBlogDelete.ts";
+export { blogGetQueryKey, blogGetQueryOptions, useBlogGet } from "./blog/useBlogGet.ts";
+export {
+  blogGetBySlugQueryKey,
+  blogGetBySlugQueryOptions,
+  useBlogGetBySlug,
+} from "./blog/useBlogGetBySlug.ts";
+export {
+  blogGetListQueryKey,
+  blogGetListQueryOptions,
+  useBlogGetList,
+} from "./blog/useBlogGetList.ts";
+export {
+  blogUpdateMutationKey,
+  blogUpdateMutationOptions,
+  useBlogUpdate,
+} from "./blog/useBlogUpdate.ts";
+export {
+  blogPostCreateMutationKey,
+  blogPostCreateMutationOptions,
+  useBlogPostCreate,
+} from "./blogPost/useBlogPostCreate.ts";
+export {
+  blogPostDeleteMutationKey,
+  blogPostDeleteMutationOptions,
+  useBlogPostDelete,
+} from "./blogPost/useBlogPostDelete.ts";
+export {
+  blogPostGetQueryKey,
+  blogPostGetQueryOptions,
+  useBlogPostGet,
+} from "./blogPost/useBlogPostGet.ts";
+export {
+  blogPostGetBySlugQueryKey,
+  blogPostGetBySlugQueryOptions,
+  useBlogPostGetBySlug,
+} from "./blogPost/useBlogPostGetBySlug.ts";
+export {
+  blogPostGetListQueryKey,
+  blogPostGetListQueryOptions,
+  useBlogPostGetList,
+} from "./blogPost/useBlogPostGetList.ts";
+export {
+  blogPostUpdateMutationKey,
+  blogPostUpdateMutationOptions,
+  useBlogPostUpdate,
+} from "./blogPost/useBlogPostUpdate.ts";
+export {
   bookCreateMutationKey,
   bookCreateMutationOptions,
   useBookCreate,
@@ -101,6 +157,51 @@ export {
   bookUpdateMutationOptions,
   useBookUpdate,
 } from "./book/useBookUpdate.ts";
+export {
+  commentCreateMutationKey,
+  commentCreateMutationOptions,
+  useCommentCreate,
+} from "./comment/useCommentCreate.ts";
+export {
+  commentDeleteMutationKey,
+  commentDeleteMutationOptions,
+  useCommentDelete,
+} from "./comment/useCommentDelete.ts";
+export {
+  commentGetListForEntityQueryKey,
+  commentGetListForEntityQueryOptions,
+  useCommentGetListForEntity,
+} from "./comment/useCommentGetListForEntity.ts";
+export {
+  contactGetListQueryKey,
+  contactGetListQueryOptions,
+  useContactGetList,
+} from "./contact/useContactGetList.ts";
+export {
+  contactGetTotalUnreadMessageCountQueryKey,
+  contactGetTotalUnreadMessageCountQueryOptions,
+  useContactGetTotalUnreadMessageCount,
+} from "./contact/useContactGetTotalUnreadMessageCount.ts";
+export {
+  conversationGetListQueryKey,
+  conversationGetListQueryOptions,
+  useConversationGetList,
+} from "./conversation/useConversationGetList.ts";
+export {
+  conversationGetMessageListQueryKey,
+  conversationGetMessageListQueryOptions,
+  useConversationGetMessageList,
+} from "./conversation/useConversationGetMessageList.ts";
+export {
+  conversationMarkAsReadMutationKey,
+  conversationMarkAsReadMutationOptions,
+  useConversationMarkAsRead,
+} from "./conversation/useConversationMarkAsRead.ts";
+export {
+  conversationSendMessageMutationKey,
+  conversationSendMessageMutationOptions,
+  useConversationSendMessage,
+} from "./conversation/useConversationSendMessage.ts";
 export {
   dynamicClaimsRefreshMutationKey,
   dynamicClaimsRefreshMutationOptions,
@@ -263,6 +364,47 @@ export {
   useLoginLogout,
 } from "./login/useLoginLogout.ts";
 export {
+  menuCreateMutationKey,
+  menuCreateMutationOptions,
+  useMenuCreate,
+} from "./menu/useMenuCreate.ts";
+export {
+  menuDeleteMutationKey,
+  menuDeleteMutationOptions,
+  useMenuDelete,
+} from "./menu/useMenuDelete.ts";
+export { menuGetQueryKey, menuGetQueryOptions, useMenuGet } from "./menu/useMenuGet.ts";
+export {
+  menuGetByNameQueryKey,
+  menuGetByNameQueryOptions,
+  useMenuGetByName,
+} from "./menu/useMenuGetByName.ts";
+export {
+  menuGetListQueryKey,
+  menuGetListQueryOptions,
+  useMenuGetList,
+} from "./menu/useMenuGetList.ts";
+export {
+  menuUpdateMutationKey,
+  menuUpdateMutationOptions,
+  useMenuUpdate,
+} from "./menu/useMenuUpdate.ts";
+export {
+  menuItemCreateMutationKey,
+  menuItemCreateMutationOptions,
+  useMenuItemCreate,
+} from "./menuItem/useMenuItemCreate.ts";
+export {
+  menuItemDeleteMutationKey,
+  menuItemDeleteMutationOptions,
+  useMenuItemDelete,
+} from "./menuItem/useMenuItemDelete.ts";
+export {
+  menuItemUpdateMutationKey,
+  menuItemUpdateMutationOptions,
+  useMenuItemUpdate,
+} from "./menuItem/useMenuItemUpdate.ts";
+export {
   openIddictApplicationDeleteMutationKey,
   openIddictApplicationDeleteMutationOptions,
   useOpenIddictApplicationDelete,
@@ -292,6 +434,32 @@ export {
   openIddictScopeGetListQueryOptions,
   useOpenIddictScopeGetList,
 } from "./openIddictScope/useOpenIddictScopeGetList.ts";
+export {
+  pageCreateMutationKey,
+  pageCreateMutationOptions,
+  usePageCreate,
+} from "./page/usePageCreate.ts";
+export {
+  pageDeleteMutationKey,
+  pageDeleteMutationOptions,
+  usePageDelete,
+} from "./page/usePageDelete.ts";
+export { pageGetQueryKey, pageGetQueryOptions, usePageGet } from "./page/usePageGet.ts";
+export {
+  pageGetBySlugQueryKey,
+  pageGetBySlugQueryOptions,
+  usePageGetBySlug,
+} from "./page/usePageGetBySlug.ts";
+export {
+  pageGetListQueryKey,
+  pageGetListQueryOptions,
+  usePageGetList,
+} from "./page/usePageGetList.ts";
+export {
+  pageUpdateMutationKey,
+  pageUpdateMutationOptions,
+  usePageUpdate,
+} from "./page/usePageUpdate.ts";
 export {
   permissionsDeleteResourceMutationKey,
   permissionsDeleteResourceMutationOptions,
@@ -358,6 +526,21 @@ export {
   useProfileUpdate,
 } from "./profile/useProfileUpdate.ts";
 export {
+  reactionDeleteMutationKey,
+  reactionDeleteMutationOptions,
+  useReactionDelete,
+} from "./reaction/useReactionDelete.ts";
+export {
+  reactionGetForEntityQueryKey,
+  reactionGetForEntityQueryOptions,
+  useReactionGetForEntity,
+} from "./reaction/useReactionGetForEntity.ts";
+export {
+  reactionToggleMutationKey,
+  reactionToggleMutationOptions,
+  useReactionToggle,
+} from "./reaction/useReactionToggle.ts";
+export {
   roleCreateMutationKey,
   roleCreateMutationOptions,
   useRoleCreate,
@@ -383,6 +566,7 @@ export {
   roleUpdateMutationOptions,
   useRoleUpdate,
 } from "./role/useRoleUpdate.ts";
+export { tagGetListQueryKey, tagGetListQueryOptions, useTagGetList } from "./tag/useTagGetList.ts";
 export {
   tenantCreateMutationKey,
   tenantCreateMutationOptions,

@@ -23,6 +23,7 @@
  */
 import { routeConfig as homeConfig } from "@/routes/index";
 import { routeConfig as profileConfig } from "@/routes/profile";
+import { routeConfig as chatConfig } from "@/routes/chat";
 import { routeConfig as booksConfig } from "@/routes/books";
 import { routeConfig as tenantsConfig } from "@/routes/tenants";
 import { routeConfig as featuresConfig } from "@/routes/features";
@@ -34,6 +35,7 @@ import { routeConfig as fileManagementConfig } from "@/routes/file-management/ro
 import { routeConfig as identityConfig } from "@/routes/identity/route-config";
 import { routeConfig as openiddictConfig } from "@/routes/openiddict/route-config";
 import { routeConfig as saasConfig } from "@/routes/saas/route-config";
+import { routeConfig as cmsConfig } from "@/routes/cms/route-config";
 import type { MenuRoute } from "./route-config-types";
 
 export type { MenuRoute } from "./route-config-types";
@@ -41,6 +43,7 @@ export type { MenuRoute } from "./route-config-types";
 export const menuRoutes: MenuRoute[] = [
   ...homeConfig,
   ...profileConfig,
+  ...chatConfig,
   ...booksConfig,
   ...tenantsConfig,
   ...featuresConfig,
@@ -52,4 +55,5 @@ export const menuRoutes: MenuRoute[] = [
   ...identityConfig,
   ...openiddictConfig,
   ...saasConfig,
+  ...cmsConfig,
 ];

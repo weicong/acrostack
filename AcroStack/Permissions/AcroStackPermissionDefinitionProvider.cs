@@ -88,6 +88,61 @@ public class AcroStackPermissionDefinitionProvider : PermissionDefinitionProvide
         // GDPR — mirrors ABP Commercial GDPR Pro (personal data export/delete).
         myGroup.AddPermission(
             AcroStackPermissions.Gdpr.Default, L("Permission:Gdpr"));
+
+        // CMS Kit — mirrors ABP Commercial CMS Kit Pro.
+        var cmsPagesPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.Pages.Default, L("Permission:Cms.Pages"));
+        cmsPagesPermission.AddChild(
+            AcroStackPermissions.Cms.Pages.Create, L("Permission:Cms.Pages.Create"));
+        cmsPagesPermission.AddChild(
+            AcroStackPermissions.Cms.Pages.Update, L("Permission:Cms.Pages.Update"));
+        cmsPagesPermission.AddChild(
+            AcroStackPermissions.Cms.Pages.Delete, L("Permission:Cms.Pages.Delete"));
+
+        var cmsBlogsPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.Blogs.Default, L("Permission:Cms.Blogs"));
+        cmsBlogsPermission.AddChild(
+            AcroStackPermissions.Cms.Blogs.Create, L("Permission:Cms.Blogs.Create"));
+        cmsBlogsPermission.AddChild(
+            AcroStackPermissions.Cms.Blogs.Update, L("Permission:Cms.Blogs.Update"));
+        cmsBlogsPermission.AddChild(
+            AcroStackPermissions.Cms.Blogs.Delete, L("Permission:Cms.Blogs.Delete"));
+
+        var cmsBlogPostsPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.BlogPosts.Default, L("Permission:Cms.BlogPosts"));
+        cmsBlogPostsPermission.AddChild(
+            AcroStackPermissions.Cms.BlogPosts.Create, L("Permission:Cms.BlogPosts.Create"));
+        cmsBlogPostsPermission.AddChild(
+            AcroStackPermissions.Cms.BlogPosts.Update, L("Permission:Cms.BlogPosts.Update"));
+        cmsBlogPostsPermission.AddChild(
+            AcroStackPermissions.Cms.BlogPosts.Delete, L("Permission:Cms.BlogPosts.Delete"));
+
+        var cmsTagsPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.Tags.Default, L("Permission:Cms.Tags"));
+        cmsTagsPermission.AddChild(
+            AcroStackPermissions.Cms.Tags.Create, L("Permission:Cms.Tags.Create"));
+        cmsTagsPermission.AddChild(
+            AcroStackPermissions.Cms.Tags.Update, L("Permission:Cms.Tags.Update"));
+        cmsTagsPermission.AddChild(
+            AcroStackPermissions.Cms.Tags.Delete, L("Permission:Cms.Tags.Delete"));
+
+        var cmsCommentsPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.Comments.Default, L("Permission:Cms.Comments"));
+        cmsCommentsPermission.AddChild(
+            AcroStackPermissions.Cms.Comments.Create, L("Permission:Cms.Comments.Create"));
+        cmsCommentsPermission.AddChild(
+            AcroStackPermissions.Cms.Comments.Update, L("Permission:Cms.Comments.Update"));
+        cmsCommentsPermission.AddChild(
+            AcroStackPermissions.Cms.Comments.Delete, L("Permission:Cms.Comments.Delete"));
+
+        var cmsMenusPermission = myGroup.AddPermission(
+            AcroStackPermissions.Cms.Menus.Default, L("Permission:Cms.Menus"));
+        cmsMenusPermission.AddChild(
+            AcroStackPermissions.Cms.Menus.Create, L("Permission:Cms.Menus.Create"));
+        cmsMenusPermission.AddChild(
+            AcroStackPermissions.Cms.Menus.Update, L("Permission:Cms.Menus.Update"));
+        cmsMenusPermission.AddChild(
+            AcroStackPermissions.Cms.Menus.Delete, L("Permission:Cms.Menus.Delete"));
     }
 
     private static LocalizableString L(string name)

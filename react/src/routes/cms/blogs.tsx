@@ -1,0 +1,21 @@
+import { createRoute } from "@tanstack/react-router";
+import { Route as rootRoute } from "../__root";
+import { BlogsPage } from "@/pages/cms/BlogsPage";
+import { createPermissionGuard } from "@/lib/routing/guards";
+import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
+import { News20Regular } from "@fluentui/react-icons";
+
+/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
+export const menu: RouteMenuConfig = {
+  nameKey: "Menu:Cms.Blogs",
+  icon: News20Regular,
+  order: 2,
+  requiredPolicy: "AcroStack.Cms.Blogs",
+};
+
+export const Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/cms/blogs",
+  component: BlogsPage,
+  beforeLoad: createPermissionGuard("AcroStack.Cms.Blogs"),
+});

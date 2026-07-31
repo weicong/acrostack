@@ -15,6 +15,7 @@ import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as AuditLogsRouteImport } from './routes/audit-logs'
 import { Route as BackgroundJobsRouteImport } from './routes/background-jobs'
 import { Route as BooksRouteImport } from './routes/books'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as GdprRouteImport } from './routes/gdpr'
 import { Route as IdentityRouteRouteImport } from './routes/identity/route'
@@ -26,6 +27,12 @@ import { Route as AccountForgotPasswordRouteImport } from './routes/account/forg
 import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
+import { Route as CmsBlogPostsRouteImport } from './routes/cms/blog-posts'
+import { Route as CmsBlogsRouteImport } from './routes/cms/blogs'
+import { Route as CmsCommentsRouteImport } from './routes/cms/comments'
+import { Route as CmsMenusRouteImport } from './routes/cms/menus'
+import { Route as CmsPagesRouteImport } from './routes/cms/pages'
+import { Route as CmsTagsRouteImport } from './routes/cms/tags'
 import { Route as FileManagementIndexRouteImport } from './routes/file-management/index'
 import { Route as IdentityIndexRouteImport } from './routes/identity/index'
 import { Route as IdentityPermissionsRouteImport } from './routes/identity/permissions'
@@ -63,6 +70,11 @@ const BackgroundJobsRoute = BackgroundJobsRouteImport.update({
 const BooksRoute = BooksRouteImport.update({
   id: '/books',
   path: '/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeaturesRoute = FeaturesRouteImport.update({
@@ -120,6 +132,36 @@ const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => AccountRouteRoute,
 } as any)
+const CmsBlogPostsRoute = CmsBlogPostsRouteImport.update({
+  id: '/cms/blog-posts',
+  path: '/cms/blog-posts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CmsBlogsRoute = CmsBlogsRouteImport.update({
+  id: '/cms/blogs',
+  path: '/cms/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CmsCommentsRoute = CmsCommentsRouteImport.update({
+  id: '/cms/comments',
+  path: '/cms/comments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CmsMenusRoute = CmsMenusRouteImport.update({
+  id: '/cms/menus',
+  path: '/cms/menus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CmsPagesRoute = CmsPagesRouteImport.update({
+  id: '/cms/pages',
+  path: '/cms/pages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CmsTagsRoute = CmsTagsRouteImport.update({
+  id: '/cms/tags',
+  path: '/cms/tags',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FileManagementIndexRoute = FileManagementIndexRouteImport.update({
   id: '/file-management/',
   path: '/file-management/',
@@ -169,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/audit-logs': typeof AuditLogsRoute
   '/background-jobs': typeof BackgroundJobsRoute
   '/books': typeof BooksRoute
+  '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
   '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
@@ -178,6 +221,12 @@ export interface FileRoutesByFullPath {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/cms/blog-posts': typeof CmsBlogPostsRoute
+  '/cms/blogs': typeof CmsBlogsRoute
+  '/cms/comments': typeof CmsCommentsRoute
+  '/cms/menus': typeof CmsMenusRoute
+  '/cms/pages': typeof CmsPagesRoute
+  '/cms/tags': typeof CmsTagsRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
@@ -194,6 +243,7 @@ export interface FileRoutesByTo {
   '/audit-logs': typeof AuditLogsRoute
   '/background-jobs': typeof BackgroundJobsRoute
   '/books': typeof BooksRoute
+  '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
   '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
@@ -203,6 +253,12 @@ export interface FileRoutesByTo {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/cms/blog-posts': typeof CmsBlogPostsRoute
+  '/cms/blogs': typeof CmsBlogsRoute
+  '/cms/comments': typeof CmsCommentsRoute
+  '/cms/menus': typeof CmsMenusRoute
+  '/cms/pages': typeof CmsPagesRoute
+  '/cms/tags': typeof CmsTagsRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
@@ -222,6 +278,7 @@ export interface FileRoutesById {
   '/audit-logs': typeof AuditLogsRoute
   '/background-jobs': typeof BackgroundJobsRoute
   '/books': typeof BooksRoute
+  '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
   '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
@@ -231,6 +288,12 @@ export interface FileRoutesById {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/cms/blog-posts': typeof CmsBlogPostsRoute
+  '/cms/blogs': typeof CmsBlogsRoute
+  '/cms/comments': typeof CmsCommentsRoute
+  '/cms/menus': typeof CmsMenusRoute
+  '/cms/pages': typeof CmsPagesRoute
+  '/cms/tags': typeof CmsTagsRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
@@ -251,6 +314,7 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/background-jobs'
     | '/books'
+    | '/chat'
     | '/features'
     | '/gdpr'
     | '/profile'
@@ -260,6 +324,12 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/cms/blog-posts'
+    | '/cms/blogs'
+    | '/cms/comments'
+    | '/cms/menus'
+    | '/cms/pages'
+    | '/cms/tags'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
@@ -276,6 +346,7 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/background-jobs'
     | '/books'
+    | '/chat'
     | '/features'
     | '/gdpr'
     | '/profile'
@@ -285,6 +356,12 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/cms/blog-posts'
+    | '/cms/blogs'
+    | '/cms/comments'
+    | '/cms/menus'
+    | '/cms/pages'
+    | '/cms/tags'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
@@ -303,6 +380,7 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/background-jobs'
     | '/books'
+    | '/chat'
     | '/features'
     | '/gdpr'
     | '/profile'
@@ -312,6 +390,12 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/cms/blog-posts'
+    | '/cms/blogs'
+    | '/cms/comments'
+    | '/cms/menus'
+    | '/cms/pages'
+    | '/cms/tags'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
@@ -331,11 +415,18 @@ export interface RootRouteChildren {
   AuditLogsRoute: typeof AuditLogsRoute
   BackgroundJobsRoute: typeof BackgroundJobsRoute
   BooksRoute: typeof BooksRoute
+  ChatRoute: typeof ChatRoute
   FeaturesRoute: typeof FeaturesRoute
   GdprRoute: typeof GdprRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
   TenantsRoute: typeof TenantsRoute
+  CmsBlogPostsRoute: typeof CmsBlogPostsRoute
+  CmsBlogsRoute: typeof CmsBlogsRoute
+  CmsCommentsRoute: typeof CmsCommentsRoute
+  CmsMenusRoute: typeof CmsMenusRoute
+  CmsPagesRoute: typeof CmsPagesRoute
+  CmsTagsRoute: typeof CmsTagsRoute
   OpeniddictApplicationsRoute: typeof OpeniddictApplicationsRoute
   OpeniddictScopesRoute: typeof OpeniddictScopesRoute
   SaasEditionsRoute: typeof SaasEditionsRoute
@@ -384,6 +475,13 @@ declare module '@tanstack/react-router' {
       path: '/books'
       fullPath: '/books'
       preLoaderRoute: typeof BooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/features': {
@@ -462,6 +560,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/reset-password'
       preLoaderRoute: typeof AccountResetPasswordRouteImport
       parentRoute: typeof AccountRouteRoute
+    }
+    '/cms/blog-posts': {
+      id: '/cms/blog-posts'
+      path: '/cms/blog-posts'
+      fullPath: '/cms/blog-posts'
+      preLoaderRoute: typeof CmsBlogPostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cms/blogs': {
+      id: '/cms/blogs'
+      path: '/cms/blogs'
+      fullPath: '/cms/blogs'
+      preLoaderRoute: typeof CmsBlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cms/comments': {
+      id: '/cms/comments'
+      path: '/cms/comments'
+      fullPath: '/cms/comments'
+      preLoaderRoute: typeof CmsCommentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cms/menus': {
+      id: '/cms/menus'
+      path: '/cms/menus'
+      fullPath: '/cms/menus'
+      preLoaderRoute: typeof CmsMenusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cms/pages': {
+      id: '/cms/pages'
+      path: '/cms/pages'
+      fullPath: '/cms/pages'
+      preLoaderRoute: typeof CmsPagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cms/tags': {
+      id: '/cms/tags'
+      path: '/cms/tags'
+      fullPath: '/cms/tags'
+      preLoaderRoute: typeof CmsTagsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/file-management/': {
       id: '/file-management/'
@@ -568,11 +708,18 @@ const rootRouteChildren: RootRouteChildren = {
   AuditLogsRoute: AuditLogsRoute,
   BackgroundJobsRoute: BackgroundJobsRoute,
   BooksRoute: BooksRoute,
+  ChatRoute: ChatRoute,
   FeaturesRoute: FeaturesRoute,
   GdprRoute: GdprRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
   TenantsRoute: TenantsRoute,
+  CmsBlogPostsRoute: CmsBlogPostsRoute,
+  CmsBlogsRoute: CmsBlogsRoute,
+  CmsCommentsRoute: CmsCommentsRoute,
+  CmsMenusRoute: CmsMenusRoute,
+  CmsPagesRoute: CmsPagesRoute,
+  CmsTagsRoute: CmsTagsRoute,
   OpeniddictApplicationsRoute: OpeniddictApplicationsRoute,
   OpeniddictScopesRoute: OpeniddictScopesRoute,
   SaasEditionsRoute: SaasEditionsRoute,

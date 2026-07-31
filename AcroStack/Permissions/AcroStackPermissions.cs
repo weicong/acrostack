@@ -109,4 +109,62 @@ public static class AcroStackPermissions
     {
         public const string Default = GroupName + ".Gdpr";
     }
+
+    /// <summary>
+    /// CMS Kit permissions — mirrors ABP Commercial CMS Kit Pro module.
+    /// The open-source ABP ships no Pages/Blogging/Comments/Reactions/Menus
+    /// feature; these permissions guard our custom AppServices.
+    /// </summary>
+    public static class Cms
+    {
+        public const string GroupName = AcroStackPermissions.GroupName + ".Cms";
+
+        public static class Pages
+        {
+            public const string Default = GroupName + ".Pages";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class Blogs
+        {
+            public const string Default = GroupName + ".Blogs";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class BlogPosts
+        {
+            public const string Default = GroupName + ".BlogPosts";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class Tags
+        {
+            public const string Default = GroupName + ".Tags";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class Comments
+        {
+            public const string Default = GroupName + ".Comments";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+
+        public static class Menus
+        {
+            public const string Default = GroupName + ".Menus";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+    }
 }
