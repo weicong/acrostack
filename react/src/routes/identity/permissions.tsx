@@ -9,7 +9,6 @@ import { Shield20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpPermissionManagement::Permissions",
   icon: Shield20Regular,
-  order: 7,
   requiredPolicy: "AbpIdentity.Roles",
 };
 

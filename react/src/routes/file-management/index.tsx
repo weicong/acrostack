@@ -9,7 +9,7 @@ import { Folder20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:FileManagement",
   icon: Folder20Regular,
-  order: 15,
+  order: 30,
   requiredPolicy: "AcroStack.FileManagement",
 };
 

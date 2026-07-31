@@ -20,7 +20,7 @@ export const routeConfig: MenuRoute[] = [
     menu: {
       nameKey: "Menu:Cms",
       icon: Apps20Regular,
-      order: 130,
+      order: 40,
       children: [
         asChild("/pages", pagesMenu),
         asChild("/blogs", blogsMenu),

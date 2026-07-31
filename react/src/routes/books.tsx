@@ -18,7 +18,7 @@ export type BooksSearch = z.infer<typeof booksSearchSchema>;
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:Books",
   icon: Book20Regular,
-  order: 3,
+  order: 10,
   requiredPolicy: "AcroStack.Books",
 };
 

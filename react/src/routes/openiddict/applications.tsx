@@ -8,7 +8,6 @@ import { Key20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpOpenIddict::Applications",
   icon: Key20Regular,
-  order: 12,
   requiredPolicy: "AcroStack.OpenIddictManagement.Applications",
 };
 

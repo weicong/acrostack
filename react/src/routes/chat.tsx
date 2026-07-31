@@ -9,7 +9,7 @@ import { Chat20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:Chat",
   icon: Chat20Regular,
-  order: 5,
+  order: 20,
   requiresAuth: true,
 };
 

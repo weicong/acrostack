@@ -8,7 +8,6 @@ import { Shield20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpOpenIddict::Scopes",
   icon: Shield20Regular,
-  order: 13,
   requiredPolicy: "AcroStack.OpenIddictManagement.Scopes",
 };
 

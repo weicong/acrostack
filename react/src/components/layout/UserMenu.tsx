@@ -3,8 +3,10 @@ import {
   Settings20Regular,
   Desktop20Regular,
   Person20Regular,
+  PersonInfo20Regular,
 } from "@fluentui/react-icons";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "@tanstack/react-router";
 import {
   Button,
   Menu,
@@ -49,6 +51,7 @@ export function UserMenu() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const currentUser = useCurrentUser();
+  const navigate = useNavigate();
   const styles = useStyles();
 
   const displayName =
@@ -90,6 +93,14 @@ export function UserMenu() {
           )}
         </div>
         <MenuDivider />
+        <MenuItem
+          onClick={() => {
+            void navigate({ to: "/profile" });
+          }}
+        >
+          <PersonInfo20Regular />
+          {t("AbpIdentity::PersonalInfo")}
+        </MenuItem>
         <MenuItem>
           <a href={getBackendAccountUrl("/account/manage")} className={styles.menuLink}>
             <Settings20Regular />

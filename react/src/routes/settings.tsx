@@ -9,7 +9,7 @@ import { Settings20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpSettingManagement::Settings",
   icon: Settings20Regular,
-  order: 9,
+  order: 160,
   requiredPolicy: "AbpSettingManagement.Emailing",
 };
 

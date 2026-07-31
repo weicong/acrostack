@@ -9,7 +9,6 @@ import { People20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpIdentity::Users",
   icon: People20Regular,
-  order: 5,
   requiredPolicy: "AbpIdentity.Users",
 };
 

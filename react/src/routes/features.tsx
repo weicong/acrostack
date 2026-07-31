@@ -9,7 +9,7 @@ import { Sparkle20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpFeatureManagement::Features",
   icon: Sparkle20Regular,
-  order: 8,
+  order: 130,
   requiredPolicy: "AbpFeatureManagement.ManageHostFeatures",
 };
 

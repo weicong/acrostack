@@ -9,7 +9,6 @@ import { Channel20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:SaaS.Editions",
   icon: Channel20Regular,
-  order: 14,
   requiredPolicy: "AcroStack.SaaS.Editions",
 };
 

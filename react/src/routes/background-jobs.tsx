@@ -8,7 +8,7 @@ import { Clock20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpBackgroundJobs::BackgroundJobs",
   icon: Clock20Regular,
-  order: 11,
+  order: 150,
   requiredPolicy: "AcroStack.BackgroundJobs",
 };
 

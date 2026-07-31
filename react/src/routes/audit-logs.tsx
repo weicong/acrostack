@@ -8,7 +8,7 @@ import { History20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "AbpAuditLogging::AuditLogs",
   icon: History20Regular,
-  order: 10,
+  order: 140,
   requiredPolicy: "AcroStack.AuditLogging",
 };
 

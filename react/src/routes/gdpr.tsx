@@ -9,7 +9,7 @@ import { ShieldKeyhole20Regular } from "@fluentui/react-icons";
 export const menu: RouteMenuConfig = {
   nameKey: "Menu:Gdpr",
   icon: ShieldKeyhole20Regular,
-  order: 16,
+  order: 200,
   requiredPolicy: "AcroStack.Gdpr",
 };
 
