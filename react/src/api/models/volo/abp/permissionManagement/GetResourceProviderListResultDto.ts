@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementResourcePermissionDefinitionDto } from "./ResourcePermissionDefinitionDto.ts";
+import type { VoloCmsKitAdminMenusPermissionLookupDto } from "../../cmsKit/admin/menus/PermissionLookupDto.ts";
 
 /**
  * @type object
@@ -9,5 +9,5 @@ export type VoloAbpPermissionManagementGetResourceProviderListResultDto = {
   /**
    * @type array | undefined
    */
-  providers?: VoloAbpPermissionManagementResourcePermissionDefinitionDto[] | null;
+  providers?: VoloCmsKitAdminMenusPermissionLookupDto[] | null;
 };

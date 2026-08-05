@@ -28,6 +28,10 @@ public class UserMessage : FullAuditedAggregateRoot<Guid>, IMultiTenant
 
     public DateTime? ReadTime { get; set; }
 
+    // IsDeleted is inherited from FullAuditedAggregateRoot (ISoftDelete).
+    // ABP's soft-delete query filter automatically excludes records where
+    // IsDeleted == true, keeping both sides of a deleted message in sync.
+
     protected UserMessage() { }
 
     public UserMessage(

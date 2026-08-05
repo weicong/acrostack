@@ -15,21 +15,19 @@ import {
 } from "@fluentui/react-components";
 import { z } from "zod";
 import { useAppForm } from "@/components/form";
-import { useBlogPostCreate } from "@/api/hooks/blogPost/useBlogPostCreate";
-import { useBlogPostUpdate } from "@/api/hooks/blogPost/useBlogPostUpdate";
-import { useBlogGetList } from "@/api/hooks/blog/useBlogGetList";
-import type { AcroStackServicesDtosCmsBlogPostDto as BlogPostDto } from "@/api/models/acroStack/services/dtos/cms/BlogPostDto";
+import { useBlogPostAdminCreate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminCreate";
+import { useBlogPostAdminUpdate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminUpdate";
+import { useBlogAdminGetAllList } from "@/api/hooks/blogAdmin/useBlogAdminGetAllList";
+import type { VoloCmsKitAdminBlogsBlogPostListDto as BlogPostDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogPostListDto";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
 const blogPostSchema = z.object({
   blogId: z.string().min(1),
-  title: z.string().min(1).max(256),
-  slug: z.string().min(1).max(256),
-  excerpt: z.string().max(512),
-  coverImage: z.string().max(512),
-  content: z.string().min(1),
-  tags: z.string(),
+  title: z.string().min(1).max(64),
+  slug: z.string().min(2).max(256),
+  shortDescription: z.string().max(256),
+  content: z.string(),
 });
 
 type BlogPostFormValues = z.infer<typeof blogPostSchema>;
@@ -59,15 +57,6 @@ const useStyles = makeStyles({
   },
 });
 
-// ── Helpers ─────────────────────────────────────────────────────────
-
-function parseTags(raw: string): string[] {
-  return raw
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-}
-
 // ── Component ───────────────────────────────────────────────────────
 
 export function BlogPostFormDialog({
@@ -82,21 +71,24 @@ export function BlogPostFormDialog({
   const { dispatchToast } = useToastController();
   const isEdit = !!blogPost?.id;
 
-  const createMutation = useBlogPostCreate();
-  const updateMutation = useBlogPostUpdate();
+  const createMutation = useBlogPostAdminCreate();
+  const updateMutation = useBlogPostAdminUpdate();
 
-  const blogsQuery = useBlogGetList({ MaxResultCount: 1000 });
-  const blogs = useMemo(() => blogsQuery.data?.items ?? [], [blogsQuery.data]);
+  const blogsQuery = useBlogAdminGetAllList();
+  const blogs = useMemo(
+    () =>
+      (blogsQuery.data as { items?: Array<{ id?: string; name?: string | null }> } | undefined)
+        ?.items ?? [],
+    [blogsQuery.data],
+  );
 
   const form = useAppForm({
     defaultValues: {
       blogId: blogPost?.blogId ?? "",
       title: blogPost?.title ?? "",
       slug: blogPost?.slug ?? "",
-      excerpt: blogPost?.excerpt ?? "",
-      coverImage: blogPost?.coverImage ?? "",
+      shortDescription: blogPost?.shortDescription ?? "",
       content: blogPost?.content ?? "",
-      tags: (blogPost?.tags ?? []).join(", "),
     } satisfies BlogPostFormValues,
     validators: {
       onChange: ({ value }) => {
@@ -107,18 +99,17 @@ export function BlogPostFormDialog({
       },
     },
     onSubmit: ({ value }) => {
-      const tags = parseTags(value.tags);
       if (isEdit && blogPost?.id) {
-        const payload = {
-          title: value.title,
-          slug: value.slug,
-          content: value.content,
-          excerpt: value.excerpt || undefined,
-          coverImage: value.coverImage || undefined,
-          tags,
-        };
         updateMutation.mutate(
-          { id: blogPost.id, data: payload },
+          {
+            id: blogPost.id,
+            data: {
+              title: value.title,
+              slug: value.slug,
+              shortDescription: value.shortDescription || undefined,
+              content: value.content || undefined,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -130,17 +121,16 @@ export function BlogPostFormDialog({
           },
         );
       } else {
-        const payload = {
-          blogId: value.blogId,
-          title: value.title,
-          slug: value.slug,
-          content: value.content,
-          excerpt: value.excerpt || undefined,
-          coverImage: value.coverImage || undefined,
-          tags,
-        };
         createMutation.mutate(
-          { data: payload },
+          {
+            data: {
+              blogId: value.blogId,
+              title: value.title,
+              slug: value.slug,
+              shortDescription: value.shortDescription || undefined,
+              content: value.content || undefined,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -207,26 +197,14 @@ export function BlogPostFormDialog({
                     children={(field) => <field.TextField label={t("Cms:Slug")} required />}
                   />
                   <form.AppField
-                    name="excerpt"
-                    children={(field) => <field.TextareaField label={t("Cms:Excerpt")} />}
-                  />
-                  <form.AppField
-                    name="coverImage"
-                    children={(field) => <field.TextField label={t("Cms:CoverImage")} />}
+                    name="shortDescription"
+                    children={(field) => <field.TextareaField label={t("Cms:ShortDescription")} />}
                   />
                   <form.AppField
                     name="content"
                     children={(field) => (
-                      <field.TextareaField
-                        label={t("Cms:Content")}
-                        required
-                        textareaProps={{ rows: 8 }}
-                      />
+                      <field.TextareaField label={t("Cms:Content")} textareaProps={{ rows: 10 }} />
                     )}
-                  />
-                  <form.AppField
-                    name="tags"
-                    children={(field) => <field.TextField label={t("Cms:Tags")} />}
                   />
                   <div className={styles.actions}>
                     <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />

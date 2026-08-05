@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Badge,
+  Card,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -9,8 +10,12 @@ import {
   Link as FluentLink,
   makeStyles,
   SearchBox,
+  Tab,
+  TabList,
   Text,
   tokens,
+  type SelectTabData,
+  type SelectTabEvent,
 } from "@fluentui/react-components";
 import type { ColumnDef } from "@tanstack/react-table";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -20,10 +25,15 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGetList";
 import type { AcroStackServicesDtosAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/services/dtos/auditLogging/AuditLogDto";
+import { AuditLogStatisticsPanel } from "./AuditLogStatisticsPanel";
 
 type AuditLogItem = AuditLogDto;
+type AuditLogTabValue = "logs" | "statistics";
 
 const useStyles = makeStyles({
+  tabs: {
+    marginBottom: tokens.spacingVerticalS,
+  },
   toolbar: {
     display: "flex",
     flexWrap: "wrap",
@@ -49,9 +59,11 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-  changeItem: {
-    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalS}`,
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+  changeHeader: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalXXS,
+    marginBottom: tokens.spacingVerticalXS,
   },
   propertyChange: {
     paddingLeft: tokens.spacingHorizontalL,
@@ -74,6 +86,9 @@ const useStyles = makeStyles({
   },
   newValue: {
     color: tokens.colorPaletteGreenForeground1,
+  },
+  entityChangeCard: {
+    padding: tokens.spacingHorizontalS,
   },
 });
 
@@ -100,10 +115,26 @@ function changeTypeLabel(changeType: number, t: (key: string) => string): string
   }
 }
 
+function changeTypeBadgeColor(
+  changeType: number,
+): "success" | "warning" | "danger" | "informative" {
+  switch (changeType) {
+    case 0:
+      return "success";
+    case 1:
+      return "warning";
+    case 2:
+      return "danger";
+    default:
+      return "informative";
+  }
+}
+
 export function AuditLogsPage() {
   const { t } = useTranslation();
   const styles = useStyles();
   const [selectedLog, setSelectedLog] = useState<AuditLogItem | null>(null);
+  const [activeTab, setActiveTab] = useState<AuditLogTabValue>("logs");
 
   const tableState = useDataTableState({
     sorting: [{ id: "executionTime", desc: true }],
@@ -197,25 +228,45 @@ export function AuditLogsPage() {
     return () => clearTimeout(timer);
   }, [searchValue]);
 
+  const handleTabSelect = (_: SelectTabEvent, data: SelectTabData) => {
+    setActiveTab(data.value as AuditLogTabValue);
+  };
+
   return (
     <PageLayout title={t("AbpAuditLogging::AuditLogs")}>
-      <div className={styles.toolbar}>
-        <div className={styles.filters}>
-          <SearchBox
-            placeholder={t("AbpUi::Search")}
-            value={searchValue}
-            onChange={(_, data) => setSearchValue(data.value)}
-            appearance="outline"
-          />
-        </div>
-      </div>
+      <TabList
+        selectedValue={activeTab}
+        onTabSelect={handleTabSelect}
+        className={styles.tabs}
+        size="medium"
+      >
+        <Tab value="logs">{t("AbpAuditLogging::AuditLogs")}</Tab>
+        <Tab value="statistics">{t("AbpAuditLogging::Statistics")}</Tab>
+      </TabList>
 
-      <DataTable
-        table={table}
-        isLoading={query.isLoading}
-        isError={query.isError}
-        errorMessage={query.error ? String(query.error) : undefined}
-      />
+      {activeTab === "logs" && (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.filters}>
+              <SearchBox
+                placeholder={t("AbpUi::Search")}
+                value={searchValue}
+                onChange={(_, data) => setSearchValue(data.value)}
+                appearance="outline"
+              />
+            </div>
+          </div>
+
+          <DataTable
+            table={table}
+            isLoading={query.isLoading}
+            isError={query.isError}
+            errorMessage={query.error ? String(query.error) : undefined}
+          />
+        </>
+      )}
+
+      {activeTab === "statistics" && <AuditLogStatisticsPanel />}
 
       <Drawer
         open={selectedLog !== null}
@@ -286,27 +337,50 @@ export function AuditLogsPage() {
               {selectedLog.entityChanges && selectedLog.entityChanges.length > 0 && (
                 <>
                   <Text weight="semibold">{t("AbpAuditLogging::EntityChanges")}</Text>
-                  {selectedLog.entityChanges.map((change, idx) => (
-                    <div key={idx} className={styles.changeItem}>
-                      <Text weight="semibold">
-                        {changeTypeLabel(change.changeType ?? 0, t)} -{" "}
-                        {change.entityTypeFullName?.split(".").pop()}
-                      </Text>
-                      <Text size={200}>Entity ID: {change.entityId}</Text>
-                      {change.propertyChanges?.map((pc, pidx) => (
-                        <div key={pidx} className={styles.propertyChange}>
-                          <Text size={200}>
-                            {pc.propertyName}:{" "}
-                            <Text className={styles.originalValue}>
-                              {pc.originalValue ?? "null"}
-                            </Text>
-                            {" → "}
-                            <Text className={styles.newValue}>{pc.newValue ?? "null"}</Text>
+                  {selectedLog.entityChanges.map((change, idx) => {
+                    const changeType = change.changeType ?? 0;
+                    return (
+                      <Card key={idx} className={styles.entityChangeCard} size="small">
+                        <div className={styles.changeHeader}>
+                          <Text weight="semibold">
+                            <Badge
+                              appearance="filled"
+                              color={changeTypeBadgeColor(changeType)}
+                              size="small"
+                            >
+                              {changeTypeLabel(changeType, t)}
+                            </Badge>{" "}
+                            {change.entityTypeFullName?.split(".").pop() ?? "-"}
                           </Text>
+                          <Text size={200}>
+                            {t("AbpAuditLogging::EntityId")}: {change.entityId ?? "-"}
+                          </Text>
+                          {change.changeTime && (
+                            <Text size={200}>
+                              {t("AbpAuditLogging::ChangeTime")}:{" "}
+                              {new Date(change.changeTime).toLocaleString()}
+                            </Text>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  ))}
+                        {change.propertyChanges && change.propertyChanges.length > 0 && (
+                          <div>
+                            {change.propertyChanges.map((pc, pidx) => (
+                              <div key={pidx} className={styles.propertyChange}>
+                                <Text size={200}>
+                                  <Text weight="semibold">{pc.propertyName}</Text>:{" "}
+                                  <Text className={styles.originalValue}>
+                                    {pc.originalValue ?? "null"}
+                                  </Text>
+                                  {" → "}
+                                  <Text className={styles.newValue}>{pc.newValue ?? "null"}</Text>
+                                </Text>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Card>
+                    );
+                  })}
                 </>
               )}
 

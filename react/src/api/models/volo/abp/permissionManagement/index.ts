@@ -8,7 +8,6 @@ export type { VoloAbpPermissionManagementGetResourceProviderListResultDto } from
 export type { VoloAbpPermissionManagementPermissionGrantInfoDto } from "./PermissionGrantInfoDto.ts";
 export type { VoloAbpPermissionManagementPermissionGroupDto } from "./PermissionGroupDto.ts";
 export type { VoloAbpPermissionManagementProviderInfoDto } from "./ProviderInfoDto.ts";
-export type { VoloAbpPermissionManagementResourcePermissionDefinitionDto } from "./ResourcePermissionDefinitionDto.ts";
 export type { VoloAbpPermissionManagementResourcePermissionGrantInfoDto } from "./ResourcePermissionGrantInfoDto.ts";
 export type { VoloAbpPermissionManagementResourcePermissionWithProdiverGrantInfoDto } from "./ResourcePermissionWithProdiverGrantInfoDto.ts";
 export type { VoloAbpPermissionManagementSearchProviderKeyInfo } from "./SearchProviderKeyInfo.ts";

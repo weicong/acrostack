@@ -70,4 +70,10 @@ export type AcroStackServicesDtosFileManagementFileEntryDto = {
    * @type string | undefined
    */
   folderId?: string | null;
+  /**
+   * @description
+   * Format: `int32`
+   * @type integer | undefined
+   */
+  currentVersion?: number;
 };

@@ -18,6 +18,18 @@ export const ChatClientMethods = {
   ReceiveMessage: "ReceiveMessage",
   MessagesRead: "MessagesRead",
   UnreadCountChanged: "UnreadCountChanged",
+  MessageEdited: "MessageEdited",
+  MessageDeleted: "MessageDeleted",
+  ReactionChanged: "ReactionChanged",
+  UserOnlineStatusChanged: "UserOnlineStatusChanged",
+  TypingNotification: "TypingNotification",
+  StopTypingNotification: "StopTypingNotification",
+} as const;
+
+/** Server-side hub method names the client can invoke. */
+export const ChatHubMethods = {
+  SendTypingNotification: "SendTypingNotification",
+  StopTypingNotification: "StopTypingNotification",
 } as const;
 
 /**

@@ -1,5 +1,6 @@
 using Volo.Abp.GlobalFeatures;
 using Volo.Abp.Threading;
+using Volo.CmsKit.GlobalFeatures;
 
 namespace AcroStack;
 
@@ -11,10 +12,12 @@ public static class AcroStackGlobalFeatureConfigurator
     {
         OneTimeRunner.Run(() =>
         {
-           /* You can configure (enable/disable) global features of the used modules here.
-            * Please refer to the documentation to learn more about the Global Features System:
-            * https://docs.abp.io/en/abp/latest/Global-Features
-            */
+            /* Enable the open-source CMS Kit features used by this project.
+             * Only the core 6 are enabled (Pages, Blogs, Tags, Comments,
+             * Reactions, Menus). Ratings / Media / GlobalResources stay off.
+             * See https://docs.abp.io/en/abp/latest/Global-Features */
+            var cmsKit = GlobalFeatureManager.Instance.Modules.CmsKit();
+            cmsKit.EnableAll();
         });
     }
 }

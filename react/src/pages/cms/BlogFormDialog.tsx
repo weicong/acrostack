@@ -14,16 +14,15 @@ import {
 } from "@fluentui/react-components";
 import { z } from "zod";
 import { useAppForm } from "@/components/form";
-import { useBlogCreate } from "@/api/hooks/blog/useBlogCreate";
-import { useBlogUpdate } from "@/api/hooks/blog/useBlogUpdate";
-import type { AcroStackServicesDtosCmsBlogDto as BlogDto } from "@/api/models/acroStack/services/dtos/cms/BlogDto";
+import { useBlogAdminCreate } from "@/api/hooks/blogAdmin/useBlogAdminCreate";
+import { useBlogAdminUpdate } from "@/api/hooks/blogAdmin/useBlogAdminUpdate";
+import type { VoloCmsKitAdminBlogsBlogDto as BlogDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
 const blogSchema = z.object({
-  name: z.string().min(1).max(256),
-  slug: z.string().min(1).max(128),
-  description: z.string().max(512),
+  name: z.string().min(1).max(64),
+  slug: z.string().min(1).max(64),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -62,14 +61,13 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
   const { dispatchToast } = useToastController();
   const isEdit = !!blog?.id;
 
-  const createMutation = useBlogCreate();
-  const updateMutation = useBlogUpdate();
+  const createMutation = useBlogAdminCreate();
+  const updateMutation = useBlogAdminUpdate();
 
   const form = useAppForm({
     defaultValues: {
       name: blog?.name ?? "",
       slug: blog?.slug ?? "",
-      description: blog?.description ?? "",
     } satisfies BlogFormValues,
     validators: {
       onChange: ({ value }) => {
@@ -80,14 +78,16 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
       },
     },
     onSubmit: ({ value }) => {
-      const payload = {
-        name: value.name,
-        slug: value.slug,
-        description: value.description || undefined,
-      };
       if (isEdit && blog?.id) {
         updateMutation.mutate(
-          { id: blog.id, data: payload },
+          {
+            id: blog.id,
+            data: {
+              name: value.name,
+              slug: value.slug,
+              concurrencyStamp: blog.concurrencyStamp ?? undefined,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -100,7 +100,12 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
         );
       } else {
         createMutation.mutate(
-          { data: payload },
+          {
+            data: {
+              name: value.name,
+              slug: value.slug,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -141,10 +146,6 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
                   <form.AppField
                     name="slug"
                     children={(field) => <field.TextField label={t("Cms:Slug")} required />}
-                  />
-                  <form.AppField
-                    name="description"
-                    children={(field) => <field.TextareaField label={t("Cms:Description")} />}
                   />
                   <div className={styles.actions}>
                     <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />

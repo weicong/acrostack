@@ -14,7 +14,7 @@ using AcroStack.Services.Dtos.Books;
 namespace AcroStack.Services.Books;
 
 [Authorize(AcroStackPermissions.Books.Default)]
-public class BookAppService : ApplicationService, IBookAppService
+public class BookAppService : AcroStackAppService, IBookAppService
 {
     private readonly IRepository<Book, Guid> _repository;
 

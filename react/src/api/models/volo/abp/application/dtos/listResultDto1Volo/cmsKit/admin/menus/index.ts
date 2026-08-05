@@ -1,0 +1,3 @@
+/* oxlint-disable */
+
+export type { VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./permissionLookupDtoVolo/cmsKit/admin/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";

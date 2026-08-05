@@ -1,0 +1,73 @@
+/* oxlint-disable */
+
+import type { AcroStackServicesDtosChatChatMessageDto } from "../acroStack/services/dtos/chat/ChatMessageDto.ts";
+
+/**
+ * @type object
+ */
+export type ChatSendMessageWithAttachmentStatus200Plain = AcroStackServicesDtosChatChatMessageDto;
+
+/**
+ * @type object
+ */
+export type ChatSendMessageWithAttachmentStatus200Json = AcroStackServicesDtosChatChatMessageDto;
+
+/**
+ * @type object
+ */
+export type ChatSendMessageWithAttachmentStatus200Json2 = AcroStackServicesDtosChatChatMessageDto;
+
+export type ChatSendMessageWithAttachmentStatus200 =
+  | ChatSendMessageWithAttachmentStatus200Plain
+  | ChatSendMessageWithAttachmentStatus200Json
+  | ChatSendMessageWithAttachmentStatus200Json2;
+
+/**
+ * @type object | undefined
+ */
+export type ChatSendMessageWithAttachmentData =
+  | {
+      /**
+       * @description
+       * Format: `uuid`
+       * @type string | undefined
+       */
+      TargetUserId?: string;
+      /**
+       * @type string | undefined
+       */
+      Text?: string;
+      /**
+       * @description
+       * Format: `binary`
+       * @type string | undefined
+       */
+      attachment?: Blob;
+    }
+  | undefined;
+
+/**
+ * @type object
+ */
+export type ChatSendMessageWithAttachmentRequestConfig = {
+  data?: ChatSendMessageWithAttachmentData;
+  pathParams?: never;
+  queryParams?: never;
+  headerParams?: never;
+  /**
+   * @type string
+   */
+  url: "/api/app/chat/messages/send-with-attachment";
+};
+
+/**
+ * @type object
+ */
+export type ChatSendMessageWithAttachmentResponses = {
+  "200": ChatSendMessageWithAttachmentStatus200;
+};
+
+/**
+ * @description Union of all possible responses
+ */
+export type ChatSendMessageWithAttachmentResponse = ChatSendMessageWithAttachmentStatus200;

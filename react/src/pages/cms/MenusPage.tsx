@@ -1,7 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Text, makeStyles, tokens, useToastController } from "@fluentui/react-components";
+import {
+  Badge,
+  Button,
+  Text,
+  makeStyles,
+  tokens,
+  useToastController,
+} from "@fluentui/react-components";
 import {
   Add20Regular,
   Delete20Regular,
@@ -11,13 +18,12 @@ import {
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import { useMenuGetList, menuGetListQueryKey } from "@/api/hooks/menu/useMenuGetList";
-import { useMenuGetByName, menuGetByNameQueryKey } from "@/api/hooks/menu/useMenuGetByName";
-import { useMenuDelete } from "@/api/hooks/menu/useMenuDelete";
-import { useMenuItemDelete } from "@/api/hooks/menuItem/useMenuItemDelete";
-import type { AcroStackServicesDtosCmsMenuDto as MenuDto } from "@/api/models/acroStack/services/dtos/cms/MenuDto";
-import type { AcroStackServicesDtosCmsMenuItemDto as MenuItemDto } from "@/api/models/acroStack/services/dtos/cms/MenuItemDto";
-import { MenuFormDialog } from "./MenuFormDialog";
+import {
+  useMenuItemAdminGetList,
+  menuItemAdminGetListQueryKey,
+} from "@/api/hooks/menuItemAdmin/useMenuItemAdminGetList";
+import { useMenuItemAdminDelete } from "@/api/hooks/menuItemAdmin/useMenuItemAdminDelete";
+import type { VoloCmsKitAdminMenusMenuItemWithDetailsDto as MenuItemDto } from "@/api/models/volo/cmsKit/admin/menus/MenuItemWithDetailsDto";
 import { MenuItemFormDialog, type MenuItemParentOption } from "./MenuItemFormDialog";
 
 // ── Tree helpers ────────────────────────────────────────────────────
@@ -42,6 +48,12 @@ function buildMenuTree(items: MenuItemDto[]): MenuTreeNode[] {
       roots.push(node);
     }
   }
+  // Sort by order at each level
+  const sortNodes = (nodes: MenuTreeNode[]) => {
+    nodes.sort((a, b) => (a.item.order ?? 0) - (b.item.order ?? 0));
+    nodes.forEach((n) => sortNodes(n.children));
+  };
+  sortNodes(roots);
   return roots;
 }
 
@@ -67,28 +79,18 @@ function flattenTreeForParentOptions(
 // ── Styles ──────────────────────────────────────────────────────────
 
 const useStyles = makeStyles({
-  root: {
+  toolbar: {
     display: "flex",
-    gap: tokens.spacingHorizontalM,
-    alignItems: "flex-start",
+    justifyContent: "flex-end",
+    marginBottom: tokens.spacingHorizontalM,
   },
   pane: {
     display: "flex",
     flexDirection: "column",
-    gap: tokens.spacingVerticalS,
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     borderRadius: tokens.borderRadiusMedium,
     backgroundColor: tokens.colorNeutralBackground1,
     overflow: "hidden",
-  },
-  leftPane: {
-    width: "280px",
-    minWidth: "240px",
-    flexShrink: 0,
-  },
-  rightPane: {
-    flex: 1,
-    minWidth: 0,
   },
   paneHeader: {
     display: "flex",
@@ -107,8 +109,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     padding: tokens.spacingVerticalS,
     gap: tokens.spacingVerticalXXS,
-    maxHeight: "60vh",
-    overflowY: "auto",
+    minHeight: "200px",
   },
   menuItemRow: {
     display: "flex",
@@ -139,38 +140,13 @@ const useStyles = makeStyles({
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
-  menuRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
-    cursor: "pointer",
-    width: "100%",
-    border: "none",
-    backgroundColor: "transparent",
-    textAlign: "left" as const,
-    borderRadius: tokens.borderRadiusSmall,
-    "&:hover": {
-      backgroundColor: tokens.colorNeutralBackground1Hover,
-    },
-  },
-  menuRowSelected: {
-    backgroundColor: tokens.colorBrandBackground2,
-    "&:hover": {
-      backgroundColor: tokens.colorBrandBackground2Hover,
-    },
-  },
-  menuName: {
-    flex: 1,
-    minWidth: 0,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
   rowActions: {
     display: "flex",
     gap: tokens.spacingHorizontalXXS,
     flexShrink: 0,
+  },
+  inactiveBadge: {
+    marginLeft: tokens.spacingHorizontalS,
   },
   emptyPane: {
     display: "flex",
@@ -192,76 +168,57 @@ export function MenusPage() {
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
 
-  const canCreate = isGranted("AcroStack.Cms.Menus.Create");
-  const canUpdate = isGranted("AcroStack.Cms.Menus.Update");
-  const canDelete = isGranted("AcroStack.Cms.Menus.Delete");
+  const canCreate = isGranted("CmsKit.Menus.Create");
+  const canUpdate = isGranted("CmsKit.Menus.Update");
+  const canDelete = isGranted("CmsKit.Menus.Delete");
 
-  const menuDeleteMutation = useMenuDelete();
-  const menuItemDeleteMutation = useMenuItemDelete();
+  const deleteMutation = useMenuItemAdminDelete();
 
-  const menusQuery = useMenuGetList();
-  const menus = useMemo(() => menusQuery.data?.items ?? [], [menusQuery.data]);
+  const itemsQuery = useMenuItemAdminGetList();
+  const items = useMemo(() => itemsQuery.data?.items ?? [], [itemsQuery.data]);
+  const menuTree = useMemo(() => buildMenuTree(items), [items]);
 
-  const [selectedMenuName, setSelectedMenuName] = useState<string | null>(null);
-  const [menuFormOpen, setMenuFormOpen] = useState(false);
-  const [editingMenu, setEditingMenu] = useState<MenuDto | undefined>();
-  const [deleteMenuId, setDeleteMenuId] = useState<string | null>(null);
-  const [menuItemFormOpen, setMenuItemFormOpen] = useState(false);
-  const [editingMenuItem, setEditingMenuItem] = useState<MenuItemDto | undefined>();
-  const [deleteMenuItemId, setDeleteMenuItemId] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<MenuItemDto | undefined>();
+  const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
 
-  const selectedMenuQuery = useMenuGetByName(
-    selectedMenuName ? { name: selectedMenuName } : undefined,
-    { query: { enabled: !!selectedMenuName } },
-  );
-
-  const selectedMenu = selectedMenuQuery.data as MenuDto | undefined;
-  const menuItems = useMemo(() => selectedMenu?.items ?? [], [selectedMenu?.items]);
-  const menuTree = useMemo(() => buildMenuTree(menuItems), [menuItems]);
   const parentOptions = useMemo(
-    () => flattenTreeForParentOptions(menuTree, 0, editingMenuItem?.id),
-    [menuTree, editingMenuItem?.id],
+    () => flattenTreeForParentOptions(menuTree, 0, editingItem?.id),
+    [menuTree, editingItem?.id],
   );
 
-  const selectedMenuId = useMemo(() => {
-    if (!selectedMenuName) return "";
-    return menus.find((m) => m.name === selectedMenuName)?.id ?? "";
-  }, [menus, selectedMenuName]);
-
-  // ── Menu handlers ────────────────────────────────────────────────
-  const handleCreateMenu = useCallback(() => {
-    setEditingMenu(undefined);
-    setMenuFormOpen(true);
-  }, []);
-
-  const handleEditMenu = useCallback((menu: MenuDto) => {
-    setEditingMenu(menu);
-    setMenuFormOpen(true);
-  }, []);
-
-  const handleSelectMenu = useCallback((name: string) => {
-    setSelectedMenuName(name);
-  }, []);
-
-  const handleDeleteMenu = useCallback((id: string) => {
-    setDeleteMenuId(id);
-  }, []);
-
-  const handleMenuFormSuccess = useCallback(() => {
-    setMenuFormOpen(false);
-    setEditingMenu(undefined);
-    void queryClient.invalidateQueries({ queryKey: menuGetListQueryKey() });
+  const invalidateList = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: menuItemAdminGetListQueryKey() });
   }, [queryClient]);
 
-  const handleDeleteMenuConfirm = useCallback(() => {
-    if (!deleteMenuId) return;
-    menuDeleteMutation.mutate(
-      { id: deleteMenuId },
+  const handleCreate = useCallback(() => {
+    setEditingItem(undefined);
+    setFormOpen(true);
+  }, []);
+
+  const handleEdit = useCallback((item: MenuItemDto) => {
+    setEditingItem(item);
+    setFormOpen(true);
+  }, []);
+
+  const handleDelete = useCallback((id: string) => {
+    setDeleteItemId(id);
+  }, []);
+
+  const handleFormSuccess = useCallback(() => {
+    setFormOpen(false);
+    setEditingItem(undefined);
+    invalidateList();
+  }, [invalidateList]);
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (!deleteItemId) return;
+    deleteMutation.mutate(
+      { id: deleteItemId },
       {
         onSuccess: () => {
-          setDeleteMenuId(null);
-          if (selectedMenuId === deleteMenuId) setSelectedMenuName(null);
-          void queryClient.invalidateQueries({ queryKey: menuGetListQueryKey() });
+          setDeleteItemId(null);
+          invalidateList();
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
         onError: (err) => {
@@ -269,56 +226,8 @@ export function MenusPage() {
         },
       },
     );
-  }, [deleteMenuId, menuDeleteMutation, selectedMenuId, queryClient, dispatchToast, t]);
+  }, [deleteItemId, deleteMutation, invalidateList, dispatchToast, t]);
 
-  // ── Menu item handlers ───────────────────────────────────────────
-  const handleCreateMenuItem = useCallback(() => {
-    setEditingMenuItem(undefined);
-    setMenuItemFormOpen(true);
-  }, []);
-
-  const handleEditMenuItem = useCallback((item: MenuItemDto) => {
-    setEditingMenuItem(item);
-    setMenuItemFormOpen(true);
-  }, []);
-
-  const handleDeleteMenuItem = useCallback((id: string) => {
-    setDeleteMenuItemId(id);
-  }, []);
-
-  const invalidateSelectedMenu = useCallback(() => {
-    void queryClient.invalidateQueries({ queryKey: menuGetListQueryKey() });
-    if (selectedMenuName) {
-      void queryClient.invalidateQueries({
-        queryKey: menuGetByNameQueryKey({ name: selectedMenuName }),
-      });
-    }
-  }, [queryClient, selectedMenuName]);
-
-  const handleMenuItemFormSuccess = useCallback(() => {
-    setMenuItemFormOpen(false);
-    setEditingMenuItem(undefined);
-    invalidateSelectedMenu();
-  }, [invalidateSelectedMenu]);
-
-  const handleDeleteMenuItemConfirm = useCallback(() => {
-    if (!deleteMenuItemId) return;
-    menuItemDeleteMutation.mutate(
-      { id: deleteMenuItemId },
-      {
-        onSuccess: () => {
-          setDeleteMenuItemId(null);
-          invalidateSelectedMenu();
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  }, [deleteMenuItemId, menuItemDeleteMutation, invalidateSelectedMenu, dispatchToast, t]);
-
-  // ── Render helpers ───────────────────────────────────────────────
   const renderMenuTreeNode = (node: MenuTreeNode, depth: number) => {
     const item = node.item;
     const paddingLeft = `${tokens.spacingHorizontalM} + ${depth * 20}px`;
@@ -326,7 +235,19 @@ export function MenusPage() {
       <div key={item.id ?? depth}>
         <div className={styles.menuItemRow} style={{ paddingLeft: `calc(${paddingLeft})` }}>
           <div className={styles.menuItemInfo}>
-            <span className={styles.menuItemName}>{item.displayName || "-"}</span>
+            <span className={styles.menuItemName}>
+              {item.displayName || "-"}
+              {item.isActive === false && (
+                <Badge
+                  className={styles.inactiveBadge}
+                  appearance="filled"
+                  color="severe"
+                  size="small"
+                >
+                  {t("Cms:Inactive")}
+                </Badge>
+              )}
+            </span>
             {item.url && <span className={styles.menuItemUrl}>{item.url}</span>}
           </div>
           {(canUpdate || canDelete) && (
@@ -336,7 +257,7 @@ export function MenusPage() {
                   size="small"
                   appearance="subtle"
                   icon={<Edit20Regular />}
-                  onClick={() => handleEditMenuItem(item)}
+                  onClick={() => handleEdit(item)}
                   aria-label={t("AbpUi::Edit")}
                   title={t("AbpUi::Edit")}
                 />
@@ -346,7 +267,7 @@ export function MenusPage() {
                   size="small"
                   appearance="subtle"
                   icon={<Delete20Regular />}
-                  onClick={() => item.id && handleDeleteMenuItem(item.id)}
+                  onClick={() => item.id && handleDelete(item.id)}
                   aria-label={t("AbpUi::Delete")}
                   title={t("AbpUi::Delete")}
                 />
@@ -361,151 +282,49 @@ export function MenusPage() {
 
   return (
     <PageLayout title={t("Cms:Menus")}>
-      <div className={styles.root}>
-        {/* Left pane: menus list */}
-        <div className={`${styles.pane} ${styles.leftPane}`}>
-          <div className={styles.paneHeader}>
-            <Text className={styles.paneTitle}>{t("Cms:Menus")}</Text>
-            {canCreate && (
-              <Button
-                size="small"
-                appearance="primary"
-                icon={<Add20Regular />}
-                onClick={handleCreateMenu}
-              >
-                {t("Cms:NewMenu")}
-              </Button>
-            )}
-          </div>
-          <div className={styles.paneBody}>
-            {menusQuery.isLoading ? (
-              <Text size={200}>{t("AbpUi::Loading")}</Text>
-            ) : menus.length === 0 ? (
-              <div className={styles.emptyPane}>
-                <Navigation20Regular fontSize={24} />
-                <Text size={200}>{t("Cms:NoMenus")}</Text>
-              </div>
-            ) : (
-              menus.map((menu) => {
-                const isSelected = menu.name === selectedMenuName;
-                return (
-                  <div
-                    key={menu.id}
-                    className={`${styles.menuRow} ${isSelected ? styles.menuRowSelected : ""}`}
-                    onClick={() => menu.name && handleSelectMenu(menu.name)}
-                  >
-                    <span className={styles.menuName}>{menu.name || "-"}</span>
-                    {(canUpdate || canDelete) && (
-                      <div className={styles.rowActions}>
-                        {canUpdate && (
-                          <Button
-                            size="small"
-                            appearance="subtle"
-                            icon={<Edit20Regular />}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditMenu(menu);
-                            }}
-                            aria-label={t("AbpUi::Edit")}
-                            title={t("AbpUi::Edit")}
-                          />
-                        )}
-                        {canDelete && (
-                          <Button
-                            size="small"
-                            appearance="subtle"
-                            icon={<Delete20Regular />}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (menu.id) handleDeleteMenu(menu.id);
-                            }}
-                            aria-label={t("AbpUi::Delete")}
-                            title={t("AbpUi::Delete")}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
+      <div className={styles.toolbar}>
+        {canCreate && (
+          <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
+            {t("Cms:NewMenuItem")}
+          </Button>
+        )}
+      </div>
 
-        {/* Right pane: menu items tree */}
-        <div className={`${styles.pane} ${styles.rightPane}`}>
-          <div className={styles.paneHeader}>
-            <Text className={styles.paneTitle}>
-              {selectedMenuName
-                ? `${t("Cms:MenuItems")} — ${selectedMenuName}`
-                : t("Cms:MenuItems")}
-            </Text>
-            {canCreate && selectedMenuName && (
-              <Button
-                size="small"
-                appearance="primary"
-                icon={<Add20Regular />}
-                onClick={handleCreateMenuItem}
-              >
-                {t("Cms:NewMenuItem")}
-              </Button>
-            )}
-          </div>
-          <div className={styles.paneBody}>
-            {!selectedMenuName ? (
-              <div className={styles.emptyPane}>
-                <Navigation20Regular fontSize={24} />
-                <Text size={200}>{t("Cms:SelectMenu")}</Text>
-              </div>
-            ) : selectedMenuQuery.isLoading ? (
-              <Text size={200}>{t("AbpUi::Loading")}</Text>
-            ) : menuTree.length === 0 ? (
-              <div className={styles.emptyPane}>
-                <Text size={200}>{t("Cms:NoMenuItems")}</Text>
-              </div>
-            ) : (
-              menuTree.map((node) => renderMenuTreeNode(node, 0))
-            )}
-          </div>
+      <div className={styles.pane}>
+        <div className={styles.paneHeader}>
+          <Text className={styles.paneTitle}>{t("Cms:MenuItems")}</Text>
+        </div>
+        <div className={styles.paneBody}>
+          {itemsQuery.isLoading ? (
+            <Text size={200}>{t("AbpUi::Loading")}</Text>
+          ) : menuTree.length === 0 ? (
+            <div className={styles.emptyPane}>
+              <Navigation20Regular fontSize={24} />
+              <Text size={200}>{t("Cms:NoMenuItems")}</Text>
+            </div>
+          ) : (
+            menuTree.map((node) => renderMenuTreeNode(node, 0))
+          )}
         </div>
       </div>
 
-      <MenuFormDialog
-        open={menuFormOpen}
-        onOpenChange={setMenuFormOpen}
-        menu={editingMenu}
-        onSuccess={handleMenuFormSuccess}
-      />
-
       <MenuItemFormDialog
-        open={menuItemFormOpen}
-        onOpenChange={setMenuItemFormOpen}
-        menuId={selectedMenuId}
-        menuItem={editingMenuItem}
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        menuItem={editingItem}
         parentOptions={parentOptions}
-        onSuccess={handleMenuItemFormSuccess}
+        onSuccess={handleFormSuccess}
       />
 
       <ConfirmDialog
-        open={deleteMenuId !== null}
-        onOpenChange={(open) => !open && setDeleteMenuId(null)}
+        open={deleteItemId !== null}
+        onOpenChange={(open) => !open && setDeleteItemId(null)}
         title={t("AbpUi::AreYouSure")}
         description={t("AbpUi::ItemWillBeDeleted")}
         confirmLabel={t("AbpUi::Delete")}
         variant="destructive"
-        onConfirm={handleDeleteMenuConfirm}
-        isPending={menuDeleteMutation.isPending}
-      />
-
-      <ConfirmDialog
-        open={deleteMenuItemId !== null}
-        onOpenChange={(open) => !open && setDeleteMenuItemId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
-        variant="destructive"
-        onConfirm={handleDeleteMenuItemConfirm}
-        isPending={menuItemDeleteMutation.isPending}
+        onConfirm={handleDeleteConfirm}
+        isPending={deleteMutation.isPending}
       />
     </PageLayout>
   );

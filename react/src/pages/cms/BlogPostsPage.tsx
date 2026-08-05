@@ -1,13 +1,22 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Badge,
   Button,
+  Dropdown,
+  Option,
   SearchBox,
   makeStyles,
   tokens,
   useToastController,
 } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import {
+  Add20Regular,
+  Delete20Regular,
+  Edit20Regular,
+  DocumentCheckmark20Regular,
+  DocumentEdit20Regular,
+} from "@fluentui/react-icons";
 import { format } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,14 +28,27 @@ import { useDataTable } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import {
-  blogPostGetListQueryOptions,
-  blogPostGetListQueryKey,
-} from "@/api/hooks/blogPost/useBlogPostGetList";
-import { useBlogPostDelete } from "@/api/hooks/blogPost/useBlogPostDelete";
-import type { AcroStackServicesDtosCmsBlogPostDto as BlogPostDto } from "@/api/models/acroStack/services/dtos/cms/BlogPostDto";
+  blogPostAdminGetListQueryOptions,
+  blogPostAdminGetListQueryKey,
+} from "@/api/hooks/blogPostAdmin/useBlogPostAdminGetList";
+import { useBlogPostAdminDelete } from "@/api/hooks/blogPostAdmin/useBlogPostAdminDelete";
+import { useBlogPostAdminPublish } from "@/api/hooks/blogPostAdmin/useBlogPostAdminPublish";
+import { useBlogPostAdminDraft } from "@/api/hooks/blogPostAdmin/useBlogPostAdminDraft";
+import { useBlogAdminGetAllList } from "@/api/hooks/blogAdmin/useBlogAdminGetAllList";
+import type { VoloCmsKitAdminBlogsBlogPostListDto as BlogPostItem } from "@/api/models/volo/cmsKit/admin/blogs/BlogPostListDto";
 import { BlogPostFormDialog } from "./BlogPostFormDialog";
 
-type BlogPostItem = BlogPostDto;
+type BlogPostListParams = AbpGridParams & {
+  BlogId?: string;
+};
+
+// ABP BlogPostStatus enum (Volo.CmsKit.Blogs.BlogPostStatus)
+const BlogPostStatus = {
+  Draft: 0,
+  Published: 1,
+  SentToReview: 2,
+  Rejected: 3,
+} as const;
 
 const useStyles = makeStyles({
   toolbar: {
@@ -40,6 +62,14 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     minWidth: 0,
+    gap: tokens.spacingHorizontalS,
+  },
+  search: {
+    flex: 1,
+    minWidth: 0,
+  },
+  blogFilter: {
+    minWidth: "200px",
   },
   actionButtons: {
     display: "flex",
@@ -58,26 +88,38 @@ export function BlogPostsPage() {
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
-  const deleteMutation = useBlogPostDelete();
+  const deleteMutation = useBlogPostAdminDelete();
+  const publishMutation = useBlogPostAdminPublish();
+  const draftMutation = useBlogPostAdminDraft();
+  const blogsQuery = useBlogAdminGetAllList();
+  const blogs = useMemo(() => blogsQuery.data?.items ?? [], [blogsQuery.data]);
 
-  const canCreate = isGranted("AcroStack.Cms.BlogPosts.Create");
-  const canUpdate = isGranted("AcroStack.Cms.BlogPosts.Update");
-  const canDelete = isGranted("AcroStack.Cms.BlogPosts.Delete");
+  const canCreate = isGranted("CmsKit.BlogPosts.Create");
+  const canUpdate = isGranted("CmsKit.BlogPosts.Update");
+  const canDelete = isGranted("CmsKit.BlogPosts.Delete");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPostItem | undefined>();
   const [deletePostId, setDeletePostId] = useState<string | null>(null);
+  const [selectedBlogId, setSelectedBlogId] = useState<string>("");
 
   const tableState = useDataTableState({
     sorting: [{ id: "title", desc: false }],
   });
 
-  const query = useDataTableQuery<BlogPostItem, AbpGridParams>({
-    queryOptions: blogPostGetListQueryOptions,
+  const query = useDataTableQuery<BlogPostItem, BlogPostListParams>({
+    queryOptions: blogPostAdminGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
     globalFilter: tableState.state.globalFilter,
+    extraParams: selectedBlogId ? { BlogId: selectedBlogId } : undefined,
   });
+
+  const invalidateList = useCallback(() => {
+    void queryClient.invalidateQueries({
+      queryKey: blogPostAdminGetListQueryKey(),
+    });
+  }, [queryClient]);
 
   const handleCreate = useCallback(() => {
     setEditingPost(undefined);
@@ -96,10 +138,8 @@ export function BlogPostsPage() {
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     setEditingPost(undefined);
-    void queryClient.invalidateQueries({
-      queryKey: blogPostGetListQueryKey(),
-    });
-  }, [queryClient]);
+    invalidateList();
+  }, [invalidateList]);
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deletePostId) return;
@@ -108,9 +148,7 @@ export function BlogPostsPage() {
       {
         onSuccess: () => {
           setDeletePostId(null);
-          void queryClient.invalidateQueries({
-            queryKey: blogPostGetListQueryKey(),
-          });
+          invalidateList();
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
         onError: (err) => {
@@ -118,7 +156,76 @@ export function BlogPostsPage() {
         },
       },
     );
-  }, [deletePostId, deleteMutation, queryClient, dispatchToast, t]);
+  }, [deletePostId, deleteMutation, invalidateList, dispatchToast, t]);
+
+  const handlePublish = useCallback(
+    (id: string) => {
+      publishMutation.mutate(
+        { id },
+        {
+          onSuccess: () => {
+            invalidateList();
+            dispatchToast(t("Cms:BlogPostPublished"), { intent: "success" });
+          },
+          onError: (err) => {
+            dispatchToast(String(err), { intent: "error" });
+          },
+        },
+      );
+    },
+    [publishMutation, invalidateList, dispatchToast, t],
+  );
+
+  const handleDraft = useCallback(
+    (id: string) => {
+      draftMutation.mutate(
+        { id },
+        {
+          onSuccess: () => {
+            invalidateList();
+            dispatchToast(t("Cms:BlogPostDrafted"), { intent: "success" });
+          },
+          onError: (err) => {
+            dispatchToast(String(err), { intent: "error" });
+          },
+        },
+      );
+    },
+    [draftMutation, invalidateList, dispatchToast, t],
+  );
+
+  const renderStatusBadge = useCallback(
+    (status: number | undefined) => {
+      switch (status) {
+        case BlogPostStatus.Published:
+          return (
+            <Badge appearance="filled" color="success">
+              {t("Cms:BlogPostStatusPublished")}
+            </Badge>
+          );
+        case BlogPostStatus.SentToReview:
+          return (
+            <Badge appearance="filled" color="informative">
+              {t("Cms:BlogPostStatusSentToReview")}
+            </Badge>
+          );
+        case BlogPostStatus.Rejected:
+          return (
+            <Badge appearance="filled" color="danger">
+              {t("Cms:BlogPostStatusRejected")}
+            </Badge>
+          );
+        case BlogPostStatus.Draft:
+        default:
+          return (
+            <Badge appearance="filled" color="warning">
+              {t("Cms:BlogPostStatusDraft")}
+            </Badge>
+          );
+      }
+    },
+    [t],
+  );
 
   const columns = useMemo<ColumnDef<BlogPostItem>[]>(
     () => [
@@ -129,20 +236,22 @@ export function BlogPostsPage() {
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
+        id: "blogName",
+        accessorKey: "blogName",
+        header: t("Cms:Blog"),
+        cell: (info) => (info.getValue() as string) || "-",
+      },
+      {
         id: "slug",
         accessorKey: "slug",
         header: t("Cms:Slug"),
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
-        id: "tags",
-        accessorKey: "tags",
-        header: t("Cms:Tags"),
-        cell: (info) => {
-          const tags = info.getValue() as string[] | null | undefined;
-          if (!tags || tags.length === 0) return "-";
-          return tags.join(", ");
-        },
+        id: "status",
+        accessorKey: "status",
+        header: t("Cms:Status"),
+        cell: (info) => renderStatusBadge(info.getValue() as number | undefined),
       },
       {
         id: "creationTime",
@@ -158,6 +267,26 @@ export function BlogPostsPage() {
         header: t("AbpUi::Actions"),
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
+            {canUpdate && row.original.status !== BlogPostStatus.Published && row.original.id && (
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<DocumentCheckmark20Regular />}
+                onClick={() => row.original.id && handlePublish(row.original.id)}
+                aria-label={t("Cms:Publish")}
+                title={t("Cms:Publish")}
+              />
+            )}
+            {canUpdate && row.original.status !== BlogPostStatus.Draft && row.original.id && (
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<DocumentEdit20Regular />}
+                onClick={() => row.original.id && handleDraft(row.original.id)}
+                aria-label={t("Cms:RevertToDraft")}
+                title={t("Cms:RevertToDraft")}
+              />
+            )}
             {canUpdate && (
               <Button
                 size="small"
@@ -182,7 +311,17 @@ export function BlogPostsPage() {
         ),
       },
     ],
-    [t, styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete],
+    [
+      t,
+      styles.actionsCell,
+      canUpdate,
+      canDelete,
+      renderStatusBadge,
+      handleEdit,
+      handleDelete,
+      handlePublish,
+      handleDraft,
+    ],
   );
 
   const table = useDataTable({
@@ -210,11 +349,28 @@ export function BlogPostsPage() {
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
+            className={styles.search}
             placeholder={t("AbpUi::Search")}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
           />
+          <Dropdown
+            className={styles.blogFilter}
+            placeholder={t("Cms:AllBlogs")}
+            value={blogs.find((b) => b.id === selectedBlogId)?.name ?? ""}
+            onOptionSelect={(_, data) =>
+              setSelectedBlogId(data.optionValue === "" ? "" : String(data.optionValue))
+            }
+            clearable
+          >
+            <Option value="">{t("Cms:AllBlogs")}</Option>
+            {blogs.map((b) => (
+              <Option key={b.id} value={b.id ?? ""}>
+                {b.name ?? ""}
+              </Option>
+            ))}
+          </Dropdown>
         </div>
         {canCreate && (
           <div className={styles.actionButtons}>

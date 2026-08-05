@@ -10,12 +10,12 @@ export const menu: RouteMenuConfig = {
   nameKey: "Menu:Cms.Tags",
   icon: Tag20Regular,
   order: 4,
-  requiredPolicy: "AcroStack.Cms.Tags",
+  requiredPolicy: "CmsKit.Tags",
 };
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/cms/tags",
   component: TagsPage,
-  beforeLoad: createPermissionGuard("AcroStack.Cms.Tags"),
+  beforeLoad: createPermissionGuard("CmsKit.Tags"),
 });

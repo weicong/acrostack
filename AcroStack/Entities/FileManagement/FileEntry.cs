@@ -1,5 +1,6 @@
 using System;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace AcroStack.Entities.FileManagement;
 
@@ -8,8 +9,10 @@ namespace AcroStack.Entities.FileManagement;
 /// blob container (<see cref="FileManagementContainer"/>); this entity
 /// holds the user-visible name, MIME type, size, and the owning folder.
 /// Mirrors ABP Commercial File Management Pro's file entity.
+/// Implements <see cref="IMultiTenant"/> so each tenant has its own
+/// isolated file set.
 /// </summary>
-public class FileEntry : FullAuditedAggregateRoot<Guid>
+public class FileEntry : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
     /// <summary>
     /// User-visible file name (e.g. "report.pdf"). Not unique — the
@@ -38,6 +41,19 @@ public class FileEntry : FullAuditedAggregateRoot<Guid>
     /// </summary>
     public string BlobName { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Current version number of this file. Starts at 1 and is
+    /// incremented each time an overwrite-as-new-version upload occurs.
+    /// Older versions are kept in the <see cref="FileVersion"/> table.
+    /// </summary>
+    public int CurrentVersion { get; set; } = 1;
+
+    /// <summary>
+    /// Tenant that owns this file. ABP's query filter automatically
+    /// scopes file listings to the current tenant.
+    /// </summary>
+    public Guid? TenantId { get; set; }
+
     public FileEntry() { }
 
     public FileEntry(
@@ -46,7 +62,8 @@ public class FileEntry : FullAuditedAggregateRoot<Guid>
         string blobName,
         long byteSize,
         string? contentType,
-        Guid? folderId)
+        Guid? folderId,
+        Guid? tenantId = null)
         : base(id)
     {
         Name = name;
@@ -54,5 +71,6 @@ public class FileEntry : FullAuditedAggregateRoot<Guid>
         ByteSize = byteSize;
         ContentType = contentType;
         FolderId = folderId;
+        TenantId = tenantId;
     }
 }

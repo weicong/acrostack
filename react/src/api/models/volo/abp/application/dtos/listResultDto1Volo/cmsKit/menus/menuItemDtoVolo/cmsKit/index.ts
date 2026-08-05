@@ -1,0 +1,3 @@
+/* oxlint-disable */
+
+export type { VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./common/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";

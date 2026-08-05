@@ -7,7 +7,7 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { Add20Regular, Delete20Regular, Edit20Regular, Home20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,14 +18,16 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import { pageGetListQueryOptions, pageGetListQueryKey } from "@/api/hooks/page/usePageGetList";
-import { usePageDelete } from "@/api/hooks/page/usePageDelete";
-import type { AcroStackServicesDtosCmsPageDto as PageDto } from "@/api/models/acroStack/services/dtos/cms/PageDto";
+import {
+  pageAdminGetListQueryOptions,
+  pageAdminGetListQueryKey,
+} from "@/api/hooks/pageAdmin/usePageAdminGetList";
+import { usePageAdminDelete } from "@/api/hooks/pageAdmin/usePageAdminDelete";
+import { usePageAdminSetAsHomePage } from "@/api/hooks/pageAdmin/usePageAdminSetAsHomePage";
+import type { VoloCmsKitAdminPagesPageDto as PageDto } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
 import { PageFormDialog } from "./PageFormDialog";
 
 type PageItem = PageDto;
-
-const DESCRIPTION_MAX = 60;
 
 const useStyles = makeStyles({
   toolbar: {
@@ -57,11 +59,12 @@ export function PagesPage() {
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
-  const deleteMutation = usePageDelete();
+  const deleteMutation = usePageAdminDelete();
+  const setHomePageMutation = usePageAdminSetAsHomePage();
 
-  const canCreate = isGranted("AcroStack.Cms.Pages.Create");
-  const canUpdate = isGranted("AcroStack.Cms.Pages.Update");
-  const canDelete = isGranted("AcroStack.Cms.Pages.Delete");
+  const canCreate = isGranted("CmsKit.Pages.Create");
+  const canUpdate = isGranted("CmsKit.Pages.Update");
+  const canDelete = isGranted("CmsKit.Pages.Delete");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingPage, setEditingPage] = useState<PageItem | undefined>();
@@ -72,7 +75,7 @@ export function PagesPage() {
   });
 
   const query = useDataTableQuery<PageItem, AbpGridParams>({
-    queryOptions: pageGetListQueryOptions,
+    queryOptions: pageAdminGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
     globalFilter: tableState.state.globalFilter,
@@ -92,11 +95,31 @@ export function PagesPage() {
     setDeletePageId(id);
   }, []);
 
+  const handleSetAsHomePage = useCallback(
+    (id: string) => {
+      setHomePageMutation.mutate(
+        { id },
+        {
+          onSuccess: () => {
+            void queryClient.invalidateQueries({
+              queryKey: pageAdminGetListQueryKey(),
+            });
+            dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          },
+          onError: (err) => {
+            dispatchToast(String(err), { intent: "error" });
+          },
+        },
+      );
+    },
+    [setHomePageMutation, queryClient, dispatchToast, t],
+  );
+
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     setEditingPage(undefined);
     void queryClient.invalidateQueries({
-      queryKey: pageGetListQueryKey(),
+      queryKey: pageAdminGetListQueryKey(),
     });
   }, [queryClient]);
 
@@ -108,7 +131,7 @@ export function PagesPage() {
         onSuccess: () => {
           setDeletePageId(null);
           void queryClient.invalidateQueries({
-            queryKey: pageGetListQueryKey(),
+            queryKey: pageAdminGetListQueryKey(),
           });
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
@@ -134,14 +157,10 @@ export function PagesPage() {
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
-        id: "description",
-        accessorKey: "description",
-        header: t("Cms:Description"),
-        cell: (info) => {
-          const desc = (info.getValue() as string | null | undefined) ?? "";
-          if (!desc) return "-";
-          return desc.length > DESCRIPTION_MAX ? `${desc.slice(0, DESCRIPTION_MAX)}…` : desc;
-        },
+        id: "isHomePage",
+        accessorKey: "isHomePage",
+        header: t("Cms:HomePage"),
+        cell: (info) => (info.getValue() ? t("AbpUi::Yes") : t("AbpUi::No")),
       },
       {
         id: "creationTime",
@@ -157,6 +176,16 @@ export function PagesPage() {
         header: t("AbpUi::Actions"),
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
+            {canUpdate && !row.original.isHomePage && (
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<Home20Regular />}
+                onClick={() => row.original.id && handleSetAsHomePage(row.original.id)}
+                aria-label={t("Cms:SetAsHomePage")}
+                title={t("Cms:SetAsHomePage")}
+              />
+            )}
             {canUpdate && (
               <Button
                 size="small"
@@ -181,7 +210,7 @@ export function PagesPage() {
         ),
       },
     ],
-    [t, styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete],
+    [t, styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete, handleSetAsHomePage],
   );
 
   const table = useDataTable({

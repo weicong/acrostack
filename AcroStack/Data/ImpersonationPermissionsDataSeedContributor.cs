@@ -29,8 +29,8 @@ public class ImpersonationPermissionsDataSeedContributor
     public virtual async Task SeedAsync(DataSeedContext context)
     {
         // Host-only permissions: tenant impersonation, global audit logs,
-        // background jobs, OpenIddict management, and SaaS edition management
-        // are host-scoped features (mirrors ABP Commercial Pro module scoping).
+        // background jobs, and OpenIddict management are host-scoped features
+        // (mirrors ABP Commercial Pro module scoping).
         if (context.TenantId == null)
         {
             await _permissionManager.SetForRoleAsync(
@@ -46,6 +46,12 @@ public class ImpersonationPermissionsDataSeedContributor
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.AuditLogging.ViewEntityChanges", true);
 
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.AuditLogging.ViewStatistics", true);
+
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.AuditLogging.Delete", true);
+
             // Background Jobs (mirrors ABP Commercial BackgroundJobs module).
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.BackgroundJobs.ViewJobs", true);
@@ -59,19 +65,6 @@ public class ImpersonationPermissionsDataSeedContributor
 
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.OpenIddictManagement.Scopes", true);
-
-            // SaaS Editions (mirrors ABP Commercial SaaS Pro Edition management).
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.SaaS.Editions", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.SaaS.Editions.Create", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.SaaS.Editions.Update", true);
-
-            await _permissionManager.SetForRoleAsync(
-                "admin", "AcroStack.SaaS.Editions.Delete", true);
         }
 
         // Tenant-available permissions: granted to the admin role at both
@@ -82,6 +75,9 @@ public class ImpersonationPermissionsDataSeedContributor
 
         await _permissionManager.SetForRoleAsync(
             "admin", "AcroStack.IdentityClaims.RoleClaims", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.IdentityClaims.ClaimTypes", true);
 
         // File Management (mirrors ABP Commercial File Management Pro).
         await _permissionManager.SetForRoleAsync(
@@ -96,8 +92,10 @@ public class ImpersonationPermissionsDataSeedContributor
         await _permissionManager.SetForRoleAsync(
             "admin", "AcroStack.FileManagement.Delete", true);
 
-        // GDPR (mirrors ABP Commercial GDPR Pro).
         await _permissionManager.SetForRoleAsync(
-            "admin", "AcroStack.Gdpr", true);
+            "admin", "AcroStack.FileManagement.Move", true);
+
+        await _permissionManager.SetForRoleAsync(
+            "admin", "AcroStack.FileManagement.Share", true);
     }
 }

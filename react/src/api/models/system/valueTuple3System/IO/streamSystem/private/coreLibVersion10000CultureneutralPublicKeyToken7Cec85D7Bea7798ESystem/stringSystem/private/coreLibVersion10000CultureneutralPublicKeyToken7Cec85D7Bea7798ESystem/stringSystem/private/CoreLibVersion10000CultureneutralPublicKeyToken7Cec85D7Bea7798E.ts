@@ -1,0 +1,7 @@
+/* oxlint-disable */
+
+/**
+ * @type object
+ */
+export type SystemValueTuple3SystemIOStreamSystemPrivateCoreLibVersion10000CultureneutralPublicKeyToken7Cec85D7Bea7798ESystemStringSystemPrivateCoreLibVersion10000CultureneutralPublicKeyToken7Cec85D7Bea7798ESystemStringSystemPrivateCoreLibVersion10000CultureneutralPublicKeyToken7Cec85D7Bea7798E =
+  object;

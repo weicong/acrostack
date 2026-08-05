@@ -1,26 +1,46 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Input, makeStyles, tokens, useToastController } from "@fluentui/react-components";
-import { Delete20Regular, Search20Regular } from "@fluentui/react-icons";
+import {
+  Badge,
+  Button,
+  Dropdown,
+  Input,
+  Option,
+  makeStyles,
+  tokens,
+  useToastController,
+} from "@fluentui/react-components";
+import {
+  CheckmarkCircle20Regular,
+  Circle20Regular,
+  Delete20Regular,
+  Search20Regular,
+} from "@fluentui/react-icons";
 import { format } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
+import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
+import { usePermissions } from "@/lib/auth/permissions";
 import {
-  useCommentGetListForEntity,
-  commentGetListForEntityQueryKey,
-} from "@/api/hooks/comment/useCommentGetListForEntity";
-import { useCommentDelete } from "@/api/hooks/comment/useCommentDelete";
-import type { AcroStackServicesDtosCmsCommentDto as CommentDto } from "@/api/models/acroStack/services/dtos/cms/CommentDto";
-
-type CommentItem = CommentDto;
+  commentAdminGetListQueryOptions,
+  commentAdminGetListQueryKey,
+} from "@/api/hooks/commentAdmin/useCommentAdminGetList";
+import { useCommentAdminDelete } from "@/api/hooks/commentAdmin/useCommentAdminDelete";
+import { useCommentAdminUpdateApprovalStatus } from "@/api/hooks/commentAdmin/useCommentAdminUpdateApprovalStatus";
+import type { VoloCmsKitAdminCommentsCommentWithAuthorDto as CommentItem } from "@/api/models/volo/cmsKit/admin/comments/CommentWithAuthorDto";
 
 const TEXT_MAX = 80;
+
+// ABP CommentApproveState enum (Volo.CmsKit.Comments.CommentApproveState)
+const CommentApproveState = {
+  Approved: 0,
+  WaitingForApproval: 1,
+} as const;
 
 const useStyles = makeStyles({
   toolbar: {
@@ -38,8 +58,8 @@ const useStyles = makeStyles({
   entityTypeInput: {
     minWidth: "180px",
   },
-  entityIdInput: {
-    minWidth: "240px",
+  stateFilter: {
+    minWidth: "160px",
   },
   actionsCell: {
     display: "flex",
@@ -47,80 +67,72 @@ const useStyles = makeStyles({
   },
 });
 
+function getAuthorName(comment: CommentItem): string {
+  const author = comment.author;
+  if (!author) return "-";
+  const name = author.name ?? author.userName;
+  const surname = author.surname;
+  if (name && surname) return `${name} ${surname}`;
+  return name ?? author.userName ?? "-";
+}
+
 export function CommentsPage() {
   const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
-  const currentUser = useCurrentUser();
   const { dispatchToast } = useToastController();
-  const deleteMutation = useCommentDelete();
+  const deleteMutation = useCommentAdminDelete();
+  const approvalMutation = useCommentAdminUpdateApprovalStatus();
 
-  const canDeleteAny = isGranted("AcroStack.Cms.Comments.Delete");
+  const canManage = isGranted("CmsKit.Comments");
+  const canDelete = isGranted("CmsKit.Comments.Delete");
 
   const [entityType, setEntityType] = useState("");
-  const [entityId, setEntityId] = useState("");
-  const [query, setQuery] = useState<{ entityType: string; entityId: string } | null>(null);
+  const [approvalState, setApprovalState] = useState<number | "">("");
   const [deleteCommentId, setDeleteCommentId] = useState<string | null>(null);
 
-  const tableState = useDataTableState();
+  const tableState = useDataTableState({
+    sorting: [{ id: "creationTime", desc: true }],
+  });
 
-  const pageSize = tableState.state.pagination.pageSize;
-  const pageIndex = tableState.state.pagination.pageIndex;
+  const extraParams = useMemo(() => {
+    const params: Record<string, unknown> = {};
+    if (entityType.trim()) params.EntityType = entityType.trim();
+    if (approvalState !== "") params.CommentApproveState = approvalState;
+    return params;
+  }, [entityType, approvalState]);
 
-  const commentsQuery = useCommentGetListForEntity(
-    query
-      ? {
-          EntityType: query.entityType,
-          EntityId: query.entityId,
-          SkipCount: pageIndex * pageSize,
-          MaxResultCount: pageSize,
-        }
-      : undefined,
-    {
-      query: { enabled: !!query },
-    },
-  );
+  const goToFirstPage = useCallback(() => {
+    tableState.state.onPaginationChange((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [tableState.state.onPaginationChange]);
 
-  const data = commentsQuery.data?.items ?? [];
-  const totalCount = Number(commentsQuery.data?.totalCount ?? 0);
-  const pageCount = Math.ceil(totalCount / pageSize) || 1;
+  const query = useDataTableQuery<CommentItem, AbpGridParams>({
+    queryOptions: commentAdminGetListQueryOptions,
+    sorting: tableState.state.sorting,
+    pagination: tableState.state.pagination,
+    globalFilter: tableState.state.globalFilter,
+    extraParams,
+  });
 
-  const canDeleteComment = useCallback(
-    (comment: CommentItem) => {
-      if (canDeleteAny) return true;
-      const creatorId = comment.creatorId ?? comment.creatorUserId ?? null;
-      return !!currentUser?.id && creatorId === currentUser.id;
-    },
-    [canDeleteAny, currentUser?.id],
-  );
-
-  const handleLoad = useCallback(() => {
-    const type = entityType.trim();
-    const id = entityId.trim();
-    if (!type || !id) return;
-    setQuery({ entityType: type, entityId: id });
-  }, [entityType, entityId]);
+  const invalidateList = useCallback(() => {
+    void queryClient.invalidateQueries({
+      queryKey: commentAdminGetListQueryKey(),
+    });
+  }, [queryClient]);
 
   const handleDelete = useCallback((id: string) => {
     setDeleteCommentId(id);
   }, []);
 
   const handleDeleteConfirm = useCallback(() => {
-    if (!deleteCommentId || !query) return;
+    if (!deleteCommentId) return;
     deleteMutation.mutate(
       { id: deleteCommentId },
       {
         onSuccess: () => {
           setDeleteCommentId(null);
-          void queryClient.invalidateQueries({
-            queryKey: commentGetListForEntityQueryKey({
-              EntityType: query.entityType,
-              EntityId: query.entityId,
-              SkipCount: pageIndex * pageSize,
-              MaxResultCount: pageSize,
-            }),
-          });
+          invalidateList();
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
         onError: (err) => {
@@ -128,20 +140,80 @@ export function CommentsPage() {
         },
       },
     );
-  }, [deleteCommentId, deleteMutation, query, queryClient, pageIndex, pageSize, dispatchToast, t]);
+  }, [deleteCommentId, deleteMutation, invalidateList, dispatchToast, t]);
+
+  const handleToggleApproval = useCallback(
+    (comment: CommentItem) => {
+      if (!comment.id) return;
+      const newApproved = !comment.isApproved;
+      approvalMutation.mutate(
+        {
+          id: comment.id,
+          data: { isApproved: newApproved },
+        },
+        {
+          onSuccess: () => {
+            invalidateList();
+            dispatchToast(newApproved ? t("Cms:CommentApproved") : t("Cms:CommentUnapproved"), {
+              intent: "success",
+            });
+          },
+          onError: (err) => {
+            dispatchToast(String(err), { intent: "error" });
+          },
+        },
+      );
+    },
+    [approvalMutation, invalidateList, dispatchToast, t],
+  );
+
+  const renderApprovalBadge = useCallback(
+    (isApproved: boolean | null | undefined) => {
+      if (isApproved === true) {
+        return (
+          <Badge appearance="filled" color="success">
+            {t("Cms:CommentApproved")}
+          </Badge>
+        );
+      }
+      if (isApproved === false) {
+        return (
+          <Badge appearance="filled" color="danger">
+            {t("Cms:CommentRejected")}
+          </Badge>
+        );
+      }
+      return (
+        <Badge appearance="filled" color="warning">
+          {t("Cms:CommentWaiting")}
+        </Badge>
+      );
+    },
+    [t],
+  );
 
   const columns = useMemo<ColumnDef<CommentItem>[]>(
     () => [
       {
         id: "author",
         header: t("Cms:Author"),
-        cell: ({ row }) => row.original.authorName || row.original.creatorUserName || "-",
+        cell: ({ row }) => getAuthorName(row.original),
       },
       {
         id: "entityType",
         accessorKey: "entityType",
         header: t("Cms:EntityType"),
         cell: (info) => (info.getValue() as string) || "-",
+      },
+      {
+        id: "entityId",
+        accessorKey: "entityId",
+        header: t("Cms:EntityId"),
+        cell: (info) => {
+          const value = info.getValue() as string | null | undefined;
+          if (!value) return "-";
+          return value.length > 24 ? `${value.slice(0, 24)}…` : value;
+        },
       },
       {
         id: "text",
@@ -152,6 +224,12 @@ export function CommentsPage() {
           if (!text) return "-";
           return text.length > TEXT_MAX ? `${text.slice(0, TEXT_MAX)}…` : text;
         },
+      },
+      {
+        id: "isApproved",
+        accessorKey: "isApproved",
+        header: t("Cms:ApprovalStatus"),
+        cell: (info) => renderApprovalBadge(info.getValue() as boolean | null | undefined),
       },
       {
         id: "creationTime",
@@ -165,33 +243,62 @@ export function CommentsPage() {
       {
         id: "actions",
         header: t("AbpUi::Actions"),
-        cell: ({ row }) =>
-          canDeleteComment(row.original) && row.original.id ? (
-            <div className={styles.actionsCell}>
+        cell: ({ row }) => (
+          <div className={styles.actionsCell}>
+            {canManage && row.original.id && (
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={row.original.isApproved ? <Circle20Regular /> : <CheckmarkCircle20Regular />}
+                onClick={() => handleToggleApproval(row.original)}
+                aria-label={row.original.isApproved ? t("Cms:Unapprove") : t("Cms:Approve")}
+                title={row.original.isApproved ? t("Cms:Unapprove") : t("Cms:Approve")}
+              />
+            )}
+            {canDelete && (
               <Button
                 size="small"
                 appearance="subtle"
                 icon={<Delete20Regular />}
-                onClick={() => handleDelete(row.original.id!)}
+                onClick={() => row.original.id && handleDelete(row.original.id)}
                 aria-label={t("AbpUi::Delete")}
                 title={t("AbpUi::Delete")}
               />
-            </div>
-          ) : null,
+            )}
+          </div>
+        ),
       },
     ],
-    [t, styles.actionsCell, canDeleteComment, handleDelete],
+    [
+      t,
+      styles.actionsCell,
+      canManage,
+      canDelete,
+      renderApprovalBadge,
+      handleToggleApproval,
+      handleDelete,
+    ],
   );
 
   const table = useDataTable({
     columns,
-    data,
-    rowCount: totalCount,
+    data: query.data,
+    rowCount: query.totalCount,
     getRowId: (row) => row.id ?? "",
     state: tableState.state,
     manualPagination: true,
-    pageCount,
+    manualSorting: true,
+    pageCount: query.pageCount,
   });
+
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      tableState.state.onGlobalFilterChange(searchValue);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchValue, tableState.state]);
 
   return (
     <PageLayout title={t("Cms:Comments")}>
@@ -204,34 +311,62 @@ export function CommentsPage() {
             value={entityType}
             onChange={(_, data) => setEntityType(data.value)}
             placeholder={t("Cms:EntityTypePlaceholder")}
+            contentAfter={
+              <Button
+                size="small"
+                appearance="subtle"
+                icon={<Search20Regular />}
+                onClick={goToFirstPage}
+                disabled={!entityType.trim()}
+                aria-label={t("AbpUi::Search")}
+              />
+            }
           />
         </div>
         <div className={styles.field}>
-          <label htmlFor="comment-entity-id">{t("Cms:EntityId")}</label>
+          <label htmlFor="comment-state-filter">{t("Cms:ApprovalStatus")}</label>
+          <Dropdown
+            id="comment-state-filter"
+            className={styles.stateFilter}
+            placeholder={t("Cms:AllStates")}
+            value={
+              approvalState === CommentApproveState.Approved
+                ? t("Cms:CommentApproved")
+                : approvalState === CommentApproveState.WaitingForApproval
+                  ? t("Cms:CommentWaiting")
+                  : ""
+            }
+            onOptionSelect={(_, data) => {
+              const val = data.optionValue;
+              setApprovalState(val === "" ? "" : Number(val));
+              goToFirstPage();
+            }}
+            clearable
+          >
+            <Option value="">{t("Cms:AllStates")}</Option>
+            <Option value={String(CommentApproveState.Approved)}>{t("Cms:CommentApproved")}</Option>
+            <Option value={String(CommentApproveState.WaitingForApproval)}>
+              {t("Cms:CommentWaiting")}
+            </Option>
+          </Dropdown>
+        </div>
+        <div className={styles.field} style={{ flex: 1, minWidth: "200px" }}>
+          <label htmlFor="comment-search">{t("AbpUi::Search")}</label>
           <Input
-            id="comment-entity-id"
-            className={styles.entityIdInput}
-            value={entityId}
-            onChange={(_, data) => setEntityId(data.value)}
-            placeholder={t("Cms:EntityIdPlaceholder")}
+            id="comment-search"
+            value={searchValue}
+            onChange={(_, data) => setSearchValue(data.value)}
+            placeholder={t("Cms:SearchComments")}
+            contentBefore={<Search20Regular />}
           />
         </div>
-        <Button
-          appearance="primary"
-          icon={<Search20Regular />}
-          onClick={handleLoad}
-          disabled={!entityType.trim() || !entityId.trim()}
-        >
-          {t("AbpUi::Search")}
-        </Button>
       </div>
 
       <DataTable
         table={table}
-        isLoading={commentsQuery.isLoading}
-        isError={commentsQuery.isError}
-        errorMessage={commentsQuery.error ? String(commentsQuery.error) : undefined}
-        emptyMessage={query ? undefined : t("Cms:CommentsEnterEntity")}
+        isLoading={query.isLoading}
+        isError={query.isError}
+        errorMessage={query.error ? String(query.error) : undefined}
       />
 
       <ConfirmDialog

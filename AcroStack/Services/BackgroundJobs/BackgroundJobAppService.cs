@@ -8,11 +8,12 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
+using System.Linq.Dynamic.Core;
 
 namespace AcroStack.Services.BackgroundJobs;
 
 [Authorize(AcroStackPermissions.BackgroundJobs.Default)]
-public class BackgroundJobAppService : ApplicationService, IBackgroundJobAppService
+public class BackgroundJobAppService : AcroStackAppService, IBackgroundJobAppService
 {
     private readonly IRepository<BackgroundJobRecord, Guid> _jobRepository;
 
@@ -29,8 +30,53 @@ public class BackgroundJobAppService : ApplicationService, IBackgroundJobAppServ
 
     public async Task<PagedResultDto<BackgroundJobDto>> GetListAsync(GetBackgroundJobListInput input)
     {
-        var queryable = await _jobRepository.GetQueryableAsync();
+        var queryable = ApplyFilters(await _jobRepository.GetQueryableAsync(), input);
 
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+
+        // Honor the caller's Sorting (e.g. "creationTime desc", "nextTryTime",
+        // "tryCount"). Default to newest-first when not specified.
+        var sorting = input.Sorting.IsNullOrWhiteSpace()
+            ? nameof(BackgroundJobRecord.CreationTime) + " desc"
+            : input.Sorting;
+
+        var query = queryable
+            .OrderBy(sorting)
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount);
+
+        var jobs = await AsyncExecuter.ToListAsync(query);
+
+        return new PagedResultDto<BackgroundJobDto>(
+            totalCount,
+            jobs.Select(MapToDto).ToList()
+        );
+    }
+
+    [Authorize(AcroStackPermissions.BackgroundJobs.Delete)]
+    public async Task DeleteAsync(Guid id)
+    {
+        await _jobRepository.DeleteAsync(id);
+    }
+
+    public async Task RequeueAsync(Guid id)
+    {
+        var job = await _jobRepository.GetAsync(id);
+        job.IsAbandoned = false;
+        job.TryCount = 0;
+        job.NextTryTime = Clock.Now;
+        await _jobRepository.UpdateAsync(job);
+    }
+
+    public async Task AbandonAsync(Guid id)
+    {
+        var job = await _jobRepository.GetAsync(id);
+        job.IsAbandoned = true;
+        await _jobRepository.UpdateAsync(job);
+    }
+
+    private static IQueryable<BackgroundJobRecord> ApplyFilters(IQueryable<BackgroundJobRecord> queryable, GetBackgroundJobListInput input)
+    {
         if (!input.JobName.IsNullOrWhiteSpace())
         {
             queryable = queryable.Where(x => x.JobName == input.JobName);
@@ -58,25 +104,7 @@ public class BackgroundJobAppService : ApplicationService, IBackgroundJobAppServ
                 (x.JobArgs != null && x.JobArgs.Contains(input.Filter)));
         }
 
-        var totalCount = await AsyncExecuter.CountAsync(queryable);
-
-        var query = queryable
-            .OrderByDescending(x => x.CreationTime)
-            .Skip(input.SkipCount)
-            .Take(input.MaxResultCount);
-
-        var jobs = await AsyncExecuter.ToListAsync(query);
-
-        return new PagedResultDto<BackgroundJobDto>(
-            totalCount,
-            jobs.Select(MapToDto).ToList()
-        );
-    }
-
-    [Authorize(AcroStackPermissions.BackgroundJobs.Delete)]
-    public async Task DeleteAsync(Guid id)
-    {
-        await _jobRepository.DeleteAsync(id);
+        return queryable;
     }
 
     private static BackgroundJobDto MapToDto(BackgroundJobRecord job)

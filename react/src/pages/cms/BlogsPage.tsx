@@ -7,8 +7,7 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
-import { format } from "date-fns";
+import { Add20Regular, Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -18,14 +17,15 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import { blogGetListQueryOptions, blogGetListQueryKey } from "@/api/hooks/blog/useBlogGetList";
-import { useBlogDelete } from "@/api/hooks/blog/useBlogDelete";
-import type { AcroStackServicesDtosCmsBlogDto as BlogDto } from "@/api/models/acroStack/services/dtos/cms/BlogDto";
+import {
+  blogAdminGetListQueryOptions,
+  blogAdminGetListQueryKey,
+} from "@/api/hooks/blogAdmin/useBlogAdminGetList";
+import { useBlogAdminDelete } from "@/api/hooks/blogAdmin/useBlogAdminDelete";
+import type { VoloCmsKitAdminBlogsBlogDto as BlogDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
 import { BlogFormDialog } from "./BlogFormDialog";
 
 type BlogItem = BlogDto;
-
-const DESCRIPTION_MAX = 60;
 
 const useStyles = makeStyles({
   toolbar: {
@@ -57,11 +57,11 @@ export function BlogsPage() {
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
-  const deleteMutation = useBlogDelete();
+  const deleteMutation = useBlogAdminDelete();
 
-  const canCreate = isGranted("AcroStack.Cms.Blogs.Create");
-  const canUpdate = isGranted("AcroStack.Cms.Blogs.Update");
-  const canDelete = isGranted("AcroStack.Cms.Blogs.Delete");
+  const canCreate = isGranted("CmsKit.Blogs.Create");
+  const canUpdate = isGranted("CmsKit.Blogs.Update");
+  const canDelete = isGranted("CmsKit.Blogs.Delete");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<BlogItem | undefined>();
@@ -72,7 +72,7 @@ export function BlogsPage() {
   });
 
   const query = useDataTableQuery<BlogItem, AbpGridParams>({
-    queryOptions: blogGetListQueryOptions,
+    queryOptions: blogAdminGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
     globalFilter: tableState.state.globalFilter,
@@ -96,7 +96,7 @@ export function BlogsPage() {
     setFormOpen(false);
     setEditingBlog(undefined);
     void queryClient.invalidateQueries({
-      queryKey: blogGetListQueryKey(),
+      queryKey: blogAdminGetListQueryKey(),
     });
   }, [queryClient]);
 
@@ -108,7 +108,7 @@ export function BlogsPage() {
         onSuccess: () => {
           setDeleteBlogId(null);
           void queryClient.invalidateQueries({
-            queryKey: blogGetListQueryKey(),
+            queryKey: blogAdminGetListQueryKey(),
           });
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
@@ -134,23 +134,10 @@ export function BlogsPage() {
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
-        id: "description",
-        accessorKey: "description",
-        header: t("Cms:Description"),
-        cell: (info) => {
-          const desc = (info.getValue() as string | null | undefined) ?? "";
-          if (!desc) return "-";
-          return desc.length > DESCRIPTION_MAX ? `${desc.slice(0, DESCRIPTION_MAX)}…` : desc;
-        },
-      },
-      {
-        id: "creationTime",
-        accessorKey: "creationTime",
-        header: t("AbpUi::CreationTime"),
-        cell: (info) => {
-          const date = info.getValue() as string | undefined;
-          return date ? format(new Date(date), "yyyy-MM-dd HH:mm") : "-";
-        },
+        id: "blogPostCount",
+        accessorKey: "blogPostCount",
+        header: t("Cms:BlogPostCount"),
+        cell: (info) => String((info.getValue() as number | null | undefined) ?? 0),
       },
       {
         id: "actions",

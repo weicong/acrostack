@@ -10,12 +10,12 @@ export const menu: RouteMenuConfig = {
   nameKey: "Menu:Cms.Comments",
   icon: Comment20Regular,
   order: 5,
-  requiredPolicy: "AcroStack.Cms.Comments",
+  requiredPolicy: "CmsKit.Comments",
 };
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/cms/comments",
   component: CommentsPage,
-  beforeLoad: createPermissionGuard("AcroStack.Cms.Comments"),
+  beforeLoad: createPermissionGuard("CmsKit.Comments"),
 });

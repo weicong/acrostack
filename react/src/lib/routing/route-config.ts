@@ -12,7 +12,7 @@
  *     e.g. identity, openiddict, saas, cms. File-management is a folder
  *     module with a single flat entry.
  *   - Flat top-level routes: the route file itself exports `routeConfig`
- *     e.g. routes/books.tsx, routes/gdpr.tsx.
+ *     e.g. routes/books.tsx.
  *
  * To add a new module: export `routeConfig` from it, then add one spread line
  * to the array below. Display order is driven by each entry's `menu.order`
@@ -23,7 +23,6 @@
  *   order 10–40        — Business modules (Books, Chat, FileManagement, CMS)
  *   order 100–160      — System administration (Identity, OpenIddict, SaaS,
  *                        Features, AuditLogs, BackgroundJobs, Settings)
- *   order 200+         — Compliance (GDPR)
  *   (removed)          — Profile lives in the Header user menu, not here
  *
  * The `requiredPolicy` in menu metadata is for display filtering only.
@@ -41,7 +40,6 @@ import { routeConfig as featuresConfig } from "@/routes/features";
 import { routeConfig as auditLogsConfig } from "@/routes/audit-logs";
 import { routeConfig as backgroundJobsConfig } from "@/routes/background-jobs";
 import { routeConfig as settingsConfig } from "@/routes/settings";
-import { routeConfig as gdprConfig } from "@/routes/gdpr";
 import type { MenuRoute } from "./route-config-types";
 
 export type { MenuRoute } from "./route-config-types";
@@ -62,6 +60,4 @@ export const menuRoutes: MenuRoute[] = [
   ...auditLogsConfig,
   ...backgroundJobsConfig,
   ...settingsConfig,
-  // Compliance
-  ...gdprConfig,
 ];

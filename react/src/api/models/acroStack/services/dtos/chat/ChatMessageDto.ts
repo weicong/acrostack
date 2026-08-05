@@ -50,4 +50,40 @@ export type AcroStackServicesDtosChatChatMessageDto = {
    * @type string | undefined
    */
   readTime?: string | null;
+  /**
+   * @type boolean | undefined
+   */
+  isEdited?: boolean;
+  /**
+   * @type boolean | undefined
+   */
+  isDeleted?: boolean;
+  /**
+   * @description
+   * Format: `date-time`
+   * @type string | undefined
+   */
+  lastModificationTime?: string | null;
+  /**
+   * @type string | undefined
+   */
+  attachmentName?: string | null;
+  /**
+   * @type string | undefined
+   */
+  attachmentContentType?: string | null;
+  /**
+   * @description
+   * Format: `int64`
+   * @type integer | undefined
+   */
+  attachmentSize?: bigint;
+  /**
+   * @type boolean | undefined
+   */
+  readonly hasAttachment?: boolean;
+  /**
+   * @type string | undefined
+   */
+  attachmentBlobName?: string | null;
 };

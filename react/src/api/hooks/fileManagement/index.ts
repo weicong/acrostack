@@ -6,6 +6,11 @@ export {
   useFileManagementCreateFolder,
 } from "./useFileManagementCreateFolder.ts";
 export {
+  fileManagementCreateShareLinkMutationKey,
+  fileManagementCreateShareLinkMutationOptions,
+  useFileManagementCreateShareLink,
+} from "./useFileManagementCreateShareLink.ts";
+export {
   fileManagementDeleteFileMutationKey,
   fileManagementDeleteFileMutationOptions,
   useFileManagementDeleteFile,
@@ -21,6 +26,16 @@ export {
   useFileManagementDownloadFile,
 } from "./useFileManagementDownloadFile.ts";
 export {
+  fileManagementDownloadSharedQueryKey,
+  fileManagementDownloadSharedQueryOptions,
+  useFileManagementDownloadShared,
+} from "./useFileManagementDownloadShared.ts";
+export {
+  fileManagementGetFileVersionsQueryKey,
+  fileManagementGetFileVersionsQueryOptions,
+  useFileManagementGetFileVersions,
+} from "./useFileManagementGetFileVersions.ts";
+export {
   fileManagementGetFilesQueryKey,
   fileManagementGetFilesQueryOptions,
   useFileManagementGetFiles,
@@ -31,10 +46,45 @@ export {
   useFileManagementGetFolders,
 } from "./useFileManagementGetFolders.ts";
 export {
+  fileManagementGetShareLinksQueryKey,
+  fileManagementGetShareLinksQueryOptions,
+  useFileManagementGetShareLinks,
+} from "./useFileManagementGetShareLinks.ts";
+export {
+  fileManagementGetStorageInfoQueryKey,
+  fileManagementGetStorageInfoQueryOptions,
+  useFileManagementGetStorageInfo,
+} from "./useFileManagementGetStorageInfo.ts";
+export {
+  fileManagementGetThumbnailQueryKey,
+  fileManagementGetThumbnailQueryOptions,
+  useFileManagementGetThumbnail,
+} from "./useFileManagementGetThumbnail.ts";
+export {
+  fileManagementMoveFileMutationKey,
+  fileManagementMoveFileMutationOptions,
+  useFileManagementMoveFile,
+} from "./useFileManagementMoveFile.ts";
+export {
+  fileManagementMoveFolderMutationKey,
+  fileManagementMoveFolderMutationOptions,
+  useFileManagementMoveFolder,
+} from "./useFileManagementMoveFolder.ts";
+export {
   fileManagementRenameFolderMutationKey,
   fileManagementRenameFolderMutationOptions,
   useFileManagementRenameFolder,
 } from "./useFileManagementRenameFolder.ts";
+export {
+  fileManagementRestoreVersionMutationKey,
+  fileManagementRestoreVersionMutationOptions,
+  useFileManagementRestoreVersion,
+} from "./useFileManagementRestoreVersion.ts";
+export {
+  fileManagementRevokeShareLinkMutationKey,
+  fileManagementRevokeShareLinkMutationOptions,
+  useFileManagementRevokeShareLink,
+} from "./useFileManagementRevokeShareLink.ts";
 export {
   fileManagementUploadFileMutationKey,
   fileManagementUploadFileMutationOptions,

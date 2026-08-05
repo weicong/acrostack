@@ -38,4 +38,12 @@ export type AcroStackServicesDtosChatContactDto = {
    * @type string | undefined
    */
   lastMessageDate?: string | null;
+  /**
+   * @type boolean | undefined
+   */
+  isOnline?: boolean;
+  /**
+   * @type boolean | undefined
+   */
+  isBlocked?: boolean;
 };

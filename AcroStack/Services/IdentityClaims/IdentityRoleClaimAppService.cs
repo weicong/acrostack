@@ -12,7 +12,7 @@ using Volo.Abp.Identity;
 namespace AcroStack.Services.IdentityClaims;
 
 [Authorize(AcroStackPermissions.IdentityClaims.RoleClaims)]
-public class IdentityRoleClaimAppService : ApplicationService, IIdentityRoleClaimAppService
+public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleClaimAppService
 {
     private readonly IRepository<IdentityRoleClaim, Guid> _claimRepository;
 

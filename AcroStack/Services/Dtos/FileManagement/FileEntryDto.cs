@@ -12,4 +12,6 @@ public class FileEntryDto : FullAuditedEntityDto<Guid>
     public long ByteSize { get; set; }
 
     public Guid? FolderId { get; set; }
+
+    public int CurrentVersion { get; set; } = 1;
 }

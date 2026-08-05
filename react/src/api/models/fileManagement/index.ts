@@ -14,6 +14,20 @@ export type {
   FileManagementCreateFolderStatus200Plain,
 } from "./FileManagementCreateFolder.ts";
 export type {
+  FileManagementCreateShareLinkData,
+  FileManagementCreateShareLinkJson2Data,
+  FileManagementCreateShareLinkJson3Data,
+  FileManagementCreateShareLinkJsonData,
+  FileManagementCreateShareLinkPathId,
+  FileManagementCreateShareLinkRequestConfig,
+  FileManagementCreateShareLinkResponse,
+  FileManagementCreateShareLinkResponses,
+  FileManagementCreateShareLinkStatus200,
+  FileManagementCreateShareLinkStatus200Json,
+  FileManagementCreateShareLinkStatus200Json2,
+  FileManagementCreateShareLinkStatus200Plain,
+} from "./FileManagementCreateShareLink.ts";
+export type {
   FileManagementDeleteFilePathId,
   FileManagementDeleteFileRequestConfig,
   FileManagementDeleteFileResponse,
@@ -35,6 +49,23 @@ export type {
   FileManagementDownloadFileStatus200,
 } from "./FileManagementDownloadFile.ts";
 export type {
+  FileManagementDownloadSharedPathToken,
+  FileManagementDownloadSharedRequestConfig,
+  FileManagementDownloadSharedResponse,
+  FileManagementDownloadSharedResponses,
+  FileManagementDownloadSharedStatus200,
+} from "./FileManagementDownloadShared.ts";
+export type {
+  FileManagementGetFileVersionsPathId,
+  FileManagementGetFileVersionsRequestConfig,
+  FileManagementGetFileVersionsResponse,
+  FileManagementGetFileVersionsResponses,
+  FileManagementGetFileVersionsStatus200,
+  FileManagementGetFileVersionsStatus200Json,
+  FileManagementGetFileVersionsStatus200Json2,
+  FileManagementGetFileVersionsStatus200Plain,
+} from "./FileManagementGetFileVersions.ts";
+export type {
   FileManagementGetFilesQueryFolderId,
   FileManagementGetFilesRequestConfig,
   FileManagementGetFilesResponse,
@@ -55,6 +86,60 @@ export type {
   FileManagementGetFoldersStatus200Plain,
 } from "./FileManagementGetFolders.ts";
 export type {
+  FileManagementGetShareLinksPathId,
+  FileManagementGetShareLinksRequestConfig,
+  FileManagementGetShareLinksResponse,
+  FileManagementGetShareLinksResponses,
+  FileManagementGetShareLinksStatus200,
+  FileManagementGetShareLinksStatus200Json,
+  FileManagementGetShareLinksStatus200Json2,
+  FileManagementGetShareLinksStatus200Plain,
+} from "./FileManagementGetShareLinks.ts";
+export type {
+  FileManagementGetStorageInfoRequestConfig,
+  FileManagementGetStorageInfoResponse,
+  FileManagementGetStorageInfoResponses,
+  FileManagementGetStorageInfoStatus200,
+  FileManagementGetStorageInfoStatus200Json,
+  FileManagementGetStorageInfoStatus200Json2,
+  FileManagementGetStorageInfoStatus200Plain,
+} from "./FileManagementGetStorageInfo.ts";
+export type {
+  FileManagementGetThumbnailPathId,
+  FileManagementGetThumbnailRequestConfig,
+  FileManagementGetThumbnailResponse,
+  FileManagementGetThumbnailResponses,
+  FileManagementGetThumbnailStatus200,
+} from "./FileManagementGetThumbnail.ts";
+export type {
+  FileManagementMoveFileData,
+  FileManagementMoveFileJson2Data,
+  FileManagementMoveFileJson3Data,
+  FileManagementMoveFileJsonData,
+  FileManagementMoveFilePathId,
+  FileManagementMoveFileRequestConfig,
+  FileManagementMoveFileResponse,
+  FileManagementMoveFileResponses,
+  FileManagementMoveFileStatus200,
+  FileManagementMoveFileStatus200Json,
+  FileManagementMoveFileStatus200Json2,
+  FileManagementMoveFileStatus200Plain,
+} from "./FileManagementMoveFile.ts";
+export type {
+  FileManagementMoveFolderData,
+  FileManagementMoveFolderJson2Data,
+  FileManagementMoveFolderJson3Data,
+  FileManagementMoveFolderJsonData,
+  FileManagementMoveFolderPathId,
+  FileManagementMoveFolderRequestConfig,
+  FileManagementMoveFolderResponse,
+  FileManagementMoveFolderResponses,
+  FileManagementMoveFolderStatus200,
+  FileManagementMoveFolderStatus200Json,
+  FileManagementMoveFolderStatus200Json2,
+  FileManagementMoveFolderStatus200Plain,
+} from "./FileManagementMoveFolder.ts";
+export type {
   FileManagementRenameFolderData,
   FileManagementRenameFolderJson2Data,
   FileManagementRenameFolderJson3Data,
@@ -68,6 +153,24 @@ export type {
   FileManagementRenameFolderStatus200Json2,
   FileManagementRenameFolderStatus200Plain,
 } from "./FileManagementRenameFolder.ts";
+export type {
+  FileManagementRestoreVersionPathId,
+  FileManagementRestoreVersionPathVersionId,
+  FileManagementRestoreVersionRequestConfig,
+  FileManagementRestoreVersionResponse,
+  FileManagementRestoreVersionResponses,
+  FileManagementRestoreVersionStatus200,
+  FileManagementRestoreVersionStatus200Json,
+  FileManagementRestoreVersionStatus200Json2,
+  FileManagementRestoreVersionStatus200Plain,
+} from "./FileManagementRestoreVersion.ts";
+export type {
+  FileManagementRevokeShareLinkPathId,
+  FileManagementRevokeShareLinkRequestConfig,
+  FileManagementRevokeShareLinkResponse,
+  FileManagementRevokeShareLinkResponses,
+  FileManagementRevokeShareLinkStatus200,
+} from "./FileManagementRevokeShareLink.ts";
 export type {
   FileManagementUploadFileData,
   FileManagementUploadFileQueryFolderId,

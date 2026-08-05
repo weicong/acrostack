@@ -9,7 +9,7 @@ export const menu: RouteMenuConfig = {
   nameKey: "AbpBackgroundJobs::BackgroundJobs",
   icon: Clock20Regular,
   order: 150,
-  requiredPolicy: "AcroStack.BackgroundJobs",
+  requiredPolicy: "AcroStack.BackgroundJobs.ViewJobs",
 };
 
 export const routeConfig: MenuRoute[] = [{ path: "/background-jobs", menu }];
@@ -18,5 +18,5 @@ export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/background-jobs",
   component: BackgroundJobsPage,
-  beforeLoad: createPermissionGuard("AcroStack.BackgroundJobs"),
+  beforeLoad: createPermissionGuard("AcroStack.BackgroundJobs.ViewJobs"),
 });

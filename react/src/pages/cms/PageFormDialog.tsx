@@ -14,17 +14,16 @@ import {
 } from "@fluentui/react-components";
 import { z } from "zod";
 import { useAppForm } from "@/components/form";
-import { usePageCreate } from "@/api/hooks/page/usePageCreate";
-import { usePageUpdate } from "@/api/hooks/page/usePageUpdate";
-import type { AcroStackServicesDtosCmsPageDto as PageDto } from "@/api/models/acroStack/services/dtos/cms/PageDto";
+import { usePageAdminCreate } from "@/api/hooks/pageAdmin/usePageAdminCreate";
+import { usePageAdminUpdate } from "@/api/hooks/pageAdmin/usePageAdminUpdate";
+import type { VoloCmsKitAdminPagesPageDto as PageDto } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
 const pageSchema = z.object({
   title: z.string().min(1).max(256),
-  slug: z.string().min(1).max(128),
-  description: z.string().max(512),
-  content: z.string().min(1),
+  slug: z.string().min(1).max(256),
+  content: z.string(),
 });
 
 type PageFormValues = z.infer<typeof pageSchema>;
@@ -63,14 +62,13 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
   const { dispatchToast } = useToastController();
   const isEdit = !!page?.id;
 
-  const createMutation = usePageCreate();
-  const updateMutation = usePageUpdate();
+  const createMutation = usePageAdminCreate();
+  const updateMutation = usePageAdminUpdate();
 
   const form = useAppForm({
     defaultValues: {
       title: page?.title ?? "",
       slug: page?.slug ?? "",
-      description: page?.description ?? "",
       content: page?.content ?? "",
     } satisfies PageFormValues,
     validators: {
@@ -82,15 +80,17 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
       },
     },
     onSubmit: ({ value }) => {
-      const payload = {
-        title: value.title,
-        slug: value.slug,
-        content: value.content,
-        description: value.description || undefined,
-      };
       if (isEdit && page?.id) {
         updateMutation.mutate(
-          { id: page.id, data: payload },
+          {
+            id: page.id,
+            data: {
+              title: value.title,
+              slug: value.slug,
+              content: value.content || undefined,
+              concurrencyStamp: page.concurrencyStamp ?? undefined,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -103,7 +103,13 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
         );
       } else {
         createMutation.mutate(
-          { data: payload },
+          {
+            data: {
+              title: value.title,
+              slug: value.slug,
+              content: value.content || undefined,
+            },
+          },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -146,17 +152,9 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
                     children={(field) => <field.TextField label={t("Cms:Slug")} required />}
                   />
                   <form.AppField
-                    name="description"
-                    children={(field) => <field.TextareaField label={t("Cms:Description")} />}
-                  />
-                  <form.AppField
                     name="content"
                     children={(field) => (
-                      <field.TextareaField
-                        label={t("Cms:Content")}
-                        required
-                        textareaProps={{ rows: 8 }}
-                      />
+                      <field.TextareaField label={t("Cms:Content")} textareaProps={{ rows: 10 }} />
                     )}
                   />
                   <div className={styles.actions}>

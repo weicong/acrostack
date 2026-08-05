@@ -36,6 +36,8 @@ public static class AcroStackPermissions
         public const string Default = GroupName + ".AuditLogging";
         public const string ViewLogs = Default + ".ViewLogs";
         public const string ViewEntityChanges = Default + ".ViewEntityChanges";
+        public const string ViewStatistics = Default + ".ViewStatistics";
+        public const string Delete = Default + ".Delete";
     }
 
     /// <summary>
@@ -70,20 +72,7 @@ public static class AcroStackPermissions
         public const string Default = GroupName + ".IdentityClaims";
         public const string UserClaims = Default + ".UserClaims";
         public const string RoleClaims = Default + ".RoleClaims";
-    }
-
-    /// <summary>
-    /// SaaS Edition management permissions — mirrors ABP Commercial SaaS Pro
-    /// module. The open-source <c>Volo.Abp.TenantManagement</c> module ships
-    /// no Edition entity or HTTP API; these permissions guard our custom
-    /// AppService that exposes edition CRUD.
-    /// </summary>
-    public static class SaaS
-    {
-        public const string Editions = GroupName + ".SaaS.Editions";
-        public const string EditionsCreate = Editions + ".Create";
-        public const string EditionsUpdate = Editions + ".Update";
-        public const string EditionsDelete = Editions + ".Delete";
+        public const string ClaimTypes = Default + ".ClaimTypes";
     }
 
     /// <summary>
@@ -98,73 +87,7 @@ public static class AcroStackPermissions
         public const string Upload = Default + ".Upload";
         public const string Download = Default + ".Download";
         public const string Delete = Default + ".Delete";
-    }
-
-    /// <summary>
-    /// GDPR permissions — mirrors ABP Commercial GDPR Pro module. The
-    /// open-source ABP ships no personal-data export/delete feature;
-    /// these permissions guard our custom AppService.
-    /// </summary>
-    public static class Gdpr
-    {
-        public const string Default = GroupName + ".Gdpr";
-    }
-
-    /// <summary>
-    /// CMS Kit permissions — mirrors ABP Commercial CMS Kit Pro module.
-    /// The open-source ABP ships no Pages/Blogging/Comments/Reactions/Menus
-    /// feature; these permissions guard our custom AppServices.
-    /// </summary>
-    public static class Cms
-    {
-        public const string GroupName = AcroStackPermissions.GroupName + ".Cms";
-
-        public static class Pages
-        {
-            public const string Default = GroupName + ".Pages";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
-
-        public static class Blogs
-        {
-            public const string Default = GroupName + ".Blogs";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
-
-        public static class BlogPosts
-        {
-            public const string Default = GroupName + ".BlogPosts";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
-
-        public static class Tags
-        {
-            public const string Default = GroupName + ".Tags";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
-
-        public static class Comments
-        {
-            public const string Default = GroupName + ".Comments";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
-
-        public static class Menus
-        {
-            public const string Default = GroupName + ".Menus";
-            public const string Create = Default + ".Create";
-            public const string Update = Default + ".Update";
-            public const string Delete = Default + ".Delete";
-        }
+        public const string Move = Default + ".Move";
+        public const string Share = Default + ".Share";
     }
 }

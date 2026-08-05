@@ -10,12 +10,12 @@ export const menu: RouteMenuConfig = {
   nameKey: "Menu:Cms.Menus",
   icon: Navigation20Regular,
   order: 6,
-  requiredPolicy: "AcroStack.Cms.Menus",
+  requiredPolicy: "CmsKit.Menus",
 };
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: "/cms/menus",
   component: MenusPage,
-  beforeLoad: createPermissionGuard("AcroStack.Cms.Menus"),
+  beforeLoad: createPermissionGuard("CmsKit.Menus"),
 });

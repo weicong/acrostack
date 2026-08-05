@@ -1,5 +1,6 @@
 /* oxlint-disable */
 
+export type { VoloAbpIdentityIdentityClaimValueType } from "./IdentityClaimValueType.ts";
 export type { VoloAbpIdentityIdentityRoleCreateDto } from "./IdentityRoleCreateDto.ts";
 export type { VoloAbpIdentityIdentityRoleDto } from "./IdentityRoleDto.ts";
 export type { VoloAbpIdentityIdentityRoleUpdateDto } from "./IdentityRoleUpdateDto.ts";

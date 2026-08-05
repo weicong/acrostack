@@ -17,7 +17,6 @@ import { Route as BackgroundJobsRouteImport } from './routes/background-jobs'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as FeaturesRouteImport } from './routes/features'
-import { Route as GdprRouteImport } from './routes/gdpr'
 import { Route as IdentityRouteRouteImport } from './routes/identity/route'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
@@ -35,12 +34,12 @@ import { Route as CmsPagesRouteImport } from './routes/cms/pages'
 import { Route as CmsTagsRouteImport } from './routes/cms/tags'
 import { Route as FileManagementIndexRouteImport } from './routes/file-management/index'
 import { Route as IdentityIndexRouteImport } from './routes/identity/index'
+import { Route as IdentityClaimTypesRouteImport } from './routes/identity/claim-types'
 import { Route as IdentityPermissionsRouteImport } from './routes/identity/permissions'
 import { Route as IdentityRolesRouteImport } from './routes/identity/roles'
 import { Route as IdentityUsersRouteImport } from './routes/identity/users'
 import { Route as OpeniddictApplicationsRouteImport } from './routes/openiddict/applications'
 import { Route as OpeniddictScopesRouteImport } from './routes/openiddict/scopes'
-import { Route as SaasEditionsRouteImport } from './routes/saas/editions'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -80,11 +79,6 @@ const ChatRoute = ChatRouteImport.update({
 const FeaturesRoute = FeaturesRouteImport.update({
   id: '/features',
   path: '/features',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GdprRoute = GdprRouteImport.update({
-  id: '/gdpr',
-  path: '/gdpr',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IdentityRouteRoute = IdentityRouteRouteImport.update({
@@ -172,6 +166,11 @@ const IdentityIndexRoute = IdentityIndexRouteImport.update({
   path: '/',
   getParentRoute: () => IdentityRouteRoute,
 } as any)
+const IdentityClaimTypesRoute = IdentityClaimTypesRouteImport.update({
+  id: '/claim-types',
+  path: '/claim-types',
+  getParentRoute: () => IdentityRouteRoute,
+} as any)
 const IdentityPermissionsRoute = IdentityPermissionsRouteImport.update({
   id: '/permissions',
   path: '/permissions',
@@ -197,11 +196,6 @@ const OpeniddictScopesRoute = OpeniddictScopesRouteImport.update({
   path: '/openiddict/scopes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SaasEditionsRoute = SaasEditionsRouteImport.update({
-  id: '/saas/editions',
-  path: '/saas/editions',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -213,7 +207,6 @@ export interface FileRoutesByFullPath {
   '/books': typeof BooksRoute
   '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
-  '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
@@ -227,12 +220,12 @@ export interface FileRoutesByFullPath {
   '/cms/menus': typeof CmsMenusRoute
   '/cms/pages': typeof CmsPagesRoute
   '/cms/tags': typeof CmsTagsRoute
+  '/identity/claim-types': typeof IdentityClaimTypesRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/openiddict/applications': typeof OpeniddictApplicationsRoute
   '/openiddict/scopes': typeof OpeniddictScopesRoute
-  '/saas/editions': typeof SaasEditionsRoute
   '/account/': typeof AccountIndexRoute
   '/file-management/': typeof FileManagementIndexRoute
   '/identity/': typeof IdentityIndexRoute
@@ -245,7 +238,6 @@ export interface FileRoutesByTo {
   '/books': typeof BooksRoute
   '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
-  '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
@@ -259,12 +251,12 @@ export interface FileRoutesByTo {
   '/cms/menus': typeof CmsMenusRoute
   '/cms/pages': typeof CmsPagesRoute
   '/cms/tags': typeof CmsTagsRoute
+  '/identity/claim-types': typeof IdentityClaimTypesRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/openiddict/applications': typeof OpeniddictApplicationsRoute
   '/openiddict/scopes': typeof OpeniddictScopesRoute
-  '/saas/editions': typeof SaasEditionsRoute
   '/account': typeof AccountIndexRoute
   '/file-management': typeof FileManagementIndexRoute
   '/identity': typeof IdentityIndexRoute
@@ -280,7 +272,6 @@ export interface FileRoutesById {
   '/books': typeof BooksRoute
   '/chat': typeof ChatRoute
   '/features': typeof FeaturesRoute
-  '/gdpr': typeof GdprRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/tenants': typeof TenantsRoute
@@ -294,12 +285,12 @@ export interface FileRoutesById {
   '/cms/menus': typeof CmsMenusRoute
   '/cms/pages': typeof CmsPagesRoute
   '/cms/tags': typeof CmsTagsRoute
+  '/identity/claim-types': typeof IdentityClaimTypesRoute
   '/identity/permissions': typeof IdentityPermissionsRoute
   '/identity/roles': typeof IdentityRolesRoute
   '/identity/users': typeof IdentityUsersRoute
   '/openiddict/applications': typeof OpeniddictApplicationsRoute
   '/openiddict/scopes': typeof OpeniddictScopesRoute
-  '/saas/editions': typeof SaasEditionsRoute
   '/account/': typeof AccountIndexRoute
   '/file-management/': typeof FileManagementIndexRoute
   '/identity/': typeof IdentityIndexRoute
@@ -316,7 +307,6 @@ export interface FileRouteTypes {
     | '/books'
     | '/chat'
     | '/features'
-    | '/gdpr'
     | '/profile'
     | '/settings'
     | '/tenants'
@@ -330,12 +320,12 @@ export interface FileRouteTypes {
     | '/cms/menus'
     | '/cms/pages'
     | '/cms/tags'
+    | '/identity/claim-types'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
     | '/openiddict/applications'
     | '/openiddict/scopes'
-    | '/saas/editions'
     | '/account/'
     | '/file-management/'
     | '/identity/'
@@ -348,7 +338,6 @@ export interface FileRouteTypes {
     | '/books'
     | '/chat'
     | '/features'
-    | '/gdpr'
     | '/profile'
     | '/settings'
     | '/tenants'
@@ -362,12 +351,12 @@ export interface FileRouteTypes {
     | '/cms/menus'
     | '/cms/pages'
     | '/cms/tags'
+    | '/identity/claim-types'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
     | '/openiddict/applications'
     | '/openiddict/scopes'
-    | '/saas/editions'
     | '/account'
     | '/file-management'
     | '/identity'
@@ -382,7 +371,6 @@ export interface FileRouteTypes {
     | '/books'
     | '/chat'
     | '/features'
-    | '/gdpr'
     | '/profile'
     | '/settings'
     | '/tenants'
@@ -396,12 +384,12 @@ export interface FileRouteTypes {
     | '/cms/menus'
     | '/cms/pages'
     | '/cms/tags'
+    | '/identity/claim-types'
     | '/identity/permissions'
     | '/identity/roles'
     | '/identity/users'
     | '/openiddict/applications'
     | '/openiddict/scopes'
-    | '/saas/editions'
     | '/account/'
     | '/file-management/'
     | '/identity/'
@@ -417,7 +405,6 @@ export interface RootRouteChildren {
   BooksRoute: typeof BooksRoute
   ChatRoute: typeof ChatRoute
   FeaturesRoute: typeof FeaturesRoute
-  GdprRoute: typeof GdprRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
   TenantsRoute: typeof TenantsRoute
@@ -429,7 +416,6 @@ export interface RootRouteChildren {
   CmsTagsRoute: typeof CmsTagsRoute
   OpeniddictApplicationsRoute: typeof OpeniddictApplicationsRoute
   OpeniddictScopesRoute: typeof OpeniddictScopesRoute
-  SaasEditionsRoute: typeof SaasEditionsRoute
   FileManagementIndexRoute: typeof FileManagementIndexRoute
 }
 
@@ -489,13 +475,6 @@ declare module '@tanstack/react-router' {
       path: '/features'
       fullPath: '/features'
       preLoaderRoute: typeof FeaturesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gdpr': {
-      id: '/gdpr'
-      path: '/gdpr'
-      fullPath: '/gdpr'
-      preLoaderRoute: typeof GdprRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/identity': {
@@ -617,6 +596,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IdentityIndexRouteImport
       parentRoute: typeof IdentityRouteRoute
     }
+    '/identity/claim-types': {
+      id: '/identity/claim-types'
+      path: '/claim-types'
+      fullPath: '/identity/claim-types'
+      preLoaderRoute: typeof IdentityClaimTypesRouteImport
+      parentRoute: typeof IdentityRouteRoute
+    }
     '/identity/permissions': {
       id: '/identity/permissions'
       path: '/permissions'
@@ -652,13 +638,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpeniddictScopesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/saas/editions': {
-      id: '/saas/editions'
-      path: '/saas/editions'
-      fullPath: '/saas/editions'
-      preLoaderRoute: typeof SaasEditionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -683,6 +662,7 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 )
 
 interface IdentityRouteRouteChildren {
+  IdentityClaimTypesRoute: typeof IdentityClaimTypesRoute
   IdentityPermissionsRoute: typeof IdentityPermissionsRoute
   IdentityRolesRoute: typeof IdentityRolesRoute
   IdentityUsersRoute: typeof IdentityUsersRoute
@@ -690,6 +670,7 @@ interface IdentityRouteRouteChildren {
 }
 
 const IdentityRouteRouteChildren: IdentityRouteRouteChildren = {
+  IdentityClaimTypesRoute: IdentityClaimTypesRoute,
   IdentityPermissionsRoute: IdentityPermissionsRoute,
   IdentityRolesRoute: IdentityRolesRoute,
   IdentityUsersRoute: IdentityUsersRoute,
@@ -710,7 +691,6 @@ const rootRouteChildren: RootRouteChildren = {
   BooksRoute: BooksRoute,
   ChatRoute: ChatRoute,
   FeaturesRoute: FeaturesRoute,
-  GdprRoute: GdprRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
   TenantsRoute: TenantsRoute,
@@ -722,7 +702,6 @@ const rootRouteChildren: RootRouteChildren = {
   CmsTagsRoute: CmsTagsRoute,
   OpeniddictApplicationsRoute: OpeniddictApplicationsRoute,
   OpeniddictScopesRoute: OpeniddictScopesRoute,
-  SaasEditionsRoute: SaasEditionsRoute,
   FileManagementIndexRoute: FileManagementIndexRoute,
 }
 export const routeTree = rootRouteImport

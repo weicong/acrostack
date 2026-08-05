@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using AcroStack.Services;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -12,7 +13,7 @@ using IdentityPermissions = Volo.Abp.Identity.IdentityPermissions;
 namespace AcroStack.AppUsers;
 
 [Authorize(IdentityPermissions.Users.Default)]
-public class AppUserAppService : ApplicationService, IAppUserAppService
+public class AppUserAppService : AcroStackAppService, IAppUserAppService
 {
     private readonly IRepository<AppUser, Guid> _appUserRepository;
 

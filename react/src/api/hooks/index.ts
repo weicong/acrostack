@@ -56,15 +56,50 @@ export {
   useAppUserGetList,
 } from "./appUser/useAppUserGetList.ts";
 export {
+  auditLogDeleteMutationKey,
+  auditLogDeleteMutationOptions,
+  useAuditLogDelete,
+} from "./auditLog/useAuditLogDelete.ts";
+export {
+  auditLogDeleteManyMutationKey,
+  auditLogDeleteManyMutationOptions,
+  useAuditLogDeleteMany,
+} from "./auditLog/useAuditLogDeleteMany.ts";
+export {
   auditLogGetQueryKey,
   auditLogGetQueryOptions,
   useAuditLogGet,
 } from "./auditLog/useAuditLogGet.ts";
 export {
+  auditLogGetEntityChangeQueryKey,
+  auditLogGetEntityChangeQueryOptions,
+  useAuditLogGetEntityChange,
+} from "./auditLog/useAuditLogGetEntityChange.ts";
+export {
+  auditLogGetEntityChangesQueryKey,
+  auditLogGetEntityChangesQueryOptions,
+  useAuditLogGetEntityChanges,
+} from "./auditLog/useAuditLogGetEntityChanges.ts";
+export {
   auditLogGetListQueryKey,
   auditLogGetListQueryOptions,
   useAuditLogGetList,
 } from "./auditLog/useAuditLogGetList.ts";
+export {
+  auditLogGetListToExcelQueryKey,
+  auditLogGetListToExcelQueryOptions,
+  useAuditLogGetListToExcel,
+} from "./auditLog/useAuditLogGetListToExcel.ts";
+export {
+  auditLogGetStatisticsQueryKey,
+  auditLogGetStatisticsQueryOptions,
+  useAuditLogGetStatistics,
+} from "./auditLog/useAuditLogGetStatistics.ts";
+export {
+  backgroundJobAbandonMutationKey,
+  backgroundJobAbandonMutationOptions,
+  useBackgroundJobAbandon,
+} from "./backgroundJob/useBackgroundJobAbandon.ts";
 export {
   backgroundJobDeleteMutationKey,
   backgroundJobDeleteMutationOptions,
@@ -81,61 +116,145 @@ export {
   useBackgroundJobGetList,
 } from "./backgroundJob/useBackgroundJobGetList.ts";
 export {
-  blogCreateMutationKey,
-  blogCreateMutationOptions,
-  useBlogCreate,
-} from "./blog/useBlogCreate.ts";
+  backgroundJobRequeueMutationKey,
+  backgroundJobRequeueMutationOptions,
+  useBackgroundJobRequeue,
+} from "./backgroundJob/useBackgroundJobRequeue.ts";
 export {
-  blogDeleteMutationKey,
-  blogDeleteMutationOptions,
-  useBlogDelete,
-} from "./blog/useBlogDelete.ts";
-export { blogGetQueryKey, blogGetQueryOptions, useBlogGet } from "./blog/useBlogGet.ts";
+  blogAdminCreateMutationKey,
+  blogAdminCreateMutationOptions,
+  useBlogAdminCreate,
+} from "./blogAdmin/useBlogAdminCreate.ts";
 export {
-  blogGetBySlugQueryKey,
-  blogGetBySlugQueryOptions,
-  useBlogGetBySlug,
-} from "./blog/useBlogGetBySlug.ts";
+  blogAdminDeleteMutationKey,
+  blogAdminDeleteMutationOptions,
+  useBlogAdminDelete,
+} from "./blogAdmin/useBlogAdminDelete.ts";
 export {
-  blogGetListQueryKey,
-  blogGetListQueryOptions,
-  useBlogGetList,
-} from "./blog/useBlogGetList.ts";
+  blogAdminGetQueryKey,
+  blogAdminGetQueryOptions,
+  useBlogAdminGet,
+} from "./blogAdmin/useBlogAdminGet.ts";
 export {
-  blogUpdateMutationKey,
-  blogUpdateMutationOptions,
-  useBlogUpdate,
-} from "./blog/useBlogUpdate.ts";
+  blogAdminGetAllListQueryKey,
+  blogAdminGetAllListQueryOptions,
+  useBlogAdminGetAllList,
+} from "./blogAdmin/useBlogAdminGetAllList.ts";
 export {
-  blogPostCreateMutationKey,
-  blogPostCreateMutationOptions,
-  useBlogPostCreate,
-} from "./blogPost/useBlogPostCreate.ts";
+  blogAdminGetListQueryKey,
+  blogAdminGetListQueryOptions,
+  useBlogAdminGetList,
+} from "./blogAdmin/useBlogAdminGetList.ts";
 export {
-  blogPostDeleteMutationKey,
-  blogPostDeleteMutationOptions,
-  useBlogPostDelete,
-} from "./blogPost/useBlogPostDelete.ts";
+  blogAdminMoveAllBlogPostsMutationKey,
+  blogAdminMoveAllBlogPostsMutationOptions,
+  useBlogAdminMoveAllBlogPosts,
+} from "./blogAdmin/useBlogAdminMoveAllBlogPosts.ts";
 export {
-  blogPostGetQueryKey,
-  blogPostGetQueryOptions,
-  useBlogPostGet,
-} from "./blogPost/useBlogPostGet.ts";
+  blogAdminUpdateMutationKey,
+  blogAdminUpdateMutationOptions,
+  useBlogAdminUpdate,
+} from "./blogAdmin/useBlogAdminUpdate.ts";
 export {
-  blogPostGetBySlugQueryKey,
-  blogPostGetBySlugQueryOptions,
-  useBlogPostGetBySlug,
-} from "./blogPost/useBlogPostGetBySlug.ts";
+  blogFeatureGetOrDefaultQueryKey,
+  blogFeatureGetOrDefaultQueryOptions,
+  useBlogFeatureGetOrDefault,
+} from "./blogFeature/useBlogFeatureGetOrDefault.ts";
 export {
-  blogPostGetListQueryKey,
-  blogPostGetListQueryOptions,
-  useBlogPostGetList,
-} from "./blogPost/useBlogPostGetList.ts";
+  blogFeatureAdminGetListQueryKey,
+  blogFeatureAdminGetListQueryOptions,
+  useBlogFeatureAdminGetList,
+} from "./blogFeatureAdmin/useBlogFeatureAdminGetList.ts";
 export {
-  blogPostUpdateMutationKey,
-  blogPostUpdateMutationOptions,
-  useBlogPostUpdate,
-} from "./blogPost/useBlogPostUpdate.ts";
+  blogFeatureAdminSetMutationKey,
+  blogFeatureAdminSetMutationOptions,
+  useBlogFeatureAdminSet,
+} from "./blogFeatureAdmin/useBlogFeatureAdminSet.ts";
+export {
+  blogPostAdminCreateMutationKey,
+  blogPostAdminCreateMutationOptions,
+  useBlogPostAdminCreate,
+} from "./blogPostAdmin/useBlogPostAdminCreate.ts";
+export {
+  blogPostAdminCreateAndPublishMutationKey,
+  blogPostAdminCreateAndPublishMutationOptions,
+  useBlogPostAdminCreateAndPublish,
+} from "./blogPostAdmin/useBlogPostAdminCreateAndPublish.ts";
+export {
+  blogPostAdminCreateAndSendToReviewMutationKey,
+  blogPostAdminCreateAndSendToReviewMutationOptions,
+  useBlogPostAdminCreateAndSendToReview,
+} from "./blogPostAdmin/useBlogPostAdminCreateAndSendToReview.ts";
+export {
+  blogPostAdminDeleteMutationKey,
+  blogPostAdminDeleteMutationOptions,
+  useBlogPostAdminDelete,
+} from "./blogPostAdmin/useBlogPostAdminDelete.ts";
+export {
+  blogPostAdminDraftMutationKey,
+  blogPostAdminDraftMutationOptions,
+  useBlogPostAdminDraft,
+} from "./blogPostAdmin/useBlogPostAdminDraft.ts";
+export {
+  blogPostAdminGetQueryKey,
+  blogPostAdminGetQueryOptions,
+  useBlogPostAdminGet,
+} from "./blogPostAdmin/useBlogPostAdminGet.ts";
+export {
+  blogPostAdminGetListQueryKey,
+  blogPostAdminGetListQueryOptions,
+  useBlogPostAdminGetList,
+} from "./blogPostAdmin/useBlogPostAdminGetList.ts";
+export {
+  blogPostAdminHasBlogPostWaitingForReviewQueryKey,
+  blogPostAdminHasBlogPostWaitingForReviewQueryOptions,
+  useBlogPostAdminHasBlogPostWaitingForReview,
+} from "./blogPostAdmin/useBlogPostAdminHasBlogPostWaitingForReview.ts";
+export {
+  blogPostAdminPublishMutationKey,
+  blogPostAdminPublishMutationOptions,
+  useBlogPostAdminPublish,
+} from "./blogPostAdmin/useBlogPostAdminPublish.ts";
+export {
+  blogPostAdminSendToReviewMutationKey,
+  blogPostAdminSendToReviewMutationOptions,
+  useBlogPostAdminSendToReview,
+} from "./blogPostAdmin/useBlogPostAdminSendToReview.ts";
+export {
+  blogPostAdminUpdateMutationKey,
+  blogPostAdminUpdateMutationOptions,
+  useBlogPostAdminUpdate,
+} from "./blogPostAdmin/useBlogPostAdminUpdate.ts";
+export {
+  blogPostPublicDeleteMutationKey,
+  blogPostPublicDeleteMutationOptions,
+  useBlogPostPublicDelete,
+} from "./blogPostPublic/useBlogPostPublicDelete.ts";
+export {
+  blogPostPublicGetQueryKey,
+  blogPostPublicGetQueryOptions,
+  useBlogPostPublicGet,
+} from "./blogPostPublic/useBlogPostPublicGet.ts";
+export {
+  blogPostPublicGetAuthorHasBlogPostQueryKey,
+  blogPostPublicGetAuthorHasBlogPostQueryOptions,
+  useBlogPostPublicGetAuthorHasBlogPost,
+} from "./blogPostPublic/useBlogPostPublicGetAuthorHasBlogPost.ts";
+export {
+  blogPostPublicGetAuthorsHasBlogPostsQueryKey,
+  blogPostPublicGetAuthorsHasBlogPostsQueryOptions,
+  useBlogPostPublicGetAuthorsHasBlogPosts,
+} from "./blogPostPublic/useBlogPostPublicGetAuthorsHasBlogPosts.ts";
+export {
+  blogPostPublicGetListQueryKey,
+  blogPostPublicGetListQueryOptions,
+  useBlogPostPublicGetList,
+} from "./blogPostPublic/useBlogPostPublicGetList.ts";
+export {
+  blogPostPublicGetTagNameQueryKey,
+  blogPostPublicGetTagNameQueryOptions,
+  useBlogPostPublicGetTagName,
+} from "./blogPostPublic/useBlogPostPublicGetTagName.ts";
 export {
   bookCreateMutationKey,
   bookCreateMutationOptions,
@@ -158,20 +277,85 @@ export {
   useBookUpdate,
 } from "./book/useBookUpdate.ts";
 export {
-  commentCreateMutationKey,
-  commentCreateMutationOptions,
-  useCommentCreate,
-} from "./comment/useCommentCreate.ts";
+  chatDownloadAttachmentQueryKey,
+  chatDownloadAttachmentQueryOptions,
+  useChatDownloadAttachment,
+} from "./chat/useChatDownloadAttachment.ts";
 export {
-  commentDeleteMutationKey,
-  commentDeleteMutationOptions,
-  useCommentDelete,
-} from "./comment/useCommentDelete.ts";
+  chatSendMessageWithAttachmentMutationKey,
+  chatSendMessageWithAttachmentMutationOptions,
+  useChatSendMessageWithAttachment,
+} from "./chat/useChatSendMessageWithAttachment.ts";
 export {
-  commentGetListForEntityQueryKey,
-  commentGetListForEntityQueryOptions,
-  useCommentGetListForEntity,
-} from "./comment/useCommentGetListForEntity.ts";
+  chatBlockBlockUserMutationKey,
+  chatBlockBlockUserMutationOptions,
+  useChatBlockBlockUser,
+} from "./chatBlock/useChatBlockBlockUser.ts";
+export {
+  chatBlockGetBlockedUsersQueryKey,
+  chatBlockGetBlockedUsersQueryOptions,
+  useChatBlockGetBlockedUsers,
+} from "./chatBlock/useChatBlockGetBlockedUsers.ts";
+export {
+  chatBlockIsUserBlockedMutationKey,
+  chatBlockIsUserBlockedMutationOptions,
+  useChatBlockIsUserBlocked,
+} from "./chatBlock/useChatBlockIsUserBlocked.ts";
+export {
+  chatBlockUnblockUserMutationKey,
+  chatBlockUnblockUserMutationOptions,
+  useChatBlockUnblockUser,
+} from "./chatBlock/useChatBlockUnblockUser.ts";
+export {
+  commentAdminDeleteMutationKey,
+  commentAdminDeleteMutationOptions,
+  useCommentAdminDelete,
+} from "./commentAdmin/useCommentAdminDelete.ts";
+export {
+  commentAdminGetQueryKey,
+  commentAdminGetQueryOptions,
+  useCommentAdminGet,
+} from "./commentAdmin/useCommentAdminGet.ts";
+export {
+  commentAdminGetListQueryKey,
+  commentAdminGetListQueryOptions,
+  useCommentAdminGetList,
+} from "./commentAdmin/useCommentAdminGetList.ts";
+export {
+  commentAdminGetWaitingCountQueryKey,
+  commentAdminGetWaitingCountQueryOptions,
+  useCommentAdminGetWaitingCount,
+} from "./commentAdmin/useCommentAdminGetWaitingCount.ts";
+export {
+  commentAdminUpdateApprovalStatusMutationKey,
+  commentAdminUpdateApprovalStatusMutationOptions,
+  useCommentAdminUpdateApprovalStatus,
+} from "./commentAdmin/useCommentAdminUpdateApprovalStatus.ts";
+export {
+  commentAdminUpdateSettingsMutationKey,
+  commentAdminUpdateSettingsMutationOptions,
+  useCommentAdminUpdateSettings,
+} from "./commentAdmin/useCommentAdminUpdateSettings.ts";
+export {
+  commentPublicCreateMutationKey,
+  commentPublicCreateMutationOptions,
+  useCommentPublicCreate,
+} from "./commentPublic/useCommentPublicCreate.ts";
+export {
+  commentPublicDeleteMutationKey,
+  commentPublicDeleteMutationOptions,
+  useCommentPublicDelete,
+} from "./commentPublic/useCommentPublicDelete.ts";
+export {
+  commentPublicGetListQueryKey,
+  commentPublicGetListQueryOptions,
+  useCommentPublicGetList,
+} from "./commentPublic/useCommentPublicGetList.ts";
+export {
+  commentPublicUpdateMutationKey,
+  commentPublicUpdateMutationOptions,
+  useCommentPublicUpdate,
+} from "./commentPublic/useCommentPublicUpdate.ts";
 export {
   contactGetListQueryKey,
   contactGetListQueryOptions,
@@ -183,6 +367,21 @@ export {
   useContactGetTotalUnreadMessageCount,
 } from "./contact/useContactGetTotalUnreadMessageCount.ts";
 export {
+  conversationDeleteMessageMutationKey,
+  conversationDeleteMessageMutationOptions,
+  useConversationDeleteMessage,
+} from "./conversation/useConversationDeleteMessage.ts";
+export {
+  conversationDownloadAttachmentMutationKey,
+  conversationDownloadAttachmentMutationOptions,
+  useConversationDownloadAttachment,
+} from "./conversation/useConversationDownloadAttachment.ts";
+export {
+  conversationEditMessageMutationKey,
+  conversationEditMessageMutationOptions,
+  useConversationEditMessage,
+} from "./conversation/useConversationEditMessage.ts";
+export {
   conversationGetListQueryKey,
   conversationGetListQueryOptions,
   useConversationGetList,
@@ -193,45 +392,40 @@ export {
   useConversationGetMessageList,
 } from "./conversation/useConversationGetMessageList.ts";
 export {
+  conversationGetReactionsQueryKey,
+  conversationGetReactionsQueryOptions,
+  useConversationGetReactions,
+} from "./conversation/useConversationGetReactions.ts";
+export {
   conversationMarkAsReadMutationKey,
   conversationMarkAsReadMutationOptions,
   useConversationMarkAsRead,
 } from "./conversation/useConversationMarkAsRead.ts";
+export {
+  conversationSearchMessagesMutationKey,
+  conversationSearchMessagesMutationOptions,
+  useConversationSearchMessages,
+} from "./conversation/useConversationSearchMessages.ts";
 export {
   conversationSendMessageMutationKey,
   conversationSendMessageMutationOptions,
   useConversationSendMessage,
 } from "./conversation/useConversationSendMessage.ts";
 export {
+  conversationSendMessageWithAttachmentMutationKey,
+  conversationSendMessageWithAttachmentMutationOptions,
+  useConversationSendMessageWithAttachment,
+} from "./conversation/useConversationSendMessageWithAttachment.ts";
+export {
+  conversationToggleReactionMutationKey,
+  conversationToggleReactionMutationOptions,
+  useConversationToggleReaction,
+} from "./conversation/useConversationToggleReaction.ts";
+export {
   dynamicClaimsRefreshMutationKey,
   dynamicClaimsRefreshMutationOptions,
   useDynamicClaimsRefresh,
 } from "./dynamicClaims/useDynamicClaimsRefresh.ts";
-export {
-  editionCreateMutationKey,
-  editionCreateMutationOptions,
-  useEditionCreate,
-} from "./edition/useEditionCreate.ts";
-export {
-  editionDeleteMutationKey,
-  editionDeleteMutationOptions,
-  useEditionDelete,
-} from "./edition/useEditionDelete.ts";
-export {
-  editionGetQueryKey,
-  editionGetQueryOptions,
-  useEditionGet,
-} from "./edition/useEditionGet.ts";
-export {
-  editionGetListQueryKey,
-  editionGetListQueryOptions,
-  useEditionGetList,
-} from "./edition/useEditionGetList.ts";
-export {
-  editionUpdateMutationKey,
-  editionUpdateMutationOptions,
-  useEditionUpdate,
-} from "./edition/useEditionUpdate.ts";
 export {
   emailSettingsGetQueryKey,
   emailSettingsGetQueryOptions,
@@ -247,6 +441,21 @@ export {
   emailSettingsUpdateMutationOptions,
   useEmailSettingsUpdate,
 } from "./emailSettings/useEmailSettingsUpdate.ts";
+export {
+  entityTagAdminAddTagToEntityMutationKey,
+  entityTagAdminAddTagToEntityMutationOptions,
+  useEntityTagAdminAddTagToEntity,
+} from "./entityTagAdmin/useEntityTagAdminAddTagToEntity.ts";
+export {
+  entityTagAdminRemoveTagFromEntityMutationKey,
+  entityTagAdminRemoveTagFromEntityMutationOptions,
+  useEntityTagAdminRemoveTagFromEntity,
+} from "./entityTagAdmin/useEntityTagAdminRemoveTagFromEntity.ts";
+export {
+  entityTagAdminSetEntityTagsMutationKey,
+  entityTagAdminSetEntityTagsMutationOptions,
+  useEntityTagAdminSetEntityTags,
+} from "./entityTagAdmin/useEntityTagAdminSetEntityTags.ts";
 export {
   featuresDeleteMutationKey,
   featuresDeleteMutationOptions,
@@ -268,6 +477,11 @@ export {
   useFileManagementCreateFolder,
 } from "./fileManagement/useFileManagementCreateFolder.ts";
 export {
+  fileManagementCreateShareLinkMutationKey,
+  fileManagementCreateShareLinkMutationOptions,
+  useFileManagementCreateShareLink,
+} from "./fileManagement/useFileManagementCreateShareLink.ts";
+export {
   fileManagementDeleteFileMutationKey,
   fileManagementDeleteFileMutationOptions,
   useFileManagementDeleteFile,
@@ -283,6 +497,16 @@ export {
   useFileManagementDownloadFile,
 } from "./fileManagement/useFileManagementDownloadFile.ts";
 export {
+  fileManagementDownloadSharedQueryKey,
+  fileManagementDownloadSharedQueryOptions,
+  useFileManagementDownloadShared,
+} from "./fileManagement/useFileManagementDownloadShared.ts";
+export {
+  fileManagementGetFileVersionsQueryKey,
+  fileManagementGetFileVersionsQueryOptions,
+  useFileManagementGetFileVersions,
+} from "./fileManagement/useFileManagementGetFileVersions.ts";
+export {
   fileManagementGetFilesQueryKey,
   fileManagementGetFilesQueryOptions,
   useFileManagementGetFiles,
@@ -293,21 +517,100 @@ export {
   useFileManagementGetFolders,
 } from "./fileManagement/useFileManagementGetFolders.ts";
 export {
+  fileManagementGetShareLinksQueryKey,
+  fileManagementGetShareLinksQueryOptions,
+  useFileManagementGetShareLinks,
+} from "./fileManagement/useFileManagementGetShareLinks.ts";
+export {
+  fileManagementGetStorageInfoQueryKey,
+  fileManagementGetStorageInfoQueryOptions,
+  useFileManagementGetStorageInfo,
+} from "./fileManagement/useFileManagementGetStorageInfo.ts";
+export {
+  fileManagementGetThumbnailQueryKey,
+  fileManagementGetThumbnailQueryOptions,
+  useFileManagementGetThumbnail,
+} from "./fileManagement/useFileManagementGetThumbnail.ts";
+export {
+  fileManagementMoveFileMutationKey,
+  fileManagementMoveFileMutationOptions,
+  useFileManagementMoveFile,
+} from "./fileManagement/useFileManagementMoveFile.ts";
+export {
+  fileManagementMoveFolderMutationKey,
+  fileManagementMoveFolderMutationOptions,
+  useFileManagementMoveFolder,
+} from "./fileManagement/useFileManagementMoveFolder.ts";
+export {
   fileManagementRenameFolderMutationKey,
   fileManagementRenameFolderMutationOptions,
   useFileManagementRenameFolder,
 } from "./fileManagement/useFileManagementRenameFolder.ts";
+export {
+  fileManagementRestoreVersionMutationKey,
+  fileManagementRestoreVersionMutationOptions,
+  useFileManagementRestoreVersion,
+} from "./fileManagement/useFileManagementRestoreVersion.ts";
+export {
+  fileManagementRevokeShareLinkMutationKey,
+  fileManagementRevokeShareLinkMutationOptions,
+  useFileManagementRevokeShareLink,
+} from "./fileManagement/useFileManagementRevokeShareLink.ts";
 export {
   fileManagementUploadFileMutationKey,
   fileManagementUploadFileMutationOptions,
   useFileManagementUploadFile,
 } from "./fileManagement/useFileManagementUploadFile.ts";
 export {
-  gdprDeleteMyAccountMutationKey,
-  gdprDeleteMyAccountMutationOptions,
-  useGdprDeleteMyAccount,
-} from "./gdpr/useGdprDeleteMyAccount.ts";
-export { gdprExportQueryKey, gdprExportQueryOptions, useGdprExport } from "./gdpr/useGdprExport.ts";
+  globalResourceAdminGetQueryKey,
+  globalResourceAdminGetQueryOptions,
+  useGlobalResourceAdminGet,
+} from "./globalResourceAdmin/useGlobalResourceAdminGet.ts";
+export {
+  globalResourceAdminSetGlobalResourcesMutationKey,
+  globalResourceAdminSetGlobalResourcesMutationOptions,
+  useGlobalResourceAdminSetGlobalResources,
+} from "./globalResourceAdmin/useGlobalResourceAdminSetGlobalResources.ts";
+export {
+  globalResourcePublicGetGlobalScriptQueryKey,
+  globalResourcePublicGetGlobalScriptQueryOptions,
+  useGlobalResourcePublicGetGlobalScript,
+} from "./globalResourcePublic/useGlobalResourcePublicGetGlobalScript.ts";
+export {
+  globalResourcePublicGetGlobalStyleQueryKey,
+  globalResourcePublicGetGlobalStyleQueryOptions,
+  useGlobalResourcePublicGetGlobalStyle,
+} from "./globalResourcePublic/useGlobalResourcePublicGetGlobalStyle.ts";
+export {
+  identityClaimTypeCreateMutationKey,
+  identityClaimTypeCreateMutationOptions,
+  useIdentityClaimTypeCreate,
+} from "./identityClaimType/useIdentityClaimTypeCreate.ts";
+export {
+  identityClaimTypeDeleteMutationKey,
+  identityClaimTypeDeleteMutationOptions,
+  useIdentityClaimTypeDelete,
+} from "./identityClaimType/useIdentityClaimTypeDelete.ts";
+export {
+  identityClaimTypeGetQueryKey,
+  identityClaimTypeGetQueryOptions,
+  useIdentityClaimTypeGet,
+} from "./identityClaimType/useIdentityClaimTypeGet.ts";
+export {
+  identityClaimTypeGetAllClaimTypesQueryKey,
+  identityClaimTypeGetAllClaimTypesQueryOptions,
+  useIdentityClaimTypeGetAllClaimTypes,
+} from "./identityClaimType/useIdentityClaimTypeGetAllClaimTypes.ts";
+export {
+  identityClaimTypeGetListQueryKey,
+  identityClaimTypeGetListQueryOptions,
+  useIdentityClaimTypeGetList,
+} from "./identityClaimType/useIdentityClaimTypeGetList.ts";
+export {
+  identityClaimTypeUpdateMutationKey,
+  identityClaimTypeUpdateMutationOptions,
+  useIdentityClaimTypeUpdate,
+} from "./identityClaimType/useIdentityClaimTypeUpdate.ts";
 export {
   identityRoleClaimCreateMutationKey,
   identityRoleClaimCreateMutationOptions,
@@ -364,46 +667,85 @@ export {
   useLoginLogout,
 } from "./login/useLoginLogout.ts";
 export {
-  menuCreateMutationKey,
-  menuCreateMutationOptions,
-  useMenuCreate,
-} from "./menu/useMenuCreate.ts";
+  markedItemPublicGetForUserQueryKey,
+  markedItemPublicGetForUserQueryOptions,
+  useMarkedItemPublicGetForUser,
+} from "./markedItemPublic/useMarkedItemPublicGetForUser.ts";
 export {
-  menuDeleteMutationKey,
-  menuDeleteMutationOptions,
-  useMenuDelete,
-} from "./menu/useMenuDelete.ts";
-export { menuGetQueryKey, menuGetQueryOptions, useMenuGet } from "./menu/useMenuGet.ts";
+  markedItemPublicToggleMutationKey,
+  markedItemPublicToggleMutationOptions,
+  useMarkedItemPublicToggle,
+} from "./markedItemPublic/useMarkedItemPublicToggle.ts";
 export {
-  menuGetByNameQueryKey,
-  menuGetByNameQueryOptions,
-  useMenuGetByName,
-} from "./menu/useMenuGetByName.ts";
+  mediaDescriptorDownloadQueryKey,
+  mediaDescriptorDownloadQueryOptions,
+  useMediaDescriptorDownload,
+} from "./mediaDescriptor/useMediaDescriptorDownload.ts";
 export {
-  menuGetListQueryKey,
-  menuGetListQueryOptions,
-  useMenuGetList,
-} from "./menu/useMenuGetList.ts";
+  mediaDescriptorAdminCreateMutationKey,
+  mediaDescriptorAdminCreateMutationOptions,
+  useMediaDescriptorAdminCreate,
+} from "./mediaDescriptorAdmin/useMediaDescriptorAdminCreate.ts";
 export {
-  menuUpdateMutationKey,
-  menuUpdateMutationOptions,
-  useMenuUpdate,
-} from "./menu/useMenuUpdate.ts";
+  mediaDescriptorAdminDeleteMutationKey,
+  mediaDescriptorAdminDeleteMutationOptions,
+  useMediaDescriptorAdminDelete,
+} from "./mediaDescriptorAdmin/useMediaDescriptorAdminDelete.ts";
 export {
-  menuItemCreateMutationKey,
-  menuItemCreateMutationOptions,
-  useMenuItemCreate,
-} from "./menuItem/useMenuItemCreate.ts";
+  menuItemAdminCreateMutationKey,
+  menuItemAdminCreateMutationOptions,
+  useMenuItemAdminCreate,
+} from "./menuItemAdmin/useMenuItemAdminCreate.ts";
 export {
-  menuItemDeleteMutationKey,
-  menuItemDeleteMutationOptions,
-  useMenuItemDelete,
-} from "./menuItem/useMenuItemDelete.ts";
+  menuItemAdminDeleteMutationKey,
+  menuItemAdminDeleteMutationOptions,
+  useMenuItemAdminDelete,
+} from "./menuItemAdmin/useMenuItemAdminDelete.ts";
 export {
-  menuItemUpdateMutationKey,
-  menuItemUpdateMutationOptions,
-  useMenuItemUpdate,
-} from "./menuItem/useMenuItemUpdate.ts";
+  menuItemAdminGetQueryKey,
+  menuItemAdminGetQueryOptions,
+  useMenuItemAdminGet,
+} from "./menuItemAdmin/useMenuItemAdminGet.ts";
+export {
+  menuItemAdminGetAvailableMenuOrderQueryKey,
+  menuItemAdminGetAvailableMenuOrderQueryOptions,
+  useMenuItemAdminGetAvailableMenuOrder,
+} from "./menuItemAdmin/useMenuItemAdminGetAvailableMenuOrder.ts";
+export {
+  menuItemAdminGetListQueryKey,
+  menuItemAdminGetListQueryOptions,
+  useMenuItemAdminGetList,
+} from "./menuItemAdmin/useMenuItemAdminGetList.ts";
+export {
+  menuItemAdminGetPageLookupQueryKey,
+  menuItemAdminGetPageLookupQueryOptions,
+  useMenuItemAdminGetPageLookup,
+} from "./menuItemAdmin/useMenuItemAdminGetPageLookup.ts";
+export {
+  menuItemAdminGetPermissionLookupQueryKey,
+  menuItemAdminGetPermissionLookupQueryOptions,
+  useMenuItemAdminGetPermissionLookup,
+} from "./menuItemAdmin/useMenuItemAdminGetPermissionLookup.ts";
+export {
+  menuItemAdminMoveMenuItemMutationKey,
+  menuItemAdminMoveMenuItemMutationOptions,
+  useMenuItemAdminMoveMenuItem,
+} from "./menuItemAdmin/useMenuItemAdminMoveMenuItem.ts";
+export {
+  menuItemAdminUpdateMutationKey,
+  menuItemAdminUpdateMutationOptions,
+  useMenuItemAdminUpdate,
+} from "./menuItemAdmin/useMenuItemAdminUpdate.ts";
+export {
+  menuItemPublicGetListQueryKey,
+  menuItemPublicGetListQueryOptions,
+  useMenuItemPublicGetList,
+} from "./menuItemPublic/useMenuItemPublicGetList.ts";
+export {
+  openIddictApplicationCreateMutationKey,
+  openIddictApplicationCreateMutationOptions,
+  useOpenIddictApplicationCreate,
+} from "./openIddictApplication/useOpenIddictApplicationCreate.ts";
 export {
   openIddictApplicationDeleteMutationKey,
   openIddictApplicationDeleteMutationOptions,
@@ -420,6 +762,16 @@ export {
   useOpenIddictApplicationGetList,
 } from "./openIddictApplication/useOpenIddictApplicationGetList.ts";
 export {
+  openIddictApplicationUpdateMutationKey,
+  openIddictApplicationUpdateMutationOptions,
+  useOpenIddictApplicationUpdate,
+} from "./openIddictApplication/useOpenIddictApplicationUpdate.ts";
+export {
+  openIddictScopeCreateMutationKey,
+  openIddictScopeCreateMutationOptions,
+  useOpenIddictScopeCreate,
+} from "./openIddictScope/useOpenIddictScopeCreate.ts";
+export {
   openIddictScopeDeleteMutationKey,
   openIddictScopeDeleteMutationOptions,
   useOpenIddictScopeDelete,
@@ -435,31 +787,55 @@ export {
   useOpenIddictScopeGetList,
 } from "./openIddictScope/useOpenIddictScopeGetList.ts";
 export {
-  pageCreateMutationKey,
-  pageCreateMutationOptions,
-  usePageCreate,
-} from "./page/usePageCreate.ts";
+  openIddictScopeUpdateMutationKey,
+  openIddictScopeUpdateMutationOptions,
+  useOpenIddictScopeUpdate,
+} from "./openIddictScope/useOpenIddictScopeUpdate.ts";
 export {
-  pageDeleteMutationKey,
-  pageDeleteMutationOptions,
-  usePageDelete,
-} from "./page/usePageDelete.ts";
-export { pageGetQueryKey, pageGetQueryOptions, usePageGet } from "./page/usePageGet.ts";
+  pageAdminCreateMutationKey,
+  pageAdminCreateMutationOptions,
+  usePageAdminCreate,
+} from "./pageAdmin/usePageAdminCreate.ts";
 export {
-  pageGetBySlugQueryKey,
-  pageGetBySlugQueryOptions,
-  usePageGetBySlug,
-} from "./page/usePageGetBySlug.ts";
+  pageAdminDeleteMutationKey,
+  pageAdminDeleteMutationOptions,
+  usePageAdminDelete,
+} from "./pageAdmin/usePageAdminDelete.ts";
 export {
-  pageGetListQueryKey,
-  pageGetListQueryOptions,
-  usePageGetList,
-} from "./page/usePageGetList.ts";
+  pageAdminGetQueryKey,
+  pageAdminGetQueryOptions,
+  usePageAdminGet,
+} from "./pageAdmin/usePageAdminGet.ts";
 export {
-  pageUpdateMutationKey,
-  pageUpdateMutationOptions,
-  usePageUpdate,
-} from "./page/usePageUpdate.ts";
+  pageAdminGetListQueryKey,
+  pageAdminGetListQueryOptions,
+  usePageAdminGetList,
+} from "./pageAdmin/usePageAdminGetList.ts";
+export {
+  pageAdminSetAsHomePageMutationKey,
+  pageAdminSetAsHomePageMutationOptions,
+  usePageAdminSetAsHomePage,
+} from "./pageAdmin/usePageAdminSetAsHomePage.ts";
+export {
+  pageAdminUpdateMutationKey,
+  pageAdminUpdateMutationOptions,
+  usePageAdminUpdate,
+} from "./pageAdmin/usePageAdminUpdate.ts";
+export {
+  pagesPublicDoesSlugExistQueryKey,
+  pagesPublicDoesSlugExistQueryOptions,
+  usePagesPublicDoesSlugExist,
+} from "./pagesPublic/usePagesPublicDoesSlugExist.ts";
+export {
+  pagesPublicFindBySlugQueryKey,
+  pagesPublicFindBySlugQueryOptions,
+  usePagesPublicFindBySlug,
+} from "./pagesPublic/usePagesPublicFindBySlug.ts";
+export {
+  pagesPublicFindDefaultHomePageQueryKey,
+  pagesPublicFindDefaultHomePageQueryOptions,
+  usePagesPublicFindDefaultHomePage,
+} from "./pagesPublic/usePagesPublicFindDefaultHomePage.ts";
 export {
   permissionsDeleteResourceMutationKey,
   permissionsDeleteResourceMutationOptions,
@@ -526,20 +902,35 @@ export {
   useProfileUpdate,
 } from "./profile/useProfileUpdate.ts";
 export {
-  reactionDeleteMutationKey,
-  reactionDeleteMutationOptions,
-  useReactionDelete,
-} from "./reaction/useReactionDelete.ts";
+  ratingPublicCreateMutationKey,
+  ratingPublicCreateMutationOptions,
+  useRatingPublicCreate,
+} from "./ratingPublic/useRatingPublicCreate.ts";
 export {
-  reactionGetForEntityQueryKey,
-  reactionGetForEntityQueryOptions,
-  useReactionGetForEntity,
-} from "./reaction/useReactionGetForEntity.ts";
+  ratingPublicDeleteMutationKey,
+  ratingPublicDeleteMutationOptions,
+  useRatingPublicDelete,
+} from "./ratingPublic/useRatingPublicDelete.ts";
 export {
-  reactionToggleMutationKey,
-  reactionToggleMutationOptions,
-  useReactionToggle,
-} from "./reaction/useReactionToggle.ts";
+  ratingPublicGetGroupedStarCountsQueryKey,
+  ratingPublicGetGroupedStarCountsQueryOptions,
+  useRatingPublicGetGroupedStarCounts,
+} from "./ratingPublic/useRatingPublicGetGroupedStarCounts.ts";
+export {
+  reactionPublicCreateMutationKey,
+  reactionPublicCreateMutationOptions,
+  useReactionPublicCreate,
+} from "./reactionPublic/useReactionPublicCreate.ts";
+export {
+  reactionPublicDeleteMutationKey,
+  reactionPublicDeleteMutationOptions,
+  useReactionPublicDelete,
+} from "./reactionPublic/useReactionPublicDelete.ts";
+export {
+  reactionPublicGetForSelectionQueryKey,
+  reactionPublicGetForSelectionQueryOptions,
+  useReactionPublicGetForSelection,
+} from "./reactionPublic/useReactionPublicGetForSelection.ts";
 export {
   roleCreateMutationKey,
   roleCreateMutationOptions,
@@ -566,7 +957,46 @@ export {
   roleUpdateMutationOptions,
   useRoleUpdate,
 } from "./role/useRoleUpdate.ts";
-export { tagGetListQueryKey, tagGetListQueryOptions, useTagGetList } from "./tag/useTagGetList.ts";
+export {
+  tagAdminCreateMutationKey,
+  tagAdminCreateMutationOptions,
+  useTagAdminCreate,
+} from "./tagAdmin/useTagAdminCreate.ts";
+export {
+  tagAdminDeleteMutationKey,
+  tagAdminDeleteMutationOptions,
+  useTagAdminDelete,
+} from "./tagAdmin/useTagAdminDelete.ts";
+export {
+  tagAdminGetQueryKey,
+  tagAdminGetQueryOptions,
+  useTagAdminGet,
+} from "./tagAdmin/useTagAdminGet.ts";
+export {
+  tagAdminGetListQueryKey,
+  tagAdminGetListQueryOptions,
+  useTagAdminGetList,
+} from "./tagAdmin/useTagAdminGetList.ts";
+export {
+  tagAdminGetTagDefinitionsQueryKey,
+  tagAdminGetTagDefinitionsQueryOptions,
+  useTagAdminGetTagDefinitions,
+} from "./tagAdmin/useTagAdminGetTagDefinitions.ts";
+export {
+  tagAdminUpdateMutationKey,
+  tagAdminUpdateMutationOptions,
+  useTagAdminUpdate,
+} from "./tagAdmin/useTagAdminUpdate.ts";
+export {
+  tagPublicGetAllRelatedTagsQueryKey,
+  tagPublicGetAllRelatedTagsQueryOptions,
+  useTagPublicGetAllRelatedTags,
+} from "./tagPublic/useTagPublicGetAllRelatedTags.ts";
+export {
+  tagPublicGetPopularTagsQueryKey,
+  tagPublicGetPopularTagsQueryOptions,
+  useTagPublicGetPopularTags,
+} from "./tagPublic/useTagPublicGetPopularTags.ts";
 export {
   tenantCreateMutationKey,
   tenantCreateMutationOptions,

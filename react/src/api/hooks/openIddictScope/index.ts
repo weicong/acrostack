@@ -1,6 +1,11 @@
 /* oxlint-disable */
 
 export {
+  openIddictScopeCreateMutationKey,
+  openIddictScopeCreateMutationOptions,
+  useOpenIddictScopeCreate,
+} from "./useOpenIddictScopeCreate.ts";
+export {
   openIddictScopeDeleteMutationKey,
   openIddictScopeDeleteMutationOptions,
   useOpenIddictScopeDelete,
@@ -15,3 +20,8 @@ export {
   openIddictScopeGetListQueryOptions,
   useOpenIddictScopeGetList,
 } from "./useOpenIddictScopeGetList.ts";
+export {
+  openIddictScopeUpdateMutationKey,
+  openIddictScopeUpdateMutationOptions,
+  useOpenIddictScopeUpdate,
+} from "./useOpenIddictScopeUpdate.ts";
