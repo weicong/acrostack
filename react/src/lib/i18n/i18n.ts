@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "@/locales/en.json";
+import zhHans from "@/locales/zh-Hans.json";
 
 export const LANGUAGE_STORAGE_KEY = "abp_culture";
 const DEFAULT_LANGUAGE = "en";
@@ -59,6 +60,7 @@ void i18n
   .init({
     resources: {
       en: { translation: en },
+      "zh-Hans": { translation: zhHans },
     },
     lng: initialLanguage,
     fallbackLng: "en",

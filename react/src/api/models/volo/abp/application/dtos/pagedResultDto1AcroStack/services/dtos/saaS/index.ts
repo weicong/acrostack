@@ -1,4 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosSaaSEditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./EditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
-export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosSaaSTenantEditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./TenantEditionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";

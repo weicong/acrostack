@@ -6,9 +6,8 @@ import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Organization20Regular } from "@fluentui/react-icons";
 
 /**
- * Tenants route. Lives under /saas/tenants to share the SaaS namespace with
- * Editions (/saas/editions). Both are the same SaaS domain and are grouped
- * together in the sidebar (see routes/saas/route-config.ts).
+ * Tenants route. Lives under /saas/tenants and is grouped under the SaaS
+ * sidebar menu (see routes/saas/route-config.ts).
  */
 export const menu: RouteMenuConfig = {
   nameKey: "AbpTenantManagement::Tenants",
