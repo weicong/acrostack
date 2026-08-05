@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 import type { RoleGetListExtraProperties } from "../RoleGetListExtraProperties.ts";
-import type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10500CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10600CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -34,19 +34,19 @@ export type UserLookupSearchQueryExtraProperties = RoleGetListExtraProperties | 
  * @type object
  */
 export type UserLookupSearchStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type UserLookupSearchStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type UserLookupSearchStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
 
 export type UserLookupSearchStatus200 =
   | UserLookupSearchStatus200Plain

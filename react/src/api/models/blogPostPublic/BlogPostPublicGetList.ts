@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/contents/blogPostCommonDtoVolo/cmsKit/common/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/contents/blogPostCommonDtoVolo/cmsKit/common/application/ContractsVersion10600CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -50,19 +50,19 @@ export type BlogPostPublicGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type BlogPostPublicGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BlogPostPublicGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BlogPostPublicGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitContentsBlogPostCommonDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 export type BlogPostPublicGetListStatus200 =
   | BlogPostPublicGetListStatus200Plain

@@ -16,4 +16,12 @@ export type VoloAbpHttpModelingReturnValueApiDescriptionModel = {
    * @type string | undefined
    */
   summary?: string | null;
+  /**
+   * @type array | undefined
+   */
+  contentTypes?: string[] | null;
+  /**
+   * @type boolean | undefined
+   */
+  isRemoteStream?: boolean;
 };

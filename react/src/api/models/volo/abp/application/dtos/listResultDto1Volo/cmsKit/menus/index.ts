@@ -1,3 +1,3 @@
 /* oxlint-disable */
 
-export type { VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "./menuItemDtoVolo/cmsKit/common/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+export type { VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "./menuItemDtoVolo/cmsKit/common/application/ContractsVersion10600CultureneutralPublicKeyTokennull.ts";

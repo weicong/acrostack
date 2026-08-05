@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/menus/pageLookupDtoVolo/cmsKit/admin/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/menus/pageLookupDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 import type { VoloCmsKitPagesPageStatus } from "../volo/cmsKit/pages/PageStatus.ts";
 
@@ -39,19 +39,19 @@ export type MenuItemAdminGetPageLookupQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type MenuItemAdminGetPageLookupStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type MenuItemAdminGetPageLookupStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type MenuItemAdminGetPageLookupStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 export type MenuItemAdminGetPageLookupStatus200 =
   | MenuItemAdminGetPageLookupStatus200Plain

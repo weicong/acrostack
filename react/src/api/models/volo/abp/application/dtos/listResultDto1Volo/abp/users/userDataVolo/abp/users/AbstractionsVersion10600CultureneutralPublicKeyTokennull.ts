@@ -5,7 +5,7 @@ import type { VoloAbpUsersUserData } from "../../../../../../../../users/UserDat
 /**
  * @type object
  */
-export type VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10500CultureneutralPublicKeyTokennull =
+export type VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull =
   {
     /**
      * @type array | undefined

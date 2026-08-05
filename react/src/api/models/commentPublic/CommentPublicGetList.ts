@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10500CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/public/comments/commentWithDetailsDtoVolo/cmsKit/public/application/ContractsVersion10500CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/public/comments/commentWithDetailsDtoVolo/cmsKit/public/application/ContractsVersion10600CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -17,19 +17,19 @@ export type CommentPublicGetListPathEntityId = string;
  * @type object
  */
 export type CommentPublicGetListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type CommentPublicGetListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type CommentPublicGetListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10500CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
 
 export type CommentPublicGetListStatus200 =
   | CommentPublicGetListStatus200Plain

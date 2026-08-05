@@ -5,7 +5,7 @@ import type { VoloCmsKitUsersCmsUserDto } from "../../../../../../../../../../cm
 /**
  * @type object
  */
-export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitUsersCmsUserDtoVoloCmsKitCommonApplicationContractsVersion10500CultureneutralPublicKeyTokennull =
+export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitUsersCmsUserDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
   {
     /**
      * @type array | undefined

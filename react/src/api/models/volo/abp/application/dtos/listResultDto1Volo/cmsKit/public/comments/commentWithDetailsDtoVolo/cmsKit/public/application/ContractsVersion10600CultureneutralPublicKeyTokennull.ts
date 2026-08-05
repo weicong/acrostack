@@ -5,7 +5,7 @@ import type { VoloCmsKitPublicCommentsCommentWithDetailsDto } from "../../../../
 /**
  * @type object
  */
-export type VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10500CultureneutralPublicKeyTokennull =
+export type VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
   {
     /**
      * @type array | undefined

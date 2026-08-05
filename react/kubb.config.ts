@@ -8,7 +8,7 @@ const BANNER = `/* oxlint-disable */`;
 const GROUP = { type: "tag" } as const;
 
 export default defineConfig({
-  input: { path: "https://localhost:44320/swagger/v1/swagger.json" },
+  input: { path: "http://localhost:5173/swagger/v1/swagger.json" },
   output: { path: "./src/api", clean: true, defaultBanner: false },
   plugins: [
     pluginTs({
