@@ -11,7 +11,7 @@ import {
 } from "@fluentui/react-components";
 import { Add20Regular, Edit20Regular, Delete20Regular, Tag20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { roleGetListQueryOptions, roleGetListQueryKey } from "@/api/hooks/role/useRoleGetList";
 import { useRoleDelete } from "@/api/hooks/role/useRoleDelete";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
@@ -72,7 +72,7 @@ function useRolesTable(
     globalFilter: tableState.state.globalFilter,
   });
 
-  const columns = useMemo<ColumnDef<RoleItemRow>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, RoleItemRow>[]>(
     () => [
       {
         id: "name",

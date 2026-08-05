@@ -18,7 +18,7 @@ import {
   DocumentEdit20Regular,
 } from "@fluentui/react-icons";
 import { format } from "date-fns";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
@@ -227,7 +227,7 @@ export function BlogPostsPage() {
     [t],
   );
 
-  const columns = useMemo<ColumnDef<BlogPostItem>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, BlogPostItem>[]>(
     () => [
       {
         id: "title",

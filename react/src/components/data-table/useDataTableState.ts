@@ -3,7 +3,6 @@ import type {
   SortingState,
   ColumnFiltersState,
   PaginationState,
-  VisibilityState,
   RowSelectionState,
   ColumnPinningState,
   ColumnSizingState,
@@ -11,6 +10,9 @@ import type {
   Updater,
 } from "@tanstack/react-table";
 import { resolveUpdater } from "./useDataTable";
+
+// VisibilityState was removed in Table V9; use an inline record type instead.
+type VisibilityState = Record<string, boolean>;
 
 interface DataTableState {
   sorting: SortingState;
@@ -29,7 +31,8 @@ const defaultState: DataTableState = {
   globalFilter: "",
   pagination: { pageIndex: 0, pageSize: 10 },
   columnVisibility: {},
-  columnPinning: {},
+  // Table V9: ColumnPinningState now requires `start` and `end` arrays.
+  columnPinning: { start: [], end: [] },
   rowSelection: {},
   columnSizing: {},
 };

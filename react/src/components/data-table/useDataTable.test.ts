@@ -4,8 +4,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createElement, type ReactNode } from "react";
 import { useDataTableState } from "./useDataTableState";
 import { useDataTable } from "./useDataTable";
+import type { AppTableFeatures } from "./useDataTable";
 import { useDataTableQuery } from "./useDataTableQuery";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 interface TestRow {
   id: string;
@@ -13,7 +14,7 @@ interface TestRow {
   age: number;
 }
 
-const columns: ColumnDef<TestRow, any>[] = [
+const columns: ColumnDef<AppTableFeatures, TestRow>[] = [
   { accessorKey: "id", header: "ID" },
   { accessorKey: "name", header: "Name" },
   { accessorKey: "age", header: "Age" },

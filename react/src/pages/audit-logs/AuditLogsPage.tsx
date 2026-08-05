@@ -17,7 +17,7 @@ import {
   type SelectTabData,
   type SelectTabEvent,
 } from "@fluentui/react-components";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
@@ -147,7 +147,7 @@ export function AuditLogsPage() {
     globalFilter: tableState.state.globalFilter,
   });
 
-  const columns = useMemo<ColumnDef<AuditLogItem>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, AuditLogItem>[]>(
     () => [
       {
         id: "executionTime",

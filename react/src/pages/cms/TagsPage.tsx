@@ -8,7 +8,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { Add20Regular, Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
@@ -119,7 +119,7 @@ export function TagsPage() {
     );
   }, [deleteTagId, deleteMutation, invalidateList, dispatchToast, t]);
 
-  const columns = useMemo<ColumnDef<TagItem>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, TagItem>[]>(
     () => [
       {
         id: "name",

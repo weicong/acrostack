@@ -10,7 +10,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { Add20Regular, Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
@@ -132,8 +132,8 @@ export function ClaimTypesPage() {
     );
   }, [deleteId, deleteMutation, queryClient, dispatchToast, t]);
 
-  const columns = useMemo<ColumnDef<ClaimTypeRow>[]>(() => {
-    const base: ColumnDef<ClaimTypeRow>[] = [
+  const columns = useMemo<ColumnDef<typeof stockFeatures, ClaimTypeRow>[]>(() => {
+    const base: ColumnDef<typeof stockFeatures, ClaimTypeRow>[] = [
       {
         id: "name",
         accessorKey: "name",

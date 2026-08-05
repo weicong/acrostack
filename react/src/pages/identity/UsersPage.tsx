@@ -18,7 +18,7 @@ import {
   Tag20Regular,
 } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import {
   appUserGetListQueryOptions,
   appUserGetListQueryKey,
@@ -107,7 +107,7 @@ function useUsersTable(
     globalFilter: tableState.state.globalFilter,
   });
 
-  const columns = useMemo<ColumnDef<UserItem>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, UserItem>[]>(
     () => [
       {
         id: "userName",

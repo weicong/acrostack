@@ -1,24 +1,64 @@
 import { useMemo } from "react";
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  columnFilteringFeature,
+  globalFilteringFeature,
+  columnPinningFeature,
+  columnVisibilityFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  createFilteredRowModel,
+  createSortedRowModel,
+  createPaginatedRowModel,
+  sortFns,
+  filterFns,
 } from "@tanstack/react-table";
 import type {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
   PaginationState,
-  VisibilityState,
   RowSelectionState,
   ColumnPinningState,
   ColumnSizingState,
   Updater,
   OnChangeFn,
-  Table,
+  ReactTable,
+  RowData,
 } from "@tanstack/react-table";
+
+// Table V9: features are opt-in and tree-shakeable. Register only the features
+// this DataTable abstraction needs (sorting, filtering, pagination, selection,
+// pinning, visibility, sizing, resizing) plus the client-side row-model
+// factories that actually apply sorting/filtering/pagination state to the rows.
+// `tableFeatures` provides type inference and validates feature prerequisites
+// (e.g. globalFilteringFeature requires columnFilteringFeature,
+// columnResizingFeature requires columnSizingFeature).
+const appTableFeatures = tableFeatures({
+  rowSortingFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  columnFilteringFeature,
+  globalFilteringFeature,
+  columnPinningFeature,
+  columnVisibilityFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  filteredRowModel: createFilteredRowModel(),
+  sortFns,
+  filterFns,
+});
+
+type AppTableFeatures = typeof appTableFeatures;
+
+// VisibilityState was removed in Table V9; use an inline record type instead.
+type VisibilityState = Record<string, boolean>;
 
 interface UseDataTableStateOptions {
   sorting?: SortingState;
@@ -39,9 +79,9 @@ interface UseDataTableStateOptions {
   onColumnSizingChange?: OnChangeFn<ColumnSizingState>;
 }
 
-interface UseDataTableOptions<TData> {
+interface UseDataTableOptions<TData extends RowData> {
   data: TData[];
-  columns: ColumnDef<TData, any>[];
+  columns: ColumnDef<AppTableFeatures, TData>[];
   rowCount?: number;
   getRowId?: (row: TData) => string;
   state?: UseDataTableStateOptions;
@@ -49,7 +89,6 @@ interface UseDataTableOptions<TData> {
   enableMultiSort?: boolean;
   enableColumnFilters?: boolean;
   enableGlobalFilter?: boolean;
-  enablePagination?: boolean;
   enableRowSelection?: boolean;
   enableMultiRowSelection?: boolean;
   enableColumnResizing?: boolean;
@@ -68,7 +107,9 @@ function resolveUpdater<T>(updater: Updater<T>, current: T): T {
   return updater;
 }
 
-function useDataTable<TData>(options: UseDataTableOptions<TData>): Table<TData> {
+function useDataTable<TData extends RowData>(
+  options: UseDataTableOptions<TData>,
+): ReactTable<AppTableFeatures, TData> {
   const {
     data,
     columns,
@@ -79,7 +120,6 @@ function useDataTable<TData>(options: UseDataTableOptions<TData>): Table<TData> 
     enableMultiSort = false,
     enableColumnFilters = false,
     enableGlobalFilter = false,
-    enablePagination = true,
     enableRowSelection = false,
     enableMultiRowSelection = false,
     enableColumnResizing = false,
@@ -114,19 +154,15 @@ function useDataTable<TData>(options: UseDataTableOptions<TData>): Table<TData> 
     stateOptions?.columnSizing,
   ]);
 
-  const table = useReactTable<TData>({
+  const table = useTable({
+    // Table V9: declare features via the `features` option. `appTableFeatures`
+    // registers the feature modules and row-model factories this DataTable
+    // abstraction needs (defined once at module scope above).
+    features: appTableFeatures,
     data,
     columns,
     getRowId,
     rowCount,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: enableSorting && !manualSorting ? getSortedRowModel() : undefined,
-    getFilteredRowModel:
-      (enableColumnFilters || enableGlobalFilter) && !manualFiltering
-        ? getFilteredRowModel()
-        : undefined,
-    getPaginationRowModel:
-      enablePagination && !manualPagination ? getPaginationRowModel() : undefined,
     enableSorting,
     enableMultiSort,
     enableColumnFilters,
@@ -154,5 +190,5 @@ function useDataTable<TData>(options: UseDataTableOptions<TData>): Table<TData> 
   return table;
 }
 
-export { useDataTable, resolveUpdater };
-export type { UseDataTableOptions, UseDataTableStateOptions };
+export { useDataTable, resolveUpdater, appTableFeatures };
+export type { UseDataTableOptions, UseDataTableStateOptions, AppTableFeatures };

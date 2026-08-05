@@ -1,5 +1,6 @@
 import { flexRender } from "@tanstack/react-table";
-import type { Table } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
+import type { AppTableFeatures } from "./useDataTable";
 import { useTranslation } from "react-i18next";
 import {
   Table as FluentTable,
@@ -84,8 +85,8 @@ const useStyles = makeStyles({
   },
 });
 
-interface DataTableProps<TData> {
-  table: Table<TData>;
+interface DataTableProps<TData extends RowData> {
+  table: ReactTable<AppTableFeatures, TData>;
   ariaLabel?: string;
   ariaLabelledBy?: string;
   emptyMessage?: string;
@@ -100,7 +101,7 @@ interface DataTableProps<TData> {
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
 
-function DataTable<TData>({
+function DataTable<TData extends RowData>({
   table,
   ariaLabel,
   ariaLabelledBy,
@@ -119,8 +120,8 @@ function DataTable<TData>({
   const rows = table.getRowModel().rows;
   const headerGroups = table.getHeaderGroups();
   const pageCount = table.getPageCount() || 1;
-  const currentPageIndex = table.getState().pagination.pageIndex;
-  const currentPageSize = table.getState().pagination.pageSize;
+  const currentPageIndex = table.state.pagination.pageIndex;
+  const currentPageSize = table.state.pagination.pageSize;
 
   const handlePageJump = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -152,14 +153,14 @@ function DataTable<TData>({
                     sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined;
 
                   let pinStyle: React.CSSProperties = {};
-                  if (pinned === "left") {
+                  if (pinned === "start") {
                     pinStyle = {
                       position: "sticky",
                       left: 0,
                       zIndex: 2,
                       borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
                     };
-                  } else if (pinned === "right") {
+                  } else if (pinned === "end") {
                     pinStyle = {
                       position: "sticky",
                       right: 0,
@@ -245,14 +246,14 @@ function DataTable<TData>({
                     {row.getVisibleCells().map((cell) => {
                       const pinned = cell.column.getIsPinned();
                       let pinStyle: React.CSSProperties = {};
-                      if (pinned === "left") {
+                      if (pinned === "start") {
                         pinStyle = {
                           position: "sticky",
                           left: 0,
                           zIndex: 1,
                           borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
                         };
-                      } else if (pinned === "right") {
+                      } else if (pinned === "end") {
                         pinStyle = {
                           position: "sticky",
                           right: 0,

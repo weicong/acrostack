@@ -9,7 +9,7 @@ import {
 } from "@fluentui/react-components";
 import { PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
 import { tenantGetListQueryOptions } from "@/api/hooks/tenant/useTenantGetList";
 import type { VoloAbpTenantManagementTenantDto } from "@/api/models/volo/abp/tenantManagement/TenantDto";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
@@ -57,7 +57,7 @@ function useTenantsTable(onImpersonate: (tenant: TenantItem) => void, canImperso
     globalFilter: tableState.state.globalFilter,
   });
 
-  const columns = useMemo<ColumnDef<TenantItem>[]>(
+  const columns = useMemo<ColumnDef<typeof stockFeatures, TenantItem>[]>(
     () => [
       {
         id: "name",

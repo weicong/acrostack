@@ -1,5 +1,5 @@
-export { useDataTable, resolveUpdater } from "./useDataTable";
-export type { UseDataTableOptions, UseDataTableStateOptions } from "./useDataTable";
+export { useDataTable, resolveUpdater, appTableFeatures } from "./useDataTable";
+export type { UseDataTableOptions, UseDataTableStateOptions, AppTableFeatures } from "./useDataTable";
 
 export { useDataTableQuery } from "./useDataTableQuery";
 export type { UseDataTableQueryOptions, AbpPagedResult, AbpGridParams } from "./useDataTableQuery";
