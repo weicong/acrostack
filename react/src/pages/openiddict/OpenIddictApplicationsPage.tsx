@@ -9,13 +9,13 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { Delete20Regular } from "@fluentui/react-icons";
-import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import {
   openIddictApplicationGetListQueryOptions,
   openIddictApplicationGetListQueryKey,
@@ -81,7 +81,7 @@ export function OpenIddictApplicationsPage() {
     );
   };
 
-  const columns = useMemo<ColumnDef<typeof stockFeatures, AppItem>[]>(
+  const columns = useMemo<ColumnDef<AppTableFeatures, AppItem>[]>(
     () => [
       {
         id: "clientId",

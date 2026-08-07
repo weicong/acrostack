@@ -22,7 +22,7 @@ vi.mock("@/lib/routing/routeEvents", () => ({
 }));
 
 vi.mock("@/lib/i18n/i18n", () => ({
-  default: { language: "en" },
+  default: { language: "zh-Hans" },
 }));
 
 vi.mock("@kubb/plugin-client/clients/axios", () => ({
@@ -82,7 +82,7 @@ describe("applyRequestConfig", () => {
 
   it("sets Accept-Language from i18n", async () => {
     const config = await applyRequestConfig(makeConfig());
-    expect(config.headers["Accept-Language"]).toBe("en");
+    expect(config.headers["Accept-Language"]).toBe("zh-Hans");
   });
 
   it("does not override an existing Accept-Language header", async () => {

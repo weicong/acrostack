@@ -50,8 +50,8 @@ interface LocalizationData {
 }
 
 const FALLBACK_LANGUAGE: LocalizationLanguage = {
-  cultureName: "en",
-  displayName: "English",
+  cultureName: "zh-Hans",
+  displayName: "简体中文",
 };
 
 const THEME_CYCLE: Theme[] = ["light", "dark", "system"];
@@ -119,7 +119,7 @@ function LanguageSwitcher() {
   const snapshot = appConfig.useSnapshot();
   const [isChanging, setIsChanging] = useState(false);
   const localization = snapshot.sections?.localization as LocalizationSection | null | undefined;
-  const currentCulture = i18n.language || FALLBACK_LANGUAGE.cultureName || "en";
+  const currentCulture = i18n.language || FALLBACK_LANGUAGE.cultureName || "zh-Hans";
 
   useEffect(() => {
     if (snapshot.initialized || snapshot.loading) {

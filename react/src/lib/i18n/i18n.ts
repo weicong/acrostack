@@ -1,10 +1,10 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import en from "@/locales/en.json";
 import zhHans from "@/locales/zh-Hans.json";
 
 export const LANGUAGE_STORAGE_KEY = "abp_culture";
-const DEFAULT_LANGUAGE = "en";
+const DEFAULT_LANGUAGE = "zh-Hans";
+const SUPPORTED_LANGUAGES = ["zh-Hans"];
 
 /**
  * i18next post-processor that substitutes .NET-style positional placeholders
@@ -45,7 +45,11 @@ function getInitialLanguage() {
   if (typeof window === "undefined") return DEFAULT_LANGUAGE;
 
   try {
-    return localStorage.getItem(LANGUAGE_STORAGE_KEY) ?? DEFAULT_LANGUAGE;
+    const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
+      return stored;
+    }
+    return DEFAULT_LANGUAGE;
   } catch {
     return DEFAULT_LANGUAGE;
   }
@@ -59,11 +63,10 @@ void i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
       "zh-Hans": { translation: zhHans },
     },
     lng: initialLanguage,
-    fallbackLng: "en",
+    fallbackLng: "zh-Hans",
     keySeparator: false,
     nsSeparator: false,
     interpolation: {

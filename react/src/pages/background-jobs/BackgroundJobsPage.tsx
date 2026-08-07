@@ -13,13 +13,13 @@ import {
   ArrowCounterclockwise20Regular,
   Pause20Regular,
 } from "@fluentui/react-icons";
-import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import {
   backgroundJobGetListQueryOptions,
   backgroundJobGetListQueryKey,
@@ -152,8 +152,8 @@ export function BackgroundJobsPage() {
         ? t("AbpBackgroundJobs::Requeue")
         : t("AbpBackgroundJobs::Abandon");
 
-  const columns = useMemo<ColumnDef<typeof stockFeatures, JobItem>[]>(() => {
-    const base: ColumnDef<typeof stockFeatures, JobItem>[] = [
+  const columns = useMemo<ColumnDef<AppTableFeatures, JobItem>[]>(() => {
+    const base: ColumnDef<AppTableFeatures, JobItem>[] = [
       {
         id: "jobName",
         header: t("AbpBackgroundJobs::JobName"),

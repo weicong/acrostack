@@ -12,12 +12,12 @@ import {
   ArrowReset20Regular,
 } from "@fluentui/react-icons";
 import { format } from "date-fns";
-import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { bookGetListQueryOptions, bookGetListQueryKey } from "@/api/hooks/book/useBookGetList";
 import { useBookDelete } from "@/api/hooks/book/useBookDelete";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { BookFormDialog } from "./BookFormDialog";
@@ -76,7 +76,7 @@ function useBooksTable(
     extraParams: extraParams as Record<string, unknown>,
   });
 
-  const columns = useMemo<ColumnDef<typeof stockFeatures, BookItem>[]>(
+  const columns = useMemo<ColumnDef<AppTableFeatures, BookItem>[]>(
     () => [
       {
         id: "name",

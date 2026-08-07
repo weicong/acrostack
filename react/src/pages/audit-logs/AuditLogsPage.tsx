@@ -17,12 +17,12 @@ import {
   type SelectTabData,
   type SelectTabEvent,
 } from "@fluentui/react-components";
-import { type ColumnDef, stockFeatures } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGetList";
 import type { AcroStackServicesDtosAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/services/dtos/auditLogging/AuditLogDto";
 import { AuditLogStatisticsPanel } from "./AuditLogStatisticsPanel";
@@ -147,7 +147,7 @@ export function AuditLogsPage() {
     globalFilter: tableState.state.globalFilter,
   });
 
-  const columns = useMemo<ColumnDef<typeof stockFeatures, AuditLogItem>[]>(
+  const columns = useMemo<ColumnDef<AppTableFeatures, AuditLogItem>[]>(
     () => [
       {
         id: "executionTime",
