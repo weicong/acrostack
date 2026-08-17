@@ -264,7 +264,7 @@ paket-files/
 *.code-workspace
 
 # AcroStack
-AcroStack/Logs/*
+src/AcroStack/Logs/*
 
 *.db
 *.db-shm

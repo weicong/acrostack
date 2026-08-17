@@ -3,5 +3,5 @@
         <Platform Name="Any CPU" />
     </Configurations>
 
-    <Project Path="AcroStack/AcroStack.csproj" />
+    <Project Path="src/AcroStack/AcroStack.csproj" />
 </Solution>

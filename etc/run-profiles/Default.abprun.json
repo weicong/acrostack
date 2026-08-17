@@ -14,7 +14,7 @@
       "launchUrl": "https://localhost:44320",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
-      "path": "../../AcroStack/AcroStack.csproj",
+      "path": "../../src/AcroStack/AcroStack.csproj",
       "execution": {
         "order": 1
       }

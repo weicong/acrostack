@@ -44,7 +44,7 @@
   },
   "packages": {
     "AcroStack": {
-      "path": "AcroStack/AcroStack.abppkg"
+      "path": "src/AcroStack/AcroStack.abppkg"
     }
   }
 }

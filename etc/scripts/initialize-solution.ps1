@@ -26,13 +26,13 @@ Run-Step "InstallLibs" {
 }
 
 Run-Step "DbMigrator" {
-    Set-Location (Join-Path $scriptRoot "../../AcroStack")
+    Set-Location (Join-Path $scriptRoot "../../src/AcroStack")
     dotnet run --migrate-database
     dotnet run --migrate-database
 }
 
 Run-Step "DevCert" {
-    Set-Location (Join-Path $scriptRoot "../../AcroStack")
+    Set-Location (Join-Path $scriptRoot "../../src/AcroStack")
     dotnet dev-certs https -v -ep openiddict.pfx -p d2003818-3ce6-4ee9-bfb0-f6389f991977
 }
 
