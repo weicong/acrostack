@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AcroStack.Entities.Books;
+using AcroStack.Books;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;

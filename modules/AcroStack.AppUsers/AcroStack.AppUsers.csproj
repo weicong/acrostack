@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AcroStack.AppUsers</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Caching" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Identity.Domain" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Mapperly" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="10.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AcroStack.Core\AcroStack.Core.csproj" />
+  </ItemGroup>
+
+</Project>

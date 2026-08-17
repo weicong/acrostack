@@ -3,5 +3,15 @@
         <Platform Name="Any CPU" />
     </Configurations>
 
+    <Project Path="src/AcroStack.Core/AcroStack.Core.csproj" />
+    <Project Path="modules/AcroStack.Books/AcroStack.Books.csproj" />
+    <Project Path="modules/AcroStack.BackgroundJobs/AcroStack.BackgroundJobs.csproj" />
+    <Project Path="modules/AcroStack.OpenIddictManagement/AcroStack.OpenIddictManagement.csproj" />
+    <Project Path="modules/AcroStack.IdentityClaims/AcroStack.IdentityClaims.csproj" />
+    <Project Path="modules/AcroStack.AuditLogging/AcroStack.AuditLogging.csproj" />
+    <Project Path="modules/AcroStack.AccountPro/AcroStack.AccountPro.csproj" />
+    <Project Path="modules/AcroStack.AppUsers/AcroStack.AppUsers.csproj" />
+    <Project Path="modules/AcroStack.FileManagement/AcroStack.FileManagement.csproj" />
+    <Project Path="modules/AcroStack.Chat/AcroStack.Chat.csproj" />
     <Project Path="src/AcroStack/AcroStack.csproj" />
 </Solution>

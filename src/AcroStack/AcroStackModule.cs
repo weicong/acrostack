@@ -9,7 +9,7 @@ using Volo.Abp.Domain.Entities.Events.Distributed;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 using OpenIddict.Validation.AspNetCore;
-using AcroStack.OpenIddict;
+using AcroStack.AccountPro;
 using static OpenIddict.Server.OpenIddictServerEvents;
 using Volo.Abp;
 using Volo.Abp.Studio;
@@ -61,9 +61,14 @@ using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.CmsKit;
 using Volo.CmsKit.EntityFrameworkCore;
 using Volo.Abp.BackgroundWorkers;
-using AcroStack.BackgroundWorkers;
-using AcroStack.Services.AuditLogging;
-using AcroStack.Services.FileManagement;
+using AcroStack.Books;
+using AcroStack.BackgroundJobs;
+using AcroStack.OpenIddictManagement;
+using AcroStack.IdentityClaims;
+using AcroStack.AuditLogging;
+using AcroStack.AppUsers;
+using AcroStack.FileManagement;
+using AcroStack.Chat;
 
 namespace AcroStack;
 
@@ -124,7 +129,18 @@ namespace AcroStack;
     typeof(CmsKitDomainModule),
     typeof(CmsKitApplicationModule),
     typeof(CmsKitHttpApiModule),
-    typeof(CmsKitEntityFrameworkCoreModule)
+    typeof(CmsKitEntityFrameworkCoreModule),
+
+    // AcroStack modules
+    typeof(BooksModule),
+    typeof(BackgroundJobsModule),
+    typeof(OpenIddictManagementModule),
+    typeof(IdentityClaimsModule),
+    typeof(AuditLoggingModule),
+    typeof(AccountProModule),
+    typeof(AppUsersModule),
+    typeof(FileManagementModule),
+    typeof(ChatModule)
 )]
 public class AcroStackModule : AbpModule
 {
@@ -233,18 +249,6 @@ public class AcroStackModule : AbpModule
 
         // Configure impersonation options (mirrors ABP Account Pro's AbpAccountOptions).
         Configure<ImpersonationOptions>(configuration.GetSection("Impersonation"));
-
-        // Configure File Management options (mirrors ABP Commercial File
-        // Management Pro's quota / size-limit options, minus virus scan).
-        Configure<FileManagementOptions>(configuration.GetSection("FileManagement"));
-
-        // Configure Audit Logging options (mirrors ABP Commercial AuditLogging
-        // Pro's host/tenant scope switch).
-        Configure<AuditLogOptions>(configuration.GetSection("AuditLog"));
-
-        // Configure Audit Log cleanup worker options (mirrors ABP Commercial
-        // AuditLogging Pro's AbpAuditLoggingCleanupOptions).
-        Configure<AuditLogCleanupOptions>(configuration.GetSection("AuditLogCleanup"));
     }
 
 
@@ -345,6 +349,14 @@ public class AcroStackModule : AbpModule
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
             options.ConventionalControllers.Create(typeof(AcroStackModule).Assembly);
+            options.ConventionalControllers.Create(typeof(BooksModule).Assembly);
+            options.ConventionalControllers.Create(typeof(BackgroundJobsModule).Assembly);
+            options.ConventionalControllers.Create(typeof(OpenIddictManagementModule).Assembly);
+            options.ConventionalControllers.Create(typeof(IdentityClaimsModule).Assembly);
+            options.ConventionalControllers.Create(typeof(AuditLoggingModule).Assembly);
+            options.ConventionalControllers.Create(typeof(AppUsersModule).Assembly);
+            options.ConventionalControllers.Create(typeof(FileManagementModule).Assembly);
+            options.ConventionalControllers.Create(typeof(ChatModule).Assembly);
         });
     }
 
@@ -385,6 +397,7 @@ public class AcroStackModule : AbpModule
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<AcroStackModule>();
+            options.FileSets.AddEmbedded<AcroStackResource>();
             if (hostingEnvironment.IsDevelopment())
             {
                 /* Using physical files in development, so we don't need to recompile on changes */
@@ -480,18 +493,7 @@ public class AcroStackModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints(endpoints =>
         {
-            endpoints.MapHub<AcroStack.Hubs.ChatHub>("/signalr-hubs/chat");
+            endpoints.MapHub<ChatHub>("/signalr-hubs/chat");
         });
-    }
-
-    public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
-    {
-        // The default AsyncPeriodicBackgroundWorkerBase lifecycle hook calls the
-        // synchronous OnApplicationInitialization via base, which runs the
-        // middleware pipeline configured above. After that, register the
-        // audit log cleanup background worker (mirrors ABP Commercial
-        // AuditLogging Pro's cleanup worker registration).
-        await base.OnApplicationInitializationAsync(context);
-        await context.AddBackgroundWorkerAsync<AuditLogCleanupWorker>();
     }
 }

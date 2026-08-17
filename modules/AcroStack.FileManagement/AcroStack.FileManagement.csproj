@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AcroStack.FileManagement</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.BlobStoring" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.MultiTenancy" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Mapperly" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="10.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AcroStack.Core\AcroStack.Core.csproj" />
+  </ItemGroup>
+
+</Project>

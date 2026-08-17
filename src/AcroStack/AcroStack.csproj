@@ -108,8 +108,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Localization\AcroStack\*.json" />
-    <EmbeddedResource Include="Localization\AcroStack\*.json" />
+    <ProjectReference Include="..\AcroStack.Core\AcroStack.Core.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.Books\AcroStack.Books.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.BackgroundJobs\AcroStack.BackgroundJobs.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.OpenIddictManagement\AcroStack.OpenIddictManagement.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.IdentityClaims\AcroStack.IdentityClaims.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.AuditLogging\AcroStack.AuditLogging.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.AccountPro\AcroStack.AccountPro.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.AppUsers\AcroStack.AppUsers.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.FileManagement\AcroStack.FileManagement.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.Chat\AcroStack.Chat.csproj" />
   </ItemGroup>
 
   <ItemGroup>

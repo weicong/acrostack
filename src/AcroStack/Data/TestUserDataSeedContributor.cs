@@ -6,6 +6,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Uow;
+using AcroStack.AppUsers;
 
 namespace AcroStack.Data;
 
@@ -16,13 +17,13 @@ public class TestUserDataSeedContributor : IDataSeedContributor, ITransientDepen
 
     private readonly IIdentityUserRepository _identityUserRepository;
     private readonly IdentityUserManager _identityUserManager;
-    private readonly IRepository<AppUsers.AppUser, Guid> _appUserRepository;
+    private readonly IRepository<AppUser, Guid> _appUserRepository;
     private readonly ILogger<TestUserDataSeedContributor> _logger;
 
     public TestUserDataSeedContributor(
         IIdentityUserRepository identityUserRepository,
         IdentityUserManager identityUserManager,
-        IRepository<AppUsers.AppUser, Guid> appUserRepository,
+        IRepository<AppUser, Guid> appUserRepository,
         ILogger<TestUserDataSeedContributor> logger)
     {
         _identityUserRepository = identityUserRepository;
@@ -66,7 +67,7 @@ public class TestUserDataSeedContributor : IDataSeedContributor, ITransientDepen
             if (result.Succeeded)
             {
                 // 同时创建对应的 AppUser 记录
-                var appUser = new AppUsers.AppUser(
+                var appUser = new AppUser(
                     identityUser.Id,
                     identityUser.UserName,
                     identityUser.Email,
