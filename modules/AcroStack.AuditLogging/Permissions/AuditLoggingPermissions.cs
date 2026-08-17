@@ -1,5 +1,3 @@
-using AcroStack;
-
 namespace AcroStack.AuditLogging;
 
 public static class AuditLoggingPermissions

@@ -1,5 +1,3 @@
-using AcroStack;
-
 namespace AcroStack.IdentityClaims;
 
 public static class IdentityClaimsPermissions

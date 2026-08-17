@@ -1,5 +1,3 @@
-using AcroStack;
-
 namespace AcroStack.Books;
 
 public static class BooksPermissions

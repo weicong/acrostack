@@ -1,5 +1,3 @@
-using AcroStack;
-
 namespace AcroStack.OpenIddictManagement;
 
 public static class OpenIddictManagementPermissions

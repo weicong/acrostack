@@ -1,5 +1,3 @@
-using AcroStack;
-
 namespace AcroStack.BackgroundJobs;
 
 public static class BackgroundJobsPermissions
