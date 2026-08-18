@@ -4,6 +4,8 @@ import zhHans from "@/locales/zh-Hans.json";
 
 export const LANGUAGE_STORAGE_KEY = "abp_culture";
 const DEFAULT_LANGUAGE = "zh-Hans";
+// 当前仅支持简体中文；如需多语言：扩展本列表并接入 ABP 本地化资源（后端 LocalizationOptions），
+// 同时在下述 resources 中补充对应语言的翻译资源
 const SUPPORTED_LANGUAGES = ["zh-Hans"];
 
 /**

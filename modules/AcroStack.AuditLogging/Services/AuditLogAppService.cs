@@ -12,6 +12,7 @@ using Volo.Abp.AuditLogging;
 using Volo.Abp.Content;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Uow;
 using System.Linq.Dynamic.Core;
 
 namespace AcroStack.AuditLogging;
@@ -22,15 +23,18 @@ public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
     private readonly IRepository<AuditLog, Guid> _auditLogRepository;
     private readonly IRepository<EntityChange, Guid> _entityChangeRepository;
     private readonly AuditLogOptions _auditLogOptions;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public AuditLogAppService(
         IRepository<AuditLog, Guid> auditLogRepository,
         IRepository<EntityChange, Guid> entityChangeRepository,
-        IOptions<AuditLogOptions> auditLogOptions)
+        IOptions<AuditLogOptions> auditLogOptions,
+        IUnitOfWorkManager unitOfWorkManager)
     {
         _auditLogRepository = auditLogRepository;
         _entityChangeRepository = entityChangeRepository;
         _auditLogOptions = auditLogOptions.Value;
+        _unitOfWorkManager = unitOfWorkManager;
     }
 
     public async Task<AuditLogDto> GetAsync(Guid id)
@@ -116,7 +120,7 @@ public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
         await MiniExcel.SaveAsAsync(stream, rows);
         stream.Position = 0;
 
-        var fileName = $"audit-logs-{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+        var fileName = $"audit-logs-{Clock.Now:yyyyMMddHHmmss}.xlsx";
         return new RemoteStreamContent(stream, fileName,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
@@ -125,6 +129,14 @@ public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
     public async Task<ListResultDto<EntityChangeDetailDto>> GetEntityChangesAsync(Guid auditLogId)
     {
         var queryable = await _auditLogRepository.GetQueryableAsync();
+
+        // 与 GetListAsync 保持一致的租户过滤规则：IsHostOnly=false 且
+        // 当前为租户用户时，仅允许查看本租户的审计日志。
+        if (!_auditLogOptions.IsHostOnly && CurrentTenant.Id.HasValue)
+        {
+            var tenantId = CurrentTenant.Id.Value;
+            queryable = queryable.Where(x => x.TenantId == tenantId);
+        }
 
         // Eager-load EntityChanges together with their PropertyChanges so the
         // detail view shows the full property-level diff in a single round
@@ -151,6 +163,15 @@ public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
     public async Task<EntityChangeDetailDto> GetEntityChangeAsync(Guid entityChangeId)
     {
         var queryable = await _entityChangeRepository.GetQueryableAsync();
+
+        // 与 GetListAsync 保持一致的租户过滤规则：IsHostOnly=false 且
+        // 当前为租户用户时，实体变更同样限定在本租户范围内（EntityChange
+        // 自带 TenantId 属性，可直接过滤）。
+        if (!_auditLogOptions.IsHostOnly && CurrentTenant.Id.HasValue)
+        {
+            var tenantId = CurrentTenant.Id.Value;
+            queryable = queryable.Where(ec => ec.TenantId == tenantId);
+        }
 
         var entityChange = await AsyncExecuter.FirstOrDefaultAsync(
             queryable

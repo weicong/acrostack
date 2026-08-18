@@ -33,6 +33,13 @@ import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
 import { useCurrentUser } from "@/lib/auth/permissions";
 
+/**
+ * Custom OAuth2 grant type implemented by the backend's
+ * `ImpersonationGrantHandler`. Must stay in sync with
+ * `ImpersonationGrantHandler.GrantType` on the server.
+ */
+const IMPERSONATION_GRANT_TYPE = "Impersonation";
+
 export interface ImpersonationState {
   isImpersonating: boolean;
   impersonatorUserId?: string;
@@ -176,7 +183,7 @@ async function callImpersonationEndpoint(
   }
 
   const formBody = new URLSearchParams({
-    grant_type: "Impersonation",
+    grant_type: IMPERSONATION_GRANT_TYPE,
     client_id: getOAuthConfig().clientId,
     ...params,
   });

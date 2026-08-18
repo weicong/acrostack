@@ -74,11 +74,9 @@ import {
 import { useFileManagementRestoreVersion } from "@/api/hooks/fileManagement/useFileManagementRestoreVersion";
 import { fileManagementDownloadFile } from "@/api/clients/fileManagement/fileManagementDownloadFile";
 import { fileManagementGetThumbnail } from "@/api/clients/fileManagement/fileManagementGetThumbnail";
-import type { AcroStackServicesDtosFileManagementFileFolderDto as FileFolderDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileFolderDto";
-import type { AcroStackServicesDtosFileManagementFileEntryDto as FileEntryDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileEntryDto";
-import type { AcroStackServicesDtosFileManagementFileShareDto as FileShareDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileShareDto";
-import type { AcroStackServicesDtosFileManagementFileVersionDto as FileVersionDto } from "@/api/models/acroStack/services/dtos/fileManagement/FileVersionDto";
-import type { AcroStackServicesDtosFileManagementStorageInfoDto as StorageInfoDto } from "@/api/models/acroStack/services/dtos/fileManagement/StorageInfoDto";
+import type { AcroStackFileManagementFileFolderDto as FileFolderDto } from "@/api/models/acroStack/fileManagement/FileFolderDto";
+import type { AcroStackFileManagementFileEntryDto as FileEntryDto } from "@/api/models/acroStack/fileManagement/FileEntryDto";
+import type { AcroStackFileManagementStorageInfoDto as StorageInfoDto } from "@/api/models/acroStack/fileManagement/StorageInfoDto";
 
 const IMAGE_CONTENT_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp", "image/bmp"];
 
@@ -938,7 +936,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
   const [expirationTime, setExpirationTime] = useState<string>("");
   const [maxDownloadCount, setMaxDownloadCount] = useState<number | null>(null);
 
-  const shareLinks = (shareLinksQuery.data?.items ?? []) as FileShareDto[];
+  const shareLinks = shareLinksQuery.data?.items ?? [];
 
   const invalidate = useCallback(() => {
     void queryClient.invalidateQueries({
@@ -1116,7 +1114,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
   const restoreVersionMutation = useFileManagementRestoreVersion();
   const [confirmVersionId, setConfirmVersionId] = useState<string | null>(null);
 
-  const versions = (versionsQuery.data?.items ?? []) as FileVersionDto[];
+  const versions = versionsQuery.data?.items ?? [];
   const currentVersionNumber = versionsQuery.data?.items?.find(
     (v) => v.id === fileId,
   )?.versionNumber;

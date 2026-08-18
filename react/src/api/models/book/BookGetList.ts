@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackEntitiesBooksBookType } from "../acroStack/entities/books/BookType.ts";
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/books/BookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { AcroStackBooksBookType } from "../acroStack/books/BookType.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/books/bookDtoAcroStack/BooksVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,7 +14,7 @@ export type BookGetListQueryFilter = string | undefined;
  * Format: `int32`
  * @type integer | undefined
  */
-export type BookGetListQueryType = AcroStackEntitiesBooksBookType | undefined;
+export type BookGetListQueryType = AcroStackBooksBookType | undefined;
 
 /**
  * @type string | undefined
@@ -39,19 +39,19 @@ export type BookGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type BookGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BookGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BookGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBooksBookDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
 
 export type BookGetListStatus200 =
   | BookGetListStatus200Plain

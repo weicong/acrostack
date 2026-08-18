@@ -1,24 +1,21 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementStorageInfoDto } from "../acroStack/services/dtos/fileManagement/StorageInfoDto.ts";
+import type { AcroStackFileManagementStorageInfoDto } from "../acroStack/fileManagement/StorageInfoDto.ts";
 
 /**
  * @type object
  */
-export type FileManagementGetStorageInfoStatus200Plain =
-  AcroStackServicesDtosFileManagementStorageInfoDto;
+export type FileManagementGetStorageInfoStatus200Plain = AcroStackFileManagementStorageInfoDto;
 
 /**
  * @type object
  */
-export type FileManagementGetStorageInfoStatus200Json =
-  AcroStackServicesDtosFileManagementStorageInfoDto;
+export type FileManagementGetStorageInfoStatus200Json = AcroStackFileManagementStorageInfoDto;
 
 /**
  * @type object
  */
-export type FileManagementGetStorageInfoStatus200Json2 =
-  AcroStackServicesDtosFileManagementStorageInfoDto;
+export type FileManagementGetStorageInfoStatus200Json2 = AcroStackFileManagementStorageInfoDto;
 
 export type FileManagementGetStorageInfoStatus200 =
   | FileManagementGetStorageInfoStatus200Plain

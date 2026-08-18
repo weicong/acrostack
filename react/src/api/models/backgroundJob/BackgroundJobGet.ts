@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto } from "../acroStack/services/dtos/backgroundJobs/BackgroundJobDto.ts";
+import type { AcroStackBackgroundJobsBackgroundJobDto } from "../acroStack/backgroundJobs/BackgroundJobDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -13,17 +13,17 @@ export type BackgroundJobGetPathId = string;
 /**
  * @type object
  */
-export type BackgroundJobGetStatus200Plain = AcroStackServicesDtosBackgroundJobsBackgroundJobDto;
+export type BackgroundJobGetStatus200Plain = AcroStackBackgroundJobsBackgroundJobDto;
 
 /**
  * @type object
  */
-export type BackgroundJobGetStatus200Json = AcroStackServicesDtosBackgroundJobsBackgroundJobDto;
+export type BackgroundJobGetStatus200Json = AcroStackBackgroundJobsBackgroundJobDto;
 
 /**
  * @type object
  */
-export type BackgroundJobGetStatus200Json2 = AcroStackServicesDtosBackgroundJobsBackgroundJobDto;
+export type BackgroundJobGetStatus200Json2 = AcroStackBackgroundJobsBackgroundJobDto;
 
 export type BackgroundJobGetStatus200 =
   | BackgroundJobGetStatus200Plain

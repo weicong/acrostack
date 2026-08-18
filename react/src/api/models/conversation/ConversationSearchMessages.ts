@@ -1,26 +1,26 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosChatSearchMessagesInput } from "../acroStack/services/dtos/chat/SearchMessagesInput.ts";
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosChatChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/chat/ChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { AcroStackChatSearchMessagesInput } from "../acroStack/chat/SearchMessagesInput.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/chat/chatMessageDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
 export type ConversationSearchMessagesStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosChatChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ConversationSearchMessagesStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosChatChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ConversationSearchMessagesStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosChatChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 export type ConversationSearchMessagesStatus200 =
   | ConversationSearchMessagesStatus200Plain
@@ -150,23 +150,17 @@ export type ConversationSearchMessagesStatus501 =
 /**
  * @type object | undefined
  */
-export type ConversationSearchMessagesJsonData =
-  | AcroStackServicesDtosChatSearchMessagesInput
-  | undefined;
+export type ConversationSearchMessagesJsonData = AcroStackChatSearchMessagesInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationSearchMessagesJson2Data =
-  | AcroStackServicesDtosChatSearchMessagesInput
-  | undefined;
+export type ConversationSearchMessagesJson2Data = AcroStackChatSearchMessagesInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationSearchMessagesJson3Data =
-  | AcroStackServicesDtosChatSearchMessagesInput
-  | undefined;
+export type ConversationSearchMessagesJson3Data = AcroStackChatSearchMessagesInput | undefined;
 
 export type ConversationSearchMessagesData =
   | ConversationSearchMessagesJsonData

@@ -46,8 +46,12 @@ export async function buildChatHubConnection(): Promise<HubConnection> {
   const origin = getBackendOrigin();
   const url = `${origin}/signalr-hubs/chat?access_token=${encodeURIComponent(accessToken)}`;
 
-  return new HubConnectionBuilder()
-    .withUrl(url, { transport: HttpTransportType.WebSockets })
-    .withAutomaticReconnect()
-    .build();
+  return (
+    new HubConnectionBuilder()
+      .withUrl(url, { transport: HttpTransportType.WebSockets })
+      // 自定义重连间隔：延长重连窗口（默认最多 4 次、约 30s 后放弃），
+      // 网络闪断或后端短暂重启后仍有约 107s 的自动恢复机会
+      .withAutomaticReconnect([0, 2000, 5000, 10000, 30000, 60000])
+      .build()
+  );
 }

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementFileEntryDto } from "../acroStack/services/dtos/fileManagement/FileEntryDto.ts";
+import type { AcroStackFileManagementFileEntryDto } from "../acroStack/fileManagement/FileEntryDto.ts";
 
 /**
  * @description
@@ -19,20 +19,17 @@ export type FileManagementRestoreVersionPathVersionId = string;
 /**
  * @type object
  */
-export type FileManagementRestoreVersionStatus200Plain =
-  AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementRestoreVersionStatus200Plain = AcroStackFileManagementFileEntryDto;
 
 /**
  * @type object
  */
-export type FileManagementRestoreVersionStatus200Json =
-  AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementRestoreVersionStatus200Json = AcroStackFileManagementFileEntryDto;
 
 /**
  * @type object
  */
-export type FileManagementRestoreVersionStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementRestoreVersionStatus200Json2 = AcroStackFileManagementFileEntryDto;
 
 export type FileManagementRestoreVersionStatus200 =
   | FileManagementRestoreVersionStatus200Plain

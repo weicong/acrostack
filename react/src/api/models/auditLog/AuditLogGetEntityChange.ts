@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosAuditLoggingEntityChangeDto } from "../acroStack/services/dtos/auditLogging/EntityChangeDto.ts";
+import type { AcroStackAuditLoggingEntityChangeDto } from "../acroStack/auditLogging/EntityChangeDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -13,19 +13,17 @@ export type AuditLogGetEntityChangePathEntityChangeId = string;
 /**
  * @type object
  */
-export type AuditLogGetEntityChangeStatus200Plain =
-  AcroStackServicesDtosAuditLoggingEntityChangeDto;
+export type AuditLogGetEntityChangeStatus200Plain = AcroStackAuditLoggingEntityChangeDto;
 
 /**
  * @type object
  */
-export type AuditLogGetEntityChangeStatus200Json = AcroStackServicesDtosAuditLoggingEntityChangeDto;
+export type AuditLogGetEntityChangeStatus200Json = AcroStackAuditLoggingEntityChangeDto;
 
 /**
  * @type object
  */
-export type AuditLogGetEntityChangeStatus200Json2 =
-  AcroStackServicesDtosAuditLoggingEntityChangeDto;
+export type AuditLogGetEntityChangeStatus200Json2 = AcroStackAuditLoggingEntityChangeDto;
 
 export type AuditLogGetEntityChangeStatus200 =
   | AuditLogGetEntityChangeStatus200Plain

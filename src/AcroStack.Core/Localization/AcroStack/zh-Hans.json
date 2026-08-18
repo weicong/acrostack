@@ -83,6 +83,8 @@
     "Permission:BackgroundJobs": "后台任务",
     "Permission:BackgroundJobs.ViewJobs": "查看后台任务",
     "Permission:BackgroundJobs.Delete": "删除后台任务",
+    "Permission:BackgroundJobs.Requeue": "重新排队后台任务",
+    "Permission:BackgroundJobs.Abandon": "放弃后台任务",
     "Permission:OpenIddictManagement": "OpenIddict 管理",
     "Permission:OpenIddictManagement.Applications": "管理应用",
     "Permission:OpenIddictManagement.Scopes": "管理 Scope",

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using OpenIddict.Abstractions;
 using System.Linq.Dynamic.Core;
 using Volo.Abp.Application.Dtos;
@@ -99,7 +100,7 @@ public class OpenIddictScopeAppService : AcroStackAppService, IOpenIddictScopeAp
         await _scopeManager.DeleteAsync(scope);
     }
 
-    private static OpenIddictScopeDto MapToDto(OpenIddictScope scope)
+    private OpenIddictScopeDto MapToDto(OpenIddictScope scope)
     {
         return new OpenIddictScopeDto
         {
@@ -112,7 +113,7 @@ public class OpenIddictScopeAppService : AcroStackAppService, IOpenIddictScopeAp
         };
     }
 
-    private static List<string> ParseJsonList(string? json)
+    private List<string> ParseJsonList(string? json)
     {
         if (json.IsNullOrWhiteSpace())
         {
@@ -123,8 +124,11 @@ public class OpenIddictScopeAppService : AcroStackAppService, IOpenIddictScopeAp
         {
             return JsonSerializer.Deserialize<List<string>>(json!) ?? new List<string>();
         }
-        catch
+        catch (Exception ex)
         {
+            // JSON 反序列化失败时记录警告而不是静默吞掉异常，
+            // 便于排查数据库中残留的脏数据。
+            Logger.LogWarning(ex, "OpenIddict Scope 的 JSON 列字段解析失败，已返回空列表。原始内容: {Json}", json);
             return new List<string>();
         }
     }

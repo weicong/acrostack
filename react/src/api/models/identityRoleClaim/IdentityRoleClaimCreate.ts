@@ -1,26 +1,23 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto } from "../acroStack/services/dtos/identityClaims/CreateIdentityRoleClaimDto.ts";
-import type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "../acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
+import type { AcroStackIdentityClaimsCreateIdentityRoleClaimDto } from "../acroStack/identityClaims/CreateIdentityRoleClaimDto.ts";
+import type { AcroStackIdentityClaimsIdentityClaimDto } from "../acroStack/identityClaims/IdentityClaimDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
-export type IdentityRoleClaimCreateStatus200Plain =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityRoleClaimCreateStatus200Plain = AcroStackIdentityClaimsIdentityClaimDto;
 
 /**
  * @type object
  */
-export type IdentityRoleClaimCreateStatus200Json =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityRoleClaimCreateStatus200Json = AcroStackIdentityClaimsIdentityClaimDto;
 
 /**
  * @type object
  */
-export type IdentityRoleClaimCreateStatus200Json2 =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityRoleClaimCreateStatus200Json2 = AcroStackIdentityClaimsIdentityClaimDto;
 
 export type IdentityRoleClaimCreateStatus200 =
   | IdentityRoleClaimCreateStatus200Plain
@@ -151,21 +148,21 @@ export type IdentityRoleClaimCreateStatus501 =
  * @type object | undefined
  */
 export type IdentityRoleClaimCreateJsonData =
-  | AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto
+  | AcroStackIdentityClaimsCreateIdentityRoleClaimDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type IdentityRoleClaimCreateJson2Data =
-  | AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto
+  | AcroStackIdentityClaimsCreateIdentityRoleClaimDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type IdentityRoleClaimCreateJson3Data =
-  | AcroStackServicesDtosIdentityClaimsCreateIdentityRoleClaimDto
+  | AcroStackIdentityClaimsCreateIdentityRoleClaimDto
   | undefined;
 
 export type IdentityRoleClaimCreateData =

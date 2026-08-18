@@ -1,25 +1,25 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatBlockedUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/chat/BlockedUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/blockedUserDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
 export type ChatBlockGetBlockedUsersStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatBlockedUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ChatBlockGetBlockedUsersStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatBlockedUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ChatBlockGetBlockedUsersStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatBlockedUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 export type ChatBlockGetBlockedUsersStatus200 =
   | ChatBlockGetBlockedUsersStatus200Plain

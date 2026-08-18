@@ -27,7 +27,7 @@ import {
 import { useBackgroundJobDelete } from "@/api/hooks/backgroundJob/useBackgroundJobDelete";
 import { useBackgroundJobRequeue } from "@/api/hooks/backgroundJob/useBackgroundJobRequeue";
 import { useBackgroundJobAbandon } from "@/api/hooks/backgroundJob/useBackgroundJobAbandon";
-import type { AcroStackServicesDtosBackgroundJobsBackgroundJobDto as BackgroundJobDto } from "@/api/models/acroStack/services/dtos/backgroundJobs/BackgroundJobDto";
+import type { AcroStackBackgroundJobsBackgroundJobDto as BackgroundJobDto } from "@/api/models/acroStack/backgroundJobs/BackgroundJobDto";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 

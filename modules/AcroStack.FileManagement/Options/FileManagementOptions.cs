@@ -21,9 +21,22 @@ public class FileManagementOptions
     public long MaxStoragePerTenant { get; set; } = 1_073_741_824; // 1 GB
 
     /// <summary>
-    /// Whitelist of allowed file extensions (lowercase, with leading dot,
-    /// e.g. <c>".pdf"</c>, <c>".png"</c>). When null/empty, all extensions
-    /// are allowed.
+    /// 允许上传的文件扩展名白名单（小写、带前导点，如 <c>".pdf"</c>、<c>".png"</c>）。
+    /// 默认白名单（可被配置整体覆盖）：
+    /// 图片：.png .jpg .jpeg .gif .webp .bmp（刻意不含 .svg，SVG 可内联执行脚本，存在 XSS 风险）；
+    /// 文档：.pdf .doc .docx .xls .xlsx .ppt .pptx .txt .csv .md；
+    /// 压缩包：.zip .7z .rar .tar .gz；
+    /// 音视频：.mp3 .mp4 .avi .mkv .mov .wav。
     /// </summary>
-    public List<string>? AllowedFileExtensions { get; set; }
+    public List<string>? AllowedFileExtensions { get; set; } = new List<string>
+    {
+        // 图片（不含 .svg：SVG 可内联执行脚本，存在 XSS 风险）
+        ".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp",
+        // 文档
+        ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".md",
+        // 压缩包
+        ".zip", ".7z", ".rar", ".tar", ".gz",
+        // 音视频
+        ".mp3", ".mp4", ".avi", ".mkv", ".mov", ".wav",
+    };
 }

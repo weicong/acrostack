@@ -24,11 +24,14 @@ import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGetList";
-import type { AcroStackServicesDtosAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/services/dtos/auditLogging/AuditLogDto";
+import type { AcroStackAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/auditLogging/AuditLogDto";
 import { AuditLogStatisticsPanel } from "./AuditLogStatisticsPanel";
 
 type AuditLogItem = AuditLogDto;
 type AuditLogTabValue = "logs" | "statistics";
+
+// URL 列展示的最大长度，超出部分截断显示省略号
+const URL_DISPLAY_MAX_LENGTH = 60;
 
 const useStyles = makeStyles({
   tabs: {
@@ -175,8 +178,8 @@ export function AuditLogsPage() {
             onClick={() => setSelectedLog(row.original)}
             title={row.original.url ?? undefined}
           >
-            {row.original.url?.length && row.original.url.length > 60
-              ? row.original.url.slice(0, 60) + "..."
+            {row.original.url && row.original.url.length > URL_DISPLAY_MAX_LENGTH
+              ? row.original.url.slice(0, URL_DISPLAY_MAX_LENGTH) + "..."
               : (row.original.url ?? "-")}
           </FluentLink>
         ),
@@ -226,6 +229,8 @@ export function AuditLogsPage() {
       tableState.state.onGlobalFilterChange(searchValue);
     }, 300);
     return () => clearTimeout(timer);
+    // onGlobalFilterChange 在 useDataTableState 中经 useCallback 包装，引用稳定，无需列入依赖数组
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   const handleTabSelect = (_: SelectTabEvent, data: SelectTabData) => {

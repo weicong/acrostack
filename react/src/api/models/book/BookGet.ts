@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosBooksBookDto } from "../acroStack/services/dtos/books/BookDto.ts";
+import type { AcroStackBooksBookDto } from "../acroStack/books/BookDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -13,17 +13,17 @@ export type BookGetPathId = string;
 /**
  * @type object
  */
-export type BookGetStatus200Plain = AcroStackServicesDtosBooksBookDto;
+export type BookGetStatus200Plain = AcroStackBooksBookDto;
 
 /**
  * @type object
  */
-export type BookGetStatus200Json = AcroStackServicesDtosBooksBookDto;
+export type BookGetStatus200Json = AcroStackBooksBookDto;
 
 /**
  * @type object
  */
-export type BookGetStatus200Json2 = AcroStackServicesDtosBooksBookDto;
+export type BookGetStatus200Json2 = AcroStackBooksBookDto;
 
 export type BookGetStatus200 = BookGetStatus200Plain | BookGetStatus200Json | BookGetStatus200Json2;
 

@@ -1,4 +1,4 @@
-import type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto as IdentityClaimDto } from "@/api/models/acroStack/services/dtos/identityClaims/IdentityClaimDto";
+import type { AcroStackIdentityClaimsIdentityClaimDto as IdentityClaimDto } from "@/api/models/acroStack/identityClaims/IdentityClaimDto";
 
 export type ClaimItem = IdentityClaimDto;
 

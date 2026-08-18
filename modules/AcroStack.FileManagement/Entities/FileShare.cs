@@ -19,8 +19,9 @@ public class FileShare : FullAuditedAggregateRoot<Guid>, IMultiTenant
     public Guid FileEntryId { get; set; }
 
     /// <summary>
-    /// Random 32-character token used in the public download URL.
-    /// Generated via <c>Guid.NewGuid().ToString("N")</c>.
+    /// 随机 64 位十六进制 token（32 字节加密安全随机数），用于公开下载 URL。
+    /// 通过 <c>RandomNumberGenerator.GetBytes(32)</c> 生成（见
+    /// <c>FileManagementAppService.CreateShareLinkAsync</c>）。
     /// </summary>
     public string Token { get; set; } = string.Empty;
 

@@ -3,7 +3,7 @@
  * Fetches dynamic-env.json at startup (used in production/Helm) and falls back
  * to env.ts when fetch fails (e.g. local dev). Matches Angular's getEnvConfig pattern.
  */
-import { env } from "@/env";
+import { env, DEFAULT_APP_BASE_URL } from "@/env";
 
 export interface DynamicEnv {
   production?: string;
@@ -63,11 +63,8 @@ export async function loadRuntimeConfig(): Promise<DynamicEnv> {
  * Uses apis.default.url from dynamic-env when loaded; otherwise env.apiUrl.
  */
 export function getApiUrl(): string {
-  const url =
-    loadedConfig?.apis?.default?.url ??
-    (import.meta.env.VITE_API_URL as string | undefined) ??
-    env.apiUrl;
-  return url;
+  // env.apiUrl 内部已处理 VITE_API_URL 与默认值（DEFAULT_API_BASE_URL），此处直接复用
+  return loadedConfig?.apis?.default?.url ?? env.apiUrl;
 }
 
 /**
@@ -89,7 +86,6 @@ export function getApiBaseUrl(): string {
   const openBrace = "\u007b";
   const isFullUrl = isAbsoluteHttpUrl(apiUrl) && !apiUrl.includes(openBrace + openBrace);
   if (isFullUrl) {
-    // return stripTrailingSlash(apiUrl) + "/api";
     return stripTrailingSlash(apiUrl);
   }
   if (import.meta.env.DEV) {
@@ -138,7 +134,7 @@ export function getOAuthConfig(): {
 } {
   const baseUrl =
     loadedConfig?.application?.baseUrl ??
-    (typeof window !== "undefined" ? window.location.origin : "http://localhost:5173");
+    (typeof window !== "undefined" ? window.location.origin : DEFAULT_APP_BASE_URL);
 
   const issuer = loadedConfig?.oAuthConfig?.issuer ?? env.oauth.issuer;
 

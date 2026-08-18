@@ -72,6 +72,10 @@ namespace AcroStack.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -79,7 +83,7 @@ namespace AcroStack.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserName");
+                    b.HasIndex("TenantId", "UserName");
 
                     b.ToTable("AppUsers", (string)null);
                 });
@@ -122,11 +126,15 @@ namespace AcroStack.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -544,7 +552,7 @@ namespace AcroStack.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId", "FolderId");
+                    b.HasIndex("TenantId", "FolderId", "Name");
 
                     b.ToTable("AppFileEntries", (string)null);
                 });
@@ -683,7 +691,7 @@ namespace AcroStack.Migrations
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasMaxLength(32)
+                        .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -778,7 +786,6 @@ namespace AcroStack.Migrations
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ApplicationName")
@@ -900,7 +907,6 @@ namespace AcroStack.Migrations
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("AuditLogId")
@@ -950,7 +956,6 @@ namespace AcroStack.Migrations
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogExcelFile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationTime")
@@ -978,7 +983,6 @@ namespace AcroStack.Migrations
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityChange", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("AuditLogId")
@@ -1027,7 +1031,6 @@ namespace AcroStack.Migrations
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityPropertyChange", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("EntityChangeId")

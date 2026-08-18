@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "../acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
+import type { AcroStackIdentityClaimsIdentityClaimDto } from "../acroStack/identityClaims/IdentityClaimDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -13,20 +13,17 @@ export type IdentityUserClaimGetListQueryUserId = string | undefined;
 /**
  * @type array
  */
-export type IdentityUserClaimGetListStatus200Plain =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto[];
+export type IdentityUserClaimGetListStatus200Plain = AcroStackIdentityClaimsIdentityClaimDto[];
 
 /**
  * @type array
  */
-export type IdentityUserClaimGetListStatus200Json =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto[];
+export type IdentityUserClaimGetListStatus200Json = AcroStackIdentityClaimsIdentityClaimDto[];
 
 /**
  * @type array
  */
-export type IdentityUserClaimGetListStatus200Json2 =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto[];
+export type IdentityUserClaimGetListStatus200Json2 = AcroStackIdentityClaimsIdentityClaimDto[];
 
 export type IdentityUserClaimGetListStatus200 =
   | IdentityUserClaimGetListStatus200Plain

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosAuditLoggingAuditLogDto } from "../acroStack/services/dtos/auditLogging/AuditLogDto.ts";
+import type { AcroStackAuditLoggingAuditLogDto } from "../acroStack/auditLogging/AuditLogDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -13,17 +13,17 @@ export type AuditLogGetPathId = string;
 /**
  * @type object
  */
-export type AuditLogGetStatus200Plain = AcroStackServicesDtosAuditLoggingAuditLogDto;
+export type AuditLogGetStatus200Plain = AcroStackAuditLoggingAuditLogDto;
 
 /**
  * @type object
  */
-export type AuditLogGetStatus200Json = AcroStackServicesDtosAuditLoggingAuditLogDto;
+export type AuditLogGetStatus200Json = AcroStackAuditLoggingAuditLogDto;
 
 /**
  * @type object
  */
-export type AuditLogGetStatus200Json2 = AcroStackServicesDtosAuditLoggingAuditLogDto;
+export type AuditLogGetStatus200Json2 = AcroStackAuditLoggingAuditLogDto;
 
 export type AuditLogGetStatus200 =
   | AuditLogGetStatus200Plain

@@ -63,6 +63,7 @@ public class AppUserSyncHandler :
 
     private static AppUser CreateAppUser(AppIdentityUserEto identityUser)
     {
+        // 显式传递租户归属，确保读模型与 IdentityUser 的租户一致
         return new AppUser(
             identityUser.Id,
             identityUser.UserName,
@@ -70,6 +71,7 @@ public class AppUserSyncHandler :
             identityUser.Name,
             identityUser.Surname,
             identityUser.PhoneNumber,
-            identityUser.IsActive);
+            identityUser.IsActive,
+            identityUser.TenantId);
     }
 }

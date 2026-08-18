@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosAuditLoggingEntityChangeDetailDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/auditLogging/EntityChangeDetailDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/auditLogging/entityChangeDetailDtoAcroStack/AuditLoggingVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,19 +14,19 @@ export type AuditLogGetEntityChangesPathAuditLogId = string;
  * @type object
  */
 export type AuditLogGetEntityChangesStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosAuditLoggingEntityChangeDetailDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type AuditLogGetEntityChangesStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosAuditLoggingEntityChangeDetailDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type AuditLogGetEntityChangesStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosAuditLoggingEntityChangeDetailDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
 
 export type AuditLogGetEntityChangesStatus200 =
   | AuditLogGetEntityChangesStatus200Plain

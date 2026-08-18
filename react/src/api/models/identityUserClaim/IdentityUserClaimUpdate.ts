@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosIdentityClaimsIdentityClaimDto } from "../acroStack/services/dtos/identityClaims/IdentityClaimDto.ts";
-import type { AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto } from "../acroStack/services/dtos/identityClaims/UpdateIdentityClaimDto.ts";
+import type { AcroStackIdentityClaimsIdentityClaimDto } from "../acroStack/identityClaims/IdentityClaimDto.ts";
+import type { AcroStackIdentityClaimsUpdateIdentityClaimDto } from "../acroStack/identityClaims/UpdateIdentityClaimDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,20 +14,17 @@ export type IdentityUserClaimUpdatePathId = string;
 /**
  * @type object
  */
-export type IdentityUserClaimUpdateStatus200Plain =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityUserClaimUpdateStatus200Plain = AcroStackIdentityClaimsIdentityClaimDto;
 
 /**
  * @type object
  */
-export type IdentityUserClaimUpdateStatus200Json =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityUserClaimUpdateStatus200Json = AcroStackIdentityClaimsIdentityClaimDto;
 
 /**
  * @type object
  */
-export type IdentityUserClaimUpdateStatus200Json2 =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimDto;
+export type IdentityUserClaimUpdateStatus200Json2 = AcroStackIdentityClaimsIdentityClaimDto;
 
 export type IdentityUserClaimUpdateStatus200 =
   | IdentityUserClaimUpdateStatus200Plain
@@ -158,21 +155,21 @@ export type IdentityUserClaimUpdateStatus501 =
  * @type object | undefined
  */
 export type IdentityUserClaimUpdateJsonData =
-  | AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto
+  | AcroStackIdentityClaimsUpdateIdentityClaimDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type IdentityUserClaimUpdateJson2Data =
-  | AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto
+  | AcroStackIdentityClaimsUpdateIdentityClaimDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type IdentityUserClaimUpdateJson3Data =
-  | AcroStackServicesDtosIdentityClaimsUpdateIdentityClaimDto
+  | AcroStackIdentityClaimsUpdateIdentityClaimDto
   | undefined;
 
 export type IdentityUserClaimUpdateData =

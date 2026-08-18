@@ -106,9 +106,9 @@ import {
 } from "@/api/hooks/chatBlock";
 import { useChatSendMessageWithAttachment } from "@/api/hooks/chat";
 import { chatDownloadAttachment } from "@/api/clients/chat/chatDownloadAttachment";
-import type { AcroStackServicesDtosChatChatMessageDto as ChatMessageDto } from "@/api/models/acroStack/services/dtos/chat/ChatMessageDto";
-import type { AcroStackServicesDtosChatChatMessageReactionDto as ChatMessageReactionDto } from "@/api/models/acroStack/services/dtos/chat/ChatMessageReactionDto";
-import type { AcroStackServicesDtosChatChatMessageSideDto as ChatMessageSideDto } from "@/api/models/acroStack/services/dtos/chat/ChatMessageSideDto";
+import type { AcroStackChatChatMessageDto as ChatMessageDto } from "@/api/models/acroStack/chat/ChatMessageDto";
+import type { AcroStackChatChatMessageReactionDto as ChatMessageReactionDto } from "@/api/models/acroStack/chat/ChatMessageReactionDto";
+import type { AcroStackChatChatMessageSideDto as ChatMessageSideDto } from "@/api/models/acroStack/chat/ChatMessageSideDto";
 
 /** Reactions offered in the hover picker. Matches ABP Commercial Chat module. */
 const REACTIONS = ["👍", "❤️", "😂", "😍", "🎉", "🔥"] as const;

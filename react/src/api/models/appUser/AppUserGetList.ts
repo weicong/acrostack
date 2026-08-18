@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/AppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/appUserDtoAcroStack/AppUsersVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -31,19 +31,19 @@ export type AppUserGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type AppUserGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type AppUserGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type AppUserGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
 
 export type AppUserGetListStatus200 =
   | AppUserGetListStatus200Plain

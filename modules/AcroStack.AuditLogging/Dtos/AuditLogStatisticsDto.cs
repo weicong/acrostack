@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AcroStack.AuditLogging;
 
@@ -16,6 +17,7 @@ public class GetAuditLogStatisticsInput
     /// Maximum number of entries to return in the TopSlowUrls and
     /// TopFrequentUrls lists. Default 10.
     /// </summary>
+    [Range(1, 100)]
     public int TopCount { get; set; } = 10;
 }
 

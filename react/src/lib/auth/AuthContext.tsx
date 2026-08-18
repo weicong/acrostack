@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, type ReactNode } from "react";
 import { getAuthClient } from "./userManager";
 import { ensureAppConfig, invalidateAppConfig, appConfig } from "./permissions";
 import { queryClient } from "@/lib/queryClient";
@@ -41,5 +41,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = getAuthClient().useAuth();
-  return { ...ctx, navigateToLogin: () => void ctx.login() };
+  // navigateToLogin 引用稳定；返回对象经 useMemo 缓存，
+  // 避免下游把 useAuth() 的返回值放进依赖数组时每次渲染都是新对象导致无限重渲染
+  const navigateToLogin = useCallback(() => void ctx.login(), [ctx.login]);
+  return useMemo(() => ({ ...ctx, navigateToLogin }), [ctx, navigateToLogin]);
 }

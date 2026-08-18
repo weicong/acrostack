@@ -1,10 +1,16 @@
 using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace AcroStack.AppUsers;
 
-public class AppUser : AuditedAggregateRoot<Guid>
+/// <summary>
+/// IdentityUser 的反规范化读模型。
+/// 必须实现 IMultiTenant：否则 ABP 查询过滤器不会按租户隔离该表，
+/// 任何租户的管理员都能看到全部租户的用户（跨租户数据泄露）。
+/// </summary>
+public class AppUser : AuditedAggregateRoot<Guid>, IMultiTenant
 {
     public string UserName { get; private set; } = null!;
     public string? Email { get; private set; }
@@ -12,6 +18,9 @@ public class AppUser : AuditedAggregateRoot<Guid>
     public string? Surname { get; private set; }
     public string? PhoneNumber { get; private set; }
     public bool IsActive { get; private set; }
+
+    /// <inheritdoc cref="IMultiTenant" />
+    public virtual Guid? TenantId { get; protected set; }
 
     protected AppUser()
     {
@@ -24,11 +33,13 @@ public class AppUser : AuditedAggregateRoot<Guid>
         string? name,
         string? surname,
         string? phoneNumber,
-        bool isActive)
+        bool isActive,
+        Guid? tenantId = null)
         : base(id)
     {
         UserName = Check.NotNullOrWhiteSpace(userName, nameof(userName), maxLength: AppUserConsts.MaxUserNameLength);
         Update(email, name, surname, phoneNumber, isActive);
+        TenantId = tenantId;
     }
 
     public void SetUserName(string userName)

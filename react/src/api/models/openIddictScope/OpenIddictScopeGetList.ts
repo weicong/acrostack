@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/openIddictManagement/openIddictScopeDtoAcroStack/OpenIddictManagementVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -31,19 +31,19 @@ export type OpenIddictScopeGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type OpenIddictScopeGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type OpenIddictScopeGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type OpenIddictScopeGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 export type OpenIddictScopeGetListStatus200 =
   | OpenIddictScopeGetListStatus200Plain

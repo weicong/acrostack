@@ -1,21 +1,21 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosChatChatMessageDto } from "../acroStack/services/dtos/chat/ChatMessageDto.ts";
+import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageDto.ts";
 
 /**
  * @type object
  */
-export type ChatSendMessageWithAttachmentStatus200Plain = AcroStackServicesDtosChatChatMessageDto;
+export type ChatSendMessageWithAttachmentStatus200Plain = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ChatSendMessageWithAttachmentStatus200Json = AcroStackServicesDtosChatChatMessageDto;
+export type ChatSendMessageWithAttachmentStatus200Json = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ChatSendMessageWithAttachmentStatus200Json2 = AcroStackServicesDtosChatChatMessageDto;
+export type ChatSendMessageWithAttachmentStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ChatSendMessageWithAttachmentStatus200 =
   | ChatSendMessageWithAttachmentStatus200Plain
@@ -34,6 +34,8 @@ export type ChatSendMessageWithAttachmentData =
        */
       TargetUserId?: string;
       /**
+       * @minLength 0
+       * @maxLength 4000
        * @type string | undefined
        */
       Text?: string;

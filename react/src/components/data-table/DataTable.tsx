@@ -105,10 +105,10 @@ function DataTable<TData extends RowData>({
   table,
   ariaLabel,
   ariaLabelledBy,
-  emptyMessage = "无数据",
+  emptyMessage,
   showPagination = true,
   isLoading = false,
-  loadingMessage = "正在加载...",
+  loadingMessage,
   isError = false,
   errorMessage,
   onRowClick,
@@ -116,6 +116,10 @@ function DataTable<TData extends RowData>({
 }: DataTableProps<TData>) {
   const { t } = useTranslation();
   const styles = useStyles();
+
+  // 未显式传入时走 i18n：key 不存在时回退中文默认值
+  const empty = emptyMessage ?? t("DataTable::EmptyMessage", "无数据");
+  const loading = loadingMessage ?? t("DataTable::LoadingMessage", "正在加载...");
 
   const rows = table.getRowModel().rows;
   const headerGroups = table.getHeaderGroups();
@@ -178,7 +182,8 @@ function DataTable<TData extends RowData>({
                       onKeyDown={(e) => {
                         if (sortable && (e.key === "Enter" || e.key === " ")) {
                           e.preventDefault();
-                          header.column.getToggleSortingHandler()?.(e as any);
+                          // 直接切换排序方向，避免把键盘事件强转为鼠标事件处理器
+                          header.column.toggleSorting(header.column.getIsSorted() === "asc");
                         }
                       }}
                       tabIndex={sortable ? 0 : undefined}
@@ -207,7 +212,7 @@ function DataTable<TData extends RowData>({
             {isLoading ? (
               <TableRow>
                 <TableCell style={{ gridColumn: "1 / -1" }} className={styles.stateCell}>
-                  {loadingMessage}
+                  {loading}
                 </TableCell>
               </TableRow>
             ) : isError ? (
@@ -219,7 +224,7 @@ function DataTable<TData extends RowData>({
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell style={{ gridColumn: "1 / -1" }} className={styles.stateCell}>
-                  {emptyMessage}
+                  {empty}
                 </TableCell>
               </TableRow>
             ) : (

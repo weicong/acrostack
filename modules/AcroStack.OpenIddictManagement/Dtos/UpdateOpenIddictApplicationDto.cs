@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AcroStack.OpenIddictManagement;
 
@@ -9,6 +10,7 @@ namespace AcroStack.OpenIddictManagement;
 /// </summary>
 public class UpdateOpenIddictApplicationDto
 {
+    [StringLength(200)]
     public string? DisplayName { get; set; }
 
     public string? ClientType { get; set; }
@@ -16,15 +18,17 @@ public class UpdateOpenIddictApplicationDto
     public string? ConsentType { get; set; }
 
     /// <summary>
-    /// Plain-text secret; hashed on save. Null leaves the existing secret
-    /// unchanged; empty string clears it.
+    /// Plain-text secret; hashed on save. Null/empty leaves the existing
+    /// secret unchanged.
     /// </summary>
     public string? ClientSecret { get; set; }
 
     public List<string> Permissions { get; set; } = new();
 
+    [MaxLength(20)]
     public List<string> RedirectUris { get; set; } = new();
 
+    [MaxLength(20)]
     public List<string> PostLogoutRedirectUris { get; set; } = new();
 
     public List<string> Requirements { get; set; } = new();

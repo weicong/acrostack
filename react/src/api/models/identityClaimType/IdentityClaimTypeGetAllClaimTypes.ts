@@ -1,25 +1,25 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDto } from "../acroStack/services/dtos/identityClaims/IdentityClaimTypeDto.ts";
+import type { AcroStackIdentityClaimsIdentityClaimTypeDto } from "../acroStack/identityClaims/IdentityClaimTypeDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type array
  */
 export type IdentityClaimTypeGetAllClaimTypesStatus200Plain =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDto[];
+  AcroStackIdentityClaimsIdentityClaimTypeDto[];
 
 /**
  * @type array
  */
 export type IdentityClaimTypeGetAllClaimTypesStatus200Json =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDto[];
+  AcroStackIdentityClaimsIdentityClaimTypeDto[];
 
 /**
  * @type array
  */
 export type IdentityClaimTypeGetAllClaimTypesStatus200Json2 =
-  AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDto[];
+  AcroStackIdentityClaimsIdentityClaimTypeDto[];
 
 export type IdentityClaimTypeGetAllClaimTypesStatus200 =
   | IdentityClaimTypeGetAllClaimTypesStatus200Plain

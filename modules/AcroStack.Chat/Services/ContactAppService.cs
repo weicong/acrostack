@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcroStack.AppUsers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Users;
@@ -85,7 +86,10 @@ public class ContactAppService : AcroStackAppService, IContactAppService
     {
         var currentUserId = CurrentUser.GetId();
         var queryable = await _conversationRepository.GetQueryableAsync();
-        var conversations = await AsyncExecuter.ToListAsync(queryable.Where(c => c.UserId == currentUserId));
-        return conversations.Sum(c => c.UnreadMessageCount);
+        // 【性能】直接在数据库端聚合（EF 的 SumAsync），避免把该用户全部
+        // 会话实体拉入内存后再逐条求和；空结果集时 Sum 返回 null，兜底为 0。
+        return await queryable
+            .Where(c => c.UserId == currentUserId)
+            .SumAsync(c => (int?)c.UnreadMessageCount) ?? 0;
     }
 }

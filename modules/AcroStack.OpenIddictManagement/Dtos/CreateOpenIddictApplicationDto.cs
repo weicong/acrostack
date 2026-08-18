@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AcroStack.OpenIddictManagement;
 
@@ -9,8 +10,11 @@ namespace AcroStack.OpenIddictManagement;
 /// </summary>
 public class CreateOpenIddictApplicationDto
 {
+    [Required]
+    [StringLength(64)]
     public string ClientId { get; set; } = string.Empty;
 
+    [StringLength(200)]
     public string? DisplayName { get; set; }
 
     /// <summary>One of <c>OpenIddictConstants.ClientTypes</c> (public/confidential).</summary>
@@ -24,8 +28,10 @@ public class CreateOpenIddictApplicationDto
 
     public List<string> Permissions { get; set; } = new();
 
+    [MaxLength(20)]
     public List<string> RedirectUris { get; set; } = new();
 
+    [MaxLength(20)]
     public List<string> PostLogoutRedirectUris { get; set; } = new();
 
     public List<string> Requirements { get; set; } = new();

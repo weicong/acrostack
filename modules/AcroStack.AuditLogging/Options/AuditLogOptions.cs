@@ -1,4 +1,4 @@
-﻿namespace AcroStack.AuditLogging;
+namespace AcroStack.AuditLogging;
 
 /// <summary>
 /// Configuration for the Audit Logging feature. Bound from the
@@ -16,4 +16,10 @@ public class AuditLogOptions
     /// automatically scope queries to the caller's tenant.
     /// </summary>
     public bool IsHostOnly { get; set; } = true;
+
+    /// <summary>
+    /// Excel 导出的最大行数上限，防止一次性加载过多数据导致内存溢出。
+    /// 默认 100000 行。
+    /// </summary>
+    public int ExcelExportMaxRows { get; set; } = 100_000;
 }

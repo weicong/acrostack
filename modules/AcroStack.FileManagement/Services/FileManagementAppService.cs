@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,20 @@ namespace AcroStack.FileManagement;
 [Authorize(FileManagementPermissions.Default)]
 public class FileManagementAppService : AcroStackAppService, IFileManagementAppService
 {
+    /// <summary>
+    /// 缩略图预览允许的光栅图 Content-Type 白名单。
+    /// 刻意排除 image/svg+xml：SVG 可内联执行脚本，流式返回会被浏览器
+    /// 当作活动文档渲染从而导致 XSS，因此只放行无脚本执行能力的光栅图格式。
+    /// </summary>
+    private static readonly string[] ThumbnailContentTypeWhitelist =
+    {
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+        "image/webp",
+        "image/bmp",
+    };
+
     private readonly IRepository<FileFolder, Guid> _folderRepository;
     private readonly IRepository<FileEntry, Guid> _fileRepository;
     private readonly IRepository<FileShare, Guid> _fileShareRepository;
@@ -97,22 +112,53 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
     private async Task DeleteFolderRecursiveAsync(Guid folderId)
     {
-        // Delete child folders first.
-        var childFolders = await _folderRepository.GetListAsync(f => f.ParentId == folderId);
-        foreach (var child in childFolders)
+        // 广度优先收集目标文件夹及其所有后代文件夹的 Id。
+        var allFolderIds = new List<Guid>();
+        var pending = new Queue<Guid>();
+        pending.Enqueue(folderId);
+        while (pending.Count > 0)
         {
-            await DeleteFolderRecursiveAsync(child.Id);
+            var currentId = pending.Dequeue();
+            allFolderIds.Add(currentId);
+
+            var childFolders = await _folderRepository.GetListAsync(f => f.ParentId == currentId);
+            foreach (var child in childFolders)
+            {
+                pending.Enqueue(child.Id);
+            }
         }
 
-        // Delete files in this folder (and their historical versions).
-        var files = await _fileRepository.GetListAsync(f => f.FolderId == folderId);
-        foreach (var file in files)
-        {
-            await DeleteFileInternalAsync(file);
-        }
+        // 先收集范围内所有文件及其历史版本对应的 Blob 名称。
+        var files = await _fileRepository.GetListAsync(
+            f => f.FolderId != null && allFolderIds.Contains(f.FolderId.Value));
+        var fileIds = files.Select(f => f.Id).ToList();
+        var versions = fileIds.Count > 0
+            ? await _fileVersionRepository.GetListAsync(v => fileIds.Contains(v.FileEntryId))
+            : new List<FileVersion>();
+        var blobNames = files.Select(f => f.BlobName)
+            .Concat(versions.Select(v => v.BlobName))
+            .Distinct()
+            .ToList();
 
-        // Delete the folder itself.
-        await _folderRepository.DeleteAsync(folderId);
+        // 顺序要点：先完成全部元数据删除并立即 SaveChanges（autoSave: true），
+        // 数据库状态落定后再物理删除 Blob 字节。若颠倒顺序，一旦 SaveChanges
+        // 失败（如乐观并发冲突、连接中断），字节已删而元数据仍在，造成不可恢复
+        // 的数据损坏；反过来失败只是遗留孤儿 Blob，后续可由清理任务回收。
+        if (versions.Count > 0)
+        {
+            await _fileVersionRepository.DeleteManyAsync(versions, autoSave: true);
+        }
+        if (files.Count > 0)
+        {
+            await _fileRepository.DeleteManyAsync(files, autoSave: true);
+        }
+        await _folderRepository.DeleteManyAsync(allFolderIds, autoSave: true);
+
+        // 元数据删除成功后再删除物理 Blob。
+        foreach (var blobName in blobNames)
+        {
+            await _blobContainer.DeleteAsync(blobName);
+        }
     }
 
     [Authorize(FileManagementPermissions.Move)]
@@ -167,6 +213,9 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             throw new BusinessException("AcroStack:EmptyFile");
         }
 
+        // 净化上传文件名：拒绝携带路径分隔符/路径穿越片段或超长的文件名
+        var fileName = SanitizeFileName(file.FileName);
+
         await ValidateUploadConstraintsAsync(file);
 
         if (folderId.HasValue)
@@ -178,14 +227,14 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         // target folder. If so, treat this upload as a new version of the
         // existing entry (mirrors ABP Commercial File Management Pro).
         var existing = await _fileRepository.FirstOrDefaultAsync(
-            f => f.FolderId == folderId && f.Name == file.FileName);
+            f => f.FolderId == folderId && f.Name == fileName);
 
         if (existing != null)
         {
             return await CreateNewVersionAsync(existing, file);
         }
 
-        var blobName = $"{Guid.NewGuid():N}{Path.GetExtension(file.FileName)}";
+        var blobName = $"{Guid.NewGuid():N}{Path.GetExtension(fileName)}";
 
         await using (var stream = file.OpenReadStream())
         {
@@ -194,14 +243,59 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
         var entry = new FileEntry(
             GuidGenerator.Create(),
-            file.FileName,
+            fileName,
             blobName,
             file.Length,
             file.ContentType,
             folderId);
 
-        await _fileRepository.InsertAsync(entry);
+        try
+        {
+            // autoSave: true 立即写库，使 DB 失败在此处即可捕获以触发补偿
+            await _fileRepository.InsertAsync(entry, autoSave: true);
+        }
+        catch
+        {
+            // 补偿：DB 写入失败时删除已保存的 Blob，避免遗留孤儿对象
+            await _blobContainer.DeleteAsync(blobName);
+            throw;
+        }
+
         return ObjectMapper.Map<FileEntry, FileEntryDto>(entry);
+    }
+
+    /// <summary>
+    /// 净化上传文件名：先用 <see cref="Path.GetFileName"/> 剥离路径部分，
+    /// 若结果与原值不同（说明原文件名包含路径分隔符或 ".." 路径穿越片段）
+    /// 则直接拒绝；同时限制文件名长度不超过 256 字符（与 FileEntry.Name 列宽一致）。
+    /// </summary>
+    private static string SanitizeFileName(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            throw new UserFriendlyException("文件名不能为空");
+        }
+
+        // 显式拒绝两种目录分隔符（兼顾 Linux 部署下对反斜杠的兼容处理）
+        if (fileName.Contains('/') || fileName.Contains('\\'))
+        {
+            throw new UserFriendlyException("文件名不能包含路径分隔符");
+        }
+
+        // Path.GetFileName 会把结尾的 ".."/"." 视为目录而剥离；结果与原值
+        // 不同即说明原文件名含路径穿越片段，按恶意输入处理直接拒绝
+        var stripped = Path.GetFileName(fileName);
+        if (!string.Equals(stripped, fileName, StringComparison.Ordinal))
+        {
+            throw new UserFriendlyException("文件名不能包含路径分隔符或路径穿越片段");
+        }
+
+        if (stripped.Length > 256)
+        {
+            throw new UserFriendlyException("文件名长度不能超过 256 个字符");
+        }
+
+        return stripped;
     }
 
     private async Task ValidateUploadConstraintsAsync(IFormFile file)
@@ -236,6 +330,11 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
     private async Task<FileEntryDto> CreateNewVersionAsync(FileEntry existing, IFormFile file)
     {
+        // 净化上传文件名：拒绝携带路径分隔符/路径穿越片段或超长的文件名
+        // （UploadFileAsync 入口已净化一次，此处做防御性重复净化，
+        // 防止未来新增的调用点绕过入口校验）
+        var fileName = SanitizeFileName(file.FileName);
+
         // Snapshot the current state as a historical version row before
         // overwriting the FileEntry with the new bytes.
         var versionSnapshot = new FileVersion(
@@ -250,17 +349,27 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         await _fileVersionRepository.InsertAsync(versionSnapshot);
 
         // Save the new bytes under a fresh blob name.
-        var newBlobName = $"{Guid.NewGuid():N}{Path.GetExtension(file.FileName)}";
+        var newBlobName = $"{Guid.NewGuid():N}{Path.GetExtension(fileName)}";
         await using (var stream = file.OpenReadStream())
         {
             await _blobContainer.SaveAsync(newBlobName, stream);
         }
 
-        existing.BlobName = newBlobName;
-        existing.ByteSize = file.Length;
-        existing.ContentType = file.ContentType;
-        existing.CurrentVersion = existing.CurrentVersion + 1;
-        await _fileRepository.UpdateAsync(existing);
+        try
+        {
+            existing.BlobName = newBlobName;
+            existing.ByteSize = file.Length;
+            existing.ContentType = file.ContentType;
+            existing.CurrentVersion = existing.CurrentVersion + 1;
+            // autoSave: true 立即写库，使 DB 失败在此处即可捕获以触发补偿
+            await _fileRepository.UpdateAsync(existing, autoSave: true);
+        }
+        catch
+        {
+            // 补偿：DB 写入失败时删除已保存的新 Blob，避免遗留孤儿对象
+            await _blobContainer.DeleteAsync(newBlobName);
+            throw;
+        }
 
         return ObjectMapper.Map<FileEntry, FileEntryDto>(existing);
     }
@@ -282,17 +391,28 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
     private async Task DeleteFileInternalAsync(FileEntry entry)
     {
-        // Delete every historical version's blob, then the current blob,
-        // then the metadata rows.
+        // 先收集要删除的 Blob 名称（当前 Blob + 所有历史版本 Blob，去重
+        // 以兼容历史上多版本行可能共享同一 Blob 的旧数据）。
         var versions = await _fileVersionRepository.GetListAsync(v => v.FileEntryId == entry.Id);
-        foreach (var version in versions)
-        {
-            await _blobContainer.DeleteAsync(version.BlobName);
-            await _fileVersionRepository.DeleteAsync(version);
-        }
+        var blobNames = versions.Select(v => v.BlobName)
+            .Append(entry.BlobName)
+            .Distinct()
+            .ToList();
 
-        await _blobContainer.DeleteAsync(entry.BlobName);
-        await _fileRepository.DeleteAsync(entry);
+        // 顺序要点：先完成元数据删除并立即 SaveChanges（autoSave: true），
+        // 数据库状态落定后再物理删除 Blob 字节。若颠倒顺序，一旦 SaveChanges
+        // 失败，字节已删而元数据仍在，将造成不可恢复的数据损坏。
+        if (versions.Count > 0)
+        {
+            await _fileVersionRepository.DeleteManyAsync(versions, autoSave: true);
+        }
+        await _fileRepository.DeleteAsync(entry, autoSave: true);
+
+        // 元数据删除成功后再删除物理 Blob。
+        foreach (var blobName in blobNames)
+        {
+            await _blobContainer.DeleteAsync(blobName);
+        }
     }
 
     [Authorize(FileManagementPermissions.Move)]
@@ -319,10 +439,31 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         // Verify the file exists (scoped to current tenant by the repo filter).
         await _fileRepository.GetAsync(fileId);
 
+        // 校验过期时间（若指定）：必须晚于当前时间，且距现在不超过 30 天
+        if (input.ExpirationTime.HasValue)
+        {
+            var now = Clock.Now;
+            if (input.ExpirationTime.Value <= now)
+            {
+                throw new UserFriendlyException("分享链接的过期时间必须晚于当前时间");
+            }
+
+            if (input.ExpirationTime.Value > now.AddDays(30))
+            {
+                throw new UserFriendlyException("分享链接的过期时间不能超过 30 天");
+            }
+        }
+
+        // 使用加密安全的随机数生成器产生 32 字节（256 位）熵值的 token，
+        // 并转为 64 位小写十六进制字符串。Guid.NewGuid() 的随机性不足以
+        // 作为公开分享链接的唯一凭证（版本位固定、熵值有限、模式可预测）。
+        var tokenBytes = RandomNumberGenerator.GetBytes(32);
+        var token = Convert.ToHexString(tokenBytes).ToLowerInvariant();
+
         var share = new FileShare(
             GuidGenerator.Create(),
             fileId,
-            Guid.NewGuid().ToString("N"),
+            token,
             input.ExpirationTime,
             input.MaxDownloadCount,
             CurrentTenant.Id);
@@ -388,6 +529,13 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
             // Increment the download counter (within the cross-tenant scope
             // so we can update the row we just looked up).
+            //
+            // TOCTOU（检查-使用竞态）防护说明：share 是由 EF 查询物化并被
+            // DbContext 跟踪的实体（tracked entity），此处"先检查再更新"操作
+            // 的是同一跟踪实例。并发场景下（多个匿名请求同时通过校验），
+            // UpdateAsync 落库时 ABP 会校验 ConcurrencyStamp 乐观并发戳，
+            // 后提交的请求会因并发戳不匹配抛出 AbpDbConcurrencyException，
+            // 从而保证 MaxDownloadCount 上限不会被并发请求击穿。
             share.DownloadCount = share.DownloadCount + 1;
             await _fileShareRepository.UpdateAsync(share);
 
@@ -440,13 +588,34 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             CurrentTenant.Id);
         await _fileVersionRepository.InsertAsync(snapshot);
 
-        // Promote the chosen historical version's blob to be the current
-        // content of the file entry.
-        entry.BlobName = version.BlobName;
+        // 将目标版本的 Blob 复制为一份独立的新副本，再把新 Blob 名赋给
+        // FileEntry。若直接共享 version.BlobName，恢复后的当前文件与该历史
+        // 版本行会指向同一 Blob，任一方删除（如再删历史版本）都会破坏另一方
+        // 的数据（数据损坏问题）。
+        var restoredBlobName = $"{Guid.NewGuid():N}{Path.GetExtension(version.BlobName)}";
+        await using (var versionStream = await _blobContainer.GetAsync(version.BlobName))
+        {
+            await _blobContainer.SaveAsync(restoredBlobName, versionStream);
+        }
+
+        // Promote the chosen historical version's content to be the current
+        // content of the file entry (pointing at the independent copy above).
+        entry.BlobName = restoredBlobName;
         entry.ByteSize = version.ByteSize;
         entry.ContentType = version.ContentType;
         entry.CurrentVersion = entry.CurrentVersion + 1;
-        await _fileRepository.UpdateAsync(entry);
+
+        try
+        {
+            // autoSave: true 立即写库，使 DB 失败在此处即可捕获以触发补偿
+            await _fileRepository.UpdateAsync(entry, autoSave: true);
+        }
+        catch
+        {
+            // 补偿：DB 写入失败时删除已复制的 Blob 副本，避免遗留孤儿对象
+            await _blobContainer.DeleteAsync(restoredBlobName);
+            throw;
+        }
 
         return ObjectMapper.Map<FileEntry, FileEntryDto>(entry);
     }
@@ -457,11 +626,14 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     {
         var entry = await _fileRepository.GetAsync(id);
 
+        // 【XSS 防护】仅允许光栅图 Content-Type 白名单通过缩略图端点流式返回。
+        // 不能用 image/* 前缀放行：image/svg+xml 可内联执行 <script>，
+        // 浏览器内联渲染即触发存储型 XSS。
         if (string.IsNullOrEmpty(entry.ContentType) ||
-            !entry.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+            !ThumbnailContentTypeWhitelist.Contains(entry.ContentType, StringComparer.OrdinalIgnoreCase))
         {
-            // Only image/* files have thumbnails; everything else 404s.
-            throw new BusinessException("AcroStack:ThumbnailNotAvailable");
+            // 白名单之外的类型（含 SVG 及所有非图片类型）一律拒绝预览。
+            throw new UserFriendlyException("该文件类型不支持缩略图预览");
         }
 
         // NOTE: A real implementation would downscale the image to a max of

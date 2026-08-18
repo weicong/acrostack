@@ -1,25 +1,25 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatContactDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/chat/ContactDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/contactDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
 export type ContactGetListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatContactDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ContactGetListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatContactDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ContactGetListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatContactDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 export type ContactGetListStatus200 =
   | ContactGetListStatus200Plain

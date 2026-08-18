@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
-import type { AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictApplicationDto } from "../acroStack/services/dtos/openIddictManagement/UpdateOpenIddictApplicationDto.ts";
+import type { AcroStackOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/openIddictManagement/OpenIddictApplicationDto.ts";
+import type { AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto } from "../acroStack/openIddictManagement/UpdateOpenIddictApplicationDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -15,19 +15,19 @@ export type OpenIddictApplicationUpdatePathId = string;
  * @type object
  */
 export type OpenIddictApplicationUpdateStatus200Plain =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationUpdateStatus200Json =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationUpdateStatus200Json2 =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationUpdateStatus200 =
   | OpenIddictApplicationUpdateStatus200Plain
@@ -158,21 +158,21 @@ export type OpenIddictApplicationUpdateStatus501 =
  * @type object | undefined
  */
 export type OpenIddictApplicationUpdateJsonData =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictApplicationUpdateJson2Data =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictApplicationUpdateJson3Data =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;
 
 export type OpenIddictApplicationUpdateData =

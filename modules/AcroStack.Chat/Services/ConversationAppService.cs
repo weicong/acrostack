@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using AcroStack.AppUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -29,6 +31,15 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 {
     /// <summary>Maximum allowed attachment size (10 MB).</summary>
     public const long MaxAttachmentSize = 10 * 1024 * 1024;
+
+    /// <summary>
+    /// 附件扩展名黑名单：可执行文件与脚本类危险扩展名一律禁止上传，
+    /// 防止聊天附件成为恶意软件分发渠道（忽略大小写比较）。
+    /// </summary>
+    private static readonly HashSet<string> BlockedAttachmentExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".exe", ".dll", ".bat", ".cmd", ".sh", ".ps1", ".msi", ".jar", ".scr",
+    };
 
     private readonly IRepository<ChatMessage, Guid> _messageRepository;
     private readonly IRepository<UserMessage, Guid> _userMessageRepository;
@@ -131,6 +142,15 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
             throw new BusinessException("AcroStack:YouCannotSendMessageToYourself");
         }
 
+        // 【跨租户防护】校验目标用户属于当前租户：对 AppUser 的查询自动应用
+        // ABP 多租户过滤，目标用户在其他租户（或不存在）时 FindAsync 返回 null，
+        // 防止通过猜测 Guid 向其他租户用户投递消息。
+        var targetUser = await _appUserRepository.FindAsync(input.TargetUserId);
+        if (targetUser == null)
+        {
+            throw new UserFriendlyException("目标用户不存在");
+        }
+
         // Block check: if the recipient has blocked the current user, refuse.
         var recipientBlockedSender = await _blockedUserRepository.FirstOrDefaultAsync(
             b => b.UserId == input.TargetUserId && b.BlockedUserId == currentUserId);
@@ -143,6 +163,16 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         {
             throw new BusinessException("AcroStack:AttachmentExceedsMaxSize")
                 .WithData("MaxSize", MaxAttachmentSize);
+        }
+
+        // 【危险附件防护】可执行/脚本类扩展名黑名单校验，命中直接拒绝
+        if (attachment != null)
+        {
+            var attachmentExtension = Path.GetExtension(attachment.FileName);
+            if (BlockedAttachmentExtensions.Contains(attachmentExtension))
+            {
+                throw new UserFriendlyException("不允许上传该类型的附件");
+            }
         }
 
         var now = Clock.Now;
@@ -179,12 +209,12 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
         // 6. Real-time push to the recipient
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(input.TargetUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, input.TargetUserId))
             .SendAsync(ChatClientMethods.ReceiveMessage, dto);
 
         var receiverUnread = await GetUnreadCountAsync(input.TargetUserId);
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(input.TargetUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, input.TargetUserId))
             .SendAsync(ChatClientMethods.UnreadCountChanged, receiverUnread);
 
         return dto;
@@ -240,7 +270,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
         // Notify the sender that their messages were read
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(targetUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, targetUserId))
             .SendAsync(ChatClientMethods.MessagesRead, currentUserId);
     }
 
@@ -276,10 +306,10 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
         // Push the edited message to both sender and recipient.
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(currentUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, currentUserId))
             .SendAsync(ChatClientMethods.MessageEdited, dto);
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(targetUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, targetUserId))
             .SendAsync(ChatClientMethods.MessageEdited, dto);
 
         return dto;
@@ -324,10 +354,10 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
         // Notify both sender and recipient.
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(currentUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, currentUserId))
             .SendAsync(ChatClientMethods.MessageDeleted, messageId);
         await _hubContext.Clients
-            .Group(ChatHub.UserGroupName(targetUserId))
+            .Group(ChatHub.UserGroupName(CurrentTenant.Id, targetUserId))
             .SendAsync(ChatClientMethods.MessageDeleted, messageId);
     }
 
@@ -344,6 +374,17 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         if (message == null)
         {
             throw new BusinessException("AcroStack:MessageNotFound");
+        }
+
+        // 【同租户越权防护】仅会话参与者可操作表情回应：校验当前用户在该
+        // 消息上存在 UserMessage 记录（发送方或接收方副本），防止用户对
+        // 无权访问的消息（如其他用户的会话）随意添加/移除回应。
+        var umQueryable = await _userMessageRepository.GetQueryableAsync();
+        var isParticipant = await AsyncExecuter.AnyAsync(
+            umQueryable.Where(um => um.ChatMessageId == messageId && um.UserId == currentUserId));
+        if (!isParticipant)
+        {
+            throw new UserFriendlyException("无权操作该消息");
         }
 
         var existing = await _reactionRepository.FirstOrDefaultAsync(
@@ -366,7 +407,6 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
         // Determine who to notify: both conversation participants. Look up
         // the UserMessage records to find sender + receiver user ids.
-        var umQueryable = await _userMessageRepository.GetQueryableAsync();
         var participantIds = await AsyncExecuter.ToListAsync(
             umQueryable.Where(um => um.ChatMessageId == messageId && !um.IsDeleted)
                 .Select(um => um.UserId));
@@ -374,7 +414,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         foreach (var participantId in participantIds.Distinct())
         {
             await _hubContext.Clients
-                .Group(ChatHub.UserGroupName(participantId))
+                .Group(ChatHub.UserGroupName(CurrentTenant.Id, participantId))
                 .SendAsync(ChatClientMethods.ReactionChanged, messageId, reaction, currentUserId, isAdded);
         }
 
@@ -383,6 +423,19 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
 
     public async Task<ListResultDto<ChatMessageReactionDto>> GetReactionsAsync(Guid messageId)
     {
+        var currentUserId = CurrentUser.GetId();
+
+        // 【同租户越权防护】仅会话参与者可查看某消息的表情回应列表：
+        // 校验当前用户在该消息上存在 UserMessage 记录（发送方或接收方副本），
+        // 防止探测其他用户会话的互动数据。
+        var umQueryable = await _userMessageRepository.GetQueryableAsync();
+        var isParticipant = await AsyncExecuter.AnyAsync(
+            umQueryable.Where(um => um.ChatMessageId == messageId && um.UserId == currentUserId));
+        if (!isParticipant)
+        {
+            throw new UserFriendlyException("无权操作该消息");
+        }
+
         var reactionQueryable = await _reactionRepository.GetQueryableAsync();
         var userQueryable = await _appUserRepository.GetQueryableAsync();
 
@@ -500,8 +553,11 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
     private async Task<int> GetUnreadCountAsync(Guid userId)
     {
         var queryable = await _conversationRepository.GetQueryableAsync();
-        var conversations = await AsyncExecuter.ToListAsync(queryable.Where(c => c.UserId == userId));
-        return conversations.Sum(c => c.UnreadMessageCount);
+        // 【性能】直接在数据库端聚合（EF 的 SumAsync），避免把该用户全部
+        // 会话实体拉入内存后再逐条求和；空结果集时 Sum 返回 null，兜底为 0。
+        return await queryable
+            .Where(c => c.UserId == userId)
+            .SumAsync(c => (int?)c.UnreadMessageCount) ?? 0;
     }
 
     private ChatMessageDto MapMessageToDto(ChatMessage message, UserMessage um, Guid currentUserId, Guid targetUserId)

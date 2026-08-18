@@ -266,6 +266,9 @@ paket-files/
 # AcroStack
 src/AcroStack/Logs/*
 
+# Local secrets (loaded via AddAppSettingsSecretsJson; production uses env vars)
+**/appsettings.secrets.json
+
 *.db
 *.db-shm
 *.db-wal

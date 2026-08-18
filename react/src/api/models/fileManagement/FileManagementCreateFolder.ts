@@ -1,25 +1,22 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementCreateFileFolderDto } from "../acroStack/services/dtos/fileManagement/CreateFileFolderDto.ts";
-import type { AcroStackServicesDtosFileManagementFileFolderDto } from "../acroStack/services/dtos/fileManagement/FileFolderDto.ts";
+import type { AcroStackFileManagementCreateFileFolderDto } from "../acroStack/fileManagement/CreateFileFolderDto.ts";
+import type { AcroStackFileManagementFileFolderDto } from "../acroStack/fileManagement/FileFolderDto.ts";
 
 /**
  * @type object
  */
-export type FileManagementCreateFolderStatus200Plain =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementCreateFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementCreateFolderStatus200Json =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementCreateFolderStatus200Json = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementCreateFolderStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementCreateFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
 
 export type FileManagementCreateFolderStatus200 =
   | FileManagementCreateFolderStatus200Plain
@@ -30,21 +27,21 @@ export type FileManagementCreateFolderStatus200 =
  * @type object | undefined
  */
 export type FileManagementCreateFolderJsonData =
-  | AcroStackServicesDtosFileManagementCreateFileFolderDto
+  | AcroStackFileManagementCreateFileFolderDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type FileManagementCreateFolderJson2Data =
-  | AcroStackServicesDtosFileManagementCreateFileFolderDto
+  | AcroStackFileManagementCreateFileFolderDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type FileManagementCreateFolderJson3Data =
-  | AcroStackServicesDtosFileManagementCreateFileFolderDto
+  | AcroStackFileManagementCreateFileFolderDto
   | undefined;
 
 export type FileManagementCreateFolderData =

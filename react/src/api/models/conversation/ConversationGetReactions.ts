@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatChatMessageReactionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/chat/ChatMessageReactionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/chatMessageReactionDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,19 +14,19 @@ export type ConversationGetReactionsPathMessageId = string;
  * @type object
  */
 export type ConversationGetReactionsStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatChatMessageReactionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ConversationGetReactionsStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatChatMessageReactionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type ConversationGetReactionsStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosChatChatMessageReactionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
 export type ConversationGetReactionsStatus200 =
   | ConversationGetReactionsStatus200Plain

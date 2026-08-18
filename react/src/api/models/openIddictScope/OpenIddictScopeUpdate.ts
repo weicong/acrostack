@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto } from "../acroStack/services/dtos/openIddictManagement/OpenIddictScopeDto.ts";
-import type { AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictScopeDto } from "../acroStack/services/dtos/openIddictManagement/UpdateOpenIddictScopeDto.ts";
+import type { AcroStackOpenIddictManagementOpenIddictScopeDto } from "../acroStack/openIddictManagement/OpenIddictScopeDto.ts";
+import type { AcroStackOpenIddictManagementUpdateOpenIddictScopeDto } from "../acroStack/openIddictManagement/UpdateOpenIddictScopeDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,20 +14,17 @@ export type OpenIddictScopeUpdatePathId = string;
 /**
  * @type object
  */
-export type OpenIddictScopeUpdateStatus200Plain =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto;
+export type OpenIddictScopeUpdateStatus200Plain = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
 /**
  * @type object
  */
-export type OpenIddictScopeUpdateStatus200Json =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto;
+export type OpenIddictScopeUpdateStatus200Json = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
 /**
  * @type object
  */
-export type OpenIddictScopeUpdateStatus200Json2 =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto;
+export type OpenIddictScopeUpdateStatus200Json2 = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
 export type OpenIddictScopeUpdateStatus200 =
   | OpenIddictScopeUpdateStatus200Plain
@@ -158,21 +155,21 @@ export type OpenIddictScopeUpdateStatus501 =
  * @type object | undefined
  */
 export type OpenIddictScopeUpdateJsonData =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictScopeDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictScopeUpdateJson2Data =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictScopeDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictScopeUpdateJson3Data =
-  | AcroStackServicesDtosOpenIddictManagementUpdateOpenIddictScopeDto
+  | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;
 
 export type OpenIddictScopeUpdateData =

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileVersionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/services/dtos/fileManagement/FileVersionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/fileManagement/fileVersionDtoAcroStack/FileManagementVersion1000CultureneutralPublicKeyTokennull.ts";
 
 /**
  * @description
@@ -13,19 +13,19 @@ export type FileManagementGetFileVersionsPathId = string;
  * @type object
  */
 export type FileManagementGetFileVersionsStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileVersionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type FileManagementGetFileVersionsStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileVersionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type FileManagementGetFileVersionsStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackServicesDtosFileManagementFileVersionDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
 
 export type FileManagementGetFileVersionsStatus200 =
   | FileManagementGetFileVersionsStatus200Plain

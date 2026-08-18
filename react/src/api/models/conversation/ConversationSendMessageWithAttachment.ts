@@ -1,26 +1,23 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosChatChatMessageDto } from "../acroStack/services/dtos/chat/ChatMessageDto.ts";
-import type { AcroStackServicesDtosChatSendMessageInput } from "../acroStack/services/dtos/chat/SendMessageInput.ts";
+import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageDto.ts";
+import type { AcroStackChatSendMessageInput } from "../acroStack/chat/SendMessageInput.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
-export type ConversationSendMessageWithAttachmentStatus200Plain =
-  AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageWithAttachmentStatus200Plain = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationSendMessageWithAttachmentStatus200Json =
-  AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageWithAttachmentStatus200Json = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationSendMessageWithAttachmentStatus200Json2 =
-  AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageWithAttachmentStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ConversationSendMessageWithAttachmentStatus200 =
   | ConversationSendMessageWithAttachmentStatus200Plain
@@ -169,21 +166,21 @@ export type ConversationSendMessageWithAttachmentStatus501 =
  * @type object | undefined
  */
 export type ConversationSendMessageWithAttachmentJsonData =
-  | AcroStackServicesDtosChatSendMessageInput
+  | AcroStackChatSendMessageInput
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type ConversationSendMessageWithAttachmentJson2Data =
-  | AcroStackServicesDtosChatSendMessageInput
+  | AcroStackChatSendMessageInput
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type ConversationSendMessageWithAttachmentJson3Data =
-  | AcroStackServicesDtosChatSendMessageInput
+  | AcroStackChatSendMessageInput
   | undefined;
 
 export type ConversationSendMessageWithAttachmentData =

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgroundJobsBackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/backgroundJobs/BackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/backgroundJobs/backgroundJobDtoAcroStack/BackgroundJobsVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -55,19 +55,19 @@ export type BackgroundJobGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type BackgroundJobGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgroundJobsBackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BackgroundJobGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgroundJobsBackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type BackgroundJobGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosBackgroundJobsBackgroundJobDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
 
 export type BackgroundJobGetListStatus200 =
   | BackgroundJobGetListStatus200Plain

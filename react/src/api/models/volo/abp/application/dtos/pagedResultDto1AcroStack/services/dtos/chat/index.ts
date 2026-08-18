@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosChatChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "./ChatMessageDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";

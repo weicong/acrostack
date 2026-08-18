@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/identityClaims/IdentityClaimTypeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/identityClaims/identityClaimTypeDtoAcroStack/IdentityClaimsVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -31,19 +31,19 @@ export type IdentityClaimTypeGetListQueryMaxResultCount = number | undefined;
  * @type object
  */
 export type IdentityClaimTypeGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type IdentityClaimTypeGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type IdentityClaimTypeGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosIdentityClaimsIdentityClaimTypeDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
 
 export type IdentityClaimTypeGetListStatus200 =
   | IdentityClaimTypeGetListStatus200Plain

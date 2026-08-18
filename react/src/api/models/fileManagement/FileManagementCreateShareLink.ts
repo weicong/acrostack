@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementCreateShareLinkDto } from "../acroStack/services/dtos/fileManagement/CreateShareLinkDto.ts";
-import type { AcroStackServicesDtosFileManagementFileShareDto } from "../acroStack/services/dtos/fileManagement/FileShareDto.ts";
+import type { AcroStackFileManagementCreateShareLinkDto } from "../acroStack/fileManagement/CreateShareLinkDto.ts";
+import type { AcroStackFileManagementFileShareDto } from "../acroStack/fileManagement/FileShareDto.ts";
 
 /**
  * @description
@@ -13,20 +13,17 @@ export type FileManagementCreateShareLinkPathId = string;
 /**
  * @type object
  */
-export type FileManagementCreateShareLinkStatus200Plain =
-  AcroStackServicesDtosFileManagementFileShareDto;
+export type FileManagementCreateShareLinkStatus200Plain = AcroStackFileManagementFileShareDto;
 
 /**
  * @type object
  */
-export type FileManagementCreateShareLinkStatus200Json =
-  AcroStackServicesDtosFileManagementFileShareDto;
+export type FileManagementCreateShareLinkStatus200Json = AcroStackFileManagementFileShareDto;
 
 /**
  * @type object
  */
-export type FileManagementCreateShareLinkStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileShareDto;
+export type FileManagementCreateShareLinkStatus200Json2 = AcroStackFileManagementFileShareDto;
 
 export type FileManagementCreateShareLinkStatus200 =
   | FileManagementCreateShareLinkStatus200Plain
@@ -37,21 +34,21 @@ export type FileManagementCreateShareLinkStatus200 =
  * @type object | undefined
  */
 export type FileManagementCreateShareLinkJsonData =
-  | AcroStackServicesDtosFileManagementCreateShareLinkDto
+  | AcroStackFileManagementCreateShareLinkDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type FileManagementCreateShareLinkJson2Data =
-  | AcroStackServicesDtosFileManagementCreateShareLinkDto
+  | AcroStackFileManagementCreateShareLinkDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type FileManagementCreateShareLinkJson3Data =
-  | AcroStackServicesDtosFileManagementCreateShareLinkDto
+  | AcroStackFileManagementCreateShareLinkDto
   | undefined;
 
 export type FileManagementCreateShareLinkData =

@@ -38,7 +38,8 @@ public class AppUserDataSeedContributor : IDataSeedContributor, ITransientDepend
                 identityUser.Name,
                 identityUser.Surname,
                 identityUser.PhoneNumber,
-                identityUser.IsActive);
+                identityUser.IsActive,
+                identityUser.TenantId);
 
             await _appUserRepository.InsertAsync(appUser);
         }

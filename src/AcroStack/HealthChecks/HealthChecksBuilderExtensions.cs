@@ -1,4 +1,4 @@
-﻿using HealthChecks.UI.Client;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace AcroStack.HealthChecks;
@@ -18,8 +18,16 @@ public static class HealthChecksBuilderExtensions
         {
             healthCheckUrl = "/health-status";
         }
-        
+
         services.ConfigureHealthCheckEndpoint("/health-status");
+
+        // The HealthChecks UI dashboard leaks internal infrastructure details —
+        // development only. The plain /health-status endpoint (for load
+        // balancers / orchestrators) stays available in every environment.
+        if (!services.GetHostingEnvironment().IsDevelopment())
+        {
+            return;
+        }
 
         var healthChecksUiBuilder = services.AddHealthChecksUI(settings =>
         {

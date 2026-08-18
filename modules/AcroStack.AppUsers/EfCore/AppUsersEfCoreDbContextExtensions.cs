@@ -16,7 +16,8 @@ public static class AppUsersEfCoreDbContextExtensions
             b.Property(x => x.Name).HasMaxLength(AppUserConsts.MaxNameLength);
             b.Property(x => x.Surname).HasMaxLength(AppUserConsts.MaxSurnameLength);
             b.Property(x => x.PhoneNumber).HasMaxLength(AppUserConsts.MaxPhoneNumberLength);
-            b.HasIndex(x => x.UserName);
+            // 复合索引覆盖租户隔离 + 用户名查询（替代原单列 UserName 索引）
+            b.HasIndex(x => new { x.TenantId, x.UserName });
         });
     }
 }

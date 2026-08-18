@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementFileEntryDto } from "../acroStack/services/dtos/fileManagement/FileEntryDto.ts";
+import type { AcroStackFileManagementFileEntryDto } from "../acroStack/fileManagement/FileEntryDto.ts";
 
 /**
  * @description
@@ -12,19 +12,17 @@ export type FileManagementUploadFileQueryFolderId = string | undefined;
 /**
  * @type object
  */
-export type FileManagementUploadFileStatus200Plain =
-  AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementUploadFileStatus200Plain = AcroStackFileManagementFileEntryDto;
 
 /**
  * @type object
  */
-export type FileManagementUploadFileStatus200Json = AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementUploadFileStatus200Json = AcroStackFileManagementFileEntryDto;
 
 /**
  * @type object
  */
-export type FileManagementUploadFileStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileEntryDto;
+export type FileManagementUploadFileStatus200Json2 = AcroStackFileManagementFileEntryDto;
 
 export type FileManagementUploadFileStatus200 =
   | FileManagementUploadFileStatus200Plain

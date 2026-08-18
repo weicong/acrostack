@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, type QueryFunction, type QueryKey } from "@tanstack/react-query";
 import type { SortingState, PaginationState } from "@tanstack/react-table";
 
 interface AbpPagedResult<T> {
@@ -14,8 +14,25 @@ interface AbpGridParams {
   MaxResultCount?: number;
 }
 
-interface UseDataTableQueryOptions<TParams extends AbpGridParams> {
-  queryOptions: (params?: TParams, config?: any) => any;
+/**
+ * queryOptions（Kubb 生成的 xxxQueryOptions）返回值的最小强类型约束：
+ * - queryKey：透传给 useQuery，并用于缓存失效；
+ * - queryFn：返回 ABP 分页结果。
+ * queryFn 的 context 参数声明为 never，使任意 Kubb 签名
+ * （QueryFunctionContext<具体 queryKey 元组>）都能安全赋值；
+ * 由本 hook 内部桥接为 react-query 的 QueryFunction。
+ */
+interface PagedQueryOptions<TData> {
+  queryKey: QueryKey;
+  queryFn?: (context: never) => AbpPagedResult<TData> | Promise<AbpPagedResult<TData>>;
+}
+
+interface UseDataTableQueryOptions<TData, TParams extends AbpGridParams> {
+  /**
+   * 第二参数 config 类型为 never：本 hook 从不透传 config
+   * （Kubb 函数的 Partial<RequestConfig> 参数在严格逆变下与 unknown 不兼容）。
+   */
+  queryOptions: (params?: TParams, config?: never) => PagedQueryOptions<TData>;
   sorting?: SortingState;
   pagination?: PaginationState;
   globalFilter?: string;
@@ -30,7 +47,7 @@ function buildSortingString(sorting: SortingState): string | undefined {
 }
 
 function useDataTableQuery<TData, TParams extends AbpGridParams>(
-  options: UseDataTableQueryOptions<TParams>,
+  options: UseDataTableQueryOptions<TData, TParams>,
 ) {
   const {
     queryOptions,
@@ -64,8 +81,11 @@ function useDataTableQuery<TData, TParams extends AbpGridParams>(
 
   const resolvedOptions = useMemo(() => queryOptionsRef.current(params), [params]);
 
-  const query = useQuery<AbpPagedResult<TData>>({
+  const query = useQuery<AbpPagedResult<TData>, Error>({
     ...resolvedOptions,
+    // 桥接 queryFn：Kubb 实现运行时接受完整 QueryFunctionContext，
+    // 声明侧的 never 参数仅用于兼容各种 Kubb 签名，此处做类型适配
+    queryFn: resolvedOptions.queryFn as QueryFunction<AbpPagedResult<TData>, QueryKey> | undefined,
     enabled,
     placeholderData: keepPreviousData ? (prev) => prev : undefined,
   });

@@ -20,7 +20,7 @@ import {
   openIddictScopeGetListQueryKey,
 } from "@/api/hooks/openIddictScope/useOpenIddictScopeGetList";
 import { useOpenIddictScopeDelete } from "@/api/hooks/openIddictScope/useOpenIddictScopeDelete";
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictScopeDto as ScopeDto } from "@/api/models/acroStack/services/dtos/openIddictManagement/OpenIddictScopeDto";
+import type { AcroStackOpenIddictManagementOpenIddictScopeDto as ScopeDto } from "@/api/models/acroStack/openIddictManagement/OpenIddictScopeDto";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 
 type ScopeItem = ScopeDto;

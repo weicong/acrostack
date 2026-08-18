@@ -18,8 +18,8 @@ import {
   auditLogGetStatisticsQueryOptions,
   auditLogGetStatisticsQueryKey,
 } from "@/api/hooks/auditLog/useAuditLogGetStatistics";
-import type { AcroStackServicesDtosAuditLoggingAuditLogStatisticsDto as AuditLogStatisticsDto } from "@/api/models/acroStack/services/dtos/auditLogging/AuditLogStatisticsDto";
-import type { AcroStackServicesDtosAuditLoggingUrlStatisticDto as UrlStatisticDto } from "@/api/models/acroStack/services/dtos/auditLogging/UrlStatisticDto";
+import type { AcroStackAuditLoggingAuditLogStatisticsDto as AuditLogStatisticsDto } from "@/api/models/acroStack/auditLogging/AuditLogStatisticsDto";
+import type { AcroStackAuditLoggingUrlStatisticDto as UrlStatisticDto } from "@/api/models/acroStack/auditLogging/UrlStatisticDto";
 
 interface AuditLogStatisticsPanelProps {
   /** Pass a tenant/key scope buster if needed; unused for now. */

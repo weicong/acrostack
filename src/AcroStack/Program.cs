@@ -11,7 +11,12 @@ public class Program
     public async static Task<int> Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Async(c => c.File("Logs/logs.txt"))
+            .WriteTo.Async(c => c.File(
+                "Logs/logs.txt",
+                rollingInterval: Serilog.RollingInterval.Day,
+                rollOnFileSizeLimit: true,
+                fileSizeLimitBytes: 104857600,
+                retainedFileCountLimit: 31))
             .WriteTo.Async(c => c.Console())
             .CreateBootstrapLogger();
 
@@ -77,6 +82,6 @@ public class Program
 
     private static bool IsMigrateDatabase(string[] args)
     {
-        return args.Any(x => x.Contains("--migrate-database", StringComparison.OrdinalIgnoreCase));
+        return args.Any(x => x.Equals("--migrate-database", StringComparison.OrdinalIgnoreCase));
     }
 }

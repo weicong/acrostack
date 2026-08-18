@@ -51,15 +51,15 @@ public class ChatOnlineTracker : IChatOnlineTracker, ISingletonDependency
             return new List<Guid>();
         }
 
-        var online = new List<Guid>();
-        foreach (var userId in userIdList)
-        {
-            if (await _cache.GetStringAsync(Key(userId)) != null)
-            {
-                online.Add(userId);
-            }
-        }
-        return online;
+        // 【性能】用 Task.WhenAll 并发发起所有缓存查询，替代逐个串行
+        // GetStringAsync 的等待方式，避免 N 个用户就产生 N 次串行网络往返；
+        // 结果数组与 userIdList 按下标一一对应，最后按原顺序组装输出。
+        var cacheResults = await Task.WhenAll(
+            userIdList.Select(userId => _cache.GetStringAsync(Key(userId))));
+
+        return userIdList
+            .Where((_, index) => cacheResults[index] != null)
+            .ToList();
     }
 
     private static string Key(Guid userId) => $"chat-online:{userId}";

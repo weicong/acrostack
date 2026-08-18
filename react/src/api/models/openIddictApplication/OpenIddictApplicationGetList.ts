@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/services/dtos/openIddictManagement/OpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/openIddictManagement/openIddictApplicationDtoAcroStack/OpenIddictManagementVersion1000CultureneutralPublicKeyTokennull.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -31,19 +31,19 @@ export type OpenIddictApplicationGetListQueryMaxResultCount = number | undefined
  * @type object
  */
 export type OpenIddictApplicationGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDtoAcroStackVersion1000CultureneutralPublicKeyTokennull;
+  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
 
 export type OpenIddictApplicationGetListStatus200 =
   | OpenIddictApplicationGetListStatus200Plain

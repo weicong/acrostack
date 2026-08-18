@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 using AcroStack.Data;
 using AcroStack.Localization;
 using AcroStack.HealthChecks;
@@ -189,9 +191,21 @@ public class AcroStackModule : AbpModule
                 options.AddDevelopmentEncryptionAndSigningCertificate = false;
             });
 
+            // Fail fast with actionable guidance instead of an obscure
+            // cryptographic exception deep inside OpenIddict startup.
+            var certificatePassPhrase = configuration["AuthServer:CertificatePassPhrase"];
+            if (certificatePassPhrase.IsNullOrWhiteSpace() || !File.Exists("openiddict.pfx"))
+            {
+                throw new AbpInitializationException(
+                    "Production requires the OpenIddict signing certificate. " +
+                    "Place 'openiddict.pfx' next to the app and provide " +
+                    "'AuthServer:CertificatePassPhrase' via environment variable " +
+                    "(AuthServer__CertificatePassPhrase) or appsettings.secrets.json.");
+            }
+
             PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
             {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
+                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", certificatePassPhrase);
             });
         }
 
@@ -228,9 +242,10 @@ public class AcroStackModule : AbpModule
         ConfigureAutoApiControllers();
         ConfigureLocalization();
         ConfigureCors(context, configuration);
-        ConfigureDataProtection(context);
+        ConfigureDataProtection(context, hostingEnvironment, configuration);
         ConfigureVirtualFiles(hostingEnvironment);
         ConfigureEfCore(context);
+        ConfigureRateLimiting(context);
 
         // SignalR for the Chat module (real-time messaging).
         context.Services.AddSignalR();
@@ -387,9 +402,56 @@ public class AcroStackModule : AbpModule
         });
     }
 
-    private void ConfigureDataProtection(ServiceConfigurationContext context)
+    private void ConfigureDataProtection(ServiceConfigurationContext context, IHostEnvironment hostingEnvironment, IConfiguration configuration)
     {
-        context.Services.AddDataProtection().SetApplicationName("AcroStack");
+        var dataProtection = context.Services.AddDataProtection().SetApplicationName("AcroStack");
+
+        if (!hostingEnvironment.IsDevelopment())
+        {
+            // Persist keys to disk so restarts don't invalidate auth cookies / antiforgery
+            // tokens. Multi-instance deployments must point this at shared storage
+            // (or use Redis) — otherwise each instance generates its own key ring.
+            var keysDirectory = configuration["DataProtection:KeysDirectory"] ?? "DataProtection-Keys";
+            dataProtection.PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(hostingEnvironment.ContentRootPath, keysDirectory)));
+        }
+    }
+
+    /// <summary>
+    /// Throttle /connect/token by client IP to blunt password-guessing and
+    /// token-endpoint abuse. 30 attempts/min/IP comfortably covers normal
+    /// sign-in, Swagger OAuth and impersonation flows.
+    /// Behind a reverse proxy set ForwardedHeaders so RemoteIpAddress is real.
+    /// </summary>
+    private void ConfigureRateLimiting(ServiceConfigurationContext context)
+    {
+        context.Services.AddRateLimiter(options =>
+        {
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            options.OnRejected = static async (onRejectedContext, _) =>
+            {
+                onRejectedContext.HttpContext.Response.Headers.RetryAfter = "60";
+                await onRejectedContext.HttpContext.Response.WriteAsync("Too many token requests. Please try again later.");
+            };
+
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+            {
+                if (HttpMethods.IsPost(httpContext.Request.Method) &&
+                    httpContext.Request.Path.StartsWithSegments("/connect/token"))
+                {
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                        _ => new FixedWindowRateLimiterOptions
+                        {
+                            PermitLimit = 30,
+                            Window = TimeSpan.FromMinutes(1),
+                            QueueLimit = 0,
+                            AutoReplenishment = true
+                        });
+                }
+
+                return RateLimitPartition.GetNoLimiter(string.Empty);
+            });
+        });
     }
 
     private void ConfigureVirtualFiles(IWebHostEnvironment hostingEnvironment)
@@ -441,7 +503,12 @@ public class AcroStackModule : AbpModule
         {
             app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseHsts();
+        }
 
+        app.UseHttpsRedirection();
         app.UseAbpRequestLocalization();
 
         if (!env.IsDevelopment())
@@ -451,6 +518,7 @@ public class AcroStackModule : AbpModule
 
         app.UseCorrelationId();
         app.UseRouting();
+        app.UseRateLimiter();
         app.UseStaticFiles();
         app.UseAbpStudioLink();
         app.UseAbpSecurityHeaders();
@@ -482,12 +550,16 @@ public class AcroStackModule : AbpModule
         app.UseDynamicClaims();
         app.UseAuthorization();
 
-        app.UseSwagger();
-        app.UseAbpSwaggerUI(options =>
+        // Swagger exposes the full API surface — development only.
+        if (env.IsDevelopment())
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "AcroStack API");
-            options.OAuthClientId(context.GetConfiguration()["AuthServer:SwaggerClientId"]);
-        });
+            app.UseSwagger();
+            app.UseAbpSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "AcroStack API");
+                options.OAuthClientId(context.GetConfiguration()["AuthServer:SwaggerClientId"]);
+            });
+        }
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();

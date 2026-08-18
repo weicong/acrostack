@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
 
 namespace AcroStack.AppUsers;
 
@@ -15,18 +16,21 @@ public class AppUserCacheService : IAppUserCacheService, ITransientDependency
 
     private readonly IDistributedCache<CachedAppUser, Guid> _cache;
     private readonly IRepository<AppUser, Guid> _appUserRepository;
+    private readonly ICurrentTenant _currentTenant;
 
     public AppUserCacheService(
         IDistributedCache<CachedAppUser, Guid> cache,
-        IRepository<AppUser, Guid> appUserRepository)
+        IRepository<AppUser, Guid> appUserRepository,
+        ICurrentTenant currentTenant)
     {
         _cache = cache;
         _appUserRepository = appUserRepository;
+        _currentTenant = currentTenant;
     }
 
     public async Task<CachedAppUser?> GetAsync(Guid userId)
     {
-        return await _cache.GetOrAddAsync(
+        var cached = await _cache.GetOrAddAsync(
             userId,
             async () =>
             {
@@ -34,6 +38,16 @@ public class AppUserCacheService : IAppUserCacheService, ITransientDependency
                 return user == null ? null! : MapToCache(user);
             },
             () => new DistributedCacheEntryOptions { SlidingExpiration = CacheDuration });
+
+        // 纵深防御：缓存键不含租户，读取时校验归属租户，
+        // 不匹配则视为缓存未命中并清除，避免跨租户串用。
+        if (cached != null && cached.TenantId != _currentTenant.Id)
+        {
+            await _cache.RemoveAsync(userId);
+            return null;
+        }
+
+        return cached;
     }
 
     public async Task<Dictionary<Guid, CachedAppUser>> GetManyAsync(IEnumerable<Guid> userIds)
@@ -65,6 +79,7 @@ public class AppUserCacheService : IAppUserCacheService, ITransientDependency
     {
         return new CachedAppUser(
             id: user.Id,
+            tenantId: user.TenantId,
             userName: user.UserName,
             email: user.Email,
             name: user.Name,

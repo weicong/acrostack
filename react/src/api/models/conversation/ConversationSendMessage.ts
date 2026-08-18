@@ -1,23 +1,23 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosChatChatMessageDto } from "../acroStack/services/dtos/chat/ChatMessageDto.ts";
-import type { AcroStackServicesDtosChatSendMessageInput } from "../acroStack/services/dtos/chat/SendMessageInput.ts";
+import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageDto.ts";
+import type { AcroStackChatSendMessageInput } from "../acroStack/chat/SendMessageInput.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
-export type ConversationSendMessageStatus200Plain = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageStatus200Plain = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationSendMessageStatus200Json = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageStatus200Json = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationSendMessageStatus200Json2 = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationSendMessageStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ConversationSendMessageStatus200 =
   | ConversationSendMessageStatus200Plain
@@ -147,21 +147,17 @@ export type ConversationSendMessageStatus501 =
 /**
  * @type object | undefined
  */
-export type ConversationSendMessageJsonData = AcroStackServicesDtosChatSendMessageInput | undefined;
+export type ConversationSendMessageJsonData = AcroStackChatSendMessageInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationSendMessageJson2Data =
-  | AcroStackServicesDtosChatSendMessageInput
-  | undefined;
+export type ConversationSendMessageJson2Data = AcroStackChatSendMessageInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationSendMessageJson3Data =
-  | AcroStackServicesDtosChatSendMessageInput
-  | undefined;
+export type ConversationSendMessageJson3Data = AcroStackChatSendMessageInput | undefined;
 
 export type ConversationSendMessageData =
   | ConversationSendMessageJsonData

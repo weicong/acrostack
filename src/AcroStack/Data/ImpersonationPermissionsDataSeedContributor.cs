@@ -59,6 +59,12 @@ public class ImpersonationPermissionsDataSeedContributor
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.BackgroundJobs.Delete", true);
 
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.BackgroundJobs.Requeue", true);
+
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.BackgroundJobs.Abandon", true);
+
             // OpenIddict management (mirrors ABP Commercial OpenIddict Pro).
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.OpenIddictManagement.Applications", true);

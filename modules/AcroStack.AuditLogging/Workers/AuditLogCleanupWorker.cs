@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +76,10 @@ public class AuditLogCleanupWorker : AsyncPeriodicBackgroundWorkerBase
 
                 await repository.DeleteManyAsync(ids, autoSave: true);
                 totalDeleted += ids.Count;
+
+                // 批次间稍作等待，避免清理任务长时间占用数据库锁，
+                // 影响线上正常业务写入。
+                await Task.Delay(_options.InterBatchDelayMs);
             }
         }
 

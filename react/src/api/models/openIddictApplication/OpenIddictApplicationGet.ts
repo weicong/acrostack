@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
+import type { AcroStackOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/openIddictManagement/OpenIddictApplicationDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,19 +14,19 @@ export type OpenIddictApplicationGetPathId = string;
  * @type object
  */
 export type OpenIddictApplicationGetStatus200Plain =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationGetStatus200Json =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationGetStatus200Json2 =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationGetStatus200 =
   | OpenIddictApplicationGetStatus200Plain

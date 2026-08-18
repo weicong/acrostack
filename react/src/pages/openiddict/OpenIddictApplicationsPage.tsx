@@ -21,7 +21,7 @@ import {
   openIddictApplicationGetListQueryKey,
 } from "@/api/hooks/openIddictApplication/useOpenIddictApplicationGetList";
 import { useOpenIddictApplicationDelete } from "@/api/hooks/openIddictApplication/useOpenIddictApplicationDelete";
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto as AppDto } from "@/api/models/acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto";
+import type { AcroStackOpenIddictManagementOpenIddictApplicationDto as AppDto } from "@/api/models/acroStack/openIddictManagement/OpenIddictApplicationDto";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 
 type AppItem = AppDto;

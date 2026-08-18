@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "@tanstack/react-router";
-import { makeStyles, tokens } from "@fluentui/react-components";
+import { makeStyles, mergeClasses, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
@@ -110,13 +110,12 @@ export function AppLayout() {
 
   const handleOverlayClick = useCallback(() => setMobileMenuOpen(false), []);
 
-  const sidebarClass = [
+  // 用 mergeClasses 组合条件样式（Griffel 方式），替代字符串拼接
+  const sidebarClass = mergeClasses(
     styles.sidebar,
-    mobileMenuOpen ? styles.sidebarOpen : "",
-    collapsed ? styles.sidebarCollapsed : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+    mobileMenuOpen && styles.sidebarOpen,
+    collapsed && styles.sidebarCollapsed,
+  );
 
   return (
     <div className={styles.root}>

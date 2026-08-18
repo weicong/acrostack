@@ -1,26 +1,26 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosOpenIddictManagementCreateOpenIddictApplicationDto } from "../acroStack/services/dtos/openIddictManagement/CreateOpenIddictApplicationDto.ts";
-import type { AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/services/dtos/openIddictManagement/OpenIddictApplicationDto.ts";
+import type { AcroStackOpenIddictManagementCreateOpenIddictApplicationDto } from "../acroStack/openIddictManagement/CreateOpenIddictApplicationDto.ts";
+import type { AcroStackOpenIddictManagementOpenIddictApplicationDto } from "../acroStack/openIddictManagement/OpenIddictApplicationDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
  * @type object
  */
 export type OpenIddictApplicationCreateStatus200Plain =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationCreateStatus200Json =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 /**
  * @type object
  */
 export type OpenIddictApplicationCreateStatus200Json2 =
-  AcroStackServicesDtosOpenIddictManagementOpenIddictApplicationDto;
+  AcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationCreateStatus200 =
   | OpenIddictApplicationCreateStatus200Plain
@@ -151,21 +151,21 @@ export type OpenIddictApplicationCreateStatus501 =
  * @type object | undefined
  */
 export type OpenIddictApplicationCreateJsonData =
-  | AcroStackServicesDtosOpenIddictManagementCreateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictApplicationCreateJson2Data =
-  | AcroStackServicesDtosOpenIddictManagementCreateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;
 
 /**
  * @type object | undefined
  */
 export type OpenIddictApplicationCreateJson3Data =
-  | AcroStackServicesDtosOpenIddictManagementCreateOpenIddictApplicationDto
+  | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;
 
 export type OpenIddictApplicationCreateData =

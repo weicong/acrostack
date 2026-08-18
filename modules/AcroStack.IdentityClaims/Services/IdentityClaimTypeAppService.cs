@@ -17,10 +17,17 @@ namespace AcroStack.IdentityClaims;
 public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTypeAppService
 {
     private readonly IRepository<IdentityClaimType, Guid> _claimTypeRepository;
+    private readonly IRepository<IdentityUserClaim, Guid> _userClaimRepository;
+    private readonly IRepository<IdentityRoleClaim, Guid> _roleClaimRepository;
 
-    public IdentityClaimTypeAppService(IRepository<IdentityClaimType, Guid> claimTypeRepository)
+    public IdentityClaimTypeAppService(
+        IRepository<IdentityClaimType, Guid> claimTypeRepository,
+        IRepository<IdentityUserClaim, Guid> userClaimRepository,
+        IRepository<IdentityRoleClaim, Guid> roleClaimRepository)
     {
         _claimTypeRepository = claimTypeRepository;
+        _userClaimRepository = userClaimRepository;
+        _roleClaimRepository = roleClaimRepository;
     }
 
     public async Task<IdentityClaimTypeDto> GetAsync(Guid id)
@@ -103,6 +110,23 @@ public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTy
             throw new BusinessException("AcroStack:StaticClaimTypeCannotBeDeleted");
         }
 
+        // 删除前统计用户声明与角色声明中对该类型的使用量，
+        // 仍被引用时禁止删除，避免产生悬空的 ClaimType。
+        var userClaimQueryable = await _userClaimRepository.GetQueryableAsync();
+        var userUsageCount = await AsyncExecuter.CountAsync(
+            userClaimQueryable.Where(x => x.ClaimType == claimType.Name));
+
+        var roleClaimQueryable = await _roleClaimRepository.GetQueryableAsync();
+        var roleUsageCount = await AsyncExecuter.CountAsync(
+            roleClaimQueryable.Where(x => x.ClaimType == claimType.Name));
+
+        if (userUsageCount + roleUsageCount > 0)
+        {
+            throw new BusinessException(
+                "AcroStack:ClaimTypeInUse",
+                "该声明类型正在被使用，无法删除");
+        }
+
         await _claimTypeRepository.DeleteAsync(id);
     }
 
@@ -111,7 +135,10 @@ public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTy
     {
         var queryable = await _claimTypeRepository.GetQueryableAsync();
         var claimTypes = await AsyncExecuter.ToListAsync(
-            queryable.OrderBy(x => x.Name));
+            queryable
+                .OrderBy(x => x.Name)
+                // 加上限防止无界查询拖垮数据库与响应，防失控。
+                .Take(500));
 
         return ObjectMapper.Map<List<IdentityClaimType>, List<IdentityClaimTypeDto>>(claimTypes);
     }

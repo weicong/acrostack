@@ -5,6 +5,8 @@ namespace AcroStack.AppUsers;
 public class CachedAppUser
 {
     public Guid Id { get; init; }
+    /// <summary>归属租户。读取缓存时校验，防止缓存内容跨租户串用（纵深防御）。</summary>
+    public Guid? TenantId { get; init; }
     public string UserName { get; init; } = null!;
     public string? Email { get; init; }
     public string? Name { get; init; }
@@ -19,6 +21,7 @@ public class CachedAppUser
 
     public CachedAppUser(
         Guid id,
+        Guid? tenantId,
         string userName,
         string? email,
         string? name,
@@ -28,6 +31,7 @@ public class CachedAppUser
         DateTime creationTime)
     {
         Id = id;
+        TenantId = tenantId;
         UserName = userName;
         Email = email;
         Name = name;

@@ -116,7 +116,13 @@ public class FileManagementController : AbpController
     public async Task<IActionResult> GetThumbnail(Guid id)
     {
         var (stream, contentType) = await _appService.GetThumbnailAsync(id);
-        return File(stream, contentType ?? "application/octet-stream");
+
+        // 禁止浏览器嗅探响应内容类型，防止响应被解释为可执行脚本（如 SVG）
+        Response.Headers["X-Content-Type-Options"] = "nosniff";
+
+        // 以附件（attachment）形式返回而非内联渲染，与 nosniff 组成双重防护，
+        // 即使 Content-Type 白名单未来被放宽也不会触发浏览器内联执行
+        return File(stream, contentType ?? "application/octet-stream", $"thumbnail-{id}");
     }
 
     // ── Storage info / quota ────────────────────────────────────────

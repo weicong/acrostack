@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
@@ -12,25 +13,29 @@ namespace AcroStack.Chat;
 
 /// <summary>
 /// SignalR hub for real-time chat. Each connected user is added to a group
-/// named after their IdentityUser.Id so the server can push new messages and
-/// read receipts to a specific user regardless of how many devices they are
-/// connected from. Mirrors ABP Commercial Chat module's <c>ChatHub</c>.
+/// named after their IdentityUser.Id (plus tenant id) so the server can push
+/// new messages and read receipts to a specific user regardless of how many
+/// devices they are connected from. Mirrors ABP Commercial Chat module's
+/// <c>ChatHub</c>.
 /// </summary>
 [Authorize]
 public class ChatHub : Hub
 {
     private readonly ICurrentUser _currentUser;
+    private readonly ICurrentTenant _currentTenant;
     private readonly IChatOnlineTracker _onlineTracker;
     private readonly IRepository<Conversation, Guid> _conversationRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     public ChatHub(
         ICurrentUser currentUser,
+        ICurrentTenant currentTenant,
         IChatOnlineTracker onlineTracker,
         IRepository<Conversation, Guid> conversationRepository,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _currentUser = currentUser;
+        _currentTenant = currentTenant;
         _onlineTracker = onlineTracker;
         _conversationRepository = conversationRepository;
         _unitOfWorkManager = unitOfWorkManager;
@@ -41,14 +46,14 @@ public class ChatHub : Hub
         if (_currentUser.Id.HasValue)
         {
             var userId = _currentUser.Id.Value;
-            await Groups.AddToGroupAsync(Context.ConnectionId, UserGroupName(userId));
+            await Groups.AddToGroupAsync(Context.ConnectionId, UserGroupName(_currentTenant.Id, userId));
             await _onlineTracker.SetOnlineAsync(userId);
 
             // Notify the user's contacts that they are now online.
             var contactIds = await GetContactUserIdsAsync(userId);
             foreach (var contactId in contactIds)
             {
-                await Clients.Group(UserGroupName(contactId))
+                await Clients.Group(UserGroupName(_currentTenant.Id, contactId))
                     .SendAsync(ChatClientMethods.UserOnlineStatusChanged, userId, true);
             }
         }
@@ -66,7 +71,7 @@ public class ChatHub : Hub
             var contactIds = await GetContactUserIdsAsync(userId);
             foreach (var contactId in contactIds)
             {
-                await Clients.Group(UserGroupName(contactId))
+                await Clients.Group(UserGroupName(_currentTenant.Id, contactId))
                     .SendAsync(ChatClientMethods.UserOnlineStatusChanged, userId, false);
             }
         }
@@ -85,7 +90,15 @@ public class ChatHub : Hub
             return;
         }
 
-        await Clients.Group(UserGroupName(targetUserId))
+        // 【防跨租户骚扰】仅当当前租户下两人之间已存在会话（任一方向的
+        // Conversation 记录，查询自动应用租户过滤）时才推送打字通知；
+        // 不存在会话则静默返回，避免向陌生用户/其他租户用户发送骚扰通知。
+        if (!await HasConversationAsync(_currentUser.Id.Value, targetUserId))
+        {
+            return;
+        }
+
+        await Clients.Group(UserGroupName(_currentTenant.Id, targetUserId))
             .SendAsync(ChatClientMethods.TypingNotification, _currentUser.Id.Value, _currentUser.UserName);
     }
 
@@ -100,12 +113,38 @@ public class ChatHub : Hub
             return;
         }
 
-        await Clients.Group(UserGroupName(targetUserId))
+        // 【防跨租户骚扰】与 SendTypingNotification 相同：仅会话存在时才推送。
+        if (!await HasConversationAsync(_currentUser.Id.Value, targetUserId))
+        {
+            return;
+        }
+
+        await Clients.Group(UserGroupName(_currentTenant.Id, targetUserId))
             .SendAsync(ChatClientMethods.StopTypingNotification, _currentUser.Id.Value, _currentUser.UserName);
     }
 
-    /// <summary>Stable group name for a user (used by both client connection and server push).</summary>
-    public static string UserGroupName(Guid userId) => $"chat:user:{userId}";
+    /// <summary>
+    /// Stable group name for a user within a tenant (used by both the client
+    /// connection and the server push).
+    /// 组名必须包含租户 Id：不同租户的用户 Id（IdentityUser.Id）全局唯一，
+    /// 但推送侧按当前租户组装组名，两侧保持一致才能避免跨租户消息串扰。
+    /// </summary>
+    public static string UserGroupName(Guid? tenantId, Guid userId) => $"chat:user:{tenantId}:{userId}";
+
+    /// <summary>
+    /// 校验当前租户下两个用户之间是否已存在会话（任一方向的 Conversation
+    /// 记录）。Conversation 实现 IMultiTenant，查询自动应用租户过滤，
+    /// 因此其他租户的同名会话不会命中。
+    /// </summary>
+    private async Task<bool> HasConversationAsync(Guid userId, Guid targetUserId)
+    {
+        using var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: false);
+        var exists = await _conversationRepository.AnyAsync(
+            c => (c.UserId == userId && c.TargetUserId == targetUserId)
+                || (c.UserId == targetUserId && c.TargetUserId == userId));
+        await uow.CompleteAsync();
+        return exists;
+    }
 
     private async Task<List<Guid>> GetContactUserIdsAsync(Guid userId)
     {

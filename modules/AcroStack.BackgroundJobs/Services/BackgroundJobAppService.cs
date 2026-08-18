@@ -56,6 +56,7 @@ public class BackgroundJobAppService : AcroStackAppService, IBackgroundJobAppSer
         await _jobRepository.DeleteAsync(id);
     }
 
+    [Authorize(BackgroundJobsPermissions.Requeue)]
     public async Task RequeueAsync(Guid id)
     {
         var job = await _jobRepository.GetAsync(id);
@@ -65,6 +66,7 @@ public class BackgroundJobAppService : AcroStackAppService, IBackgroundJobAppSer
         await _jobRepository.UpdateAsync(job);
     }
 
+    [Authorize(BackgroundJobsPermissions.Abandon)]
     public async Task AbandonAsync(Guid id)
     {
         var job = await _jobRepository.GetAsync(id);
@@ -116,6 +118,10 @@ public class BackgroundJobAppService : AcroStackAppService, IBackgroundJobAppSer
             NextTryTime = job.NextTryTime,
             LastTryTime = job.LastTryTime,
             IsAbandoned = job.IsAbandoned,
+            // 补充完成时间/应用名称/优先级三个字段的映射。
+            CompletionTime = job.CompletionTime,
+            ApplicationName = job.ApplicationName,
+            Priority = job.Priority,
         };
     }
 }

@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementFileFolderDto } from "../acroStack/services/dtos/fileManagement/FileFolderDto.ts";
-import type { AcroStackServicesDtosFileManagementMoveFileDto } from "../acroStack/services/dtos/fileManagement/MoveFileDto.ts";
+import type { AcroStackFileManagementFileFolderDto } from "../acroStack/fileManagement/FileFolderDto.ts";
+import type { AcroStackFileManagementMoveFileDto } from "../acroStack/fileManagement/MoveFileDto.ts";
 
 /**
  * @description
@@ -13,20 +13,17 @@ export type FileManagementMoveFolderPathId = string;
 /**
  * @type object
  */
-export type FileManagementMoveFolderStatus200Plain =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementMoveFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementMoveFolderStatus200Json =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementMoveFolderStatus200Json = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementMoveFolderStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementMoveFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
 
 export type FileManagementMoveFolderStatus200 =
   | FileManagementMoveFolderStatus200Plain
@@ -36,23 +33,17 @@ export type FileManagementMoveFolderStatus200 =
 /**
  * @type object | undefined
  */
-export type FileManagementMoveFolderJsonData =
-  | AcroStackServicesDtosFileManagementMoveFileDto
-  | undefined;
+export type FileManagementMoveFolderJsonData = AcroStackFileManagementMoveFileDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type FileManagementMoveFolderJson2Data =
-  | AcroStackServicesDtosFileManagementMoveFileDto
-  | undefined;
+export type FileManagementMoveFolderJson2Data = AcroStackFileManagementMoveFileDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type FileManagementMoveFolderJson3Data =
-  | AcroStackServicesDtosFileManagementMoveFileDto
-  | undefined;
+export type FileManagementMoveFolderJson3Data = AcroStackFileManagementMoveFileDto | undefined;
 
 export type FileManagementMoveFolderData =
   | FileManagementMoveFolderJsonData

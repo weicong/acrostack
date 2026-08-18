@@ -1,10 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
+using Volo.Abp.Linq;
 using Volo.Abp.Uow;
 using AcroStack.AppUsers;
 
@@ -15,30 +17,46 @@ public class TestUserDataSeedContributor : IDataSeedContributor, ITransientDepen
     private const int TargetUserCount = 1000;
     private const string TestPassword = "Test@123456";
 
-    private readonly IIdentityUserRepository _identityUserRepository;
+    private readonly IRepository<IdentityUser, Guid> _identityUserRepository;
     private readonly IdentityUserManager _identityUserManager;
     private readonly IRepository<AppUser, Guid> _appUserRepository;
+    private readonly IHostEnvironment _hostEnvironment;
+    private readonly IAsyncQueryableProvider _asyncExecuter;
     private readonly ILogger<TestUserDataSeedContributor> _logger;
 
     public TestUserDataSeedContributor(
-        IIdentityUserRepository identityUserRepository,
+        IRepository<IdentityUser, Guid> identityUserRepository,
         IdentityUserManager identityUserManager,
         IRepository<AppUser, Guid> appUserRepository,
+        IHostEnvironment hostEnvironment,
+        IAsyncQueryableProvider asyncExecuter,
         ILogger<TestUserDataSeedContributor> logger)
     {
         _identityUserRepository = identityUserRepository;
         _identityUserManager = identityUserManager;
         _appUserRepository = appUserRepository;
+        _hostEnvironment = hostEnvironment;
+        _asyncExecuter = asyncExecuter;
         _logger = logger;
     }
 
     [UnitOfWork]
     public virtual async Task SeedAsync(DataSeedContext context)
     {
-        var allUsers = await _identityUserRepository.GetListAsync();
-        var existingTestUsers = allUsers.Count(u => u.UserName.StartsWith("testuser"));
+        // 仅开发环境允许种测试用户：弱口令账号绝不能进入生产库
+        if (!_hostEnvironment.IsDevelopment())
+        {
+            return;
+        }
 
-        var usersToCreate = TargetUserCount - existingTestUsers;
+        // 用带谓词的计数查询代替全表 GetListAsync，避免用户表增大后 OOM。
+        // IIdentityUserRepository.GetCountAsync 的 filter 参数是模糊匹配，
+        // 精确前缀计数走 Queryable + AsyncExecuter。
+        var queryable = await _identityUserRepository.GetQueryableAsync();
+        var existingTestUsers = (int)await _asyncExecuter.LongCountAsync(
+            queryable.Where(u => u.UserName.StartsWith("testuser")));
+
+        var usersToCreate = TargetUserCount - (int)existingTestUsers;
         if (usersToCreate <= 0)
         {
             _logger.LogInformation("已有 {Count} 个测试用户，跳过创建", existingTestUsers);
@@ -66,7 +84,7 @@ public class TestUserDataSeedContributor : IDataSeedContributor, ITransientDepen
 
             if (result.Succeeded)
             {
-                // 同时创建对应的 AppUser 记录
+                // 同时创建对应的 AppUser 记录（显式携带租户归属）
                 var appUser = new AppUser(
                     identityUser.Id,
                     identityUser.UserName,
@@ -74,7 +92,8 @@ public class TestUserDataSeedContributor : IDataSeedContributor, ITransientDepen
                     identityUser.Name,
                     identityUser.Surname,
                     identityUser.PhoneNumber,
-                    identityUser.IsActive);
+                    identityUser.IsActive,
+                    identityUser.TenantId);
 
                 await _appUserRepository.InsertAsync(appUser, autoSave: true);
 

@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosChatChatMessageDto } from "../acroStack/services/dtos/chat/ChatMessageDto.ts";
-import type { AcroStackServicesDtosChatEditMessageInput } from "../acroStack/services/dtos/chat/EditMessageInput.ts";
+import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageDto.ts";
+import type { AcroStackChatEditMessageInput } from "../acroStack/chat/EditMessageInput.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,17 +14,17 @@ export type ConversationEditMessagePathMessageId = string;
 /**
  * @type object
  */
-export type ConversationEditMessageStatus200Plain = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationEditMessageStatus200Plain = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationEditMessageStatus200Json = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationEditMessageStatus200Json = AcroStackChatChatMessageDto;
 
 /**
  * @type object
  */
-export type ConversationEditMessageStatus200Json2 = AcroStackServicesDtosChatChatMessageDto;
+export type ConversationEditMessageStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ConversationEditMessageStatus200 =
   | ConversationEditMessageStatus200Plain
@@ -154,21 +154,17 @@ export type ConversationEditMessageStatus501 =
 /**
  * @type object | undefined
  */
-export type ConversationEditMessageJsonData = AcroStackServicesDtosChatEditMessageInput | undefined;
+export type ConversationEditMessageJsonData = AcroStackChatEditMessageInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationEditMessageJson2Data =
-  | AcroStackServicesDtosChatEditMessageInput
-  | undefined;
+export type ConversationEditMessageJson2Data = AcroStackChatEditMessageInput | undefined;
 
 /**
  * @type object | undefined
  */
-export type ConversationEditMessageJson3Data =
-  | AcroStackServicesDtosChatEditMessageInput
-  | undefined;
+export type ConversationEditMessageJson3Data = AcroStackChatEditMessageInput | undefined;
 
 export type ConversationEditMessageData =
   | ConversationEditMessageJsonData

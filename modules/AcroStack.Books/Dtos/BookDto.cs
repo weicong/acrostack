@@ -11,5 +11,5 @@ public class BookDto : AuditedEntityDto<Guid>
 
     public DateTime PublishDate { get; set; }
 
-    public float Price { get; set; }
+    public decimal Price { get; set; }
 }

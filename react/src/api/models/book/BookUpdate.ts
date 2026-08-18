@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosBooksBookDto } from "../acroStack/services/dtos/books/BookDto.ts";
-import type { AcroStackServicesDtosBooksCreateUpdateBookDto } from "../acroStack/services/dtos/books/CreateUpdateBookDto.ts";
+import type { AcroStackBooksBookDto } from "../acroStack/books/BookDto.ts";
+import type { AcroStackBooksCreateUpdateBookDto } from "../acroStack/books/CreateUpdateBookDto.ts";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
 
 /**
@@ -14,17 +14,17 @@ export type BookUpdatePathId = string;
 /**
  * @type object
  */
-export type BookUpdateStatus200Plain = AcroStackServicesDtosBooksBookDto;
+export type BookUpdateStatus200Plain = AcroStackBooksBookDto;
 
 /**
  * @type object
  */
-export type BookUpdateStatus200Json = AcroStackServicesDtosBooksBookDto;
+export type BookUpdateStatus200Json = AcroStackBooksBookDto;
 
 /**
  * @type object
  */
-export type BookUpdateStatus200Json2 = AcroStackServicesDtosBooksBookDto;
+export type BookUpdateStatus200Json2 = AcroStackBooksBookDto;
 
 export type BookUpdateStatus200 =
   | BookUpdateStatus200Plain
@@ -154,17 +154,17 @@ export type BookUpdateStatus501 =
 /**
  * @type object | undefined
  */
-export type BookUpdateJsonData = AcroStackServicesDtosBooksCreateUpdateBookDto | undefined;
+export type BookUpdateJsonData = AcroStackBooksCreateUpdateBookDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type BookUpdateJson2Data = AcroStackServicesDtosBooksCreateUpdateBookDto | undefined;
+export type BookUpdateJson2Data = AcroStackBooksCreateUpdateBookDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type BookUpdateJson3Data = AcroStackServicesDtosBooksCreateUpdateBookDto | undefined;
+export type BookUpdateJson3Data = AcroStackBooksCreateUpdateBookDto | undefined;
 
 export type BookUpdateData = BookUpdateJsonData | BookUpdateJson2Data | BookUpdateJson3Data;
 

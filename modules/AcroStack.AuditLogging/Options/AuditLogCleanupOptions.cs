@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AcroStack.AuditLogging;
 
@@ -30,4 +30,10 @@ public class AuditLogCleanupOptions
     /// Maximum number of audit logs to delete per batch. Default 1000.
     /// </summary>
     public int BatchSize { get; set; } = 1000;
+
+    /// <summary>
+    /// 批次之间的间隔毫秒数，避免清理任务长时间占用数据库锁。
+    /// 默认 200 毫秒。
+    /// </summary>
+    public int InterBatchDelayMs { get; set; } = 200;
 }

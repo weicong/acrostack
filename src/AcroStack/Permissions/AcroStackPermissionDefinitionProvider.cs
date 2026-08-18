@@ -64,6 +64,10 @@ public class AcroStackPermissionDefinitionProvider : PermissionDefinitionProvide
             BackgroundJobsPermissions.ViewJobs, L("Permission:BackgroundJobs.ViewJobs"));
         bgJobPermission.AddChild(
             BackgroundJobsPermissions.Delete, L("Permission:BackgroundJobs.Delete"));
+        bgJobPermission.AddChild(
+            BackgroundJobsPermissions.Requeue, L("Permission:BackgroundJobs.Requeue"));
+        bgJobPermission.AddChild(
+            BackgroundJobsPermissions.Abandon, L("Permission:BackgroundJobs.Abandon"));
 
         // OpenIddict management — mirrors ABP Commercial OpenIddict Pro permissions.
         // Host-only: OpenIddict applications/scopes are global SSO config.

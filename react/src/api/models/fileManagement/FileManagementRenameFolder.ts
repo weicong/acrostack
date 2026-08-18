@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackServicesDtosFileManagementFileFolderDto } from "../acroStack/services/dtos/fileManagement/FileFolderDto.ts";
-import type { AcroStackServicesDtosFileManagementRenameDto } from "../acroStack/services/dtos/fileManagement/RenameDto.ts";
+import type { AcroStackFileManagementFileFolderDto } from "../acroStack/fileManagement/FileFolderDto.ts";
+import type { AcroStackFileManagementRenameDto } from "../acroStack/fileManagement/RenameDto.ts";
 
 /**
  * @description
@@ -13,20 +13,17 @@ export type FileManagementRenameFolderPathId = string;
 /**
  * @type object
  */
-export type FileManagementRenameFolderStatus200Plain =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementRenameFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementRenameFolderStatus200Json =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementRenameFolderStatus200Json = AcroStackFileManagementFileFolderDto;
 
 /**
  * @type object
  */
-export type FileManagementRenameFolderStatus200Json2 =
-  AcroStackServicesDtosFileManagementFileFolderDto;
+export type FileManagementRenameFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
 
 export type FileManagementRenameFolderStatus200 =
   | FileManagementRenameFolderStatus200Plain
@@ -36,23 +33,17 @@ export type FileManagementRenameFolderStatus200 =
 /**
  * @type object | undefined
  */
-export type FileManagementRenameFolderJsonData =
-  | AcroStackServicesDtosFileManagementRenameDto
-  | undefined;
+export type FileManagementRenameFolderJsonData = AcroStackFileManagementRenameDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type FileManagementRenameFolderJson2Data =
-  | AcroStackServicesDtosFileManagementRenameDto
-  | undefined;
+export type FileManagementRenameFolderJson2Data = AcroStackFileManagementRenameDto | undefined;
 
 /**
  * @type object | undefined
  */
-export type FileManagementRenameFolderJson3Data =
-  | AcroStackServicesDtosFileManagementRenameDto
-  | undefined;
+export type FileManagementRenameFolderJson3Data = AcroStackFileManagementRenameDto | undefined;
 
 export type FileManagementRenameFolderData =
   | FileManagementRenameFolderJsonData
