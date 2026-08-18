@@ -26,6 +26,7 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.Auditing;
 using Volo.Abp.Autofac;
 using Volo.Abp.Mapperly;
 using Volo.Abp.Caching;
@@ -246,6 +247,7 @@ public class AcroStackModule : AbpModule
         ConfigureVirtualFiles(hostingEnvironment);
         ConfigureEfCore(context);
         ConfigureRateLimiting(context);
+        ConfigureAuditing();
 
         // SignalR for the Chat module (real-time messaging).
         context.Services.AddSignalR();
@@ -270,6 +272,32 @@ public class AcroStackModule : AbpModule
     private void ConfigureHealthChecks(ServiceConfigurationContext context)
     {
         context.Services.AddAcroStackHealthChecks();
+    }
+
+    private void ConfigureAuditing()
+    {
+        Configure<AbpAuditingOptions>(options =>
+        {
+            // ABP 默认不记录任何实体的变更历史（EntityHistorySelectors 为空），
+            // 审计日志 UI 的"实体变更"页面需要显式配置选择器才有数据来源。
+            //
+            // 仅勾选业务实体（Books / AppUsers / FileManagement）：
+            // - 排除 Chat：消息写入高频，且聊天记录已有独立查询界面，
+            //   双写 AbpEntityChanges + AbpEntityPropertyChanges 会成倍放大表体积；
+            // - 切勿改用 AddAllEntities()：OpenIddict 令牌/授权等框架实体的
+            //   每次刷新都会触发实体变更记录，数据量不可控。
+            options.EntityHistorySelectors.Add(
+                new NamedTypeSelector(
+                    "AcroStackBusinessEntities",
+                    type => type.Namespace is not null
+                            && (type.Namespace.StartsWith("AcroStack.Books")
+                                || type.Namespace.StartsWith("AcroStack.AppUsers")
+                                || type.Namespace.StartsWith("AcroStack.FileManagement"))));
+
+            // HTTP GET 请求不产生审计日志（ABP 默认即 false；显式声明，
+            // 避免被误开启后只读流量刷爆审计表）。
+            options.IsEnabledForGetRequests = false;
+        });
     }
 
     private void ConfigureStudio(IHostEnvironment hostingEnvironment)
