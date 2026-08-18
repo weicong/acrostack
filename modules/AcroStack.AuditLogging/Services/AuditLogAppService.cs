@@ -321,36 +321,42 @@ public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
             Exceptions = auditLog.Exceptions,
             Comments = auditLog.Comments,
             CorrelationId = auditLog.CorrelationId,
-            EntityChanges = auditLog.EntityChanges.Select(ec => new EntityChangeDto
-            {
-                Id = ec.Id,
-                AuditLogId = ec.AuditLogId,
-                EntityTypeFullName = ec.EntityTypeFullName,
-                EntityId = ec.EntityId,
-                ChangeType = (int)ec.ChangeType,
-                ChangeTime = ec.ChangeTime,
-                TenantId = ec.TenantId,
-                PropertyChanges = ec.PropertyChanges.Select(fc => new EntityChangeFieldDto
+            // ABP 10.x AuditLog 的无参构造函数不初始化导航集合，
+            // 列表/单条查询未 Include 时这些集合为 null，需空值保护
+            // （实体变更详情通过 GetEntityChangesAsync 单独加载）。
+            EntityChanges = (auditLog.EntityChanges ?? Enumerable.Empty<EntityChange>())
+                .Select(ec => new EntityChangeDto
                 {
-                    Id = fc.Id,
-                    EntityChangeId = fc.EntityChangeId,
-                    PropertyName = fc.PropertyName,
-                    OriginalValue = fc.OriginalValue,
-                    NewValue = fc.NewValue,
-                    PropertyTypeFullName = fc.PropertyTypeFullName,
+                    Id = ec.Id,
+                    AuditLogId = ec.AuditLogId,
+                    EntityTypeFullName = ec.EntityTypeFullName,
+                    EntityId = ec.EntityId,
+                    ChangeType = (int)ec.ChangeType,
+                    ChangeTime = ec.ChangeTime,
+                    TenantId = ec.TenantId,
+                    PropertyChanges = (ec.PropertyChanges ?? Enumerable.Empty<EntityPropertyChange>())
+                        .Select(fc => new EntityChangeFieldDto
+                        {
+                            Id = fc.Id,
+                            EntityChangeId = fc.EntityChangeId,
+                            PropertyName = fc.PropertyName,
+                            OriginalValue = fc.OriginalValue,
+                            NewValue = fc.NewValue,
+                            PropertyTypeFullName = fc.PropertyTypeFullName,
+                        }).ToList(),
                 }).ToList(),
-            }).ToList(),
-            Actions = auditLog.Actions.Select(a => new AuditLogActionDto
-            {
-                Id = a.Id,
-                AuditLogId = a.AuditLogId,
-                ServiceName = a.ServiceName,
-                MethodName = a.MethodName,
-                Parameters = a.Parameters,
-                ExecutionTime = a.ExecutionTime,
-                ExecutionDuration = a.ExecutionDuration,
-                TenantId = a.TenantId,
-            }).ToList(),
+            Actions = (auditLog.Actions ?? Enumerable.Empty<AuditLogAction>())
+                .Select(a => new AuditLogActionDto
+                {
+                    Id = a.Id,
+                    AuditLogId = a.AuditLogId,
+                    ServiceName = a.ServiceName,
+                    MethodName = a.MethodName,
+                    Parameters = a.Parameters,
+                    ExecutionTime = a.ExecutionTime,
+                    ExecutionDuration = a.ExecutionDuration,
+                    TenantId = a.TenantId,
+                }).ToList(),
         };
     }
 

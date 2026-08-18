@@ -3,6 +3,7 @@ using System;
 using AcroStack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace AcroStack.Migrations
 {
     [DbContext(typeof(AcroStackDbContext))]
-    partial class AcroStackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260817093049_UpdateBackgroundJobsSchema")]
+    partial class UpdateBackgroundJobsSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

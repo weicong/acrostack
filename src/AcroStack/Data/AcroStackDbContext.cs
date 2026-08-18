@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using Volo.Abp.AuditLogging;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -21,7 +22,7 @@ using FileShare = AcroStack.FileManagement.FileShare;
 
 namespace AcroStack.Data;
 
-public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>
+public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggingDbContext
 {
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Book> Books { get; set; }
@@ -34,6 +35,14 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>
     public DbSet<Conversation> ChatConversations { get; set; }
     public DbSet<ChatMessageReaction> ChatMessageReactions { get; set; }
     public DbSet<ChatBlockedUser> ChatBlockedUsers { get; set; }
+
+    public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<AuditLogExcelFile> AuditLogExcelFiles { get; set; }
+
+    // EntityChange 是 AuditLog 聚合的子实体，ABP 审计日志模块不为其注册仓储。
+    // 此处声明 DbSet 使 AddDefaultRepositories(includeAllEntities: true)
+    // 注册 IRepository<EntityChange, Guid>（AuditLogAppService 需要）。
+    public DbSet<EntityChange> EntityChanges { get; set; }
 
     public const string DbTablePrefix = "App";
     public const string DbSchema = null;
