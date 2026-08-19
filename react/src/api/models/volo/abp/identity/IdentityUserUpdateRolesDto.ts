@@ -1,5 +1,5 @@
 /* oxlint-disable */
 
 export type VoloAbpIdentityIdentityUserUpdateRolesDto = {
-    roleNames: string[];
+  roleNames: string[];
 };

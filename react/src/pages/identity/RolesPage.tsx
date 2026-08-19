@@ -225,7 +225,7 @@ export function RolesPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteRoleId) return;
     deleteMutation.mutate(
-      { id: deleteRoleId },
+      { path: { id: deleteRoleId } },
       {
         onSuccess: () => {
           setDeleteRoleId(null);

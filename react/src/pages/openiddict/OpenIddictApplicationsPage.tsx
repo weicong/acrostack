@@ -67,7 +67,7 @@ export function OpenIddictApplicationsPage() {
   const handleDeleteConfirm = () => {
     if (!deleteAppId) return;
     deleteMutation.mutate(
-      { id: deleteAppId },
+      { path: { id: deleteAppId } },
       {
         onSuccess: () => {
           setDeleteAppId(null);

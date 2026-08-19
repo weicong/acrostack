@@ -331,10 +331,10 @@ describe("useDataTableQuery", () => {
 
     expect(queryOptions).toHaveBeenCalled();
     const params = queryOptions.mock.calls[0][0];
-    expect(params.Sorting).toBe("name asc");
-    expect(params.SkipCount).toBe(20);
-    expect(params.MaxResultCount).toBe(20);
-    expect(params.Filter).toBe("search");
+    expect(params.query.Sorting).toBe("name asc");
+    expect(params.query.SkipCount).toBe(20);
+    expect(params.query.MaxResultCount).toBe(20);
+    expect(params.query.Filter).toBe("search");
   });
 
   it("returns empty data when sorting is empty", () => {
@@ -435,6 +435,6 @@ describe("useDataTableQuery", () => {
     );
 
     const params = queryOptions.mock.calls[0][0];
-    expect(params.Filter).toBe("overridden");
+    expect(params.query.Filter).toBe("overridden");
   });
 });

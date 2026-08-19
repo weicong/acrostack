@@ -304,10 +304,10 @@ export function FileManagementPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const foldersQuery = useFileManagementGetFolders(
-    currentFolderId ? { parentId: currentFolderId } : undefined,
+    currentFolderId ? { query: { parentId: currentFolderId } } : undefined,
   );
   const filesQuery = useFileManagementGetFiles(
-    currentFolderId ? { folderId: currentFolderId } : undefined,
+    currentFolderId ? { query: { folderId: currentFolderId } } : undefined,
   );
   const storageInfoQuery = useFileManagementGetStorageInfo();
 
@@ -344,7 +344,7 @@ export function FileManagementPage() {
     const name = newFolderName.trim();
     if (!name) return;
     createFolderMutation.mutate(
-      { data: { name, parentId: currentFolderId } },
+      { body: { name, parentId: currentFolderId } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
@@ -362,8 +362,8 @@ export function FileManagementPage() {
       if (!file) return;
       uploadFileMutation.mutate(
         {
-          data: { file },
-          params: currentFolderId ? { folderId: currentFolderId } : undefined,
+          body: { file },
+          query: currentFolderId ? { folderId: currentFolderId } : undefined,
         },
         {
           onSuccess: () => {
@@ -386,7 +386,7 @@ export function FileManagementPage() {
   const handleDeleteFolderConfirm = useCallback(() => {
     if (!deleteFolderId) return;
     deleteFolderMutation.mutate(
-      { id: deleteFolderId },
+      { path: { id: deleteFolderId } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
@@ -405,7 +405,7 @@ export function FileManagementPage() {
   const handleDeleteFileConfirm = useCallback(() => {
     if (!deleteFileId) return;
     deleteFileMutation.mutate(
-      { id: deleteFileId },
+      { path: { id: deleteFileId } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
@@ -424,7 +424,10 @@ export function FileManagementPage() {
     async (file: FileEntryDto) => {
       if (!file.id) return;
       try {
-        const blob = await fileManagementDownloadFile(file.id, { responseType: "blob" });
+        const { data: blob } = await fileManagementDownloadFile({
+          path: { id: file.id },
+          responseType: "blob",
+        });
         const url = window.URL.createObjectURL(blob as Blob);
         const a = document.createElement("a");
         a.href = url;
@@ -452,12 +455,12 @@ export function FileManagementPage() {
 
       if (target.kind === "file") {
         moveFileMutation.mutate(
-          { id: target.id, data: { targetFolderId } },
+          { path: { id: target.id }, body: { targetFolderId } },
           { onSuccess: onMoveSuccess, onError: onMoveError },
         );
       } else {
         moveFolderMutation.mutate(
-          { id: target.id, data: { targetFolderId } },
+          { path: { id: target.id }, body: { targetFolderId } },
           { onSuccess: onMoveSuccess, onError: onMoveError },
         );
       }
@@ -777,8 +780,8 @@ function FileThumbnail({ fileId }: { fileId: string }) {
     let revoked = false;
     let objectUrl: string | null = null;
     setUrl(null);
-    fileManagementGetThumbnail(fileId, { responseType: "blob" })
-      .then((blob) => {
+    fileManagementGetThumbnail({ path: { id: fileId }, responseType: "blob" })
+      .then(({ data: blob }) => {
         if (revoked || !blob) return;
         objectUrl = window.URL.createObjectURL(blob as Blob);
         setUrl(objectUrl);
@@ -821,7 +824,7 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
   ]);
 
   const foldersQuery = useFileManagementGetFolders(
-    browseFolderId ? { parentId: browseFolderId } : undefined,
+    browseFolderId ? { query: { parentId: browseFolderId } } : undefined,
   );
   const folders = foldersQuery.data?.items ?? [];
 
@@ -929,7 +932,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
 
-  const shareLinksQuery = useFileManagementGetShareLinks(fileId);
+  const shareLinksQuery = useFileManagementGetShareLinks({ path: { id: fileId } });
   const createShareLinkMutation = useFileManagementCreateShareLink();
   const revokeShareLinkMutation = useFileManagementRevokeShareLink();
 
@@ -940,7 +943,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
 
   const invalidate = useCallback(() => {
     void queryClient.invalidateQueries({
-      queryKey: fileManagementGetShareLinksQueryKey(fileId),
+      queryKey: fileManagementGetShareLinksQueryKey({ path: { id: fileId } }),
     });
   }, [queryClient, fileId]);
 
@@ -960,7 +963,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
       data.maxDownloadCount = maxDownloadCount;
     }
     createShareLinkMutation.mutate(
-      { id: fileId, data },
+      { path: { id: fileId }, body: data },
       {
         onSuccess: () => {
           invalidate();
@@ -984,7 +987,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
   const handleRevoke = useCallback(
     (shareId: string) => {
       revokeShareLinkMutation.mutate(
-        { id: shareId },
+        { path: { id: shareId } },
         {
           onSuccess: () => {
             invalidate();
@@ -1110,7 +1113,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
 
-  const versionsQuery = useFileManagementGetFileVersions(fileId);
+  const versionsQuery = useFileManagementGetFileVersions({ path: { id: fileId } });
   const restoreVersionMutation = useFileManagementRestoreVersion();
   const [confirmVersionId, setConfirmVersionId] = useState<string | null>(null);
 
@@ -1121,7 +1124,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
 
   const invalidateAll = useCallback(() => {
     void queryClient.invalidateQueries({
-      queryKey: fileManagementGetFileVersionsQueryKey(fileId),
+      queryKey: fileManagementGetFileVersionsQueryKey({ path: { id: fileId } }),
     });
     void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
     void queryClient.invalidateQueries({
@@ -1132,7 +1135,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
   const handleRestoreConfirm = useCallback(() => {
     if (!confirmVersionId) return;
     restoreVersionMutation.mutate(
-      { id: fileId, versionId: confirmVersionId },
+      { path: { id: fileId, versionId: confirmVersionId } },
       {
         onSuccess: () => {
           invalidateAll();

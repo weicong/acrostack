@@ -81,8 +81,8 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
       if (isEdit && tag?.id) {
         updateMutation.mutate(
           {
-            id: tag.id,
-            data: {
+            path: { id: tag.id },
+            body: {
               name: value.name,
               concurrencyStamp: tag.concurrencyStamp ?? undefined,
             },
@@ -100,7 +100,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
       } else {
         createMutation.mutate(
           {
-            data: {
+            body: {
               entityType: value.entityType,
               name: value.name,
             },

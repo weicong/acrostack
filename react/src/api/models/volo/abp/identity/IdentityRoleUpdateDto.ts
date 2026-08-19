@@ -1,16 +1,16 @@
 /* oxlint-disable */
 
 export type VoloAbpIdentityIdentityRoleUpdateDto = {
-    readonly extraProperties?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * @minLength 0
-     * @maxLength 256
-     * @type string
-    */
-    name: string;
-    isDefault?: boolean;
-    isPublic?: boolean;
-    concurrencyStamp?: string | null;
+  readonly extraProperties?: {
+    [key: string]: unknown;
+  } | null;
+  /**
+   * @minLength 0
+   * @maxLength 256
+   * @type string
+   */
+  name: string;
+  isDefault?: boolean;
+  isPublic?: boolean;
+  concurrencyStamp?: string | null;
 };

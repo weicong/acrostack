@@ -91,7 +91,7 @@ export function MenuItemFormDialog({
   const createMutation = useMenuItemAdminCreate();
   const updateMutation = useMenuItemAdminUpdate();
 
-  const pagesQuery = useMenuItemAdminGetPageLookup({ MaxResultCount: 1000 });
+  const pagesQuery = useMenuItemAdminGetPageLookup({ query: { MaxResultCount: 1000 } });
   const pages = useMemo(() => pagesQuery.data?.items ?? [], [pagesQuery.data]);
 
   const form = useAppForm({
@@ -126,7 +126,7 @@ export function MenuItemFormDialog({
           pageId: pageId,
         };
         updateMutation.mutate(
-          { id: menuItem.id, data: payload },
+          { path: { id: menuItem.id }, body: payload },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -149,7 +149,7 @@ export function MenuItemFormDialog({
           pageId: pageId,
         };
         createMutation.mutate(
-          { data: payload },
+          { body: payload },
           {
             onSuccess: () => {
               dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });

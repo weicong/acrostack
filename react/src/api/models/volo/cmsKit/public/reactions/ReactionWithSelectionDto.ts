@@ -1,14 +1,14 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitPublicReactionsReactionDto } from './ReactionDto'
+import type { VoloCmsKitPublicReactionsReactionDto } from "./ReactionDto";
 
 export type VoloCmsKitPublicReactionsReactionWithSelectionDto = {
-    reaction?: VoloCmsKitPublicReactionsReactionDto;
-    /**
-     * @description
-     * Format: `int32`
-     * @type integer | undefined
-    */
-    count?: number;
-    isSelectedByCurrentUser?: boolean;
+  reaction?: VoloCmsKitPublicReactionsReactionDto;
+  /**
+   * @description
+   * Format: `int32`
+   * @type integer | undefined
+   */
+  count?: number;
+  isSelectedByCurrentUser?: boolean;
 };

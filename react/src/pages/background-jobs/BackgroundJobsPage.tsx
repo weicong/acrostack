@@ -114,11 +114,11 @@ export function BackgroundJobsPage() {
     };
 
     if (action.kind === "delete") {
-      deleteMutation.mutate({ id: action.id }, { onSuccess, onError });
+      deleteMutation.mutate({ path: { id: action.id } }, { onSuccess, onError });
     } else if (action.kind === "requeue") {
-      requeueMutation.mutate({ id: action.id }, { onSuccess, onError });
+      requeueMutation.mutate({ path: { id: action.id } }, { onSuccess, onError });
     } else {
-      abandonMutation.mutate({ id: action.id }, { onSuccess, onError });
+      abandonMutation.mutate({ path: { id: action.id } }, { onSuccess, onError });
     }
   }, [
     confirmAction,

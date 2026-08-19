@@ -1,8 +1,9 @@
 /* oxlint-disable */
 
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyAttributeDto = {
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyAttributeDto =
+  {
     typeSimple?: string | null;
     config?: {
-        [key: string]: unknown;
+      [key: string]: unknown;
     } | null;
-};
+  };

@@ -44,7 +44,10 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
   const updateMutation = useUserUpdate();
 
   const assignableRolesQuery = useUserGetAssignableRoles();
-  const userRolesQuery = useUserGetRoles(isEdit ? user.id : undefined);
+  const userRolesQuery = useUserGetRoles(
+    { path: { id: user?.id ?? "" } },
+    { query: { enabled: isEdit && !!user?.id } },
+  );
 
   const roleOptions: ComboboxOption[] = useMemo(
     () =>
@@ -95,8 +98,8 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
       if (isEdit && user?.id) {
         updateMutation.mutate(
           {
-            id: user.id,
-            data: {
+            path: { id: user.id },
+            body: {
               ...base,
               password: value.password || undefined,
               concurrencyStamp: value.concurrencyStamp || undefined,
@@ -105,7 +108,7 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
           { onSuccess },
         );
       } else {
-        createMutation.mutate({ data: { ...base, password: value.password! } }, { onSuccess });
+        createMutation.mutate({ body: { ...base, password: value.password! } }, { onSuccess });
       }
     },
   });

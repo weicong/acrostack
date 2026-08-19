@@ -214,7 +214,7 @@ export function MenusPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteItemId) return;
     deleteMutation.mutate(
-      { id: deleteItemId },
+      { path: { id: deleteItemId } },
       {
         onSuccess: () => {
           setDeleteItemId(null);

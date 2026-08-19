@@ -118,7 +118,7 @@ export function ClaimTypesPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteId) return;
     deleteMutation.mutate(
-      { id: deleteId },
+      { path: { id: deleteId } },
       {
         onSuccess: () => {
           setDeleteId(null);

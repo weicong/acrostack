@@ -23,10 +23,8 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { Add20Regular, Delete20Regular, Edit20Regular, Save20Regular } from "@fluentui/react-icons";
-import {
-  useIdentityUserClaimGetList,
-  identityUserClaimGetListQueryKey,
-} from "@/api/hooks/identityUserClaim";
+import { identityUserClaimGetListQueryKey } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
+import { useIdentityUserClaimGetList } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
 import { useIdentityUserClaimCreate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimCreate";
 import { useIdentityUserClaimUpdate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimUpdate";
 import { useIdentityUserClaimDelete } from "@/api/hooks/identityUserClaim/useIdentityUserClaimDelete";
@@ -85,9 +83,12 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
 
-  const claimsQuery = useIdentityUserClaimGetList(open && userId ? { userId } : undefined, {
-    query: { enabled: open && !!userId },
-  });
+  const claimsQuery = useIdentityUserClaimGetList(
+    open && userId ? { query: { userId } } : undefined,
+    {
+      query: { enabled: open && !!userId },
+    },
+  );
 
   const createMutation = useIdentityUserClaimCreate();
   const updateMutation = useIdentityUserClaimUpdate();
@@ -108,7 +109,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
   const invalidate = () => {
     if (userId) {
       void queryClient.invalidateQueries({
-        queryKey: identityUserClaimGetListQueryKey({ userId }),
+        queryKey: identityUserClaimGetListQueryKey({ query: { userId } }),
       });
     }
   };
@@ -121,7 +122,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
 
     createMutation.mutate(
       {
-        data: {
+        body: {
           userId,
           claimType: addValues.claimType,
           claimValue: addValues.claimValue,
@@ -164,8 +165,8 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
 
     updateMutation.mutate(
       {
-        id: editId,
-        data: {
+        path: { id: editId },
+        body: {
           claimType: editValues.claimType,
           claimValue: editValues.claimValue,
         },
@@ -186,7 +187,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
   const handleDelete = (claim: ClaimItem) => {
     if (!claim.id) return;
     deleteMutation.mutate(
-      { id: claim.id },
+      { path: { id: claim.id } },
       {
         onSuccess: () => {
           invalidate();
@@ -201,7 +202,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
 
   const isAddPending = createMutation.isPending;
   const isSavePending = updateMutation.isPending;
-  const deletePendingId = deleteMutation.isPending ? deleteMutation.variables?.id : null;
+  const deletePendingId = deleteMutation.isPending ? deleteMutation.variables?.path?.id : null;
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>

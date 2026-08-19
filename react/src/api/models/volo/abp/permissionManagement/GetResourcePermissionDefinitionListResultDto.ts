@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementResourcePermissionDefinitionDto } from './ResourcePermissionDefinitionDto'
+import type { VoloAbpPermissionManagementResourcePermissionDefinitionDto } from "./ResourcePermissionDefinitionDto";
 
 export type VoloAbpPermissionManagementGetResourcePermissionDefinitionListResultDto = {
-    permissions?: VoloAbpPermissionManagementResourcePermissionDefinitionDto[] | null;
+  permissions?: VoloAbpPermissionManagementResourcePermissionDefinitionDto[] | null;
 };

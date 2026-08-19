@@ -63,9 +63,9 @@ export function BookForm({ book, onSuccess, footer }: BookFormProps) {
       };
 
       if (isEdit && book?.id) {
-        updateMutation.mutate({ id: book.id, data: payload }, { onSuccess });
+        updateMutation.mutate({ path: { id: book.id }, body: payload }, { onSuccess });
       } else {
-        createMutation.mutate({ data: payload }, { onSuccess });
+        createMutation.mutate({ body: payload }, { onSuccess });
       }
     },
   });

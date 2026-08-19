@@ -66,7 +66,7 @@ export function OpenIddictScopesPage() {
   const handleDeleteConfirm = () => {
     if (!deleteScopeId) return;
     deleteMutation.mutate(
-      { id: deleteScopeId },
+      { path: { id: deleteScopeId } },
       {
         onSuccess: () => {
           setDeleteScopeId(null);

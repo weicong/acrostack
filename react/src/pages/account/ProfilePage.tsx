@@ -81,7 +81,7 @@ function ProfileFormCard() {
     onSubmit: ({ value }) => {
       updateMutation.mutate(
         {
-          data: {
+          body: {
             userName: value.userName,
             email: value.email,
             name: value.name || null,
@@ -187,7 +187,7 @@ function ChangePasswordFormCard() {
     onSubmit: ({ value }) => {
       changePasswordMutation.mutate(
         {
-          data: {
+          body: {
             currentPassword: value.currentPassword || undefined,
             newPassword: value.newPassword,
           },

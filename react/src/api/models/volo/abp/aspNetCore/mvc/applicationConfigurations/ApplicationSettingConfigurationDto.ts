@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationSettingConfigurationDto = {
-    values?: {
-        [key: string]: string;
-    } | null;
+  values?: {
+    [key: string]: string;
+  } | null;
 };

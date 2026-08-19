@@ -102,8 +102,8 @@ export function BlogPostFormDialog({
       if (isEdit && blogPost?.id) {
         updateMutation.mutate(
           {
-            id: blogPost.id,
-            data: {
+            path: { id: blogPost.id },
+            body: {
               title: value.title,
               slug: value.slug,
               shortDescription: value.shortDescription || undefined,
@@ -123,7 +123,7 @@ export function BlogPostFormDialog({
       } else {
         createMutation.mutate(
           {
-            data: {
+            body: {
               blogId: value.blogId,
               title: value.title,
               slug: value.slug,

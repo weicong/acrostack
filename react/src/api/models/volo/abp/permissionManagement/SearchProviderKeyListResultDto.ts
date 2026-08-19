@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementSearchProviderKeyInfo } from './SearchProviderKeyInfo'
+import type { VoloAbpPermissionManagementSearchProviderKeyInfo } from "./SearchProviderKeyInfo";
 
 export type VoloAbpPermissionManagementSearchProviderKeyListResultDto = {
-    keys?: VoloAbpPermissionManagementSearchProviderKeyInfo[] | null;
+  keys?: VoloAbpPermissionManagementSearchProviderKeyInfo[] | null;
 };

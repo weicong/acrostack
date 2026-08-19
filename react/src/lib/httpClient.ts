@@ -5,7 +5,7 @@
  * - baseURL: Resolved from runtimeConfig (dynamic-env.json) at request time
  */
 import type { InternalAxiosRequestConfig } from "axios";
-import { axiosInstance } from "@kubb/plugin-client/clients/axios";
+import { client } from "@/api/.kubb/client";
 import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
@@ -75,6 +75,8 @@ export async function handleResponseError(error: HttpErrorLike): Promise<never> 
 }
 
 export function setupHttpClientInterceptors() {
-  axiosInstance.interceptors.request.use(applyRequestConfig);
-  axiosInstance.interceptors.response.use((response) => response, handleResponseError);
+  // Kubb v5 的共享客户端实例：请求拦截器补充 ABP 头；
+  // 错误通道处理 401/403（通道本身总是以原错误拒绝）。
+  client.interceptors.request.use(applyRequestConfig);
+  client.interceptors.error.use(handleResponseError);
 }

@@ -192,7 +192,7 @@ export function BooksPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteBookId) return;
     deleteMutation.mutate(
-      { id: deleteBookId },
+      { path: { id: deleteBookId } },
       {
         onSuccess: () => {
           setDeleteBookId(null);

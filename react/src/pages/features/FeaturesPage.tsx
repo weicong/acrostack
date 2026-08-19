@@ -111,7 +111,7 @@ export function FeaturesPage() {
     }
 
     updateMutation.mutate(
-      { data: { features: changedFeatures } },
+      { body: { features: changedFeatures } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });

@@ -170,9 +170,11 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
 
   const params = useMemo(
     () => ({
-      StartTime: startDate ? startDate.toISOString() : undefined,
-      EndTime: endDate ? endDate.toISOString() : undefined,
-      TopCount: defaultTopCount,
+      query: {
+        StartTime: startDate ? startDate.toISOString() : undefined,
+        EndTime: endDate ? endDate.toISOString() : undefined,
+        TopCount: defaultTopCount,
+      },
     }),
     [startDate, endDate, defaultTopCount],
   );

@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpFeatureManagementUpdateFeatureDto } from './UpdateFeatureDto'
+import type { VoloAbpFeatureManagementUpdateFeatureDto } from "./UpdateFeatureDto";
 
 export type VoloAbpFeatureManagementUpdateFeaturesDto = {
-    features?: VoloAbpFeatureManagementUpdateFeatureDto[] | null;
+  features?: VoloAbpFeatureManagementUpdateFeatureDto[] | null;
 };

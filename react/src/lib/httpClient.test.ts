@@ -25,8 +25,8 @@ vi.mock("@/lib/i18n/i18n", () => ({
   default: { language: "zh-Hans" },
 }));
 
-vi.mock("@kubb/plugin-client/clients/axios", () => ({
-  axiosInstance: { interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } } },
+vi.mock("@/api/.kubb/client", () => ({
+  client: { interceptors: { request: { use: vi.fn() }, error: { use: vi.fn() } } },
 }));
 
 function makeConfig(

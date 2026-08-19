@@ -1,5 +1,5 @@
 /* oxlint-disable */
 
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsClockDto = {
-    kind?: string | null;
+  kind?: string | null;
 };

@@ -128,7 +128,7 @@ export function CommentsPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteCommentId) return;
     deleteMutation.mutate(
-      { id: deleteCommentId },
+      { path: { id: deleteCommentId } },
       {
         onSuccess: () => {
           setDeleteCommentId(null);
@@ -148,8 +148,8 @@ export function CommentsPage() {
       const newApproved = !comment.isApproved;
       approvalMutation.mutate(
         {
-          id: comment.id,
-          data: { isApproved: newApproved },
+          path: { id: comment.id },
+          body: { isApproved: newApproved },
         },
         {
           onSuccess: () => {

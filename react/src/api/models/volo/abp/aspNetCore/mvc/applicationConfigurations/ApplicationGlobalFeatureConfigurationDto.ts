@@ -1,5 +1,6 @@
 /* oxlint-disable */
 
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationGlobalFeatureConfigurationDto = {
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationGlobalFeatureConfigurationDto =
+  {
     enabledFeatures?: string[] | null;
-};
+  };

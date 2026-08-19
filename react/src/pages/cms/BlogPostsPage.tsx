@@ -144,7 +144,7 @@ export function BlogPostsPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deletePostId) return;
     deleteMutation.mutate(
-      { id: deletePostId },
+      { path: { id: deletePostId } },
       {
         onSuccess: () => {
           setDeletePostId(null);
@@ -161,7 +161,7 @@ export function BlogPostsPage() {
   const handlePublish = useCallback(
     (id: string) => {
       publishMutation.mutate(
-        { id },
+        { path: { id } },
         {
           onSuccess: () => {
             invalidateList();
@@ -179,7 +179,7 @@ export function BlogPostsPage() {
   const handleDraft = useCallback(
     (id: string) => {
       draftMutation.mutate(
-        { id },
+        { path: { id } },
         {
           onSuccess: () => {
             invalidateList();

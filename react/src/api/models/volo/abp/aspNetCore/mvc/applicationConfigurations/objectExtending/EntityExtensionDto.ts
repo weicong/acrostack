@@ -1,12 +1,12 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyDto } from './ExtensionPropertyDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyDto } from "./ExtensionPropertyDto";
 
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingEntityExtensionDto = {
-    properties?: {
-        [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyDto;
-    } | null;
-    configuration?: {
-        [key: string]: unknown;
-    } | null;
+  properties?: {
+    [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyDto;
+  } | null;
+  configuration?: {
+    [key: string]: unknown;
+  } | null;
 };

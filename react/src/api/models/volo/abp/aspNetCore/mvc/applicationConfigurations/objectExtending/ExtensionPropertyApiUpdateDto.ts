@@ -1,5 +1,6 @@
 /* oxlint-disable */
 
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyApiUpdateDto = {
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyApiUpdateDto =
+  {
     isAvailable?: boolean;
-};
+  };

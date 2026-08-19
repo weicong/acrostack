@@ -1,41 +1,41 @@
 /* oxlint-disable */
 
 export type VoloCmsKitAdminBlogsCreateBlogPostDto = {
-    readonly extraProperties?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * @description
-     * Format: `uuid`
-     * @type string
-    */
-    blogId: string;
-    /**
-     * @minLength 1
-     * @maxLength 64
-     * @type string
-    */
-    title: string;
-    /**
-     * @minLength 2
-     * @maxLength 256
-     * @type string
-    */
-    slug: string;
-    /**
-     * @maxLength 256
-     * @type string | undefined
-    */
-    shortDescription?: string | null;
-    /**
-     * @maxLength 2147483647
-     * @type string | undefined
-    */
-    content?: string | null;
-    /**
-     * @description
-     * Format: `uuid`
-     * @type string | undefined
-    */
-    coverImageMediaId?: string | null;
+  readonly extraProperties?: {
+    [key: string]: unknown;
+  } | null;
+  /**
+   * @description
+   * Format: `uuid`
+   * @type string
+   */
+  blogId: string;
+  /**
+   * @minLength 1
+   * @maxLength 64
+   * @type string
+   */
+  title: string;
+  /**
+   * @minLength 2
+   * @maxLength 256
+   * @type string
+   */
+  slug: string;
+  /**
+   * @maxLength 256
+   * @type string | undefined
+   */
+  shortDescription?: string | null;
+  /**
+   * @maxLength 2147483647
+   * @type string | undefined
+   */
+  content?: string | null;
+  /**
+   * @description
+   * Format: `uuid`
+   * @type string | undefined
+   */
+  coverImageMediaId?: string | null;
 };

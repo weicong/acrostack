@@ -98,7 +98,7 @@ export function PagesPage() {
   const handleSetAsHomePage = useCallback(
     (id: string) => {
       setHomePageMutation.mutate(
-        { id },
+        { path: { id } },
         {
           onSuccess: () => {
             void queryClient.invalidateQueries({
@@ -126,7 +126,7 @@ export function PagesPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deletePageId) return;
     deleteMutation.mutate(
-      { id: deletePageId },
+      { path: { id: deletePageId } },
       {
         onSuccess: () => {
           setDeletePageId(null);

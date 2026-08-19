@@ -63,10 +63,12 @@ export function RegisterPage() {
     onSubmit: async ({ value }) => {
       try {
         await accountRegister({
-          appName: "React",
-          userName: value.userName,
-          emailAddress: value.emailAddress,
-          password: value.password,
+          body: {
+            appName: "React",
+            userName: value.userName,
+            emailAddress: value.emailAddress,
+            password: value.password,
+          },
         });
         void login();
       } catch (err: unknown) {

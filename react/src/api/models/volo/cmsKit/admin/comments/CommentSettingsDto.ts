@@ -1,5 +1,5 @@
 /* oxlint-disable */
 
 export type VoloCmsKitAdminCommentsCommentSettingsDto = {
-    commentRequireApprovement?: boolean;
+  commentRequireApprovement?: boolean;
 };

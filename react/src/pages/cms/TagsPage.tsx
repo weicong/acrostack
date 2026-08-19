@@ -105,7 +105,7 @@ export function TagsPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteTagId) return;
     deleteMutation.mutate(
-      { id: deleteTagId },
+      { path: { id: deleteTagId } },
       {
         onSuccess: () => {
           setDeleteTagId(null);

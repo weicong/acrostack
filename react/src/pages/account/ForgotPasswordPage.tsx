@@ -48,7 +48,7 @@ export function ForgotPasswordPage() {
     },
     onSubmit: async ({ value }) => {
       try {
-        await accountSendPasswordResetCode({ appName: "React", email: value.email });
+        await accountSendPasswordResetCode({ body: { appName: "React", email: value.email } });
         setSent(true);
       } catch (err: unknown) {
         const msg =

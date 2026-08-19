@@ -33,9 +33,12 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
 
   // Fetch the full IdentityUserDto (with concurrencyStamp / lockoutEnabled) when editing.
   // Enabled only while the dialog is open and we have a user id.
-  const fullUserQuery = useUserGet(isEdit && open ? user?.id : undefined, {
-    query: { enabled: isEdit && open && !!user?.id },
-  });
+  const fullUserQuery = useUserGet(
+    { path: { id: user?.id ?? "" } },
+    {
+      query: { enabled: isEdit && open && !!user?.id },
+    },
+  );
 
   const formUser: UserFormUser | undefined = isEdit
     ? fullUserQuery.data

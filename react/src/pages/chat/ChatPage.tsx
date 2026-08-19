@@ -80,31 +80,34 @@ import { ChatClientMethods, ChatHubMethods } from "@/lib/chat/chatHub";
 import { useCurrentUser } from "@/lib/auth/permissions";
 import {
   useConversationGetList,
-  useConversationGetMessageList,
-  useConversationSendMessage,
-  useConversationMarkAsRead,
-  useConversationEditMessage,
-  useConversationDeleteMessage,
-  useConversationGetReactions,
-  useConversationToggleReaction,
-  useConversationSearchMessages,
   conversationGetListQueryKey,
+} from "@/api/hooks/conversation/useConversationGetList";
+import {
+  useConversationGetMessageList,
   conversationGetMessageListQueryKey,
+} from "@/api/hooks/conversation/useConversationGetMessageList";
+import { useConversationSendMessage } from "@/api/hooks/conversation/useConversationSendMessage";
+import { useConversationMarkAsRead } from "@/api/hooks/conversation/useConversationMarkAsRead";
+import { useConversationEditMessage } from "@/api/hooks/conversation/useConversationEditMessage";
+import { useConversationDeleteMessage } from "@/api/hooks/conversation/useConversationDeleteMessage";
+import {
+  useConversationGetReactions,
   conversationGetReactionsQueryKey,
-} from "@/api/hooks/conversation";
+} from "@/api/hooks/conversation/useConversationGetReactions";
+import { useConversationToggleReaction } from "@/api/hooks/conversation/useConversationToggleReaction";
+import { useConversationSearchMessages } from "@/api/hooks/conversation/useConversationSearchMessages";
+import { useContactGetList, contactGetListQueryKey } from "@/api/hooks/contact/useContactGetList";
 import {
-  useContactGetList,
   useContactGetTotalUnreadMessageCount,
-  contactGetListQueryKey,
   contactGetTotalUnreadMessageCountQueryKey,
-} from "@/api/hooks/contact";
+} from "@/api/hooks/contact/useContactGetTotalUnreadMessageCount";
+import { useChatBlockBlockUser } from "@/api/hooks/chatBlock/useChatBlockBlockUser";
+import { useChatBlockUnblockUser } from "@/api/hooks/chatBlock/useChatBlockUnblockUser";
 import {
-  useChatBlockBlockUser,
-  useChatBlockUnblockUser,
   useChatBlockGetBlockedUsers,
   chatBlockGetBlockedUsersQueryKey,
-} from "@/api/hooks/chatBlock";
-import { useChatSendMessageWithAttachment } from "@/api/hooks/chat";
+} from "@/api/hooks/chatBlock/useChatBlockGetBlockedUsers";
+import { useChatSendMessageWithAttachment } from "@/api/hooks/chat/useChatSendMessageWithAttachment";
 import { chatDownloadAttachment } from "@/api/clients/chat/chatDownloadAttachment";
 import type { AcroStackChatChatMessageDto as ChatMessageDto } from "@/api/models/acroStack/chat/ChatMessageDto";
 import type { AcroStackChatChatMessageReactionDto as ChatMessageReactionDto } from "@/api/models/acroStack/chat/ChatMessageReactionDto";
@@ -583,7 +586,10 @@ function MessageBubble({
 }: MessageBubbleProps) {
   const { t } = useTranslation();
   const styles = useStyles();
-  const reactionsQuery = useConversationGetReactions(message.id);
+  const reactionsQuery = useConversationGetReactions(
+    { path: { messageId: message.id ?? "" } },
+    { query: { enabled: !!message.id } },
+  );
   const reactions: ChatMessageReactionDto[] = reactionsQuery.data?.items ?? [];
 
   // Group reactions by emoji, tracking whether the current user has reacted.
@@ -797,9 +803,11 @@ export function ChatPage() {
   const messagesQuery = useConversationGetMessageList(
     state.selectedTargetUserId
       ? {
-          TargetUserId: state.selectedTargetUserId,
-          SkipCount: 0,
-          MaxResultCount: 100,
+          query: {
+            TargetUserId: state.selectedTargetUserId,
+            SkipCount: 0,
+            MaxResultCount: 100,
+          },
         }
       : undefined,
     {
@@ -883,9 +891,11 @@ export function ChatPage() {
       ) {
         void queryClient.invalidateQueries({
           queryKey: conversationGetMessageListQueryKey({
-            TargetUserId: activeTargetUserId,
-            SkipCount: 0,
-            MaxResultCount: 100,
+            query: {
+              TargetUserId: activeTargetUserId,
+              SkipCount: 0,
+              MaxResultCount: 100,
+            },
           }),
         });
       }
@@ -896,9 +906,11 @@ export function ChatPage() {
       if (readByUserId === state.selectedTargetUserId) {
         void queryClient.invalidateQueries({
           queryKey: conversationGetMessageListQueryKey({
-            TargetUserId: readByUserId,
-            SkipCount: 0,
-            MaxResultCount: 100,
+            query: {
+              TargetUserId: readByUserId,
+              SkipCount: 0,
+              MaxResultCount: 100,
+            },
           }),
         });
       }
@@ -919,9 +931,11 @@ export function ChatPage() {
       ) {
         void queryClient.invalidateQueries({
           queryKey: conversationGetMessageListQueryKey({
-            TargetUserId: activeTargetUserId,
-            SkipCount: 0,
-            MaxResultCount: 100,
+            query: {
+              TargetUserId: activeTargetUserId,
+              SkipCount: 0,
+              MaxResultCount: 100,
+            },
           }),
         });
       }
@@ -931,19 +945,21 @@ export function ChatPage() {
       if (activeTargetUserId) {
         void queryClient.invalidateQueries({
           queryKey: conversationGetMessageListQueryKey({
-            TargetUserId: activeTargetUserId,
-            SkipCount: 0,
-            MaxResultCount: 100,
+            query: {
+              TargetUserId: activeTargetUserId,
+              SkipCount: 0,
+              MaxResultCount: 100,
+            },
           }),
         });
       }
       void queryClient.invalidateQueries({
-        queryKey: conversationGetReactionsQueryKey(messageId),
+        queryKey: conversationGetReactionsQueryKey({ path: { messageId } }),
       });
     };
     const onReactionChanged = (messageId: string) => {
       void queryClient.invalidateQueries({
-        queryKey: conversationGetReactionsQueryKey(messageId),
+        queryKey: conversationGetReactionsQueryKey({ path: { messageId } }),
       });
     };
     const onUserOnlineStatusChanged = () => {
@@ -1016,14 +1032,16 @@ export function ChatPage() {
     const unreadInActive = messages.some((m) => m.side === 1 && !m.isRead);
     if (!unreadInActive) return;
     markAsReadMutation.mutate(
-      { targetUserId },
+      { path: { targetUserId } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({
             queryKey: conversationGetMessageListQueryKey({
-              TargetUserId: targetUserId,
-              SkipCount: 0,
-              MaxResultCount: 100,
+              query: {
+                TargetUserId: targetUserId,
+                SkipCount: 0,
+                MaxResultCount: 100,
+              },
             }),
           });
           void queryClient.invalidateQueries({
@@ -1153,7 +1171,7 @@ export function ChatPage() {
       const file = attachmentFile;
       sendMessageWithAttachmentMutation.mutate(
         {
-          data: {
+          body: {
             TargetUserId: targetUserId,
             Text: text || undefined,
             attachment: file,
@@ -1166,9 +1184,11 @@ export function ChatPage() {
             if (attachmentInputRef.current) attachmentInputRef.current.value = "";
             void queryClient.invalidateQueries({
               queryKey: conversationGetMessageListQueryKey({
-                TargetUserId: targetUserId,
-                SkipCount: 0,
-                MaxResultCount: 100,
+                query: {
+                  TargetUserId: targetUserId,
+                  SkipCount: 0,
+                  MaxResultCount: 100,
+                },
               }),
             });
             void queryClient.invalidateQueries({
@@ -1184,7 +1204,7 @@ export function ChatPage() {
     if (!text) return;
     sendMessageMutation.mutate(
       {
-        data: {
+        body: {
           targetUserId,
           text,
         },
@@ -1194,9 +1214,11 @@ export function ChatPage() {
           setState((s) => ({ ...s, composerValue: "" }));
           void queryClient.invalidateQueries({
             queryKey: conversationGetMessageListQueryKey({
-              TargetUserId: targetUserId,
-              SkipCount: 0,
-              MaxResultCount: 100,
+              query: {
+                TargetUserId: targetUserId,
+                SkipCount: 0,
+                MaxResultCount: 100,
+              },
             }),
           });
           void queryClient.invalidateQueries({
@@ -1263,8 +1285,8 @@ export function ChatPage() {
     if (!messageId || !text || !targetUserId) return;
     editMessageMutation.mutate(
       {
-        messageId,
-        data: { text },
+        path: { messageId },
+        body: { text },
       },
       {
         onSuccess: () => {
@@ -1272,9 +1294,11 @@ export function ChatPage() {
           setEditingText("");
           void queryClient.invalidateQueries({
             queryKey: conversationGetMessageListQueryKey({
-              TargetUserId: targetUserId,
-              SkipCount: 0,
-              MaxResultCount: 100,
+              query: {
+                TargetUserId: targetUserId,
+                SkipCount: 0,
+                MaxResultCount: 100,
+              },
             }),
           });
           dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
@@ -1297,19 +1321,21 @@ export function ChatPage() {
     const targetUserId = state.selectedTargetUserId;
     if (!messageId || !targetUserId) return;
     deleteMessageMutation.mutate(
-      { messageId },
+      { path: { messageId } },
       {
         onSuccess: () => {
           setDeleteMessageId(null);
           void queryClient.invalidateQueries({
             queryKey: conversationGetMessageListQueryKey({
-              TargetUserId: targetUserId,
-              SkipCount: 0,
-              MaxResultCount: 100,
+              query: {
+                TargetUserId: targetUserId,
+                SkipCount: 0,
+                MaxResultCount: 100,
+              },
             }),
           });
           void queryClient.invalidateQueries({
-            queryKey: conversationGetReactionsQueryKey(messageId),
+            queryKey: conversationGetReactionsQueryKey({ path: { messageId } }),
           });
           dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
         },
@@ -1330,11 +1356,11 @@ export function ChatPage() {
     (messageId: string | undefined, reaction: string) => {
       if (!messageId) return;
       toggleReactionMutation.mutate(
-        { messageId, params: { reaction } },
+        { path: { messageId }, query: { reaction } },
         {
           onSuccess: () => {
             void queryClient.invalidateQueries({
-              queryKey: conversationGetReactionsQueryKey(messageId),
+              queryKey: conversationGetReactionsQueryKey({ path: { messageId } }),
             });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
@@ -1349,7 +1375,10 @@ export function ChatPage() {
     async (messageId: string | undefined, fallbackName?: string | null) => {
       if (!messageId) return;
       try {
-        const blob = await chatDownloadAttachment(messageId, { responseType: "blob" });
+        const { data: blob } = await chatDownloadAttachment({
+          path: { messageId },
+          responseType: "blob",
+        });
         const url = window.URL.createObjectURL(blob as Blob);
         const a = document.createElement("a");
         a.href = url;
@@ -1378,7 +1407,7 @@ export function ChatPage() {
       setIsSearchingMessages(true);
       searchMessagesMutation.mutate(
         {
-          data: {
+          body: {
             keyword: trimmed,
             skipCount: 0,
             maxResultCount: 20,
@@ -1404,7 +1433,7 @@ export function ChatPage() {
   const handleBlockUser = useCallback(
     (blockedUserId: string) => {
       blockUserMutation.mutate(
-        { blockedUserId },
+        { path: { blockedUserId } },
         {
           onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: contactGetListQueryKey() });
@@ -1423,7 +1452,7 @@ export function ChatPage() {
   const handleUnblockUser = useCallback(
     (blockedUserId: string) => {
       unblockUserMutation.mutate(
-        { blockedUserId },
+        { path: { blockedUserId } },
         {
           onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: contactGetListQueryKey() });

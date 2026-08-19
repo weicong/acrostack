@@ -29,10 +29,11 @@ interface PagedQueryOptions<TData> {
 
 interface UseDataTableQueryOptions<TData, TParams extends AbpGridParams> {
   /**
+   * Kubb v5 生成的 xxxQueryOptions 第一个参数是 { query?: {...} }，
    * 第二参数 config 类型为 never：本 hook 从不透传 config
    * （Kubb 函数的 Partial<RequestConfig> 参数在严格逆变下与 unknown 不兼容）。
    */
-  queryOptions: (params?: TParams, config?: never) => PagedQueryOptions<TData>;
+  queryOptions: (params?: { query?: TParams }, config?: never) => PagedQueryOptions<TData>;
   sorting?: SortingState;
   pagination?: PaginationState;
   globalFilter?: string;
@@ -66,16 +67,17 @@ function useDataTableQuery<TData, TParams extends AbpGridParams>(
   const pageSize = pagination?.pageSize ?? 10;
   const pageIndex = pagination?.pageIndex ?? 0;
 
-  const params = useMemo<TParams>(
-    () =>
-      ({
-        // Defaults first, then extraParams so callers can override Filter/Sorting/etc.
+  const params = useMemo<{ query: TParams }>(
+    () => ({
+      // Defaults first, then extraParams so callers can override Filter/Sorting/etc.
+      query: {
         Sorting: buildSortingString(sorting),
         Filter: globalFilter || undefined,
         SkipCount: pageIndex * pageSize,
         MaxResultCount: pageSize,
         ...extraParams,
-      }) as TParams,
+      } as TParams,
+    }),
     [extraParams, sorting, globalFilter, pageIndex, pageSize],
   );
 

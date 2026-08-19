@@ -111,7 +111,7 @@ export function PermissionsPage() {
   const roles = rolesQuery.data?.items ?? [];
 
   const permissionsQuery = usePermissionsGet(
-    providerKey ? { providerName, providerKey } : undefined,
+    providerKey ? { query: { providerName, providerKey } } : undefined,
     {
       query: { enabled: !!providerKey },
     },
@@ -180,13 +180,13 @@ export function PermissionsPage() {
 
     updateMutation.mutate(
       {
-        params: { providerName, providerKey },
-        data: { permissions: changedPermissions },
+        query: { providerName, providerKey },
+        body: { permissions: changedPermissions },
       },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({
-            queryKey: permissionsGetQueryKey({ providerName, providerKey }),
+            queryKey: permissionsGetQueryKey({ query: { providerName, providerKey } }),
           });
           dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
         },

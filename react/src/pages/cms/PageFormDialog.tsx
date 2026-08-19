@@ -83,8 +83,8 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
       if (isEdit && page?.id) {
         updateMutation.mutate(
           {
-            id: page.id,
-            data: {
+            path: { id: page.id },
+            body: {
               title: value.title,
               slug: value.slug,
               content: value.content || undefined,
@@ -104,7 +104,7 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
       } else {
         createMutation.mutate(
           {
-            data: {
+            body: {
               title: value.title,
               slug: value.slug,
               content: value.content || undefined,

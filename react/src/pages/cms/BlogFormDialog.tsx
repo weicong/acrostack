@@ -81,8 +81,8 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
       if (isEdit && blog?.id) {
         updateMutation.mutate(
           {
-            id: blog.id,
-            data: {
+            path: { id: blog.id },
+            body: {
               name: value.name,
               slug: value.slug,
               concurrencyStamp: blog.concurrencyStamp ?? undefined,
@@ -101,7 +101,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
       } else {
         createMutation.mutate(
           {
-            data: {
+            body: {
               name: value.name,
               slug: value.slug,
             },

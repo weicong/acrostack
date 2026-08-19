@@ -58,9 +58,11 @@ export function ResetPasswordPage() {
     onSubmit: async ({ value }) => {
       try {
         await accountResetPassword({
-          userId,
-          resetToken,
-          password: value.password,
+          body: {
+            userId,
+            resetToken,
+            password: value.password,
+          },
         });
         window.location.href = "/account/login";
       } catch (err: unknown) {

@@ -1,5 +1,5 @@
 /* oxlint-disable */
 
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsWindowsTimeZone = {
-    timeZoneId?: string | null;
+  timeZoneId?: string | null;
 };

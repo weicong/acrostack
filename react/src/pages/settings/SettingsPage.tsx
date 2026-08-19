@@ -132,7 +132,7 @@ function EmailSettingsCard() {
 
     updateMutation.mutate(
       {
-        data: {
+        body: {
           smtpHost: form.smtpHost || null,
           smtpPort: form.smtpPort ?? undefined,
           smtpUserName: form.smtpUserName || null,
@@ -278,7 +278,7 @@ function TestEmailCard() {
 
     sendMutation.mutate(
       {
-        data: {
+        body: {
           senderEmailAddress: form.senderEmailAddress,
           targetEmailAddress: form.targetEmailAddress,
           subject: form.subject,
@@ -371,7 +371,7 @@ function TimeZoneSettingsCard() {
   const handleSave = () => {
     if (!selectedTz) return;
     updateMutation.mutate(
-      { params: { timezone: selectedTz } },
+      { query: { timezone: selectedTz } },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: timeZoneSettingsGetQueryKey() });

@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
-import type { VoloAbpSettingManagementSendTestEmailInput } from '../volo/abp/settingManagement/SendTestEmailInput'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
+import type { VoloAbpSettingManagementSendTestEmailInput } from "../volo/abp/settingManagement/SendTestEmailInput";
 
 export type EmailSettingsSendTestEmailStatus200 = unknown;
 
@@ -13,7 +13,10 @@ export type EmailSettingsSendTestEmailStatus400Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus400 = (EmailSettingsSendTestEmailStatus400Plain | EmailSettingsSendTestEmailStatus400Json | EmailSettingsSendTestEmailStatus400Json2);
+export type EmailSettingsSendTestEmailStatus400 =
+  | EmailSettingsSendTestEmailStatus400Plain
+  | EmailSettingsSendTestEmailStatus400Json
+  | EmailSettingsSendTestEmailStatus400Json2;
 
 export type EmailSettingsSendTestEmailStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
@@ -21,7 +24,10 @@ export type EmailSettingsSendTestEmailStatus401Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus401 = (EmailSettingsSendTestEmailStatus401Plain | EmailSettingsSendTestEmailStatus401Json | EmailSettingsSendTestEmailStatus401Json2);
+export type EmailSettingsSendTestEmailStatus401 =
+  | EmailSettingsSendTestEmailStatus401Plain
+  | EmailSettingsSendTestEmailStatus401Json
+  | EmailSettingsSendTestEmailStatus401Json2;
 
 export type EmailSettingsSendTestEmailStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
@@ -29,7 +35,10 @@ export type EmailSettingsSendTestEmailStatus403Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus403 = (EmailSettingsSendTestEmailStatus403Plain | EmailSettingsSendTestEmailStatus403Json | EmailSettingsSendTestEmailStatus403Json2);
+export type EmailSettingsSendTestEmailStatus403 =
+  | EmailSettingsSendTestEmailStatus403Plain
+  | EmailSettingsSendTestEmailStatus403Json
+  | EmailSettingsSendTestEmailStatus403Json2;
 
 export type EmailSettingsSendTestEmailStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
@@ -37,7 +46,10 @@ export type EmailSettingsSendTestEmailStatus404Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus404 = (EmailSettingsSendTestEmailStatus404Plain | EmailSettingsSendTestEmailStatus404Json | EmailSettingsSendTestEmailStatus404Json2);
+export type EmailSettingsSendTestEmailStatus404 =
+  | EmailSettingsSendTestEmailStatus404Plain
+  | EmailSettingsSendTestEmailStatus404Json
+  | EmailSettingsSendTestEmailStatus404Json2;
 
 export type EmailSettingsSendTestEmailStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
@@ -45,7 +57,10 @@ export type EmailSettingsSendTestEmailStatus500Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus500 = (EmailSettingsSendTestEmailStatus500Plain | EmailSettingsSendTestEmailStatus500Json | EmailSettingsSendTestEmailStatus500Json2);
+export type EmailSettingsSendTestEmailStatus500 =
+  | EmailSettingsSendTestEmailStatus500Plain
+  | EmailSettingsSendTestEmailStatus500Json
+  | EmailSettingsSendTestEmailStatus500Json2;
 
 export type EmailSettingsSendTestEmailStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
@@ -53,89 +68,127 @@ export type EmailSettingsSendTestEmailStatus501Json = VoloAbpHttpRemoteServiceEr
 
 export type EmailSettingsSendTestEmailStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsSendTestEmailStatus501 = (EmailSettingsSendTestEmailStatus501Plain | EmailSettingsSendTestEmailStatus501Json | EmailSettingsSendTestEmailStatus501Json2);
+export type EmailSettingsSendTestEmailStatus501 =
+  | EmailSettingsSendTestEmailStatus501Plain
+  | EmailSettingsSendTestEmailStatus501Json
+  | EmailSettingsSendTestEmailStatus501Json2;
 
-export type EmailSettingsSendTestEmailBodyJson = VoloAbpSettingManagementSendTestEmailInput | undefined;
+export type EmailSettingsSendTestEmailBodyJson =
+  | VoloAbpSettingManagementSendTestEmailInput
+  | undefined;
 
-export type EmailSettingsSendTestEmailBodyJson2 = VoloAbpSettingManagementSendTestEmailInput | undefined;
+export type EmailSettingsSendTestEmailBodyJson2 =
+  | VoloAbpSettingManagementSendTestEmailInput
+  | undefined;
 
-export type EmailSettingsSendTestEmailBodyJson3 = VoloAbpSettingManagementSendTestEmailInput | undefined;
+export type EmailSettingsSendTestEmailBodyJson3 =
+  | VoloAbpSettingManagementSendTestEmailInput
+  | undefined;
 
-export type EmailSettingsSendTestEmailBody = (EmailSettingsSendTestEmailBodyJson | EmailSettingsSendTestEmailBodyJson2 | EmailSettingsSendTestEmailBodyJson3);
+export type EmailSettingsSendTestEmailBody =
+  | EmailSettingsSendTestEmailBodyJson
+  | EmailSettingsSendTestEmailBodyJson2
+  | EmailSettingsSendTestEmailBodyJson3;
 
 export type EmailSettingsSendTestEmailOptions = {
-    body: EmailSettingsSendTestEmailBody;
-    path?: never;
-    query?: never;
-    headers?: never;
+  body: EmailSettingsSendTestEmailBody;
+  path?: never;
+  query?: never;
+  headers?: never;
 };
 
 export type EmailSettingsSendTestEmailResponses = {
-    "200": EmailSettingsSendTestEmailStatus200;
-    "204": EmailSettingsSendTestEmailStatus204;
-    "400": ({
+  "200": EmailSettingsSendTestEmailStatus200;
+  "204": EmailSettingsSendTestEmailStatus204;
+  "400":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus400Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus400Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus400Json2;
-    });
-    "401": ({
+      };
+  "401":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus401Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus401Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus401Json2;
-    });
-    "403": ({
+      };
+  "403":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus403Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus403Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus403Json2;
-    });
-    "404": ({
+      };
+  "404":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus404Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus404Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus404Json2;
-    });
-    "500": ({
+      };
+  "500":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus500Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus500Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus500Json2;
-    });
-    "501": ({
+      };
+  "501":
+    | {
         contentType: "text/plain";
         data: EmailSettingsSendTestEmailStatus501Plain;
-    } | {
+      }
+    | {
         contentType: "application/json";
         data: EmailSettingsSendTestEmailStatus501Json;
-    } | {
+      }
+    | {
         contentType: "text/json";
         data: EmailSettingsSendTestEmailStatus501Json2;
-    });
+      };
 };
 
 /**
  * @description Union of all possible responses
-*/
-export type EmailSettingsSendTestEmailResponse = (EmailSettingsSendTestEmailStatus200 | EmailSettingsSendTestEmailStatus204 | EmailSettingsSendTestEmailStatus400 | EmailSettingsSendTestEmailStatus401 | EmailSettingsSendTestEmailStatus403 | EmailSettingsSendTestEmailStatus404 | EmailSettingsSendTestEmailStatus500 | EmailSettingsSendTestEmailStatus501);
+ */
+export type EmailSettingsSendTestEmailResponse =
+  | EmailSettingsSendTestEmailStatus200
+  | EmailSettingsSendTestEmailStatus204
+  | EmailSettingsSendTestEmailStatus400
+  | EmailSettingsSendTestEmailStatus401
+  | EmailSettingsSendTestEmailStatus403
+  | EmailSettingsSendTestEmailStatus404
+  | EmailSettingsSendTestEmailStatus500
+  | EmailSettingsSendTestEmailStatus501;

@@ -1,7 +1,8 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementFileVersionDto } from '../../../../../../../acroStack/fileManagement/FileVersionDto'
+import type { AcroStackFileManagementFileVersionDto } from "../../../../../../../acroStack/fileManagement/FileVersionDto";
 
-export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull = {
+export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull =
+  {
     items?: AcroStackFileManagementFileVersionDto[] | null;
-};
+  };

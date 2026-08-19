@@ -23,10 +23,8 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { Add20Regular, Delete20Regular, Edit20Regular, Save20Regular } from "@fluentui/react-icons";
-import {
-  useIdentityRoleClaimGetList,
-  identityRoleClaimGetListQueryKey,
-} from "@/api/hooks/identityRoleClaim";
+import { identityRoleClaimGetListQueryKey } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimGetList";
+import { useIdentityRoleClaimGetList } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimGetList";
 import { useIdentityRoleClaimCreate } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimCreate";
 import { useIdentityRoleClaimUpdate } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimUpdate";
 import { useIdentityRoleClaimDelete } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimDelete";
@@ -85,9 +83,12 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
 
-  const claimsQuery = useIdentityRoleClaimGetList(open && roleId ? { roleId } : undefined, {
-    query: { enabled: open && !!roleId },
-  });
+  const claimsQuery = useIdentityRoleClaimGetList(
+    open && roleId ? { query: { roleId } } : undefined,
+    {
+      query: { enabled: open && !!roleId },
+    },
+  );
 
   const createMutation = useIdentityRoleClaimCreate();
   const updateMutation = useIdentityRoleClaimUpdate();
@@ -108,7 +109,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
   const invalidate = () => {
     if (roleId) {
       void queryClient.invalidateQueries({
-        queryKey: identityRoleClaimGetListQueryKey({ roleId }),
+        queryKey: identityRoleClaimGetListQueryKey({ query: { roleId } }),
       });
     }
   };
@@ -121,7 +122,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
 
     createMutation.mutate(
       {
-        data: {
+        body: {
           roleId,
           claimType: addValues.claimType,
           claimValue: addValues.claimValue,
@@ -164,8 +165,8 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
 
     updateMutation.mutate(
       {
-        id: editId,
-        data: {
+        path: { id: editId },
+        body: {
           claimType: editValues.claimType,
           claimValue: editValues.claimValue,
         },
@@ -186,7 +187,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
   const handleDelete = (claim: ClaimItem) => {
     if (!claim.id) return;
     deleteMutation.mutate(
-      { id: claim.id },
+      { path: { id: claim.id } },
       {
         onSuccess: () => {
           invalidate();
@@ -201,7 +202,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
 
   const isAddPending = createMutation.isPending;
   const isSavePending = updateMutation.isPending;
-  const deletePendingId = deleteMutation.isPending ? deleteMutation.variables?.id : null;
+  const deletePendingId = deleteMutation.isPending ? deleteMutation.variables?.path?.id : null;
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>

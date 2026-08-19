@@ -119,11 +119,11 @@ export function ClaimTypeFormDialog({
 
       if (isEdit && seed?.id) {
         updateMutation.mutate(
-          { id: seed.id, data },
+          { path: { id: seed.id }, body: data },
           { onSuccess: handleSuccess, onError: handleError },
         );
       } else {
-        createMutation.mutate({ data }, { onSuccess: handleSuccess, onError: handleError });
+        createMutation.mutate({ body: data }, { onSuccess: handleSuccess, onError: handleError });
       }
     },
   });

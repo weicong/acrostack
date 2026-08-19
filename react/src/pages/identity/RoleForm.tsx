@@ -64,8 +64,8 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
       if (isEdit && role?.id) {
         updateMutation.mutate(
           {
-            id: role.id,
-            data: {
+            path: { id: role.id },
+            body: {
               ...base,
               concurrencyStamp: value.concurrencyStamp || undefined,
             },
@@ -73,7 +73,7 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
           { onSuccess },
         );
       } else {
-        createMutation.mutate({ data: base }, { onSuccess });
+        createMutation.mutate({ body: base }, { onSuccess });
       }
     },
   });

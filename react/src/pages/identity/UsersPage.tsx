@@ -288,7 +288,7 @@ export function UsersPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteUserId) return;
     deleteMutation.mutate(
-      { id: deleteUserId },
+      { path: { id: deleteUserId } },
       {
         onSuccess: () => {
           setDeleteUserId(null);

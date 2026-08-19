@@ -103,7 +103,7 @@ export function BlogsPage() {
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteBlogId) return;
     deleteMutation.mutate(
-      { id: deleteBlogId },
+      { path: { id: deleteBlogId } },
       {
         onSuccess: () => {
           setDeleteBlogId(null);
