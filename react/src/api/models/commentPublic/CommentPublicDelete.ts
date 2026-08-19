@@ -1,186 +1,141 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type CommentPublicDeletePathId = string;
-
-/**
- * @type any
- */
-export type CommentPublicDeleteStatus200 = any;
-
-/**
- * @type any
- */
-export type CommentPublicDeleteStatus204 = any;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus400 =
-  | CommentPublicDeleteStatus400Plain
-  | CommentPublicDeleteStatus400Json
-  | CommentPublicDeleteStatus400Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus401 =
-  | CommentPublicDeleteStatus401Plain
-  | CommentPublicDeleteStatus401Json
-  | CommentPublicDeleteStatus401Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus403 =
-  | CommentPublicDeleteStatus403Plain
-  | CommentPublicDeleteStatus403Json
-  | CommentPublicDeleteStatus403Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus404 =
-  | CommentPublicDeleteStatus404Plain
-  | CommentPublicDeleteStatus404Json
-  | CommentPublicDeleteStatus404Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus500 =
-  | CommentPublicDeleteStatus500Plain
-  | CommentPublicDeleteStatus500Json
-  | CommentPublicDeleteStatus500Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type CommentPublicDeleteStatus501 =
-  | CommentPublicDeleteStatus501Plain
-  | CommentPublicDeleteStatus501Json
-  | CommentPublicDeleteStatus501Json2;
-
-/**
- * @type object
- */
-export type CommentPublicDeleteRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: CommentPublicDeletePathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/cms-kit-public/comments/${string}`;
+export type CommentPublicDeletePath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type CommentPublicDeleteStatus200 = unknown;
+
+export type CommentPublicDeleteStatus204 = unknown;
+
+export type CommentPublicDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus400 = (CommentPublicDeleteStatus400Plain | CommentPublicDeleteStatus400Json | CommentPublicDeleteStatus400Json2);
+
+export type CommentPublicDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus401 = (CommentPublicDeleteStatus401Plain | CommentPublicDeleteStatus401Json | CommentPublicDeleteStatus401Json2);
+
+export type CommentPublicDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus403 = (CommentPublicDeleteStatus403Plain | CommentPublicDeleteStatus403Json | CommentPublicDeleteStatus403Json2);
+
+export type CommentPublicDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus404 = (CommentPublicDeleteStatus404Plain | CommentPublicDeleteStatus404Json | CommentPublicDeleteStatus404Json2);
+
+export type CommentPublicDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus500 = (CommentPublicDeleteStatus500Plain | CommentPublicDeleteStatus500Json | CommentPublicDeleteStatus500Json2);
+
+export type CommentPublicDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type CommentPublicDeleteStatus501 = (CommentPublicDeleteStatus501Plain | CommentPublicDeleteStatus501Json | CommentPublicDeleteStatus501Json2);
+
+export type CommentPublicDeleteOptions = {
+    body?: never;
+    path: CommentPublicDeletePath;
+    query?: never;
+    headers?: never;
+};
+
 export type CommentPublicDeleteResponses = {
-  "200": CommentPublicDeleteStatus200;
-  "204": CommentPublicDeleteStatus204;
-  "400": CommentPublicDeleteStatus400;
-  "401": CommentPublicDeleteStatus401;
-  "403": CommentPublicDeleteStatus403;
-  "404": CommentPublicDeleteStatus404;
-  "500": CommentPublicDeleteStatus500;
-  "501": CommentPublicDeleteStatus501;
+    "200": CommentPublicDeleteStatus200;
+    "204": CommentPublicDeleteStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: CommentPublicDeleteStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: CommentPublicDeleteStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: CommentPublicDeleteStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type CommentPublicDeleteResponse =
-  | CommentPublicDeleteStatus200
-  | CommentPublicDeleteStatus204
-  | CommentPublicDeleteStatus400
-  | CommentPublicDeleteStatus401
-  | CommentPublicDeleteStatus403
-  | CommentPublicDeleteStatus404
-  | CommentPublicDeleteStatus500
-  | CommentPublicDeleteStatus501;
+*/
+export type CommentPublicDeleteResponse = (CommentPublicDeleteStatus200 | CommentPublicDeleteStatus204 | CommentPublicDeleteStatus400 | CommentPublicDeleteStatus401 | CommentPublicDeleteStatus403 | CommentPublicDeleteStatus404 | CommentPublicDeleteStatus500 | CommentPublicDeleteStatus501);

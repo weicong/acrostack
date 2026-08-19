@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityClaimTypeUpdatePathId,
-  IdentityClaimTypeUpdateData,
-  IdentityClaimTypeUpdateStatus200,
-  IdentityClaimTypeUpdateStatus400,
-  IdentityClaimTypeUpdateStatus401,
-  IdentityClaimTypeUpdateStatus403,
-  IdentityClaimTypeUpdateStatus404,
-  IdentityClaimTypeUpdateStatus500,
-  IdentityClaimTypeUpdateStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeUpdate.ts";
-
-function getIdentityClaimTypeUpdateUrl(id: IdentityClaimTypeUpdatePathId) {
-  const res = { method: "PUT", url: `/api/app/identity-claim-type/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityClaimTypeUpdateOptions, IdentityClaimTypeUpdateResponses } from '../../models/identityClaimType/IdentityClaimTypeUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-claim-type/:id}
  */
-export async function identityClaimTypeUpdate(
-  id: IdentityClaimTypeUpdatePathId,
-  data?: IdentityClaimTypeUpdateData,
-  config: Partial<RequestConfig<IdentityClaimTypeUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function identityClaimTypeUpdate<ThrowOnError extends boolean = true>(options: Options<IdentityClaimTypeUpdateOptions, ThrowOnError>): Promise<RequestResult<IdentityClaimTypeUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    IdentityClaimTypeUpdateStatus200,
-    ResponseErrorConfig<
-      | IdentityClaimTypeUpdateStatus400
-      | IdentityClaimTypeUpdateStatus401
-      | IdentityClaimTypeUpdateStatus403
-      | IdentityClaimTypeUpdateStatus404
-      | IdentityClaimTypeUpdateStatus500
-      | IdentityClaimTypeUpdateStatus501
-    >,
-    IdentityClaimTypeUpdateData
-  >({
-    method: "PUT",
-    url: getIdentityClaimTypeUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/app/identity-claim-type/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityClaimTypeUpdateResponses, ThrowOnError>>
 }

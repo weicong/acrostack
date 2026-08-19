@@ -1,53 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ConversationMarkAsReadPathTargetUserId,
-  ConversationMarkAsReadStatus200,
-  ConversationMarkAsReadStatus204,
-  ConversationMarkAsReadStatus400,
-  ConversationMarkAsReadStatus401,
-  ConversationMarkAsReadStatus403,
-  ConversationMarkAsReadStatus404,
-  ConversationMarkAsReadStatus500,
-  ConversationMarkAsReadStatus501,
-} from "../../models/conversation/ConversationMarkAsRead.ts";
-
-function getConversationMarkAsReadUrl(targetUserId: ConversationMarkAsReadPathTargetUserId) {
-  const res = {
-    method: "POST",
-    url: `/api/app/conversation/mark-as-read/${targetUserId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ConversationMarkAsReadOptions, ConversationMarkAsReadResponses } from '../../models/conversation/ConversationMarkAsRead'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/conversation/mark-as-read/:targetUserId}
  */
-export async function conversationMarkAsRead(
-  targetUserId: ConversationMarkAsReadPathTargetUserId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function conversationMarkAsRead<ThrowOnError extends boolean = true>(options: Options<ConversationMarkAsReadOptions, ThrowOnError>): Promise<RequestResult<ConversationMarkAsReadResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    ConversationMarkAsReadStatus200 | ConversationMarkAsReadStatus204,
-    ResponseErrorConfig<
-      | ConversationMarkAsReadStatus400
-      | ConversationMarkAsReadStatus401
-      | ConversationMarkAsReadStatus403
-      | ConversationMarkAsReadStatus404
-      | ConversationMarkAsReadStatus500
-      | ConversationMarkAsReadStatus501
-    >,
-    unknown
-  >({
-    method: "POST",
-    url: getConversationMarkAsReadUrl(targetUserId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/conversation/mark-as-read/{targetUserId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ConversationMarkAsReadResponses, ThrowOnError>>
 }

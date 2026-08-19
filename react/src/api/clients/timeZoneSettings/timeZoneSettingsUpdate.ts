@@ -1,51 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TimeZoneSettingsUpdateQueryTimezone,
-  TimeZoneSettingsUpdateStatus200,
-  TimeZoneSettingsUpdateStatus204,
-  TimeZoneSettingsUpdateStatus400,
-  TimeZoneSettingsUpdateStatus401,
-  TimeZoneSettingsUpdateStatus403,
-  TimeZoneSettingsUpdateStatus404,
-  TimeZoneSettingsUpdateStatus500,
-  TimeZoneSettingsUpdateStatus501,
-} from "../../models/timeZoneSettings/TimeZoneSettingsUpdate.ts";
-
-function getTimeZoneSettingsUpdateUrl() {
-  const res = { method: "POST", url: `/api/setting-management/timezone` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TimeZoneSettingsUpdateOptions, TimeZoneSettingsUpdateResponses } from '../../models/timeZoneSettings/TimeZoneSettingsUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/setting-management/timezone}
  */
-export async function timeZoneSettingsUpdate(
-  params?: { timezone?: TimeZoneSettingsUpdateQueryTimezone },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function timeZoneSettingsUpdate<ThrowOnError extends boolean = true>(options: Options<TimeZoneSettingsUpdateOptions, ThrowOnError> = {}): Promise<RequestResult<TimeZoneSettingsUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TimeZoneSettingsUpdateStatus200 | TimeZoneSettingsUpdateStatus204,
-    ResponseErrorConfig<
-      | TimeZoneSettingsUpdateStatus400
-      | TimeZoneSettingsUpdateStatus401
-      | TimeZoneSettingsUpdateStatus403
-      | TimeZoneSettingsUpdateStatus404
-      | TimeZoneSettingsUpdateStatus500
-      | TimeZoneSettingsUpdateStatus501
-    >,
-    unknown
-  >({
-    method: "POST",
-    url: getTimeZoneSettingsUpdateUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/setting-management/timezone', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TimeZoneSettingsUpdateResponses, ThrowOnError>>
 }

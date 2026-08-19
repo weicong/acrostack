@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  OpenIddictScopeUpdatePathId,
-  OpenIddictScopeUpdateData,
-  OpenIddictScopeUpdateStatus200,
-  OpenIddictScopeUpdateStatus400,
-  OpenIddictScopeUpdateStatus401,
-  OpenIddictScopeUpdateStatus403,
-  OpenIddictScopeUpdateStatus404,
-  OpenIddictScopeUpdateStatus500,
-  OpenIddictScopeUpdateStatus501,
-} from "../../models/openIddictScope/OpenIddictScopeUpdate.ts";
-
-function getOpenIddictScopeUpdateUrl(id: OpenIddictScopeUpdatePathId) {
-  const res = { method: "PUT", url: `/api/app/open-iddict-scope/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { OpenIddictScopeUpdateOptions, OpenIddictScopeUpdateResponses } from '../../models/openIddictScope/OpenIddictScopeUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/open-iddict-scope/:id}
  */
-export async function openIddictScopeUpdate(
-  id: OpenIddictScopeUpdatePathId,
-  data?: OpenIddictScopeUpdateData,
-  config: Partial<RequestConfig<OpenIddictScopeUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function openIddictScopeUpdate<ThrowOnError extends boolean = true>(options: Options<OpenIddictScopeUpdateOptions, ThrowOnError>): Promise<RequestResult<OpenIddictScopeUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    OpenIddictScopeUpdateStatus200,
-    ResponseErrorConfig<
-      | OpenIddictScopeUpdateStatus400
-      | OpenIddictScopeUpdateStatus401
-      | OpenIddictScopeUpdateStatus403
-      | OpenIddictScopeUpdateStatus404
-      | OpenIddictScopeUpdateStatus500
-      | OpenIddictScopeUpdateStatus501
-    >,
-    OpenIddictScopeUpdateData
-  >({
-    method: "PUT",
-    url: getOpenIddictScopeUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/app/open-iddict-scope/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<OpenIddictScopeUpdateResponses, ThrowOnError>>
 }

@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MenuItemPublicGetListStatus200,
-  MenuItemPublicGetListStatus400,
-  MenuItemPublicGetListStatus401,
-  MenuItemPublicGetListStatus403,
-  MenuItemPublicGetListStatus404,
-  MenuItemPublicGetListStatus500,
-  MenuItemPublicGetListStatus501,
-} from "../../models/menuItemPublic/MenuItemPublicGetList.ts";
-
-function getMenuItemPublicGetListUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-public/menu-items` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MenuItemPublicGetListOptions, MenuItemPublicGetListResponses } from '../../models/menuItemPublic/MenuItemPublicGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/menu-items}
  */
-export async function menuItemPublicGetList(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function menuItemPublicGetList<ThrowOnError extends boolean = true>(options: Options<MenuItemPublicGetListOptions, ThrowOnError> = {}): Promise<RequestResult<MenuItemPublicGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MenuItemPublicGetListStatus200,
-    ResponseErrorConfig<
-      | MenuItemPublicGetListStatus400
-      | MenuItemPublicGetListStatus401
-      | MenuItemPublicGetListStatus403
-      | MenuItemPublicGetListStatus404
-      | MenuItemPublicGetListStatus500
-      | MenuItemPublicGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getMenuItemPublicGetListUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/menu-items', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MenuItemPublicGetListResponses, ThrowOnError>>
 }

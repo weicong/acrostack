@@ -1,19 +1,8 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumFieldDto } from "./ExtensionEnumFieldDto.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumFieldDto } from './ExtensionEnumFieldDto'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumDto = {
-  /**
-   * @type array | undefined
-   */
-  fields?:
-    | VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumFieldDto[]
-    | null;
-  /**
-   * @type string | undefined
-   */
-  localizationResource?: string | null;
+    fields?: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumFieldDto[] | null;
+    localizationResource?: string | null;
 };

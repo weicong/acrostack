@@ -1,46 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PageAdminDeletePathId,
-  PageAdminDeleteStatus200,
-  PageAdminDeleteStatus204,
-  PageAdminDeleteStatus400,
-  PageAdminDeleteStatus401,
-  PageAdminDeleteStatus403,
-  PageAdminDeleteStatus404,
-  PageAdminDeleteStatus500,
-  PageAdminDeleteStatus501,
-} from "../../models/pageAdmin/PageAdminDelete.ts";
-
-function getPageAdminDeleteUrl(id: PageAdminDeletePathId) {
-  const res = { method: "DELETE", url: `/api/cms-kit-admin/pages/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PageAdminDeleteOptions, PageAdminDeleteResponses } from '../../models/pageAdmin/PageAdminDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/pages/:id}
  */
-export async function pageAdminDelete(
-  id: PageAdminDeletePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pageAdminDelete<ThrowOnError extends boolean = true>(options: Options<PageAdminDeleteOptions, ThrowOnError>): Promise<RequestResult<PageAdminDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PageAdminDeleteStatus200 | PageAdminDeleteStatus204,
-    ResponseErrorConfig<
-      | PageAdminDeleteStatus400
-      | PageAdminDeleteStatus401
-      | PageAdminDeleteStatus403
-      | PageAdminDeleteStatus404
-      | PageAdminDeleteStatus500
-      | PageAdminDeleteStatus501
-    >,
-    unknown
-  >({ method: "DELETE", url: getPageAdminDeleteUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-admin/pages/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PageAdminDeleteResponses, ThrowOnError>>
 }

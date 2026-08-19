@@ -1,47 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PagesPublicFindDefaultHomePageStatus200,
-  PagesPublicFindDefaultHomePageStatus400,
-  PagesPublicFindDefaultHomePageStatus401,
-  PagesPublicFindDefaultHomePageStatus403,
-  PagesPublicFindDefaultHomePageStatus404,
-  PagesPublicFindDefaultHomePageStatus500,
-  PagesPublicFindDefaultHomePageStatus501,
-} from "../../models/pagesPublic/PagesPublicFindDefaultHomePage.ts";
-
-function getPagesPublicFindDefaultHomePageUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-public/pages/home` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PagesPublicFindDefaultHomePageOptions, PagesPublicFindDefaultHomePageResponses } from '../../models/pagesPublic/PagesPublicFindDefaultHomePage'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/pages/home}
  */
-export async function pagesPublicFindDefaultHomePage(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pagesPublicFindDefaultHomePage<ThrowOnError extends boolean = true>(options: Options<PagesPublicFindDefaultHomePageOptions, ThrowOnError> = {}): Promise<RequestResult<PagesPublicFindDefaultHomePageResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PagesPublicFindDefaultHomePageStatus200,
-    ResponseErrorConfig<
-      | PagesPublicFindDefaultHomePageStatus400
-      | PagesPublicFindDefaultHomePageStatus401
-      | PagesPublicFindDefaultHomePageStatus403
-      | PagesPublicFindDefaultHomePageStatus404
-      | PagesPublicFindDefaultHomePageStatus500
-      | PagesPublicFindDefaultHomePageStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getPagesPublicFindDefaultHomePageUrl().url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/pages/home', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PagesPublicFindDefaultHomePageResponses, ThrowOnError>>
 }

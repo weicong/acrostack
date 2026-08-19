@@ -1,54 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AbpApplicationLocalizationGetQueryCultureName,
-  AbpApplicationLocalizationGetQueryOnlyDynamics,
-  AbpApplicationLocalizationGetStatus200,
-  AbpApplicationLocalizationGetStatus400,
-  AbpApplicationLocalizationGetStatus401,
-  AbpApplicationLocalizationGetStatus403,
-  AbpApplicationLocalizationGetStatus404,
-  AbpApplicationLocalizationGetStatus500,
-  AbpApplicationLocalizationGetStatus501,
-} from "../../models/abpApplicationLocalization/AbpApplicationLocalizationGet.ts";
-
-function getAbpApplicationLocalizationGetUrl() {
-  const res = { method: "GET", url: `/api/abp/application-localization` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AbpApplicationLocalizationGetOptions, AbpApplicationLocalizationGetResponses } from '../../models/abpApplicationLocalization/AbpApplicationLocalizationGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/abp/application-localization}
  */
-export async function abpApplicationLocalizationGet(
-  params: {
-    CultureName: AbpApplicationLocalizationGetQueryCultureName;
-    OnlyDynamics?: AbpApplicationLocalizationGetQueryOnlyDynamics;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function abpApplicationLocalizationGet<ThrowOnError extends boolean = true>(options: Options<AbpApplicationLocalizationGetOptions, ThrowOnError>): Promise<RequestResult<AbpApplicationLocalizationGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AbpApplicationLocalizationGetStatus200,
-    ResponseErrorConfig<
-      | AbpApplicationLocalizationGetStatus400
-      | AbpApplicationLocalizationGetStatus401
-      | AbpApplicationLocalizationGetStatus403
-      | AbpApplicationLocalizationGetStatus404
-      | AbpApplicationLocalizationGetStatus500
-      | AbpApplicationLocalizationGetStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getAbpApplicationLocalizationGetUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/abp/application-localization', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AbpApplicationLocalizationGetResponses, ThrowOnError>>
 }

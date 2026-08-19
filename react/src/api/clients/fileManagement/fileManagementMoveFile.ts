@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementMoveFilePathId,
-  FileManagementMoveFileData,
-  FileManagementMoveFileStatus200,
-} from "../../models/fileManagement/FileManagementMoveFile.ts";
-
-function getFileManagementMoveFileUrl(id: FileManagementMoveFilePathId) {
-  const res = { method: "POST", url: `/api/app/file-management/files/${id}/move` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementMoveFileOptions, FileManagementMoveFileResponses } from '../../models/fileManagement/FileManagementMoveFile'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/move}
  */
-export async function fileManagementMoveFile(
-  id: FileManagementMoveFilePathId,
-  data?: FileManagementMoveFileData,
-  config: Partial<RequestConfig<FileManagementMoveFileData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function fileManagementMoveFile<ThrowOnError extends boolean = true>(options: Options<FileManagementMoveFileOptions, ThrowOnError>): Promise<RequestResult<FileManagementMoveFileResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    FileManagementMoveFileStatus200,
-    ResponseErrorConfig<Error>,
-    FileManagementMoveFileData
-  >({
-    method: "POST",
-    url: getFileManagementMoveFileUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/file-management/files/{id}/move', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementMoveFileResponses, ThrowOnError>>
 }

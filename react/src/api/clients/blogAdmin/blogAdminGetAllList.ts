@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogAdminGetAllListStatus200,
-  BlogAdminGetAllListStatus400,
-  BlogAdminGetAllListStatus401,
-  BlogAdminGetAllListStatus403,
-  BlogAdminGetAllListStatus404,
-  BlogAdminGetAllListStatus500,
-  BlogAdminGetAllListStatus501,
-} from "../../models/blogAdmin/BlogAdminGetAllList.ts";
-
-function getBlogAdminGetAllListUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-admin/blogs/all` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogAdminGetAllListOptions, BlogAdminGetAllListResponses } from '../../models/blogAdmin/BlogAdminGetAllList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/all}
  */
-export async function blogAdminGetAllList(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogAdminGetAllList<ThrowOnError extends boolean = true>(options: Options<BlogAdminGetAllListOptions, ThrowOnError> = {}): Promise<RequestResult<BlogAdminGetAllListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogAdminGetAllListStatus200,
-    ResponseErrorConfig<
-      | BlogAdminGetAllListStatus400
-      | BlogAdminGetAllListStatus401
-      | BlogAdminGetAllListStatus403
-      | BlogAdminGetAllListStatus404
-      | BlogAdminGetAllListStatus500
-      | BlogAdminGetAllListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getBlogAdminGetAllListUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/blogs/all', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogAdminGetAllListResponses, ThrowOnError>>
 }

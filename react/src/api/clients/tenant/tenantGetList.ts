@@ -1,53 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TenantGetListQueryFilter,
-  TenantGetListQuerySorting,
-  TenantGetListQuerySkipCount,
-  TenantGetListQueryMaxResultCount,
-  TenantGetListStatus200,
-  TenantGetListStatus400,
-  TenantGetListStatus401,
-  TenantGetListStatus403,
-  TenantGetListStatus404,
-  TenantGetListStatus500,
-  TenantGetListStatus501,
-} from "../../models/tenant/TenantGetList.ts";
-
-function getTenantGetListUrl() {
-  const res = { method: "GET", url: `/api/multi-tenancy/tenants` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TenantGetListOptions, TenantGetListResponses } from '../../models/tenant/TenantGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/multi-tenancy/tenants}
  */
-export async function tenantGetList(
-  params?: {
-    Filter?: TenantGetListQueryFilter;
-    Sorting?: TenantGetListQuerySorting;
-    SkipCount?: TenantGetListQuerySkipCount;
-    MaxResultCount?: TenantGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function tenantGetList<ThrowOnError extends boolean = true>(options: Options<TenantGetListOptions, ThrowOnError> = {}): Promise<RequestResult<TenantGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TenantGetListStatus200,
-    ResponseErrorConfig<
-      | TenantGetListStatus400
-      | TenantGetListStatus401
-      | TenantGetListStatus403
-      | TenantGetListStatus404
-      | TenantGetListStatus500
-      | TenantGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getTenantGetListUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/multi-tenancy/tenants', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TenantGetListResponses, ThrowOnError>>
 }

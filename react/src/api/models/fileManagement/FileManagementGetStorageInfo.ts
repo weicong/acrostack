@@ -1,49 +1,36 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementStorageInfoDto } from "../acroStack/fileManagement/StorageInfoDto.ts";
+import type { AcroStackFileManagementStorageInfoDto } from '../acroStack/fileManagement/StorageInfoDto'
 
-/**
- * @type object
- */
 export type FileManagementGetStorageInfoStatus200Plain = AcroStackFileManagementStorageInfoDto;
 
-/**
- * @type object
- */
 export type FileManagementGetStorageInfoStatus200Json = AcroStackFileManagementStorageInfoDto;
 
-/**
- * @type object
- */
 export type FileManagementGetStorageInfoStatus200Json2 = AcroStackFileManagementStorageInfoDto;
 
-export type FileManagementGetStorageInfoStatus200 =
-  | FileManagementGetStorageInfoStatus200Plain
-  | FileManagementGetStorageInfoStatus200Json
-  | FileManagementGetStorageInfoStatus200Json2;
+export type FileManagementGetStorageInfoStatus200 = (FileManagementGetStorageInfoStatus200Plain | FileManagementGetStorageInfoStatus200Json | FileManagementGetStorageInfoStatus200Json2);
 
-/**
- * @type object
- */
-export type FileManagementGetStorageInfoRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/file-management/storage-info";
+export type FileManagementGetStorageInfoOptions = {
+    body?: never;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type FileManagementGetStorageInfoResponses = {
-  "200": FileManagementGetStorageInfoStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementGetStorageInfoStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementGetStorageInfoStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementGetStorageInfoStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementGetStorageInfoResponse = FileManagementGetStorageInfoStatus200;

@@ -1,45 +1,15 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsDateTimeFormatDto } from "./DateTimeFormatDto.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsDateTimeFormatDto } from './DateTimeFormatDto'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto = {
-  /**
-   * @type string | undefined
-   */
-  displayName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  englishName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  threeLetterIsoLanguageName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  twoLetterIsoLanguageName?: string | null;
-  /**
-   * @type boolean | undefined
-   */
-  isRightToLeft?: boolean;
-  /**
-   * @type string | undefined
-   */
-  cultureName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  name?: string | null;
-  /**
-   * @type string | undefined
-   */
-  nativeName?: string | null;
-  /**
-   * @type object | undefined
-   */
-  dateTimeFormat?: VoloAbpAspNetCoreMvcApplicationConfigurationsDateTimeFormatDto;
+    displayName?: string | null;
+    englishName?: string | null;
+    threeLetterIsoLanguageName?: string | null;
+    twoLetterIsoLanguageName?: string | null;
+    isRightToLeft?: boolean;
+    cultureName?: string | null;
+    name?: string | null;
+    nativeName?: string | null;
+    dateTimeFormat?: VoloAbpAspNetCoreMvcApplicationConfigurationsDateTimeFormatDto;
 };

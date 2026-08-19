@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TimeZoneSettingsGetTimezonesStatus200,
-  TimeZoneSettingsGetTimezonesStatus400,
-  TimeZoneSettingsGetTimezonesStatus401,
-  TimeZoneSettingsGetTimezonesStatus403,
-  TimeZoneSettingsGetTimezonesStatus404,
-  TimeZoneSettingsGetTimezonesStatus500,
-  TimeZoneSettingsGetTimezonesStatus501,
-} from "../../models/timeZoneSettings/TimeZoneSettingsGetTimezones.ts";
-
-function getTimeZoneSettingsGetTimezonesUrl() {
-  const res = { method: "GET", url: `/api/setting-management/timezone/timezones` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TimeZoneSettingsGetTimezonesOptions, TimeZoneSettingsGetTimezonesResponses } from '../../models/timeZoneSettings/TimeZoneSettingsGetTimezones'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/setting-management/timezone/timezones}
  */
-export async function timeZoneSettingsGetTimezones(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function timeZoneSettingsGetTimezones<ThrowOnError extends boolean = true>(options: Options<TimeZoneSettingsGetTimezonesOptions, ThrowOnError> = {}): Promise<RequestResult<TimeZoneSettingsGetTimezonesResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TimeZoneSettingsGetTimezonesStatus200,
-    ResponseErrorConfig<
-      | TimeZoneSettingsGetTimezonesStatus400
-      | TimeZoneSettingsGetTimezonesStatus401
-      | TimeZoneSettingsGetTimezonesStatus403
-      | TimeZoneSettingsGetTimezonesStatus404
-      | TimeZoneSettingsGetTimezonesStatus500
-      | TimeZoneSettingsGetTimezonesStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getTimeZoneSettingsGetTimezonesUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/setting-management/timezone/timezones', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TimeZoneSettingsGetTimezonesResponses, ThrowOnError>>
 }

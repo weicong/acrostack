@@ -1,47 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityClaimTypeGetAllClaimTypesStatus200,
-  IdentityClaimTypeGetAllClaimTypesStatus400,
-  IdentityClaimTypeGetAllClaimTypesStatus401,
-  IdentityClaimTypeGetAllClaimTypesStatus403,
-  IdentityClaimTypeGetAllClaimTypesStatus404,
-  IdentityClaimTypeGetAllClaimTypesStatus500,
-  IdentityClaimTypeGetAllClaimTypesStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeGetAllClaimTypes.ts";
-
-function getIdentityClaimTypeGetAllClaimTypesUrl() {
-  const res = { method: "GET", url: `/api/app/identity-claim-type/all` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityClaimTypeGetAllClaimTypesOptions, IdentityClaimTypeGetAllClaimTypesResponses } from '../../models/identityClaimType/IdentityClaimTypeGetAllClaimTypes'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-claim-type/all}
  */
-export async function identityClaimTypeGetAllClaimTypes(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function identityClaimTypeGetAllClaimTypes<ThrowOnError extends boolean = true>(options: Options<IdentityClaimTypeGetAllClaimTypesOptions, ThrowOnError> = {}): Promise<RequestResult<IdentityClaimTypeGetAllClaimTypesResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    IdentityClaimTypeGetAllClaimTypesStatus200,
-    ResponseErrorConfig<
-      | IdentityClaimTypeGetAllClaimTypesStatus400
-      | IdentityClaimTypeGetAllClaimTypesStatus401
-      | IdentityClaimTypeGetAllClaimTypesStatus403
-      | IdentityClaimTypeGetAllClaimTypesStatus404
-      | IdentityClaimTypeGetAllClaimTypesStatus500
-      | IdentityClaimTypeGetAllClaimTypesStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getIdentityClaimTypeGetAllClaimTypesUrl().url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/identity-claim-type/all', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityClaimTypeGetAllClaimTypesResponses, ThrowOnError>>
 }

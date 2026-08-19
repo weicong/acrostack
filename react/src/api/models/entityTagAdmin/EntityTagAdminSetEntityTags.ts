@@ -1,195 +1,141 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
-import type { VoloCmsKitAdminTagsEntityTagSetDto } from "../volo/cmsKit/admin/tags/EntityTagSetDto.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
+import type { VoloCmsKitAdminTagsEntityTagSetDto } from '../volo/cmsKit/admin/tags/EntityTagSetDto'
 
-/**
- * @type any
- */
-export type EntityTagAdminSetEntityTagsStatus200 = any;
+export type EntityTagAdminSetEntityTagsStatus200 = unknown;
 
-/**
- * @type any
- */
-export type EntityTagAdminSetEntityTagsStatus204 = any;
+export type EntityTagAdminSetEntityTagsStatus204 = unknown;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus400 =
-  | EntityTagAdminSetEntityTagsStatus400Plain
-  | EntityTagAdminSetEntityTagsStatus400Json
-  | EntityTagAdminSetEntityTagsStatus400Json2;
+export type EntityTagAdminSetEntityTagsStatus400 = (EntityTagAdminSetEntityTagsStatus400Plain | EntityTagAdminSetEntityTagsStatus400Json | EntityTagAdminSetEntityTagsStatus400Json2);
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus401 =
-  | EntityTagAdminSetEntityTagsStatus401Plain
-  | EntityTagAdminSetEntityTagsStatus401Json
-  | EntityTagAdminSetEntityTagsStatus401Json2;
+export type EntityTagAdminSetEntityTagsStatus401 = (EntityTagAdminSetEntityTagsStatus401Plain | EntityTagAdminSetEntityTagsStatus401Json | EntityTagAdminSetEntityTagsStatus401Json2);
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus403 =
-  | EntityTagAdminSetEntityTagsStatus403Plain
-  | EntityTagAdminSetEntityTagsStatus403Json
-  | EntityTagAdminSetEntityTagsStatus403Json2;
+export type EntityTagAdminSetEntityTagsStatus403 = (EntityTagAdminSetEntityTagsStatus403Plain | EntityTagAdminSetEntityTagsStatus403Json | EntityTagAdminSetEntityTagsStatus403Json2);
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus404 =
-  | EntityTagAdminSetEntityTagsStatus404Plain
-  | EntityTagAdminSetEntityTagsStatus404Json
-  | EntityTagAdminSetEntityTagsStatus404Json2;
+export type EntityTagAdminSetEntityTagsStatus404 = (EntityTagAdminSetEntityTagsStatus404Plain | EntityTagAdminSetEntityTagsStatus404Json | EntityTagAdminSetEntityTagsStatus404Json2);
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus500 =
-  | EntityTagAdminSetEntityTagsStatus500Plain
-  | EntityTagAdminSetEntityTagsStatus500Json
-  | EntityTagAdminSetEntityTagsStatus500Json2;
+export type EntityTagAdminSetEntityTagsStatus500 = (EntityTagAdminSetEntityTagsStatus500Plain | EntityTagAdminSetEntityTagsStatus500Json | EntityTagAdminSetEntityTagsStatus500Json2);
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EntityTagAdminSetEntityTagsStatus501 =
-  | EntityTagAdminSetEntityTagsStatus501Plain
-  | EntityTagAdminSetEntityTagsStatus501Json
-  | EntityTagAdminSetEntityTagsStatus501Json2;
+export type EntityTagAdminSetEntityTagsStatus501 = (EntityTagAdminSetEntityTagsStatus501Plain | EntityTagAdminSetEntityTagsStatus501Json | EntityTagAdminSetEntityTagsStatus501Json2);
 
-/**
- * @type object | undefined
- */
-export type EntityTagAdminSetEntityTagsJsonData = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
+export type EntityTagAdminSetEntityTagsBodyJson = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type EntityTagAdminSetEntityTagsJson2Data = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
+export type EntityTagAdminSetEntityTagsBodyJson2 = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type EntityTagAdminSetEntityTagsJson3Data = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
+export type EntityTagAdminSetEntityTagsBodyJson3 = VoloCmsKitAdminTagsEntityTagSetDto | undefined;
 
-export type EntityTagAdminSetEntityTagsData =
-  | EntityTagAdminSetEntityTagsJsonData
-  | EntityTagAdminSetEntityTagsJson2Data
-  | EntityTagAdminSetEntityTagsJson3Data;
+export type EntityTagAdminSetEntityTagsBody = (EntityTagAdminSetEntityTagsBodyJson | EntityTagAdminSetEntityTagsBodyJson2 | EntityTagAdminSetEntityTagsBodyJson3);
 
-/**
- * @type object
- */
-export type EntityTagAdminSetEntityTagsRequestConfig = {
-  data?: EntityTagAdminSetEntityTagsData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/cms-kit-admin/entity-tags";
+export type EntityTagAdminSetEntityTagsOptions = {
+    body: EntityTagAdminSetEntityTagsBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type EntityTagAdminSetEntityTagsResponses = {
-  "200": EntityTagAdminSetEntityTagsStatus200;
-  "204": EntityTagAdminSetEntityTagsStatus204;
-  "400": EntityTagAdminSetEntityTagsStatus400;
-  "401": EntityTagAdminSetEntityTagsStatus401;
-  "403": EntityTagAdminSetEntityTagsStatus403;
-  "404": EntityTagAdminSetEntityTagsStatus404;
-  "500": EntityTagAdminSetEntityTagsStatus500;
-  "501": EntityTagAdminSetEntityTagsStatus501;
+    "200": EntityTagAdminSetEntityTagsStatus200;
+    "204": EntityTagAdminSetEntityTagsStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: EntityTagAdminSetEntityTagsStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: EntityTagAdminSetEntityTagsStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: EntityTagAdminSetEntityTagsStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type EntityTagAdminSetEntityTagsResponse =
-  | EntityTagAdminSetEntityTagsStatus200
-  | EntityTagAdminSetEntityTagsStatus204
-  | EntityTagAdminSetEntityTagsStatus400
-  | EntityTagAdminSetEntityTagsStatus401
-  | EntityTagAdminSetEntityTagsStatus403
-  | EntityTagAdminSetEntityTagsStatus404
-  | EntityTagAdminSetEntityTagsStatus500
-  | EntityTagAdminSetEntityTagsStatus501;
+*/
+export type EntityTagAdminSetEntityTagsResponse = (EntityTagAdminSetEntityTagsStatus200 | EntityTagAdminSetEntityTagsStatus204 | EntityTagAdminSetEntityTagsStatus400 | EntityTagAdminSetEntityTagsStatus401 | EntityTagAdminSetEntityTagsStatus403 | EntityTagAdminSetEntityTagsStatus404 | EntityTagAdminSetEntityTagsStatus500 | EntityTagAdminSetEntityTagsStatus501);

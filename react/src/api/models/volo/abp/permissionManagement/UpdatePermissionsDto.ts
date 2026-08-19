@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementUpdatePermissionDto } from "./UpdatePermissionDto.ts";
+import type { VoloAbpPermissionManagementUpdatePermissionDto } from './UpdatePermissionDto'
 
-/**
- * @type object
- */
 export type VoloAbpPermissionManagementUpdatePermissionsDto = {
-  /**
-   * @type array | undefined
-   */
-  permissions?: VoloAbpPermissionManagementUpdatePermissionDto[] | null;
+    permissions?: VoloAbpPermissionManagementUpdatePermissionDto[] | null;
 };

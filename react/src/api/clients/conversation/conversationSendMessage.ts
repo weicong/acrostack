@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ConversationSendMessageData,
-  ConversationSendMessageStatus200,
-  ConversationSendMessageStatus400,
-  ConversationSendMessageStatus401,
-  ConversationSendMessageStatus403,
-  ConversationSendMessageStatus404,
-  ConversationSendMessageStatus500,
-  ConversationSendMessageStatus501,
-} from "../../models/conversation/ConversationSendMessage.ts";
-
-function getConversationSendMessageUrl() {
-  const res = { method: "POST", url: `/api/app/conversation/send-message` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ConversationSendMessageOptions, ConversationSendMessageResponses } from '../../models/conversation/ConversationSendMessage'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/conversation/send-message}
  */
-export async function conversationSendMessage(
-  data?: ConversationSendMessageData,
-  config: Partial<RequestConfig<ConversationSendMessageData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function conversationSendMessage<ThrowOnError extends boolean = true>(options: Options<ConversationSendMessageOptions, ThrowOnError>): Promise<RequestResult<ConversationSendMessageResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    ConversationSendMessageStatus200,
-    ResponseErrorConfig<
-      | ConversationSendMessageStatus400
-      | ConversationSendMessageStatus401
-      | ConversationSendMessageStatus403
-      | ConversationSendMessageStatus404
-      | ConversationSendMessageStatus500
-      | ConversationSendMessageStatus501
-    >,
-    ConversationSendMessageData
-  >({
-    method: "POST",
-    url: getConversationSendMessageUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/conversation/send-message', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ConversationSendMessageResponses, ThrowOnError>>
 }

@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TimeZoneSettingsGetStatus200,
-  TimeZoneSettingsGetStatus400,
-  TimeZoneSettingsGetStatus401,
-  TimeZoneSettingsGetStatus403,
-  TimeZoneSettingsGetStatus404,
-  TimeZoneSettingsGetStatus500,
-  TimeZoneSettingsGetStatus501,
-} from "../../models/timeZoneSettings/TimeZoneSettingsGet.ts";
-
-function getTimeZoneSettingsGetUrl() {
-  const res = { method: "GET", url: `/api/setting-management/timezone` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TimeZoneSettingsGetOptions, TimeZoneSettingsGetResponses } from '../../models/timeZoneSettings/TimeZoneSettingsGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/setting-management/timezone}
  */
-export async function timeZoneSettingsGet(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function timeZoneSettingsGet<ThrowOnError extends boolean = true>(options: Options<TimeZoneSettingsGetOptions, ThrowOnError> = {}): Promise<RequestResult<TimeZoneSettingsGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TimeZoneSettingsGetStatus200,
-    ResponseErrorConfig<
-      | TimeZoneSettingsGetStatus400
-      | TimeZoneSettingsGetStatus401
-      | TimeZoneSettingsGetStatus403
-      | TimeZoneSettingsGetStatus404
-      | TimeZoneSettingsGetStatus500
-      | TimeZoneSettingsGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getTimeZoneSettingsGetUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/setting-management/timezone', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TimeZoneSettingsGetResponses, ThrowOnError>>
 }

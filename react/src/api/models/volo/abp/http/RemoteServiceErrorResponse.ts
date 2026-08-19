@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorInfo } from "./RemoteServiceErrorInfo.ts";
+import type { VoloAbpHttpRemoteServiceErrorInfo } from './RemoteServiceErrorInfo'
 
-/**
- * @type object
- */
 export type VoloAbpHttpRemoteServiceErrorResponse = {
-  /**
-   * @type object | undefined
-   */
-  error?: VoloAbpHttpRemoteServiceErrorInfo;
+    error?: VoloAbpHttpRemoteServiceErrorInfo;
 };

@@ -1,44 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementUploadFileQueryFolderId,
-  FileManagementUploadFileData,
-  FileManagementUploadFileStatus200,
-} from "../../models/fileManagement/FileManagementUploadFile.ts";
-import { buildFormData } from "../../.kubb/config.ts";
-
-function getFileManagementUploadFileUrl() {
-  const res = { method: "POST", url: `/api/app/file-management/files/upload` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementUploadFileOptions, FileManagementUploadFileResponses } from '../../models/fileManagement/FileManagementUploadFile'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/upload}
  */
-export async function fileManagementUploadFile(
-  data?: FileManagementUploadFileData,
-  params?: { folderId?: FileManagementUploadFileQueryFolderId },
-  config: Partial<RequestConfig<FileManagementUploadFileData>> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementUploadFile<ThrowOnError extends boolean = true>(options: Options<FileManagementUploadFileOptions, ThrowOnError>): Promise<RequestResult<FileManagementUploadFileResponses, ThrowOnError>> {
+  const { client: request = client, contentType, ...config } = options
 
-  const requestData = data;
-  const formData = buildFormData(requestData);
-
-  const res = await request<
-    FileManagementUploadFileStatus200,
-    ResponseErrorConfig<Error>,
-    FileManagementUploadFileData
-  >({
-    method: "POST",
-    url: getFileManagementUploadFileUrl().url.toString(),
-    params,
-    data: formData as FormData,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/file-management/files/upload', security: [{ type: 'oauth2' }], contentType: { request: 'multipart/form-data', ...(typeof contentType === 'string' ? { request: contentType } : contentType) }, ...config }) as Promise<RequestResult<FileManagementUploadFileResponses, ThrowOnError>>
 }

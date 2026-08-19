@@ -1,59 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogPostAdminCreateAndSendToReviewData,
-  BlogPostAdminCreateAndSendToReviewStatus200,
-  BlogPostAdminCreateAndSendToReviewStatus400,
-  BlogPostAdminCreateAndSendToReviewStatus401,
-  BlogPostAdminCreateAndSendToReviewStatus403,
-  BlogPostAdminCreateAndSendToReviewStatus404,
-  BlogPostAdminCreateAndSendToReviewStatus500,
-  BlogPostAdminCreateAndSendToReviewStatus501,
-} from "../../models/blogPostAdmin/BlogPostAdminCreateAndSendToReview.ts";
-
-function getBlogPostAdminCreateAndSendToReviewUrl() {
-  const res = {
-    method: "POST",
-    url: `/api/cms-kit-admin/blogs/blog-posts/create-and-send-to-review` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogPostAdminCreateAndSendToReviewOptions, BlogPostAdminCreateAndSendToReviewResponses } from '../../models/blogPostAdmin/BlogPostAdminCreateAndSendToReview'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/blog-posts/create-and-send-to-review}
  */
-export async function blogPostAdminCreateAndSendToReview(
-  data?: BlogPostAdminCreateAndSendToReviewData,
-  config: Partial<RequestConfig<BlogPostAdminCreateAndSendToReviewData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function blogPostAdminCreateAndSendToReview<ThrowOnError extends boolean = true>(options: Options<BlogPostAdminCreateAndSendToReviewOptions, ThrowOnError>): Promise<RequestResult<BlogPostAdminCreateAndSendToReviewResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    BlogPostAdminCreateAndSendToReviewStatus200,
-    ResponseErrorConfig<
-      | BlogPostAdminCreateAndSendToReviewStatus400
-      | BlogPostAdminCreateAndSendToReviewStatus401
-      | BlogPostAdminCreateAndSendToReviewStatus403
-      | BlogPostAdminCreateAndSendToReviewStatus404
-      | BlogPostAdminCreateAndSendToReviewStatus500
-      | BlogPostAdminCreateAndSendToReviewStatus501
-    >,
-    BlogPostAdminCreateAndSendToReviewData
-  >({
-    method: "POST",
-    url: getBlogPostAdminCreateAndSendToReviewUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/cms-kit-admin/blogs/blog-posts/create-and-send-to-review', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogPostAdminCreateAndSendToReviewResponses, ThrowOnError>>
 }

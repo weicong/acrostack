@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "./commentWithAuthorDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull.ts";

@@ -1,72 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AuditLogGetListToExcelQueryFilter,
-  AuditLogGetListToExcelQueryUserId,
-  AuditLogGetListToExcelQueryHttpMethod,
-  AuditLogGetListToExcelQueryUrl,
-  AuditLogGetListToExcelQueryStartTime,
-  AuditLogGetListToExcelQueryEndTime,
-  AuditLogGetListToExcelQueryHttpStatusCode,
-  AuditLogGetListToExcelQueryHasException,
-  AuditLogGetListToExcelQuerySorting,
-  AuditLogGetListToExcelQuerySkipCount,
-  AuditLogGetListToExcelQueryMaxResultCount,
-  AuditLogGetListToExcelStatus200,
-  AuditLogGetListToExcelStatus400,
-  AuditLogGetListToExcelStatus401,
-  AuditLogGetListToExcelStatus403,
-  AuditLogGetListToExcelStatus404,
-  AuditLogGetListToExcelStatus500,
-  AuditLogGetListToExcelStatus501,
-} from "../../models/auditLog/AuditLogGetListToExcel.ts";
-
-function getAuditLogGetListToExcelUrl() {
-  const res = { method: "GET", url: `/api/app/audit-log/to-excel` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AuditLogGetListToExcelOptions, AuditLogGetListToExcelResponses } from '../../models/auditLog/AuditLogGetListToExcel'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/audit-log/to-excel}
  */
-export async function auditLogGetListToExcel(
-  params?: {
-    Filter?: AuditLogGetListToExcelQueryFilter;
-    UserId?: AuditLogGetListToExcelQueryUserId;
-    HttpMethod?: AuditLogGetListToExcelQueryHttpMethod;
-    Url?: AuditLogGetListToExcelQueryUrl;
-    StartTime?: AuditLogGetListToExcelQueryStartTime;
-    EndTime?: AuditLogGetListToExcelQueryEndTime;
-    HttpStatusCode?: AuditLogGetListToExcelQueryHttpStatusCode;
-    HasException?: AuditLogGetListToExcelQueryHasException;
-    Sorting?: AuditLogGetListToExcelQuerySorting;
-    SkipCount?: AuditLogGetListToExcelQuerySkipCount;
-    MaxResultCount?: AuditLogGetListToExcelQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function auditLogGetListToExcel<ThrowOnError extends boolean = true>(options: Options<AuditLogGetListToExcelOptions, ThrowOnError> = {}): Promise<RequestResult<AuditLogGetListToExcelResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AuditLogGetListToExcelStatus200,
-    ResponseErrorConfig<
-      | AuditLogGetListToExcelStatus400
-      | AuditLogGetListToExcelStatus401
-      | AuditLogGetListToExcelStatus403
-      | AuditLogGetListToExcelStatus404
-      | AuditLogGetListToExcelStatus500
-      | AuditLogGetListToExcelStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getAuditLogGetListToExcelUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/audit-log/to-excel', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AuditLogGetListToExcelResponses, ThrowOnError>>
 }

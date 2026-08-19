@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpNameValue } from "../NameValue.ts";
+import type { VoloAbpFeatureManagementUpdateFeatureDto } from './UpdateFeatureDto'
 
-/**
- * @type object
- */
 export type VoloAbpFeatureManagementUpdateFeaturesDto = {
-  /**
-   * @type array | undefined
-   */
-  features?: VoloAbpNameValue[] | null;
+    features?: VoloAbpFeatureManagementUpdateFeatureDto[] | null;
 };

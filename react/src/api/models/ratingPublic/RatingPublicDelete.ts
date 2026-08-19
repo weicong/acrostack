@@ -1,190 +1,137 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type string
- */
-export type RatingPublicDeletePathEntityType = string;
-
-/**
- * @type string
- */
-export type RatingPublicDeletePathEntityId = string;
-
-/**
- * @type any
- */
-export type RatingPublicDeleteStatus200 = any;
-
-/**
- * @type any
- */
-export type RatingPublicDeleteStatus204 = any;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus400 =
-  | RatingPublicDeleteStatus400Plain
-  | RatingPublicDeleteStatus400Json
-  | RatingPublicDeleteStatus400Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus401 =
-  | RatingPublicDeleteStatus401Plain
-  | RatingPublicDeleteStatus401Json
-  | RatingPublicDeleteStatus401Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus403 =
-  | RatingPublicDeleteStatus403Plain
-  | RatingPublicDeleteStatus403Json
-  | RatingPublicDeleteStatus403Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus404 =
-  | RatingPublicDeleteStatus404Plain
-  | RatingPublicDeleteStatus404Json
-  | RatingPublicDeleteStatus404Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus500 =
-  | RatingPublicDeleteStatus500Plain
-  | RatingPublicDeleteStatus500Json
-  | RatingPublicDeleteStatus500Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type RatingPublicDeleteStatus501 =
-  | RatingPublicDeleteStatus501Plain
-  | RatingPublicDeleteStatus501Json
-  | RatingPublicDeleteStatus501Json2;
-
-/**
- * @type object
- */
-export type RatingPublicDeleteRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    entityType: RatingPublicDeletePathEntityType;
-    entityId: RatingPublicDeletePathEntityId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/cms-kit-public/ratings/${string}/${string}`;
+export type RatingPublicDeletePath = {
+    entityType: string;
+    entityId: string;
 };
 
-/**
- * @type object
- */
+export type RatingPublicDeleteStatus200 = unknown;
+
+export type RatingPublicDeleteStatus204 = unknown;
+
+export type RatingPublicDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus400 = (RatingPublicDeleteStatus400Plain | RatingPublicDeleteStatus400Json | RatingPublicDeleteStatus400Json2);
+
+export type RatingPublicDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus401 = (RatingPublicDeleteStatus401Plain | RatingPublicDeleteStatus401Json | RatingPublicDeleteStatus401Json2);
+
+export type RatingPublicDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus403 = (RatingPublicDeleteStatus403Plain | RatingPublicDeleteStatus403Json | RatingPublicDeleteStatus403Json2);
+
+export type RatingPublicDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus404 = (RatingPublicDeleteStatus404Plain | RatingPublicDeleteStatus404Json | RatingPublicDeleteStatus404Json2);
+
+export type RatingPublicDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus500 = (RatingPublicDeleteStatus500Plain | RatingPublicDeleteStatus500Json | RatingPublicDeleteStatus500Json2);
+
+export type RatingPublicDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type RatingPublicDeleteStatus501 = (RatingPublicDeleteStatus501Plain | RatingPublicDeleteStatus501Json | RatingPublicDeleteStatus501Json2);
+
+export type RatingPublicDeleteOptions = {
+    body?: never;
+    path: RatingPublicDeletePath;
+    query?: never;
+    headers?: never;
+};
+
 export type RatingPublicDeleteResponses = {
-  "200": RatingPublicDeleteStatus200;
-  "204": RatingPublicDeleteStatus204;
-  "400": RatingPublicDeleteStatus400;
-  "401": RatingPublicDeleteStatus401;
-  "403": RatingPublicDeleteStatus403;
-  "404": RatingPublicDeleteStatus404;
-  "500": RatingPublicDeleteStatus500;
-  "501": RatingPublicDeleteStatus501;
+    "200": RatingPublicDeleteStatus200;
+    "204": RatingPublicDeleteStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: RatingPublicDeleteStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: RatingPublicDeleteStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: RatingPublicDeleteStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type RatingPublicDeleteResponse =
-  | RatingPublicDeleteStatus200
-  | RatingPublicDeleteStatus204
-  | RatingPublicDeleteStatus400
-  | RatingPublicDeleteStatus401
-  | RatingPublicDeleteStatus403
-  | RatingPublicDeleteStatus404
-  | RatingPublicDeleteStatus500
-  | RatingPublicDeleteStatus501;
+*/
+export type RatingPublicDeleteResponse = (RatingPublicDeleteStatus200 | RatingPublicDeleteStatus204 | RatingPublicDeleteStatus400 | RatingPublicDeleteStatus401 | RatingPublicDeleteStatus403 | RatingPublicDeleteStatus404 | RatingPublicDeleteStatus500 | RatingPublicDeleteStatus501);

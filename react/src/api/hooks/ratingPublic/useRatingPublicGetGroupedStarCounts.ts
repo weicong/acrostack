@@ -1,126 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  RatingPublicGetGroupedStarCountsPathEntityType,
-  RatingPublicGetGroupedStarCountsPathEntityId,
-  RatingPublicGetGroupedStarCountsStatus200,
-  RatingPublicGetGroupedStarCountsStatus400,
-  RatingPublicGetGroupedStarCountsStatus401,
-  RatingPublicGetGroupedStarCountsStatus403,
-  RatingPublicGetGroupedStarCountsStatus404,
-  RatingPublicGetGroupedStarCountsStatus500,
-  RatingPublicGetGroupedStarCountsStatus501,
-} from "../../models/ratingPublic/RatingPublicGetGroupedStarCounts.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { ratingPublicGetGroupedStarCounts } from "../../clients/ratingPublic/ratingPublicGetGroupedStarCounts.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { RatingPublicGetGroupedStarCountsOptions, RatingPublicGetGroupedStarCountsStatus200, RatingPublicGetGroupedStarCountsStatus400, RatingPublicGetGroupedStarCountsStatus401, RatingPublicGetGroupedStarCountsStatus403, RatingPublicGetGroupedStarCountsStatus404, RatingPublicGetGroupedStarCountsStatus500, RatingPublicGetGroupedStarCountsStatus501 } from '../../models/ratingPublic/RatingPublicGetGroupedStarCounts'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { ratingPublicGetGroupedStarCounts } from '../../clients/ratingPublic/ratingPublicGetGroupedStarCounts'
 
-export const ratingPublicGetGroupedStarCountsQueryKey = (
-  entityType?: RatingPublicGetGroupedStarCountsPathEntityType,
-  entityId?: RatingPublicGetGroupedStarCountsPathEntityId,
-) =>
-  [
-    {
-      url: "/api/cms-kit-public/ratings/:entityType/:entityId",
-      params: { entityType: entityType, entityId: entityId },
-    },
-  ] as const;
+export const ratingPublicGetGroupedStarCountsQueryKey = ({ path }: Omit<RatingPublicGetGroupedStarCountsOptions, 'headers'>) => [{ url: '/api/cms-kit-public/ratings/:entityType/:entityId', params: path }] as const
 
-type RatingPublicGetGroupedStarCountsQueryKey = ReturnType<
-  typeof ratingPublicGetGroupedStarCountsQueryKey
->;
+type RatingPublicGetGroupedStarCountsQueryKey = ReturnType<typeof ratingPublicGetGroupedStarCountsQueryKey>
 
-export function ratingPublicGetGroupedStarCountsQueryOptions(
-  entityType?: RatingPublicGetGroupedStarCountsPathEntityType,
-  entityId?: RatingPublicGetGroupedStarCountsPathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = ratingPublicGetGroupedStarCountsQueryKey(entityType, entityId);
-  return queryOptions<
-    RatingPublicGetGroupedStarCountsStatus200,
-    ResponseErrorConfig<
-      | RatingPublicGetGroupedStarCountsStatus400
-      | RatingPublicGetGroupedStarCountsStatus401
-      | RatingPublicGetGroupedStarCountsStatus403
-      | RatingPublicGetGroupedStarCountsStatus404
-      | RatingPublicGetGroupedStarCountsStatus500
-      | RatingPublicGetGroupedStarCountsStatus501
-    >,
-    RatingPublicGetGroupedStarCountsStatus200,
-    typeof queryKey
-  >({
-    enabled: !!(entityType && entityId),
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return ratingPublicGetGroupedStarCounts(entityType!, entityId!, {
-        ...config,
-        signal: config.signal ?? signal,
-      });
-    },
-  });
+export function ratingPublicGetGroupedStarCountsQueryOptions({ path }: RatingPublicGetGroupedStarCountsOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = ratingPublicGetGroupedStarCountsQueryKey({ path })
+  return queryOptions<RatingPublicGetGroupedStarCountsStatus200, ResponseErrorConfig<RatingPublicGetGroupedStarCountsStatus400 | RatingPublicGetGroupedStarCountsStatus401 | RatingPublicGetGroupedStarCountsStatus403 | RatingPublicGetGroupedStarCountsStatus404 | RatingPublicGetGroupedStarCountsStatus500 | RatingPublicGetGroupedStarCountsStatus501>, RatingPublicGetGroupedStarCountsStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await ratingPublicGetGroupedStarCounts({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/cms-kit-public/ratings/:entityType/:entityId}
  */
-export function useRatingPublicGetGroupedStarCounts<
-  TData = RatingPublicGetGroupedStarCountsStatus200,
-  TQueryData = RatingPublicGetGroupedStarCountsStatus200,
-  TQueryKey extends QueryKey = RatingPublicGetGroupedStarCountsQueryKey,
->(
-  entityType?: RatingPublicGetGroupedStarCountsPathEntityType,
-  entityId?: RatingPublicGetGroupedStarCountsPathEntityId,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        RatingPublicGetGroupedStarCountsStatus200,
-        ResponseErrorConfig<
-          | RatingPublicGetGroupedStarCountsStatus400
-          | RatingPublicGetGroupedStarCountsStatus401
-          | RatingPublicGetGroupedStarCountsStatus403
-          | RatingPublicGetGroupedStarCountsStatus404
-          | RatingPublicGetGroupedStarCountsStatus500
-          | RatingPublicGetGroupedStarCountsStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey =
-    resolvedOptions?.queryKey ?? ratingPublicGetGroupedStarCountsQueryKey(entityType, entityId);
+export function useRatingPublicGetGroupedStarCounts<TData = RatingPublicGetGroupedStarCountsStatus200, TQueryData = RatingPublicGetGroupedStarCountsStatus200, TQueryKey extends QueryKey = RatingPublicGetGroupedStarCountsQueryKey>({ path }: { path: RatingPublicGetGroupedStarCountsOptions['path'] | (() => RatingPublicGetGroupedStarCountsOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<RatingPublicGetGroupedStarCountsStatus200, ResponseErrorConfig<RatingPublicGetGroupedStarCountsStatus400 | RatingPublicGetGroupedStarCountsStatus401 | RatingPublicGetGroupedStarCountsStatus403 | RatingPublicGetGroupedStarCountsStatus404 | RatingPublicGetGroupedStarCountsStatus500 | RatingPublicGetGroupedStarCountsStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? ratingPublicGetGroupedStarCountsQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...ratingPublicGetGroupedStarCountsQueryOptions(entityType, entityId, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | RatingPublicGetGroupedStarCountsStatus400
-      | RatingPublicGetGroupedStarCountsStatus401
-      | RatingPublicGetGroupedStarCountsStatus403
-      | RatingPublicGetGroupedStarCountsStatus404
-      | RatingPublicGetGroupedStarCountsStatus500
-      | RatingPublicGetGroupedStarCountsStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...ratingPublicGetGroupedStarCountsQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<RatingPublicGetGroupedStarCountsStatus400 | RatingPublicGetGroupedStarCountsStatus401 | RatingPublicGetGroupedStarCountsStatus403 | RatingPublicGetGroupedStarCountsStatus404 | RatingPublicGetGroupedStarCountsStatus500 | RatingPublicGetGroupedStarCountsStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

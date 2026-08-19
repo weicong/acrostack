@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TagAdminGetTagDefinitionsStatus200,
-  TagAdminGetTagDefinitionsStatus400,
-  TagAdminGetTagDefinitionsStatus401,
-  TagAdminGetTagDefinitionsStatus403,
-  TagAdminGetTagDefinitionsStatus404,
-  TagAdminGetTagDefinitionsStatus500,
-  TagAdminGetTagDefinitionsStatus501,
-} from "../../models/tagAdmin/TagAdminGetTagDefinitions.ts";
-
-function getTagAdminGetTagDefinitionsUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-admin/tags/tag-definitions` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TagAdminGetTagDefinitionsOptions, TagAdminGetTagDefinitionsResponses } from '../../models/tagAdmin/TagAdminGetTagDefinitions'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/tags/tag-definitions}
  */
-export async function tagAdminGetTagDefinitions(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function tagAdminGetTagDefinitions<ThrowOnError extends boolean = true>(options: Options<TagAdminGetTagDefinitionsOptions, ThrowOnError> = {}): Promise<RequestResult<TagAdminGetTagDefinitionsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TagAdminGetTagDefinitionsStatus200,
-    ResponseErrorConfig<
-      | TagAdminGetTagDefinitionsStatus400
-      | TagAdminGetTagDefinitionsStatus401
-      | TagAdminGetTagDefinitionsStatus403
-      | TagAdminGetTagDefinitionsStatus404
-      | TagAdminGetTagDefinitionsStatus500
-      | TagAdminGetTagDefinitionsStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getTagAdminGetTagDefinitionsUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/tags/tag-definitions', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TagAdminGetTagDefinitionsResponses, ThrowOnError>>
 }

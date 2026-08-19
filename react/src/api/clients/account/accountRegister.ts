@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AccountRegisterData,
-  AccountRegisterStatus200,
-  AccountRegisterStatus400,
-  AccountRegisterStatus401,
-  AccountRegisterStatus403,
-  AccountRegisterStatus404,
-  AccountRegisterStatus500,
-  AccountRegisterStatus501,
-} from "../../models/account/AccountRegister.ts";
-
-function getAccountRegisterUrl() {
-  const res = { method: "POST", url: `/api/account/register` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AccountRegisterOptions, AccountRegisterResponses } from '../../models/account/AccountRegister'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/account/register}
  */
-export async function accountRegister(
-  data?: AccountRegisterData,
-  config: Partial<RequestConfig<AccountRegisterData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function accountRegister<ThrowOnError extends boolean = true>(options: Options<AccountRegisterOptions, ThrowOnError>): Promise<RequestResult<AccountRegisterResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    AccountRegisterStatus200,
-    ResponseErrorConfig<
-      | AccountRegisterStatus400
-      | AccountRegisterStatus401
-      | AccountRegisterStatus403
-      | AccountRegisterStatus404
-      | AccountRegisterStatus500
-      | AccountRegisterStatus501
-    >,
-    AccountRegisterData
-  >({
-    method: "POST",
-    url: getAccountRegisterUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/account/register', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AccountRegisterResponses, ThrowOnError>>
 }

@@ -1,183 +1,145 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
-import type { VoloAbpSettingManagementEmailSettingsDto } from "../volo/abp/settingManagement/EmailSettingsDto.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
+import type { VoloAbpSettingManagementEmailSettingsDto } from '../volo/abp/settingManagement/EmailSettingsDto'
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus200Plain = VoloAbpSettingManagementEmailSettingsDto;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus200Json = VoloAbpSettingManagementEmailSettingsDto;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus200Json2 = VoloAbpSettingManagementEmailSettingsDto;
 
-export type EmailSettingsGetStatus200 =
-  | EmailSettingsGetStatus200Plain
-  | EmailSettingsGetStatus200Json
-  | EmailSettingsGetStatus200Json2;
+export type EmailSettingsGetStatus200 = (EmailSettingsGetStatus200Plain | EmailSettingsGetStatus200Json | EmailSettingsGetStatus200Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus400 =
-  | EmailSettingsGetStatus400Plain
-  | EmailSettingsGetStatus400Json
-  | EmailSettingsGetStatus400Json2;
+export type EmailSettingsGetStatus400 = (EmailSettingsGetStatus400Plain | EmailSettingsGetStatus400Json | EmailSettingsGetStatus400Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus401 =
-  | EmailSettingsGetStatus401Plain
-  | EmailSettingsGetStatus401Json
-  | EmailSettingsGetStatus401Json2;
+export type EmailSettingsGetStatus401 = (EmailSettingsGetStatus401Plain | EmailSettingsGetStatus401Json | EmailSettingsGetStatus401Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus403 =
-  | EmailSettingsGetStatus403Plain
-  | EmailSettingsGetStatus403Json
-  | EmailSettingsGetStatus403Json2;
+export type EmailSettingsGetStatus403 = (EmailSettingsGetStatus403Plain | EmailSettingsGetStatus403Json | EmailSettingsGetStatus403Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus404 =
-  | EmailSettingsGetStatus404Plain
-  | EmailSettingsGetStatus404Json
-  | EmailSettingsGetStatus404Json2;
+export type EmailSettingsGetStatus404 = (EmailSettingsGetStatus404Plain | EmailSettingsGetStatus404Json | EmailSettingsGetStatus404Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus500 =
-  | EmailSettingsGetStatus500Plain
-  | EmailSettingsGetStatus500Json
-  | EmailSettingsGetStatus500Json2;
+export type EmailSettingsGetStatus500 = (EmailSettingsGetStatus500Plain | EmailSettingsGetStatus500Json | EmailSettingsGetStatus500Json2);
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type EmailSettingsGetStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type EmailSettingsGetStatus501 =
-  | EmailSettingsGetStatus501Plain
-  | EmailSettingsGetStatus501Json
-  | EmailSettingsGetStatus501Json2;
+export type EmailSettingsGetStatus501 = (EmailSettingsGetStatus501Plain | EmailSettingsGetStatus501Json | EmailSettingsGetStatus501Json2);
 
-/**
- * @type object
- */
-export type EmailSettingsGetRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/setting-management/emailing";
+export type EmailSettingsGetOptions = {
+    body?: never;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type EmailSettingsGetResponses = {
-  "200": EmailSettingsGetStatus200;
-  "400": EmailSettingsGetStatus400;
-  "401": EmailSettingsGetStatus401;
-  "403": EmailSettingsGetStatus403;
-  "404": EmailSettingsGetStatus404;
-  "500": EmailSettingsGetStatus500;
-  "501": EmailSettingsGetStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: EmailSettingsGetStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: EmailSettingsGetStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: EmailSettingsGetStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type EmailSettingsGetResponse =
-  | EmailSettingsGetStatus200
-  | EmailSettingsGetStatus400
-  | EmailSettingsGetStatus401
-  | EmailSettingsGetStatus403
-  | EmailSettingsGetStatus404
-  | EmailSettingsGetStatus500
-  | EmailSettingsGetStatus501;
+*/
+export type EmailSettingsGetResponse = (EmailSettingsGetStatus200 | EmailSettingsGetStatus400 | EmailSettingsGetStatus401 | EmailSettingsGetStatus403 | EmailSettingsGetStatus404 | EmailSettingsGetStatus500 | EmailSettingsGetStatus501);

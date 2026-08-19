@@ -1,125 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  IdentityClaimTypeGetListQueryName,
-  IdentityClaimTypeGetListQuerySorting,
-  IdentityClaimTypeGetListQuerySkipCount,
-  IdentityClaimTypeGetListQueryMaxResultCount,
-  IdentityClaimTypeGetListStatus200,
-  IdentityClaimTypeGetListStatus400,
-  IdentityClaimTypeGetListStatus401,
-  IdentityClaimTypeGetListStatus403,
-  IdentityClaimTypeGetListStatus404,
-  IdentityClaimTypeGetListStatus500,
-  IdentityClaimTypeGetListStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeGetList.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { identityClaimTypeGetList } from "../../clients/identityClaimType/identityClaimTypeGetList.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { IdentityClaimTypeGetListOptions, IdentityClaimTypeGetListStatus200, IdentityClaimTypeGetListStatus400, IdentityClaimTypeGetListStatus401, IdentityClaimTypeGetListStatus403, IdentityClaimTypeGetListStatus404, IdentityClaimTypeGetListStatus500, IdentityClaimTypeGetListStatus501 } from '../../models/identityClaimType/IdentityClaimTypeGetList'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { identityClaimTypeGetList } from '../../clients/identityClaimType/identityClaimTypeGetList'
 
-export const identityClaimTypeGetListQueryKey = (params?: {
-  Name?: IdentityClaimTypeGetListQueryName;
-  Sorting?: IdentityClaimTypeGetListQuerySorting;
-  SkipCount?: IdentityClaimTypeGetListQuerySkipCount;
-  MaxResultCount?: IdentityClaimTypeGetListQueryMaxResultCount;
-}) => [{ url: "/api/app/identity-claim-type" }, ...(params ? [params] : [])] as const;
+export const identityClaimTypeGetListQueryKey = ({ query }: Omit<IdentityClaimTypeGetListOptions, 'headers'> = {}) => [{ url: '/api/app/identity-claim-type' }, ...(query ? [query] : [])] as const
 
-type IdentityClaimTypeGetListQueryKey = ReturnType<typeof identityClaimTypeGetListQueryKey>;
+type IdentityClaimTypeGetListQueryKey = ReturnType<typeof identityClaimTypeGetListQueryKey>
 
-export function identityClaimTypeGetListQueryOptions(
-  params?: {
-    Name?: IdentityClaimTypeGetListQueryName;
-    Sorting?: IdentityClaimTypeGetListQuerySorting;
-    SkipCount?: IdentityClaimTypeGetListQuerySkipCount;
-    MaxResultCount?: IdentityClaimTypeGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = identityClaimTypeGetListQueryKey(params);
-  return queryOptions<
-    IdentityClaimTypeGetListStatus200,
-    ResponseErrorConfig<
-      | IdentityClaimTypeGetListStatus400
-      | IdentityClaimTypeGetListStatus401
-      | IdentityClaimTypeGetListStatus403
-      | IdentityClaimTypeGetListStatus404
-      | IdentityClaimTypeGetListStatus500
-      | IdentityClaimTypeGetListStatus501
-    >,
-    IdentityClaimTypeGetListStatus200,
-    typeof queryKey
-  >({
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return identityClaimTypeGetList(params, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function identityClaimTypeGetListQueryOptions({ query }: IdentityClaimTypeGetListOptions = {}, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = identityClaimTypeGetListQueryKey({ query })
+  return queryOptions<IdentityClaimTypeGetListStatus200, ResponseErrorConfig<IdentityClaimTypeGetListStatus400 | IdentityClaimTypeGetListStatus401 | IdentityClaimTypeGetListStatus403 | IdentityClaimTypeGetListStatus404 | IdentityClaimTypeGetListStatus500 | IdentityClaimTypeGetListStatus501>, IdentityClaimTypeGetListStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await identityClaimTypeGetList({ ...config, query, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/app/identity-claim-type}
  */
-export function useIdentityClaimTypeGetList<
-  TData = IdentityClaimTypeGetListStatus200,
-  TQueryData = IdentityClaimTypeGetListStatus200,
-  TQueryKey extends QueryKey = IdentityClaimTypeGetListQueryKey,
->(
-  params?: {
-    Name?: IdentityClaimTypeGetListQueryName;
-    Sorting?: IdentityClaimTypeGetListQuerySorting;
-    SkipCount?: IdentityClaimTypeGetListQuerySkipCount;
-    MaxResultCount?: IdentityClaimTypeGetListQueryMaxResultCount;
-  },
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        IdentityClaimTypeGetListStatus200,
-        ResponseErrorConfig<
-          | IdentityClaimTypeGetListStatus400
-          | IdentityClaimTypeGetListStatus401
-          | IdentityClaimTypeGetListStatus403
-          | IdentityClaimTypeGetListStatus404
-          | IdentityClaimTypeGetListStatus500
-          | IdentityClaimTypeGetListStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? identityClaimTypeGetListQueryKey(params);
+export function useIdentityClaimTypeGetList<TData = IdentityClaimTypeGetListStatus200, TQueryData = IdentityClaimTypeGetListStatus200, TQueryKey extends QueryKey = IdentityClaimTypeGetListQueryKey>({ query }: { query?: IdentityClaimTypeGetListOptions['query'] | (() => IdentityClaimTypeGetListOptions['query']) } = {}, options: {
+  query?: Partial<QueryObserverOptions<IdentityClaimTypeGetListStatus200, ResponseErrorConfig<IdentityClaimTypeGetListStatus400 | IdentityClaimTypeGetListStatus401 | IdentityClaimTypeGetListStatus403 | IdentityClaimTypeGetListStatus404 | IdentityClaimTypeGetListStatus500 | IdentityClaimTypeGetListStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { query: typeof query === 'function' ? query() : query }
+  const queryKey = resolvedOptions?.queryKey ?? identityClaimTypeGetListQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...identityClaimTypeGetListQueryOptions(params, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | IdentityClaimTypeGetListStatus400
-      | IdentityClaimTypeGetListStatus401
-      | IdentityClaimTypeGetListStatus403
-      | IdentityClaimTypeGetListStatus404
-      | IdentityClaimTypeGetListStatus500
-      | IdentityClaimTypeGetListStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...identityClaimTypeGetListQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<IdentityClaimTypeGetListStatus400 | IdentityClaimTypeGetListStatus401 | IdentityClaimTypeGetListStatus403 | IdentityClaimTypeGetListStatus404 | IdentityClaimTypeGetListStatus500 | IdentityClaimTypeGetListStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

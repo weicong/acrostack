@@ -1,36 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementRevokeShareLinkPathId,
-  FileManagementRevokeShareLinkStatus200,
-} from "../../models/fileManagement/FileManagementRevokeShareLink.ts";
-
-function getFileManagementRevokeShareLinkUrl(id: FileManagementRevokeShareLinkPathId) {
-  const res = { method: "DELETE", url: `/api/app/file-management/share-links/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementRevokeShareLinkOptions, FileManagementRevokeShareLinkResponses } from '../../models/fileManagement/FileManagementRevokeShareLink'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/share-links/:id}
  */
-export async function fileManagementRevokeShareLink(
-  id: FileManagementRevokeShareLinkPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementRevokeShareLink<ThrowOnError extends boolean = true>(options: Options<FileManagementRevokeShareLinkOptions, ThrowOnError>): Promise<RequestResult<FileManagementRevokeShareLinkResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementRevokeShareLinkStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({
-    method: "DELETE",
-    url: getFileManagementRevokeShareLinkUrl(id).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/app/file-management/share-links/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementRevokeShareLinkResponses, ThrowOnError>>
 }

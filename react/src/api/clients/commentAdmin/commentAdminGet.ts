@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  CommentAdminGetPathId,
-  CommentAdminGetStatus200,
-  CommentAdminGetStatus400,
-  CommentAdminGetStatus401,
-  CommentAdminGetStatus403,
-  CommentAdminGetStatus404,
-  CommentAdminGetStatus500,
-  CommentAdminGetStatus501,
-} from "../../models/commentAdmin/CommentAdminGet.ts";
-
-function getCommentAdminGetUrl(id: CommentAdminGetPathId) {
-  const res = { method: "GET", url: `/api/cms-kit-admin/comments/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { CommentAdminGetOptions, CommentAdminGetResponses } from '../../models/commentAdmin/CommentAdminGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/comments/:id}
  */
-export async function commentAdminGet(
-  id: CommentAdminGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function commentAdminGet<ThrowOnError extends boolean = true>(options: Options<CommentAdminGetOptions, ThrowOnError>): Promise<RequestResult<CommentAdminGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    CommentAdminGetStatus200,
-    ResponseErrorConfig<
-      | CommentAdminGetStatus400
-      | CommentAdminGetStatus401
-      | CommentAdminGetStatus403
-      | CommentAdminGetStatus404
-      | CommentAdminGetStatus500
-      | CommentAdminGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getCommentAdminGetUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/comments/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<CommentAdminGetResponses, ThrowOnError>>
 }

@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { AcroStackBackgroundJobsBackgroundJobDto } from "../../../../../../../acroStack/backgroundJobs/BackgroundJobDto.ts";
+import type { AcroStackBackgroundJobsBackgroundJobDto } from '../../../../../../../acroStack/backgroundJobs/BackgroundJobDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackBackgroundJobsBackgroundJobDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PageAdminGetPathId,
-  PageAdminGetStatus200,
-  PageAdminGetStatus400,
-  PageAdminGetStatus401,
-  PageAdminGetStatus403,
-  PageAdminGetStatus404,
-  PageAdminGetStatus500,
-  PageAdminGetStatus501,
-} from "../../models/pageAdmin/PageAdminGet.ts";
-
-function getPageAdminGetUrl(id: PageAdminGetPathId) {
-  const res = { method: "GET", url: `/api/cms-kit-admin/pages/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PageAdminGetOptions, PageAdminGetResponses } from '../../models/pageAdmin/PageAdminGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/pages/:id}
  */
-export async function pageAdminGet(
-  id: PageAdminGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pageAdminGet<ThrowOnError extends boolean = true>(options: Options<PageAdminGetOptions, ThrowOnError>): Promise<RequestResult<PageAdminGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PageAdminGetStatus200,
-    ResponseErrorConfig<
-      | PageAdminGetStatus400
-      | PageAdminGetStatus401
-      | PageAdminGetStatus403
-      | PageAdminGetStatus404
-      | PageAdminGetStatus500
-      | PageAdminGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getPageAdminGetUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/pages/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PageAdminGetResponses, ThrowOnError>>
 }

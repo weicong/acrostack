@@ -1,51 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PermissionsGetByGroupQueryGroupName,
-  PermissionsGetByGroupQueryProviderName,
-  PermissionsGetByGroupQueryProviderKey,
-  PermissionsGetByGroupStatus200,
-  PermissionsGetByGroupStatus400,
-  PermissionsGetByGroupStatus401,
-  PermissionsGetByGroupStatus403,
-  PermissionsGetByGroupStatus404,
-  PermissionsGetByGroupStatus500,
-  PermissionsGetByGroupStatus501,
-} from "../../models/permissions/PermissionsGetByGroup.ts";
-
-function getPermissionsGetByGroupUrl() {
-  const res = { method: "GET", url: `/api/permission-management/permissions/by-group` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PermissionsGetByGroupOptions, PermissionsGetByGroupResponses } from '../../models/permissions/PermissionsGetByGroup'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/permission-management/permissions/by-group}
  */
-export async function permissionsGetByGroup(
-  params?: {
-    groupName?: PermissionsGetByGroupQueryGroupName;
-    providerName?: PermissionsGetByGroupQueryProviderName;
-    providerKey?: PermissionsGetByGroupQueryProviderKey;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function permissionsGetByGroup<ThrowOnError extends boolean = true>(options: Options<PermissionsGetByGroupOptions, ThrowOnError> = {}): Promise<RequestResult<PermissionsGetByGroupResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PermissionsGetByGroupStatus200,
-    ResponseErrorConfig<
-      | PermissionsGetByGroupStatus400
-      | PermissionsGetByGroupStatus401
-      | PermissionsGetByGroupStatus403
-      | PermissionsGetByGroupStatus404
-      | PermissionsGetByGroupStatus500
-      | PermissionsGetByGroupStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getPermissionsGetByGroupUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/permission-management/permissions/by-group', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PermissionsGetByGroupResponses, ThrowOnError>>
 }

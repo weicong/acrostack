@@ -1,53 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PermissionsGetResourceProviderKeyLookupServicesQueryResourceName,
-  PermissionsGetResourceProviderKeyLookupServicesStatus200,
-  PermissionsGetResourceProviderKeyLookupServicesStatus400,
-  PermissionsGetResourceProviderKeyLookupServicesStatus401,
-  PermissionsGetResourceProviderKeyLookupServicesStatus403,
-  PermissionsGetResourceProviderKeyLookupServicesStatus404,
-  PermissionsGetResourceProviderKeyLookupServicesStatus500,
-  PermissionsGetResourceProviderKeyLookupServicesStatus501,
-} from "../../models/permissions/PermissionsGetResourceProviderKeyLookupServices.ts";
-
-function getPermissionsGetResourceProviderKeyLookupServicesUrl() {
-  const res = {
-    method: "GET",
-    url: `/api/permission-management/permissions/resource-provider-key-lookup-services` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PermissionsGetResourceProviderKeyLookupServicesOptions, PermissionsGetResourceProviderKeyLookupServicesResponses } from '../../models/permissions/PermissionsGetResourceProviderKeyLookupServices'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/permission-management/permissions/resource-provider-key-lookup-services}
  */
-export async function permissionsGetResourceProviderKeyLookupServices(
-  params?: { resourceName?: PermissionsGetResourceProviderKeyLookupServicesQueryResourceName },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function permissionsGetResourceProviderKeyLookupServices<ThrowOnError extends boolean = true>(options: Options<PermissionsGetResourceProviderKeyLookupServicesOptions, ThrowOnError> = {}): Promise<RequestResult<PermissionsGetResourceProviderKeyLookupServicesResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PermissionsGetResourceProviderKeyLookupServicesStatus200,
-    ResponseErrorConfig<
-      | PermissionsGetResourceProviderKeyLookupServicesStatus400
-      | PermissionsGetResourceProviderKeyLookupServicesStatus401
-      | PermissionsGetResourceProviderKeyLookupServicesStatus403
-      | PermissionsGetResourceProviderKeyLookupServicesStatus404
-      | PermissionsGetResourceProviderKeyLookupServicesStatus500
-      | PermissionsGetResourceProviderKeyLookupServicesStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getPermissionsGetResourceProviderKeyLookupServicesUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/permission-management/permissions/resource-provider-key-lookup-services', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PermissionsGetResourceProviderKeyLookupServicesResponses, ThrowOnError>>
 }

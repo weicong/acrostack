@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  EntityTagAdminSetEntityTagsData,
-  EntityTagAdminSetEntityTagsStatus200,
-  EntityTagAdminSetEntityTagsStatus204,
-  EntityTagAdminSetEntityTagsStatus400,
-  EntityTagAdminSetEntityTagsStatus401,
-  EntityTagAdminSetEntityTagsStatus403,
-  EntityTagAdminSetEntityTagsStatus404,
-  EntityTagAdminSetEntityTagsStatus500,
-  EntityTagAdminSetEntityTagsStatus501,
-} from "../../models/entityTagAdmin/EntityTagAdminSetEntityTags.ts";
-
-function getEntityTagAdminSetEntityTagsUrl() {
-  const res = { method: "PUT", url: `/api/cms-kit-admin/entity-tags` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { EntityTagAdminSetEntityTagsOptions, EntityTagAdminSetEntityTagsResponses } from '../../models/entityTagAdmin/EntityTagAdminSetEntityTags'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/entity-tags}
  */
-export async function entityTagAdminSetEntityTags(
-  data?: EntityTagAdminSetEntityTagsData,
-  config: Partial<RequestConfig<EntityTagAdminSetEntityTagsData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function entityTagAdminSetEntityTags<ThrowOnError extends boolean = true>(options: Options<EntityTagAdminSetEntityTagsOptions, ThrowOnError>): Promise<RequestResult<EntityTagAdminSetEntityTagsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    EntityTagAdminSetEntityTagsStatus200 | EntityTagAdminSetEntityTagsStatus204,
-    ResponseErrorConfig<
-      | EntityTagAdminSetEntityTagsStatus400
-      | EntityTagAdminSetEntityTagsStatus401
-      | EntityTagAdminSetEntityTagsStatus403
-      | EntityTagAdminSetEntityTagsStatus404
-      | EntityTagAdminSetEntityTagsStatus500
-      | EntityTagAdminSetEntityTagsStatus501
-    >,
-    EntityTagAdminSetEntityTagsData
-  >({
-    method: "PUT",
-    url: getEntityTagAdminSetEntityTagsUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/entity-tags', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<EntityTagAdminSetEntityTagsResponses, ThrowOnError>>
 }

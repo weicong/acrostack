@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackAuditLoggingEntityChangeDto } from "../../../../../../../acroStack/auditLogging/EntityChangeDto.ts";
+import type { AcroStackAuditLoggingEntityChangeDetailDto } from '../../../../../../../acroStack/auditLogging/EntityChangeDetailDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
-    items?: AcroStackAuditLoggingEntityChangeDto[] | null;
-  };
+export type VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull = {
+    items?: AcroStackAuditLoggingEntityChangeDetailDto[] | null;
+};

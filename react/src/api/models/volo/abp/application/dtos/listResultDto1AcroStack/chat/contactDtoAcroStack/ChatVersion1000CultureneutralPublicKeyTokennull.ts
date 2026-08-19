@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackChatContactDto } from "../../../../../../../acroStack/chat/ContactDto.ts";
+import type { AcroStackChatContactDto } from '../../../../../../../acroStack/chat/ContactDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackChatContactDto[] | null;
-  };
+};

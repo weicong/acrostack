@@ -1,113 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  ConversationGetReactionsPathMessageId,
-  ConversationGetReactionsStatus200,
-  ConversationGetReactionsStatus400,
-  ConversationGetReactionsStatus401,
-  ConversationGetReactionsStatus403,
-  ConversationGetReactionsStatus404,
-  ConversationGetReactionsStatus500,
-  ConversationGetReactionsStatus501,
-} from "../../models/conversation/ConversationGetReactions.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { conversationGetReactions } from "../../clients/conversation/conversationGetReactions.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { ConversationGetReactionsOptions, ConversationGetReactionsStatus200, ConversationGetReactionsStatus400, ConversationGetReactionsStatus401, ConversationGetReactionsStatus403, ConversationGetReactionsStatus404, ConversationGetReactionsStatus500, ConversationGetReactionsStatus501 } from '../../models/conversation/ConversationGetReactions'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { conversationGetReactions } from '../../clients/conversation/conversationGetReactions'
 
-export const conversationGetReactionsQueryKey = (
-  messageId?: ConversationGetReactionsPathMessageId,
-) =>
-  [
-    { url: "/api/app/conversation/reactions/:messageId", params: { messageId: messageId } },
-  ] as const;
+export const conversationGetReactionsQueryKey = ({ path }: Omit<ConversationGetReactionsOptions, 'headers'>) => [{ url: '/api/app/conversation/reactions/:messageId', params: path }] as const
 
-type ConversationGetReactionsQueryKey = ReturnType<typeof conversationGetReactionsQueryKey>;
+type ConversationGetReactionsQueryKey = ReturnType<typeof conversationGetReactionsQueryKey>
 
-export function conversationGetReactionsQueryOptions(
-  messageId?: ConversationGetReactionsPathMessageId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = conversationGetReactionsQueryKey(messageId);
-  return queryOptions<
-    ConversationGetReactionsStatus200,
-    ResponseErrorConfig<
-      | ConversationGetReactionsStatus400
-      | ConversationGetReactionsStatus401
-      | ConversationGetReactionsStatus403
-      | ConversationGetReactionsStatus404
-      | ConversationGetReactionsStatus500
-      | ConversationGetReactionsStatus501
-    >,
-    ConversationGetReactionsStatus200,
-    typeof queryKey
-  >({
-    enabled: !!messageId,
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return conversationGetReactions(messageId!, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function conversationGetReactionsQueryOptions({ path }: ConversationGetReactionsOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = conversationGetReactionsQueryKey({ path })
+  return queryOptions<ConversationGetReactionsStatus200, ResponseErrorConfig<ConversationGetReactionsStatus400 | ConversationGetReactionsStatus401 | ConversationGetReactionsStatus403 | ConversationGetReactionsStatus404 | ConversationGetReactionsStatus500 | ConversationGetReactionsStatus501>, ConversationGetReactionsStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await conversationGetReactions({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/app/conversation/reactions/:messageId}
  */
-export function useConversationGetReactions<
-  TData = ConversationGetReactionsStatus200,
-  TQueryData = ConversationGetReactionsStatus200,
-  TQueryKey extends QueryKey = ConversationGetReactionsQueryKey,
->(
-  messageId?: ConversationGetReactionsPathMessageId,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        ConversationGetReactionsStatus200,
-        ResponseErrorConfig<
-          | ConversationGetReactionsStatus400
-          | ConversationGetReactionsStatus401
-          | ConversationGetReactionsStatus403
-          | ConversationGetReactionsStatus404
-          | ConversationGetReactionsStatus500
-          | ConversationGetReactionsStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? conversationGetReactionsQueryKey(messageId);
+export function useConversationGetReactions<TData = ConversationGetReactionsStatus200, TQueryData = ConversationGetReactionsStatus200, TQueryKey extends QueryKey = ConversationGetReactionsQueryKey>({ path }: { path: ConversationGetReactionsOptions['path'] | (() => ConversationGetReactionsOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<ConversationGetReactionsStatus200, ResponseErrorConfig<ConversationGetReactionsStatus400 | ConversationGetReactionsStatus401 | ConversationGetReactionsStatus403 | ConversationGetReactionsStatus404 | ConversationGetReactionsStatus500 | ConversationGetReactionsStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? conversationGetReactionsQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...conversationGetReactionsQueryOptions(messageId, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | ConversationGetReactionsStatus400
-      | ConversationGetReactionsStatus401
-      | ConversationGetReactionsStatus403
-      | ConversationGetReactionsStatus404
-      | ConversationGetReactionsStatus500
-      | ConversationGetReactionsStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...conversationGetReactionsQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<ConversationGetReactionsStatus400 | ConversationGetReactionsStatus401 | ConversationGetReactionsStatus403 | ConversationGetReactionsStatus404 | ConversationGetReactionsStatus500 | ConversationGetReactionsStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

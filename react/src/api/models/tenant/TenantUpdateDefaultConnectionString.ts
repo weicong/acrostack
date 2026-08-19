@@ -1,214 +1,145 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type TenantUpdateDefaultConnectionStringPathId = string;
-
-/**
- * @type string | undefined
- */
-export type TenantUpdateDefaultConnectionStringQueryDefaultConnectionString = string | undefined;
-
-/**
- * @type any
- */
-export type TenantUpdateDefaultConnectionStringStatus200 = any;
-
-/**
- * @type any
- */
-export type TenantUpdateDefaultConnectionStringStatus204 = any;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus400Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus400Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus400Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus400 =
-  | TenantUpdateDefaultConnectionStringStatus400Plain
-  | TenantUpdateDefaultConnectionStringStatus400Json
-  | TenantUpdateDefaultConnectionStringStatus400Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus401Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus401Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus401Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus401 =
-  | TenantUpdateDefaultConnectionStringStatus401Plain
-  | TenantUpdateDefaultConnectionStringStatus401Json
-  | TenantUpdateDefaultConnectionStringStatus401Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus403Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus403Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus403Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus403 =
-  | TenantUpdateDefaultConnectionStringStatus403Plain
-  | TenantUpdateDefaultConnectionStringStatus403Json
-  | TenantUpdateDefaultConnectionStringStatus403Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus404Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus404Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus404Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus404 =
-  | TenantUpdateDefaultConnectionStringStatus404Plain
-  | TenantUpdateDefaultConnectionStringStatus404Json
-  | TenantUpdateDefaultConnectionStringStatus404Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus500Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus500Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus500Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus500 =
-  | TenantUpdateDefaultConnectionStringStatus500Plain
-  | TenantUpdateDefaultConnectionStringStatus500Json
-  | TenantUpdateDefaultConnectionStringStatus500Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus501Plain =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus501Json =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringStatus501Json2 =
-  VoloAbpHttpRemoteServiceErrorResponse;
-
-export type TenantUpdateDefaultConnectionStringStatus501 =
-  | TenantUpdateDefaultConnectionStringStatus501Plain
-  | TenantUpdateDefaultConnectionStringStatus501Json
-  | TenantUpdateDefaultConnectionStringStatus501Json2;
-
-/**
- * @type object
- */
-export type TenantUpdateDefaultConnectionStringRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: TenantUpdateDefaultConnectionStringPathId;
-  };
-  /**
-   * @type object | undefined
-   */
-  queryParams?: {
-    defaultConnectionString?: TenantUpdateDefaultConnectionStringQueryDefaultConnectionString;
-  };
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/multi-tenancy/tenants/${string}/default-connection-string`;
+export type TenantUpdateDefaultConnectionStringPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type TenantUpdateDefaultConnectionStringQuery = {
+    defaultConnectionString?: string;
+};
+
+export type TenantUpdateDefaultConnectionStringStatus200 = unknown;
+
+export type TenantUpdateDefaultConnectionStringStatus204 = unknown;
+
+export type TenantUpdateDefaultConnectionStringStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus400 = (TenantUpdateDefaultConnectionStringStatus400Plain | TenantUpdateDefaultConnectionStringStatus400Json | TenantUpdateDefaultConnectionStringStatus400Json2);
+
+export type TenantUpdateDefaultConnectionStringStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus401 = (TenantUpdateDefaultConnectionStringStatus401Plain | TenantUpdateDefaultConnectionStringStatus401Json | TenantUpdateDefaultConnectionStringStatus401Json2);
+
+export type TenantUpdateDefaultConnectionStringStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus403 = (TenantUpdateDefaultConnectionStringStatus403Plain | TenantUpdateDefaultConnectionStringStatus403Json | TenantUpdateDefaultConnectionStringStatus403Json2);
+
+export type TenantUpdateDefaultConnectionStringStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus404 = (TenantUpdateDefaultConnectionStringStatus404Plain | TenantUpdateDefaultConnectionStringStatus404Json | TenantUpdateDefaultConnectionStringStatus404Json2);
+
+export type TenantUpdateDefaultConnectionStringStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus500 = (TenantUpdateDefaultConnectionStringStatus500Plain | TenantUpdateDefaultConnectionStringStatus500Json | TenantUpdateDefaultConnectionStringStatus500Json2);
+
+export type TenantUpdateDefaultConnectionStringStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type TenantUpdateDefaultConnectionStringStatus501 = (TenantUpdateDefaultConnectionStringStatus501Plain | TenantUpdateDefaultConnectionStringStatus501Json | TenantUpdateDefaultConnectionStringStatus501Json2);
+
+export type TenantUpdateDefaultConnectionStringOptions = {
+    body?: never;
+    path: TenantUpdateDefaultConnectionStringPath;
+    query?: TenantUpdateDefaultConnectionStringQuery;
+    headers?: never;
+};
+
 export type TenantUpdateDefaultConnectionStringResponses = {
-  "200": TenantUpdateDefaultConnectionStringStatus200;
-  "204": TenantUpdateDefaultConnectionStringStatus204;
-  "400": TenantUpdateDefaultConnectionStringStatus400;
-  "401": TenantUpdateDefaultConnectionStringStatus401;
-  "403": TenantUpdateDefaultConnectionStringStatus403;
-  "404": TenantUpdateDefaultConnectionStringStatus404;
-  "500": TenantUpdateDefaultConnectionStringStatus500;
-  "501": TenantUpdateDefaultConnectionStringStatus501;
+    "200": TenantUpdateDefaultConnectionStringStatus200;
+    "204": TenantUpdateDefaultConnectionStringStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: TenantUpdateDefaultConnectionStringStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: TenantUpdateDefaultConnectionStringStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: TenantUpdateDefaultConnectionStringStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type TenantUpdateDefaultConnectionStringResponse =
-  | TenantUpdateDefaultConnectionStringStatus200
-  | TenantUpdateDefaultConnectionStringStatus204
-  | TenantUpdateDefaultConnectionStringStatus400
-  | TenantUpdateDefaultConnectionStringStatus401
-  | TenantUpdateDefaultConnectionStringStatus403
-  | TenantUpdateDefaultConnectionStringStatus404
-  | TenantUpdateDefaultConnectionStringStatus500
-  | TenantUpdateDefaultConnectionStringStatus501;
+*/
+export type TenantUpdateDefaultConnectionStringResponse = (TenantUpdateDefaultConnectionStringStatus200 | TenantUpdateDefaultConnectionStringStatus204 | TenantUpdateDefaultConnectionStringStatus400 | TenantUpdateDefaultConnectionStringStatus401 | TenantUpdateDefaultConnectionStringStatus403 | TenantUpdateDefaultConnectionStringStatus404 | TenantUpdateDefaultConnectionStringStatus500 | TenantUpdateDefaultConnectionStringStatus501);

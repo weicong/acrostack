@@ -1,61 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogPostAdminGetListQueryFilter,
-  BlogPostAdminGetListQueryBlogId,
-  BlogPostAdminGetListQueryAuthorId,
-  BlogPostAdminGetListQueryTagId,
-  BlogPostAdminGetListQueryStatus,
-  BlogPostAdminGetListQuerySorting,
-  BlogPostAdminGetListQuerySkipCount,
-  BlogPostAdminGetListQueryMaxResultCount,
-  BlogPostAdminGetListStatus200,
-  BlogPostAdminGetListStatus400,
-  BlogPostAdminGetListStatus401,
-  BlogPostAdminGetListStatus403,
-  BlogPostAdminGetListStatus404,
-  BlogPostAdminGetListStatus500,
-  BlogPostAdminGetListStatus501,
-} from "../../models/blogPostAdmin/BlogPostAdminGetList.ts";
-
-function getBlogPostAdminGetListUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-admin/blogs/blog-posts` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogPostAdminGetListOptions, BlogPostAdminGetListResponses } from '../../models/blogPostAdmin/BlogPostAdminGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/blog-posts}
  */
-export async function blogPostAdminGetList(
-  params?: {
-    Filter?: BlogPostAdminGetListQueryFilter;
-    BlogId?: BlogPostAdminGetListQueryBlogId;
-    AuthorId?: BlogPostAdminGetListQueryAuthorId;
-    TagId?: BlogPostAdminGetListQueryTagId;
-    Status?: BlogPostAdminGetListQueryStatus;
-    Sorting?: BlogPostAdminGetListQuerySorting;
-    SkipCount?: BlogPostAdminGetListQuerySkipCount;
-    MaxResultCount?: BlogPostAdminGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogPostAdminGetList<ThrowOnError extends boolean = true>(options: Options<BlogPostAdminGetListOptions, ThrowOnError> = {}): Promise<RequestResult<BlogPostAdminGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogPostAdminGetListStatus200,
-    ResponseErrorConfig<
-      | BlogPostAdminGetListStatus400
-      | BlogPostAdminGetListStatus401
-      | BlogPostAdminGetListStatus403
-      | BlogPostAdminGetListStatus404
-      | BlogPostAdminGetListStatus500
-      | BlogPostAdminGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getBlogPostAdminGetListUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/blogs/blog-posts', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogPostAdminGetListResponses, ThrowOnError>>
 }

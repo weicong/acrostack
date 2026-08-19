@@ -1,17 +1,8 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitPublicMarkedItemsMarkedItemDto } from "./MarkedItemDto.ts";
+import type { VoloCmsKitPublicMarkedItemsMarkedItemDto } from './MarkedItemDto'
 
-/**
- * @type object
- */
 export type VoloCmsKitPublicMarkedItemsMarkedItemWithToggleDto = {
-  /**
-   * @type object | undefined
-   */
-  markedItem?: VoloCmsKitPublicMarkedItemsMarkedItemDto;
-  /**
-   * @type boolean | undefined
-   */
-  isMarkedByCurrentUser?: boolean;
+    markedItem?: VoloCmsKitPublicMarkedItemsMarkedItemDto;
+    isMarkedByCurrentUser?: boolean;
 };

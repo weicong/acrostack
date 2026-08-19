@@ -1,12 +1,5 @@
 /* oxlint-disable */
 
-/**
- * @type object
- */
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyUiTableDto =
-  {
-    /**
-     * @type boolean | undefined
-     */
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyUiTableDto = {
     isVisible?: boolean;
-  };
+};

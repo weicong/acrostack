@@ -1,44 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementRestoreVersionPathId,
-  FileManagementRestoreVersionPathVersionId,
-  FileManagementRestoreVersionStatus200,
-} from "../../models/fileManagement/FileManagementRestoreVersion.ts";
-
-function getFileManagementRestoreVersionUrl(
-  id: FileManagementRestoreVersionPathId,
-  versionId: FileManagementRestoreVersionPathVersionId,
-) {
-  const res = {
-    method: "POST",
-    url: `/api/app/file-management/files/${id}/versions/${versionId}/restore` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementRestoreVersionOptions, FileManagementRestoreVersionResponses } from '../../models/fileManagement/FileManagementRestoreVersion'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/versions/:versionId/restore}
  */
-export async function fileManagementRestoreVersion(
-  id: FileManagementRestoreVersionPathId,
-  versionId: FileManagementRestoreVersionPathVersionId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementRestoreVersion<ThrowOnError extends boolean = true>(options: Options<FileManagementRestoreVersionOptions, ThrowOnError>): Promise<RequestResult<FileManagementRestoreVersionResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementRestoreVersionStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({
-    method: "POST",
-    url: getFileManagementRestoreVersionUrl(id, versionId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/file-management/files/{id}/versions/{versionId}/restore', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementRestoreVersionResponses, ThrowOnError>>
 }

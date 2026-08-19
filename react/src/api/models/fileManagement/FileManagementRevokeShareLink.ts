@@ -1,44 +1,28 @@
 /* oxlint-disable */
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementRevokeShareLinkPathId = string;
-
-/**
- * @type any
- */
-export type FileManagementRevokeShareLinkStatus200 = any;
-
-/**
- * @type object
- */
-export type FileManagementRevokeShareLinkRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementRevokeShareLinkPathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/share-links/${string}`;
+export type FileManagementRevokeShareLinkPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementRevokeShareLinkStatus200 = unknown;
+
+export type FileManagementRevokeShareLinkOptions = {
+    body?: never;
+    path: FileManagementRevokeShareLinkPath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementRevokeShareLinkResponses = {
-  "200": FileManagementRevokeShareLinkStatus200;
+    "200": FileManagementRevokeShareLinkStatus200;
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementRevokeShareLinkResponse = FileManagementRevokeShareLinkStatus200;

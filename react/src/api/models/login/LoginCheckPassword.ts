@@ -1,213 +1,154 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from "../volo/abp/account/web/areas/account/controllers/models/AbpLoginResult.ts";
-import type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from "../volo/abp/account/web/areas/account/controllers/models/UserLoginInfo.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from '../volo/abp/account/web/areas/account/controllers/models/AbpLoginResult'
+import type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from '../volo/abp/account/web/areas/account/controllers/models/UserLoginInfo'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type object
- */
-export type LoginCheckPasswordStatus200Plain =
-  VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
+export type LoginCheckPasswordStatus200Plain = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-/**
- * @type object
- */
-export type LoginCheckPasswordStatus200Json =
-  VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
+export type LoginCheckPasswordStatus200Json = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-/**
- * @type object
- */
-export type LoginCheckPasswordStatus200Json2 =
-  VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
+export type LoginCheckPasswordStatus200Json2 = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-export type LoginCheckPasswordStatus200 =
-  | LoginCheckPasswordStatus200Plain
-  | LoginCheckPasswordStatus200Json
-  | LoginCheckPasswordStatus200Json2;
+export type LoginCheckPasswordStatus200 = (LoginCheckPasswordStatus200Plain | LoginCheckPasswordStatus200Json | LoginCheckPasswordStatus200Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus400 =
-  | LoginCheckPasswordStatus400Plain
-  | LoginCheckPasswordStatus400Json
-  | LoginCheckPasswordStatus400Json2;
+export type LoginCheckPasswordStatus400 = (LoginCheckPasswordStatus400Plain | LoginCheckPasswordStatus400Json | LoginCheckPasswordStatus400Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus401 =
-  | LoginCheckPasswordStatus401Plain
-  | LoginCheckPasswordStatus401Json
-  | LoginCheckPasswordStatus401Json2;
+export type LoginCheckPasswordStatus401 = (LoginCheckPasswordStatus401Plain | LoginCheckPasswordStatus401Json | LoginCheckPasswordStatus401Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus403 =
-  | LoginCheckPasswordStatus403Plain
-  | LoginCheckPasswordStatus403Json
-  | LoginCheckPasswordStatus403Json2;
+export type LoginCheckPasswordStatus403 = (LoginCheckPasswordStatus403Plain | LoginCheckPasswordStatus403Json | LoginCheckPasswordStatus403Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus404 =
-  | LoginCheckPasswordStatus404Plain
-  | LoginCheckPasswordStatus404Json
-  | LoginCheckPasswordStatus404Json2;
+export type LoginCheckPasswordStatus404 = (LoginCheckPasswordStatus404Plain | LoginCheckPasswordStatus404Json | LoginCheckPasswordStatus404Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus500 =
-  | LoginCheckPasswordStatus500Plain
-  | LoginCheckPasswordStatus500Json
-  | LoginCheckPasswordStatus500Json2;
+export type LoginCheckPasswordStatus500 = (LoginCheckPasswordStatus500Plain | LoginCheckPasswordStatus500Json | LoginCheckPasswordStatus500Json2);
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginCheckPasswordStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginCheckPasswordStatus501 =
-  | LoginCheckPasswordStatus501Plain
-  | LoginCheckPasswordStatus501Json
-  | LoginCheckPasswordStatus501Json2;
+export type LoginCheckPasswordStatus501 = (LoginCheckPasswordStatus501Plain | LoginCheckPasswordStatus501Json | LoginCheckPasswordStatus501Json2);
 
-/**
- * @type object | undefined
- */
-export type LoginCheckPasswordJsonData =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginCheckPasswordBodyJson = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-/**
- * @type object | undefined
- */
-export type LoginCheckPasswordJson2Data =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginCheckPasswordBodyJson2 = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-/**
- * @type object | undefined
- */
-export type LoginCheckPasswordJson3Data =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginCheckPasswordBodyJson3 = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-export type LoginCheckPasswordData =
-  | LoginCheckPasswordJsonData
-  | LoginCheckPasswordJson2Data
-  | LoginCheckPasswordJson3Data;
+export type LoginCheckPasswordBody = (LoginCheckPasswordBodyJson | LoginCheckPasswordBodyJson2 | LoginCheckPasswordBodyJson3);
 
-/**
- * @type object
- */
-export type LoginCheckPasswordRequestConfig = {
-  data?: LoginCheckPasswordData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/account/check-password";
+export type LoginCheckPasswordOptions = {
+    body: LoginCheckPasswordBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type LoginCheckPasswordResponses = {
-  "200": LoginCheckPasswordStatus200;
-  "400": LoginCheckPasswordStatus400;
-  "401": LoginCheckPasswordStatus401;
-  "403": LoginCheckPasswordStatus403;
-  "404": LoginCheckPasswordStatus404;
-  "500": LoginCheckPasswordStatus500;
-  "501": LoginCheckPasswordStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: LoginCheckPasswordStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginCheckPasswordStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: LoginCheckPasswordStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type LoginCheckPasswordResponse =
-  | LoginCheckPasswordStatus200
-  | LoginCheckPasswordStatus400
-  | LoginCheckPasswordStatus401
-  | LoginCheckPasswordStatus403
-  | LoginCheckPasswordStatus404
-  | LoginCheckPasswordStatus500
-  | LoginCheckPasswordStatus501;
+*/
+export type LoginCheckPasswordResponse = (LoginCheckPasswordStatus200 | LoginCheckPasswordStatus400 | LoginCheckPasswordStatus401 | LoginCheckPasswordStatus403 | LoginCheckPasswordStatus404 | LoginCheckPasswordStatus500 | LoginCheckPasswordStatus501);

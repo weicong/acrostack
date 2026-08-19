@@ -1,59 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ConversationSendMessageWithAttachmentData,
-  ConversationSendMessageWithAttachmentStatus200,
-  ConversationSendMessageWithAttachmentStatus400,
-  ConversationSendMessageWithAttachmentStatus401,
-  ConversationSendMessageWithAttachmentStatus403,
-  ConversationSendMessageWithAttachmentStatus404,
-  ConversationSendMessageWithAttachmentStatus500,
-  ConversationSendMessageWithAttachmentStatus501,
-} from "../../models/conversation/ConversationSendMessageWithAttachment.ts";
-
-function getConversationSendMessageWithAttachmentUrl() {
-  const res = {
-    method: "POST",
-    url: `/api/app/conversation/send-message-with-attachment` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ConversationSendMessageWithAttachmentOptions, ConversationSendMessageWithAttachmentResponses } from '../../models/conversation/ConversationSendMessageWithAttachment'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/conversation/send-message-with-attachment}
  */
-export async function conversationSendMessageWithAttachment(
-  data?: ConversationSendMessageWithAttachmentData,
-  config: Partial<RequestConfig<ConversationSendMessageWithAttachmentData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function conversationSendMessageWithAttachment<ThrowOnError extends boolean = true>(options: Options<ConversationSendMessageWithAttachmentOptions, ThrowOnError>): Promise<RequestResult<ConversationSendMessageWithAttachmentResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    ConversationSendMessageWithAttachmentStatus200,
-    ResponseErrorConfig<
-      | ConversationSendMessageWithAttachmentStatus400
-      | ConversationSendMessageWithAttachmentStatus401
-      | ConversationSendMessageWithAttachmentStatus403
-      | ConversationSendMessageWithAttachmentStatus404
-      | ConversationSendMessageWithAttachmentStatus500
-      | ConversationSendMessageWithAttachmentStatus501
-    >,
-    ConversationSendMessageWithAttachmentData
-  >({
-    method: "POST",
-    url: getConversationSendMessageWithAttachmentUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/conversation/send-message-with-attachment', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ConversationSendMessageWithAttachmentResponses, ThrowOnError>>
 }

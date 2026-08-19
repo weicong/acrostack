@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpIdentityIdentityUserDto } from "../../../../../../../../../identity/IdentityUserDto.ts";
+import type { VoloAbpIdentityIdentityUserDto } from '../../../../../../../../../identity/IdentityUserDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloAbpIdentityIdentityUserDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

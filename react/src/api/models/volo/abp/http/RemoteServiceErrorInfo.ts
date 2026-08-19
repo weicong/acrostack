@@ -1,27 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountProfileDtoExtraProperties } from "../../../VoloAbpAccountProfileDtoExtraProperties.ts";
-import type { VoloAbpHttpRemoteServiceValidationErrorInfo } from "./RemoteServiceValidationErrorInfo.ts";
+import type { VoloAbpHttpRemoteServiceValidationErrorInfo } from './RemoteServiceValidationErrorInfo'
 
-/**
- * @type object
- */
 export type VoloAbpHttpRemoteServiceErrorInfo = {
-  /**
-   * @type string | undefined
-   */
-  code?: string | null;
-  /**
-   * @type string | undefined
-   */
-  message?: string | null;
-  /**
-   * @type string | undefined
-   */
-  details?: string | null;
-  data?: VoloAbpAccountProfileDtoExtraProperties;
-  /**
-   * @type array | undefined
-   */
-  validationErrors?: VoloAbpHttpRemoteServiceValidationErrorInfo[] | null;
+    code?: string | null;
+    message?: string | null;
+    details?: string | null;
+    data?: {
+        [key: string]: unknown;
+    } | null;
+    validationErrors?: VoloAbpHttpRemoteServiceValidationErrorInfo[] | null;
 };

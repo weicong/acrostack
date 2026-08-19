@@ -1,88 +1,54 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementCreateShareLinkDto } from "../acroStack/fileManagement/CreateShareLinkDto.ts";
-import type { AcroStackFileManagementFileShareDto } from "../acroStack/fileManagement/FileShareDto.ts";
+import type { AcroStackFileManagementCreateShareLinkDto } from '../acroStack/fileManagement/CreateShareLinkDto'
+import type { AcroStackFileManagementFileShareDto } from '../acroStack/fileManagement/FileShareDto'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementCreateShareLinkPathId = string;
-
-/**
- * @type object
- */
-export type FileManagementCreateShareLinkStatus200Plain = AcroStackFileManagementFileShareDto;
-
-/**
- * @type object
- */
-export type FileManagementCreateShareLinkStatus200Json = AcroStackFileManagementFileShareDto;
-
-/**
- * @type object
- */
-export type FileManagementCreateShareLinkStatus200Json2 = AcroStackFileManagementFileShareDto;
-
-export type FileManagementCreateShareLinkStatus200 =
-  | FileManagementCreateShareLinkStatus200Plain
-  | FileManagementCreateShareLinkStatus200Json
-  | FileManagementCreateShareLinkStatus200Json2;
-
-/**
- * @type object | undefined
- */
-export type FileManagementCreateShareLinkJsonData =
-  | AcroStackFileManagementCreateShareLinkDto
-  | undefined;
-
-/**
- * @type object | undefined
- */
-export type FileManagementCreateShareLinkJson2Data =
-  | AcroStackFileManagementCreateShareLinkDto
-  | undefined;
-
-/**
- * @type object | undefined
- */
-export type FileManagementCreateShareLinkJson3Data =
-  | AcroStackFileManagementCreateShareLinkDto
-  | undefined;
-
-export type FileManagementCreateShareLinkData =
-  | FileManagementCreateShareLinkJsonData
-  | FileManagementCreateShareLinkJson2Data
-  | FileManagementCreateShareLinkJson3Data;
-
-/**
- * @type object
- */
-export type FileManagementCreateShareLinkRequestConfig = {
-  data?: FileManagementCreateShareLinkData;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementCreateShareLinkPathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/files/${string}/share-links`;
+export type FileManagementCreateShareLinkPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementCreateShareLinkStatus200Plain = AcroStackFileManagementFileShareDto;
+
+export type FileManagementCreateShareLinkStatus200Json = AcroStackFileManagementFileShareDto;
+
+export type FileManagementCreateShareLinkStatus200Json2 = AcroStackFileManagementFileShareDto;
+
+export type FileManagementCreateShareLinkStatus200 = (FileManagementCreateShareLinkStatus200Plain | FileManagementCreateShareLinkStatus200Json | FileManagementCreateShareLinkStatus200Json2);
+
+export type FileManagementCreateShareLinkBodyJson = AcroStackFileManagementCreateShareLinkDto | undefined;
+
+export type FileManagementCreateShareLinkBodyJson2 = AcroStackFileManagementCreateShareLinkDto | undefined;
+
+export type FileManagementCreateShareLinkBodyJson3 = AcroStackFileManagementCreateShareLinkDto | undefined;
+
+export type FileManagementCreateShareLinkBody = (FileManagementCreateShareLinkBodyJson | FileManagementCreateShareLinkBodyJson2 | FileManagementCreateShareLinkBodyJson3);
+
+export type FileManagementCreateShareLinkOptions = {
+    body: FileManagementCreateShareLinkBody;
+    path: FileManagementCreateShareLinkPath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementCreateShareLinkResponses = {
-  "200": FileManagementCreateShareLinkStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementCreateShareLinkStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementCreateShareLinkStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementCreateShareLinkStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementCreateShareLinkResponse = FileManagementCreateShareLinkStatus200;

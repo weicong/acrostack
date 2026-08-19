@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementMoveFolderPathId,
-  FileManagementMoveFolderData,
-  FileManagementMoveFolderStatus200,
-} from "../../models/fileManagement/FileManagementMoveFolder.ts";
-
-function getFileManagementMoveFolderUrl(id: FileManagementMoveFolderPathId) {
-  const res = { method: "POST", url: `/api/app/file-management/folders/${id}/move` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementMoveFolderOptions, FileManagementMoveFolderResponses } from '../../models/fileManagement/FileManagementMoveFolder'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/folders/:id/move}
  */
-export async function fileManagementMoveFolder(
-  id: FileManagementMoveFolderPathId,
-  data?: FileManagementMoveFolderData,
-  config: Partial<RequestConfig<FileManagementMoveFolderData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function fileManagementMoveFolder<ThrowOnError extends boolean = true>(options: Options<FileManagementMoveFolderOptions, ThrowOnError>): Promise<RequestResult<FileManagementMoveFolderResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    FileManagementMoveFolderStatus200,
-    ResponseErrorConfig<Error>,
-    FileManagementMoveFolderData
-  >({
-    method: "POST",
-    url: getFileManagementMoveFolderUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/file-management/folders/{id}/move', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementMoveFolderResponses, ThrowOnError>>
 }

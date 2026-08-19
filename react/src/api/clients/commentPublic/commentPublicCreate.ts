@@ -1,66 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  CommentPublicCreatePathEntityType,
-  CommentPublicCreatePathEntityId,
-  CommentPublicCreateData,
-  CommentPublicCreateStatus200,
-  CommentPublicCreateStatus400,
-  CommentPublicCreateStatus401,
-  CommentPublicCreateStatus403,
-  CommentPublicCreateStatus404,
-  CommentPublicCreateStatus500,
-  CommentPublicCreateStatus501,
-} from "../../models/commentPublic/CommentPublicCreate.ts";
-
-function getCommentPublicCreateUrl(
-  entityType: CommentPublicCreatePathEntityType,
-  entityId: CommentPublicCreatePathEntityId,
-) {
-  const res = {
-    method: "POST",
-    url: `/api/cms-kit-public/comments/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { CommentPublicCreateOptions, CommentPublicCreateResponses } from '../../models/commentPublic/CommentPublicCreate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/comments/:entityType/:entityId}
  */
-export async function commentPublicCreate(
-  entityType: CommentPublicCreatePathEntityType,
-  entityId: CommentPublicCreatePathEntityId,
-  data?: CommentPublicCreateData,
-  config: Partial<RequestConfig<CommentPublicCreateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function commentPublicCreate<ThrowOnError extends boolean = true>(options: Options<CommentPublicCreateOptions, ThrowOnError>): Promise<RequestResult<CommentPublicCreateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    CommentPublicCreateStatus200,
-    ResponseErrorConfig<
-      | CommentPublicCreateStatus400
-      | CommentPublicCreateStatus401
-      | CommentPublicCreateStatus403
-      | CommentPublicCreateStatus404
-      | CommentPublicCreateStatus500
-      | CommentPublicCreateStatus501
-    >,
-    CommentPublicCreateData
-  >({
-    method: "POST",
-    url: getCommentPublicCreateUrl(entityType, entityId).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/cms-kit-public/comments/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<CommentPublicCreateResponses, ThrowOnError>>
 }

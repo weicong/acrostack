@@ -1,144 +1,40 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type {
-  RatingPublicCreateData,
-  RatingPublicCreatePathEntityType,
-  RatingPublicCreatePathEntityId,
-  RatingPublicCreateStatus200,
-  RatingPublicCreateStatus400,
-  RatingPublicCreateStatus401,
-  RatingPublicCreateStatus403,
-  RatingPublicCreateStatus404,
-  RatingPublicCreateStatus500,
-  RatingPublicCreateStatus501,
-} from "../../models/ratingPublic/RatingPublicCreate.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
-import { ratingPublicCreate } from "../../clients/ratingPublic/ratingPublicCreate.ts";
+import type { UseMutationOptions, UseMutationResult, QueryClient } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { RatingPublicCreateOptions, RatingPublicCreateStatus200, RatingPublicCreateStatus400, RatingPublicCreateStatus401, RatingPublicCreateStatus403, RatingPublicCreateStatus404, RatingPublicCreateStatus500, RatingPublicCreateStatus501 } from '../../models/ratingPublic/RatingPublicCreate'
+import { mutationOptions, useMutation } from '@tanstack/react-query'
+import { ratingPublicCreate } from '../../clients/ratingPublic/ratingPublicCreate'
 
-export const ratingPublicCreateMutationKey = () =>
-  [{ url: "/api/cms-kit-public/ratings/:entityType/:entityId" }] as const;
+export const ratingPublicCreateMutationKey = () => [{ url: '/api/cms-kit-public/ratings/:entityType/:entityId' }] as const
 
-export function ratingPublicCreateMutationOptions<TContext = unknown>(
-  config: Partial<RequestConfig<RatingPublicCreateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const mutationKey = ratingPublicCreateMutationKey();
-  return mutationOptions<
-    RatingPublicCreateStatus200,
-    ResponseErrorConfig<
-      | RatingPublicCreateStatus400
-      | RatingPublicCreateStatus401
-      | RatingPublicCreateStatus403
-      | RatingPublicCreateStatus404
-      | RatingPublicCreateStatus500
-      | RatingPublicCreateStatus501
-    >,
-    {
-      entityType: RatingPublicCreatePathEntityType;
-      entityId: RatingPublicCreatePathEntityId;
-      data?: RatingPublicCreateData;
-    },
-    TContext
-  >({
+export function ratingPublicCreateMutationOptions<TContext = unknown>(config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> & { contentType?: { request?: "application/json" | "text/json" | "application/*+json"; response?: "text/plain" | "application/json" | "text/json" } } = {}) {
+  const mutationKey = ratingPublicCreateMutationKey()
+  return mutationOptions<RatingPublicCreateStatus200, ResponseErrorConfig<RatingPublicCreateStatus400 | RatingPublicCreateStatus401 | RatingPublicCreateStatus403 | RatingPublicCreateStatus404 | RatingPublicCreateStatus500 | RatingPublicCreateStatus501>, RatingPublicCreateOptions, TContext>({
     mutationKey,
-    mutationFn: async ({ entityType, entityId, data }) => {
-      return ratingPublicCreate(entityType, entityId, data, config);
+    mutationFn: async({ path, body }) => {
+      const { data } = await ratingPublicCreate({ ...config, path, body, throwOnError: true })
+      return data
     },
-  });
+  })
 }
 
 /**
  * {@link /api/cms-kit-public/ratings/:entityType/:entityId}
  */
-export function useRatingPublicCreate<TContext>(
-  options: {
-    mutation?: UseMutationOptions<
-      RatingPublicCreateStatus200,
-      ResponseErrorConfig<
-        | RatingPublicCreateStatus400
-        | RatingPublicCreateStatus401
-        | RatingPublicCreateStatus403
-        | RatingPublicCreateStatus404
-        | RatingPublicCreateStatus500
-        | RatingPublicCreateStatus501
-      >,
-      {
-        entityType: RatingPublicCreatePathEntityType;
-        entityId: RatingPublicCreatePathEntityId;
-        data?: RatingPublicCreateData;
-      },
-      TContext
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig<RatingPublicCreateData>> & {
-      client?: Client;
-      contentType?: "application/json" | "text/json" | "application/*+json";
-    };
-  } = {},
-) {
-  const { mutation = {}, client: config = {} } = options ?? {};
+export function useRatingPublicCreate<TContext>(options: {
+  mutation?: UseMutationOptions<RatingPublicCreateStatus200, ResponseErrorConfig<RatingPublicCreateStatus400 | RatingPublicCreateStatus401 | RatingPublicCreateStatus403 | RatingPublicCreateStatus404 | RatingPublicCreateStatus500 | RatingPublicCreateStatus501>, RatingPublicCreateOptions, TContext> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> & { contentType?: { request?: "application/json" | "text/json" | "application/*+json"; response?: "text/plain" | "application/json" | "text/json" } },
+} = {}) {
+  const { mutation = {}, client: config = {} } = options ?? {}
   const { client: queryClient, ...mutationOptions } = mutation;
-  const mutationKey = mutationOptions.mutationKey ?? ratingPublicCreateMutationKey();
+  const mutationKey = mutationOptions.mutationKey ?? ratingPublicCreateMutationKey()
 
-  const baseOptions = ratingPublicCreateMutationOptions(config) as UseMutationOptions<
-    RatingPublicCreateStatus200,
-    ResponseErrorConfig<
-      | RatingPublicCreateStatus400
-      | RatingPublicCreateStatus401
-      | RatingPublicCreateStatus403
-      | RatingPublicCreateStatus404
-      | RatingPublicCreateStatus500
-      | RatingPublicCreateStatus501
-    >,
-    {
-      entityType: RatingPublicCreatePathEntityType;
-      entityId: RatingPublicCreatePathEntityId;
-      data?: RatingPublicCreateData;
-    },
-    TContext
-  >;
+  const baseOptions = ratingPublicCreateMutationOptions(config) as UseMutationOptions<RatingPublicCreateStatus200, ResponseErrorConfig<RatingPublicCreateStatus400 | RatingPublicCreateStatus401 | RatingPublicCreateStatus403 | RatingPublicCreateStatus404 | RatingPublicCreateStatus500 | RatingPublicCreateStatus501>, RatingPublicCreateOptions, TContext>
 
-  return useMutation<
-    RatingPublicCreateStatus200,
-    ResponseErrorConfig<
-      | RatingPublicCreateStatus400
-      | RatingPublicCreateStatus401
-      | RatingPublicCreateStatus403
-      | RatingPublicCreateStatus404
-      | RatingPublicCreateStatus500
-      | RatingPublicCreateStatus501
-    >,
-    {
-      entityType: RatingPublicCreatePathEntityType;
-      entityId: RatingPublicCreatePathEntityId;
-      data?: RatingPublicCreateData;
-    },
-    TContext
-  >(
-    {
-      ...baseOptions,
-      mutationKey,
-      ...mutationOptions,
-    },
-    queryClient,
-  ) as UseMutationResult<
-    RatingPublicCreateStatus200,
-    ResponseErrorConfig<
-      | RatingPublicCreateStatus400
-      | RatingPublicCreateStatus401
-      | RatingPublicCreateStatus403
-      | RatingPublicCreateStatus404
-      | RatingPublicCreateStatus500
-      | RatingPublicCreateStatus501
-    >,
-    {
-      entityType: RatingPublicCreatePathEntityType;
-      entityId: RatingPublicCreatePathEntityId;
-      data?: RatingPublicCreateData;
-    },
-    TContext
-  >;
+  return useMutation<RatingPublicCreateStatus200, ResponseErrorConfig<RatingPublicCreateStatus400 | RatingPublicCreateStatus401 | RatingPublicCreateStatus403 | RatingPublicCreateStatus404 | RatingPublicCreateStatus500 | RatingPublicCreateStatus501>, RatingPublicCreateOptions, TContext>({
+    ...baseOptions,
+    mutationKey,
+    ...mutationOptions,
+  }, queryClient) as UseMutationResult<RatingPublicCreateStatus200, ResponseErrorConfig<RatingPublicCreateStatus400 | RatingPublicCreateStatus401 | RatingPublicCreateStatus403 | RatingPublicCreateStatus404 | RatingPublicCreateStatus500 | RatingPublicCreateStatus501>, RatingPublicCreateOptions, TContext>
 }

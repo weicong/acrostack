@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MarkedItemPublicGetForUserPathEntityType,
-  MarkedItemPublicGetForUserPathEntityId,
-  MarkedItemPublicGetForUserStatus200,
-  MarkedItemPublicGetForUserStatus400,
-  MarkedItemPublicGetForUserStatus401,
-  MarkedItemPublicGetForUserStatus403,
-  MarkedItemPublicGetForUserStatus404,
-  MarkedItemPublicGetForUserStatus500,
-  MarkedItemPublicGetForUserStatus501,
-} from "../../models/markedItemPublic/MarkedItemPublicGetForUser.ts";
-
-function getMarkedItemPublicGetForUserUrl(
-  entityType: MarkedItemPublicGetForUserPathEntityType,
-  entityId: MarkedItemPublicGetForUserPathEntityId,
-) {
-  const res = {
-    method: "GET",
-    url: `/api/cms-kit-public/marked-items/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MarkedItemPublicGetForUserOptions, MarkedItemPublicGetForUserResponses } from '../../models/markedItemPublic/MarkedItemPublicGetForUser'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/marked-items/:entityType/:entityId}
  */
-export async function markedItemPublicGetForUser(
-  entityType: MarkedItemPublicGetForUserPathEntityType,
-  entityId: MarkedItemPublicGetForUserPathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function markedItemPublicGetForUser<ThrowOnError extends boolean = true>(options: Options<MarkedItemPublicGetForUserOptions, ThrowOnError>): Promise<RequestResult<MarkedItemPublicGetForUserResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MarkedItemPublicGetForUserStatus200,
-    ResponseErrorConfig<
-      | MarkedItemPublicGetForUserStatus400
-      | MarkedItemPublicGetForUserStatus401
-      | MarkedItemPublicGetForUserStatus403
-      | MarkedItemPublicGetForUserStatus404
-      | MarkedItemPublicGetForUserStatus500
-      | MarkedItemPublicGetForUserStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getMarkedItemPublicGetForUserUrl(entityType, entityId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/marked-items/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MarkedItemPublicGetForUserResponses, ThrowOnError>>
 }

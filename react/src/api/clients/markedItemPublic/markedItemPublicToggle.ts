@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MarkedItemPublicTogglePathEntityType,
-  MarkedItemPublicTogglePathEntityId,
-  MarkedItemPublicToggleStatus200,
-  MarkedItemPublicToggleStatus400,
-  MarkedItemPublicToggleStatus401,
-  MarkedItemPublicToggleStatus403,
-  MarkedItemPublicToggleStatus404,
-  MarkedItemPublicToggleStatus500,
-  MarkedItemPublicToggleStatus501,
-} from "../../models/markedItemPublic/MarkedItemPublicToggle.ts";
-
-function getMarkedItemPublicToggleUrl(
-  entityType: MarkedItemPublicTogglePathEntityType,
-  entityId: MarkedItemPublicTogglePathEntityId,
-) {
-  const res = {
-    method: "PUT",
-    url: `/api/cms-kit-public/marked-items/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MarkedItemPublicToggleOptions, MarkedItemPublicToggleResponses } from '../../models/markedItemPublic/MarkedItemPublicToggle'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/marked-items/:entityType/:entityId}
  */
-export async function markedItemPublicToggle(
-  entityType: MarkedItemPublicTogglePathEntityType,
-  entityId: MarkedItemPublicTogglePathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function markedItemPublicToggle<ThrowOnError extends boolean = true>(options: Options<MarkedItemPublicToggleOptions, ThrowOnError>): Promise<RequestResult<MarkedItemPublicToggleResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MarkedItemPublicToggleStatus200,
-    ResponseErrorConfig<
-      | MarkedItemPublicToggleStatus400
-      | MarkedItemPublicToggleStatus401
-      | MarkedItemPublicToggleStatus403
-      | MarkedItemPublicToggleStatus404
-      | MarkedItemPublicToggleStatus500
-      | MarkedItemPublicToggleStatus501
-    >,
-    unknown
-  >({
-    method: "PUT",
-    url: getMarkedItemPublicToggleUrl(entityType, entityId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-public/marked-items/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MarkedItemPublicToggleResponses, ThrowOnError>>
 }

@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from "./AuditLoggingVersion1000CultureneutralPublicKeyTokennull.ts";

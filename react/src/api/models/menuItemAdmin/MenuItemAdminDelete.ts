@@ -1,186 +1,141 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type MenuItemAdminDeletePathId = string;
-
-/**
- * @type any
- */
-export type MenuItemAdminDeleteStatus200 = any;
-
-/**
- * @type any
- */
-export type MenuItemAdminDeleteStatus204 = any;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus400 =
-  | MenuItemAdminDeleteStatus400Plain
-  | MenuItemAdminDeleteStatus400Json
-  | MenuItemAdminDeleteStatus400Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus401 =
-  | MenuItemAdminDeleteStatus401Plain
-  | MenuItemAdminDeleteStatus401Json
-  | MenuItemAdminDeleteStatus401Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus403 =
-  | MenuItemAdminDeleteStatus403Plain
-  | MenuItemAdminDeleteStatus403Json
-  | MenuItemAdminDeleteStatus403Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus404 =
-  | MenuItemAdminDeleteStatus404Plain
-  | MenuItemAdminDeleteStatus404Json
-  | MenuItemAdminDeleteStatus404Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus500 =
-  | MenuItemAdminDeleteStatus500Plain
-  | MenuItemAdminDeleteStatus500Json
-  | MenuItemAdminDeleteStatus500Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type MenuItemAdminDeleteStatus501 =
-  | MenuItemAdminDeleteStatus501Plain
-  | MenuItemAdminDeleteStatus501Json
-  | MenuItemAdminDeleteStatus501Json2;
-
-/**
- * @type object
- */
-export type MenuItemAdminDeleteRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: MenuItemAdminDeletePathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/cms-kit-admin/menu-items/${string}`;
+export type MenuItemAdminDeletePath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type MenuItemAdminDeleteStatus200 = unknown;
+
+export type MenuItemAdminDeleteStatus204 = unknown;
+
+export type MenuItemAdminDeleteStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus400 = (MenuItemAdminDeleteStatus400Plain | MenuItemAdminDeleteStatus400Json | MenuItemAdminDeleteStatus400Json2);
+
+export type MenuItemAdminDeleteStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus401 = (MenuItemAdminDeleteStatus401Plain | MenuItemAdminDeleteStatus401Json | MenuItemAdminDeleteStatus401Json2);
+
+export type MenuItemAdminDeleteStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus403 = (MenuItemAdminDeleteStatus403Plain | MenuItemAdminDeleteStatus403Json | MenuItemAdminDeleteStatus403Json2);
+
+export type MenuItemAdminDeleteStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus404 = (MenuItemAdminDeleteStatus404Plain | MenuItemAdminDeleteStatus404Json | MenuItemAdminDeleteStatus404Json2);
+
+export type MenuItemAdminDeleteStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus500 = (MenuItemAdminDeleteStatus500Plain | MenuItemAdminDeleteStatus500Json | MenuItemAdminDeleteStatus500Json2);
+
+export type MenuItemAdminDeleteStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type MenuItemAdminDeleteStatus501 = (MenuItemAdminDeleteStatus501Plain | MenuItemAdminDeleteStatus501Json | MenuItemAdminDeleteStatus501Json2);
+
+export type MenuItemAdminDeleteOptions = {
+    body?: never;
+    path: MenuItemAdminDeletePath;
+    query?: never;
+    headers?: never;
+};
+
 export type MenuItemAdminDeleteResponses = {
-  "200": MenuItemAdminDeleteStatus200;
-  "204": MenuItemAdminDeleteStatus204;
-  "400": MenuItemAdminDeleteStatus400;
-  "401": MenuItemAdminDeleteStatus401;
-  "403": MenuItemAdminDeleteStatus403;
-  "404": MenuItemAdminDeleteStatus404;
-  "500": MenuItemAdminDeleteStatus500;
-  "501": MenuItemAdminDeleteStatus501;
+    "200": MenuItemAdminDeleteStatus200;
+    "204": MenuItemAdminDeleteStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: MenuItemAdminDeleteStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: MenuItemAdminDeleteStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: MenuItemAdminDeleteStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type MenuItemAdminDeleteResponse =
-  | MenuItemAdminDeleteStatus200
-  | MenuItemAdminDeleteStatus204
-  | MenuItemAdminDeleteStatus400
-  | MenuItemAdminDeleteStatus401
-  | MenuItemAdminDeleteStatus403
-  | MenuItemAdminDeleteStatus404
-  | MenuItemAdminDeleteStatus500
-  | MenuItemAdminDeleteStatus501;
+*/
+export type MenuItemAdminDeleteResponse = (MenuItemAdminDeleteStatus200 | MenuItemAdminDeleteStatus204 | MenuItemAdminDeleteStatus400 | MenuItemAdminDeleteStatus401 | MenuItemAdminDeleteStatus403 | MenuItemAdminDeleteStatus404 | MenuItemAdminDeleteStatus500 | MenuItemAdminDeleteStatus501);

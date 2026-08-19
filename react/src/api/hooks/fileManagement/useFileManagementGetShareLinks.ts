@@ -1,79 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  FileManagementGetShareLinksPathId,
-  FileManagementGetShareLinksStatus200,
-} from "../../models/fileManagement/FileManagementGetShareLinks.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { fileManagementGetShareLinks } from "../../clients/fileManagement/fileManagementGetShareLinks.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { FileManagementGetShareLinksOptions, FileManagementGetShareLinksStatus200 } from '../../models/fileManagement/FileManagementGetShareLinks'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { fileManagementGetShareLinks } from '../../clients/fileManagement/fileManagementGetShareLinks'
 
-export const fileManagementGetShareLinksQueryKey = (id?: FileManagementGetShareLinksPathId) =>
-  [{ url: "/api/app/file-management/files/:id/share-links", params: { id: id } }] as const;
+export const fileManagementGetShareLinksQueryKey = ({ path }: Omit<FileManagementGetShareLinksOptions, 'headers'>) => [{ url: '/api/app/file-management/files/:id/share-links', params: path }] as const
 
-type FileManagementGetShareLinksQueryKey = ReturnType<typeof fileManagementGetShareLinksQueryKey>;
+type FileManagementGetShareLinksQueryKey = ReturnType<typeof fileManagementGetShareLinksQueryKey>
 
-export function fileManagementGetShareLinksQueryOptions(
-  id?: FileManagementGetShareLinksPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = fileManagementGetShareLinksQueryKey(id);
-  return queryOptions<
-    FileManagementGetShareLinksStatus200,
-    ResponseErrorConfig<Error>,
-    FileManagementGetShareLinksStatus200,
-    typeof queryKey
-  >({
-    enabled: !!id,
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return fileManagementGetShareLinks(id!, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function fileManagementGetShareLinksQueryOptions({ path }: FileManagementGetShareLinksOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = fileManagementGetShareLinksQueryKey({ path })
+  return queryOptions<FileManagementGetShareLinksStatus200, ResponseErrorConfig<Error>, FileManagementGetShareLinksStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await fileManagementGetShareLinks({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/app/file-management/files/:id/share-links}
  */
-export function useFileManagementGetShareLinks<
-  TData = FileManagementGetShareLinksStatus200,
-  TQueryData = FileManagementGetShareLinksStatus200,
-  TQueryKey extends QueryKey = FileManagementGetShareLinksQueryKey,
->(
-  id?: FileManagementGetShareLinksPathId,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        FileManagementGetShareLinksStatus200,
-        ResponseErrorConfig<Error>,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? fileManagementGetShareLinksQueryKey(id);
+export function useFileManagementGetShareLinks<TData = FileManagementGetShareLinksStatus200, TQueryData = FileManagementGetShareLinksStatus200, TQueryKey extends QueryKey = FileManagementGetShareLinksQueryKey>({ path }: { path: FileManagementGetShareLinksOptions['path'] | (() => FileManagementGetShareLinksOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<FileManagementGetShareLinksStatus200, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? fileManagementGetShareLinksQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...fileManagementGetShareLinksQueryOptions(id, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...fileManagementGetShareLinksQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

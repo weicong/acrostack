@@ -1,43 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MenuItemAdminGetListStatus200,
-  MenuItemAdminGetListStatus400,
-  MenuItemAdminGetListStatus401,
-  MenuItemAdminGetListStatus403,
-  MenuItemAdminGetListStatus404,
-  MenuItemAdminGetListStatus500,
-  MenuItemAdminGetListStatus501,
-} from "../../models/menuItemAdmin/MenuItemAdminGetList.ts";
-
-function getMenuItemAdminGetListUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-admin/menu-items` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MenuItemAdminGetListOptions, MenuItemAdminGetListResponses } from '../../models/menuItemAdmin/MenuItemAdminGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/menu-items}
  */
-export async function menuItemAdminGetList(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function menuItemAdminGetList<ThrowOnError extends boolean = true>(options: Options<MenuItemAdminGetListOptions, ThrowOnError> = {}): Promise<RequestResult<MenuItemAdminGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MenuItemAdminGetListStatus200,
-    ResponseErrorConfig<
-      | MenuItemAdminGetListStatus400
-      | MenuItemAdminGetListStatus401
-      | MenuItemAdminGetListStatus403
-      | MenuItemAdminGetListStatus404
-      | MenuItemAdminGetListStatus500
-      | MenuItemAdminGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getMenuItemAdminGetListUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/menu-items', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MenuItemAdminGetListResponses, ThrowOnError>>
 }

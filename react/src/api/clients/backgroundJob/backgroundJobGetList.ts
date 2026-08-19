@@ -1,61 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BackgroundJobGetListQueryFilter,
-  BackgroundJobGetListQueryJobName,
-  BackgroundJobGetListQueryIsAbandoned,
-  BackgroundJobGetListQueryStartCreationTime,
-  BackgroundJobGetListQueryEndCreationTime,
-  BackgroundJobGetListQuerySorting,
-  BackgroundJobGetListQuerySkipCount,
-  BackgroundJobGetListQueryMaxResultCount,
-  BackgroundJobGetListStatus200,
-  BackgroundJobGetListStatus400,
-  BackgroundJobGetListStatus401,
-  BackgroundJobGetListStatus403,
-  BackgroundJobGetListStatus404,
-  BackgroundJobGetListStatus500,
-  BackgroundJobGetListStatus501,
-} from "../../models/backgroundJob/BackgroundJobGetList.ts";
-
-function getBackgroundJobGetListUrl() {
-  const res = { method: "GET", url: `/api/app/background-job` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BackgroundJobGetListOptions, BackgroundJobGetListResponses } from '../../models/backgroundJob/BackgroundJobGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/background-job}
  */
-export async function backgroundJobGetList(
-  params?: {
-    Filter?: BackgroundJobGetListQueryFilter;
-    JobName?: BackgroundJobGetListQueryJobName;
-    IsAbandoned?: BackgroundJobGetListQueryIsAbandoned;
-    StartCreationTime?: BackgroundJobGetListQueryStartCreationTime;
-    EndCreationTime?: BackgroundJobGetListQueryEndCreationTime;
-    Sorting?: BackgroundJobGetListQuerySorting;
-    SkipCount?: BackgroundJobGetListQuerySkipCount;
-    MaxResultCount?: BackgroundJobGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function backgroundJobGetList<ThrowOnError extends boolean = true>(options: Options<BackgroundJobGetListOptions, ThrowOnError> = {}): Promise<RequestResult<BackgroundJobGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BackgroundJobGetListStatus200,
-    ResponseErrorConfig<
-      | BackgroundJobGetListStatus400
-      | BackgroundJobGetListStatus401
-      | BackgroundJobGetListStatus403
-      | BackgroundJobGetListStatus404
-      | BackgroundJobGetListStatus500
-      | BackgroundJobGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getBackgroundJobGetListUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/background-job', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BackgroundJobGetListResponses, ThrowOnError>>
 }

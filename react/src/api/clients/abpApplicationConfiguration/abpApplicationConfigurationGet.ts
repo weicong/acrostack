@@ -1,52 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AbpApplicationConfigurationGetQueryIncludeLocalizationResources,
-  AbpApplicationConfigurationGetStatus200,
-  AbpApplicationConfigurationGetStatus400,
-  AbpApplicationConfigurationGetStatus401,
-  AbpApplicationConfigurationGetStatus403,
-  AbpApplicationConfigurationGetStatus404,
-  AbpApplicationConfigurationGetStatus500,
-  AbpApplicationConfigurationGetStatus501,
-} from "../../models/abpApplicationConfiguration/AbpApplicationConfigurationGet.ts";
-
-function getAbpApplicationConfigurationGetUrl() {
-  const res = { method: "GET", url: `/api/abp/application-configuration` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AbpApplicationConfigurationGetOptions, AbpApplicationConfigurationGetResponses } from '../../models/abpApplicationConfiguration/AbpApplicationConfigurationGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/abp/application-configuration}
  */
-export async function abpApplicationConfigurationGet(
-  params?: {
-    IncludeLocalizationResources?: AbpApplicationConfigurationGetQueryIncludeLocalizationResources;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function abpApplicationConfigurationGet<ThrowOnError extends boolean = true>(options: Options<AbpApplicationConfigurationGetOptions, ThrowOnError> = {}): Promise<RequestResult<AbpApplicationConfigurationGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AbpApplicationConfigurationGetStatus200,
-    ResponseErrorConfig<
-      | AbpApplicationConfigurationGetStatus400
-      | AbpApplicationConfigurationGetStatus401
-      | AbpApplicationConfigurationGetStatus403
-      | AbpApplicationConfigurationGetStatus404
-      | AbpApplicationConfigurationGetStatus500
-      | AbpApplicationConfigurationGetStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getAbpApplicationConfigurationGetUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/abp/application-configuration', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AbpApplicationConfigurationGetResponses, ThrowOnError>>
 }

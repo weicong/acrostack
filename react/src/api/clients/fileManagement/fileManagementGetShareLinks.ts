@@ -1,32 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementGetShareLinksPathId,
-  FileManagementGetShareLinksStatus200,
-} from "../../models/fileManagement/FileManagementGetShareLinks.ts";
-
-function getFileManagementGetShareLinksUrl(id: FileManagementGetShareLinksPathId) {
-  const res = { method: "GET", url: `/api/app/file-management/files/${id}/share-links` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementGetShareLinksOptions, FileManagementGetShareLinksResponses } from '../../models/fileManagement/FileManagementGetShareLinks'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/share-links}
  */
-export async function fileManagementGetShareLinks(
-  id: FileManagementGetShareLinksPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementGetShareLinks<ThrowOnError extends boolean = true>(options: Options<FileManagementGetShareLinksOptions, ThrowOnError>): Promise<RequestResult<FileManagementGetShareLinksResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementGetShareLinksStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({ method: "GET", url: getFileManagementGetShareLinksUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/files/{id}/share-links', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementGetShareLinksResponses, ThrowOnError>>
 }

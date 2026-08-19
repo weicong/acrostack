@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogAdminMoveAllBlogPostsPathBlogId,
-  BlogAdminMoveAllBlogPostsQueryAssignToBlogId,
-  BlogAdminMoveAllBlogPostsStatus200,
-  BlogAdminMoveAllBlogPostsStatus204,
-  BlogAdminMoveAllBlogPostsStatus400,
-  BlogAdminMoveAllBlogPostsStatus401,
-  BlogAdminMoveAllBlogPostsStatus403,
-  BlogAdminMoveAllBlogPostsStatus404,
-  BlogAdminMoveAllBlogPostsStatus500,
-  BlogAdminMoveAllBlogPostsStatus501,
-} from "../../models/blogAdmin/BlogAdminMoveAllBlogPosts.ts";
-
-function getBlogAdminMoveAllBlogPostsUrl(blogId: BlogAdminMoveAllBlogPostsPathBlogId) {
-  const res = {
-    method: "PUT",
-    url: `/api/cms-kit-admin/blogs/${blogId}/move-all-blog-posts` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogAdminMoveAllBlogPostsOptions, BlogAdminMoveAllBlogPostsResponses } from '../../models/blogAdmin/BlogAdminMoveAllBlogPosts'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/:blogId/move-all-blog-posts}
  */
-export async function blogAdminMoveAllBlogPosts(
-  blogId: BlogAdminMoveAllBlogPostsPathBlogId,
-  params?: { assignToBlogId?: BlogAdminMoveAllBlogPostsQueryAssignToBlogId },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogAdminMoveAllBlogPosts<ThrowOnError extends boolean = true>(options: Options<BlogAdminMoveAllBlogPostsOptions, ThrowOnError>): Promise<RequestResult<BlogAdminMoveAllBlogPostsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogAdminMoveAllBlogPostsStatus200 | BlogAdminMoveAllBlogPostsStatus204,
-    ResponseErrorConfig<
-      | BlogAdminMoveAllBlogPostsStatus400
-      | BlogAdminMoveAllBlogPostsStatus401
-      | BlogAdminMoveAllBlogPostsStatus403
-      | BlogAdminMoveAllBlogPostsStatus404
-      | BlogAdminMoveAllBlogPostsStatus500
-      | BlogAdminMoveAllBlogPostsStatus501
-    >,
-    unknown
-  >({
-    method: "PUT",
-    url: getBlogAdminMoveAllBlogPostsUrl(blogId).url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/blogs/{blogId}/move-all-blog-posts', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogAdminMoveAllBlogPostsResponses, ThrowOnError>>
 }

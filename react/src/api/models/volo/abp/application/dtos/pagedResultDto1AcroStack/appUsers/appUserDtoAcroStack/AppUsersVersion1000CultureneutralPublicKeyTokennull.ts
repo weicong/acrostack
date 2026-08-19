@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { AcroStackAppUsersAppUserDto } from "../../../../../../../acroStack/appUsers/AppUserDto.ts";
+import type { AcroStackAppUsersAppUserDto } from '../../../../../../../acroStack/appUsers/AppUserDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackAppUsersAppUserDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

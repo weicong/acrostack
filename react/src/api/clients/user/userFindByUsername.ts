@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  UserFindByUsernamePathUserName,
-  UserFindByUsernameStatus200,
-  UserFindByUsernameStatus400,
-  UserFindByUsernameStatus401,
-  UserFindByUsernameStatus403,
-  UserFindByUsernameStatus404,
-  UserFindByUsernameStatus500,
-  UserFindByUsernameStatus501,
-} from "../../models/user/UserFindByUsername.ts";
-
-function getUserFindByUsernameUrl(userName: UserFindByUsernamePathUserName) {
-  const res = { method: "GET", url: `/api/identity/users/by-username/${userName}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { UserFindByUsernameOptions, UserFindByUsernameResponses } from '../../models/user/UserFindByUsername'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/identity/users/by-username/:userName}
  */
-export async function userFindByUsername(
-  userName: UserFindByUsernamePathUserName,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function userFindByUsername<ThrowOnError extends boolean = true>(options: Options<UserFindByUsernameOptions, ThrowOnError>): Promise<RequestResult<UserFindByUsernameResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    UserFindByUsernameStatus200,
-    ResponseErrorConfig<
-      | UserFindByUsernameStatus400
-      | UserFindByUsernameStatus401
-      | UserFindByUsernameStatus403
-      | UserFindByUsernameStatus404
-      | UserFindByUsernameStatus500
-      | UserFindByUsernameStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getUserFindByUsernameUrl(userName).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/identity/users/by-username/{userName}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<UserFindByUsernameResponses, ThrowOnError>>
 }

@@ -1,207 +1,154 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from "../volo/abp/account/web/areas/account/controllers/models/AbpLoginResult.ts";
-import type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from "../volo/abp/account/web/areas/account/controllers/models/UserLoginInfo.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult } from '../volo/abp/account/web/areas/account/controllers/models/AbpLoginResult'
+import type { VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo } from '../volo/abp/account/web/areas/account/controllers/models/UserLoginInfo'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type object
- */
 export type LoginLoginStatus200Plain = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-/**
- * @type object
- */
 export type LoginLoginStatus200Json = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-/**
- * @type object
- */
 export type LoginLoginStatus200Json2 = VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult;
 
-export type LoginLoginStatus200 =
-  | LoginLoginStatus200Plain
-  | LoginLoginStatus200Json
-  | LoginLoginStatus200Json2;
+export type LoginLoginStatus200 = (LoginLoginStatus200Plain | LoginLoginStatus200Json | LoginLoginStatus200Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus400 =
-  | LoginLoginStatus400Plain
-  | LoginLoginStatus400Json
-  | LoginLoginStatus400Json2;
+export type LoginLoginStatus400 = (LoginLoginStatus400Plain | LoginLoginStatus400Json | LoginLoginStatus400Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus401 =
-  | LoginLoginStatus401Plain
-  | LoginLoginStatus401Json
-  | LoginLoginStatus401Json2;
+export type LoginLoginStatus401 = (LoginLoginStatus401Plain | LoginLoginStatus401Json | LoginLoginStatus401Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus403 =
-  | LoginLoginStatus403Plain
-  | LoginLoginStatus403Json
-  | LoginLoginStatus403Json2;
+export type LoginLoginStatus403 = (LoginLoginStatus403Plain | LoginLoginStatus403Json | LoginLoginStatus403Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus404 =
-  | LoginLoginStatus404Plain
-  | LoginLoginStatus404Json
-  | LoginLoginStatus404Json2;
+export type LoginLoginStatus404 = (LoginLoginStatus404Plain | LoginLoginStatus404Json | LoginLoginStatus404Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus500 =
-  | LoginLoginStatus500Plain
-  | LoginLoginStatus500Json
-  | LoginLoginStatus500Json2;
+export type LoginLoginStatus500 = (LoginLoginStatus500Plain | LoginLoginStatus500Json | LoginLoginStatus500Json2);
 
-/**
- * @type object
- */
 export type LoginLoginStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type LoginLoginStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type LoginLoginStatus501 =
-  | LoginLoginStatus501Plain
-  | LoginLoginStatus501Json
-  | LoginLoginStatus501Json2;
+export type LoginLoginStatus501 = (LoginLoginStatus501Plain | LoginLoginStatus501Json | LoginLoginStatus501Json2);
 
-/**
- * @type object | undefined
- */
-export type LoginLoginJsonData =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginLoginBodyJson = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-/**
- * @type object | undefined
- */
-export type LoginLoginJson2Data =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginLoginBodyJson2 = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-/**
- * @type object | undefined
- */
-export type LoginLoginJson3Data =
-  | VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo
-  | undefined;
+export type LoginLoginBodyJson3 = VoloAbpAccountWebAreasAccountControllersModelsUserLoginInfo | undefined;
 
-export type LoginLoginData = LoginLoginJsonData | LoginLoginJson2Data | LoginLoginJson3Data;
+export type LoginLoginBody = (LoginLoginBodyJson | LoginLoginBodyJson2 | LoginLoginBodyJson3);
 
-/**
- * @type object
- */
-export type LoginLoginRequestConfig = {
-  data?: LoginLoginData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/account/login";
+export type LoginLoginOptions = {
+    body: LoginLoginBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type LoginLoginResponses = {
-  "200": LoginLoginStatus200;
-  "400": LoginLoginStatus400;
-  "401": LoginLoginStatus401;
-  "403": LoginLoginStatus403;
-  "404": LoginLoginStatus404;
-  "500": LoginLoginStatus500;
-  "501": LoginLoginStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: LoginLoginStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: LoginLoginStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: LoginLoginStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type LoginLoginResponse =
-  | LoginLoginStatus200
-  | LoginLoginStatus400
-  | LoginLoginStatus401
-  | LoginLoginStatus403
-  | LoginLoginStatus404
-  | LoginLoginStatus500
-  | LoginLoginStatus501;
+*/
+export type LoginLoginResponse = (LoginLoginStatus200 | LoginLoginStatus400 | LoginLoginStatus401 | LoginLoginStatus403 | LoginLoginStatus404 | LoginLoginStatus500 | LoginLoginStatus501);

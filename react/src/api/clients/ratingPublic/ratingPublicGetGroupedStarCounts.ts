@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  RatingPublicGetGroupedStarCountsPathEntityType,
-  RatingPublicGetGroupedStarCountsPathEntityId,
-  RatingPublicGetGroupedStarCountsStatus200,
-  RatingPublicGetGroupedStarCountsStatus400,
-  RatingPublicGetGroupedStarCountsStatus401,
-  RatingPublicGetGroupedStarCountsStatus403,
-  RatingPublicGetGroupedStarCountsStatus404,
-  RatingPublicGetGroupedStarCountsStatus500,
-  RatingPublicGetGroupedStarCountsStatus501,
-} from "../../models/ratingPublic/RatingPublicGetGroupedStarCounts.ts";
-
-function getRatingPublicGetGroupedStarCountsUrl(
-  entityType: RatingPublicGetGroupedStarCountsPathEntityType,
-  entityId: RatingPublicGetGroupedStarCountsPathEntityId,
-) {
-  const res = {
-    method: "GET",
-    url: `/api/cms-kit-public/ratings/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { RatingPublicGetGroupedStarCountsOptions, RatingPublicGetGroupedStarCountsResponses } from '../../models/ratingPublic/RatingPublicGetGroupedStarCounts'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/ratings/:entityType/:entityId}
  */
-export async function ratingPublicGetGroupedStarCounts(
-  entityType: RatingPublicGetGroupedStarCountsPathEntityType,
-  entityId: RatingPublicGetGroupedStarCountsPathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function ratingPublicGetGroupedStarCounts<ThrowOnError extends boolean = true>(options: Options<RatingPublicGetGroupedStarCountsOptions, ThrowOnError>): Promise<RequestResult<RatingPublicGetGroupedStarCountsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    RatingPublicGetGroupedStarCountsStatus200,
-    ResponseErrorConfig<
-      | RatingPublicGetGroupedStarCountsStatus400
-      | RatingPublicGetGroupedStarCountsStatus401
-      | RatingPublicGetGroupedStarCountsStatus403
-      | RatingPublicGetGroupedStarCountsStatus404
-      | RatingPublicGetGroupedStarCountsStatus500
-      | RatingPublicGetGroupedStarCountsStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getRatingPublicGetGroupedStarCountsUrl(entityType, entityId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/ratings/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<RatingPublicGetGroupedStarCountsResponses, ThrowOnError>>
 }

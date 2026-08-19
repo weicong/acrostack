@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  OpenIddictApplicationUpdatePathId,
-  OpenIddictApplicationUpdateData,
-  OpenIddictApplicationUpdateStatus200,
-  OpenIddictApplicationUpdateStatus400,
-  OpenIddictApplicationUpdateStatus401,
-  OpenIddictApplicationUpdateStatus403,
-  OpenIddictApplicationUpdateStatus404,
-  OpenIddictApplicationUpdateStatus500,
-  OpenIddictApplicationUpdateStatus501,
-} from "../../models/openIddictApplication/OpenIddictApplicationUpdate.ts";
-
-function getOpenIddictApplicationUpdateUrl(id: OpenIddictApplicationUpdatePathId) {
-  const res = { method: "PUT", url: `/api/app/open-iddict-application/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { OpenIddictApplicationUpdateOptions, OpenIddictApplicationUpdateResponses } from '../../models/openIddictApplication/OpenIddictApplicationUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/open-iddict-application/:id}
  */
-export async function openIddictApplicationUpdate(
-  id: OpenIddictApplicationUpdatePathId,
-  data?: OpenIddictApplicationUpdateData,
-  config: Partial<RequestConfig<OpenIddictApplicationUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function openIddictApplicationUpdate<ThrowOnError extends boolean = true>(options: Options<OpenIddictApplicationUpdateOptions, ThrowOnError>): Promise<RequestResult<OpenIddictApplicationUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    OpenIddictApplicationUpdateStatus200,
-    ResponseErrorConfig<
-      | OpenIddictApplicationUpdateStatus400
-      | OpenIddictApplicationUpdateStatus401
-      | OpenIddictApplicationUpdateStatus403
-      | OpenIddictApplicationUpdateStatus404
-      | OpenIddictApplicationUpdateStatus500
-      | OpenIddictApplicationUpdateStatus501
-    >,
-    OpenIddictApplicationUpdateData
-  >({
-    method: "PUT",
-    url: getOpenIddictApplicationUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/app/open-iddict-application/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<OpenIddictApplicationUpdateResponses, ThrowOnError>>
 }

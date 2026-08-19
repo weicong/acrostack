@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  OpenIddictScopeGetListQueryFilter,
-  OpenIddictScopeGetListQuerySorting,
-  OpenIddictScopeGetListQuerySkipCount,
-  OpenIddictScopeGetListQueryMaxResultCount,
-  OpenIddictScopeGetListStatus200,
-  OpenIddictScopeGetListStatus400,
-  OpenIddictScopeGetListStatus401,
-  OpenIddictScopeGetListStatus403,
-  OpenIddictScopeGetListStatus404,
-  OpenIddictScopeGetListStatus500,
-  OpenIddictScopeGetListStatus501,
-} from "../../models/openIddictScope/OpenIddictScopeGetList.ts";
-
-function getOpenIddictScopeGetListUrl() {
-  const res = { method: "GET", url: `/api/app/open-iddict-scope` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { OpenIddictScopeGetListOptions, OpenIddictScopeGetListResponses } from '../../models/openIddictScope/OpenIddictScopeGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/open-iddict-scope}
  */
-export async function openIddictScopeGetList(
-  params?: {
-    Filter?: OpenIddictScopeGetListQueryFilter;
-    Sorting?: OpenIddictScopeGetListQuerySorting;
-    SkipCount?: OpenIddictScopeGetListQuerySkipCount;
-    MaxResultCount?: OpenIddictScopeGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function openIddictScopeGetList<ThrowOnError extends boolean = true>(options: Options<OpenIddictScopeGetListOptions, ThrowOnError> = {}): Promise<RequestResult<OpenIddictScopeGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    OpenIddictScopeGetListStatus200,
-    ResponseErrorConfig<
-      | OpenIddictScopeGetListStatus400
-      | OpenIddictScopeGetListStatus401
-      | OpenIddictScopeGetListStatus403
-      | OpenIddictScopeGetListStatus404
-      | OpenIddictScopeGetListStatus500
-      | OpenIddictScopeGetListStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getOpenIddictScopeGetListUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/open-iddict-scope', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<OpenIddictScopeGetListResponses, ThrowOnError>>
 }

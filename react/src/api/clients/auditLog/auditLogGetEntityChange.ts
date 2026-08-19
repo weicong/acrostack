@@ -1,49 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AuditLogGetEntityChangePathEntityChangeId,
-  AuditLogGetEntityChangeStatus200,
-  AuditLogGetEntityChangeStatus400,
-  AuditLogGetEntityChangeStatus401,
-  AuditLogGetEntityChangeStatus403,
-  AuditLogGetEntityChangeStatus404,
-  AuditLogGetEntityChangeStatus500,
-  AuditLogGetEntityChangeStatus501,
-} from "../../models/auditLog/AuditLogGetEntityChange.ts";
-
-function getAuditLogGetEntityChangeUrl(entityChangeId: AuditLogGetEntityChangePathEntityChangeId) {
-  const res = { method: "GET", url: `/api/app/audit-log/entity-change/${entityChangeId}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AuditLogGetEntityChangeOptions, AuditLogGetEntityChangeResponses } from '../../models/auditLog/AuditLogGetEntityChange'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/audit-log/entity-change/:entityChangeId}
  */
-export async function auditLogGetEntityChange(
-  entityChangeId: AuditLogGetEntityChangePathEntityChangeId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function auditLogGetEntityChange<ThrowOnError extends boolean = true>(options: Options<AuditLogGetEntityChangeOptions, ThrowOnError>): Promise<RequestResult<AuditLogGetEntityChangeResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AuditLogGetEntityChangeStatus200,
-    ResponseErrorConfig<
-      | AuditLogGetEntityChangeStatus400
-      | AuditLogGetEntityChangeStatus401
-      | AuditLogGetEntityChangeStatus403
-      | AuditLogGetEntityChangeStatus404
-      | AuditLogGetEntityChangeStatus500
-      | AuditLogGetEntityChangeStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getAuditLogGetEntityChangeUrl(entityChangeId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/audit-log/entity-change/{entityChangeId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AuditLogGetEntityChangeResponses, ThrowOnError>>
 }

@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PagesPublicFindBySlugQuerySlug,
-  PagesPublicFindBySlugStatus200,
-  PagesPublicFindBySlugStatus400,
-  PagesPublicFindBySlugStatus401,
-  PagesPublicFindBySlugStatus403,
-  PagesPublicFindBySlugStatus404,
-  PagesPublicFindBySlugStatus500,
-  PagesPublicFindBySlugStatus501,
-} from "../../models/pagesPublic/PagesPublicFindBySlug.ts";
-
-function getPagesPublicFindBySlugUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-public/pages/by-slug` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PagesPublicFindBySlugOptions, PagesPublicFindBySlugResponses } from '../../models/pagesPublic/PagesPublicFindBySlug'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/pages/by-slug}
  */
-export async function pagesPublicFindBySlug(
-  params?: { slug?: PagesPublicFindBySlugQuerySlug },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pagesPublicFindBySlug<ThrowOnError extends boolean = true>(options: Options<PagesPublicFindBySlugOptions, ThrowOnError> = {}): Promise<RequestResult<PagesPublicFindBySlugResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PagesPublicFindBySlugStatus200,
-    ResponseErrorConfig<
-      | PagesPublicFindBySlugStatus400
-      | PagesPublicFindBySlugStatus401
-      | PagesPublicFindBySlugStatus403
-      | PagesPublicFindBySlugStatus404
-      | PagesPublicFindBySlugStatus500
-      | PagesPublicFindBySlugStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getPagesPublicFindBySlugUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/pages/by-slug', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PagesPublicFindBySlugResponses, ThrowOnError>>
 }

@@ -1,32 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementDownloadFilePathId,
-  FileManagementDownloadFileStatus200,
-} from "../../models/fileManagement/FileManagementDownloadFile.ts";
-
-function getFileManagementDownloadFileUrl(id: FileManagementDownloadFilePathId) {
-  const res = { method: "GET", url: `/api/app/file-management/files/${id}/download` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementDownloadFileOptions, FileManagementDownloadFileResponses } from '../../models/fileManagement/FileManagementDownloadFile'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/download}
  */
-export async function fileManagementDownloadFile(
-  id: FileManagementDownloadFilePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementDownloadFile<ThrowOnError extends boolean = true>(options: Options<FileManagementDownloadFileOptions, ThrowOnError>): Promise<RequestResult<FileManagementDownloadFileResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementDownloadFileStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({ method: "GET", url: getFileManagementDownloadFileUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/files/{id}/download', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementDownloadFileResponses, ThrowOnError>>
 }

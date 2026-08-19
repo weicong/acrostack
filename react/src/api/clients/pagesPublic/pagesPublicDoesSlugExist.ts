@@ -1,50 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PagesPublicDoesSlugExistQuerySlug,
-  PagesPublicDoesSlugExistStatus200,
-  PagesPublicDoesSlugExistStatus400,
-  PagesPublicDoesSlugExistStatus401,
-  PagesPublicDoesSlugExistStatus403,
-  PagesPublicDoesSlugExistStatus404,
-  PagesPublicDoesSlugExistStatus500,
-  PagesPublicDoesSlugExistStatus501,
-} from "../../models/pagesPublic/PagesPublicDoesSlugExist.ts";
-
-function getPagesPublicDoesSlugExistUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-public/pages/exist` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PagesPublicDoesSlugExistOptions, PagesPublicDoesSlugExistResponses } from '../../models/pagesPublic/PagesPublicDoesSlugExist'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/pages/exist}
  */
-export async function pagesPublicDoesSlugExist(
-  params?: { slug?: PagesPublicDoesSlugExistQuerySlug },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pagesPublicDoesSlugExist<ThrowOnError extends boolean = true>(options: Options<PagesPublicDoesSlugExistOptions, ThrowOnError> = {}): Promise<RequestResult<PagesPublicDoesSlugExistResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PagesPublicDoesSlugExistStatus200,
-    ResponseErrorConfig<
-      | PagesPublicDoesSlugExistStatus400
-      | PagesPublicDoesSlugExistStatus401
-      | PagesPublicDoesSlugExistStatus403
-      | PagesPublicDoesSlugExistStatus404
-      | PagesPublicDoesSlugExistStatus500
-      | PagesPublicDoesSlugExistStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getPagesPublicDoesSlugExistUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/pages/exist', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PagesPublicDoesSlugExistResponses, ThrowOnError>>
 }

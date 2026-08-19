@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsTimeZone } from "./TimeZone.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsTimeZone } from './TimeZone'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsTimingDto = {
-  /**
-   * @type object | undefined
-   */
-  timeZone?: VoloAbpAspNetCoreMvcApplicationConfigurationsTimeZone;
+    timeZone?: VoloAbpAspNetCoreMvcApplicationConfigurationsTimeZone;
 };

@@ -1,44 +1,28 @@
 /* oxlint-disable */
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementDeleteFolderPathId = string;
-
-/**
- * @type any
- */
-export type FileManagementDeleteFolderStatus200 = any;
-
-/**
- * @type object
- */
-export type FileManagementDeleteFolderRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementDeleteFolderPathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/folders/${string}`;
+export type FileManagementDeleteFolderPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementDeleteFolderStatus200 = unknown;
+
+export type FileManagementDeleteFolderOptions = {
+    body?: never;
+    path: FileManagementDeleteFolderPath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementDeleteFolderResponses = {
-  "200": FileManagementDeleteFolderStatus200;
+    "200": FileManagementDeleteFolderStatus200;
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementDeleteFolderResponse = FileManagementDeleteFolderStatus200;

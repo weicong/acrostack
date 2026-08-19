@@ -1,46 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  CommentPublicDeletePathId,
-  CommentPublicDeleteStatus200,
-  CommentPublicDeleteStatus204,
-  CommentPublicDeleteStatus400,
-  CommentPublicDeleteStatus401,
-  CommentPublicDeleteStatus403,
-  CommentPublicDeleteStatus404,
-  CommentPublicDeleteStatus500,
-  CommentPublicDeleteStatus501,
-} from "../../models/commentPublic/CommentPublicDelete.ts";
-
-function getCommentPublicDeleteUrl(id: CommentPublicDeletePathId) {
-  const res = { method: "DELETE", url: `/api/cms-kit-public/comments/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { CommentPublicDeleteOptions, CommentPublicDeleteResponses } from '../../models/commentPublic/CommentPublicDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/comments/:id}
  */
-export async function commentPublicDelete(
-  id: CommentPublicDeletePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function commentPublicDelete<ThrowOnError extends boolean = true>(options: Options<CommentPublicDeleteOptions, ThrowOnError>): Promise<RequestResult<CommentPublicDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    CommentPublicDeleteStatus200 | CommentPublicDeleteStatus204,
-    ResponseErrorConfig<
-      | CommentPublicDeleteStatus400
-      | CommentPublicDeleteStatus401
-      | CommentPublicDeleteStatus403
-      | CommentPublicDeleteStatus404
-      | CommentPublicDeleteStatus500
-      | CommentPublicDeleteStatus501
-    >,
-    unknown
-  >({ method: "DELETE", url: getCommentPublicDeleteUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-public/comments/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<CommentPublicDeleteResponses, ThrowOnError>>
 }

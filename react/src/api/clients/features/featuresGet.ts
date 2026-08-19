@@ -1,49 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FeaturesGetQueryProviderName,
-  FeaturesGetQueryProviderKey,
-  FeaturesGetStatus200,
-  FeaturesGetStatus400,
-  FeaturesGetStatus401,
-  FeaturesGetStatus403,
-  FeaturesGetStatus404,
-  FeaturesGetStatus500,
-  FeaturesGetStatus501,
-} from "../../models/features/FeaturesGet.ts";
-
-function getFeaturesGetUrl() {
-  const res = { method: "GET", url: `/api/feature-management/features` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FeaturesGetOptions, FeaturesGetResponses } from '../../models/features/FeaturesGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/feature-management/features}
  */
-export async function featuresGet(
-  params?: {
-    providerName?: FeaturesGetQueryProviderName;
-    providerKey?: FeaturesGetQueryProviderKey;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function featuresGet<ThrowOnError extends boolean = true>(options: Options<FeaturesGetOptions, ThrowOnError> = {}): Promise<RequestResult<FeaturesGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FeaturesGetStatus200,
-    ResponseErrorConfig<
-      | FeaturesGetStatus400
-      | FeaturesGetStatus401
-      | FeaturesGetStatus403
-      | FeaturesGetStatus404
-      | FeaturesGetStatus500
-      | FeaturesGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getFeaturesGetUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/feature-management/features', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FeaturesGetResponses, ThrowOnError>>
 }

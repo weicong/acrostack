@@ -1,36 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementGetFileVersionsPathId,
-  FileManagementGetFileVersionsStatus200,
-} from "../../models/fileManagement/FileManagementGetFileVersions.ts";
-
-function getFileManagementGetFileVersionsUrl(id: FileManagementGetFileVersionsPathId) {
-  const res = { method: "GET", url: `/api/app/file-management/files/${id}/versions` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementGetFileVersionsOptions, FileManagementGetFileVersionsResponses } from '../../models/fileManagement/FileManagementGetFileVersions'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/versions}
  */
-export async function fileManagementGetFileVersions(
-  id: FileManagementGetFileVersionsPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementGetFileVersions<ThrowOnError extends boolean = true>(options: Options<FileManagementGetFileVersionsOptions, ThrowOnError>): Promise<RequestResult<FileManagementGetFileVersionsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementGetFileVersionsStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({
-    method: "GET",
-    url: getFileManagementGetFileVersionsUrl(id).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/files/{id}/versions', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementGetFileVersionsResponses, ThrowOnError>>
 }

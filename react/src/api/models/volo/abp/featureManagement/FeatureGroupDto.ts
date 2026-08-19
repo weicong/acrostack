@@ -1,21 +1,9 @@
 /* oxlint-disable */
 
-import type { VoloAbpFeatureManagementFeatureDto } from "./FeatureDto.ts";
+import type { VoloAbpFeatureManagementFeatureDto } from './FeatureDto'
 
-/**
- * @type object
- */
 export type VoloAbpFeatureManagementFeatureGroupDto = {
-  /**
-   * @type string | undefined
-   */
-  name?: string | null;
-  /**
-   * @type string | undefined
-   */
-  displayName?: string | null;
-  /**
-   * @type array | undefined
-   */
-  features?: VoloAbpFeatureManagementFeatureDto[] | null;
+    name?: string | null;
+    displayName?: string | null;
+    features?: VoloAbpFeatureManagementFeatureDto[] | null;
 };

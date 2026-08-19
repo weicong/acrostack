@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  EntityTagAdminRemoveTagFromEntityQueryTagId,
-  EntityTagAdminRemoveTagFromEntityQueryEntityType,
-  EntityTagAdminRemoveTagFromEntityQueryEntityId,
-  EntityTagAdminRemoveTagFromEntityStatus200,
-  EntityTagAdminRemoveTagFromEntityStatus204,
-  EntityTagAdminRemoveTagFromEntityStatus400,
-  EntityTagAdminRemoveTagFromEntityStatus401,
-  EntityTagAdminRemoveTagFromEntityStatus403,
-  EntityTagAdminRemoveTagFromEntityStatus404,
-  EntityTagAdminRemoveTagFromEntityStatus500,
-  EntityTagAdminRemoveTagFromEntityStatus501,
-} from "../../models/entityTagAdmin/EntityTagAdminRemoveTagFromEntity.ts";
-
-function getEntityTagAdminRemoveTagFromEntityUrl() {
-  const res = { method: "DELETE", url: `/api/cms-kit-admin/entity-tags` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { EntityTagAdminRemoveTagFromEntityOptions, EntityTagAdminRemoveTagFromEntityResponses } from '../../models/entityTagAdmin/EntityTagAdminRemoveTagFromEntity'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/entity-tags}
  */
-export async function entityTagAdminRemoveTagFromEntity(
-  params: {
-    TagId: EntityTagAdminRemoveTagFromEntityQueryTagId;
-    EntityType: EntityTagAdminRemoveTagFromEntityQueryEntityType;
-    EntityId: EntityTagAdminRemoveTagFromEntityQueryEntityId;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function entityTagAdminRemoveTagFromEntity<ThrowOnError extends boolean = true>(options: Options<EntityTagAdminRemoveTagFromEntityOptions, ThrowOnError>): Promise<RequestResult<EntityTagAdminRemoveTagFromEntityResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    EntityTagAdminRemoveTagFromEntityStatus200 | EntityTagAdminRemoveTagFromEntityStatus204,
-    ResponseErrorConfig<
-      | EntityTagAdminRemoveTagFromEntityStatus400
-      | EntityTagAdminRemoveTagFromEntityStatus401
-      | EntityTagAdminRemoveTagFromEntityStatus403
-      | EntityTagAdminRemoveTagFromEntityStatus404
-      | EntityTagAdminRemoveTagFromEntityStatus500
-      | EntityTagAdminRemoveTagFromEntityStatus501
-    >,
-    unknown
-  >({
-    method: "DELETE",
-    url: getEntityTagAdminRemoveTagFromEntityUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-admin/entity-tags', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<EntityTagAdminRemoveTagFromEntityResponses, ThrowOnError>>
 }

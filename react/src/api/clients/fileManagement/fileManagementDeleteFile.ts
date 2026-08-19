@@ -1,30 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementDeleteFilePathId,
-  FileManagementDeleteFileStatus200,
-} from "../../models/fileManagement/FileManagementDeleteFile.ts";
-
-function getFileManagementDeleteFileUrl(id: FileManagementDeleteFilePathId) {
-  const res = { method: "DELETE", url: `/api/app/file-management/files/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementDeleteFileOptions, FileManagementDeleteFileResponses } from '../../models/fileManagement/FileManagementDeleteFile'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id}
  */
-export async function fileManagementDeleteFile(
-  id: FileManagementDeleteFilePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementDeleteFile<ThrowOnError extends boolean = true>(options: Options<FileManagementDeleteFileOptions, ThrowOnError>): Promise<RequestResult<FileManagementDeleteFileResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<FileManagementDeleteFileStatus200, ResponseErrorConfig<Error>, unknown>(
-    { method: "DELETE", url: getFileManagementDeleteFileUrl(id).url.toString(), ...requestConfig },
-  );
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/app/file-management/files/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementDeleteFileResponses, ThrowOnError>>
 }

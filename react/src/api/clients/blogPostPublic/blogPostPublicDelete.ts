@@ -1,46 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogPostPublicDeletePathId,
-  BlogPostPublicDeleteStatus200,
-  BlogPostPublicDeleteStatus204,
-  BlogPostPublicDeleteStatus400,
-  BlogPostPublicDeleteStatus401,
-  BlogPostPublicDeleteStatus403,
-  BlogPostPublicDeleteStatus404,
-  BlogPostPublicDeleteStatus500,
-  BlogPostPublicDeleteStatus501,
-} from "../../models/blogPostPublic/BlogPostPublicDelete.ts";
-
-function getBlogPostPublicDeleteUrl(id: BlogPostPublicDeletePathId) {
-  const res = { method: "DELETE", url: `/api/cms-kit-public/blog-posts/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogPostPublicDeleteOptions, BlogPostPublicDeleteResponses } from '../../models/blogPostPublic/BlogPostPublicDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/blog-posts/:id}
  */
-export async function blogPostPublicDelete(
-  id: BlogPostPublicDeletePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogPostPublicDelete<ThrowOnError extends boolean = true>(options: Options<BlogPostPublicDeleteOptions, ThrowOnError>): Promise<RequestResult<BlogPostPublicDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogPostPublicDeleteStatus200 | BlogPostPublicDeleteStatus204,
-    ResponseErrorConfig<
-      | BlogPostPublicDeleteStatus400
-      | BlogPostPublicDeleteStatus401
-      | BlogPostPublicDeleteStatus403
-      | BlogPostPublicDeleteStatus404
-      | BlogPostPublicDeleteStatus500
-      | BlogPostPublicDeleteStatus501
-    >,
-    unknown
-  >({ method: "DELETE", url: getBlogPostPublicDeleteUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-public/blog-posts/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogPostPublicDeleteResponses, ThrowOnError>>
 }

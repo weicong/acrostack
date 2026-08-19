@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  CommentPublicUpdatePathId,
-  CommentPublicUpdateData,
-  CommentPublicUpdateStatus200,
-  CommentPublicUpdateStatus400,
-  CommentPublicUpdateStatus401,
-  CommentPublicUpdateStatus403,
-  CommentPublicUpdateStatus404,
-  CommentPublicUpdateStatus500,
-  CommentPublicUpdateStatus501,
-} from "../../models/commentPublic/CommentPublicUpdate.ts";
-
-function getCommentPublicUpdateUrl(id: CommentPublicUpdatePathId) {
-  const res = { method: "PUT", url: `/api/cms-kit-public/comments/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { CommentPublicUpdateOptions, CommentPublicUpdateResponses } from '../../models/commentPublic/CommentPublicUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/comments/:id}
  */
-export async function commentPublicUpdate(
-  id: CommentPublicUpdatePathId,
-  data?: CommentPublicUpdateData,
-  config: Partial<RequestConfig<CommentPublicUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function commentPublicUpdate<ThrowOnError extends boolean = true>(options: Options<CommentPublicUpdateOptions, ThrowOnError>): Promise<RequestResult<CommentPublicUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    CommentPublicUpdateStatus200,
-    ResponseErrorConfig<
-      | CommentPublicUpdateStatus400
-      | CommentPublicUpdateStatus401
-      | CommentPublicUpdateStatus403
-      | CommentPublicUpdateStatus404
-      | CommentPublicUpdateStatus500
-      | CommentPublicUpdateStatus501
-    >,
-    CommentPublicUpdateData
-  >({
-    method: "PUT",
-    url: getCommentPublicUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-public/comments/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<CommentPublicUpdateResponses, ThrowOnError>>
 }

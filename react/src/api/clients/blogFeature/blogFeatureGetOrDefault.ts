@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogFeatureGetOrDefaultPathBlogId,
-  BlogFeatureGetOrDefaultPathFeatureName,
-  BlogFeatureGetOrDefaultStatus200,
-  BlogFeatureGetOrDefaultStatus400,
-  BlogFeatureGetOrDefaultStatus401,
-  BlogFeatureGetOrDefaultStatus403,
-  BlogFeatureGetOrDefaultStatus404,
-  BlogFeatureGetOrDefaultStatus500,
-  BlogFeatureGetOrDefaultStatus501,
-} from "../../models/blogFeature/BlogFeatureGetOrDefault.ts";
-
-function getBlogFeatureGetOrDefaultUrl(
-  blogId: BlogFeatureGetOrDefaultPathBlogId,
-  featureName: BlogFeatureGetOrDefaultPathFeatureName,
-) {
-  const res = {
-    method: "GET",
-    url: `/api/cms-kit/blogs/${blogId}/features/${featureName}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogFeatureGetOrDefaultOptions, BlogFeatureGetOrDefaultResponses } from '../../models/blogFeature/BlogFeatureGetOrDefault'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit/blogs/:blogId/features/:featureName}
  */
-export async function blogFeatureGetOrDefault(
-  blogId: BlogFeatureGetOrDefaultPathBlogId,
-  featureName: BlogFeatureGetOrDefaultPathFeatureName,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogFeatureGetOrDefault<ThrowOnError extends boolean = true>(options: Options<BlogFeatureGetOrDefaultOptions, ThrowOnError>): Promise<RequestResult<BlogFeatureGetOrDefaultResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogFeatureGetOrDefaultStatus200,
-    ResponseErrorConfig<
-      | BlogFeatureGetOrDefaultStatus400
-      | BlogFeatureGetOrDefaultStatus401
-      | BlogFeatureGetOrDefaultStatus403
-      | BlogFeatureGetOrDefaultStatus404
-      | BlogFeatureGetOrDefaultStatus500
-      | BlogFeatureGetOrDefaultStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getBlogFeatureGetOrDefaultUrl(blogId, featureName).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit/blogs/{blogId}/features/{featureName}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogFeatureGetOrDefaultResponses, ThrowOnError>>
 }

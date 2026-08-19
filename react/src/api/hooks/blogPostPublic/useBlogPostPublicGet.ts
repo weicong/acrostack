@@ -1,123 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  BlogPostPublicGetPathBlogSlug,
-  BlogPostPublicGetPathBlogPostSlug,
-  BlogPostPublicGetStatus200,
-  BlogPostPublicGetStatus400,
-  BlogPostPublicGetStatus401,
-  BlogPostPublicGetStatus403,
-  BlogPostPublicGetStatus404,
-  BlogPostPublicGetStatus500,
-  BlogPostPublicGetStatus501,
-} from "../../models/blogPostPublic/BlogPostPublicGet.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { blogPostPublicGet } from "../../clients/blogPostPublic/blogPostPublicGet.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { BlogPostPublicGetOptions, BlogPostPublicGetStatus200, BlogPostPublicGetStatus400, BlogPostPublicGetStatus401, BlogPostPublicGetStatus403, BlogPostPublicGetStatus404, BlogPostPublicGetStatus500, BlogPostPublicGetStatus501 } from '../../models/blogPostPublic/BlogPostPublicGet'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { blogPostPublicGet } from '../../clients/blogPostPublic/blogPostPublicGet'
 
-export const blogPostPublicGetQueryKey = (
-  blogSlug?: BlogPostPublicGetPathBlogSlug,
-  blogPostSlug?: BlogPostPublicGetPathBlogPostSlug,
-) =>
-  [
-    {
-      url: "/api/cms-kit-public/blog-posts/:blogSlug/:blogPostSlug",
-      params: { blogSlug: blogSlug, blogPostSlug: blogPostSlug },
-    },
-  ] as const;
+export const blogPostPublicGetQueryKey = ({ path }: Omit<BlogPostPublicGetOptions, 'headers'>) => [{ url: '/api/cms-kit-public/blog-posts/:blogSlug/:blogPostSlug', params: path }] as const
 
-type BlogPostPublicGetQueryKey = ReturnType<typeof blogPostPublicGetQueryKey>;
+type BlogPostPublicGetQueryKey = ReturnType<typeof blogPostPublicGetQueryKey>
 
-export function blogPostPublicGetQueryOptions(
-  blogSlug?: BlogPostPublicGetPathBlogSlug,
-  blogPostSlug?: BlogPostPublicGetPathBlogPostSlug,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = blogPostPublicGetQueryKey(blogSlug, blogPostSlug);
-  return queryOptions<
-    BlogPostPublicGetStatus200,
-    ResponseErrorConfig<
-      | BlogPostPublicGetStatus400
-      | BlogPostPublicGetStatus401
-      | BlogPostPublicGetStatus403
-      | BlogPostPublicGetStatus404
-      | BlogPostPublicGetStatus500
-      | BlogPostPublicGetStatus501
-    >,
-    BlogPostPublicGetStatus200,
-    typeof queryKey
-  >({
-    enabled: !!(blogSlug && blogPostSlug),
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return blogPostPublicGet(blogSlug!, blogPostSlug!, {
-        ...config,
-        signal: config.signal ?? signal,
-      });
-    },
-  });
+export function blogPostPublicGetQueryOptions({ path }: BlogPostPublicGetOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = blogPostPublicGetQueryKey({ path })
+  return queryOptions<BlogPostPublicGetStatus200, ResponseErrorConfig<BlogPostPublicGetStatus400 | BlogPostPublicGetStatus401 | BlogPostPublicGetStatus403 | BlogPostPublicGetStatus404 | BlogPostPublicGetStatus500 | BlogPostPublicGetStatus501>, BlogPostPublicGetStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await blogPostPublicGet({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/cms-kit-public/blog-posts/:blogSlug/:blogPostSlug}
  */
-export function useBlogPostPublicGet<
-  TData = BlogPostPublicGetStatus200,
-  TQueryData = BlogPostPublicGetStatus200,
-  TQueryKey extends QueryKey = BlogPostPublicGetQueryKey,
->(
-  blogSlug?: BlogPostPublicGetPathBlogSlug,
-  blogPostSlug?: BlogPostPublicGetPathBlogPostSlug,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        BlogPostPublicGetStatus200,
-        ResponseErrorConfig<
-          | BlogPostPublicGetStatus400
-          | BlogPostPublicGetStatus401
-          | BlogPostPublicGetStatus403
-          | BlogPostPublicGetStatus404
-          | BlogPostPublicGetStatus500
-          | BlogPostPublicGetStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? blogPostPublicGetQueryKey(blogSlug, blogPostSlug);
+export function useBlogPostPublicGet<TData = BlogPostPublicGetStatus200, TQueryData = BlogPostPublicGetStatus200, TQueryKey extends QueryKey = BlogPostPublicGetQueryKey>({ path }: { path: BlogPostPublicGetOptions['path'] | (() => BlogPostPublicGetOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<BlogPostPublicGetStatus200, ResponseErrorConfig<BlogPostPublicGetStatus400 | BlogPostPublicGetStatus401 | BlogPostPublicGetStatus403 | BlogPostPublicGetStatus404 | BlogPostPublicGetStatus500 | BlogPostPublicGetStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? blogPostPublicGetQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...blogPostPublicGetQueryOptions(blogSlug, blogPostSlug, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | BlogPostPublicGetStatus400
-      | BlogPostPublicGetStatus401
-      | BlogPostPublicGetStatus403
-      | BlogPostPublicGetStatus404
-      | BlogPostPublicGetStatus500
-      | BlogPostPublicGetStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...blogPostPublicGetQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<BlogPostPublicGetStatus400 | BlogPostPublicGetStatus401 | BlogPostPublicGetStatus403 | BlogPostPublicGetStatus404 | BlogPostPublicGetStatus500 | BlogPostPublicGetStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

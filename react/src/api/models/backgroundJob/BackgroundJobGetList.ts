@@ -1,246 +1,176 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/backgroundJobs/backgroundJobDtoAcroStack/BackgroundJobsVersion1000CultureneutralPublicKeyTokennull.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull } from '../volo/abp/application/dtos/pagedResultDto1AcroStack/backgroundJobs/backgroundJobDtoAcroStack/BackgroundJobsVersion1000CultureneutralPublicKeyTokennull'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type string | undefined
- */
-export type BackgroundJobGetListQueryFilter = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type BackgroundJobGetListQueryJobName = string | undefined;
-
-/**
- * @type boolean | undefined
- */
-export type BackgroundJobGetListQueryIsAbandoned = boolean | undefined;
-
-/**
- * @description
- * Format: `date-time`
- * @type string | undefined
- */
-export type BackgroundJobGetListQueryStartCreationTime = string | undefined;
-
-/**
- * @description
- * Format: `date-time`
- * @type string | undefined
- */
-export type BackgroundJobGetListQueryEndCreationTime = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type BackgroundJobGetListQuerySorting = string | undefined;
-
-/**
- * @description
- * Format: `int32`
- * @type integer | undefined
- */
-export type BackgroundJobGetListQuerySkipCount = number | undefined;
-
-/**
- * @description
- * Format: `int32`
- * @type integer | undefined
- */
-export type BackgroundJobGetListQueryMaxResultCount = number | undefined;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
-
-export type BackgroundJobGetListStatus200 =
-  | BackgroundJobGetListStatus200Plain
-  | BackgroundJobGetListStatus200Json
-  | BackgroundJobGetListStatus200Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus400 =
-  | BackgroundJobGetListStatus400Plain
-  | BackgroundJobGetListStatus400Json
-  | BackgroundJobGetListStatus400Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus401 =
-  | BackgroundJobGetListStatus401Plain
-  | BackgroundJobGetListStatus401Json
-  | BackgroundJobGetListStatus401Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus403 =
-  | BackgroundJobGetListStatus403Plain
-  | BackgroundJobGetListStatus403Json
-  | BackgroundJobGetListStatus403Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus404 =
-  | BackgroundJobGetListStatus404Plain
-  | BackgroundJobGetListStatus404Json
-  | BackgroundJobGetListStatus404Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus500 =
-  | BackgroundJobGetListStatus500Plain
-  | BackgroundJobGetListStatus500Json
-  | BackgroundJobGetListStatus500Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BackgroundJobGetListStatus501 =
-  | BackgroundJobGetListStatus501Plain
-  | BackgroundJobGetListStatus501Json
-  | BackgroundJobGetListStatus501Json2;
-
-/**
- * @type object
- */
-export type BackgroundJobGetListRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  /**
-   * @type object | undefined
-   */
-  queryParams?: {
-    Filter?: BackgroundJobGetListQueryFilter;
-    JobName?: BackgroundJobGetListQueryJobName;
-    IsAbandoned?: BackgroundJobGetListQueryIsAbandoned;
-    StartCreationTime?: BackgroundJobGetListQueryStartCreationTime;
-    EndCreationTime?: BackgroundJobGetListQueryEndCreationTime;
-    Sorting?: BackgroundJobGetListQuerySorting;
-    SkipCount?: BackgroundJobGetListQuerySkipCount;
-    MaxResultCount?: BackgroundJobGetListQueryMaxResultCount;
-  };
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/background-job";
+export type BackgroundJobGetListQuery = {
+    Filter?: string;
+    JobName?: string;
+    IsAbandoned?: boolean;
+    /**
+     * @description
+     * Format: `date-time`
+     * @type string | undefined
+    */
+    StartCreationTime?: string;
+    /**
+     * @description
+     * Format: `date-time`
+     * @type string | undefined
+    */
+    EndCreationTime?: string;
+    Sorting?: string;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    SkipCount?: number;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    MaxResultCount?: number;
 };
 
-/**
- * @type object
- */
+export type BackgroundJobGetListStatus200Plain = VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+
+export type BackgroundJobGetListStatus200Json = VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+
+export type BackgroundJobGetListStatus200Json2 = VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+
+export type BackgroundJobGetListStatus200 = (BackgroundJobGetListStatus200Plain | BackgroundJobGetListStatus200Json | BackgroundJobGetListStatus200Json2);
+
+export type BackgroundJobGetListStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus400 = (BackgroundJobGetListStatus400Plain | BackgroundJobGetListStatus400Json | BackgroundJobGetListStatus400Json2);
+
+export type BackgroundJobGetListStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus401 = (BackgroundJobGetListStatus401Plain | BackgroundJobGetListStatus401Json | BackgroundJobGetListStatus401Json2);
+
+export type BackgroundJobGetListStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus403 = (BackgroundJobGetListStatus403Plain | BackgroundJobGetListStatus403Json | BackgroundJobGetListStatus403Json2);
+
+export type BackgroundJobGetListStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus404 = (BackgroundJobGetListStatus404Plain | BackgroundJobGetListStatus404Json | BackgroundJobGetListStatus404Json2);
+
+export type BackgroundJobGetListStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus500 = (BackgroundJobGetListStatus500Plain | BackgroundJobGetListStatus500Json | BackgroundJobGetListStatus500Json2);
+
+export type BackgroundJobGetListStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BackgroundJobGetListStatus501 = (BackgroundJobGetListStatus501Plain | BackgroundJobGetListStatus501Json | BackgroundJobGetListStatus501Json2);
+
+export type BackgroundJobGetListOptions = {
+    body?: never;
+    path?: never;
+    query?: BackgroundJobGetListQuery;
+    headers?: never;
+};
+
 export type BackgroundJobGetListResponses = {
-  "200": BackgroundJobGetListStatus200;
-  "400": BackgroundJobGetListStatus400;
-  "401": BackgroundJobGetListStatus401;
-  "403": BackgroundJobGetListStatus403;
-  "404": BackgroundJobGetListStatus404;
-  "500": BackgroundJobGetListStatus500;
-  "501": BackgroundJobGetListStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: BackgroundJobGetListStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: BackgroundJobGetListStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: BackgroundJobGetListStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type BackgroundJobGetListResponse =
-  | BackgroundJobGetListStatus200
-  | BackgroundJobGetListStatus400
-  | BackgroundJobGetListStatus401
-  | BackgroundJobGetListStatus403
-  | BackgroundJobGetListStatus404
-  | BackgroundJobGetListStatus500
-  | BackgroundJobGetListStatus501;
+*/
+export type BackgroundJobGetListResponse = (BackgroundJobGetListStatus200 | BackgroundJobGetListStatus400 | BackgroundJobGetListStatus401 | BackgroundJobGetListStatus403 | BackgroundJobGetListStatus404 | BackgroundJobGetListStatus500 | BackgroundJobGetListStatus501);

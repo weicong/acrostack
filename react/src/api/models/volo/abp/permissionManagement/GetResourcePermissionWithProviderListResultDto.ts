@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementResourcePermissionWithProdiverGrantInfoDto } from "./ResourcePermissionWithProdiverGrantInfoDto.ts";
+import type { VoloAbpPermissionManagementResourcePermissionWithProdiverGrantInfoDto } from './ResourcePermissionWithProdiverGrantInfoDto'
 
-/**
- * @type object
- */
 export type VoloAbpPermissionManagementGetResourcePermissionWithProviderListResultDto = {
-  /**
-   * @type array | undefined
-   */
-  permissions?: VoloAbpPermissionManagementResourcePermissionWithProdiverGrantInfoDto[] | null;
+    permissions?: VoloAbpPermissionManagementResourcePermissionWithProdiverGrantInfoDto[] | null;
 };

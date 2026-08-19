@@ -1,52 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TenantGetDefaultConnectionStringPathId,
-  TenantGetDefaultConnectionStringStatus200,
-  TenantGetDefaultConnectionStringStatus400,
-  TenantGetDefaultConnectionStringStatus401,
-  TenantGetDefaultConnectionStringStatus403,
-  TenantGetDefaultConnectionStringStatus404,
-  TenantGetDefaultConnectionStringStatus500,
-  TenantGetDefaultConnectionStringStatus501,
-} from "../../models/tenant/TenantGetDefaultConnectionString.ts";
-
-function getTenantGetDefaultConnectionStringUrl(id: TenantGetDefaultConnectionStringPathId) {
-  const res = {
-    method: "GET",
-    url: `/api/multi-tenancy/tenants/${id}/default-connection-string` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TenantGetDefaultConnectionStringOptions, TenantGetDefaultConnectionStringResponses } from '../../models/tenant/TenantGetDefaultConnectionString'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/multi-tenancy/tenants/:id/default-connection-string}
  */
-export async function tenantGetDefaultConnectionString(
-  id: TenantGetDefaultConnectionStringPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function tenantGetDefaultConnectionString<ThrowOnError extends boolean = true>(options: Options<TenantGetDefaultConnectionStringOptions, ThrowOnError>): Promise<RequestResult<TenantGetDefaultConnectionStringResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    TenantGetDefaultConnectionStringStatus200,
-    ResponseErrorConfig<
-      | TenantGetDefaultConnectionStringStatus400
-      | TenantGetDefaultConnectionStringStatus401
-      | TenantGetDefaultConnectionStringStatus403
-      | TenantGetDefaultConnectionStringStatus404
-      | TenantGetDefaultConnectionStringStatus500
-      | TenantGetDefaultConnectionStringStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getTenantGetDefaultConnectionStringUrl(id).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/multi-tenancy/tenants/{id}/default-connection-string', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TenantGetDefaultConnectionStringResponses, ThrowOnError>>
 }

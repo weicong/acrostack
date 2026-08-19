@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  UserLookupGetCountQueryFilter,
-  UserLookupGetCountStatus200,
-  UserLookupGetCountStatus400,
-  UserLookupGetCountStatus401,
-  UserLookupGetCountStatus403,
-  UserLookupGetCountStatus404,
-  UserLookupGetCountStatus500,
-  UserLookupGetCountStatus501,
-} from "../../models/userLookup/UserLookupGetCount.ts";
-
-function getUserLookupGetCountUrl() {
-  const res = { method: "GET", url: `/api/identity/users/lookup/count` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { UserLookupGetCountOptions, UserLookupGetCountResponses } from '../../models/userLookup/UserLookupGetCount'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/identity/users/lookup/count}
  */
-export async function userLookupGetCount(
-  params?: { Filter?: UserLookupGetCountQueryFilter },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function userLookupGetCount<ThrowOnError extends boolean = true>(options: Options<UserLookupGetCountOptions, ThrowOnError> = {}): Promise<RequestResult<UserLookupGetCountResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    UserLookupGetCountStatus200,
-    ResponseErrorConfig<
-      | UserLookupGetCountStatus400
-      | UserLookupGetCountStatus401
-      | UserLookupGetCountStatus403
-      | UserLookupGetCountStatus404
-      | UserLookupGetCountStatus500
-      | UserLookupGetCountStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getUserLookupGetCountUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/identity/users/lookup/count', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<UserLookupGetCountResponses, ThrowOnError>>
 }

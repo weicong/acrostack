@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MenuItemAdminGetPathId,
-  MenuItemAdminGetStatus200,
-  MenuItemAdminGetStatus400,
-  MenuItemAdminGetStatus401,
-  MenuItemAdminGetStatus403,
-  MenuItemAdminGetStatus404,
-  MenuItemAdminGetStatus500,
-  MenuItemAdminGetStatus501,
-} from "../../models/menuItemAdmin/MenuItemAdminGet.ts";
-
-function getMenuItemAdminGetUrl(id: MenuItemAdminGetPathId) {
-  const res = { method: "GET", url: `/api/cms-kit-admin/menu-items/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MenuItemAdminGetOptions, MenuItemAdminGetResponses } from '../../models/menuItemAdmin/MenuItemAdminGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/menu-items/:id}
  */
-export async function menuItemAdminGet(
-  id: MenuItemAdminGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function menuItemAdminGet<ThrowOnError extends boolean = true>(options: Options<MenuItemAdminGetOptions, ThrowOnError>): Promise<RequestResult<MenuItemAdminGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MenuItemAdminGetStatus200,
-    ResponseErrorConfig<
-      | MenuItemAdminGetStatus400
-      | MenuItemAdminGetStatus401
-      | MenuItemAdminGetStatus403
-      | MenuItemAdminGetStatus404
-      | MenuItemAdminGetStatus500
-      | MenuItemAdminGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getMenuItemAdminGetUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/menu-items/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MenuItemAdminGetResponses, ThrowOnError>>
 }

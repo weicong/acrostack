@@ -1,64 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PermissionsUpdateResourceQueryResourceName,
-  PermissionsUpdateResourceQueryResourceKey,
-  PermissionsUpdateResourceData,
-  PermissionsUpdateResourceStatus200,
-  PermissionsUpdateResourceStatus204,
-  PermissionsUpdateResourceStatus400,
-  PermissionsUpdateResourceStatus401,
-  PermissionsUpdateResourceStatus403,
-  PermissionsUpdateResourceStatus404,
-  PermissionsUpdateResourceStatus500,
-  PermissionsUpdateResourceStatus501,
-} from "../../models/permissions/PermissionsUpdateResource.ts";
-
-function getPermissionsUpdateResourceUrl() {
-  const res = { method: "PUT", url: `/api/permission-management/permissions/resource` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PermissionsUpdateResourceOptions, PermissionsUpdateResourceResponses } from '../../models/permissions/PermissionsUpdateResource'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/permission-management/permissions/resource}
  */
-export async function permissionsUpdateResource(
-  data?: PermissionsUpdateResourceData,
-  params?: {
-    resourceName?: PermissionsUpdateResourceQueryResourceName;
-    resourceKey?: PermissionsUpdateResourceQueryResourceKey;
-  },
-  config: Partial<RequestConfig<PermissionsUpdateResourceData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function permissionsUpdateResource<ThrowOnError extends boolean = true>(options: Options<PermissionsUpdateResourceOptions, ThrowOnError>): Promise<RequestResult<PermissionsUpdateResourceResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    PermissionsUpdateResourceStatus200 | PermissionsUpdateResourceStatus204,
-    ResponseErrorConfig<
-      | PermissionsUpdateResourceStatus400
-      | PermissionsUpdateResourceStatus401
-      | PermissionsUpdateResourceStatus403
-      | PermissionsUpdateResourceStatus404
-      | PermissionsUpdateResourceStatus500
-      | PermissionsUpdateResourceStatus501
-    >,
-    PermissionsUpdateResourceData
-  >({
-    method: "PUT",
-    url: getPermissionsUpdateResourceUrl().url.toString(),
-    params,
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/permission-management/permissions/resource', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PermissionsUpdateResourceResponses, ThrowOnError>>
 }

@@ -1,41 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  EmailSettingsGetStatus200,
-  EmailSettingsGetStatus400,
-  EmailSettingsGetStatus401,
-  EmailSettingsGetStatus403,
-  EmailSettingsGetStatus404,
-  EmailSettingsGetStatus500,
-  EmailSettingsGetStatus501,
-} from "../../models/emailSettings/EmailSettingsGet.ts";
-
-function getEmailSettingsGetUrl() {
-  const res = { method: "GET", url: `/api/setting-management/emailing` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { EmailSettingsGetOptions, EmailSettingsGetResponses } from '../../models/emailSettings/EmailSettingsGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/setting-management/emailing}
  */
-export async function emailSettingsGet(config: Partial<RequestConfig> & { client?: Client } = {}) {
-  const { client: request = client, ...requestConfig } = config;
+export function emailSettingsGet<ThrowOnError extends boolean = true>(options: Options<EmailSettingsGetOptions, ThrowOnError> = {}): Promise<RequestResult<EmailSettingsGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    EmailSettingsGetStatus200,
-    ResponseErrorConfig<
-      | EmailSettingsGetStatus400
-      | EmailSettingsGetStatus401
-      | EmailSettingsGetStatus403
-      | EmailSettingsGetStatus404
-      | EmailSettingsGetStatus500
-      | EmailSettingsGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getEmailSettingsGetUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/setting-management/emailing', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<EmailSettingsGetResponses, ThrowOnError>>
 }

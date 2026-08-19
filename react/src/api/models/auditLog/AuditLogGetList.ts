@@ -1,268 +1,189 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/auditLogging/auditLogDtoAcroStack/AuditLoggingVersion1000CultureneutralPublicKeyTokennull.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from '../volo/abp/application/dtos/pagedResultDto1AcroStack/auditLogging/auditLogDtoAcroStack/AuditLoggingVersion1000CultureneutralPublicKeyTokennull'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type string | undefined
- */
-export type AuditLogGetListQueryFilter = string | undefined;
-
-/**
- * @description
- * Format: `uuid`
- * @type string | undefined
- */
-export type AuditLogGetListQueryUserId = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type AuditLogGetListQueryHttpMethod = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type AuditLogGetListQueryUrl = string | undefined;
-
-/**
- * @description
- * Format: `date-time`
- * @type string | undefined
- */
-export type AuditLogGetListQueryStartTime = string | undefined;
-
-/**
- * @description
- * Format: `date-time`
- * @type string | undefined
- */
-export type AuditLogGetListQueryEndTime = string | undefined;
-
-/**
- * @description
- * Format: `int32`
- * @type integer | undefined
- */
-export type AuditLogGetListQueryHttpStatusCode = number | undefined;
-
-/**
- * @type boolean | undefined
- */
-export type AuditLogGetListQueryHasException = boolean | undefined;
-
-/**
- * @type string | undefined
- */
-export type AuditLogGetListQuerySorting = string | undefined;
-
-/**
- * @description
- * Format: `int32`
- * @type integer | undefined
- */
-export type AuditLogGetListQuerySkipCount = number | undefined;
-
-/**
- * @description
- * Format: `int32`
- * @type integer | undefined
- */
-export type AuditLogGetListQueryMaxResultCount = number | undefined;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
-
-export type AuditLogGetListStatus200 =
-  | AuditLogGetListStatus200Plain
-  | AuditLogGetListStatus200Json
-  | AuditLogGetListStatus200Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus400 =
-  | AuditLogGetListStatus400Plain
-  | AuditLogGetListStatus400Json
-  | AuditLogGetListStatus400Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus401 =
-  | AuditLogGetListStatus401Plain
-  | AuditLogGetListStatus401Json
-  | AuditLogGetListStatus401Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus403 =
-  | AuditLogGetListStatus403Plain
-  | AuditLogGetListStatus403Json
-  | AuditLogGetListStatus403Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus404 =
-  | AuditLogGetListStatus404Plain
-  | AuditLogGetListStatus404Json
-  | AuditLogGetListStatus404Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus500 =
-  | AuditLogGetListStatus500Plain
-  | AuditLogGetListStatus500Json
-  | AuditLogGetListStatus500Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type AuditLogGetListStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type AuditLogGetListStatus501 =
-  | AuditLogGetListStatus501Plain
-  | AuditLogGetListStatus501Json
-  | AuditLogGetListStatus501Json2;
-
-/**
- * @type object
- */
-export type AuditLogGetListRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  /**
-   * @type object | undefined
-   */
-  queryParams?: {
-    Filter?: AuditLogGetListQueryFilter;
-    UserId?: AuditLogGetListQueryUserId;
-    HttpMethod?: AuditLogGetListQueryHttpMethod;
-    Url?: AuditLogGetListQueryUrl;
-    StartTime?: AuditLogGetListQueryStartTime;
-    EndTime?: AuditLogGetListQueryEndTime;
-    HttpStatusCode?: AuditLogGetListQueryHttpStatusCode;
-    HasException?: AuditLogGetListQueryHasException;
-    Sorting?: AuditLogGetListQuerySorting;
-    SkipCount?: AuditLogGetListQuerySkipCount;
-    MaxResultCount?: AuditLogGetListQueryMaxResultCount;
-  };
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/audit-log";
+export type AuditLogGetListQuery = {
+    Filter?: string;
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string | undefined
+    */
+    UserId?: string;
+    HttpMethod?: string;
+    Url?: string;
+    /**
+     * @description
+     * Format: `date-time`
+     * @type string | undefined
+    */
+    StartTime?: string;
+    /**
+     * @description
+     * Format: `date-time`
+     * @type string | undefined
+    */
+    EndTime?: string;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    HttpStatusCode?: number;
+    HasException?: boolean;
+    Sorting?: string;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    SkipCount?: number;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    MaxResultCount?: number;
 };
 
-/**
- * @type object
- */
+export type AuditLogGetListStatus200Plain = VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+
+export type AuditLogGetListStatus200Json = VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+
+export type AuditLogGetListStatus200Json2 = VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+
+export type AuditLogGetListStatus200 = (AuditLogGetListStatus200Plain | AuditLogGetListStatus200Json | AuditLogGetListStatus200Json2);
+
+export type AuditLogGetListStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus400 = (AuditLogGetListStatus400Plain | AuditLogGetListStatus400Json | AuditLogGetListStatus400Json2);
+
+export type AuditLogGetListStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus401 = (AuditLogGetListStatus401Plain | AuditLogGetListStatus401Json | AuditLogGetListStatus401Json2);
+
+export type AuditLogGetListStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus403 = (AuditLogGetListStatus403Plain | AuditLogGetListStatus403Json | AuditLogGetListStatus403Json2);
+
+export type AuditLogGetListStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus404 = (AuditLogGetListStatus404Plain | AuditLogGetListStatus404Json | AuditLogGetListStatus404Json2);
+
+export type AuditLogGetListStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus500 = (AuditLogGetListStatus500Plain | AuditLogGetListStatus500Json | AuditLogGetListStatus500Json2);
+
+export type AuditLogGetListStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type AuditLogGetListStatus501 = (AuditLogGetListStatus501Plain | AuditLogGetListStatus501Json | AuditLogGetListStatus501Json2);
+
+export type AuditLogGetListOptions = {
+    body?: never;
+    path?: never;
+    query?: AuditLogGetListQuery;
+    headers?: never;
+};
+
 export type AuditLogGetListResponses = {
-  "200": AuditLogGetListStatus200;
-  "400": AuditLogGetListStatus400;
-  "401": AuditLogGetListStatus401;
-  "403": AuditLogGetListStatus403;
-  "404": AuditLogGetListStatus404;
-  "500": AuditLogGetListStatus500;
-  "501": AuditLogGetListStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: AuditLogGetListStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: AuditLogGetListStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: AuditLogGetListStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type AuditLogGetListResponse =
-  | AuditLogGetListStatus200
-  | AuditLogGetListStatus400
-  | AuditLogGetListStatus401
-  | AuditLogGetListStatus403
-  | AuditLogGetListStatus404
-  | AuditLogGetListStatus500
-  | AuditLogGetListStatus501;
+*/
+export type AuditLogGetListResponse = (AuditLogGetListStatus200 | AuditLogGetListStatus400 | AuditLogGetListStatus401 | AuditLogGetListStatus403 | AuditLogGetListStatus404 | AuditLogGetListStatus500 | AuditLogGetListStatus501);

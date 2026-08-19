@@ -1,75 +1,49 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementFileEntryDto } from "../acroStack/fileManagement/FileEntryDto.ts";
+import type { AcroStackFileManagementFileEntryDto } from '../acroStack/fileManagement/FileEntryDto'
 
-/**
- * @description
- * Format: `uuid`
- * @type string | undefined
- */
-export type FileManagementUploadFileQueryFolderId = string | undefined;
-
-/**
- * @type object
- */
-export type FileManagementUploadFileStatus200Plain = AcroStackFileManagementFileEntryDto;
-
-/**
- * @type object
- */
-export type FileManagementUploadFileStatus200Json = AcroStackFileManagementFileEntryDto;
-
-/**
- * @type object
- */
-export type FileManagementUploadFileStatus200Json2 = AcroStackFileManagementFileEntryDto;
-
-export type FileManagementUploadFileStatus200 =
-  | FileManagementUploadFileStatus200Plain
-  | FileManagementUploadFileStatus200Json
-  | FileManagementUploadFileStatus200Json2;
-
-/**
- * @type object | undefined
- */
-export type FileManagementUploadFileData =
-  | {
-      /**
-       * @description
-       * Format: `binary`
-       * @type string | undefined
-       */
-      file?: Blob;
-    }
-  | undefined;
-
-/**
- * @type object
- */
-export type FileManagementUploadFileRequestConfig = {
-  data?: FileManagementUploadFileData;
-  pathParams?: never;
-  /**
-   * @type object | undefined
-   */
-  queryParams?: {
-    folderId?: FileManagementUploadFileQueryFolderId;
-  };
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/file-management/files/upload";
+export type FileManagementUploadFileQuery = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string | undefined
+    */
+    folderId?: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementUploadFileStatus200Plain = AcroStackFileManagementFileEntryDto;
+
+export type FileManagementUploadFileStatus200Json = AcroStackFileManagementFileEntryDto;
+
+export type FileManagementUploadFileStatus200Json2 = AcroStackFileManagementFileEntryDto;
+
+export type FileManagementUploadFileStatus200 = (FileManagementUploadFileStatus200Plain | FileManagementUploadFileStatus200Json | FileManagementUploadFileStatus200Json2);
+
+export type FileManagementUploadFileBody = {
+    file?: Blob;
+} | undefined;
+
+export type FileManagementUploadFileOptions = {
+    body: FileManagementUploadFileBody;
+    path?: never;
+    query?: FileManagementUploadFileQuery;
+    headers?: never;
+};
+
 export type FileManagementUploadFileResponses = {
-  "200": FileManagementUploadFileStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementUploadFileStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementUploadFileStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementUploadFileStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementUploadFileResponse = FileManagementUploadFileStatus200;

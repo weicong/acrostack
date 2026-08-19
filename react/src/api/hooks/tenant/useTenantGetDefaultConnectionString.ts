@@ -1,115 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  TenantGetDefaultConnectionStringPathId,
-  TenantGetDefaultConnectionStringStatus200,
-  TenantGetDefaultConnectionStringStatus400,
-  TenantGetDefaultConnectionStringStatus401,
-  TenantGetDefaultConnectionStringStatus403,
-  TenantGetDefaultConnectionStringStatus404,
-  TenantGetDefaultConnectionStringStatus500,
-  TenantGetDefaultConnectionStringStatus501,
-} from "../../models/tenant/TenantGetDefaultConnectionString.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { tenantGetDefaultConnectionString } from "../../clients/tenant/tenantGetDefaultConnectionString.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { TenantGetDefaultConnectionStringOptions, TenantGetDefaultConnectionStringStatus200, TenantGetDefaultConnectionStringStatus400, TenantGetDefaultConnectionStringStatus401, TenantGetDefaultConnectionStringStatus403, TenantGetDefaultConnectionStringStatus404, TenantGetDefaultConnectionStringStatus500, TenantGetDefaultConnectionStringStatus501 } from '../../models/tenant/TenantGetDefaultConnectionString'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { tenantGetDefaultConnectionString } from '../../clients/tenant/tenantGetDefaultConnectionString'
 
-export const tenantGetDefaultConnectionStringQueryKey = (
-  id?: TenantGetDefaultConnectionStringPathId,
-) =>
-  [
-    { url: "/api/multi-tenancy/tenants/:id/default-connection-string", params: { id: id } },
-  ] as const;
+export const tenantGetDefaultConnectionStringQueryKey = ({ path }: Omit<TenantGetDefaultConnectionStringOptions, 'headers'>) => [{ url: '/api/multi-tenancy/tenants/:id/default-connection-string', params: path }] as const
 
-type TenantGetDefaultConnectionStringQueryKey = ReturnType<
-  typeof tenantGetDefaultConnectionStringQueryKey
->;
+type TenantGetDefaultConnectionStringQueryKey = ReturnType<typeof tenantGetDefaultConnectionStringQueryKey>
 
-export function tenantGetDefaultConnectionStringQueryOptions(
-  id?: TenantGetDefaultConnectionStringPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = tenantGetDefaultConnectionStringQueryKey(id);
-  return queryOptions<
-    TenantGetDefaultConnectionStringStatus200,
-    ResponseErrorConfig<
-      | TenantGetDefaultConnectionStringStatus400
-      | TenantGetDefaultConnectionStringStatus401
-      | TenantGetDefaultConnectionStringStatus403
-      | TenantGetDefaultConnectionStringStatus404
-      | TenantGetDefaultConnectionStringStatus500
-      | TenantGetDefaultConnectionStringStatus501
-    >,
-    TenantGetDefaultConnectionStringStatus200,
-    typeof queryKey
-  >({
-    enabled: !!id,
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return tenantGetDefaultConnectionString(id!, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function tenantGetDefaultConnectionStringQueryOptions({ path }: TenantGetDefaultConnectionStringOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = tenantGetDefaultConnectionStringQueryKey({ path })
+  return queryOptions<TenantGetDefaultConnectionStringStatus200, ResponseErrorConfig<TenantGetDefaultConnectionStringStatus400 | TenantGetDefaultConnectionStringStatus401 | TenantGetDefaultConnectionStringStatus403 | TenantGetDefaultConnectionStringStatus404 | TenantGetDefaultConnectionStringStatus500 | TenantGetDefaultConnectionStringStatus501>, TenantGetDefaultConnectionStringStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await tenantGetDefaultConnectionString({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/multi-tenancy/tenants/:id/default-connection-string}
  */
-export function useTenantGetDefaultConnectionString<
-  TData = TenantGetDefaultConnectionStringStatus200,
-  TQueryData = TenantGetDefaultConnectionStringStatus200,
-  TQueryKey extends QueryKey = TenantGetDefaultConnectionStringQueryKey,
->(
-  id?: TenantGetDefaultConnectionStringPathId,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        TenantGetDefaultConnectionStringStatus200,
-        ResponseErrorConfig<
-          | TenantGetDefaultConnectionStringStatus400
-          | TenantGetDefaultConnectionStringStatus401
-          | TenantGetDefaultConnectionStringStatus403
-          | TenantGetDefaultConnectionStringStatus404
-          | TenantGetDefaultConnectionStringStatus500
-          | TenantGetDefaultConnectionStringStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? tenantGetDefaultConnectionStringQueryKey(id);
+export function useTenantGetDefaultConnectionString<TData = TenantGetDefaultConnectionStringStatus200, TQueryData = TenantGetDefaultConnectionStringStatus200, TQueryKey extends QueryKey = TenantGetDefaultConnectionStringQueryKey>({ path }: { path: TenantGetDefaultConnectionStringOptions['path'] | (() => TenantGetDefaultConnectionStringOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<TenantGetDefaultConnectionStringStatus200, ResponseErrorConfig<TenantGetDefaultConnectionStringStatus400 | TenantGetDefaultConnectionStringStatus401 | TenantGetDefaultConnectionStringStatus403 | TenantGetDefaultConnectionStringStatus404 | TenantGetDefaultConnectionStringStatus500 | TenantGetDefaultConnectionStringStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? tenantGetDefaultConnectionStringQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...tenantGetDefaultConnectionStringQueryOptions(id, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | TenantGetDefaultConnectionStringStatus400
-      | TenantGetDefaultConnectionStringStatus401
-      | TenantGetDefaultConnectionStringStatus403
-      | TenantGetDefaultConnectionStringStatus404
-      | TenantGetDefaultConnectionStringStatus500
-      | TenantGetDefaultConnectionStringStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...tenantGetDefaultConnectionStringQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<TenantGetDefaultConnectionStringStatus400 | TenantGetDefaultConnectionStringStatus401 | TenantGetDefaultConnectionStringStatus403 | TenantGetDefaultConnectionStringStatus404 | TenantGetDefaultConnectionStringStatus500 | TenantGetDefaultConnectionStringStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

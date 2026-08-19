@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitAdminCommentsCommentWithAuthorDto } from "../../../../../../../../../../../cmsKit/admin/comments/CommentWithAuthorDto.ts";
+import type { VoloCmsKitAdminCommentsCommentWithAuthorDto } from '../../../../../../../../../../../cmsKit/admin/comments/CommentWithAuthorDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitAdminCommentsCommentWithAuthorDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

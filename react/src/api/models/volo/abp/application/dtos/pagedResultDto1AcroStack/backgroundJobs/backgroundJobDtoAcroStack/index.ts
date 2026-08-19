@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull } from "./BackgroundJobsVersion1000CultureneutralPublicKeyTokennull.ts";

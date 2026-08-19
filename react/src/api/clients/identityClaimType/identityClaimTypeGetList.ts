@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityClaimTypeGetListQueryName,
-  IdentityClaimTypeGetListQuerySorting,
-  IdentityClaimTypeGetListQuerySkipCount,
-  IdentityClaimTypeGetListQueryMaxResultCount,
-  IdentityClaimTypeGetListStatus200,
-  IdentityClaimTypeGetListStatus400,
-  IdentityClaimTypeGetListStatus401,
-  IdentityClaimTypeGetListStatus403,
-  IdentityClaimTypeGetListStatus404,
-  IdentityClaimTypeGetListStatus500,
-  IdentityClaimTypeGetListStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeGetList.ts";
-
-function getIdentityClaimTypeGetListUrl() {
-  const res = { method: "GET", url: `/api/app/identity-claim-type` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityClaimTypeGetListOptions, IdentityClaimTypeGetListResponses } from '../../models/identityClaimType/IdentityClaimTypeGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-claim-type}
  */
-export async function identityClaimTypeGetList(
-  params?: {
-    Name?: IdentityClaimTypeGetListQueryName;
-    Sorting?: IdentityClaimTypeGetListQuerySorting;
-    SkipCount?: IdentityClaimTypeGetListQuerySkipCount;
-    MaxResultCount?: IdentityClaimTypeGetListQueryMaxResultCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function identityClaimTypeGetList<ThrowOnError extends boolean = true>(options: Options<IdentityClaimTypeGetListOptions, ThrowOnError> = {}): Promise<RequestResult<IdentityClaimTypeGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    IdentityClaimTypeGetListStatus200,
-    ResponseErrorConfig<
-      | IdentityClaimTypeGetListStatus400
-      | IdentityClaimTypeGetListStatus401
-      | IdentityClaimTypeGetListStatus403
-      | IdentityClaimTypeGetListStatus404
-      | IdentityClaimTypeGetListStatus500
-      | IdentityClaimTypeGetListStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getIdentityClaimTypeGetListUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/identity-claim-type', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityClaimTypeGetListResponses, ThrowOnError>>
 }

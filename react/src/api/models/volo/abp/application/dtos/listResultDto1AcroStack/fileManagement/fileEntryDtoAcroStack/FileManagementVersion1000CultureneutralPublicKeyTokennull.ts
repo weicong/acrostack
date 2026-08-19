@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementFileEntryDto } from "../../../../../../../acroStack/fileManagement/FileEntryDto.ts";
+import type { AcroStackFileManagementFileEntryDto } from '../../../../../../../acroStack/fileManagement/FileEntryDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileEntryDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileEntryDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackFileManagementFileEntryDto[] | null;
-  };
+};

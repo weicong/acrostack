@@ -1,21 +1,9 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpModelingInterfaceMethodApiDescriptionModel } from "./InterfaceMethodApiDescriptionModel.ts";
+import type { VoloAbpHttpModelingInterfaceMethodApiDescriptionModel } from './InterfaceMethodApiDescriptionModel'
 
-/**
- * @type object
- */
 export type VoloAbpHttpModelingControllerInterfaceApiDescriptionModel = {
-  /**
-   * @type string | undefined
-   */
-  type?: string | null;
-  /**
-   * @type string | undefined
-   */
-  name?: string | null;
-  /**
-   * @type array | undefined
-   */
-  methods?: VoloAbpHttpModelingInterfaceMethodApiDescriptionModel[] | null;
+    type?: string | null;
+    name?: string | null;
+    methods?: VoloAbpHttpModelingInterfaceMethodApiDescriptionModel[] | null;
 };

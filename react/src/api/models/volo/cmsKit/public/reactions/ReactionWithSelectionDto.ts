@@ -1,23 +1,14 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitAdminMenusPermissionLookupDto } from "../../admin/menus/PermissionLookupDto.ts";
+import type { VoloCmsKitPublicReactionsReactionDto } from './ReactionDto'
 
-/**
- * @type object
- */
 export type VoloCmsKitPublicReactionsReactionWithSelectionDto = {
-  /**
-   * @type object | undefined
-   */
-  reaction?: VoloCmsKitAdminMenusPermissionLookupDto;
-  /**
-   * @description
-   * Format: `int32`
-   * @type integer | undefined
-   */
-  count?: number;
-  /**
-   * @type boolean | undefined
-   */
-  isSelectedByCurrentUser?: boolean;
+    reaction?: VoloCmsKitPublicReactionsReactionDto;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    count?: number;
+    isSelectedByCurrentUser?: boolean;
 };

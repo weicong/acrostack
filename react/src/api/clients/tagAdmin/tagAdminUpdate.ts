@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  TagAdminUpdatePathId,
-  TagAdminUpdateData,
-  TagAdminUpdateStatus200,
-  TagAdminUpdateStatus400,
-  TagAdminUpdateStatus401,
-  TagAdminUpdateStatus403,
-  TagAdminUpdateStatus404,
-  TagAdminUpdateStatus500,
-  TagAdminUpdateStatus501,
-} from "../../models/tagAdmin/TagAdminUpdate.ts";
-
-function getTagAdminUpdateUrl(id: TagAdminUpdatePathId) {
-  const res = { method: "PUT", url: `/api/cms-kit-admin/tags/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { TagAdminUpdateOptions, TagAdminUpdateResponses } from '../../models/tagAdmin/TagAdminUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/tags/:id}
  */
-export async function tagAdminUpdate(
-  id: TagAdminUpdatePathId,
-  data?: TagAdminUpdateData,
-  config: Partial<RequestConfig<TagAdminUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function tagAdminUpdate<ThrowOnError extends boolean = true>(options: Options<TagAdminUpdateOptions, ThrowOnError>): Promise<RequestResult<TagAdminUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    TagAdminUpdateStatus200,
-    ResponseErrorConfig<
-      | TagAdminUpdateStatus400
-      | TagAdminUpdateStatus401
-      | TagAdminUpdateStatus403
-      | TagAdminUpdateStatus404
-      | TagAdminUpdateStatus500
-      | TagAdminUpdateStatus501
-    >,
-    TagAdminUpdateData
-  >({
-    method: "PUT",
-    url: getTagAdminUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/tags/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<TagAdminUpdateResponses, ThrowOnError>>
 }

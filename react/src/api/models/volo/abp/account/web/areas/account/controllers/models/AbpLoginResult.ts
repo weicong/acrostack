@@ -1,19 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountWebAreasAccountControllersModelsLoginResultType } from "./LoginResultType.ts";
+import type { VoloAbpAccountWebAreasAccountControllersModelsLoginResultType } from './LoginResultType'
 
-/**
- * @type object
- */
 export type VoloAbpAccountWebAreasAccountControllersModelsAbpLoginResult = {
-  /**
-   * @description
-   * Format: `int32`
-   * @type integer | undefined
-   */
-  result?: VoloAbpAccountWebAreasAccountControllersModelsLoginResultType;
-  /**
-   * @type string | undefined
-   */
-  readonly description?: string | null;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    result?: VoloAbpAccountWebAreasAccountControllersModelsLoginResultType;
+    readonly description?: string | null;
 };

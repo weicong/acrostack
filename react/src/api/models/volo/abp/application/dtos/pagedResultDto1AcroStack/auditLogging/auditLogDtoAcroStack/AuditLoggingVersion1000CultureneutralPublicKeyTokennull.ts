@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { AcroStackAuditLoggingAuditLogDto } from "../../../../../../../acroStack/auditLogging/AuditLogDto.ts";
+import type { AcroStackAuditLoggingAuditLogDto } from '../../../../../../../acroStack/auditLogging/AuditLogDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackAuditLoggingAuditLogDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

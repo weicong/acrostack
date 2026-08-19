@@ -1,54 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PermissionsGetResourceQueryResourceName,
-  PermissionsGetResourceQueryResourceKey,
-  PermissionsGetResourceStatus200,
-  PermissionsGetResourceStatus400,
-  PermissionsGetResourceStatus401,
-  PermissionsGetResourceStatus403,
-  PermissionsGetResourceStatus404,
-  PermissionsGetResourceStatus500,
-  PermissionsGetResourceStatus501,
-} from "../../models/permissions/PermissionsGetResource.ts";
-
-function getPermissionsGetResourceUrl() {
-  const res = { method: "GET", url: `/api/permission-management/permissions/resource` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PermissionsGetResourceOptions, PermissionsGetResourceResponses } from '../../models/permissions/PermissionsGetResource'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/permission-management/permissions/resource}
  */
-export async function permissionsGetResource(
-  params?: {
-    resourceName?: PermissionsGetResourceQueryResourceName;
-    resourceKey?: PermissionsGetResourceQueryResourceKey;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function permissionsGetResource<ThrowOnError extends boolean = true>(options: Options<PermissionsGetResourceOptions, ThrowOnError> = {}): Promise<RequestResult<PermissionsGetResourceResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PermissionsGetResourceStatus200,
-    ResponseErrorConfig<
-      | PermissionsGetResourceStatus400
-      | PermissionsGetResourceStatus401
-      | PermissionsGetResourceStatus403
-      | PermissionsGetResourceStatus404
-      | PermissionsGetResourceStatus500
-      | PermissionsGetResourceStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getPermissionsGetResourceUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/permission-management/permissions/resource', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PermissionsGetResourceResponses, ThrowOnError>>
 }

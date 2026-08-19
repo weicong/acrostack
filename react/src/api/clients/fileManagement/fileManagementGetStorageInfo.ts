@@ -1,28 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type { FileManagementGetStorageInfoStatus200 } from "../../models/fileManagement/FileManagementGetStorageInfo.ts";
-
-function getFileManagementGetStorageInfoUrl() {
-  const res = { method: "GET", url: `/api/app/file-management/storage-info` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementGetStorageInfoOptions, FileManagementGetStorageInfoResponses } from '../../models/fileManagement/FileManagementGetStorageInfo'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/storage-info}
  */
-export async function fileManagementGetStorageInfo(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementGetStorageInfo<ThrowOnError extends boolean = true>(options: Options<FileManagementGetStorageInfoOptions, ThrowOnError> = {}): Promise<RequestResult<FileManagementGetStorageInfoResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementGetStorageInfoStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({ method: "GET", url: getFileManagementGetStorageInfoUrl().url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/storage-info', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementGetStorageInfoResponses, ThrowOnError>>
 }

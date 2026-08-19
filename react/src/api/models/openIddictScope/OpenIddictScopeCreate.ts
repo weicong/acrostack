@@ -1,210 +1,154 @@
 /* oxlint-disable */
 
-import type { AcroStackOpenIddictManagementCreateOpenIddictScopeDto } from "../acroStack/openIddictManagement/CreateOpenIddictScopeDto.ts";
-import type { AcroStackOpenIddictManagementOpenIddictScopeDto } from "../acroStack/openIddictManagement/OpenIddictScopeDto.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { AcroStackOpenIddictManagementCreateOpenIddictScopeDto } from '../acroStack/openIddictManagement/CreateOpenIddictScopeDto'
+import type { AcroStackOpenIddictManagementOpenIddictScopeDto } from '../acroStack/openIddictManagement/OpenIddictScopeDto'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus200Plain = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus200Json = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus200Json2 = AcroStackOpenIddictManagementOpenIddictScopeDto;
 
-export type OpenIddictScopeCreateStatus200 =
-  | OpenIddictScopeCreateStatus200Plain
-  | OpenIddictScopeCreateStatus200Json
-  | OpenIddictScopeCreateStatus200Json2;
+export type OpenIddictScopeCreateStatus200 = (OpenIddictScopeCreateStatus200Plain | OpenIddictScopeCreateStatus200Json | OpenIddictScopeCreateStatus200Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus400 =
-  | OpenIddictScopeCreateStatus400Plain
-  | OpenIddictScopeCreateStatus400Json
-  | OpenIddictScopeCreateStatus400Json2;
+export type OpenIddictScopeCreateStatus400 = (OpenIddictScopeCreateStatus400Plain | OpenIddictScopeCreateStatus400Json | OpenIddictScopeCreateStatus400Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus401 =
-  | OpenIddictScopeCreateStatus401Plain
-  | OpenIddictScopeCreateStatus401Json
-  | OpenIddictScopeCreateStatus401Json2;
+export type OpenIddictScopeCreateStatus401 = (OpenIddictScopeCreateStatus401Plain | OpenIddictScopeCreateStatus401Json | OpenIddictScopeCreateStatus401Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus403 =
-  | OpenIddictScopeCreateStatus403Plain
-  | OpenIddictScopeCreateStatus403Json
-  | OpenIddictScopeCreateStatus403Json2;
+export type OpenIddictScopeCreateStatus403 = (OpenIddictScopeCreateStatus403Plain | OpenIddictScopeCreateStatus403Json | OpenIddictScopeCreateStatus403Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus404 =
-  | OpenIddictScopeCreateStatus404Plain
-  | OpenIddictScopeCreateStatus404Json
-  | OpenIddictScopeCreateStatus404Json2;
+export type OpenIddictScopeCreateStatus404 = (OpenIddictScopeCreateStatus404Plain | OpenIddictScopeCreateStatus404Json | OpenIddictScopeCreateStatus404Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus500 =
-  | OpenIddictScopeCreateStatus500Plain
-  | OpenIddictScopeCreateStatus500Json
-  | OpenIddictScopeCreateStatus500Json2;
+export type OpenIddictScopeCreateStatus500 = (OpenIddictScopeCreateStatus500Plain | OpenIddictScopeCreateStatus500Json | OpenIddictScopeCreateStatus500Json2);
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type OpenIddictScopeCreateStatus501 =
-  | OpenIddictScopeCreateStatus501Plain
-  | OpenIddictScopeCreateStatus501Json
-  | OpenIddictScopeCreateStatus501Json2;
+export type OpenIddictScopeCreateStatus501 = (OpenIddictScopeCreateStatus501Plain | OpenIddictScopeCreateStatus501Json | OpenIddictScopeCreateStatus501Json2);
 
-/**
- * @type object | undefined
- */
-export type OpenIddictScopeCreateJsonData =
-  | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
-  | undefined;
+export type OpenIddictScopeCreateBodyJson = AcroStackOpenIddictManagementCreateOpenIddictScopeDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type OpenIddictScopeCreateJson2Data =
-  | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
-  | undefined;
+export type OpenIddictScopeCreateBodyJson2 = AcroStackOpenIddictManagementCreateOpenIddictScopeDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type OpenIddictScopeCreateJson3Data =
-  | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
-  | undefined;
+export type OpenIddictScopeCreateBodyJson3 = AcroStackOpenIddictManagementCreateOpenIddictScopeDto | undefined;
 
-export type OpenIddictScopeCreateData =
-  | OpenIddictScopeCreateJsonData
-  | OpenIddictScopeCreateJson2Data
-  | OpenIddictScopeCreateJson3Data;
+export type OpenIddictScopeCreateBody = (OpenIddictScopeCreateBodyJson | OpenIddictScopeCreateBodyJson2 | OpenIddictScopeCreateBodyJson3);
 
-/**
- * @type object
- */
-export type OpenIddictScopeCreateRequestConfig = {
-  data?: OpenIddictScopeCreateData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/open-iddict-scope";
+export type OpenIddictScopeCreateOptions = {
+    body: OpenIddictScopeCreateBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type OpenIddictScopeCreateResponses = {
-  "200": OpenIddictScopeCreateStatus200;
-  "400": OpenIddictScopeCreateStatus400;
-  "401": OpenIddictScopeCreateStatus401;
-  "403": OpenIddictScopeCreateStatus403;
-  "404": OpenIddictScopeCreateStatus404;
-  "500": OpenIddictScopeCreateStatus500;
-  "501": OpenIddictScopeCreateStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: OpenIddictScopeCreateStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: OpenIddictScopeCreateStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: OpenIddictScopeCreateStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type OpenIddictScopeCreateResponse =
-  | OpenIddictScopeCreateStatus200
-  | OpenIddictScopeCreateStatus400
-  | OpenIddictScopeCreateStatus401
-  | OpenIddictScopeCreateStatus403
-  | OpenIddictScopeCreateStatus404
-  | OpenIddictScopeCreateStatus500
-  | OpenIddictScopeCreateStatus501;
+*/
+export type OpenIddictScopeCreateResponse = (OpenIddictScopeCreateStatus200 | OpenIddictScopeCreateStatus400 | OpenIddictScopeCreateStatus401 | OpenIddictScopeCreateStatus403 | OpenIddictScopeCreateStatus404 | OpenIddictScopeCreateStatus500 | OpenIddictScopeCreateStatus501);

@@ -1,55 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  RoleGetListQueryFilter,
-  RoleGetListQuerySorting,
-  RoleGetListQuerySkipCount,
-  RoleGetListQueryMaxResultCount,
-  RoleGetListQueryExtraProperties,
-  RoleGetListStatus200,
-  RoleGetListStatus400,
-  RoleGetListStatus401,
-  RoleGetListStatus403,
-  RoleGetListStatus404,
-  RoleGetListStatus500,
-  RoleGetListStatus501,
-} from "../../models/role/RoleGetList.ts";
-
-function getRoleGetListUrl() {
-  const res = { method: "GET", url: `/api/identity/roles` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { RoleGetListOptions, RoleGetListResponses } from '../../models/role/RoleGetList'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/identity/roles}
  */
-export async function roleGetList(
-  params?: {
-    Filter?: RoleGetListQueryFilter;
-    Sorting?: RoleGetListQuerySorting;
-    SkipCount?: RoleGetListQuerySkipCount;
-    MaxResultCount?: RoleGetListQueryMaxResultCount;
-    ExtraProperties?: RoleGetListQueryExtraProperties;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function roleGetList<ThrowOnError extends boolean = true>(options: Options<RoleGetListOptions, ThrowOnError> = {}): Promise<RequestResult<RoleGetListResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    RoleGetListStatus200,
-    ResponseErrorConfig<
-      | RoleGetListStatus400
-      | RoleGetListStatus401
-      | RoleGetListStatus403
-      | RoleGetListStatus404
-      | RoleGetListStatus500
-      | RoleGetListStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getRoleGetListUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/identity/roles', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<RoleGetListResponses, ThrowOnError>>
 }

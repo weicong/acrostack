@@ -1,50 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MediaDescriptorAdminDeletePathId,
-  MediaDescriptorAdminDeleteStatus200,
-  MediaDescriptorAdminDeleteStatus204,
-  MediaDescriptorAdminDeleteStatus400,
-  MediaDescriptorAdminDeleteStatus401,
-  MediaDescriptorAdminDeleteStatus403,
-  MediaDescriptorAdminDeleteStatus404,
-  MediaDescriptorAdminDeleteStatus500,
-  MediaDescriptorAdminDeleteStatus501,
-} from "../../models/mediaDescriptorAdmin/MediaDescriptorAdminDelete.ts";
-
-function getMediaDescriptorAdminDeleteUrl(id: MediaDescriptorAdminDeletePathId) {
-  const res = { method: "DELETE", url: `/api/cms-kit-admin/media/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MediaDescriptorAdminDeleteOptions, MediaDescriptorAdminDeleteResponses } from '../../models/mediaDescriptorAdmin/MediaDescriptorAdminDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/media/:id}
  */
-export async function mediaDescriptorAdminDelete(
-  id: MediaDescriptorAdminDeletePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function mediaDescriptorAdminDelete<ThrowOnError extends boolean = true>(options: Options<MediaDescriptorAdminDeleteOptions, ThrowOnError>): Promise<RequestResult<MediaDescriptorAdminDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MediaDescriptorAdminDeleteStatus200 | MediaDescriptorAdminDeleteStatus204,
-    ResponseErrorConfig<
-      | MediaDescriptorAdminDeleteStatus400
-      | MediaDescriptorAdminDeleteStatus401
-      | MediaDescriptorAdminDeleteStatus403
-      | MediaDescriptorAdminDeleteStatus404
-      | MediaDescriptorAdminDeleteStatus500
-      | MediaDescriptorAdminDeleteStatus501
-    >,
-    unknown
-  >({
-    method: "DELETE",
-    url: getMediaDescriptorAdminDeleteUrl(id).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-admin/media/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MediaDescriptorAdminDeleteResponses, ThrowOnError>>
 }

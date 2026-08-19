@@ -1,23 +1,11 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto } from "./ExtensionPropertyGlobalFeaturePolicyDto.ts";
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPermissionPolicyDto } from "./ExtensionPropertyPermissionPolicyDto.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyFeaturePolicyDto } from './ExtensionPropertyFeaturePolicyDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto } from './ExtensionPropertyGlobalFeaturePolicyDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPermissionPolicyDto } from './ExtensionPropertyPermissionPolicyDto'
 
-/**
- * @type object
- */
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPolicyDto =
-  {
-    /**
-     * @type object | undefined
-     */
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPolicyDto = {
     globalFeatures?: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto;
-    /**
-     * @type object | undefined
-     */
-    features?: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto;
-    /**
-     * @type object | undefined
-     */
+    features?: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyFeaturePolicyDto;
     permissions?: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPermissionPolicyDto;
-  };
+};

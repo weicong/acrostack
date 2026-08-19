@@ -1,22 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumDto } from "./ExtensionEnumDto.ts";
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingModuleExtensionDto } from "./ModuleExtensionDto.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumDto } from './ExtensionEnumDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingModuleExtensionDto } from './ModuleExtensionDto'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingObjectExtensionsDto = {
-  /**
-   * @type object | undefined
-   */
-  modules?: {
-    [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingModuleExtensionDto;
-  } | null;
-  /**
-   * @type object | undefined
-   */
-  enums?: {
-    [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumDto;
-  } | null;
+    modules?: {
+        [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingModuleExtensionDto;
+    } | null;
+    enums?: {
+        [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionEnumDto;
+    } | null;
 };

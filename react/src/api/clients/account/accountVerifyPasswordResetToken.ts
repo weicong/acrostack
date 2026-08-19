@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AccountVerifyPasswordResetTokenData,
-  AccountVerifyPasswordResetTokenStatus200,
-  AccountVerifyPasswordResetTokenStatus400,
-  AccountVerifyPasswordResetTokenStatus401,
-  AccountVerifyPasswordResetTokenStatus403,
-  AccountVerifyPasswordResetTokenStatus404,
-  AccountVerifyPasswordResetTokenStatus500,
-  AccountVerifyPasswordResetTokenStatus501,
-} from "../../models/account/AccountVerifyPasswordResetToken.ts";
-
-function getAccountVerifyPasswordResetTokenUrl() {
-  const res = { method: "POST", url: `/api/account/verify-password-reset-token` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AccountVerifyPasswordResetTokenOptions, AccountVerifyPasswordResetTokenResponses } from '../../models/account/AccountVerifyPasswordResetToken'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/account/verify-password-reset-token}
  */
-export async function accountVerifyPasswordResetToken(
-  data?: AccountVerifyPasswordResetTokenData,
-  config: Partial<RequestConfig<AccountVerifyPasswordResetTokenData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function accountVerifyPasswordResetToken<ThrowOnError extends boolean = true>(options: Options<AccountVerifyPasswordResetTokenOptions, ThrowOnError>): Promise<RequestResult<AccountVerifyPasswordResetTokenResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    AccountVerifyPasswordResetTokenStatus200,
-    ResponseErrorConfig<
-      | AccountVerifyPasswordResetTokenStatus400
-      | AccountVerifyPasswordResetTokenStatus401
-      | AccountVerifyPasswordResetTokenStatus403
-      | AccountVerifyPasswordResetTokenStatus404
-      | AccountVerifyPasswordResetTokenStatus500
-      | AccountVerifyPasswordResetTokenStatus501
-    >,
-    AccountVerifyPasswordResetTokenData
-  >({
-    method: "POST",
-    url: getAccountVerifyPasswordResetTokenUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/account/verify-password-reset-token', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AccountVerifyPasswordResetTokenResponses, ThrowOnError>>
 }

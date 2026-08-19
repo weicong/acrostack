@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementCreateShareLinkPathId,
-  FileManagementCreateShareLinkData,
-  FileManagementCreateShareLinkStatus200,
-} from "../../models/fileManagement/FileManagementCreateShareLink.ts";
-
-function getFileManagementCreateShareLinkUrl(id: FileManagementCreateShareLinkPathId) {
-  const res = { method: "POST", url: `/api/app/file-management/files/${id}/share-links` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementCreateShareLinkOptions, FileManagementCreateShareLinkResponses } from '../../models/fileManagement/FileManagementCreateShareLink'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/share-links}
  */
-export async function fileManagementCreateShareLink(
-  id: FileManagementCreateShareLinkPathId,
-  data?: FileManagementCreateShareLinkData,
-  config: Partial<RequestConfig<FileManagementCreateShareLinkData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function fileManagementCreateShareLink<ThrowOnError extends boolean = true>(options: Options<FileManagementCreateShareLinkOptions, ThrowOnError>): Promise<RequestResult<FileManagementCreateShareLinkResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    FileManagementCreateShareLinkStatus200,
-    ResponseErrorConfig<Error>,
-    FileManagementCreateShareLinkData
-  >({
-    method: "POST",
-    url: getFileManagementCreateShareLinkUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/file-management/files/{id}/share-links', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementCreateShareLinkResponses, ThrowOnError>>
 }

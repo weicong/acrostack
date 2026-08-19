@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PageAdminCreateData,
-  PageAdminCreateStatus200,
-  PageAdminCreateStatus400,
-  PageAdminCreateStatus401,
-  PageAdminCreateStatus403,
-  PageAdminCreateStatus404,
-  PageAdminCreateStatus500,
-  PageAdminCreateStatus501,
-} from "../../models/pageAdmin/PageAdminCreate.ts";
-
-function getPageAdminCreateUrl() {
-  const res = { method: "POST", url: `/api/cms-kit-admin/pages` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PageAdminCreateOptions, PageAdminCreateResponses } from '../../models/pageAdmin/PageAdminCreate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/pages}
  */
-export async function pageAdminCreate(
-  data?: PageAdminCreateData,
-  config: Partial<RequestConfig<PageAdminCreateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function pageAdminCreate<ThrowOnError extends boolean = true>(options: Options<PageAdminCreateOptions, ThrowOnError>): Promise<RequestResult<PageAdminCreateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    PageAdminCreateStatus200,
-    ResponseErrorConfig<
-      | PageAdminCreateStatus400
-      | PageAdminCreateStatus401
-      | PageAdminCreateStatus403
-      | PageAdminCreateStatus404
-      | PageAdminCreateStatus500
-      | PageAdminCreateStatus501
-    >,
-    PageAdminCreateData
-  >({
-    method: "POST",
-    url: getPageAdminCreateUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/cms-kit-admin/pages', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PageAdminCreateResponses, ThrowOnError>>
 }

@@ -1,50 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ConversationDeleteMessagePathMessageId,
-  ConversationDeleteMessageStatus200,
-  ConversationDeleteMessageStatus204,
-  ConversationDeleteMessageStatus400,
-  ConversationDeleteMessageStatus401,
-  ConversationDeleteMessageStatus403,
-  ConversationDeleteMessageStatus404,
-  ConversationDeleteMessageStatus500,
-  ConversationDeleteMessageStatus501,
-} from "../../models/conversation/ConversationDeleteMessage.ts";
-
-function getConversationDeleteMessageUrl(messageId: ConversationDeleteMessagePathMessageId) {
-  const res = { method: "DELETE", url: `/api/app/conversation/message/${messageId}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ConversationDeleteMessageOptions, ConversationDeleteMessageResponses } from '../../models/conversation/ConversationDeleteMessage'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/conversation/message/:messageId}
  */
-export async function conversationDeleteMessage(
-  messageId: ConversationDeleteMessagePathMessageId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function conversationDeleteMessage<ThrowOnError extends boolean = true>(options: Options<ConversationDeleteMessageOptions, ThrowOnError>): Promise<RequestResult<ConversationDeleteMessageResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    ConversationDeleteMessageStatus200 | ConversationDeleteMessageStatus204,
-    ResponseErrorConfig<
-      | ConversationDeleteMessageStatus400
-      | ConversationDeleteMessageStatus401
-      | ConversationDeleteMessageStatus403
-      | ConversationDeleteMessageStatus404
-      | ConversationDeleteMessageStatus500
-      | ConversationDeleteMessageStatus501
-    >,
-    unknown
-  >({
-    method: "DELETE",
-    url: getConversationDeleteMessageUrl(messageId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/app/conversation/message/{messageId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ConversationDeleteMessageResponses, ThrowOnError>>
 }

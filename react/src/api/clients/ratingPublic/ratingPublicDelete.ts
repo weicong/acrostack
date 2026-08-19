@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  RatingPublicDeletePathEntityType,
-  RatingPublicDeletePathEntityId,
-  RatingPublicDeleteStatus200,
-  RatingPublicDeleteStatus204,
-  RatingPublicDeleteStatus400,
-  RatingPublicDeleteStatus401,
-  RatingPublicDeleteStatus403,
-  RatingPublicDeleteStatus404,
-  RatingPublicDeleteStatus500,
-  RatingPublicDeleteStatus501,
-} from "../../models/ratingPublic/RatingPublicDelete.ts";
-
-function getRatingPublicDeleteUrl(
-  entityType: RatingPublicDeletePathEntityType,
-  entityId: RatingPublicDeletePathEntityId,
-) {
-  const res = {
-    method: "DELETE",
-    url: `/api/cms-kit-public/ratings/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { RatingPublicDeleteOptions, RatingPublicDeleteResponses } from '../../models/ratingPublic/RatingPublicDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/ratings/:entityType/:entityId}
  */
-export async function ratingPublicDelete(
-  entityType: RatingPublicDeletePathEntityType,
-  entityId: RatingPublicDeletePathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function ratingPublicDelete<ThrowOnError extends boolean = true>(options: Options<RatingPublicDeleteOptions, ThrowOnError>): Promise<RequestResult<RatingPublicDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    RatingPublicDeleteStatus200 | RatingPublicDeleteStatus204,
-    ResponseErrorConfig<
-      | RatingPublicDeleteStatus400
-      | RatingPublicDeleteStatus401
-      | RatingPublicDeleteStatus403
-      | RatingPublicDeleteStatus404
-      | RatingPublicDeleteStatus500
-      | RatingPublicDeleteStatus501
-    >,
-    unknown
-  >({
-    method: "DELETE",
-    url: getRatingPublicDeleteUrl(entityType, entityId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/cms-kit-public/ratings/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<RatingPublicDeleteResponses, ThrowOnError>>
 }

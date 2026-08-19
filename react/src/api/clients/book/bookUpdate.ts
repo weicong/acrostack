@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BookUpdatePathId,
-  BookUpdateData,
-  BookUpdateStatus200,
-  BookUpdateStatus400,
-  BookUpdateStatus401,
-  BookUpdateStatus403,
-  BookUpdateStatus404,
-  BookUpdateStatus500,
-  BookUpdateStatus501,
-} from "../../models/book/BookUpdate.ts";
-
-function getBookUpdateUrl(id: BookUpdatePathId) {
-  const res = { method: "PUT", url: `/api/app/book/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BookUpdateOptions, BookUpdateResponses } from '../../models/book/BookUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/book/:id}
  */
-export async function bookUpdate(
-  id: BookUpdatePathId,
-  data?: BookUpdateData,
-  config: Partial<RequestConfig<BookUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function bookUpdate<ThrowOnError extends boolean = true>(options: Options<BookUpdateOptions, ThrowOnError>): Promise<RequestResult<BookUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    BookUpdateStatus200,
-    ResponseErrorConfig<
-      | BookUpdateStatus400
-      | BookUpdateStatus401
-      | BookUpdateStatus403
-      | BookUpdateStatus404
-      | BookUpdateStatus500
-      | BookUpdateStatus501
-    >,
-    BookUpdateData
-  >({
-    method: "PUT",
-    url: getBookUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/app/book/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BookUpdateResponses, ThrowOnError>>
 }

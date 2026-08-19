@@ -1,44 +1,28 @@
 /* oxlint-disable */
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementDownloadFilePathId = string;
-
-/**
- * @type any
- */
-export type FileManagementDownloadFileStatus200 = any;
-
-/**
- * @type object
- */
-export type FileManagementDownloadFileRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementDownloadFilePathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/files/${string}/download`;
+export type FileManagementDownloadFilePath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementDownloadFileStatus200 = unknown;
+
+export type FileManagementDownloadFileOptions = {
+    body?: never;
+    path: FileManagementDownloadFilePath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementDownloadFileResponses = {
-  "200": FileManagementDownloadFileStatus200;
+    "200": FileManagementDownloadFileStatus200;
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementDownloadFileResponse = FileManagementDownloadFileStatus200;

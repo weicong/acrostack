@@ -1,46 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  PageAdminSetAsHomePagePathId,
-  PageAdminSetAsHomePageStatus200,
-  PageAdminSetAsHomePageStatus204,
-  PageAdminSetAsHomePageStatus400,
-  PageAdminSetAsHomePageStatus401,
-  PageAdminSetAsHomePageStatus403,
-  PageAdminSetAsHomePageStatus404,
-  PageAdminSetAsHomePageStatus500,
-  PageAdminSetAsHomePageStatus501,
-} from "../../models/pageAdmin/PageAdminSetAsHomePage.ts";
-
-function getPageAdminSetAsHomePageUrl(id: PageAdminSetAsHomePagePathId) {
-  const res = { method: "PUT", url: `/api/cms-kit-admin/pages/setashomepage/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { PageAdminSetAsHomePageOptions, PageAdminSetAsHomePageResponses } from '../../models/pageAdmin/PageAdminSetAsHomePage'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/pages/setashomepage/:id}
  */
-export async function pageAdminSetAsHomePage(
-  id: PageAdminSetAsHomePagePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function pageAdminSetAsHomePage<ThrowOnError extends boolean = true>(options: Options<PageAdminSetAsHomePageOptions, ThrowOnError>): Promise<RequestResult<PageAdminSetAsHomePageResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    PageAdminSetAsHomePageStatus200 | PageAdminSetAsHomePageStatus204,
-    ResponseErrorConfig<
-      | PageAdminSetAsHomePageStatus400
-      | PageAdminSetAsHomePageStatus401
-      | PageAdminSetAsHomePageStatus403
-      | PageAdminSetAsHomePageStatus404
-      | PageAdminSetAsHomePageStatus500
-      | PageAdminSetAsHomePageStatus501
-    >,
-    unknown
-  >({ method: "PUT", url: getPageAdminSetAsHomePageUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/pages/setashomepage/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<PageAdminSetAsHomePageResponses, ThrowOnError>>
 }

@@ -1,111 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  UserLookupFindByUserNamePathUserName,
-  UserLookupFindByUserNameStatus200,
-  UserLookupFindByUserNameStatus400,
-  UserLookupFindByUserNameStatus401,
-  UserLookupFindByUserNameStatus403,
-  UserLookupFindByUserNameStatus404,
-  UserLookupFindByUserNameStatus500,
-  UserLookupFindByUserNameStatus501,
-} from "../../models/userLookup/UserLookupFindByUserName.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { userLookupFindByUserName } from "../../clients/userLookup/userLookupFindByUserName.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { UserLookupFindByUserNameOptions, UserLookupFindByUserNameStatus200, UserLookupFindByUserNameStatus400, UserLookupFindByUserNameStatus401, UserLookupFindByUserNameStatus403, UserLookupFindByUserNameStatus404, UserLookupFindByUserNameStatus500, UserLookupFindByUserNameStatus501 } from '../../models/userLookup/UserLookupFindByUserName'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { userLookupFindByUserName } from '../../clients/userLookup/userLookupFindByUserName'
 
-export const userLookupFindByUserNameQueryKey = (userName?: UserLookupFindByUserNamePathUserName) =>
-  [
-    { url: "/api/identity/users/lookup/by-username/:userName", params: { userName: userName } },
-  ] as const;
+export const userLookupFindByUserNameQueryKey = ({ path }: Omit<UserLookupFindByUserNameOptions, 'headers'>) => [{ url: '/api/identity/users/lookup/by-username/:userName', params: path }] as const
 
-type UserLookupFindByUserNameQueryKey = ReturnType<typeof userLookupFindByUserNameQueryKey>;
+type UserLookupFindByUserNameQueryKey = ReturnType<typeof userLookupFindByUserNameQueryKey>
 
-export function userLookupFindByUserNameQueryOptions(
-  userName?: UserLookupFindByUserNamePathUserName,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = userLookupFindByUserNameQueryKey(userName);
-  return queryOptions<
-    UserLookupFindByUserNameStatus200,
-    ResponseErrorConfig<
-      | UserLookupFindByUserNameStatus400
-      | UserLookupFindByUserNameStatus401
-      | UserLookupFindByUserNameStatus403
-      | UserLookupFindByUserNameStatus404
-      | UserLookupFindByUserNameStatus500
-      | UserLookupFindByUserNameStatus501
-    >,
-    UserLookupFindByUserNameStatus200,
-    typeof queryKey
-  >({
-    enabled: !!userName,
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return userLookupFindByUserName(userName!, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function userLookupFindByUserNameQueryOptions({ path }: UserLookupFindByUserNameOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = userLookupFindByUserNameQueryKey({ path })
+  return queryOptions<UserLookupFindByUserNameStatus200, ResponseErrorConfig<UserLookupFindByUserNameStatus400 | UserLookupFindByUserNameStatus401 | UserLookupFindByUserNameStatus403 | UserLookupFindByUserNameStatus404 | UserLookupFindByUserNameStatus500 | UserLookupFindByUserNameStatus501>, UserLookupFindByUserNameStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await userLookupFindByUserName({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/identity/users/lookup/by-username/:userName}
  */
-export function useUserLookupFindByUserName<
-  TData = UserLookupFindByUserNameStatus200,
-  TQueryData = UserLookupFindByUserNameStatus200,
-  TQueryKey extends QueryKey = UserLookupFindByUserNameQueryKey,
->(
-  userName?: UserLookupFindByUserNamePathUserName,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        UserLookupFindByUserNameStatus200,
-        ResponseErrorConfig<
-          | UserLookupFindByUserNameStatus400
-          | UserLookupFindByUserNameStatus401
-          | UserLookupFindByUserNameStatus403
-          | UserLookupFindByUserNameStatus404
-          | UserLookupFindByUserNameStatus500
-          | UserLookupFindByUserNameStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? userLookupFindByUserNameQueryKey(userName);
+export function useUserLookupFindByUserName<TData = UserLookupFindByUserNameStatus200, TQueryData = UserLookupFindByUserNameStatus200, TQueryKey extends QueryKey = UserLookupFindByUserNameQueryKey>({ path }: { path: UserLookupFindByUserNameOptions['path'] | (() => UserLookupFindByUserNameOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<UserLookupFindByUserNameStatus200, ResponseErrorConfig<UserLookupFindByUserNameStatus400 | UserLookupFindByUserNameStatus401 | UserLookupFindByUserNameStatus403 | UserLookupFindByUserNameStatus404 | UserLookupFindByUserNameStatus500 | UserLookupFindByUserNameStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? userLookupFindByUserNameQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...userLookupFindByUserNameQueryOptions(userName, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | UserLookupFindByUserNameStatus400
-      | UserLookupFindByUserNameStatus401
-      | UserLookupFindByUserNameStatus403
-      | UserLookupFindByUserNameStatus404
-      | UserLookupFindByUserNameStatus500
-      | UserLookupFindByUserNameStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...userLookupFindByUserNameQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<UserLookupFindByUserNameStatus400 | UserLookupFindByUserNameStatus401 | UserLookupFindByUserNameStatus403 | UserLookupFindByUserNameStatus404 | UserLookupFindByUserNameStatus500 | UserLookupFindByUserNameStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

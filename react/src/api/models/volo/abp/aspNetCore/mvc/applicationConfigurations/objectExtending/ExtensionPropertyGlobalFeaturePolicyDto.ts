@@ -1,16 +1,6 @@
 /* oxlint-disable */
 
-/**
- * @type object
- */
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyGlobalFeaturePolicyDto = {
     features?: string[] | null;
-    /**
-     * @type boolean | undefined
-     */
     requiresAll?: boolean;
-  };
+};

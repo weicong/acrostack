@@ -1,186 +1,145 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/conversationDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from '../volo/abp/application/dtos/listResultDto1AcroStack/chat/conversationDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type object
- */
-export type ConversationGetListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetListStatus200Plain = VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
-/**
- * @type object
- */
-export type ConversationGetListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetListStatus200Json = VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
-/**
- * @type object
- */
-export type ConversationGetListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetListStatus200Json2 = VoloAbpApplicationDtosListResultDto1AcroStackChatConversationDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
 
-export type ConversationGetListStatus200 =
-  | ConversationGetListStatus200Plain
-  | ConversationGetListStatus200Json
-  | ConversationGetListStatus200Json2;
+export type ConversationGetListStatus200 = (ConversationGetListStatus200Plain | ConversationGetListStatus200Json | ConversationGetListStatus200Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus400 =
-  | ConversationGetListStatus400Plain
-  | ConversationGetListStatus400Json
-  | ConversationGetListStatus400Json2;
+export type ConversationGetListStatus400 = (ConversationGetListStatus400Plain | ConversationGetListStatus400Json | ConversationGetListStatus400Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus401 =
-  | ConversationGetListStatus401Plain
-  | ConversationGetListStatus401Json
-  | ConversationGetListStatus401Json2;
+export type ConversationGetListStatus401 = (ConversationGetListStatus401Plain | ConversationGetListStatus401Json | ConversationGetListStatus401Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus403 =
-  | ConversationGetListStatus403Plain
-  | ConversationGetListStatus403Json
-  | ConversationGetListStatus403Json2;
+export type ConversationGetListStatus403 = (ConversationGetListStatus403Plain | ConversationGetListStatus403Json | ConversationGetListStatus403Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus404 =
-  | ConversationGetListStatus404Plain
-  | ConversationGetListStatus404Json
-  | ConversationGetListStatus404Json2;
+export type ConversationGetListStatus404 = (ConversationGetListStatus404Plain | ConversationGetListStatus404Json | ConversationGetListStatus404Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus500 =
-  | ConversationGetListStatus500Plain
-  | ConversationGetListStatus500Json
-  | ConversationGetListStatus500Json2;
+export type ConversationGetListStatus500 = (ConversationGetListStatus500Plain | ConversationGetListStatus500Json | ConversationGetListStatus500Json2);
 
-/**
- * @type object
- */
 export type ConversationGetListStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ConversationGetListStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ConversationGetListStatus501 =
-  | ConversationGetListStatus501Plain
-  | ConversationGetListStatus501Json
-  | ConversationGetListStatus501Json2;
+export type ConversationGetListStatus501 = (ConversationGetListStatus501Plain | ConversationGetListStatus501Json | ConversationGetListStatus501Json2);
 
-/**
- * @type object
- */
-export type ConversationGetListRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/conversation";
+export type ConversationGetListOptions = {
+    body?: never;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type ConversationGetListResponses = {
-  "200": ConversationGetListStatus200;
-  "400": ConversationGetListStatus400;
-  "401": ConversationGetListStatus401;
-  "403": ConversationGetListStatus403;
-  "404": ConversationGetListStatus404;
-  "500": ConversationGetListStatus500;
-  "501": ConversationGetListStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: ConversationGetListStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationGetListStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationGetListStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type ConversationGetListResponse =
-  | ConversationGetListStatus200
-  | ConversationGetListStatus400
-  | ConversationGetListStatus401
-  | ConversationGetListStatus403
-  | ConversationGetListStatus404
-  | ConversationGetListStatus500
-  | ConversationGetListStatus501;
+*/
+export type ConversationGetListResponse = (ConversationGetListStatus200 | ConversationGetListStatus400 | ConversationGetListStatus401 | ConversationGetListStatus403 | ConversationGetListStatus404 | ConversationGetListStatus500 | ConversationGetListStatus501);

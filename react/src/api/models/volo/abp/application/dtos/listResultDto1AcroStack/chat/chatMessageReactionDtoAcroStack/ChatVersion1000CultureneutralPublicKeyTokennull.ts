@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackChatChatMessageReactionDto } from "../../../../../../../acroStack/chat/ChatMessageReactionDto.ts";
+import type { AcroStackChatChatMessageReactionDto } from '../../../../../../../acroStack/chat/ChatMessageReactionDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackChatChatMessageReactionDto[] | null;
-  };
+};

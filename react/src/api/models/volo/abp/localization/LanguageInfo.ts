@@ -1,23 +1,8 @@
 /* oxlint-disable */
 
-/**
- * @type object
- */
 export type VoloAbpLocalizationLanguageInfo = {
-  /**
-   * @type string | undefined
-   */
-  cultureName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  uiCultureName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  displayName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  readonly twoLetterISOLanguageName?: string | null;
+    cultureName?: string | null;
+    uiCultureName?: string | null;
+    displayName?: string | null;
+    readonly twoLetterISOLanguageName?: string | null;
 };

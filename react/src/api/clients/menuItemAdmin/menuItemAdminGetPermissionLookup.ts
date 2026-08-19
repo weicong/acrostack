@@ -1,50 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MenuItemAdminGetPermissionLookupQueryFilter,
-  MenuItemAdminGetPermissionLookupStatus200,
-  MenuItemAdminGetPermissionLookupStatus400,
-  MenuItemAdminGetPermissionLookupStatus401,
-  MenuItemAdminGetPermissionLookupStatus403,
-  MenuItemAdminGetPermissionLookupStatus404,
-  MenuItemAdminGetPermissionLookupStatus500,
-  MenuItemAdminGetPermissionLookupStatus501,
-} from "../../models/menuItemAdmin/MenuItemAdminGetPermissionLookup.ts";
-
-function getMenuItemAdminGetPermissionLookupUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-admin/menu-items/lookup/permissions` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MenuItemAdminGetPermissionLookupOptions, MenuItemAdminGetPermissionLookupResponses } from '../../models/menuItemAdmin/MenuItemAdminGetPermissionLookup'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/menu-items/lookup/permissions}
  */
-export async function menuItemAdminGetPermissionLookup(
-  params?: { Filter?: MenuItemAdminGetPermissionLookupQueryFilter },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function menuItemAdminGetPermissionLookup<ThrowOnError extends boolean = true>(options: Options<MenuItemAdminGetPermissionLookupOptions, ThrowOnError> = {}): Promise<RequestResult<MenuItemAdminGetPermissionLookupResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    MenuItemAdminGetPermissionLookupStatus200,
-    ResponseErrorConfig<
-      | MenuItemAdminGetPermissionLookupStatus400
-      | MenuItemAdminGetPermissionLookupStatus401
-      | MenuItemAdminGetPermissionLookupStatus403
-      | MenuItemAdminGetPermissionLookupStatus404
-      | MenuItemAdminGetPermissionLookupStatus500
-      | MenuItemAdminGetPermissionLookupStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getMenuItemAdminGetPermissionLookupUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/menu-items/lookup/permissions', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MenuItemAdminGetPermissionLookupResponses, ThrowOnError>>
 }

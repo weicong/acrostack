@@ -4,5 +4,5 @@
  * @description
  * Format: `int32`
  * @type integer
- */
+*/
 export type VoloCmsKitCommentsCommentApproveState = number;

@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitUsersCmsUserDto } from "../../../../../../../../../../cmsKit/users/CmsUserDto.ts";
+import type { VoloCmsKitUsersCmsUserDto } from '../../../../../../../../../../cmsKit/users/CmsUserDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitUsersCmsUserDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitUsersCmsUserDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitUsersCmsUserDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

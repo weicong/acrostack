@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitMenusMenuItemDto } from "../../../../../../../../../../cmsKit/menus/MenuItemDto.ts";
+import type { VoloCmsKitMenusMenuItemDto } from '../../../../../../../../../../cmsKit/menus/MenuItemDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitMenusMenuItemDto[] | null;
-  };
+};

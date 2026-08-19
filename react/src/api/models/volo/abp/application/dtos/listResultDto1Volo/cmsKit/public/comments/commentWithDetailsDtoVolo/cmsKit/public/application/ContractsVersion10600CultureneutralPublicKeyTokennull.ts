@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitPublicCommentsCommentWithDetailsDto } from "../../../../../../../../../../../cmsKit/public/comments/CommentWithDetailsDto.ts";
+import type { VoloCmsKitPublicCommentsCommentWithDetailsDto } from '../../../../../../../../../../../cmsKit/public/comments/CommentWithDetailsDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicCommentsCommentWithDetailsDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitPublicCommentsCommentWithDetailsDto[] | null;
-  };
+};

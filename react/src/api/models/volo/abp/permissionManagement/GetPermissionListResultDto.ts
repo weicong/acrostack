@@ -1,17 +1,8 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementPermissionGroupDto } from "./PermissionGroupDto.ts";
+import type { VoloAbpPermissionManagementPermissionGroupDto } from './PermissionGroupDto'
 
-/**
- * @type object
- */
 export type VoloAbpPermissionManagementGetPermissionListResultDto = {
-  /**
-   * @type string | undefined
-   */
-  entityDisplayName?: string | null;
-  /**
-   * @type array | undefined
-   */
-  groups?: VoloAbpPermissionManagementPermissionGroupDto[] | null;
+    entityDisplayName?: string | null;
+    groups?: VoloAbpPermissionManagementPermissionGroupDto[] | null;
 };

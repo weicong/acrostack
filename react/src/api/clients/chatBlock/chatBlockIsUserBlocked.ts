@@ -1,54 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ChatBlockIsUserBlockedQueryUserId,
-  ChatBlockIsUserBlockedQueryTargetUserId,
-  ChatBlockIsUserBlockedStatus200,
-  ChatBlockIsUserBlockedStatus400,
-  ChatBlockIsUserBlockedStatus401,
-  ChatBlockIsUserBlockedStatus403,
-  ChatBlockIsUserBlockedStatus404,
-  ChatBlockIsUserBlockedStatus500,
-  ChatBlockIsUserBlockedStatus501,
-} from "../../models/chatBlock/ChatBlockIsUserBlocked.ts";
-
-function getChatBlockIsUserBlockedUrl() {
-  const res = { method: "POST", url: `/api/app/chat-block/is-user-blocked` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ChatBlockIsUserBlockedOptions, ChatBlockIsUserBlockedResponses } from '../../models/chatBlock/ChatBlockIsUserBlocked'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/chat-block/is-user-blocked}
  */
-export async function chatBlockIsUserBlocked(
-  params?: {
-    userId?: ChatBlockIsUserBlockedQueryUserId;
-    targetUserId?: ChatBlockIsUserBlockedQueryTargetUserId;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function chatBlockIsUserBlocked<ThrowOnError extends boolean = true>(options: Options<ChatBlockIsUserBlockedOptions, ThrowOnError> = {}): Promise<RequestResult<ChatBlockIsUserBlockedResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    ChatBlockIsUserBlockedStatus200,
-    ResponseErrorConfig<
-      | ChatBlockIsUserBlockedStatus400
-      | ChatBlockIsUserBlockedStatus401
-      | ChatBlockIsUserBlockedStatus403
-      | ChatBlockIsUserBlockedStatus404
-      | ChatBlockIsUserBlockedStatus500
-      | ChatBlockIsUserBlockedStatus501
-    >,
-    unknown
-  >({
-    method: "POST",
-    url: getChatBlockIsUserBlockedUrl().url.toString(),
-    params,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/chat-block/is-user-blocked', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ChatBlockIsUserBlockedResponses, ThrowOnError>>
 }

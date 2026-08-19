@@ -1,199 +1,150 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
-import type { VoloAbpPermissionManagementGetPermissionListResultDto } from "../volo/abp/permissionManagement/GetPermissionListResultDto.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
+import type { VoloAbpPermissionManagementGetPermissionListResultDto } from '../volo/abp/permissionManagement/GetPermissionListResultDto'
 
-/**
- * @type string | undefined
- */
-export type PermissionsGetQueryProviderName = string | undefined;
-
-/**
- * @type string | undefined
- */
-export type PermissionsGetQueryProviderKey = string | undefined;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus200Plain = VoloAbpPermissionManagementGetPermissionListResultDto;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus200Json = VoloAbpPermissionManagementGetPermissionListResultDto;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus200Json2 = VoloAbpPermissionManagementGetPermissionListResultDto;
-
-export type PermissionsGetStatus200 =
-  | PermissionsGetStatus200Plain
-  | PermissionsGetStatus200Json
-  | PermissionsGetStatus200Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus400 =
-  | PermissionsGetStatus400Plain
-  | PermissionsGetStatus400Json
-  | PermissionsGetStatus400Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus401 =
-  | PermissionsGetStatus401Plain
-  | PermissionsGetStatus401Json
-  | PermissionsGetStatus401Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus403 =
-  | PermissionsGetStatus403Plain
-  | PermissionsGetStatus403Json
-  | PermissionsGetStatus403Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus404 =
-  | PermissionsGetStatus404Plain
-  | PermissionsGetStatus404Json
-  | PermissionsGetStatus404Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus500 =
-  | PermissionsGetStatus500Plain
-  | PermissionsGetStatus500Json
-  | PermissionsGetStatus500Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type PermissionsGetStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type PermissionsGetStatus501 =
-  | PermissionsGetStatus501Plain
-  | PermissionsGetStatus501Json
-  | PermissionsGetStatus501Json2;
-
-/**
- * @type object
- */
-export type PermissionsGetRequestConfig = {
-  data?: never;
-  pathParams?: never;
-  /**
-   * @type object | undefined
-   */
-  queryParams?: {
-    providerName?: PermissionsGetQueryProviderName;
-    providerKey?: PermissionsGetQueryProviderKey;
-  };
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/permission-management/permissions";
+export type PermissionsGetQuery = {
+    providerName?: string;
+    providerKey?: string;
 };
 
-/**
- * @type object
- */
+export type PermissionsGetStatus200Plain = VoloAbpPermissionManagementGetPermissionListResultDto;
+
+export type PermissionsGetStatus200Json = VoloAbpPermissionManagementGetPermissionListResultDto;
+
+export type PermissionsGetStatus200Json2 = VoloAbpPermissionManagementGetPermissionListResultDto;
+
+export type PermissionsGetStatus200 = (PermissionsGetStatus200Plain | PermissionsGetStatus200Json | PermissionsGetStatus200Json2);
+
+export type PermissionsGetStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus400 = (PermissionsGetStatus400Plain | PermissionsGetStatus400Json | PermissionsGetStatus400Json2);
+
+export type PermissionsGetStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus401 = (PermissionsGetStatus401Plain | PermissionsGetStatus401Json | PermissionsGetStatus401Json2);
+
+export type PermissionsGetStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus403 = (PermissionsGetStatus403Plain | PermissionsGetStatus403Json | PermissionsGetStatus403Json2);
+
+export type PermissionsGetStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus404 = (PermissionsGetStatus404Plain | PermissionsGetStatus404Json | PermissionsGetStatus404Json2);
+
+export type PermissionsGetStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus500 = (PermissionsGetStatus500Plain | PermissionsGetStatus500Json | PermissionsGetStatus500Json2);
+
+export type PermissionsGetStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type PermissionsGetStatus501 = (PermissionsGetStatus501Plain | PermissionsGetStatus501Json | PermissionsGetStatus501Json2);
+
+export type PermissionsGetOptions = {
+    body?: never;
+    path?: never;
+    query?: PermissionsGetQuery;
+    headers?: never;
+};
+
 export type PermissionsGetResponses = {
-  "200": PermissionsGetStatus200;
-  "400": PermissionsGetStatus400;
-  "401": PermissionsGetStatus401;
-  "403": PermissionsGetStatus403;
-  "404": PermissionsGetStatus404;
-  "500": PermissionsGetStatus500;
-  "501": PermissionsGetStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: PermissionsGetStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: PermissionsGetStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: PermissionsGetStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type PermissionsGetResponse =
-  | PermissionsGetStatus200
-  | PermissionsGetStatus400
-  | PermissionsGetStatus401
-  | PermissionsGetStatus403
-  | PermissionsGetStatus404
-  | PermissionsGetStatus500
-  | PermissionsGetStatus501;
+*/
+export type PermissionsGetResponse = (PermissionsGetStatus200 | PermissionsGetStatus400 | PermissionsGetStatus401 | PermissionsGetStatus403 | PermissionsGetStatus404 | PermissionsGetStatus500 | PermissionsGetStatus501);

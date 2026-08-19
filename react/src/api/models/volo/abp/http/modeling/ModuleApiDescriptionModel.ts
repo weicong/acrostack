@@ -1,23 +1,11 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpModelingControllerApiDescriptionModel } from "./ControllerApiDescriptionModel.ts";
+import type { VoloAbpHttpModelingControllerApiDescriptionModel } from './ControllerApiDescriptionModel'
 
-/**
- * @type object
- */
 export type VoloAbpHttpModelingModuleApiDescriptionModel = {
-  /**
-   * @type string | undefined
-   */
-  rootPath?: string | null;
-  /**
-   * @type string | undefined
-   */
-  remoteServiceName?: string | null;
-  /**
-   * @type object | undefined
-   */
-  controllers?: {
-    [key: string]: VoloAbpHttpModelingControllerApiDescriptionModel;
-  } | null;
+    rootPath?: string | null;
+    remoteServiceName?: string | null;
+    controllers?: {
+        [key: string]: VoloAbpHttpModelingControllerApiDescriptionModel;
+    } | null;
 };

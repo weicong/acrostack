@@ -1,82 +1,54 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementFileFolderDto } from "../acroStack/fileManagement/FileFolderDto.ts";
-import type { AcroStackFileManagementRenameDto } from "../acroStack/fileManagement/RenameDto.ts";
+import type { AcroStackFileManagementFileFolderDto } from '../acroStack/fileManagement/FileFolderDto'
+import type { AcroStackFileManagementRenameDto } from '../acroStack/fileManagement/RenameDto'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementRenameFolderPathId = string;
-
-/**
- * @type object
- */
-export type FileManagementRenameFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
-
-/**
- * @type object
- */
-export type FileManagementRenameFolderStatus200Json = AcroStackFileManagementFileFolderDto;
-
-/**
- * @type object
- */
-export type FileManagementRenameFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
-
-export type FileManagementRenameFolderStatus200 =
-  | FileManagementRenameFolderStatus200Plain
-  | FileManagementRenameFolderStatus200Json
-  | FileManagementRenameFolderStatus200Json2;
-
-/**
- * @type object | undefined
- */
-export type FileManagementRenameFolderJsonData = AcroStackFileManagementRenameDto | undefined;
-
-/**
- * @type object | undefined
- */
-export type FileManagementRenameFolderJson2Data = AcroStackFileManagementRenameDto | undefined;
-
-/**
- * @type object | undefined
- */
-export type FileManagementRenameFolderJson3Data = AcroStackFileManagementRenameDto | undefined;
-
-export type FileManagementRenameFolderData =
-  | FileManagementRenameFolderJsonData
-  | FileManagementRenameFolderJson2Data
-  | FileManagementRenameFolderJson3Data;
-
-/**
- * @type object
- */
-export type FileManagementRenameFolderRequestConfig = {
-  data?: FileManagementRenameFolderData;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementRenameFolderPathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/folders/${string}/rename`;
+export type FileManagementRenameFolderPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementRenameFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
+
+export type FileManagementRenameFolderStatus200Json = AcroStackFileManagementFileFolderDto;
+
+export type FileManagementRenameFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
+
+export type FileManagementRenameFolderStatus200 = (FileManagementRenameFolderStatus200Plain | FileManagementRenameFolderStatus200Json | FileManagementRenameFolderStatus200Json2);
+
+export type FileManagementRenameFolderBodyJson = AcroStackFileManagementRenameDto | undefined;
+
+export type FileManagementRenameFolderBodyJson2 = AcroStackFileManagementRenameDto | undefined;
+
+export type FileManagementRenameFolderBodyJson3 = AcroStackFileManagementRenameDto | undefined;
+
+export type FileManagementRenameFolderBody = (FileManagementRenameFolderBodyJson | FileManagementRenameFolderBodyJson2 | FileManagementRenameFolderBodyJson3);
+
+export type FileManagementRenameFolderOptions = {
+    body: FileManagementRenameFolderBody;
+    path: FileManagementRenameFolderPath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementRenameFolderResponses = {
-  "200": FileManagementRenameFolderStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementRenameFolderStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementRenameFolderStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementRenameFolderStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementRenameFolderResponse = FileManagementRenameFolderStatus200;

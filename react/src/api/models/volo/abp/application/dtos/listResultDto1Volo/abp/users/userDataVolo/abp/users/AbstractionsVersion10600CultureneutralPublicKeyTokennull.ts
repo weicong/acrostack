@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpUsersUserData } from "../../../../../../../../users/UserData.ts";
+import type { VoloAbpUsersUserData } from '../../../../../../../../users/UserData'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloAbpUsersUserData[] | null;
-  };
+};

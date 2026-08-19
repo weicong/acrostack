@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitAdminBlogsBlogPostListDto } from "../../../../../../../../../../../cmsKit/admin/blogs/BlogPostListDto.ts";
+import type { VoloCmsKitAdminBlogsBlogPostListDto } from '../../../../../../../../../../../cmsKit/admin/blogs/BlogPostListDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitAdminBlogsBlogPostListDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

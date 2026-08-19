@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  MenuItemAdminUpdatePathId,
-  MenuItemAdminUpdateData,
-  MenuItemAdminUpdateStatus200,
-  MenuItemAdminUpdateStatus400,
-  MenuItemAdminUpdateStatus401,
-  MenuItemAdminUpdateStatus403,
-  MenuItemAdminUpdateStatus404,
-  MenuItemAdminUpdateStatus500,
-  MenuItemAdminUpdateStatus501,
-} from "../../models/menuItemAdmin/MenuItemAdminUpdate.ts";
-
-function getMenuItemAdminUpdateUrl(id: MenuItemAdminUpdatePathId) {
-  const res = { method: "PUT", url: `/api/cms-kit-admin/menu-items/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { MenuItemAdminUpdateOptions, MenuItemAdminUpdateResponses } from '../../models/menuItemAdmin/MenuItemAdminUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/menu-items/:id}
  */
-export async function menuItemAdminUpdate(
-  id: MenuItemAdminUpdatePathId,
-  data?: MenuItemAdminUpdateData,
-  config: Partial<RequestConfig<MenuItemAdminUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function menuItemAdminUpdate<ThrowOnError extends boolean = true>(options: Options<MenuItemAdminUpdateOptions, ThrowOnError>): Promise<RequestResult<MenuItemAdminUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    MenuItemAdminUpdateStatus200,
-    ResponseErrorConfig<
-      | MenuItemAdminUpdateStatus400
-      | MenuItemAdminUpdateStatus401
-      | MenuItemAdminUpdateStatus403
-      | MenuItemAdminUpdateStatus404
-      | MenuItemAdminUpdateStatus500
-      | MenuItemAdminUpdateStatus501
-    >,
-    MenuItemAdminUpdateData
-  >({
-    method: "PUT",
-    url: getMenuItemAdminUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/menu-items/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<MenuItemAdminUpdateResponses, ThrowOnError>>
 }

@@ -1,46 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityClaimTypeDeletePathId,
-  IdentityClaimTypeDeleteStatus200,
-  IdentityClaimTypeDeleteStatus204,
-  IdentityClaimTypeDeleteStatus400,
-  IdentityClaimTypeDeleteStatus401,
-  IdentityClaimTypeDeleteStatus403,
-  IdentityClaimTypeDeleteStatus404,
-  IdentityClaimTypeDeleteStatus500,
-  IdentityClaimTypeDeleteStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeDelete.ts";
-
-function getIdentityClaimTypeDeleteUrl(id: IdentityClaimTypeDeletePathId) {
-  const res = { method: "DELETE", url: `/api/app/identity-claim-type/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityClaimTypeDeleteOptions, IdentityClaimTypeDeleteResponses } from '../../models/identityClaimType/IdentityClaimTypeDelete'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-claim-type/:id}
  */
-export async function identityClaimTypeDelete(
-  id: IdentityClaimTypeDeletePathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function identityClaimTypeDelete<ThrowOnError extends boolean = true>(options: Options<IdentityClaimTypeDeleteOptions, ThrowOnError>): Promise<RequestResult<IdentityClaimTypeDeleteResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    IdentityClaimTypeDeleteStatus200 | IdentityClaimTypeDeleteStatus204,
-    ResponseErrorConfig<
-      | IdentityClaimTypeDeleteStatus400
-      | IdentityClaimTypeDeleteStatus401
-      | IdentityClaimTypeDeleteStatus403
-      | IdentityClaimTypeDeleteStatus404
-      | IdentityClaimTypeDeleteStatus500
-      | IdentityClaimTypeDeleteStatus501
-    >,
-    unknown
-  >({ method: "DELETE", url: getIdentityClaimTypeDeleteUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'DELETE', url: '/api/app/identity-claim-type/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityClaimTypeDeleteResponses, ThrowOnError>>
 }

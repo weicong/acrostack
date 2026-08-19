@@ -1,44 +1,20 @@
 /* oxlint-disable */
 
-import type { VoloAbpFeatureManagementFeatureProviderDto } from "./FeatureProviderDto.ts";
-import type { VoloAbpValidationStringValuesIStringValueType } from "../validation/stringValues/IStringValueType.ts";
+import type { VoloAbpFeatureManagementFeatureProviderDto } from './FeatureProviderDto'
+import type { VoloAbpValidationStringValuesIStringValueType } from '../validation/stringValues/IStringValueType'
 
-/**
- * @type object
- */
 export type VoloAbpFeatureManagementFeatureDto = {
-  /**
-   * @type string | undefined
-   */
-  name?: string | null;
-  /**
-   * @type string | undefined
-   */
-  displayName?: string | null;
-  /**
-   * @type string | undefined
-   */
-  value?: string | null;
-  /**
-   * @type object | undefined
-   */
-  provider?: VoloAbpFeatureManagementFeatureProviderDto;
-  /**
-   * @type string | undefined
-   */
-  description?: string | null;
-  /**
-   * @type object | undefined
-   */
-  valueType?: VoloAbpValidationStringValuesIStringValueType;
-  /**
-   * @description
-   * Format: `int32`
-   * @type integer | undefined
-   */
-  depth?: number;
-  /**
-   * @type string | undefined
-   */
-  parentName?: string | null;
+    name?: string | null;
+    displayName?: string | null;
+    value?: string | null;
+    provider?: VoloAbpFeatureManagementFeatureProviderDto;
+    description?: string | null;
+    valueType?: VoloAbpValidationStringValuesIStringValueType;
+    /**
+     * @description
+     * Format: `int32`
+     * @type integer | undefined
+    */
+    depth?: number;
+    parentName?: string | null;
 };

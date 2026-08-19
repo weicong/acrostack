@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileVersionDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from "./FileManagementVersion1000CultureneutralPublicKeyTokennull.ts";

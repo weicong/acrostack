@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityClaimTypeGetPathId,
-  IdentityClaimTypeGetStatus200,
-  IdentityClaimTypeGetStatus400,
-  IdentityClaimTypeGetStatus401,
-  IdentityClaimTypeGetStatus403,
-  IdentityClaimTypeGetStatus404,
-  IdentityClaimTypeGetStatus500,
-  IdentityClaimTypeGetStatus501,
-} from "../../models/identityClaimType/IdentityClaimTypeGet.ts";
-
-function getIdentityClaimTypeGetUrl(id: IdentityClaimTypeGetPathId) {
-  const res = { method: "GET", url: `/api/app/identity-claim-type/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityClaimTypeGetOptions, IdentityClaimTypeGetResponses } from '../../models/identityClaimType/IdentityClaimTypeGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-claim-type/:id}
  */
-export async function identityClaimTypeGet(
-  id: IdentityClaimTypeGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function identityClaimTypeGet<ThrowOnError extends boolean = true>(options: Options<IdentityClaimTypeGetOptions, ThrowOnError>): Promise<RequestResult<IdentityClaimTypeGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    IdentityClaimTypeGetStatus200,
-    ResponseErrorConfig<
-      | IdentityClaimTypeGetStatus400
-      | IdentityClaimTypeGetStatus401
-      | IdentityClaimTypeGetStatus403
-      | IdentityClaimTypeGetStatus404
-      | IdentityClaimTypeGetStatus500
-      | IdentityClaimTypeGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getIdentityClaimTypeGetUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/identity-claim-type/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityClaimTypeGetResponses, ThrowOnError>>
 }

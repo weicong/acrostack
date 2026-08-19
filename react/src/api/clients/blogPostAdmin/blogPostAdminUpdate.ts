@@ -1,58 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogPostAdminUpdatePathId,
-  BlogPostAdminUpdateData,
-  BlogPostAdminUpdateStatus200,
-  BlogPostAdminUpdateStatus400,
-  BlogPostAdminUpdateStatus401,
-  BlogPostAdminUpdateStatus403,
-  BlogPostAdminUpdateStatus404,
-  BlogPostAdminUpdateStatus500,
-  BlogPostAdminUpdateStatus501,
-} from "../../models/blogPostAdmin/BlogPostAdminUpdate.ts";
-
-function getBlogPostAdminUpdateUrl(id: BlogPostAdminUpdatePathId) {
-  const res = { method: "PUT", url: `/api/cms-kit-admin/blogs/blog-posts/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogPostAdminUpdateOptions, BlogPostAdminUpdateResponses } from '../../models/blogPostAdmin/BlogPostAdminUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/blog-posts/:id}
  */
-export async function blogPostAdminUpdate(
-  id: BlogPostAdminUpdatePathId,
-  data?: BlogPostAdminUpdateData,
-  config: Partial<RequestConfig<BlogPostAdminUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function blogPostAdminUpdate<ThrowOnError extends boolean = true>(options: Options<BlogPostAdminUpdateOptions, ThrowOnError>): Promise<RequestResult<BlogPostAdminUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    BlogPostAdminUpdateStatus200,
-    ResponseErrorConfig<
-      | BlogPostAdminUpdateStatus400
-      | BlogPostAdminUpdateStatus401
-      | BlogPostAdminUpdateStatus403
-      | BlogPostAdminUpdateStatus404
-      | BlogPostAdminUpdateStatus500
-      | BlogPostAdminUpdateStatus501
-    >,
-    BlogPostAdminUpdateData
-  >({
-    method: "PUT",
-    url: getBlogPostAdminUpdateUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/cms-kit-admin/blogs/blog-posts/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogPostAdminUpdateResponses, ThrowOnError>>
 }

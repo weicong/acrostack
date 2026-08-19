@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackChatBlockedUserDto } from "../../../../../../../acroStack/chat/BlockedUserDto.ts";
+import type { AcroStackChatBlockedUserDto } from '../../../../../../../acroStack/chat/BlockedUserDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1AcroStackChatBlockedUserDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackChatBlockedUserDto[] | null;
-  };
+};

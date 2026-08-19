@@ -1,3 +1,0 @@
-/* oxlint-disable */
-
-export type { VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull } from "./OpenIddictManagementVersion1000CultureneutralPublicKeyTokennull.ts";

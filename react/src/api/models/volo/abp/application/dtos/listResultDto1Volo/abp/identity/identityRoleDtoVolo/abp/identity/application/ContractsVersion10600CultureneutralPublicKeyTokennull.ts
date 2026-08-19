@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpIdentityIdentityRoleDto } from "../../../../../../../../../identity/IdentityRoleDto.ts";
+import type { VoloAbpIdentityIdentityRoleDto } from '../../../../../../../../../identity/IdentityRoleDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloAbpIdentityIdentityRoleDto[] | null;
-  };
+};

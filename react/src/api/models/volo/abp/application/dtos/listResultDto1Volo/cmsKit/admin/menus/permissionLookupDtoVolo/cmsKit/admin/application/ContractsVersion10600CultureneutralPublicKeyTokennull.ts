@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloCmsKitAdminMenusPermissionLookupDto } from "../../../../../../../../../../../cmsKit/admin/menus/PermissionLookupDto.ts";
+import type { VoloCmsKitAdminMenusPermissionLookupDto } from '../../../../../../../../../../../cmsKit/admin/menus/PermissionLookupDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull = {
     items?: VoloCmsKitAdminMenusPermissionLookupDto[] | null;
-  };
+};

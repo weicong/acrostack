@@ -1,59 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  UserUpdateRolesPathId,
-  UserUpdateRolesData,
-  UserUpdateRolesStatus200,
-  UserUpdateRolesStatus204,
-  UserUpdateRolesStatus400,
-  UserUpdateRolesStatus401,
-  UserUpdateRolesStatus403,
-  UserUpdateRolesStatus404,
-  UserUpdateRolesStatus500,
-  UserUpdateRolesStatus501,
-} from "../../models/user/UserUpdateRoles.ts";
-
-function getUserUpdateRolesUrl(id: UserUpdateRolesPathId) {
-  const res = { method: "PUT", url: `/api/identity/users/${id}/roles` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { UserUpdateRolesOptions, UserUpdateRolesResponses } from '../../models/user/UserUpdateRoles'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/identity/users/:id/roles}
  */
-export async function userUpdateRoles(
-  id: UserUpdateRolesPathId,
-  data?: UserUpdateRolesData,
-  config: Partial<RequestConfig<UserUpdateRolesData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function userUpdateRoles<ThrowOnError extends boolean = true>(options: Options<UserUpdateRolesOptions, ThrowOnError>): Promise<RequestResult<UserUpdateRolesResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    UserUpdateRolesStatus200 | UserUpdateRolesStatus204,
-    ResponseErrorConfig<
-      | UserUpdateRolesStatus400
-      | UserUpdateRolesStatus401
-      | UserUpdateRolesStatus403
-      | UserUpdateRolesStatus404
-      | UserUpdateRolesStatus500
-      | UserUpdateRolesStatus501
-    >,
-    UserUpdateRolesData
-  >({
-    method: "PUT",
-    url: getUserUpdateRolesUrl(id).url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/identity/users/{id}/roles', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<UserUpdateRolesResponses, ThrowOnError>>
 }

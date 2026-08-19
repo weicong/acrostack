@@ -1,45 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  BlogPostAdminGetPathId,
-  BlogPostAdminGetStatus200,
-  BlogPostAdminGetStatus400,
-  BlogPostAdminGetStatus401,
-  BlogPostAdminGetStatus403,
-  BlogPostAdminGetStatus404,
-  BlogPostAdminGetStatus500,
-  BlogPostAdminGetStatus501,
-} from "../../models/blogPostAdmin/BlogPostAdminGet.ts";
-
-function getBlogPostAdminGetUrl(id: BlogPostAdminGetPathId) {
-  const res = { method: "GET", url: `/api/cms-kit-admin/blogs/blog-posts/${id}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { BlogPostAdminGetOptions, BlogPostAdminGetResponses } from '../../models/blogPostAdmin/BlogPostAdminGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/blogs/blog-posts/:id}
  */
-export async function blogPostAdminGet(
-  id: BlogPostAdminGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function blogPostAdminGet<ThrowOnError extends boolean = true>(options: Options<BlogPostAdminGetOptions, ThrowOnError>): Promise<RequestResult<BlogPostAdminGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    BlogPostAdminGetStatus200,
-    ResponseErrorConfig<
-      | BlogPostAdminGetStatus400
-      | BlogPostAdminGetStatus401
-      | BlogPostAdminGetStatus403
-      | BlogPostAdminGetStatus404
-      | BlogPostAdminGetStatus500
-      | BlogPostAdminGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getBlogPostAdminGetUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-admin/blogs/blog-posts/{id}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<BlogPostAdminGetResponses, ThrowOnError>>
 }

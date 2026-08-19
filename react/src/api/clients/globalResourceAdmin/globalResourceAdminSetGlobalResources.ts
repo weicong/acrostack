@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  GlobalResourceAdminSetGlobalResourcesData,
-  GlobalResourceAdminSetGlobalResourcesStatus200,
-  GlobalResourceAdminSetGlobalResourcesStatus204,
-  GlobalResourceAdminSetGlobalResourcesStatus400,
-  GlobalResourceAdminSetGlobalResourcesStatus401,
-  GlobalResourceAdminSetGlobalResourcesStatus403,
-  GlobalResourceAdminSetGlobalResourcesStatus404,
-  GlobalResourceAdminSetGlobalResourcesStatus500,
-  GlobalResourceAdminSetGlobalResourcesStatus501,
-} from "../../models/globalResourceAdmin/GlobalResourceAdminSetGlobalResources.ts";
-
-function getGlobalResourceAdminSetGlobalResourcesUrl() {
-  const res = { method: "POST", url: `/api/cms-kit-admin/global-resources` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { GlobalResourceAdminSetGlobalResourcesOptions, GlobalResourceAdminSetGlobalResourcesResponses } from '../../models/globalResourceAdmin/GlobalResourceAdminSetGlobalResources'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-admin/global-resources}
  */
-export async function globalResourceAdminSetGlobalResources(
-  data?: GlobalResourceAdminSetGlobalResourcesData,
-  config: Partial<RequestConfig<GlobalResourceAdminSetGlobalResourcesData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function globalResourceAdminSetGlobalResources<ThrowOnError extends boolean = true>(options: Options<GlobalResourceAdminSetGlobalResourcesOptions, ThrowOnError>): Promise<RequestResult<GlobalResourceAdminSetGlobalResourcesResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    GlobalResourceAdminSetGlobalResourcesStatus200 | GlobalResourceAdminSetGlobalResourcesStatus204,
-    ResponseErrorConfig<
-      | GlobalResourceAdminSetGlobalResourcesStatus400
-      | GlobalResourceAdminSetGlobalResourcesStatus401
-      | GlobalResourceAdminSetGlobalResourcesStatus403
-      | GlobalResourceAdminSetGlobalResourcesStatus404
-      | GlobalResourceAdminSetGlobalResourcesStatus500
-      | GlobalResourceAdminSetGlobalResourcesStatus501
-    >,
-    GlobalResourceAdminSetGlobalResourcesData
-  >({
-    method: "POST",
-    url: getGlobalResourceAdminSetGlobalResourcesUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/cms-kit-admin/global-resources', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<GlobalResourceAdminSetGlobalResourcesResponses, ThrowOnError>>
 }

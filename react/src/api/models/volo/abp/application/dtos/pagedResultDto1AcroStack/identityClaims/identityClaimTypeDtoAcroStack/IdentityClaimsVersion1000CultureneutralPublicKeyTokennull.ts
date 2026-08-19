@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { AcroStackIdentityClaimsIdentityClaimTypeDto } from "../../../../../../../acroStack/identityClaims/IdentityClaimTypeDto.ts";
+import type { AcroStackIdentityClaimsIdentityClaimTypeDto } from '../../../../../../../acroStack/identityClaims/IdentityClaimTypeDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackIdentityClaimsIdentityClaimTypeDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

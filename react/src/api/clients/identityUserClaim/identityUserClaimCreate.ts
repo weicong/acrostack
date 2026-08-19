@@ -1,56 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  IdentityUserClaimCreateData,
-  IdentityUserClaimCreateStatus200,
-  IdentityUserClaimCreateStatus400,
-  IdentityUserClaimCreateStatus401,
-  IdentityUserClaimCreateStatus403,
-  IdentityUserClaimCreateStatus404,
-  IdentityUserClaimCreateStatus500,
-  IdentityUserClaimCreateStatus501,
-} from "../../models/identityUserClaim/IdentityUserClaimCreate.ts";
-
-function getIdentityUserClaimCreateUrl() {
-  const res = { method: "POST", url: `/api/app/identity-user-claim` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { IdentityUserClaimCreateOptions, IdentityUserClaimCreateResponses } from '../../models/identityUserClaim/IdentityUserClaimCreate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/identity-user-claim}
  */
-export async function identityUserClaimCreate(
-  data?: IdentityUserClaimCreateData,
-  config: Partial<RequestConfig<IdentityUserClaimCreateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function identityUserClaimCreate<ThrowOnError extends boolean = true>(options: Options<IdentityUserClaimCreateOptions, ThrowOnError>): Promise<RequestResult<IdentityUserClaimCreateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    IdentityUserClaimCreateStatus200,
-    ResponseErrorConfig<
-      | IdentityUserClaimCreateStatus400
-      | IdentityUserClaimCreateStatus401
-      | IdentityUserClaimCreateStatus403
-      | IdentityUserClaimCreateStatus404
-      | IdentityUserClaimCreateStatus500
-      | IdentityUserClaimCreateStatus501
-    >,
-    IdentityUserClaimCreateData
-  >({
-    method: "POST",
-    url: getIdentityUserClaimCreateUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/app/identity-user-claim', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<IdentityUserClaimCreateResponses, ThrowOnError>>
 }

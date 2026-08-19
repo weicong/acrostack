@@ -1,36 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementDownloadSharedPathToken,
-  FileManagementDownloadSharedStatus200,
-} from "../../models/fileManagement/FileManagementDownloadShared.ts";
-
-function getFileManagementDownloadSharedUrl(token: FileManagementDownloadSharedPathToken) {
-  const res = { method: "GET", url: `/api/app/file-management/shared/${token}` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementDownloadSharedOptions, FileManagementDownloadSharedResponses } from '../../models/fileManagement/FileManagementDownloadShared'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/shared/:token}
  */
-export async function fileManagementDownloadShared(
-  token: FileManagementDownloadSharedPathToken,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementDownloadShared<ThrowOnError extends boolean = true>(options: Options<FileManagementDownloadSharedOptions, ThrowOnError>): Promise<RequestResult<FileManagementDownloadSharedResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementDownloadSharedStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({
-    method: "GET",
-    url: getFileManagementDownloadSharedUrl(token).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/shared/{token}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementDownloadSharedResponses, ThrowOnError>>
 }

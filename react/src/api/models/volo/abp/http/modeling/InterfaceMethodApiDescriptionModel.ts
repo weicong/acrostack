@@ -1,22 +1,10 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpModelingMethodParameterApiDescriptionModel } from "./MethodParameterApiDescriptionModel.ts";
-import type { VoloAbpHttpModelingReturnValueApiDescriptionModel } from "./ReturnValueApiDescriptionModel.ts";
+import type { VoloAbpHttpModelingMethodParameterApiDescriptionModel } from './MethodParameterApiDescriptionModel'
+import type { VoloAbpHttpModelingReturnValueApiDescriptionModel } from './ReturnValueApiDescriptionModel'
 
-/**
- * @type object
- */
 export type VoloAbpHttpModelingInterfaceMethodApiDescriptionModel = {
-  /**
-   * @type string | undefined
-   */
-  name?: string | null;
-  /**
-   * @type array | undefined
-   */
-  parametersOnMethod?: VoloAbpHttpModelingMethodParameterApiDescriptionModel[] | null;
-  /**
-   * @type object | undefined
-   */
-  returnValue?: VoloAbpHttpModelingReturnValueApiDescriptionModel;
+    name?: string | null;
+    parametersOnMethod?: VoloAbpHttpModelingMethodParameterApiDescriptionModel[] | null;
+    returnValue?: VoloAbpHttpModelingReturnValueApiDescriptionModel;
 };

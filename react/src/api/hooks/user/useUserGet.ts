@@ -1,109 +1,45 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  QueryKey,
-  QueryClient,
-  QueryObserverOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import type {
-  UserGetPathId,
-  UserGetStatus200,
-  UserGetStatus400,
-  UserGetStatus401,
-  UserGetStatus403,
-  UserGetStatus404,
-  UserGetStatus500,
-  UserGetStatus501,
-} from "../../models/user/UserGet.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
-import { userGet } from "../../clients/user/userGet.ts";
+import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { UserGetOptions, UserGetStatus200, UserGetStatus400, UserGetStatus401, UserGetStatus403, UserGetStatus404, UserGetStatus500, UserGetStatus501 } from '../../models/user/UserGet'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { userGet } from '../../clients/user/userGet'
 
-export const userGetQueryKey = (id?: UserGetPathId) =>
-  [{ url: "/api/identity/users/:id", params: { id: id } }] as const;
+export const userGetQueryKey = ({ path }: Omit<UserGetOptions, 'headers'>) => [{ url: '/api/identity/users/:id', params: path }] as const
 
-type UserGetQueryKey = ReturnType<typeof userGetQueryKey>;
+type UserGetQueryKey = ReturnType<typeof userGetQueryKey>
 
-export function userGetQueryOptions(
-  id?: UserGetPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const queryKey = userGetQueryKey(id);
-  return queryOptions<
-    UserGetStatus200,
-    ResponseErrorConfig<
-      | UserGetStatus400
-      | UserGetStatus401
-      | UserGetStatus403
-      | UserGetStatus404
-      | UserGetStatus500
-      | UserGetStatus501
-    >,
-    UserGetStatus200,
-    typeof queryKey
-  >({
-    enabled: !!id,
-    queryKey,
-    queryFn: async ({ signal }) => {
-      return userGet(id!, { ...config, signal: config.signal ?? signal });
-    },
-  });
+export function userGetQueryOptions({ path }: UserGetOptions, config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const queryKey = userGetQueryKey({ path })
+  return queryOptions<UserGetStatus200, ResponseErrorConfig<UserGetStatus400 | UserGetStatus401 | UserGetStatus403 | UserGetStatus404 | UserGetStatus500 | UserGetStatus501>, UserGetStatus200, typeof queryKey>({
+   queryKey,
+   queryFn: async ({ signal }) => {
+      const { data } = await userGet({ ...config, path, signal: config.signal ?? signal, throwOnError: true })
+      return data
+   },
+  })
 }
 
 /**
  * {@link /api/identity/users/:id}
  */
-export function useUserGet<
-  TData = UserGetStatus200,
-  TQueryData = UserGetStatus200,
-  TQueryKey extends QueryKey = UserGetQueryKey,
->(
-  id?: UserGetPathId,
-  options: {
-    query?: Partial<
-      QueryObserverOptions<
-        UserGetStatus200,
-        ResponseErrorConfig<
-          | UserGetStatus400
-          | UserGetStatus401
-          | UserGetStatus403
-          | UserGetStatus404
-          | UserGetStatus500
-          | UserGetStatus501
-        >,
-        TData,
-        TQueryData,
-        TQueryKey
-      >
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { query: queryConfig = {}, client: config = {} } = options ?? {};
-  const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? userGetQueryKey(id);
+export function useUserGet<TData = UserGetStatus200, TQueryData = UserGetStatus200, TQueryKey extends QueryKey = UserGetQueryKey>({ path }: { path: UserGetOptions['path'] | (() => UserGetOptions['path']) }, options: {
+  query?: Partial<QueryObserverOptions<UserGetStatus200, ResponseErrorConfig<UserGetStatus400 | UserGetStatus401 | UserGetStatus403 | UserGetStatus404 | UserGetStatus500 | UserGetStatus501>, TData, TQueryData, TQueryKey>> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>
+} = {}) {
+  const { query: queryConfig = {}, client: config = {} } = options ?? {}
+  const { client: queryClient, ...resolvedOptions } = queryConfig
+  const resolvedParams = { path: typeof path === 'function' ? path() : path }
+  const queryKey = resolvedOptions?.queryKey ?? userGetQueryKey(resolvedParams)
 
-  const query = useQuery(
-    {
-      ...userGetQueryOptions(id, config),
-      ...resolvedOptions,
-      queryKey,
-    } as unknown as QueryObserverOptions,
-    queryClient,
-  ) as UseQueryResult<
-    TData,
-    ResponseErrorConfig<
-      | UserGetStatus400
-      | UserGetStatus401
-      | UserGetStatus403
-      | UserGetStatus404
-      | UserGetStatus500
-      | UserGetStatus501
-    >
-  > & { queryKey: TQueryKey };
+  const queryResult = useQuery({
+   ...userGetQueryOptions(resolvedParams, config),
+   ...resolvedOptions,
+   queryKey,
+  } as unknown as QueryObserverOptions, queryClient) as UseQueryResult<TData, ResponseErrorConfig<UserGetStatus400 | UserGetStatus401 | UserGetStatus403 | UserGetStatus404 | UserGetStatus500 | UserGetStatus501>> & { queryKey: TQueryKey }
 
-  query.queryKey = queryKey as TQueryKey;
+  queryResult.queryKey = queryKey as TQueryKey
 
-  return query;
+  return queryResult
 }

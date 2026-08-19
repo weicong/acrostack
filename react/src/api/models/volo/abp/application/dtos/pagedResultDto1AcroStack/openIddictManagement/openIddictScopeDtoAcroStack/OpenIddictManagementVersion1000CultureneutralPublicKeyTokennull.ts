@@ -1,20 +1,13 @@
 /* oxlint-disable */
 
-import type { AcroStackOpenIddictManagementOpenIddictScopeDto } from "../../../../../../../acroStack/openIddictManagement/OpenIddictScopeDto.ts";
+import type { AcroStackOpenIddictManagementOpenIddictScopeDto } from '../../../../../../../acroStack/openIddictManagement/OpenIddictScopeDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictScopeDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackOpenIddictManagementOpenIddictScopeDto[] | null;
     /**
      * @description
      * Format: `int64`
      * @type integer | undefined
-     */
+    */
     totalCount?: bigint;
-  };
+};

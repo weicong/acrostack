@@ -1,15 +1,11 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources } from "../../../../../VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources.ts";
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto } from "./CurrentCultureDto.ts";
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationResourceDto } from './ApplicationLocalizationResourceDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto } from './CurrentCultureDto'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationDto = {
-  resources?: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources;
-  /**
-   * @type object | undefined
-   */
-  currentCulture?: VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto;
+    resources?: {
+        [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationResourceDto;
+    } | null;
+    currentCulture?: VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto;
 };

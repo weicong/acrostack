@@ -1,64 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FeaturesUpdateQueryProviderName,
-  FeaturesUpdateQueryProviderKey,
-  FeaturesUpdateData,
-  FeaturesUpdateStatus200,
-  FeaturesUpdateStatus204,
-  FeaturesUpdateStatus400,
-  FeaturesUpdateStatus401,
-  FeaturesUpdateStatus403,
-  FeaturesUpdateStatus404,
-  FeaturesUpdateStatus500,
-  FeaturesUpdateStatus501,
-} from "../../models/features/FeaturesUpdate.ts";
-
-function getFeaturesUpdateUrl() {
-  const res = { method: "PUT", url: `/api/feature-management/features` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FeaturesUpdateOptions, FeaturesUpdateResponses } from '../../models/features/FeaturesUpdate'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/feature-management/features}
  */
-export async function featuresUpdate(
-  data?: FeaturesUpdateData,
-  params?: {
-    providerName?: FeaturesUpdateQueryProviderName;
-    providerKey?: FeaturesUpdateQueryProviderKey;
-  },
-  config: Partial<RequestConfig<FeaturesUpdateData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function featuresUpdate<ThrowOnError extends boolean = true>(options: Options<FeaturesUpdateOptions, ThrowOnError>): Promise<RequestResult<FeaturesUpdateResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    FeaturesUpdateStatus200 | FeaturesUpdateStatus204,
-    ResponseErrorConfig<
-      | FeaturesUpdateStatus400
-      | FeaturesUpdateStatus401
-      | FeaturesUpdateStatus403
-      | FeaturesUpdateStatus404
-      | FeaturesUpdateStatus500
-      | FeaturesUpdateStatus501
-    >,
-    FeaturesUpdateData
-  >({
-    method: "PUT",
-    url: getFeaturesUpdateUrl().url.toString(),
-    params,
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'PUT', url: '/api/feature-management/features', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FeaturesUpdateResponses, ThrowOnError>>
 }

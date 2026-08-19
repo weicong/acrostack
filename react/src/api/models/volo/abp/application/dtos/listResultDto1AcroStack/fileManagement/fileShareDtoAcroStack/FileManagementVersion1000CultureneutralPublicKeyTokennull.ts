@@ -1,14 +1,7 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementFileShareDto } from "../../../../../../../acroStack/fileManagement/FileShareDto.ts";
+import type { AcroStackFileManagementFileShareDto } from '../../../../../../../acroStack/fileManagement/FileShareDto'
 
-/**
- * @type object
- */
-export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull = {
     items?: AcroStackFileManagementFileShareDto[] | null;
-  };
+};

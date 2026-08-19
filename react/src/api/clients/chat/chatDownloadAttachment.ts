@@ -1,32 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ChatDownloadAttachmentPathMessageId,
-  ChatDownloadAttachmentStatus200,
-} from "../../models/chat/ChatDownloadAttachment.ts";
-
-function getChatDownloadAttachmentUrl(messageId: ChatDownloadAttachmentPathMessageId) {
-  const res = { method: "GET", url: `/api/app/chat/messages/${messageId}/attachment` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ChatDownloadAttachmentOptions, ChatDownloadAttachmentResponses } from '../../models/chat/ChatDownloadAttachment'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/chat/messages/:messageId/attachment}
  */
-export async function chatDownloadAttachment(
-  messageId: ChatDownloadAttachmentPathMessageId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function chatDownloadAttachment<ThrowOnError extends boolean = true>(options: Options<ChatDownloadAttachmentOptions, ThrowOnError>): Promise<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<ChatDownloadAttachmentStatus200, ResponseErrorConfig<Error>, unknown>({
-    method: "GET",
-    url: getChatDownloadAttachmentUrl(messageId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/chat/messages/{messageId}/attachment', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>>
 }

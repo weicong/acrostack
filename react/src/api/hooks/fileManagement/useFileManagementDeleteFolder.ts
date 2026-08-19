@@ -1,75 +1,40 @@
 /* oxlint-disable */
 
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type {
-  FileManagementDeleteFolderPathId,
-  FileManagementDeleteFolderStatus200,
-} from "../../models/fileManagement/FileManagementDeleteFolder.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
-import { fileManagementDeleteFolder } from "../../clients/fileManagement/fileManagementDeleteFolder.ts";
+import type { UseMutationOptions, UseMutationResult, QueryClient } from '@tanstack/react-query'
+import type { RequestConfig, ResponseErrorConfig } from '../../.kubb/client'
+import type { FileManagementDeleteFolderOptions, FileManagementDeleteFolderStatus200 } from '../../models/fileManagement/FileManagementDeleteFolder'
+import { mutationOptions, useMutation } from '@tanstack/react-query'
+import { fileManagementDeleteFolder } from '../../clients/fileManagement/fileManagementDeleteFolder'
 
-export const fileManagementDeleteFolderMutationKey = () =>
-  [{ url: "/api/app/file-management/folders/:id" }] as const;
+export const fileManagementDeleteFolderMutationKey = () => [{ url: '/api/app/file-management/folders/:id' }] as const
 
-export function fileManagementDeleteFolderMutationOptions<TContext = unknown>(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const mutationKey = fileManagementDeleteFolderMutationKey();
-  return mutationOptions<
-    FileManagementDeleteFolderStatus200,
-    ResponseErrorConfig<Error>,
-    { id: FileManagementDeleteFolderPathId },
-    TContext
-  >({
+export function fileManagementDeleteFolderMutationOptions<TContext = unknown>(config: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>> = {}) {
+  const mutationKey = fileManagementDeleteFolderMutationKey()
+  return mutationOptions<FileManagementDeleteFolderStatus200, ResponseErrorConfig<Error>, FileManagementDeleteFolderOptions, TContext>({
     mutationKey,
-    mutationFn: async ({ id }) => {
-      return fileManagementDeleteFolder(id, config);
+    mutationFn: async({ path }) => {
+      const { data } = await fileManagementDeleteFolder({ ...config, path, throwOnError: true })
+      return data
     },
-  });
+  })
 }
 
 /**
  * {@link /api/app/file-management/folders/:id}
  */
-export function useFileManagementDeleteFolder<TContext>(
-  options: {
-    mutation?: UseMutationOptions<
-      FileManagementDeleteFolderStatus200,
-      ResponseErrorConfig<Error>,
-      { id: FileManagementDeleteFolderPathId },
-      TContext
-    > & { client?: QueryClient };
-    client?: Partial<RequestConfig> & { client?: Client };
-  } = {},
-) {
-  const { mutation = {}, client: config = {} } = options ?? {};
+export function useFileManagementDeleteFolder<TContext>(options: {
+  mutation?: UseMutationOptions<FileManagementDeleteFolderStatus200, ResponseErrorConfig<Error>, FileManagementDeleteFolderOptions, TContext> & { client?: QueryClient },
+  client?: Partial<Omit<RequestConfig, 'path' | 'query' | 'body' | 'headers' | 'url'>>,
+} = {}) {
+  const { mutation = {}, client: config = {} } = options ?? {}
   const { client: queryClient, ...mutationOptions } = mutation;
-  const mutationKey = mutationOptions.mutationKey ?? fileManagementDeleteFolderMutationKey();
+  const mutationKey = mutationOptions.mutationKey ?? fileManagementDeleteFolderMutationKey()
 
-  const baseOptions = fileManagementDeleteFolderMutationOptions(config) as UseMutationOptions<
-    FileManagementDeleteFolderStatus200,
-    ResponseErrorConfig<Error>,
-    { id: FileManagementDeleteFolderPathId },
-    TContext
-  >;
+  const baseOptions = fileManagementDeleteFolderMutationOptions(config) as UseMutationOptions<FileManagementDeleteFolderStatus200, ResponseErrorConfig<Error>, FileManagementDeleteFolderOptions, TContext>
 
-  return useMutation<
-    FileManagementDeleteFolderStatus200,
-    ResponseErrorConfig<Error>,
-    { id: FileManagementDeleteFolderPathId },
-    TContext
-  >(
-    {
-      ...baseOptions,
-      mutationKey,
-      ...mutationOptions,
-    },
-    queryClient,
-  ) as UseMutationResult<
-    FileManagementDeleteFolderStatus200,
-    ResponseErrorConfig<Error>,
-    { id: FileManagementDeleteFolderPathId },
-    TContext
-  >;
+  return useMutation<FileManagementDeleteFolderStatus200, ResponseErrorConfig<Error>, FileManagementDeleteFolderOptions, TContext>({
+    ...baseOptions,
+    mutationKey,
+    ...mutationOptions,
+  }, queryClient) as UseMutationResult<FileManagementDeleteFolderStatus200, ResponseErrorConfig<Error>, FileManagementDeleteFolderOptions, TContext>
 }

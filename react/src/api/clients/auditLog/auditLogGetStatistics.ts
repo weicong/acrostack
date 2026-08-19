@@ -1,51 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AuditLogGetStatisticsQueryStartTime,
-  AuditLogGetStatisticsQueryEndTime,
-  AuditLogGetStatisticsQueryTopCount,
-  AuditLogGetStatisticsStatus200,
-  AuditLogGetStatisticsStatus400,
-  AuditLogGetStatisticsStatus401,
-  AuditLogGetStatisticsStatus403,
-  AuditLogGetStatisticsStatus404,
-  AuditLogGetStatisticsStatus500,
-  AuditLogGetStatisticsStatus501,
-} from "../../models/auditLog/AuditLogGetStatistics.ts";
-
-function getAuditLogGetStatisticsUrl() {
-  const res = { method: "GET", url: `/api/app/audit-log/statistics` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AuditLogGetStatisticsOptions, AuditLogGetStatisticsResponses } from '../../models/auditLog/AuditLogGetStatistics'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/audit-log/statistics}
  */
-export async function auditLogGetStatistics(
-  params?: {
-    StartTime?: AuditLogGetStatisticsQueryStartTime;
-    EndTime?: AuditLogGetStatisticsQueryEndTime;
-    TopCount?: AuditLogGetStatisticsQueryTopCount;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function auditLogGetStatistics<ThrowOnError extends boolean = true>(options: Options<AuditLogGetStatisticsOptions, ThrowOnError> = {}): Promise<RequestResult<AuditLogGetStatisticsResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AuditLogGetStatisticsStatus200,
-    ResponseErrorConfig<
-      | AuditLogGetStatisticsStatus400
-      | AuditLogGetStatisticsStatus401
-      | AuditLogGetStatisticsStatus403
-      | AuditLogGetStatisticsStatus404
-      | AuditLogGetStatisticsStatus500
-      | AuditLogGetStatisticsStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getAuditLogGetStatisticsUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/audit-log/statistics', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AuditLogGetStatisticsResponses, ThrowOnError>>
 }

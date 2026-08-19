@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ProfileChangePasswordData,
-  ProfileChangePasswordStatus200,
-  ProfileChangePasswordStatus204,
-  ProfileChangePasswordStatus400,
-  ProfileChangePasswordStatus401,
-  ProfileChangePasswordStatus403,
-  ProfileChangePasswordStatus404,
-  ProfileChangePasswordStatus500,
-  ProfileChangePasswordStatus501,
-} from "../../models/profile/ProfileChangePassword.ts";
-
-function getProfileChangePasswordUrl() {
-  const res = { method: "POST", url: `/api/account/my-profile/change-password` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ProfileChangePasswordOptions, ProfileChangePasswordResponses } from '../../models/profile/ProfileChangePassword'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/account/my-profile/change-password}
  */
-export async function profileChangePassword(
-  data?: ProfileChangePasswordData,
-  config: Partial<RequestConfig<ProfileChangePasswordData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function profileChangePassword<ThrowOnError extends boolean = true>(options: Options<ProfileChangePasswordOptions, ThrowOnError>): Promise<RequestResult<ProfileChangePasswordResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    ProfileChangePasswordStatus200 | ProfileChangePasswordStatus204,
-    ResponseErrorConfig<
-      | ProfileChangePasswordStatus400
-      | ProfileChangePasswordStatus401
-      | ProfileChangePasswordStatus403
-      | ProfileChangePasswordStatus404
-      | ProfileChangePasswordStatus500
-      | ProfileChangePasswordStatus501
-    >,
-    ProfileChangePasswordData
-  >({
-    method: "POST",
-    url: getProfileChangePasswordUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/account/my-profile/change-password', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ProfileChangePasswordResponses, ThrowOnError>>
 }

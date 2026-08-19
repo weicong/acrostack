@@ -1,76 +1,45 @@
 /* oxlint-disable */
 
-import type { AcroStackFileManagementCreateFileFolderDto } from "../acroStack/fileManagement/CreateFileFolderDto.ts";
-import type { AcroStackFileManagementFileFolderDto } from "../acroStack/fileManagement/FileFolderDto.ts";
+import type { AcroStackFileManagementCreateFileFolderDto } from '../acroStack/fileManagement/CreateFileFolderDto'
+import type { AcroStackFileManagementFileFolderDto } from '../acroStack/fileManagement/FileFolderDto'
 
-/**
- * @type object
- */
 export type FileManagementCreateFolderStatus200Plain = AcroStackFileManagementFileFolderDto;
 
-/**
- * @type object
- */
 export type FileManagementCreateFolderStatus200Json = AcroStackFileManagementFileFolderDto;
 
-/**
- * @type object
- */
 export type FileManagementCreateFolderStatus200Json2 = AcroStackFileManagementFileFolderDto;
 
-export type FileManagementCreateFolderStatus200 =
-  | FileManagementCreateFolderStatus200Plain
-  | FileManagementCreateFolderStatus200Json
-  | FileManagementCreateFolderStatus200Json2;
+export type FileManagementCreateFolderStatus200 = (FileManagementCreateFolderStatus200Plain | FileManagementCreateFolderStatus200Json | FileManagementCreateFolderStatus200Json2);
 
-/**
- * @type object | undefined
- */
-export type FileManagementCreateFolderJsonData =
-  | AcroStackFileManagementCreateFileFolderDto
-  | undefined;
+export type FileManagementCreateFolderBodyJson = AcroStackFileManagementCreateFileFolderDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type FileManagementCreateFolderJson2Data =
-  | AcroStackFileManagementCreateFileFolderDto
-  | undefined;
+export type FileManagementCreateFolderBodyJson2 = AcroStackFileManagementCreateFileFolderDto | undefined;
 
-/**
- * @type object | undefined
- */
-export type FileManagementCreateFolderJson3Data =
-  | AcroStackFileManagementCreateFileFolderDto
-  | undefined;
+export type FileManagementCreateFolderBodyJson3 = AcroStackFileManagementCreateFileFolderDto | undefined;
 
-export type FileManagementCreateFolderData =
-  | FileManagementCreateFolderJsonData
-  | FileManagementCreateFolderJson2Data
-  | FileManagementCreateFolderJson3Data;
+export type FileManagementCreateFolderBody = (FileManagementCreateFolderBodyJson | FileManagementCreateFolderBodyJson2 | FileManagementCreateFolderBodyJson3);
 
-/**
- * @type object
- */
-export type FileManagementCreateFolderRequestConfig = {
-  data?: FileManagementCreateFolderData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/app/file-management/folders";
+export type FileManagementCreateFolderOptions = {
+    body: FileManagementCreateFolderBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type FileManagementCreateFolderResponses = {
-  "200": FileManagementCreateFolderStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementCreateFolderStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementCreateFolderStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementCreateFolderStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementCreateFolderResponse = FileManagementCreateFolderStatus200;

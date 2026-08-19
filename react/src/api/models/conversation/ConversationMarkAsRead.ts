@@ -1,186 +1,141 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type ConversationMarkAsReadPathTargetUserId = string;
-
-/**
- * @type any
- */
-export type ConversationMarkAsReadStatus200 = any;
-
-/**
- * @type any
- */
-export type ConversationMarkAsReadStatus204 = any;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus400 =
-  | ConversationMarkAsReadStatus400Plain
-  | ConversationMarkAsReadStatus400Json
-  | ConversationMarkAsReadStatus400Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus401 =
-  | ConversationMarkAsReadStatus401Plain
-  | ConversationMarkAsReadStatus401Json
-  | ConversationMarkAsReadStatus401Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus403 =
-  | ConversationMarkAsReadStatus403Plain
-  | ConversationMarkAsReadStatus403Json
-  | ConversationMarkAsReadStatus403Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus404 =
-  | ConversationMarkAsReadStatus404Plain
-  | ConversationMarkAsReadStatus404Json
-  | ConversationMarkAsReadStatus404Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus500 =
-  | ConversationMarkAsReadStatus500Plain
-  | ConversationMarkAsReadStatus500Json
-  | ConversationMarkAsReadStatus500Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type ConversationMarkAsReadStatus501 =
-  | ConversationMarkAsReadStatus501Plain
-  | ConversationMarkAsReadStatus501Json
-  | ConversationMarkAsReadStatus501Json2;
-
-/**
- * @type object
- */
-export type ConversationMarkAsReadRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    targetUserId: ConversationMarkAsReadPathTargetUserId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/conversation/mark-as-read/${string}`;
+export type ConversationMarkAsReadPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    targetUserId: string;
 };
 
-/**
- * @type object
- */
+export type ConversationMarkAsReadStatus200 = unknown;
+
+export type ConversationMarkAsReadStatus204 = unknown;
+
+export type ConversationMarkAsReadStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus400 = (ConversationMarkAsReadStatus400Plain | ConversationMarkAsReadStatus400Json | ConversationMarkAsReadStatus400Json2);
+
+export type ConversationMarkAsReadStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus401 = (ConversationMarkAsReadStatus401Plain | ConversationMarkAsReadStatus401Json | ConversationMarkAsReadStatus401Json2);
+
+export type ConversationMarkAsReadStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus403 = (ConversationMarkAsReadStatus403Plain | ConversationMarkAsReadStatus403Json | ConversationMarkAsReadStatus403Json2);
+
+export type ConversationMarkAsReadStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus404 = (ConversationMarkAsReadStatus404Plain | ConversationMarkAsReadStatus404Json | ConversationMarkAsReadStatus404Json2);
+
+export type ConversationMarkAsReadStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus500 = (ConversationMarkAsReadStatus500Plain | ConversationMarkAsReadStatus500Json | ConversationMarkAsReadStatus500Json2);
+
+export type ConversationMarkAsReadStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type ConversationMarkAsReadStatus501 = (ConversationMarkAsReadStatus501Plain | ConversationMarkAsReadStatus501Json | ConversationMarkAsReadStatus501Json2);
+
+export type ConversationMarkAsReadOptions = {
+    body?: never;
+    path: ConversationMarkAsReadPath;
+    query?: never;
+    headers?: never;
+};
+
 export type ConversationMarkAsReadResponses = {
-  "200": ConversationMarkAsReadStatus200;
-  "204": ConversationMarkAsReadStatus204;
-  "400": ConversationMarkAsReadStatus400;
-  "401": ConversationMarkAsReadStatus401;
-  "403": ConversationMarkAsReadStatus403;
-  "404": ConversationMarkAsReadStatus404;
-  "500": ConversationMarkAsReadStatus500;
-  "501": ConversationMarkAsReadStatus501;
+    "200": ConversationMarkAsReadStatus200;
+    "204": ConversationMarkAsReadStatus204;
+    "400": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: ConversationMarkAsReadStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: ConversationMarkAsReadStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: ConversationMarkAsReadStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type ConversationMarkAsReadResponse =
-  | ConversationMarkAsReadStatus200
-  | ConversationMarkAsReadStatus204
-  | ConversationMarkAsReadStatus400
-  | ConversationMarkAsReadStatus401
-  | ConversationMarkAsReadStatus403
-  | ConversationMarkAsReadStatus404
-  | ConversationMarkAsReadStatus500
-  | ConversationMarkAsReadStatus501;
+*/
+export type ConversationMarkAsReadResponse = (ConversationMarkAsReadStatus200 | ConversationMarkAsReadStatus204 | ConversationMarkAsReadStatus400 | ConversationMarkAsReadStatus401 | ConversationMarkAsReadStatus403 | ConversationMarkAsReadStatus404 | ConversationMarkAsReadStatus500 | ConversationMarkAsReadStatus501);

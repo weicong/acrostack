@@ -1,13 +1,7 @@
 /* oxlint-disable */
 
-import type { VoloAbpPermissionManagementResourcePermissionGrantInfoDto } from "./ResourcePermissionGrantInfoDto.ts";
+import type { VoloAbpPermissionManagementResourcePermissionGrantInfoDto } from './ResourcePermissionGrantInfoDto'
 
-/**
- * @type object
- */
 export type VoloAbpPermissionManagementGetResourcePermissionListResultDto = {
-  /**
-   * @type array | undefined
-   */
-  permissions?: VoloAbpPermissionManagementResourcePermissionGrantInfoDto[] | null;
+    permissions?: VoloAbpPermissionManagementResourcePermissionGrantInfoDto[] | null;
 };

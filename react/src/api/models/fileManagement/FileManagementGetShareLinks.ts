@@ -1,64 +1,45 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/fileManagement/fileShareDtoAcroStack/FileManagementVersion1000CultureneutralPublicKeyTokennull.ts";
+import type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from '../volo/abp/application/dtos/listResultDto1AcroStack/fileManagement/fileShareDtoAcroStack/FileManagementVersion1000CultureneutralPublicKeyTokennull'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type FileManagementGetShareLinksPathId = string;
-
-/**
- * @type object
- */
-export type FileManagementGetShareLinksStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type FileManagementGetShareLinksStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
-
-/**
- * @type object
- */
-export type FileManagementGetShareLinksStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
-
-export type FileManagementGetShareLinksStatus200 =
-  | FileManagementGetShareLinksStatus200Plain
-  | FileManagementGetShareLinksStatus200Json
-  | FileManagementGetShareLinksStatus200Json2;
-
-/**
- * @type object
- */
-export type FileManagementGetShareLinksRequestConfig = {
-  data?: never;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: FileManagementGetShareLinksPathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/app/file-management/files/${string}/share-links`;
+export type FileManagementGetShareLinksPath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type FileManagementGetShareLinksStatus200Plain = VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+
+export type FileManagementGetShareLinksStatus200Json = VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+
+export type FileManagementGetShareLinksStatus200Json2 = VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+
+export type FileManagementGetShareLinksStatus200 = (FileManagementGetShareLinksStatus200Plain | FileManagementGetShareLinksStatus200Json | FileManagementGetShareLinksStatus200Json2);
+
+export type FileManagementGetShareLinksOptions = {
+    body?: never;
+    path: FileManagementGetShareLinksPath;
+    query?: never;
+    headers?: never;
+};
+
 export type FileManagementGetShareLinksResponses = {
-  "200": FileManagementGetShareLinksStatus200;
+    "200": ({
+        contentType: "text/plain";
+        data: FileManagementGetShareLinksStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: FileManagementGetShareLinksStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: FileManagementGetShareLinksStatus200Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
+*/
 export type FileManagementGetShareLinksResponse = FileManagementGetShareLinksStatus200;

@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AccountSendPasswordResetCodeData,
-  AccountSendPasswordResetCodeStatus200,
-  AccountSendPasswordResetCodeStatus204,
-  AccountSendPasswordResetCodeStatus400,
-  AccountSendPasswordResetCodeStatus401,
-  AccountSendPasswordResetCodeStatus403,
-  AccountSendPasswordResetCodeStatus404,
-  AccountSendPasswordResetCodeStatus500,
-  AccountSendPasswordResetCodeStatus501,
-} from "../../models/account/AccountSendPasswordResetCode.ts";
-
-function getAccountSendPasswordResetCodeUrl() {
-  const res = { method: "POST", url: `/api/account/send-password-reset-code` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AccountSendPasswordResetCodeOptions, AccountSendPasswordResetCodeResponses } from '../../models/account/AccountSendPasswordResetCode'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/account/send-password-reset-code}
  */
-export async function accountSendPasswordResetCode(
-  data?: AccountSendPasswordResetCodeData,
-  config: Partial<RequestConfig<AccountSendPasswordResetCodeData>> & {
-    client?: Client;
-    contentType?: "application/json" | "text/json" | "application/*+json";
-  } = {},
-) {
-  const { client: request = client, contentType = "application/json", ...requestConfig } = config;
+export function accountSendPasswordResetCode<ThrowOnError extends boolean = true>(options: Options<AccountSendPasswordResetCodeOptions, ThrowOnError>): Promise<RequestResult<AccountSendPasswordResetCodeResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const requestData = data;
-
-  const res = await request<
-    AccountSendPasswordResetCodeStatus200 | AccountSendPasswordResetCodeStatus204,
-    ResponseErrorConfig<
-      | AccountSendPasswordResetCodeStatus400
-      | AccountSendPasswordResetCodeStatus401
-      | AccountSendPasswordResetCodeStatus403
-      | AccountSendPasswordResetCodeStatus404
-      | AccountSendPasswordResetCodeStatus500
-      | AccountSendPasswordResetCodeStatus501
-    >,
-    AccountSendPasswordResetCodeData
-  >({
-    method: "POST",
-    url: getAccountSendPasswordResetCodeUrl().url.toString(),
-    data: requestData,
-    contentType,
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'POST', url: '/api/account/send-password-reset-code', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AccountSendPasswordResetCodeResponses, ThrowOnError>>
 }

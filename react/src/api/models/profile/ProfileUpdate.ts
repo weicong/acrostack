@@ -1,210 +1,154 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountProfileDto } from "../volo/abp/account/ProfileDto.ts";
-import type { VoloAbpAccountUpdateProfileDto } from "../volo/abp/account/UpdateProfileDto.ts";
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
+import type { VoloAbpAccountProfileDto } from '../volo/abp/account/ProfileDto'
+import type { VoloAbpAccountUpdateProfileDto } from '../volo/abp/account/UpdateProfileDto'
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus200Plain = VoloAbpAccountProfileDto;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus200Json = VoloAbpAccountProfileDto;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus200Json2 = VoloAbpAccountProfileDto;
 
-export type ProfileUpdateStatus200 =
-  | ProfileUpdateStatus200Plain
-  | ProfileUpdateStatus200Json
-  | ProfileUpdateStatus200Json2;
+export type ProfileUpdateStatus200 = (ProfileUpdateStatus200Plain | ProfileUpdateStatus200Json | ProfileUpdateStatus200Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus400 =
-  | ProfileUpdateStatus400Plain
-  | ProfileUpdateStatus400Json
-  | ProfileUpdateStatus400Json2;
+export type ProfileUpdateStatus400 = (ProfileUpdateStatus400Plain | ProfileUpdateStatus400Json | ProfileUpdateStatus400Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus401 =
-  | ProfileUpdateStatus401Plain
-  | ProfileUpdateStatus401Json
-  | ProfileUpdateStatus401Json2;
+export type ProfileUpdateStatus401 = (ProfileUpdateStatus401Plain | ProfileUpdateStatus401Json | ProfileUpdateStatus401Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus403 =
-  | ProfileUpdateStatus403Plain
-  | ProfileUpdateStatus403Json
-  | ProfileUpdateStatus403Json2;
+export type ProfileUpdateStatus403 = (ProfileUpdateStatus403Plain | ProfileUpdateStatus403Json | ProfileUpdateStatus403Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus404 =
-  | ProfileUpdateStatus404Plain
-  | ProfileUpdateStatus404Json
-  | ProfileUpdateStatus404Json2;
+export type ProfileUpdateStatus404 = (ProfileUpdateStatus404Plain | ProfileUpdateStatus404Json | ProfileUpdateStatus404Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus500 =
-  | ProfileUpdateStatus500Plain
-  | ProfileUpdateStatus500Json
-  | ProfileUpdateStatus500Json2;
+export type ProfileUpdateStatus500 = (ProfileUpdateStatus500Plain | ProfileUpdateStatus500Json | ProfileUpdateStatus500Json2);
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
 
-/**
- * @type object
- */
 export type ProfileUpdateStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
 
-export type ProfileUpdateStatus501 =
-  | ProfileUpdateStatus501Plain
-  | ProfileUpdateStatus501Json
-  | ProfileUpdateStatus501Json2;
+export type ProfileUpdateStatus501 = (ProfileUpdateStatus501Plain | ProfileUpdateStatus501Json | ProfileUpdateStatus501Json2);
 
-/**
- * @type object | undefined
- */
-export type ProfileUpdateJsonData =
-  | Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties">
-  | undefined;
+export type ProfileUpdateBodyJson = Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties"> | undefined;
 
-/**
- * @type object | undefined
- */
-export type ProfileUpdateJson2Data =
-  | Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties">
-  | undefined;
+export type ProfileUpdateBodyJson2 = Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties"> | undefined;
 
-/**
- * @type object | undefined
- */
-export type ProfileUpdateJson3Data =
-  | Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties">
-  | undefined;
+export type ProfileUpdateBodyJson3 = Omit<NonNullable<VoloAbpAccountUpdateProfileDto>, "extraProperties"> | undefined;
 
-export type ProfileUpdateData =
-  | ProfileUpdateJsonData
-  | ProfileUpdateJson2Data
-  | ProfileUpdateJson3Data;
+export type ProfileUpdateBody = (ProfileUpdateBodyJson | ProfileUpdateBodyJson2 | ProfileUpdateBodyJson3);
 
-/**
- * @type object
- */
-export type ProfileUpdateRequestConfig = {
-  data?: ProfileUpdateData;
-  pathParams?: never;
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: "/api/account/my-profile";
+export type ProfileUpdateOptions = {
+    body: ProfileUpdateBody;
+    path?: never;
+    query?: never;
+    headers?: never;
 };
 
-/**
- * @type object
- */
 export type ProfileUpdateResponses = {
-  "200": ProfileUpdateStatus200;
-  "400": ProfileUpdateStatus400;
-  "401": ProfileUpdateStatus401;
-  "403": ProfileUpdateStatus403;
-  "404": ProfileUpdateStatus404;
-  "500": ProfileUpdateStatus500;
-  "501": ProfileUpdateStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: ProfileUpdateStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: ProfileUpdateStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: ProfileUpdateStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type ProfileUpdateResponse =
-  | ProfileUpdateStatus200
-  | ProfileUpdateStatus400
-  | ProfileUpdateStatus401
-  | ProfileUpdateStatus403
-  | ProfileUpdateStatus404
-  | ProfileUpdateStatus500
-  | ProfileUpdateStatus501;
+*/
+export type ProfileUpdateResponse = (ProfileUpdateStatus200 | ProfileUpdateStatus400 | ProfileUpdateStatus401 | ProfileUpdateStatus403 | ProfileUpdateStatus404 | ProfileUpdateStatus500 | ProfileUpdateStatus501);

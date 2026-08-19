@@ -1,16 +1,6 @@
 /* oxlint-disable */
 
-/**
- * @type object
- */
-export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPermissionPolicyDto =
-  {
-    /**
-     * @type array | undefined
-     */
+export type VoloAbpAspNetCoreMvcApplicationConfigurationsObjectExtendingExtensionPropertyPermissionPolicyDto = {
     permissionNames?: string[] | null;
-    /**
-     * @type boolean | undefined
-     */
     requiresAll?: boolean;
-  };
+};

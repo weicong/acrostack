@@ -1,39 +1,27 @@
 /* oxlint-disable */
 
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoLanguagesMap } from "../../../../../VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoLanguagesMap.ts";
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources } from "../../../../../VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources.ts";
-import type { VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto } from "./CurrentCultureDto.ts";
-import type { VoloAbpLocalizationLanguageInfo } from "../../../localization/LanguageInfo.ts";
+import type { VoloAbpNameValue } from '../../../NameValue'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationResourceDto } from './ApplicationLocalizationResourceDto'
+import type { VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto } from './CurrentCultureDto'
+import type { VoloAbpLocalizationLanguageInfo } from '../../../localization/LanguageInfo'
 
-/**
- * @type object
- */
 export type VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDto = {
-  /**
-   * @type object | undefined
-   */
-  values?: {
-    [key: string]: {
-      [key: string]: string;
-    };
-  } | null;
-  resources?: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoResources;
-  /**
-   * @type array | undefined
-   */
-  languages?: VoloAbpLocalizationLanguageInfo[] | null;
-  /**
-   * @type object | undefined
-   */
-  currentCulture?: VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto;
-  /**
-   * @type string | undefined
-   */
-  defaultResourceName?: string | null;
-  languagesMap?: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoLanguagesMap;
-  languageFilesMap?: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationConfigurationDtoLanguagesMap;
-  /**
-   * @type boolean | undefined
-   */
-  useRouteBasedCulture?: boolean;
+    values?: {
+        [key: string]: {
+            [key: string]: string;
+        };
+    } | null;
+    resources?: {
+        [key: string]: VoloAbpAspNetCoreMvcApplicationConfigurationsApplicationLocalizationResourceDto;
+    } | null;
+    languages?: VoloAbpLocalizationLanguageInfo[] | null;
+    currentCulture?: VoloAbpAspNetCoreMvcApplicationConfigurationsCurrentCultureDto;
+    defaultResourceName?: string | null;
+    languagesMap?: {
+        [key: string]: VoloAbpNameValue[];
+    } | null;
+    languageFilesMap?: {
+        [key: string]: VoloAbpNameValue[];
+    } | null;
+    useRouteBasedCulture?: boolean;
 };

@@ -1,32 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  FileManagementGetThumbnailPathId,
-  FileManagementGetThumbnailStatus200,
-} from "../../models/fileManagement/FileManagementGetThumbnail.ts";
-
-function getFileManagementGetThumbnailUrl(id: FileManagementGetThumbnailPathId) {
-  const res = { method: "GET", url: `/api/app/file-management/files/${id}/thumbnail` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { FileManagementGetThumbnailOptions, FileManagementGetThumbnailResponses } from '../../models/fileManagement/FileManagementGetThumbnail'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/app/file-management/files/:id/thumbnail}
  */
-export async function fileManagementGetThumbnail(
-  id: FileManagementGetThumbnailPathId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function fileManagementGetThumbnail<ThrowOnError extends boolean = true>(options: Options<FileManagementGetThumbnailOptions, ThrowOnError>): Promise<RequestResult<FileManagementGetThumbnailResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    FileManagementGetThumbnailStatus200,
-    ResponseErrorConfig<Error>,
-    unknown
-  >({ method: "GET", url: getFileManagementGetThumbnailUrl(id).url.toString(), ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/app/file-management/files/{id}/thumbnail', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<FileManagementGetThumbnailResponses, ThrowOnError>>
 }

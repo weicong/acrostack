@@ -1,49 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  AbpApiDefinitionGetQueryIncludeTypes,
-  AbpApiDefinitionGetQueryIncludeDescriptions,
-  AbpApiDefinitionGetStatus200,
-  AbpApiDefinitionGetStatus400,
-  AbpApiDefinitionGetStatus401,
-  AbpApiDefinitionGetStatus403,
-  AbpApiDefinitionGetStatus404,
-  AbpApiDefinitionGetStatus500,
-  AbpApiDefinitionGetStatus501,
-} from "../../models/abpApiDefinition/AbpApiDefinitionGet.ts";
-
-function getAbpApiDefinitionGetUrl() {
-  const res = { method: "GET", url: `/api/abp/api-definition` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { AbpApiDefinitionGetOptions, AbpApiDefinitionGetResponses } from '../../models/abpApiDefinition/AbpApiDefinitionGet'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/abp/api-definition}
  */
-export async function abpApiDefinitionGet(
-  params?: {
-    IncludeTypes?: AbpApiDefinitionGetQueryIncludeTypes;
-    IncludeDescriptions?: AbpApiDefinitionGetQueryIncludeDescriptions;
-  },
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function abpApiDefinitionGet<ThrowOnError extends boolean = true>(options: Options<AbpApiDefinitionGetOptions, ThrowOnError> = {}): Promise<RequestResult<AbpApiDefinitionGetResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    AbpApiDefinitionGetStatus200,
-    ResponseErrorConfig<
-      | AbpApiDefinitionGetStatus400
-      | AbpApiDefinitionGetStatus401
-      | AbpApiDefinitionGetStatus403
-      | AbpApiDefinitionGetStatus404
-      | AbpApiDefinitionGetStatus500
-      | AbpApiDefinitionGetStatus501
-    >,
-    unknown
-  >({ method: "GET", url: getAbpApiDefinitionGetUrl().url.toString(), params, ...requestConfig });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/abp/api-definition', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<AbpApiDefinitionGetResponses, ThrowOnError>>
 }

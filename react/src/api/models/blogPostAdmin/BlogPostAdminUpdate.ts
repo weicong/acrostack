@@ -1,222 +1,163 @@
 /* oxlint-disable */
 
-import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse.ts";
-import type { VoloCmsKitAdminBlogsBlogPostDto } from "../volo/cmsKit/admin/blogs/BlogPostDto.ts";
-import type { VoloCmsKitAdminBlogsUpdateBlogPostDto } from "../volo/cmsKit/admin/blogs/UpdateBlogPostDto.ts";
+import type { VoloAbpHttpRemoteServiceErrorResponse } from '../volo/abp/http/RemoteServiceErrorResponse'
+import type { VoloCmsKitAdminBlogsBlogPostDto } from '../volo/cmsKit/admin/blogs/BlogPostDto'
+import type { VoloCmsKitAdminBlogsUpdateBlogPostDto } from '../volo/cmsKit/admin/blogs/UpdateBlogPostDto'
 
-/**
- * @description
- * Format: `uuid`
- * @type string
- */
-export type BlogPostAdminUpdatePathId = string;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus200Plain = VoloCmsKitAdminBlogsBlogPostDto;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus200Json = VoloCmsKitAdminBlogsBlogPostDto;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus200Json2 = VoloCmsKitAdminBlogsBlogPostDto;
-
-export type BlogPostAdminUpdateStatus200 =
-  | BlogPostAdminUpdateStatus200Plain
-  | BlogPostAdminUpdateStatus200Json
-  | BlogPostAdminUpdateStatus200Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus400 =
-  | BlogPostAdminUpdateStatus400Plain
-  | BlogPostAdminUpdateStatus400Json
-  | BlogPostAdminUpdateStatus400Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus401 =
-  | BlogPostAdminUpdateStatus401Plain
-  | BlogPostAdminUpdateStatus401Json
-  | BlogPostAdminUpdateStatus401Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus403 =
-  | BlogPostAdminUpdateStatus403Plain
-  | BlogPostAdminUpdateStatus403Json
-  | BlogPostAdminUpdateStatus403Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus404 =
-  | BlogPostAdminUpdateStatus404Plain
-  | BlogPostAdminUpdateStatus404Json
-  | BlogPostAdminUpdateStatus404Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus500 =
-  | BlogPostAdminUpdateStatus500Plain
-  | BlogPostAdminUpdateStatus500Json
-  | BlogPostAdminUpdateStatus500Json2;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
-
-export type BlogPostAdminUpdateStatus501 =
-  | BlogPostAdminUpdateStatus501Plain
-  | BlogPostAdminUpdateStatus501Json
-  | BlogPostAdminUpdateStatus501Json2;
-
-/**
- * @type object | undefined
- */
-export type BlogPostAdminUpdateJsonData =
-  | Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties">
-  | undefined;
-
-/**
- * @type object | undefined
- */
-export type BlogPostAdminUpdateJson2Data =
-  | Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties">
-  | undefined;
-
-/**
- * @type object | undefined
- */
-export type BlogPostAdminUpdateJson3Data =
-  | Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties">
-  | undefined;
-
-export type BlogPostAdminUpdateData =
-  | BlogPostAdminUpdateJsonData
-  | BlogPostAdminUpdateJson2Data
-  | BlogPostAdminUpdateJson3Data;
-
-/**
- * @type object
- */
-export type BlogPostAdminUpdateRequestConfig = {
-  data?: BlogPostAdminUpdateData;
-  /**
-   * @type object
-   */
-  pathParams: {
-    id: BlogPostAdminUpdatePathId;
-  };
-  queryParams?: never;
-  headerParams?: never;
-  /**
-   * @type string
-   */
-  url: `/api/cms-kit-admin/blogs/blog-posts/${string}`;
+export type BlogPostAdminUpdatePath = {
+    /**
+     * @description
+     * Format: `uuid`
+     * @type string
+    */
+    id: string;
 };
 
-/**
- * @type object
- */
+export type BlogPostAdminUpdateStatus200Plain = VoloCmsKitAdminBlogsBlogPostDto;
+
+export type BlogPostAdminUpdateStatus200Json = VoloCmsKitAdminBlogsBlogPostDto;
+
+export type BlogPostAdminUpdateStatus200Json2 = VoloCmsKitAdminBlogsBlogPostDto;
+
+export type BlogPostAdminUpdateStatus200 = (BlogPostAdminUpdateStatus200Plain | BlogPostAdminUpdateStatus200Json | BlogPostAdminUpdateStatus200Json2);
+
+export type BlogPostAdminUpdateStatus400Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus400Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus400Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus400 = (BlogPostAdminUpdateStatus400Plain | BlogPostAdminUpdateStatus400Json | BlogPostAdminUpdateStatus400Json2);
+
+export type BlogPostAdminUpdateStatus401Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus401Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus401Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus401 = (BlogPostAdminUpdateStatus401Plain | BlogPostAdminUpdateStatus401Json | BlogPostAdminUpdateStatus401Json2);
+
+export type BlogPostAdminUpdateStatus403Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus403Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus403Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus403 = (BlogPostAdminUpdateStatus403Plain | BlogPostAdminUpdateStatus403Json | BlogPostAdminUpdateStatus403Json2);
+
+export type BlogPostAdminUpdateStatus404Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus404Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus404Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus404 = (BlogPostAdminUpdateStatus404Plain | BlogPostAdminUpdateStatus404Json | BlogPostAdminUpdateStatus404Json2);
+
+export type BlogPostAdminUpdateStatus500Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus500Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus500Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus500 = (BlogPostAdminUpdateStatus500Plain | BlogPostAdminUpdateStatus500Json | BlogPostAdminUpdateStatus500Json2);
+
+export type BlogPostAdminUpdateStatus501Plain = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus501Json = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus501Json2 = VoloAbpHttpRemoteServiceErrorResponse;
+
+export type BlogPostAdminUpdateStatus501 = (BlogPostAdminUpdateStatus501Plain | BlogPostAdminUpdateStatus501Json | BlogPostAdminUpdateStatus501Json2);
+
+export type BlogPostAdminUpdateBodyJson = Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties"> | undefined;
+
+export type BlogPostAdminUpdateBodyJson2 = Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties"> | undefined;
+
+export type BlogPostAdminUpdateBodyJson3 = Omit<NonNullable<VoloCmsKitAdminBlogsUpdateBlogPostDto>, "extraProperties"> | undefined;
+
+export type BlogPostAdminUpdateBody = (BlogPostAdminUpdateBodyJson | BlogPostAdminUpdateBodyJson2 | BlogPostAdminUpdateBodyJson3);
+
+export type BlogPostAdminUpdateOptions = {
+    body: BlogPostAdminUpdateBody;
+    path: BlogPostAdminUpdatePath;
+    query?: never;
+    headers?: never;
+};
+
 export type BlogPostAdminUpdateResponses = {
-  "200": BlogPostAdminUpdateStatus200;
-  "400": BlogPostAdminUpdateStatus400;
-  "401": BlogPostAdminUpdateStatus401;
-  "403": BlogPostAdminUpdateStatus403;
-  "404": BlogPostAdminUpdateStatus404;
-  "500": BlogPostAdminUpdateStatus500;
-  "501": BlogPostAdminUpdateStatus501;
+    "200": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus200Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus200Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus200Json2;
+    });
+    "400": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus400Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus400Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus400Json2;
+    });
+    "401": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus401Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus401Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus401Json2;
+    });
+    "403": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus403Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus403Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus403Json2;
+    });
+    "404": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus404Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus404Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus404Json2;
+    });
+    "500": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus500Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus500Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus500Json2;
+    });
+    "501": ({
+        contentType: "text/plain";
+        data: BlogPostAdminUpdateStatus501Plain;
+    } | {
+        contentType: "application/json";
+        data: BlogPostAdminUpdateStatus501Json;
+    } | {
+        contentType: "text/json";
+        data: BlogPostAdminUpdateStatus501Json2;
+    });
 };
 
 /**
  * @description Union of all possible responses
- */
-export type BlogPostAdminUpdateResponse =
-  | BlogPostAdminUpdateStatus200
-  | BlogPostAdminUpdateStatus400
-  | BlogPostAdminUpdateStatus401
-  | BlogPostAdminUpdateStatus403
-  | BlogPostAdminUpdateStatus404
-  | BlogPostAdminUpdateStatus500
-  | BlogPostAdminUpdateStatus501;
+*/
+export type BlogPostAdminUpdateResponse = (BlogPostAdminUpdateStatus200 | BlogPostAdminUpdateStatus400 | BlogPostAdminUpdateStatus401 | BlogPostAdminUpdateStatus403 | BlogPostAdminUpdateStatus404 | BlogPostAdminUpdateStatus500 | BlogPostAdminUpdateStatus501);

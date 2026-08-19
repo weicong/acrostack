@@ -1,47 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  GlobalResourcePublicGetGlobalScriptStatus200,
-  GlobalResourcePublicGetGlobalScriptStatus400,
-  GlobalResourcePublicGetGlobalScriptStatus401,
-  GlobalResourcePublicGetGlobalScriptStatus403,
-  GlobalResourcePublicGetGlobalScriptStatus404,
-  GlobalResourcePublicGetGlobalScriptStatus500,
-  GlobalResourcePublicGetGlobalScriptStatus501,
-} from "../../models/globalResourcePublic/GlobalResourcePublicGetGlobalScript.ts";
-
-function getGlobalResourcePublicGetGlobalScriptUrl() {
-  const res = { method: "GET", url: `/api/cms-kit-public/global-resources/script` as const };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { GlobalResourcePublicGetGlobalScriptOptions, GlobalResourcePublicGetGlobalScriptResponses } from '../../models/globalResourcePublic/GlobalResourcePublicGetGlobalScript'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/global-resources/script}
  */
-export async function globalResourcePublicGetGlobalScript(
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function globalResourcePublicGetGlobalScript<ThrowOnError extends boolean = true>(options: Options<GlobalResourcePublicGetGlobalScriptOptions, ThrowOnError> = {}): Promise<RequestResult<GlobalResourcePublicGetGlobalScriptResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    GlobalResourcePublicGetGlobalScriptStatus200,
-    ResponseErrorConfig<
-      | GlobalResourcePublicGetGlobalScriptStatus400
-      | GlobalResourcePublicGetGlobalScriptStatus401
-      | GlobalResourcePublicGetGlobalScriptStatus403
-      | GlobalResourcePublicGetGlobalScriptStatus404
-      | GlobalResourcePublicGetGlobalScriptStatus500
-      | GlobalResourcePublicGetGlobalScriptStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getGlobalResourcePublicGetGlobalScriptUrl().url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/global-resources/script', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<GlobalResourcePublicGetGlobalScriptResponses, ThrowOnError>>
 }

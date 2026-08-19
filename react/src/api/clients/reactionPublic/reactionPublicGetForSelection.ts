@@ -1,57 +1,14 @@
 /* oxlint-disable */
 
-import client from "@kubb/plugin-client/clients/axios";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/axios";
-import type {
-  ReactionPublicGetForSelectionPathEntityType,
-  ReactionPublicGetForSelectionPathEntityId,
-  ReactionPublicGetForSelectionStatus200,
-  ReactionPublicGetForSelectionStatus400,
-  ReactionPublicGetForSelectionStatus401,
-  ReactionPublicGetForSelectionStatus403,
-  ReactionPublicGetForSelectionStatus404,
-  ReactionPublicGetForSelectionStatus500,
-  ReactionPublicGetForSelectionStatus501,
-} from "../../models/reactionPublic/ReactionPublicGetForSelection.ts";
-
-function getReactionPublicGetForSelectionUrl(
-  entityType: ReactionPublicGetForSelectionPathEntityType,
-  entityId: ReactionPublicGetForSelectionPathEntityId,
-) {
-  const res = {
-    method: "GET",
-    url: `/api/cms-kit-public/reactions/${entityType}/${entityId}` as const,
-  };
-
-  return res;
-}
+import type { Options, RequestResult } from '../../.kubb/client'
+import type { ReactionPublicGetForSelectionOptions, ReactionPublicGetForSelectionResponses } from '../../models/reactionPublic/ReactionPublicGetForSelection'
+import { client } from '../../.kubb/client'
 
 /**
  * {@link /api/cms-kit-public/reactions/:entityType/:entityId}
  */
-export async function reactionPublicGetForSelection(
-  entityType: ReactionPublicGetForSelectionPathEntityType,
-  entityId: ReactionPublicGetForSelectionPathEntityId,
-  config: Partial<RequestConfig> & { client?: Client } = {},
-) {
-  const { client: request = client, ...requestConfig } = config;
+export function reactionPublicGetForSelection<ThrowOnError extends boolean = true>(options: Options<ReactionPublicGetForSelectionOptions, ThrowOnError>): Promise<RequestResult<ReactionPublicGetForSelectionResponses, ThrowOnError>> {
+  const { client: request = client, ...config } = options
 
-  const res = await request<
-    ReactionPublicGetForSelectionStatus200,
-    ResponseErrorConfig<
-      | ReactionPublicGetForSelectionStatus400
-      | ReactionPublicGetForSelectionStatus401
-      | ReactionPublicGetForSelectionStatus403
-      | ReactionPublicGetForSelectionStatus404
-      | ReactionPublicGetForSelectionStatus500
-      | ReactionPublicGetForSelectionStatus501
-    >,
-    unknown
-  >({
-    method: "GET",
-    url: getReactionPublicGetForSelectionUrl(entityType, entityId).url.toString(),
-    ...requestConfig,
-  });
-
-  return res.data;
+  return request({ method: 'GET', url: '/api/cms-kit-public/reactions/{entityType}/{entityId}', security: [{ type: 'oauth2' }], ...config }) as Promise<RequestResult<ReactionPublicGetForSelectionResponses, ThrowOnError>>
 }

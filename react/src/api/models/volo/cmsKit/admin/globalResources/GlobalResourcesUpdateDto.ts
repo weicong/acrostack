@@ -1,18 +1,9 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountProfileDtoExtraProperties } from "../../../../VoloAbpAccountProfileDtoExtraProperties.ts";
-
-/**
- * @type object
- */
 export type VoloCmsKitAdminGlobalResourcesGlobalResourcesUpdateDto = {
-  readonly extraProperties?: VoloAbpAccountProfileDtoExtraProperties;
-  /**
-   * @type string | undefined
-   */
-  style?: string | null;
-  /**
-   * @type string | undefined
-   */
-  script?: string | null;
+    readonly extraProperties?: {
+        [key: string]: unknown;
+    } | null;
+    style?: string | null;
+    script?: string | null;
 };

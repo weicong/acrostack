@@ -1,19 +1,11 @@
 /* oxlint-disable */
 
-import type { VoloAbpAccountProfileDtoExtraProperties } from "../../../../VoloAbpAccountProfileDtoExtraProperties.ts";
-import type { VoloAbpValidationStringValuesIValueValidator } from "./IValueValidator.ts";
+import type { VoloAbpValidationStringValuesIValueValidator } from './IValueValidator'
 
-/**
- * @type object
- */
 export type VoloAbpValidationStringValuesIStringValueType = {
-  /**
-   * @type string | undefined
-   */
-  readonly name?: string | null;
-  readonly properties?: VoloAbpAccountProfileDtoExtraProperties;
-  /**
-   * @type object | undefined
-   */
-  validator?: VoloAbpValidationStringValuesIValueValidator;
+    readonly name?: string | null;
+    readonly properties?: {
+        [key: string]: unknown;
+    } | null;
+    validator?: VoloAbpValidationStringValuesIValueValidator;
 };
