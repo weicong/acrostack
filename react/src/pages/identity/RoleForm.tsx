@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
@@ -34,7 +33,6 @@ const useStyles = makeStyles({
 // ── Component ───────────────────────────────────────────────────────
 
 export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const isEdit = !!role;
 
@@ -92,23 +90,16 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
         <form.AppField
           name="name"
           children={(field) => (
-            <field.TextField
-              label={t("AbpIdentity::RoleName")}
-              required
-              inputProps={{ disabled: isStatic }}
-            />
+            <field.TextField label={"角色名称"} required inputProps={{ disabled: isStatic }} />
           )}
         />
         <form.AppField
           name="isDefault"
-          children={(field) => <field.SwitchField label={t("AbpIdentity::Default")} />}
+          children={(field) => <field.SwitchField label={"默认"} />}
         />
-        <form.AppField
-          name="isPublic"
-          children={(field) => <field.SwitchField label={t("AbpIdentity::Public")} />}
-        />
+        <form.AppField name="isPublic" children={(field) => <field.SwitchField label={"公开"} />} />
         <div className={styles.actions}>
-          <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
           {footer}
         </div>
       </form>

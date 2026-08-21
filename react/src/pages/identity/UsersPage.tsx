@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Avatar,
@@ -69,17 +68,16 @@ const useStyles = makeStyles({
 });
 
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
-  const { t } = useTranslation();
   if (isActive === false) {
     return (
       <Badge appearance="filled" color="danger" size="small">
-        {t("AbpIdentity::NotActive")}
+        {"未激活"}
       </Badge>
     );
   }
   return (
     <Badge appearance="filled" color="success" size="small">
-      {t("AbpIdentity::Active")}
+      {"激活"}
     </Badge>
   );
 }
@@ -93,7 +91,6 @@ function useUsersTable(
   canManageClaims: boolean,
   currentUserId?: string,
 ) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   const tableState = useDataTableState({
@@ -112,7 +109,7 @@ function useUsersTable(
       {
         id: "userName",
         accessorKey: "userName",
-        header: t("AbpIdentity::UserName"),
+        header: "用户名称",
         cell: (info) => {
           const userName = (info.getValue() as string) ?? "";
           return (
@@ -125,25 +122,25 @@ function useUsersTable(
       },
       {
         id: "displayName",
-        header: t("AbpIdentity::DisplayName"),
+        header: "显示名称",
         accessorFn: (row) => `${row.name ?? ""} ${row.surname ?? ""}`.trim() || "-",
       },
       {
         id: "email",
         accessorKey: "email",
-        header: t("AbpIdentity::Email"),
+        header: "邮箱",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "phoneNumber",
         accessorKey: "phoneNumber",
-        header: t("AbpIdentity::PhoneNumber"),
+        header: "手机号",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "isActive",
         accessorKey: "isActive",
-        header: t("AbpIdentity::Status"),
+        header: "状态",
         cell: (info) => <UserStatusBadge isActive={info.getValue() as boolean | undefined} />,
       },
       {
@@ -163,7 +160,7 @@ function useUsersTable(
                   e.stopPropagation();
                   onEdit(row);
                 }}
-                aria-label={t("AbpUi::Edit")}
+                aria-label={"编辑"}
               />
               <Button
                 size="small"
@@ -173,7 +170,7 @@ function useUsersTable(
                   e.stopPropagation();
                   onDelete(row.id!);
                 }}
-                aria-label={t("AbpUi::Delete")}
+                aria-label={"删除"}
               />
               {canImpersonateRow && (
                 <Button
@@ -184,8 +181,8 @@ function useUsersTable(
                     e.stopPropagation();
                     onImpersonate(row);
                   }}
-                  aria-label={t("AbpIdentity::Permission:Impersonation")}
-                  title={t("AbpIdentity::Permission:Impersonation")}
+                  aria-label={"模拟登录"}
+                  title={"模拟登录"}
                 />
               )}
               {canManageClaimsRow && (
@@ -197,8 +194,8 @@ function useUsersTable(
                     e.stopPropagation();
                     onManageClaims(row);
                   }}
-                  aria-label={t("AbpIdentity::Claims")}
-                  title={t("AbpIdentity::Claims")}
+                  aria-label={"声明"}
+                  title={"声明"}
                 />
               )}
             </div>
@@ -207,7 +204,6 @@ function useUsersTable(
       },
     ],
     [
-      t,
       styles.userNameCell,
       styles.actionsCell,
       onEdit,
@@ -235,7 +231,6 @@ function useUsersTable(
 }
 
 export function UsersPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const deleteMutation = useUserDelete();
@@ -318,11 +313,11 @@ export function UsersPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AbpIdentity::Users")}>
+    <PageLayout title={"用户"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -330,7 +325,7 @@ export function UsersPage() {
         </div>
         <div className={styles.actionButtons}>
           <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-            {t("AbpIdentity::NewUser")}
+            {"新用户"}
           </Button>
         </div>
       </div>
@@ -363,9 +358,9 @@ export function UsersPage() {
         onOpenChange={(open) => {
           if (!open) setDeleteUserId(null);
         }}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

@@ -9,4 +9,6 @@
 import { type MenuRoute } from "@/lib/routing/route-config-types";
 import { menu as fileManagementMenu } from "./index";
 
-export const routeConfig: MenuRoute[] = [{ path: "/file-management", menu: fileManagementMenu }];
+export const routeConfig: MenuRoute[] = [
+  { path: "/admin/file-management", menu: fileManagementMenu },
+];

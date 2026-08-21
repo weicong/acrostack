@@ -1,29 +1,15 @@
-import { Outlet, useLocation } from "@tanstack/react-router";
-import { AppLayout } from "./AppLayout";
-import { AccountLayout } from "./AccountLayout";
+import { Outlet } from "@tanstack/react-router";
 
 /**
- * Picks layout based on path: AccountLayout for auth pages (login, register, forgot/reset password),
- * AppLayout for the rest (including /account/manage, /account/sessions, etc.).
+ * 根布局：仅承担全局包装职责（FluentProvider/Toaster 挂在 App.tsx）。
+ *
+ * 页面区域布局由路由树声明式决定（TanStack Router 布局路由）：
+ *   /admin/*        → routes/admin/route.tsx      AppLayout（侧边栏管理后台）
+ *   /classroom/*    → routes/classroom/route.tsx  ClassroomLayout（教师教学端）
+ *   /student/*      → routes/student/route.tsx    StudentLayout（学员移动端）
+ *   /presentation/* → routes/presentation/route.tsx 裸布局（投屏）
+ *   /account/*      → routes/account/route.tsx    AccountLayout（匿名账户页）
  */
 export function RootLayout() {
-  const { pathname } = useLocation();
-  const isAccountAuth =
-    pathname.startsWith("/account/login") ||
-    pathname.startsWith("/account/register") ||
-    pathname.startsWith("/account/forgot-password") ||
-    pathname.startsWith("/account/reset-password") ||
-    pathname === "/account";
-
-  return (
-    <>
-      {isAccountAuth ? (
-        <AccountLayout>
-          <Outlet />
-        </AccountLayout>
-      ) : (
-        <AppLayout />
-      )}
-    </>
-  );
+  return <Outlet />;
 }

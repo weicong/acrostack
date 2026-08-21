@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { Link } from "@tanstack/react-router";
 import { Button, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { ShieldError20Regular } from "@fluentui/react-icons";
@@ -26,7 +25,6 @@ const useStyles = makeStyles({
 });
 
 export function ForbiddenPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   return (
@@ -38,11 +36,11 @@ export function ForbiddenPage() {
             403
           </Text>
           <Text as="p" block>
-            {t("AbpUi::YouAreNotAuthorized")}
+            {"您没有权限执行此操作"}
           </Text>
         </div>
         <Link to="/">
-          <Button>{t("AbpUi::BackToTheApplication")}</Button>
+          <Button>{"返回应用"}</Button>
         </Link>
       </div>
     </PageLayout>

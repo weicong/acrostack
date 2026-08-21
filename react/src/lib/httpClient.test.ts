@@ -21,10 +21,6 @@ vi.mock("@/lib/routing/routeEvents", () => ({
   emitRouteEvent: (...args: unknown[]) => mockEmitRouteEvent(...args),
 }));
 
-vi.mock("@/lib/i18n/i18n", () => ({
-  default: { language: "zh-Hans" },
-}));
-
 vi.mock("@/api/.kubb/client", () => ({
   client: { interceptors: { request: { use: vi.fn() }, error: { use: vi.fn() } } },
 }));
@@ -80,7 +76,7 @@ describe("applyRequestConfig", () => {
     expect(config.headers.__tenant).toBeUndefined();
   });
 
-  it("sets Accept-Language from i18n", async () => {
+  it("sets Accept-Language to zh-Hans (Chinese-only system)", async () => {
     const config = await applyRequestConfig(makeConfig());
     expect(config.headers["Accept-Language"]).toBe("zh-Hans");
   });
@@ -118,7 +114,7 @@ describe("handleResponseError", () => {
 
   it("on 403 emits a route event and rejects", async () => {
     await expect(handleResponseError({ response: { status: 403 } })).rejects.toThrow("Forbidden");
-    expect(mockEmitRouteEvent).toHaveBeenCalledWith({ type: "403", to: "/403" });
+    expect(mockEmitRouteEvent).toHaveBeenCalledWith({ type: "403", to: "/admin/403" });
   });
 
   it("passes through other errors unchanged", async () => {

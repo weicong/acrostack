@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
@@ -9,13 +8,13 @@ import { useState } from "react";
 
 const registerSchema = z
   .object({
-    userName: z.string().min(1, "AbpAccount::ThisFieldIsRequired"),
-    emailAddress: z.string().email("AbpAccount::InvalidEmailAddress"),
-    password: z.string().min(6, "AbpAccount::PasswordMustBeAtLeast6Characters"),
+    userName: z.string().min(1, "此字段为必填项"),
+    emailAddress: z.string().email("邮箱地址无效"),
+    password: z.string().min(6, "密码长度必须至少为 6 个字符"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "AbpAccount::PasswordsDoNotMatch",
+    message: "两次输入的密码不一致",
     path: ["confirmPassword"],
   });
 
@@ -45,7 +44,6 @@ const useStyles = makeStyles({
 });
 
 export function RegisterPage() {
-  const { t } = useTranslation();
   const { login } = useAuth();
   const [rootError, setRootError] = useState<string | null>(null);
   const styles = useStyles();
@@ -77,7 +75,7 @@ export function RegisterPage() {
             ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
                 ?.error?.message
             : undefined;
-        setRootError(msg ?? t("AbpAccount::RegisterFailed"));
+        setRootError(msg ?? "注册失败");
       }
     },
   });
@@ -85,10 +83,8 @@ export function RegisterPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{t("AbpAccount::Register")}</Text>}
-        description={
-          <Text size={200}>{t("AbpAccount::RegisterSubtitle", "Create a new account")}</Text>
-        }
+        header={<Text weight="semibold">{"注册"}</Text>}
+        description={<Text size={200}>{"创建新账户"}</Text>}
       />
       <div className={styles.body}>
         <form
@@ -107,17 +103,14 @@ export function RegisterPage() {
           <form.AppField
             name="userName"
             children={(field) => (
-              <field.TextField
-                label={t("AbpAccount::UserName")}
-                inputProps={{ autoComplete: "username" }}
-              />
+              <field.TextField label={"用户名"} inputProps={{ autoComplete: "username" }} />
             )}
           />
           <form.AppField
             name="emailAddress"
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::EmailAddress")}
+                label={"电子邮件地址"}
                 inputProps={{ type: "email", autoComplete: "email" }}
               />
             )}
@@ -126,7 +119,7 @@ export function RegisterPage() {
             name="password"
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::Password")}
+                label={"密码"}
                 inputProps={{ type: "password", autoComplete: "new-password" }}
               />
             )}
@@ -138,21 +131,18 @@ export function RegisterPage() {
             }}
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::ConfirmPassword")}
+                label={"确认密码"}
                 inputProps={{ type: "password", autoComplete: "new-password" }}
               />
             )}
           />
           <form.AppForm>
-            <form.SubmitButton
-              label={t("AbpAccount::Register")}
-              className={styles.fullWidthButton}
-            />
+            <form.SubmitButton label={"注册"} className={styles.fullWidthButton} />
           </form.AppForm>
           <Text as="p" size={200} align="center" block>
-            {t("AbpAccount::AlreadyHaveAnAccount", "Already have an account?")}{" "}
+            {"已经有账户了？"}{" "}
             <Link to="/account/login" className={styles.link}>
-              {t("AbpAccount::Login")}
+              {"登录"}
             </Link>
           </Text>
         </form>

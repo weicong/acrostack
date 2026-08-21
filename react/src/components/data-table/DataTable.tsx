@@ -1,7 +1,7 @@
 import { flexRender } from "@tanstack/react-table";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import type { AppTableFeatures } from "./useDataTable";
-import { useTranslation } from "react-i18next";
+
 import {
   Table as FluentTable,
   TableHeader,
@@ -114,12 +114,11 @@ function DataTable<TData extends RowData>({
   onRowClick,
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData>) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
-  // 未显式传入时走 i18n：key 不存在时回退中文默认值
-  const empty = emptyMessage ?? t("DataTable::EmptyMessage", "无数据");
-  const loading = loadingMessage ?? t("DataTable::LoadingMessage", "正在加载...");
+  // 未显式传入时使用中文默认值
+  const empty = emptyMessage ?? "无数据";
+  const loading = loadingMessage ?? "正在加载...";
 
   const rows = table.getRowModel().rows;
   const headerGroups = table.getHeaderGroups();
@@ -288,19 +287,17 @@ function DataTable<TData extends RowData>({
               onChange={(e) => {
                 table.setPageSize(Number(e.currentTarget.value));
               }}
-              aria-label={t("DataTable::RowsPerPage")}
+              aria-label={"每页行数"}
             >
               {pageSizeOptions.map((size) => (
                 <option key={size} value={size}>
-                  {size} {t("DataTable::PerPage")}
+                  {size} {"条/页"}
                 </option>
               ))}
             </Select>
           </div>
 
-          <Text size={200}>
-            {t("DataTable::PageInfo", { current: currentPageIndex + 1, total: pageCount })}
-          </Text>
+          <Text size={200}>{`第 ${currentPageIndex + 1} 页，共 ${pageCount} 页`}</Text>
 
           <div className={styles.paginationControls}>
             <Button
@@ -309,7 +306,7 @@ function DataTable<TData extends RowData>({
               icon={<ArrowPreviousFilled />}
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
-              aria-label={t("DataTable::FirstPage")}
+              aria-label={"首页"}
             />
             <Button
               appearance="subtle"
@@ -317,7 +314,7 @@ function DataTable<TData extends RowData>({
               icon={<ChevronLeftFilled />}
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              aria-label={t("DataTable::PreviousPage")}
+              aria-label={"上一页"}
             />
 
             <Input
@@ -325,7 +322,7 @@ function DataTable<TData extends RowData>({
               appearance="underline"
               placeholder={`${currentPageIndex + 1}`}
               onKeyDown={handlePageJump}
-              aria-label={t("DataTable::GoToPage")}
+              aria-label={"跳转到"}
             />
 
             <Button
@@ -334,7 +331,7 @@ function DataTable<TData extends RowData>({
               icon={<ChevronRightFilled />}
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              aria-label={t("DataTable::NextPage")}
+              aria-label={"下一页"}
             />
             <Button
               appearance="subtle"
@@ -342,7 +339,7 @@ function DataTable<TData extends RowData>({
               icon={<ArrowNextFilled />}
               onClick={() => table.setPageIndex(pageCount - 1)}
               disabled={!table.getCanNextPage()}
-              aria-label={t("DataTable::LastPage")}
+              aria-label={"末页"}
             />
           </div>
         </div>

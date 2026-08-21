@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -27,7 +26,6 @@ type UserFormDialogProps = {
 // ── Component ───────────────────────────────────────────────────────
 
 export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserFormDialogProps) {
-  const { t } = useTranslation();
   const dialogId = useId("user-form-");
   const isEdit = !!user;
 
@@ -52,11 +50,9 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("AbpIdentity::Edit") : t("AbpIdentity::NewUser")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新用户"}</DialogTitle>
           <DialogContent>
-            {open && !showForm && <Spinner label={t("AbpUi::Loading")} />}
+            {open && !showForm && <Spinner label={"加载中..."} />}
             {open && showForm && (
               <UserForm
                 key={formUser?.id ?? "create"}
@@ -64,7 +60,7 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
                 onSuccess={onSuccess}
                 footer={
                   <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="secondary">{t("AbpUi::Cancel")}</Button>
+                    <Button appearance="secondary">{"取消"}</Button>
                   </DialogTrigger>
                 }
               />

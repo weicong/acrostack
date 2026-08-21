@@ -10,7 +10,6 @@ import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { emitRouteEvent } from "@/lib/routing/routeEvents";
-import i18n from "@/lib/i18n/i18n";
 
 // Re-export setTenantId for backward compatibility
 export { setTenantId } from "@/lib/tenant";
@@ -34,9 +33,8 @@ export async function applyRequestConfig(
     config.headers.__tenant = tenantId;
   }
 
-  if (i18n?.language) {
-    config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? i18n.language;
-  }
+  // 系统仅支持简体中文：固定 Accept-Language，服务端据此返回中文本地化消息
+  config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? "zh-Hans";
 
   return config;
 }
@@ -67,7 +65,7 @@ export async function handleResponseError(error: HttpErrorLike): Promise<never> 
   }
 
   if (status === 403) {
-    emitRouteEvent({ type: "403", to: "/403" });
+    emitRouteEvent({ type: "403", to: "/admin/403" });
     return Promise.reject(new Error("Forbidden"));
   }
 

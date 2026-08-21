@@ -1,0 +1,33 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:Classroom": "Classroom",
+    "Permission:Questions.Manage": "Manage questions",
+    "Permission:Quizzes.Manage": "Manage quizzes",
+    "Permission:Sessions.Create": "Create sessions",
+    "Permission:Sessions.Control": "Control sessions",
+    "Permission:Sessions.ViewDashboard": "View dashboard",
+    "Classroom:InvalidStatusTransition": "Invalid classroom status transition: {0} -> {1}",
+    "Classroom:QuestionNotOpen": "The current question is not open for answering",
+    "Classroom:QuestionClosed": "The current question is closed; answers can no longer be submitted or changed",
+    "Classroom:ClassroomFinished": "The classroom session has finished",
+    "Classroom:ClassroomNotStarted": "The classroom session has not started yet",
+    "Classroom:ClassroomCodeNotFound": "Invalid classroom code or session not found",
+    "Classroom:ClassroomCodeExpired": "The classroom code has expired",
+    "Classroom:NotSessionTeacher": "Only the session creator or authorized teachers can perform this operation",
+    "Classroom:ParticipantNotFound": "Participant not found or has left the session",
+    "Classroom:InvalidClassroomToken": "Classroom token is invalid or expired",
+    "Classroom:TokenSessionMismatch": "The token does not match the current session",
+    "Classroom:QuestionNotFound": "Question not found",
+    "Classroom:QuizNotFound": "Quiz not found",
+    "Classroom:SessionNotFound": "Session not found",
+    "Classroom:SessionQuestionNotFound": "Session question not found",
+    "Classroom:InvalidAnswerFormat": "Answer format does not match the question type",
+    "Classroom:DuplicateClassroomCode": "Classroom code collision, please retry",
+    "Classroom:QuestionAlreadyOpen": "Another question is already open; only one question can be open at a time",
+    "Classroom:NoNextQuestion": "No more questions",
+    "Classroom:VersionConflict": "Classroom version conflict; please refresh the snapshot and retry",
+    "Classroom:RateLimited": "Too many requests, please retry later",
+    "Classroom:InvalidPresentationToken": "Presentation token is invalid or expired"
+  }
+}

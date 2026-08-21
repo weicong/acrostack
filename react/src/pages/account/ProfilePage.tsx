@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { makeStyles, tokens, useToastController, Text, Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -48,13 +47,12 @@ const passwordSchema = z
   })
   .refine((data) => data.newPassword === data.newPasswordConfirm, {
     path: ["newPasswordConfirm"],
-    message: "AbpIdentity::PasswordsAreNotSame",
+    message: "两次输入的密码不一致",
   });
 
 // ── Profile Form ────────────────────────────────────────────────────
 
 function ProfileFormCard() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const updateMutation = useProfileUpdate();
@@ -93,7 +91,7 @@ function ProfileFormCard() {
         {
           onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: profileGetQueryKey() });
-            dispatchToast(t("AbpIdentity::PersonalSettingsSavedMessage"), { intent: "success" });
+            dispatchToast("你的个人设置保存成功。", { intent: "success" });
           },
           onError: (err) => {
             dispatchToast(String(err), { intent: "error" });
@@ -104,17 +102,17 @@ function ProfileFormCard() {
   });
 
   if (profileQuery.isLoading) {
-    return <Text>{t("AbpUi::LoadingWithThreeDot")}</Text>;
+    return <Text>{"加载中..."}</Text>;
   }
 
   if (profileQuery.isError || !profile) {
-    return <Text>{t("AbpUi::Error")}</Text>;
+    return <Text>{"错误"}</Text>;
   }
 
   return (
     <Card>
       <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
-        {t("AbpIdentity::PersonalSettings")}
+        {"个人设置"}
       </Text>
       <form.AppForm>
         <form
@@ -126,28 +124,20 @@ function ProfileFormCard() {
         >
           <form.AppField
             name="userName"
-            children={(field) => (
-              <field.TextField label={t("AbpIdentity::DisplayName:UserName")} required />
-            )}
+            children={(field) => <field.TextField label={"用户名称"} required />}
           />
           <form.AppField
             name="email"
-            children={(field) => <field.TextField label={t("AbpIdentity::Email")} required />}
+            children={(field) => <field.TextField label={"邮箱"} required />}
           />
-          <form.AppField
-            name="name"
-            children={(field) => <field.TextField label={t("AbpIdentity::Name")} />}
-          />
-          <form.AppField
-            name="surname"
-            children={(field) => <field.TextField label={t("AbpIdentity::Surname")} />}
-          />
+          <form.AppField name="name" children={(field) => <field.TextField label={"名称"} />} />
+          <form.AppField name="surname" children={(field) => <field.TextField label={"姓"} />} />
           <form.AppField
             name="phoneNumber"
-            children={(field) => <field.TextField label={t("AbpIdentity::PhoneNumber")} />}
+            children={(field) => <field.TextField label={"手机号"} />}
           />
           <div className={styles.actions}>
-            <form.SubmitButton label={t("AbpUi::Save")} />
+            <form.SubmitButton label={"保存"} />
           </div>
         </form>
       </form.AppForm>
@@ -158,7 +148,6 @@ function ProfileFormCard() {
 // ── Change Password Form ────────────────────────────────────────────
 
 function ChangePasswordFormCard() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const changePasswordMutation = useProfileChangePassword();
   const { dispatchToast } = useToastController();
@@ -174,12 +163,6 @@ function ChangePasswordFormCard() {
         const result = passwordSchema.safeParse(value);
         if (result.error) {
           const fieldErrors = result.error.flatten().fieldErrors as Record<string, string[]>;
-          // Translate the confirmation message key if present
-          if (fieldErrors.newPasswordConfirm) {
-            fieldErrors.newPasswordConfirm = fieldErrors.newPasswordConfirm.map((msg) =>
-              msg.startsWith("Abp") ? t(msg) : msg,
-            );
-          }
           return fieldErrors;
         }
       },
@@ -195,7 +178,7 @@ function ChangePasswordFormCard() {
         {
           onSuccess: () => {
             form.reset();
-            dispatchToast(t("AbpIdentity::PasswordChangedMessage"), { intent: "success" });
+            dispatchToast("你已成功更改密码。", { intent: "success" });
           },
           onError: (err) => {
             dispatchToast(String(err), { intent: "error" });
@@ -208,7 +191,7 @@ function ChangePasswordFormCard() {
   return (
     <Card>
       <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
-        {t("AbpUi::ChangePassword")}
+        {"修改密码"}
       </Text>
       <form.AppForm>
         <form
@@ -221,34 +204,23 @@ function ChangePasswordFormCard() {
           <form.AppField
             name="currentPassword"
             children={(field) => (
-              <field.TextField
-                label={t("AbpIdentity::DisplayName:CurrentPassword")}
-                inputProps={{ type: "password" }}
-              />
+              <field.TextField label={"当前密码"} inputProps={{ type: "password" }} />
             )}
           />
           <form.AppField
             name="newPassword"
             children={(field) => (
-              <field.TextField
-                label={t("AbpIdentity::DisplayName:NewPassword")}
-                required
-                inputProps={{ type: "password" }}
-              />
+              <field.TextField label={"新密码"} required inputProps={{ type: "password" }} />
             )}
           />
           <form.AppField
             name="newPasswordConfirm"
             children={(field) => (
-              <field.TextField
-                label={t("AbpIdentity::DisplayName:NewPasswordConfirm")}
-                required
-                inputProps={{ type: "password" }}
-              />
+              <field.TextField label={"确认新密码"} required inputProps={{ type: "password" }} />
             )}
           />
           <div className={styles.actions}>
-            <form.SubmitButton label={t("AbpUi::Save")} />
+            <form.SubmitButton label={"保存"} />
           </div>
         </form>
       </form.AppForm>
@@ -259,11 +231,10 @@ function ChangePasswordFormCard() {
 // ── Page ────────────────────────────────────────────────────────────
 
 export function ProfilePage() {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   return (
-    <PageLayout title={t("AbpIdentity::PersonalInfo")}>
+    <PageLayout title={" 个人信息"}>
       <div className={styles.cards}>
         <ProfileFormCard />
         <ChangePasswordFormCard />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -86,7 +85,6 @@ const testEmailSchema = z.object({
 // ── Email Settings Card ─────────────────────────────────────────────
 
 function EmailSettingsCard() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const updateMutation = useEmailSettingsUpdate();
@@ -147,7 +145,7 @@ function EmailSettingsCard() {
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: emailSettingsGetQueryKey() });
-          dispatchToast(t("AbpSettingManagement::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -157,23 +155,23 @@ function EmailSettingsCard() {
   };
 
   if (emailQuery.isLoading) {
-    return <Spinner label={t("AbpUi::LoadingWithThreeDot")} />;
+    return <Spinner label={"加载中..."} />;
   }
 
   return (
     <Card>
       <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
-        {t("AbpSettingManagement::Menu:Emailing")}
+        {"邮件"}
       </Text>
       <div className={styles.form}>
         <div className={styles.row}>
-          <Field label={t("AbpSettingManagement::SmtpHost")} className={styles.rowItem}>
+          <Field label={"主机"} className={styles.rowItem}>
             <Input
               value={form.smtpHost}
               onChange={(_, d) => setForm((p) => ({ ...p, smtpHost: d.value }))}
             />
           </Field>
-          <Field label={t("AbpSettingManagement::SmtpPort")} className={styles.rowItem}>
+          <Field label={"端口"} className={styles.rowItem}>
             <Input
               type="number"
               value={String(form.smtpPort ?? "")}
@@ -187,23 +185,23 @@ function EmailSettingsCard() {
           </Field>
         </div>
         <div className={styles.row}>
-          <Field label={t("AbpSettingManagement::SmtpUserName")} className={styles.rowItem}>
+          <Field label={"用户名"} className={styles.rowItem}>
             <Input
               value={form.smtpUserName}
               onChange={(_, d) => setForm((p) => ({ ...p, smtpUserName: d.value }))}
             />
           </Field>
-          <Field label={t("AbpSettingManagement::SmtpPassword")} className={styles.rowItem}>
+          <Field label={"密码"} className={styles.rowItem}>
             <Input
               type="password"
-              placeholder={t("AbpSettingManagement::SmtpPasswordPlaceholder")}
+              placeholder={"输入一个值以更新密码"}
               value={form.smtpPassword}
               onChange={(_, d) => setForm((p) => ({ ...p, smtpPassword: d.value }))}
             />
           </Field>
         </div>
         <div className={styles.row}>
-          <Field label={t("AbpSettingManagement::SmtpDomain")} className={styles.rowItem}>
+          <Field label={"域"} className={styles.rowItem}>
             <Input
               value={form.smtpDomain}
               onChange={(_, d) => setForm((p) => ({ ...p, smtpDomain: d.value }))}
@@ -214,30 +212,22 @@ function EmailSettingsCard() {
           <Switch
             checked={form.smtpEnableSsl}
             onChange={(_, d) => setForm((p) => ({ ...p, smtpEnableSsl: d.checked }))}
-            label={t("AbpSettingManagement::SmtpEnableSsl")}
+            label={"启用ssl"}
           />
           <Switch
             checked={form.smtpUseDefaultCredentials}
             onChange={(_, d) => setForm((p) => ({ ...p, smtpUseDefaultCredentials: d.checked }))}
-            label={t("AbpSettingManagement::SmtpUseDefaultCredentials")}
+            label={"使用默认凭据"}
           />
         </div>
         <div className={styles.row}>
-          <Field
-            label={t("AbpSettingManagement::DefaultFromAddress")}
-            className={styles.rowItem}
-            required
-          >
+          <Field label={"默认发件人"} className={styles.rowItem} required>
             <Input
               value={form.defaultFromAddress}
               onChange={(_, d) => setForm((p) => ({ ...p, defaultFromAddress: d.value }))}
             />
           </Field>
-          <Field
-            label={t("AbpSettingManagement::DefaultFromDisplayName")}
-            className={styles.rowItem}
-            required
-          >
+          <Field label={"默认显示名称"} className={styles.rowItem} required>
             <Input
               value={form.defaultFromDisplayName}
               onChange={(_, d) => setForm((p) => ({ ...p, defaultFromDisplayName: d.value }))}
@@ -246,7 +236,7 @@ function EmailSettingsCard() {
         </div>
         <div className={styles.actions}>
           <Button appearance="primary" onClick={handleSave} disabled={updateMutation.isPending}>
-            {t("AbpUi::Save")}
+            {"保存"}
           </Button>
         </div>
       </div>
@@ -257,7 +247,6 @@ function EmailSettingsCard() {
 // ── Test Email Card ─────────────────────────────────────────────────
 
 function TestEmailCard() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const sendMutation = useEmailSettingsSendTestEmail();
   const { dispatchToast } = useToastController();
@@ -287,7 +276,7 @@ function TestEmailCard() {
       },
       {
         onSuccess: () => {
-          dispatchToast(t("AbpSettingManagement::SentSuccessfully"), { intent: "success" });
+          dispatchToast("发送成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -299,38 +288,30 @@ function TestEmailCard() {
   return (
     <Card>
       <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
-        {t("AbpSettingManagement::SendTestEmail")}
+        {"发送测试邮件"}
       </Text>
       <div className={styles.form}>
         <div className={styles.row}>
-          <Field
-            label={t("AbpSettingManagement::SenderEmailAddress")}
-            className={styles.rowItem}
-            required
-          >
+          <Field label={"发件人邮箱地址"} className={styles.rowItem} required>
             <Input
               value={form.senderEmailAddress}
               onChange={(_, d) => setForm((p) => ({ ...p, senderEmailAddress: d.value }))}
             />
           </Field>
-          <Field
-            label={t("AbpSettingManagement::TargetEmailAddress")}
-            className={styles.rowItem}
-            required
-          >
+          <Field label={"收件人邮箱地址"} className={styles.rowItem} required>
             <Input
               value={form.targetEmailAddress}
               onChange={(_, d) => setForm((p) => ({ ...p, targetEmailAddress: d.value }))}
             />
           </Field>
         </div>
-        <Field label={t("AbpSettingManagement::Subject")} required>
+        <Field label={"主题"} required>
           <Input
             value={form.subject}
             onChange={(_, d) => setForm((p) => ({ ...p, subject: d.value }))}
           />
         </Field>
-        <Field label={t("AbpSettingManagement::Body")}>
+        <Field label={"正文"}>
           <Textarea
             value={form.body}
             onChange={(_, d) => setForm((p) => ({ ...p, body: d.value }))}
@@ -338,7 +319,7 @@ function TestEmailCard() {
         </Field>
         <div className={styles.actions}>
           <Button appearance="primary" onClick={handleSend} disabled={sendMutation.isPending}>
-            {t("AbpSettingManagement::Send")}
+            {"发送"}
           </Button>
         </div>
       </div>
@@ -349,7 +330,6 @@ function TestEmailCard() {
 // ── Timezone Settings Card ──────────────────────────────────────────
 
 function TimeZoneSettingsCard() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const updateMutation = useTimeZoneSettingsUpdate();
@@ -375,7 +355,7 @@ function TimeZoneSettingsCard() {
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: timeZoneSettingsGetQueryKey() });
-          dispatchToast(t("AbpSettingManagement::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -385,15 +365,15 @@ function TimeZoneSettingsCard() {
   };
 
   if (tzQuery.isLoading || timezonesQuery.isLoading) {
-    return <Spinner label={t("AbpUi::LoadingWithThreeDot")} />;
+    return <Spinner label={"加载中..."} />;
   }
 
   return (
     <Card>
       <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
-        {t("AbpSettingManagement::TimeZone")}
+        {"时区"}
       </Text>
-      <Field label={t("AbpSettingManagement::DisplayName:Timezone")}>
+      <Field label={"时区"}>
         <Dropdown
           value={timezones.find((tz) => tz.name === selectedTz)?.value ?? selectedTz ?? ""}
           selectedOptions={selectedTz ? [selectedTz] : []}
@@ -408,10 +388,14 @@ function TimeZoneSettingsCard() {
           ))}
         </Dropdown>
       </Field>
-      <Text size={200}>{t("AbpSettingManagement::TimezoneHelpText")}</Text>
+      <Text size={200}>
+        {
+          "此功能允许您为服务器设置默认时区，同时用户可以选择自己的时区。如果用户的时区与服务器的时区不同，所有时间将相应调整。例如，如果服务器设置为欧洲/伦敦(00:00)，而用户在欧洲/巴黎(+01:00)，则该用户的时间将调整1小时。选择'默认时区'将自动使用服务器或浏览器的时区。"
+        }
+      </Text>
       <div className={styles.actions}>
         <Button appearance="primary" onClick={handleSave} disabled={updateMutation.isPending}>
-          {t("AbpUi::Save")}
+          {"保存"}
         </Button>
       </div>
     </Card>
@@ -421,11 +405,10 @@ function TimeZoneSettingsCard() {
 // ── Page ────────────────────────────────────────────────────────────
 
 export function SettingsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   return (
-    <PageLayout title={t("AbpSettingManagement::Settings")}>
+    <PageLayout title={"设置"}>
       <div className={styles.cards}>
         <EmailSettingsCard />
         <TestEmailCard />

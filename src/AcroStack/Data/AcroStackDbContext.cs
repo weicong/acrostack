@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.AuditLogging;
@@ -16,13 +17,22 @@ using AcroStack.AppUsers;
 using AcroStack.Books;
 using AcroStack.FileManagement;
 using AcroStack.Chat;
+using Classroom;
+using Classroom.EntityFrameworkCore;
 // Disambiguate FileShare: System.IO.FileShare (from implicit usings)
 // collides with our AcroStack.FileManagement.FileShare entity.
 using FileShare = AcroStack.FileManagement.FileShare;
 
 namespace AcroStack.Data;
 
-public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggingDbContext
+/// <summary>
+/// 宿主 DbContext 挂载 Classroom 模块实体（IIdentityDbContext 替换模式）。
+/// <see cref="ReplaceDbContextAttribute"/> 使 Classroom 模块注册的
+/// IDbContextProvider&lt;ClassroomDbContext&gt; 与默认仓储解析到本 DbContext，
+/// 保证 ClassroomTransactionExecutor 的显式事务与仓储写入同一 DbContext 实例。
+/// </summary>
+[ReplaceDbContext(typeof(IClassroomDbContext))]
+public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggingDbContext, IClassroomDbContext
 {
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Book> Books { get; set; }
@@ -35,6 +45,14 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
     public DbSet<Conversation> ChatConversations { get; set; }
     public DbSet<ChatMessageReaction> ChatMessageReactions { get; set; }
     public DbSet<ChatBlockedUser> ChatBlockedUsers { get; set; }
+
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<Quiz> Quizzes { get; set; }
+    public DbSet<ClassSession> ClassSessions { get; set; }
+    public DbSet<SessionQuestion> SessionQuestions { get; set; }
+    public DbSet<Participant> Participants { get; set; }
+    public DbSet<AnswerRecord> AnswerRecords { get; set; }
+    public DbSet<AnswerRevision> AnswerRevisions { get; set; }
 
     public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<AuditLogExcelFile> AuditLogExcelFiles { get; set; }
@@ -78,6 +96,9 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
         builder.ConfigureFileManagement(DbTablePrefix, DbSchema);
 
         builder.ConfigureChat(DbTablePrefix, DbSchema);
+
+        // Classroom 模块（表前缀 Cls，实体配置与 ClassroomDbContext 共享）
+        builder.ConfigureClassroom();
     }
 }
 

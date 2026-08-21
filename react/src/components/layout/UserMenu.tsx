@@ -5,7 +5,6 @@ import {
   Person20Regular,
   PersonInfo20Regular,
 } from "@fluentui/react-icons";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "@tanstack/react-router";
 import {
   Button,
@@ -48,7 +47,6 @@ const useStyles = makeStyles({
 });
 
 export function UserMenu() {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const currentUser = useCurrentUser();
   const navigate = useNavigate();
@@ -70,7 +68,7 @@ export function UserMenu() {
         <Button
           appearance="subtle"
           icon={<Person20Regular />}
-          aria-label={displayName ?? t("AbpAccount::MyAccount")}
+          aria-label={displayName ?? "我的账户"}
         >
           {displayName && (
             <Text truncate className={styles.userName}>
@@ -95,22 +93,22 @@ export function UserMenu() {
         <MenuDivider />
         <MenuItem
           onClick={() => {
-            void navigate({ to: "/profile" });
+            void navigate({ to: "/admin/profile" });
           }}
         >
           <PersonInfo20Regular />
-          {t("AbpIdentity::PersonalInfo")}
+          {" 个人信息"}
         </MenuItem>
         <MenuItem>
           <a href={getBackendAccountUrl("/account/manage")} className={styles.menuLink}>
             <Settings20Regular />
-            {t("AbpAccount::MyAccount")}
+            {"我的账户"}
           </a>
         </MenuItem>
         <MenuItem>
           <a href={getBackendAccountUrl("/account/sessions")} className={styles.menuLink}>
             <Desktop20Regular />
-            {t("AbpAccount::Sessions")}
+            {"登录会话"}
           </a>
         </MenuItem>
         <MenuDivider />
@@ -122,7 +120,7 @@ export function UserMenu() {
           }}
         >
           <SignOut20Regular />
-          {t("AbpAccount::Logout")}
+          {"退出登录"}
         </MenuItem>
       </MenuPopover>
     </Menu>

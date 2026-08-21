@@ -36,6 +36,6 @@ export function createPermissionGuard(requiredPolicy: string) {
     // Load app config once per tenant via TanStack Query (deduplicated + cached).
     await ensureAppConfig(queryClient);
 
-    if (!isPolicyGranted(requiredPolicy)) throw redirect({ to: "/403" });
+    if (!isPolicyGranted(requiredPolicy)) throw redirect({ to: "/admin/403" });
   };
 }

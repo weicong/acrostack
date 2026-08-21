@@ -1,0 +1,33 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Permission:Classroom": "课堂答题",
+    "Permission:Questions.Manage": "题库管理",
+    "Permission:Quizzes.Manage": "试卷管理",
+    "Permission:Sessions.Create": "创建课堂",
+    "Permission:Sessions.Control": "课堂控制",
+    "Permission:Sessions.ViewDashboard": "查看驾驶舱",
+    "Classroom:InvalidStatusTransition": "非法的课堂状态转换：{0} -> {1}",
+    "Classroom:QuestionNotOpen": "当前题目未开放，无法提交",
+    "Classroom:QuestionClosed": "当前题目已截止，无法提交或修改答案",
+    "Classroom:ClassroomFinished": "课堂已结束，无法继续操作",
+    "Classroom:ClassroomNotStarted": "课堂尚未开始",
+    "Classroom:ClassroomCodeNotFound": "课堂码无效或课堂不存在",
+    "Classroom:ClassroomCodeExpired": "课堂码已失效",
+    "Classroom:NotSessionTeacher": "只有课堂创建者或授权教师才能执行此操作",
+    "Classroom:ParticipantNotFound": "学员不存在或已退出课堂",
+    "Classroom:InvalidClassroomToken": "课堂令牌无效或已过期",
+    "Classroom:TokenSessionMismatch": "令牌与当前课堂不匹配",
+    "Classroom:QuestionNotFound": "题目不存在",
+    "Classroom:QuizNotFound": "试卷不存在",
+    "Classroom:SessionNotFound": "课堂不存在",
+    "Classroom:SessionQuestionNotFound": "课堂题目不存在",
+    "Classroom:InvalidAnswerFormat": "答案格式不符合题型要求",
+    "Classroom:DuplicateClassroomCode": "课堂码生成冲突，请重试",
+    "Classroom:QuestionAlreadyOpen": "已有开放中的题目，不能同时开放多题",
+    "Classroom:NoNextQuestion": "没有更多题目了",
+    "Classroom:VersionConflict": "课堂版本冲突，请刷新快照后重试",
+    "Classroom:RateLimited": "请求过于频繁，请稍后再试",
+    "Classroom:InvalidPresentationToken": "投屏令牌无效或已过期"
+  }
+}

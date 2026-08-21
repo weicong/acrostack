@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Badge,
@@ -28,16 +28,16 @@ import { toFormSeed, type ClaimTypeItem } from "./claim-type-types";
 
 type ClaimTypeRow = ClaimTypeItem;
 
-const VALUE_TYPE_LABEL_KEYS: Record<number, string> = {
-  0: "AcroStack::ClaimValueType:String",
-  1: "AcroStack::ClaimValueType:Int",
-  2: "AcroStack::ClaimValueType:Boolean",
-  3: "AcroStack::ClaimValueType:DateTime",
+const VALUE_TYPE_LABELS: Record<number, string> = {
+  0: "字符串",
+  1: "整数",
+  2: "布尔值",
+  3: "日期时间",
 };
 
-function valueTypeLabel(valueType: number | undefined, t: (key: string) => string): string {
+function valueTypeLabel(valueType: number | undefined): string {
   if (valueType === undefined || valueType === null) return "-";
-  return t(VALUE_TYPE_LABEL_KEYS[valueType] ?? "AcroStack::ClaimValueType:String");
+  return VALUE_TYPE_LABELS[valueType] ?? VALUE_TYPE_LABELS[0];
 }
 
 const useStyles = makeStyles({
@@ -73,7 +73,6 @@ const useStyles = makeStyles({
 });
 
 export function ClaimTypesPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -123,26 +122,26 @@ export function ClaimTypesPage() {
         onSuccess: () => {
           setDeleteId(null);
           void queryClient.invalidateQueries({ queryKey: identityClaimTypeGetListQueryKey() });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deleteId, deleteMutation, queryClient, dispatchToast, t]);
+  }, [deleteId, deleteMutation, queryClient, dispatchToast]);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, ClaimTypeRow>[]>(() => {
     const base: ColumnDef<AppTableFeatures, ClaimTypeRow>[] = [
       {
         id: "name",
         accessorKey: "name",
-        header: t("AbpIdentity::Name"),
+        header: "名称",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "description",
-        header: t("AbpIdentity::Description"),
+        header: "描述",
         cell: ({ row }) => (
           <span className={styles.description} title={row.original.description ?? undefined}>
             {row.original.description || "-"}
@@ -151,17 +150,17 @@ export function ClaimTypesPage() {
       },
       {
         id: "valueType",
-        header: t("AcroStack::ClaimValueType"),
-        cell: ({ row }) => valueTypeLabel(row.original.valueType, t),
+        header: "值类型",
+        cell: ({ row }) => valueTypeLabel(row.original.valueType),
       },
       {
         id: "isRequired",
         accessorKey: "isRequired",
-        header: t("AbpIdentity::IsRequired"),
+        header: "必填",
         cell: (info) =>
           info.getValue() ? (
             <Badge appearance="filled" color="brand" size="small">
-              {t("AbpIdentity::True")}
+              {"是"}
             </Badge>
           ) : (
             "-"
@@ -170,11 +169,11 @@ export function ClaimTypesPage() {
       {
         id: "isStatic",
         accessorKey: "isStatic",
-        header: t("AbpIdentity::IsStatic"),
+        header: "静态",
         cell: (info) =>
           info.getValue() ? (
             <Badge appearance="filled" color="warning" size="small">
-              {t("AbpIdentity::True")}
+              {"是"}
             </Badge>
           ) : (
             "-"
@@ -199,7 +198,7 @@ export function ClaimTypesPage() {
                   e.stopPropagation();
                   handleEdit(row);
                 }}
-                aria-label={t("AbpUi::Edit")}
+                aria-label={"编辑"}
               />
               <Button
                 size="small"
@@ -210,7 +209,7 @@ export function ClaimTypesPage() {
                   e.stopPropagation();
                   if (row.id) handleDelete(row.id);
                 }}
-                aria-label={t("AbpUi::Delete")}
+                aria-label={"删除"}
               />
             </div>
           );
@@ -219,7 +218,7 @@ export function ClaimTypesPage() {
     }
 
     return base;
-  }, [t, styles.description, styles.actionsCell, canManage, handleEdit, handleDelete]);
+  }, [styles.description, styles.actionsCell, canManage, handleEdit, handleDelete]);
 
   const table = useDataTable({
     data: query.data,
@@ -242,11 +241,11 @@ export function ClaimTypesPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AcroStack::ClaimTypes")}>
+    <PageLayout title={"声明类型"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -255,7 +254,7 @@ export function ClaimTypesPage() {
         {canManage && (
           <div className={styles.actionButtons}>
             <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {t("AcroStack::NewClaimType")}
+              {"新建声明类型"}
             </Button>
           </div>
         )}
@@ -280,9 +279,9 @@ export function ClaimTypesPage() {
         onOpenChange={(open) => {
           if (!open) setDeleteId(null);
         }}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AcroStack::ClaimTypeDeleteConfirmation")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此声明类型吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

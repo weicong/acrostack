@@ -72,6 +72,8 @@ using AcroStack.AuditLogging;
 using AcroStack.AppUsers;
 using AcroStack.FileManagement;
 using AcroStack.Chat;
+using Classroom;
+using Classroom.EntityFrameworkCore;
 
 namespace AcroStack;
 
@@ -143,7 +145,11 @@ namespace AcroStack;
     typeof(AccountProModule),
     typeof(AppUsersModule),
     typeof(FileManagementModule),
-    typeof(ChatModule)
+    typeof(ChatModule),
+
+    // Classroom 课堂实时答题模块（分层模块：HttpApi + EF Core）
+    typeof(ClassroomHttpApiModule),
+    typeof(ClassroomEntityFrameworkCoreModule)
 )]
 public class AcroStackModule : AbpModule
 {
@@ -371,7 +377,7 @@ public class AcroStackModule : AbpModule
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Resources
-                .Add<AcroStackResource>("en")
+                .Add<AcroStackResource>("zh-Hans")
                 .AddBaseTypes(typeof(AbpValidationResource), typeof(AbpUiResource))
                 .AddVirtualJson("/Localization/AcroStack");
 
@@ -400,6 +406,7 @@ public class AcroStackModule : AbpModule
             options.ConventionalControllers.Create(typeof(AppUsersModule).Assembly);
             options.ConventionalControllers.Create(typeof(FileManagementModule).Assembly);
             options.ConventionalControllers.Create(typeof(ChatModule).Assembly);
+            options.ConventionalControllers.Create(typeof(ClassroomApplicationModule).Assembly);
         });
     }
 
@@ -554,12 +561,15 @@ public class AcroStackModule : AbpModule
 
         // SignalR cannot set Authorization header for WebSocket/SSE transports,
         // so the access token is sent as a query string. Move it to the header
-        // for the chat hub path so the ABP/OpenIddict auth middleware picks it up.
+        // for hub paths (chat: OpenIddict teacher token; classroom: OpenIddict
+        // teacher token — student/presentation classroom tokens are validated
+        // by the hub itself via IClassroomTokenService) so the ABP/OpenIddict
+        // auth middleware picks it up.
         app.Use(async (httpContext, next) =>
         {
             var accessToken = httpContext.Request.Query["access_token"];
             var path = httpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/signalr-hubs/chat"))
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/signalr-hubs"))
             {
                 httpContext.Request.Headers["Authorization"] = "Bearer " + accessToken;
             }
@@ -594,6 +604,7 @@ public class AcroStackModule : AbpModule
         app.UseConfiguredEndpoints(endpoints =>
         {
             endpoints.MapHub<ChatHub>("/signalr-hubs/chat");
+            endpoints.MapHub<ClassroomHub>(ClassroomHttpApiModule.HubPath);
         });
     }
 }

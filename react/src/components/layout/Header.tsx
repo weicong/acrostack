@@ -1,25 +1,12 @@
 import {
-  Globe20Regular,
   ArrowExit20Regular,
   Navigation20Regular,
   WeatherMoon20Regular,
   WeatherSunny20Regular,
   Desktop20Regular,
 } from "@fluentui/react-icons";
-import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Menu,
-  MenuTrigger,
-  MenuPopover,
-  MenuItem,
-  tokens,
-  makeStyles,
-  Text,
-} from "@fluentui/react-components";
-import { appConfig, fetchAppConfig, fetchAppLocalization } from "@/lib/auth/permissions";
-import { persistLanguageSelection } from "@/lib/i18n/i18n";
+import { Link } from "@tanstack/react-router";
+import { Button, tokens, makeStyles, Text } from "@fluentui/react-components";
 import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/lib/auth/AuthContext";
@@ -30,56 +17,10 @@ interface HeaderProps {
   onToggleCollapse?: () => void;
 }
 
-interface LocalizationLanguage {
-  cultureName?: string;
-  uiCultureName?: string;
-  name?: string;
-  displayName?: string;
-}
-
-interface LocalizationSection {
-  languages?: LocalizationLanguage[];
-}
-
-interface LocalizationResource {
-  texts?: Record<string, string>;
-}
-
-interface LocalizationData {
-  resources?: Record<string, LocalizationResource>;
-}
-
-const FALLBACK_LANGUAGE: LocalizationLanguage = {
-  cultureName: "zh-Hans",
-  displayName: "简体中文",
-};
-
 const THEME_CYCLE: Theme[] = ["light", "dark", "system"];
-
-function getLanguageCulture(language: LocalizationLanguage): string {
-  return language.cultureName ?? language.uiCultureName ?? language.name ?? "";
-}
-
-function getLanguageLabel(language: LocalizationLanguage): string {
-  return language.displayName ?? getLanguageCulture(language).toUpperCase();
-}
-
-function flattenLocalizationResources(localization: LocalizationData) {
-  const translations: Record<string, string> = {};
-
-  for (const [resourceName, resource] of Object.entries(localization.resources ?? {})) {
-    for (const [key, value] of Object.entries(resource.texts ?? {})) {
-      translations[`${resourceName}::${key}`] = value;
-      translations[key] ??= value;
-    }
-  }
-
-  return translations;
-}
 
 function ThemeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();
-  const { t } = useTranslation();
 
   function cycleTheme() {
     const currentIndex = THEME_CYCLE.indexOf(theme);
@@ -87,12 +28,7 @@ function ThemeToggle() {
     setTheme(THEME_CYCLE[nextIndex]);
   }
 
-  const label =
-    theme === "light"
-      ? t("AbpSettingManagement::Theme.Light", "Light")
-      : theme === "dark"
-        ? t("AbpSettingManagement::Theme.Dark", "Dark")
-        : t("AbpSettingManagement::Theme.System", "System");
+  const label = theme === "light" ? "浅色" : theme === "dark" ? "深色" : "跟随系统";
 
   const Icon =
     theme === "system"
@@ -110,135 +46,6 @@ function ThemeToggle() {
       title={label}
       icon={<Icon />}
     ></Button>
-  );
-}
-
-function LanguageSwitcher() {
-  const { t, i18n } = useTranslation();
-  const { getAccessToken } = useAuth();
-  const snapshot = appConfig.useSnapshot();
-  const [isChanging, setIsChanging] = useState(false);
-  const localization = snapshot.sections?.localization as LocalizationSection | null | undefined;
-  const currentCulture = i18n.language || FALLBACK_LANGUAGE.cultureName || "zh-Hans";
-
-  useEffect(() => {
-    if (snapshot.initialized || snapshot.loading) {
-      return;
-    }
-
-    void getAccessToken()
-      .then((token) => fetchAppConfig(token))
-      .catch(() => undefined);
-  }, [getAccessToken, snapshot.initialized, snapshot.loading]);
-
-  useEffect(() => {
-    if (!currentCulture) {
-      return;
-    }
-
-    let disposed = false;
-
-    void getAccessToken()
-      .then((token) => fetchAppLocalization(currentCulture, token))
-      .then((localizationData) => {
-        if (disposed) {
-          return;
-        }
-
-        const translations = flattenLocalizationResources(localizationData as LocalizationData);
-        if (Object.keys(translations).length === 0) {
-          return;
-        }
-
-        // Deep merge and overwrite: server-side localization is the source of truth.
-        // Client-side en.json only provides initial fallback for app-specific keys
-        // (e.g. DataTable::*) before the server payload arrives.
-        i18n.addResourceBundle(currentCulture, "translation", translations, true, true);
-        void i18n.changeLanguage(currentCulture);
-      })
-      .catch(() => undefined);
-
-    return () => {
-      disposed = true;
-    };
-  }, [currentCulture, getAccessToken, i18n]);
-
-  const languages = useMemo(() => {
-    const configuredLanguages = (localization?.languages ?? [])
-      .map((language) => ({
-        ...language,
-        cultureName: getLanguageCulture(language),
-      }))
-      .filter((language) => Boolean(language.cultureName));
-
-    const nextLanguages =
-      configuredLanguages.length > 0 ? configuredLanguages : [FALLBACK_LANGUAGE];
-
-    return nextLanguages.some((language) => getLanguageCulture(language) === currentCulture)
-      ? nextLanguages
-      : [
-          { cultureName: currentCulture, displayName: currentCulture.toUpperCase() },
-          ...nextLanguages,
-        ];
-  }, [currentCulture, localization?.languages]);
-
-  const currentLanguage = languages.find(
-    (language) => getLanguageCulture(language) === currentCulture,
-  );
-  const languageLabel = t("Language");
-
-  if (languages.length <= 1) {
-    return null;
-  }
-
-  async function changeLanguage(culture: string) {
-    if (!culture || culture === currentCulture) {
-      return;
-    }
-
-    setIsChanging(true);
-
-    try {
-      const token = await getAccessToken();
-      const localizationData = await fetchAppLocalization(culture, token);
-      const translations = flattenLocalizationResources(localizationData as LocalizationData);
-
-      if (Object.keys(translations).length > 0) {
-        i18n.addResourceBundle(culture, "translation", translations, true, true);
-      }
-    } catch (err) {
-      console.error(`[i18n] Failed to load resources for culture "${culture}":`, err);
-    } finally {
-      persistLanguageSelection(culture);
-      await i18n.changeLanguage(culture);
-      setIsChanging(false);
-    }
-  }
-
-  return (
-    <Menu>
-      <MenuTrigger>
-        <Button
-          appearance="subtle"
-          size="small"
-          disabled={isChanging}
-          aria-label={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
-          title={`${languageLabel}: ${getLanguageLabel(currentLanguage ?? FALLBACK_LANGUAGE)}`}
-          icon={<Globe20Regular />}
-        />
-      </MenuTrigger>
-      <MenuPopover>
-        {languages.map((language) => {
-          const culture = getLanguageCulture(language);
-
-          return (
-            <MenuItem key={culture} onClick={() => void changeLanguage(culture)}>
-              {getLanguageLabel(language)}
-            </MenuItem>
-          );
-        })}
-      </MenuPopover>
-    </Menu>
   );
 }
 
@@ -275,6 +82,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     gap: tokens.spacingHorizontalS,
   },
+  // 品牌名回链：点击返回门户入口（/）
+  brandLink: {
+    textDecoration: "none",
+    color: "inherit",
+  },
   actions: {
     display: "flex",
     alignItems: "center",
@@ -283,7 +95,6 @@ const useStyles = makeStyles({
 });
 
 export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps) {
-  const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
   const styles = useStyles();
 
@@ -294,7 +105,7 @@ export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps
         size="small"
         className={styles.mobileMenuBtn}
         onClick={onMenuClick}
-        aria-label={t("Menu:Menu")}
+        aria-label={"菜单"}
         icon={<Navigation20Regular />}
       />
       <Button
@@ -302,23 +113,22 @@ export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps
         size="small"
         className={styles.collapseBtn}
         onClick={onToggleCollapse}
-        aria-label={
-          collapsed ? t("Menu:Expand", "Expand sidebar") : t("Menu:Collapse", "Collapse sidebar")
-        }
+        aria-label={collapsed ? "展开侧边栏" : "折叠侧边栏"}
         icon={<Navigation20Regular />}
       />
       <div className={styles.titleArea}>
-        <Text weight="semibold">AcroStack</Text>
+        <Link to="/" className={styles.brandLink} aria-label="AcroStack">
+          <Text weight="semibold">AcroStack</Text>
+        </Link>
       </div>
       <div className={styles.actions}>
-        <LanguageSwitcher />
         <ThemeToggle />
         {!isLoading &&
           (isAuthenticated ? (
             <UserMenu />
           ) : (
             <Button size="small" onClick={() => void login()} icon={<ArrowExit20Regular />}>
-              {t("AbpAccount::Login")}
+              {"登录"}
             </Button>
           ))}
       </div>

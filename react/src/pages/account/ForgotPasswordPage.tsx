@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button, Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
@@ -36,7 +35,6 @@ const useStyles = makeStyles({
 });
 
 export function ForgotPasswordPage() {
-  const { t } = useTranslation();
   const [sent, setSent] = useState(false);
   const [rootError, setRootError] = useState<string | null>(null);
   const styles = useStyles();
@@ -56,9 +54,7 @@ export function ForgotPasswordPage() {
             ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
                 ?.error?.message
             : undefined;
-        setRootError(
-          msg ?? t("AbpAccount::SendPasswordResetCodeFailed", "Failed to send reset code"),
-        );
+        setRootError(msg ?? "发送重置密码邮件失败");
       }
     },
   });
@@ -67,19 +63,12 @@ export function ForgotPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{t("AbpAccount::ForgotPassword")}</Text>}
-          description={
-            <Text size={200}>
-              {t(
-                "AbpAccount::PasswordResetMailSentMessage",
-                "If the email address exists, we have sent a password reset link.",
-              )}
-            </Text>
-          }
+          header={<Text weight="semibold">{"忘记密码？"}</Text>}
+          description={<Text size={200}>{"如果该邮箱地址存在，我们已发送密码重置链接。"}</Text>}
         />
         <div className={styles.body}>
           <Link to="/account/login">
-            <Button>{t("AbpAccount::Login")}</Button>
+            <Button>{"登录"}</Button>
           </Link>
         </div>
       </Card>
@@ -89,15 +78,8 @@ export function ForgotPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{t("AbpAccount::ForgotPassword")}</Text>}
-        description={
-          <Text size={200}>
-            {t(
-              "AbpAccount::SendPasswordResetCode_Information",
-              "Enter your email address and we will send you a link to reset your password.",
-            )}
-          </Text>
-        }
+        header={<Text weight="semibold">{"忘记密码？"}</Text>}
+        description={<Text size={200}>{"输入您的邮箱地址，我们将向您发送重置密码的链接。"}</Text>}
       />
       <div className={styles.body}>
         <form
@@ -117,17 +99,17 @@ export function ForgotPasswordPage() {
             name="email"
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::EmailAddress")}
+                label={"电子邮件地址"}
                 inputProps={{ type: "email", autoComplete: "email" }}
               />
             )}
           />
           <form.AppForm>
-            <form.SubmitButton label={t("AbpAccount::Submit")} className={styles.fullWidthButton} />
+            <form.SubmitButton label={"提交"} className={styles.fullWidthButton} />
           </form.AppForm>
           <Text as="p" size={200} align="center" block>
             <Link to="/account/login" className={styles.link}>
-              {t("AbpUi::BackToTheApplication")}
+              {"返回应用"}
             </Link>
           </Text>
         </form>

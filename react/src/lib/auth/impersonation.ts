@@ -27,7 +27,6 @@
  *    and restores it as the active session.
  */
 import { User } from "oidc-client-ts";
-import i18n from "i18next";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
@@ -71,8 +70,8 @@ interface OAuth2ErrorResponse {
  * The backend returns ABP localization resource keys (e.g.
  * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) as the OAuth2
  * <c>error_description</c> for known impersonation errors. We detect this
- * pattern and translate via i18next (<c>AbpAccount::Volo.Account:XXX</c>).
- * For unknown errors we fall back to the raw description or HTTP status.
+ * pattern and translate via a local message map. For unknown errors we
+ * fall back to the raw description or HTTP status.
  */
 async function extractImpersonationError(response: Response): Promise<string> {
   let rawBody: string | undefined;
@@ -99,26 +98,20 @@ async function extractImpersonationError(response: Response): Promise<string> {
     }
   }
 
-  return (
-    i18n.t("AbpAccount::Volo.Account:ImpersonateError") ||
-    `Impersonation failed (${response.status})`
-  );
+  return `模拟登录失败 (${response.status})`;
 }
 
 /**
- * Translates an ABP localization resource key (e.g.
- * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) into the current
- * language. Keys are prefixed with <c>AbpAccount::</c> to match the
- * en.json resource structure. Non-key strings are returned as-is.
+ * Translates known impersonation error keys returned by the backend
+ * (e.g. <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) into Chinese.
+ * Non-key strings are returned as-is.
  */
+const IMPERSONATION_ERROR_MESSAGES: Record<string, string> = {
+  "Volo.Account:NestedImpersonationIsNotAllowed": "不允许嵌套模拟登录",
+};
+
 function localizeImpersonationError(description: string): string {
-  if (description.startsWith("Volo.Account:")) {
-    const key = `AbpAccount::${description}`;
-    const translated = i18n.t(key);
-    // i18next returns the key itself when no translation is found.
-    return translated === key ? description : translated;
-  }
-  return description;
+  return IMPERSONATION_ERROR_MESSAGES[description] ?? description;
 }
 
 /**

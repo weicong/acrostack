@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -55,7 +54,6 @@ const useStyles = makeStyles({
 // ── Component ───────────────────────────────────────────────────────
 
 export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("tag-form-");
   const { dispatchToast } = useToastController();
@@ -89,7 +87,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -107,7 +105,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -125,9 +123,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("Cms:EditTag") : t("Cms:NewTag")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑标签" : "新建标签"}</DialogTitle>
           <DialogContent>
             {open && (
               <form.AppForm>
@@ -142,7 +138,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
                     name="entityType"
                     children={(field) => (
                       <field.TextField
-                        label={t("Cms:EntityType")}
+                        label={"实体类型"}
                         required
                         inputProps={{ disabled: isEdit }}
                       />
@@ -150,13 +146,13 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
                   />
                   <form.AppField
                     name="name"
-                    children={(field) => <field.TextField label={t("Cms:Name")} required />}
+                    children={(field) => <field.TextField label={"名称"} required />}
                   />
                   <div className={styles.actions}>
-                    <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+                    <form.SubmitButton label={isEdit ? "保存" : "创建"} />
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary" disabled={isPending}>
-                        {t("AbpUi::Cancel")}
+                        {"取消"}
                       </Button>
                     </DialogTrigger>
                   </div>

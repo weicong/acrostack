@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, SearchBox, Select, makeStyles, tokens } from "@fluentui/react-components";
@@ -23,7 +23,7 @@ import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { BookFormDialog } from "./BookFormDialog";
 import { toFormBook, type BookFormBook, type BookListItem } from "./book-types";
 import { bookTypeOptions } from "./bookTypeOptions";
-import { Route } from "@/routes/books";
+import { Route } from "@/routes/admin/books";
 
 type BookItem = BookListItem;
 
@@ -59,7 +59,6 @@ function useBooksTable(
   searchQuery: string,
   typeFilter?: number,
 ) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   const tableState = useDataTableState({
@@ -81,23 +80,23 @@ function useBooksTable(
       {
         id: "name",
         accessorKey: "name",
-        header: t("BookStore:Name"),
+        header: "书名",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "type",
         accessorKey: "type",
-        header: t("BookStore:Type"),
+        header: "类型",
         cell: (info) => {
           const type = info.getValue() as number | undefined;
-          const label = bookTypeOptions.find((o) => o.value === type)?.key;
-          return label ? t(label) : "-";
+          const label = bookTypeOptions.find((o) => o.value === type)?.label;
+          return label ?? "-";
         },
       },
       {
         id: "publishDate",
         accessorKey: "publishDate",
-        header: t("BookStore:PublishDate"),
+        header: "出版日期",
         cell: (info) => {
           const date = info.getValue() as string | undefined;
           return date ? format(new Date(date), "yyyy-MM-dd") : "-";
@@ -106,7 +105,7 @@ function useBooksTable(
       {
         id: "price",
         accessorKey: "price",
-        header: t("BookStore:Price"),
+        header: "价格",
         cell: (info) => {
           const price = info.getValue() as number | undefined;
           return price != null ? price.toFixed(2) : "-";
@@ -125,7 +124,7 @@ function useBooksTable(
                 e.stopPropagation();
                 onEdit(info.row.original);
               }}
-              aria-label={t("AbpUi::Edit")}
+              aria-label={"编辑"}
             />
             <Button
               size="small"
@@ -135,13 +134,13 @@ function useBooksTable(
                 e.stopPropagation();
                 onDelete(info.row.original.id!);
               }}
-              aria-label={t("AbpUi::Delete")}
+              aria-label={"删除"}
             />
           </div>
         ),
       },
     ],
-    [t, styles.actionsCell, onEdit, onDelete],
+    [styles.actionsCell, onEdit, onDelete],
   );
 
   const table = useDataTable({
@@ -159,7 +158,6 @@ function useBooksTable(
 }
 
 export function BooksPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const deleteMutation = useBookDelete();
@@ -225,11 +223,11 @@ export function BooksPage() {
   const isFilterDirty = searchInput !== "" || typeFilter !== undefined;
 
   return (
-    <PageLayout title={t("Menu:Books")}>
+    <PageLayout title={"图书"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchInput}
             onChange={(_, data) => setSearchInput(data.value)}
             onKeyDown={(e) => {
@@ -242,27 +240,27 @@ export function BooksPage() {
             value={typeFilter != null ? String(typeFilter) : ""}
             onChange={(_, data) => setTypeFilter(data.value ? Number(data.value) : undefined)}
           >
-            <option value="">{t("BookStore:AllTypes")}</option>
+            <option value="">{"全部类型"}</option>
             {bookTypeOptions
               .filter((o) => o.value !== 0)
               .map((o) => (
                 <option key={o.value} value={String(o.value)}>
-                  {t(o.key)}
+                  {o.label}
                 </option>
               ))}
           </Select>
           <Button appearance="secondary" icon={<Search20Regular />} onClick={handleSearch}>
-            {t("AbpUi::Search")}
+            {"搜索"}
           </Button>
           {isFilterDirty && (
             <Button appearance="subtle" icon={<ArrowReset20Regular />} onClick={handleReset}>
-              {t("AbpUi::Reset")}
+              {"重置"}
             </Button>
           )}
         </div>
         <div className={styles.actionButtons}>
           <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-            {t("BookStore:NewBook")}
+            {"新增图书"}
           </Button>
         </div>
       </div>
@@ -286,9 +284,9 @@ export function BooksPage() {
         onOpenChange={(open) => {
           if (!open) setDeleteBookId(null);
         }}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

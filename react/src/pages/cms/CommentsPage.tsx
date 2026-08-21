@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Badge,
   Button,
@@ -77,7 +76,6 @@ function getAuthorName(comment: CommentItem): string {
 }
 
 export function CommentsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
@@ -133,14 +131,14 @@ export function CommentsPage() {
         onSuccess: () => {
           setDeleteCommentId(null);
           invalidateList();
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deleteCommentId, deleteMutation, invalidateList, dispatchToast, t]);
+  }, [deleteCommentId, deleteMutation, invalidateList, dispatchToast]);
 
   const handleToggleApproval = useCallback(
     (comment: CommentItem) => {
@@ -154,7 +152,7 @@ export function CommentsPage() {
         {
           onSuccess: () => {
             invalidateList();
-            dispatchToast(newApproved ? t("Cms:CommentApproved") : t("Cms:CommentUnapproved"), {
+            dispatchToast(newApproved ? "评论已通过" : "评论已取消通过", {
               intent: "success",
             });
           },
@@ -164,51 +162,48 @@ export function CommentsPage() {
         },
       );
     },
-    [approvalMutation, invalidateList, dispatchToast, t],
+    [approvalMutation, invalidateList, dispatchToast],
   );
 
-  const renderApprovalBadge = useCallback(
-    (isApproved: boolean | null | undefined) => {
-      if (isApproved === true) {
-        return (
-          <Badge appearance="filled" color="success">
-            {t("Cms:CommentApproved")}
-          </Badge>
-        );
-      }
-      if (isApproved === false) {
-        return (
-          <Badge appearance="filled" color="danger">
-            {t("Cms:CommentRejected")}
-          </Badge>
-        );
-      }
+  const renderApprovalBadge = useCallback((isApproved: boolean | null | undefined) => {
+    if (isApproved === true) {
       return (
-        <Badge appearance="filled" color="warning">
-          {t("Cms:CommentWaiting")}
+        <Badge appearance="filled" color="success">
+          {"评论已通过"}
         </Badge>
       );
-    },
-    [t],
-  );
+    }
+    if (isApproved === false) {
+      return (
+        <Badge appearance="filled" color="danger">
+          {"评论已拒绝"}
+        </Badge>
+      );
+    }
+    return (
+      <Badge appearance="filled" color="warning">
+        {"评论已标记为等待"}
+      </Badge>
+    );
+  }, []);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, CommentItem>[]>(
     () => [
       {
         id: "author",
-        header: t("Cms:Author"),
+        header: "作者",
         cell: ({ row }) => getAuthorName(row.original),
       },
       {
         id: "entityType",
         accessorKey: "entityType",
-        header: t("Cms:EntityType"),
+        header: "实体类型",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "entityId",
         accessorKey: "entityId",
-        header: t("Cms:EntityId"),
+        header: "实体 ID",
         cell: (info) => {
           const value = info.getValue() as string | null | undefined;
           if (!value) return "-";
@@ -218,7 +213,7 @@ export function CommentsPage() {
       {
         id: "text",
         accessorKey: "text",
-        header: t("Cms:Text"),
+        header: "内容",
         cell: (info) => {
           const text = (info.getValue() as string | null | undefined) ?? "";
           if (!text) return "-";
@@ -228,13 +223,13 @@ export function CommentsPage() {
       {
         id: "isApproved",
         accessorKey: "isApproved",
-        header: t("Cms:ApprovalStatus"),
+        header: "审核状态",
         cell: (info) => renderApprovalBadge(info.getValue() as boolean | null | undefined),
       },
       {
         id: "creationTime",
         accessorKey: "creationTime",
-        header: t("AbpUi::CreationTime"),
+        header: "创建时间",
         cell: (info) => {
           const date = info.getValue() as string | undefined;
           return date ? format(new Date(date), "yyyy-MM-dd HH:mm") : "-";
@@ -242,7 +237,7 @@ export function CommentsPage() {
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             {canManage && row.original.id && (
@@ -251,8 +246,8 @@ export function CommentsPage() {
                 appearance="subtle"
                 icon={row.original.isApproved ? <Circle20Regular /> : <CheckmarkCircle20Regular />}
                 onClick={() => handleToggleApproval(row.original)}
-                aria-label={row.original.isApproved ? t("Cms:Unapprove") : t("Cms:Approve")}
-                title={row.original.isApproved ? t("Cms:Unapprove") : t("Cms:Approve")}
+                aria-label={row.original.isApproved ? "取消通过" : "通过"}
+                title={row.original.isApproved ? "取消通过" : "通过"}
               />
             )}
             {canDelete && (
@@ -261,8 +256,8 @@ export function CommentsPage() {
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 onClick={() => row.original.id && handleDelete(row.original.id)}
-                aria-label={t("AbpUi::Delete")}
-                title={t("AbpUi::Delete")}
+                aria-label={"删除"}
+                title={"删除"}
               />
             )}
           </div>
@@ -270,7 +265,6 @@ export function CommentsPage() {
       },
     ],
     [
-      t,
       styles.actionsCell,
       canManage,
       canDelete,
@@ -301,16 +295,16 @@ export function CommentsPage() {
   }, [searchValue, tableState.state]);
 
   return (
-    <PageLayout title={t("Cms:Comments")}>
+    <PageLayout title={"评论"}>
       <div className={styles.toolbar}>
         <div className={styles.field}>
-          <label htmlFor="comment-entity-type">{t("Cms:EntityType")}</label>
+          <label htmlFor="comment-entity-type">{"实体类型"}</label>
           <Input
             id="comment-entity-type"
             className={styles.entityTypeInput}
             value={entityType}
             onChange={(_, data) => setEntityType(data.value)}
-            placeholder={t("Cms:EntityTypePlaceholder")}
+            placeholder={"全部类型"}
             contentAfter={
               <Button
                 size="small"
@@ -318,22 +312,22 @@ export function CommentsPage() {
                 icon={<Search20Regular />}
                 onClick={goToFirstPage}
                 disabled={!entityType.trim()}
-                aria-label={t("AbpUi::Search")}
+                aria-label={"搜索"}
               />
             }
           />
         </div>
         <div className={styles.field}>
-          <label htmlFor="comment-state-filter">{t("Cms:ApprovalStatus")}</label>
+          <label htmlFor="comment-state-filter">{"审核状态"}</label>
           <Dropdown
             id="comment-state-filter"
             className={styles.stateFilter}
-            placeholder={t("Cms:AllStates")}
+            placeholder={"全部状态"}
             value={
               approvalState === CommentApproveState.Approved
-                ? t("Cms:CommentApproved")
+                ? "评论已通过"
                 : approvalState === CommentApproveState.WaitingForApproval
-                  ? t("Cms:CommentWaiting")
+                  ? "评论已标记为等待"
                   : ""
             }
             onOptionSelect={(_, data) => {
@@ -343,20 +337,20 @@ export function CommentsPage() {
             }}
             clearable
           >
-            <Option value="">{t("Cms:AllStates")}</Option>
-            <Option value={String(CommentApproveState.Approved)}>{t("Cms:CommentApproved")}</Option>
+            <Option value="">{"全部状态"}</Option>
+            <Option value={String(CommentApproveState.Approved)}>{"评论已通过"}</Option>
             <Option value={String(CommentApproveState.WaitingForApproval)}>
-              {t("Cms:CommentWaiting")}
+              {"评论已标记为等待"}
             </Option>
           </Dropdown>
         </div>
         <div className={styles.field} style={{ flex: 1, minWidth: "200px" }}>
-          <label htmlFor="comment-search">{t("AbpUi::Search")}</label>
+          <label htmlFor="comment-search">{"搜索"}</label>
           <Input
             id="comment-search"
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
-            placeholder={t("Cms:SearchComments")}
+            placeholder={"搜索评论..."}
             contentBefore={<Search20Regular />}
           />
         </div>
@@ -372,9 +366,9 @@ export function CommentsPage() {
       <ConfirmDialog
         open={deleteCommentId !== null}
         onOpenChange={(open) => !open && setDeleteCommentId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

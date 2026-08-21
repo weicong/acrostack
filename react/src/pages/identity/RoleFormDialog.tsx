@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -24,7 +23,6 @@ type RoleFormDialogProps = {
 // ── Component ───────────────────────────────────────────────────────
 
 export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleFormDialogProps) {
-  const { t } = useTranslation();
   const dialogId = useId("role-form-");
   const isEdit = !!role;
 
@@ -32,9 +30,7 @@ export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleForm
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("AbpIdentity::Edit") : t("AbpIdentity::NewRole")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新角色"}</DialogTitle>
           <DialogContent>
             <RoleForm
               key={role?.id ?? "create"}
@@ -42,7 +38,7 @@ export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleForm
               onSuccess={onSuccess}
               footer={
                 <DialogTrigger disableButtonEnhancement>
-                  <Button appearance="secondary">{t("AbpUi::Cancel")}</Button>
+                  <Button appearance="secondary">{"取消"}</Button>
                 </DialogTrigger>
               }
             />

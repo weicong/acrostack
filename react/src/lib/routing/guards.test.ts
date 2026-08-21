@@ -88,7 +88,7 @@ describe("guards", () => {
         await guard(CONTEXT);
         expect.fail("Should have thrown");
       } catch (err: unknown) {
-        expect((err as Error & { to: string }).to).toBe("/403");
+        expect((err as Error & { to: string }).to).toBe("/admin/403");
       }
     });
 

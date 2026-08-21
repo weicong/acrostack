@@ -64,13 +64,6 @@ export function invalidateAppConfig(queryClient: QueryClient): void {
   void queryClient.invalidateQueries({ queryKey: ["abp-app-config"] });
 }
 
-export async function fetchAppLocalization(culture: string, token: string | null) {
-  const headers: Record<string, string> = {};
-  const tenantId = getTenantId();
-  if (tenantId) headers.__tenant = tenantId;
-  return appConfig.fetchLocalization(culture, token, { headers });
-}
-
 /** For non-React guard usage. Supports compound policies (|| and &&). */
 export function isPolicyGranted(policy: string): boolean {
   const sections = appConfig.getSections() as {

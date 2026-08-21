@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -95,7 +94,6 @@ function flattenPermissions(
 }
 
 export function PermissionsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -174,7 +172,7 @@ export function PermissionsPage() {
       .map(([name, isGranted]) => ({ name, isGranted }));
 
     if (changedPermissions.length === 0) {
-      dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "info" });
+      dispatchToast("保存成功", { intent: "info" });
       return;
     }
 
@@ -188,7 +186,7 @@ export function PermissionsPage() {
           void queryClient.invalidateQueries({
             queryKey: permissionsGetQueryKey({ query: { providerName, providerKey } }),
           });
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -198,15 +196,11 @@ export function PermissionsPage() {
   };
 
   return (
-    <PageLayout title={t("AbpPermissionManagement::Permissions")}>
+    <PageLayout title={"权限"}>
       <div className={styles.toolbar}>
-        <Field label={t("AbpPermissionManagement::Provider")} className={styles.providerSelect}>
+        <Field label={"提供程序"} className={styles.providerSelect}>
           <Dropdown
-            value={
-              providerName === "R"
-                ? t("AbpIdentity::Role")
-                : t("AbpIdentity::UserResourcePermissionProviderKeyLookupService")
-            }
+            value={providerName === "R" ? "角色" : "用户"}
             selectedOptions={[providerName]}
             onOptionSelect={(_, data) => {
               const next = data.optionValue as ProviderName;
@@ -214,23 +208,14 @@ export function PermissionsPage() {
               setProviderKey("");
             }}
           >
-            <Option value="R">{t("AbpIdentity::Role")}</Option>
-            <Option value="U">
-              {t("AbpIdentity::UserResourcePermissionProviderKeyLookupService")}
-            </Option>
+            <Option value="R">{"角色"}</Option>
+            <Option value="U">{"用户"}</Option>
           </Dropdown>
         </Field>
 
-        <Field
-          label={
-            providerName === "R"
-              ? t("AbpIdentity::Role")
-              : t("AbpIdentity::UserResourcePermissionProviderKeyLookupService")
-          }
-          className={styles.providerSelect}
-        >
+        <Field label={providerName === "R" ? "角色" : "用户"} className={styles.providerSelect}>
           <Dropdown
-            placeholder={t("AbpPermissionManagement::SelectProvider")}
+            placeholder={"选择提供程序"}
             selectedOptions={providerKey ? [providerKey] : []}
             value={roles.find((r) => r.id === providerKey)?.name ?? ""}
             onOptionSelect={(_, data) => {
@@ -246,23 +231,15 @@ export function PermissionsPage() {
         </Field>
       </div>
 
-      {!providerKey && (
-        <Text>{t("AbpPermissionManagement::PleaseSelectProviderAndPermissions")}</Text>
-      )}
+      {!providerKey && <Text>{"请选择提供程序和权限"}</Text>}
 
-      {providerKey && permissionsQuery.isLoading && (
-        <Spinner label={t("AbpUi::LoadingWithThreeDot")} />
-      )}
+      {providerKey && permissionsQuery.isLoading && <Spinner label={"加载中..."} />}
 
-      {providerKey && permissionsQuery.isError && (
-        <Text>{t("AbpPermissionManagement::ErrorLoadingPermissions")}</Text>
-      )}
+      {providerKey && permissionsQuery.isError && <Text>{"加载权限时出错"}</Text>}
 
       {providerKey && permissionsQuery.data && (
         <>
-          {flatPermissionsByGroup.length === 0 && (
-            <Text>{t("AbpPermissionManagement::NoResourcePermissionFound")}</Text>
-          )}
+          {flatPermissionsByGroup.length === 0 && <Text>{"未定义任何权限。"}</Text>}
           <div className={styles.groups}>
             {flatPermissionsByGroup.map(({ group, flat }) => {
               const allGranted = (group.permissions ?? []).every(
@@ -304,7 +281,7 @@ export function PermissionsPage() {
           </div>
           <div className={styles.actions}>
             <Button appearance="primary" onClick={handleSave} disabled={updateMutation.isPending}>
-              {t("AbpUi::Save")}
+              {"保存"}
             </Button>
           </div>
         </>

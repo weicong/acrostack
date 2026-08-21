@@ -7,7 +7,7 @@ import { People20Regular } from "@fluentui/react-icons";
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
-  nameKey: "AbpIdentity::Users",
+  name: "用户",
   icon: People20Regular,
   requiredPolicy: "AbpIdentity.Users",
 };

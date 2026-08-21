@@ -13,8 +13,8 @@
 import type { ComponentType } from "react";
 
 export interface RouteMenuConfig {
-  /** i18n translation key for the menu item label. */
-  nameKey: string;
+  /** Menu item display name (system is Chinese-only; no i18n lookup). */
+  name: string;
   /** Icon component to display in the sidebar. */
   icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   /** Sort order for menu items (lower = higher priority). */
@@ -37,8 +37,8 @@ export interface RouteMenuConfig {
 export interface RouteMenuConfigChild {
   /** Relative path from parent route (e.g., "users" for /identity/users). */
   path: string;
-  /** i18n translation key for the menu item label. */
-  nameKey: string;
+  /** Menu item display name (system is Chinese-only; no i18n lookup). */
+  name: string;
   /** Icon component to display in the sidebar. */
   icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   /** ABP policy required to view this menu item (checked by isGranted). */
@@ -71,7 +71,7 @@ export interface MenuRoute {
 export function asChild(relativePath: string, menu: RouteMenuConfig): RouteMenuConfigChild {
   return {
     path: relativePath,
-    nameKey: menu.nameKey,
+    name: menu.name,
     icon: menu.icon,
     requiredPolicy: menu.requiredPolicy,
     requiresAuth: menu.requiresAuth,

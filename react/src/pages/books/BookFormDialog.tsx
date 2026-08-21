@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -24,7 +23,6 @@ type BookFormDialogProps = {
 // ── Component ───────────────────────────────────────────────────────
 
 export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookFormDialogProps) {
-  const { t } = useTranslation();
   const dialogId = useId("book-form-");
   const isEdit = !!book;
 
@@ -32,9 +30,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("BookStore:EditBook") : t("BookStore:NewBook")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑图书" : "新增图书"}</DialogTitle>
           <DialogContent>
             {open && (
               <BookForm
@@ -43,7 +39,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
                 onSuccess={onSuccess}
                 footer={
                   <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="secondary">{t("AbpUi::Cancel")}</Button>
+                    <Button appearance="secondary">{"取消"}</Button>
                   </DialogTrigger>
                 }
               />

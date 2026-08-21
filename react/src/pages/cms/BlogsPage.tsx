@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   SearchBox,
@@ -52,7 +51,6 @@ const useStyles = makeStyles({
 });
 
 export function BlogsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
@@ -110,38 +108,38 @@ export function BlogsPage() {
           void queryClient.invalidateQueries({
             queryKey: blogAdminGetListQueryKey(),
           });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deleteBlogId, deleteMutation, queryClient, dispatchToast, t]);
+  }, [deleteBlogId, deleteMutation, queryClient, dispatchToast]);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, BlogItem>[]>(
     () => [
       {
         id: "name",
         accessorKey: "name",
-        header: t("Cms:Name"),
+        header: "名称",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "slug",
         accessorKey: "slug",
-        header: t("Cms:Slug"),
+        header: "Slug",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "blogPostCount",
         accessorKey: "blogPostCount",
-        header: t("Cms:BlogPostCount"),
+        header: "文章数",
         cell: (info) => String((info.getValue() as number | null | undefined) ?? 0),
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             {canUpdate && (
@@ -150,8 +148,8 @@ export function BlogsPage() {
                 appearance="subtle"
                 icon={<Edit20Regular />}
                 onClick={() => handleEdit(row.original)}
-                aria-label={t("AbpUi::Edit")}
-                title={t("AbpUi::Edit")}
+                aria-label={"编辑"}
+                title={"编辑"}
               />
             )}
             {canDelete && (
@@ -160,15 +158,15 @@ export function BlogsPage() {
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 onClick={() => row.original.id && handleDelete(row.original.id)}
-                aria-label={t("AbpUi::Delete")}
-                title={t("AbpUi::Delete")}
+                aria-label={"删除"}
+                title={"删除"}
               />
             )}
           </div>
         ),
       },
     ],
-    [t, styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete],
+    [styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete],
   );
 
   const table = useDataTable({
@@ -192,11 +190,11 @@ export function BlogsPage() {
   }, [searchValue, tableState.state]);
 
   return (
-    <PageLayout title={t("Cms:Blogs")}>
+    <PageLayout title={"博客"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -205,7 +203,7 @@ export function BlogsPage() {
         {canCreate && (
           <div className={styles.actionButtons}>
             <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {t("Cms:NewBlog")}
+              {"新建博客"}
             </Button>
           </div>
         )}
@@ -228,9 +226,9 @@ export function BlogsPage() {
       <ConfirmDialog
         open={deleteBlogId !== null}
         onOpenChange={(open) => !open && setDeleteBlogId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

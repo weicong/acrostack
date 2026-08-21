@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -58,7 +57,6 @@ function useRolesTable(
   onManageClaims: (role: RoleItemRow) => void,
   canManageClaims: boolean,
 ) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   const tableState = useDataTableState({
@@ -77,17 +75,17 @@ function useRolesTable(
       {
         id: "name",
         accessorKey: "name",
-        header: t("AbpIdentity::RoleName"),
+        header: "角色名称",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "isDefault",
         accessorKey: "isDefault",
-        header: t("AbpIdentity::Default"),
+        header: "默认",
         cell: (info) =>
           info.getValue() ? (
             <Badge appearance="filled" color="brand" size="small">
-              {t("AbpIdentity::Default")}
+              {"默认"}
             </Badge>
           ) : (
             "-"
@@ -96,11 +94,11 @@ function useRolesTable(
       {
         id: "isPublic",
         accessorKey: "isPublic",
-        header: t("AbpIdentity::Public"),
+        header: "公开",
         cell: (info) =>
           info.getValue() ? (
             <Badge appearance="filled" color="success" size="small">
-              {t("AbpIdentity::Public")}
+              {"公开"}
             </Badge>
           ) : (
             "-"
@@ -109,11 +107,11 @@ function useRolesTable(
       {
         id: "isStatic",
         accessorKey: "isStatic",
-        header: t("AbpIdentity::IsStatic"),
+        header: "静态",
         cell: (info) =>
           info.getValue() ? (
             <Badge appearance="filled" color="warning" size="small">
-              {t("AbpIdentity::True")}
+              {"是"}
             </Badge>
           ) : (
             "-"
@@ -136,7 +134,7 @@ function useRolesTable(
                   e.stopPropagation();
                   onEdit(row);
                 }}
-                aria-label={t("AbpUi::Edit")}
+                aria-label={"编辑"}
               />
               <Button
                 size="small"
@@ -147,7 +145,7 @@ function useRolesTable(
                   e.stopPropagation();
                   onDelete(row.id!);
                 }}
-                aria-label={t("AbpUi::Delete")}
+                aria-label={"删除"}
               />
               {canManageClaimsRow && (
                 <Button
@@ -158,8 +156,8 @@ function useRolesTable(
                     e.stopPropagation();
                     onManageClaims(row);
                   }}
-                  aria-label={t("AbpIdentity::Claims")}
-                  title={t("AbpIdentity::Claims")}
+                  aria-label={"声明"}
+                  title={"声明"}
                 />
               )}
             </div>
@@ -167,7 +165,7 @@ function useRolesTable(
         },
       },
     ],
-    [t, styles.actionsCell, onEdit, onDelete, onManageClaims, canManageClaims],
+    [styles.actionsCell, onEdit, onDelete, onManageClaims, canManageClaims],
   );
 
   const table = useDataTable({
@@ -185,7 +183,6 @@ function useRolesTable(
 }
 
 export function RolesPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const deleteMutation = useRoleDelete();
@@ -219,8 +216,8 @@ export function RolesPage() {
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     void queryClient.invalidateQueries({ queryKey: roleGetListQueryKey() });
-    dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
-  }, [queryClient, dispatchToast, t]);
+    dispatchToast("保存成功", { intent: "success" });
+  }, [queryClient, dispatchToast]);
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteRoleId) return;
@@ -230,14 +227,14 @@ export function RolesPage() {
         onSuccess: () => {
           setDeleteRoleId(null);
           void queryClient.invalidateQueries({ queryKey: roleGetListQueryKey() });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deleteRoleId, deleteMutation, queryClient, dispatchToast, t]);
+  }, [deleteRoleId, deleteMutation, queryClient, dispatchToast]);
 
   const { table, query, tableState } = useRolesTable(
     handleEdit,
@@ -256,11 +253,11 @@ export function RolesPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AbpIdentity::Roles")}>
+    <PageLayout title={"角色"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -268,7 +265,7 @@ export function RolesPage() {
         </div>
         <div className={styles.actionButtons}>
           <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-            {t("AbpIdentity::NewRole")}
+            {"新角色"}
           </Button>
         </div>
       </div>
@@ -301,9 +298,9 @@ export function RolesPage() {
         onOpenChange={(open) => {
           if (!open) setDeleteRoleId(null);
         }}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpIdentity::RoleDeleteConfirmationMessage")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此角色吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

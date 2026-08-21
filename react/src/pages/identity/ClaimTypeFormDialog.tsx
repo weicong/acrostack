@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -20,10 +19,10 @@ import { createClaimTypeSchema, updateClaimTypeSchema } from "./claim-type-schem
 
 // Mirrors Volo.Abp.Identity.IdentityClaimValueType enum (int32).
 const CLAIM_VALUE_TYPE_OPTIONS = [
-  { value: "0", nameKey: "AcroStack::ClaimValueType:String" },
-  { value: "1", nameKey: "AcroStack::ClaimValueType:Int" },
-  { value: "2", nameKey: "AcroStack::ClaimValueType:Boolean" },
-  { value: "3", nameKey: "AcroStack::ClaimValueType:DateTime" },
+  { value: "0", label: "字符串" },
+  { value: "1", label: "整数" },
+  { value: "2", label: "布尔值" },
+  { value: "3", label: "日期时间" },
 ] as const;
 
 // ── Props ───────────────────────────────────────────────────────────
@@ -59,7 +58,6 @@ export function ClaimTypeFormDialog({
   seed,
   onSuccess,
 }: ClaimTypeFormDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("claim-type-form-");
   const { dispatchToast } = useToastController();
@@ -110,7 +108,7 @@ export function ClaimTypeFormDialog({
       };
 
       const handleSuccess = () => {
-        dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+        dispatchToast("保存成功", { intent: "success" });
         onSuccess();
       };
       const handleError = (err: unknown) => {
@@ -134,9 +132,7 @@ export function ClaimTypeFormDialog({
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("AbpIdentity::Edit") : t("AcroStack::NewClaimType")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新建声明类型"}</DialogTitle>
           <DialogContent>
             {open && (
               <form.AppForm>
@@ -151,7 +147,7 @@ export function ClaimTypeFormDialog({
                     name="name"
                     children={(field) => (
                       <field.TextField
-                        label={t("AbpIdentity::Name")}
+                        label={"名称"}
                         required
                         inputProps={{ disabled: isStatic }}
                       />
@@ -159,17 +155,15 @@ export function ClaimTypeFormDialog({
                   />
                   <form.AppField
                     name="description"
-                    children={(field) => (
-                      <field.TextareaField label={t("AbpIdentity::Description")} />
-                    )}
+                    children={(field) => <field.TextareaField label={"描述"} />}
                   />
                   <form.AppField
                     name="valueType"
                     children={(field) => (
-                      <field.SelectField label={t("AcroStack::ClaimValueType")} required>
+                      <field.SelectField label={"值类型"} required>
                         {CLAIM_VALUE_TYPE_OPTIONS.map((o) => (
                           <option key={o.value} value={o.value}>
-                            {t(o.nameKey)}
+                            {o.label}
                           </option>
                         ))}
                       </field.SelectField>
@@ -177,17 +171,17 @@ export function ClaimTypeFormDialog({
                   />
                   <form.AppField
                     name="regex"
-                    children={(field) => <field.TextField label={t("AcroStack::ClaimTypeRegex")} />}
+                    children={(field) => <field.TextField label={"正则表达式"} />}
                   />
                   <form.AppField
                     name="isRequired"
-                    children={(field) => <field.SwitchField label={t("AbpIdentity::IsRequired")} />}
+                    children={(field) => <field.SwitchField label={"必填"} />}
                   />
                   <div className={styles.actions}>
-                    <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+                    <form.SubmitButton label={isEdit ? "保存" : "创建"} />
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary" disabled={isPending}>
-                        {t("AbpUi::Cancel")}
+                        {"取消"}
                       </Button>
                     </DialogTrigger>
                   </div>

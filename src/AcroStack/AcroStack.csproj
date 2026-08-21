@@ -119,6 +119,8 @@
     <ProjectReference Include="..\..\modules\AcroStack.AppUsers\AcroStack.AppUsers.csproj" />
     <ProjectReference Include="..\..\modules\AcroStack.FileManagement\AcroStack.FileManagement.csproj" />
     <ProjectReference Include="..\..\modules\AcroStack.Chat\AcroStack.Chat.csproj" />
+    <ProjectReference Include="..\..\modules\classroom\src\Classroom.HttpApi\Classroom.HttpApi.csproj" />
+    <ProjectReference Include="..\..\modules\classroom\src\Classroom.EntityFrameworkCore\Classroom.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

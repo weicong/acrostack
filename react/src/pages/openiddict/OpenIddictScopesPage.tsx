@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   SearchBox,
@@ -45,7 +44,6 @@ const useStyles = makeStyles({
 });
 
 export function OpenIddictScopesPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -71,7 +69,7 @@ export function OpenIddictScopesPage() {
         onSuccess: () => {
           setDeleteScopeId(null);
           void queryClient.invalidateQueries({ queryKey: openIddictScopeGetListQueryKey() });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -84,33 +82,33 @@ export function OpenIddictScopesPage() {
     () => [
       {
         id: "name",
-        header: t("AbpOpenIddict::Name"),
+        header: "名称",
         cell: ({ row }) => <code>{row.original.name ?? "-"}</code>,
       },
       {
         id: "displayName",
-        header: t("AbpOpenIddict::DisplayName"),
+        header: "显示名称",
         cell: ({ row }) => row.original.displayName ?? "-",
       },
       {
         id: "description",
-        header: t("AbpOpenIddict::Description"),
+        header: "描述",
         cell: ({ row }) => row.original.description ?? "-",
       },
       {
         id: "resources",
-        header: t("AbpOpenIddict::Resources"),
+        header: "资源",
         cell: ({ row }) => row.original.resources?.length ?? 0,
       },
       {
         id: "creationTime",
-        header: t("AbpUi::CreationTime"),
+        header: "创建时间",
         cell: ({ row }) =>
           row.original.creationTime ? new Date(row.original.creationTime).toLocaleString() : "-",
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             <Button
@@ -118,13 +116,13 @@ export function OpenIddictScopesPage() {
               appearance="subtle"
               icon={<Delete20Regular />}
               onClick={() => setDeleteScopeId(row.original.id ?? "")}
-              title={t("AbpUi::Delete")}
+              title={"删除"}
             />
           </div>
         ),
       },
     ],
-    [t, styles.actionsCell],
+    [styles.actionsCell],
   );
 
   const table = useDataTable({
@@ -147,11 +145,11 @@ export function OpenIddictScopesPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AbpOpenIddict::Scopes")}>
+    <PageLayout title={"Scope"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -169,9 +167,9 @@ export function OpenIddictScopesPage() {
       <ConfirmDialog
         open={deleteScopeId !== null}
         onOpenChange={(open) => !open && setDeleteScopeId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpOpenIddict::ScopeDeleteConfirmation")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此 Scope 吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

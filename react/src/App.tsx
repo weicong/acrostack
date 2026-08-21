@@ -6,7 +6,6 @@ import { Toaster } from "@fluentui/react-components";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import { queryClient } from "@/lib/queryClient";
 import { RouteEventProvider } from "@/lib/routing/RouteEventProvider";
-import "@/lib/i18n/i18n";
 
 const router = createRouter({ routeTree });
 

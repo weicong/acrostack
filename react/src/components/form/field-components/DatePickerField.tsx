@@ -1,5 +1,6 @@
 import { Field, type FieldProps } from "@fluentui/react-components";
 import { DatePicker, type DatePickerProps } from "@fluentui/react-datepicker-compat";
+import { zhCNDatePickerDefaults } from "@/lib/ui/datePickerLocalization";
 import { useFieldContext } from "../form-context";
 import { getErrorMessage } from "./field-error";
 
@@ -39,6 +40,7 @@ export function DatePickerField({
         onSelectDate={(date) => field.handleChange(date ?? null)}
         onBlur={field.handleBlur}
         placeholder={placeholder}
+        {...zhCNDatePickerDefaults}
         {...datePickerProps}
       />
     </Field>

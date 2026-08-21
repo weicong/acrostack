@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { Button, Card, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -17,15 +16,14 @@ const useStyles = makeStyles({
 });
 
 export function HomePage() {
-  const { t } = useTranslation();
   const { isAuthenticated, navigateToLogin } = useAuth();
   const styles = useStyles();
 
   return (
-    <PageLayout title={t("Welcome")}>
+    <PageLayout title={"欢迎"}>
       {!isAuthenticated && (
         <div className={styles.loginActions}>
-          <Button onClick={navigateToLogin}>{t("AbpAccount::Login")}</Button>
+          <Button onClick={navigateToLogin}>{"登录"}</Button>
         </div>
       )}
 
@@ -34,9 +32,9 @@ export function HomePage() {
           ABP React UI
         </Text>
         <Text as="p" block>
-          This application is built with the ABP Framework React UI. You can use the pre-built
-          components, layouts, and services to develop your application. Explore the full React UI
-          documentation to learn how to customize and extend every aspect of the UI.
+          本应用基于 ABP Framework React UI
+          构建。你可以使用预置的组件、布局和服务快速开发应用。查阅完整的 React UI
+          文档，了解如何自定义和扩展 UI 的各个方面。
         </Text>
         <a
           href="https://abp.io/docs/latest/framework/ui/react/index"
@@ -44,7 +42,7 @@ export function HomePage() {
           rel="noreferrer"
           className={styles.docLink}
         >
-          <Button appearance="outline">React UI Documentation</Button>
+          <Button appearance="outline">React UI 文档</Button>
         </a>
       </Card>
     </PageLayout>

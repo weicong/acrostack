@@ -14,9 +14,9 @@ import { menu as permissionsMenu } from "./permissions";
 
 export const routeConfig: MenuRoute[] = [
   {
-    path: "/identity",
+    path: "/admin/identity",
     menu: {
-      nameKey: "AbpIdentity::Menu:IdentityManagement",
+      name: "身份认证管理",
       icon: PeopleTeam20Regular,
       order: 100,
       children: [

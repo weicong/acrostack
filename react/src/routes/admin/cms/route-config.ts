@@ -16,9 +16,9 @@ import { menu as menusMenu } from "./menus";
 
 export const routeConfig: MenuRoute[] = [
   {
-    path: "/cms",
+    path: "/admin/cms",
     menu: {
-      nameKey: "Menu:Cms",
+      name: "内容管理",
       icon: Apps20Regular,
       order: 40,
       children: [

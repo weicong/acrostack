@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { Route as rootRoute } from "./__root";
+import { Route as adminRoute } from "./route";
 import { BooksPage } from "@/pages/books/BooksPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
@@ -16,16 +16,16 @@ export type BooksSearch = z.infer<typeof booksSearchSchema>;
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
-  nameKey: "Menu:Books",
+  name: "图书",
   icon: Book20Regular,
   order: 10,
   requiredPolicy: "AcroStack.Books",
 };
 
-export const routeConfig: MenuRoute[] = [{ path: "/books", menu }];
+export const routeConfig: MenuRoute[] = [{ path: "/admin/books", menu }];
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => adminRoute,
   path: "/books",
   validateSearch: booksSearchSchema,
   component: BooksPage,

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   SearchBox,
@@ -54,7 +53,6 @@ const useStyles = makeStyles({
 });
 
 export function PagesPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
@@ -104,7 +102,7 @@ export function PagesPage() {
             void queryClient.invalidateQueries({
               queryKey: pageAdminGetListQueryKey(),
             });
-            dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+            dispatchToast("保存成功", { intent: "success" });
           },
           onError: (err) => {
             dispatchToast(String(err), { intent: "error" });
@@ -112,7 +110,7 @@ export function PagesPage() {
         },
       );
     },
-    [setHomePageMutation, queryClient, dispatchToast, t],
+    [setHomePageMutation, queryClient, dispatchToast],
   );
 
   const handleFormSuccess = useCallback(() => {
@@ -133,39 +131,39 @@ export function PagesPage() {
           void queryClient.invalidateQueries({
             queryKey: pageAdminGetListQueryKey(),
           });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deletePageId, deleteMutation, queryClient, dispatchToast, t]);
+  }, [deletePageId, deleteMutation, queryClient, dispatchToast]);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, PageItem>[]>(
     () => [
       {
         id: "title",
         accessorKey: "title",
-        header: t("Cms:Title"),
+        header: "标题",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "slug",
         accessorKey: "slug",
-        header: t("Cms:Slug"),
+        header: "Slug",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "isHomePage",
         accessorKey: "isHomePage",
-        header: t("Cms:HomePage"),
-        cell: (info) => (info.getValue() ? t("AbpUi::Yes") : t("AbpUi::No")),
+        header: "首页",
+        cell: (info) => (info.getValue() ? "是" : "否"),
       },
       {
         id: "creationTime",
         accessorKey: "creationTime",
-        header: t("AbpUi::CreationTime"),
+        header: "创建时间",
         cell: (info) => {
           const date = info.getValue() as string | undefined;
           return date ? format(new Date(date), "yyyy-MM-dd HH:mm") : "-";
@@ -173,7 +171,7 @@ export function PagesPage() {
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             {canUpdate && !row.original.isHomePage && (
@@ -182,8 +180,8 @@ export function PagesPage() {
                 appearance="subtle"
                 icon={<Home20Regular />}
                 onClick={() => row.original.id && handleSetAsHomePage(row.original.id)}
-                aria-label={t("Cms:SetAsHomePage")}
-                title={t("Cms:SetAsHomePage")}
+                aria-label={"设为首页"}
+                title={"设为首页"}
               />
             )}
             {canUpdate && (
@@ -192,8 +190,8 @@ export function PagesPage() {
                 appearance="subtle"
                 icon={<Edit20Regular />}
                 onClick={() => handleEdit(row.original)}
-                aria-label={t("AbpUi::Edit")}
-                title={t("AbpUi::Edit")}
+                aria-label={"编辑"}
+                title={"编辑"}
               />
             )}
             {canDelete && (
@@ -202,15 +200,15 @@ export function PagesPage() {
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 onClick={() => row.original.id && handleDelete(row.original.id)}
-                aria-label={t("AbpUi::Delete")}
-                title={t("AbpUi::Delete")}
+                aria-label={"删除"}
+                title={"删除"}
               />
             )}
           </div>
         ),
       },
     ],
-    [t, styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete, handleSetAsHomePage],
+    [styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete, handleSetAsHomePage],
   );
 
   const table = useDataTable({
@@ -234,11 +232,11 @@ export function PagesPage() {
   }, [searchValue, tableState.state]);
 
   return (
-    <PageLayout title={t("Cms:Pages")}>
+    <PageLayout title={"页面"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -247,7 +245,7 @@ export function PagesPage() {
         {canCreate && (
           <div className={styles.actionButtons}>
             <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {t("Cms:NewPage")}
+              {"新建页面"}
             </Button>
           </div>
         )}
@@ -270,9 +268,9 @@ export function PagesPage() {
       <ConfirmDialog
         open={deletePageId !== null}
         onOpenChange={(open) => !open && setDeletePageId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

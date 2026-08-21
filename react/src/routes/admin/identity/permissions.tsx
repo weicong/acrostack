@@ -7,7 +7,7 @@ import { Shield20Regular } from "@fluentui/react-icons";
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
-  nameKey: "AbpPermissionManagement::Permissions",
+  name: "权限",
   icon: Shield20Regular,
   requiredPolicy: "AbpIdentity.Roles",
 };

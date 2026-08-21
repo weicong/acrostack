@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -61,7 +60,6 @@ function isBooleanFeature(feature: VoloAbpFeatureManagementFeatureDto): boolean 
 }
 
 export function FeaturesPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -106,7 +104,7 @@ export function FeaturesPage() {
       .map(([name, value]) => ({ name, value }));
 
     if (changedFeatures.length === 0) {
-      dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "info" });
+      dispatchToast("保存成功", { intent: "info" });
       return;
     }
 
@@ -115,7 +113,7 @@ export function FeaturesPage() {
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -131,7 +129,7 @@ export function FeaturesPage() {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
           setResetOpen(false);
-          dispatchToast(t("AbpFeatureManagement::ResetedToDefault"), { intent: "success" });
+          dispatchToast("已重置为默认值", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -141,14 +139,12 @@ export function FeaturesPage() {
   };
 
   return (
-    <PageLayout title={t("AbpFeatureManagement::Features")}>
-      {featuresQuery.isLoading && <Spinner label={t("AbpUi::LoadingWithThreeDot")} />}
+    <PageLayout title={"功能"}>
+      {featuresQuery.isLoading && <Spinner label={"加载中..."} />}
 
-      {featuresQuery.isError && <Text>{t("AbpFeatureManagement::NoFeatureFoundMessage")}</Text>}
+      {featuresQuery.isError && <Text>{"没有任何可用的功能。"}</Text>}
 
-      {featuresQuery.data && groups.length === 0 && (
-        <Text>{t("AbpFeatureManagement::NoFeatureFoundMessage")}</Text>
-      )}
+      {featuresQuery.data && groups.length === 0 && <Text>{"没有任何可用的功能。"}</Text>}
 
       {featuresQuery.data && groups.length > 0 && (
         <>
@@ -191,12 +187,10 @@ export function FeaturesPage() {
 
           <div className={styles.actions}>
             <div className={styles.leftActions}>
-              <Button onClick={() => setResetOpen(true)}>
-                {t("AbpFeatureManagement::ResetToDefault")}
-              </Button>
+              <Button onClick={() => setResetOpen(true)}>{"重置为默认值"}</Button>
             </div>
             <Button appearance="primary" onClick={handleSave} disabled={updateMutation.isPending}>
-              {t("AbpUi::Save")}
+              {"保存"}
             </Button>
           </div>
         </>
@@ -205,9 +199,9 @@ export function FeaturesPage() {
       <ConfirmDialog
         open={resetOpen}
         onOpenChange={setResetOpen}
-        title={t("AbpFeatureManagement::AreYouSure")}
-        description={t("AbpFeatureManagement::AreYouSureToResetToDefault")}
-        confirmLabel={t("AbpFeatureManagement::ResetToDefault")}
+        title={"你确定吗？"}
+        description={"您确定要重置为默认设置吗？"}
+        confirmLabel={"重置为默认值"}
         variant="destructive"
         onConfirm={handleReset}
         isPending={deleteMutation.isPending}

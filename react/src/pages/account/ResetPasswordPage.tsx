@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
+
 import { z } from "zod";
 import { Button, Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
@@ -8,11 +8,11 @@ import { useState } from "react";
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(6, "AbpAccount::PasswordMustBeAtLeast6Characters"),
+    password: z.string().min(6, "密码长度必须至少为 6 个字符"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "AbpAccount::PasswordsDoNotMatch",
+    message: "两次输入的密码不一致",
     path: ["confirmPassword"],
   });
 
@@ -42,7 +42,6 @@ const useStyles = makeStyles({
 });
 
 export function ResetPasswordPage() {
-  const { t } = useTranslation();
   const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
   const userId = params.get("userId") ?? params.get("cid") ?? "";
   const resetToken =
@@ -71,7 +70,7 @@ export function ResetPasswordPage() {
             ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
                 ?.error?.message
             : undefined;
-        setRootError(msg ?? t("AbpAccount::ResetPasswordFailed", "Failed to reset password"));
+        setRootError(msg ?? "重置密码失败");
       }
     },
   });
@@ -82,19 +81,12 @@ export function ResetPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{t("AbpAccount::ResetPassword")}</Text>}
-          description={
-            <Text size={200}>
-              {t(
-                "AbpAccount::InvalidPasswordResetToken",
-                "This password reset link is invalid or has expired.",
-              )}
-            </Text>
-          }
+          header={<Text weight="semibold">{"重置密码"}</Text>}
+          description={<Text size={200}>{"此密码重置链接无效或已过期。"}</Text>}
         />
         <div className={styles.body}>
           <Link to="/account/forgot-password">
-            <Button>{t("AbpAccount::SendPasswordResetCode")}</Button>
+            <Button>{"发送重置密码邮件"}</Button>
           </Link>
         </div>
       </Card>
@@ -104,12 +96,8 @@ export function ResetPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{t("AbpAccount::ResetPassword")}</Text>}
-        description={
-          <Text size={200}>
-            {t("AbpAccount::ResetPassword_Information", "Enter your new password")}
-          </Text>
-        }
+        header={<Text weight="semibold">{"重置密码"}</Text>}
+        description={<Text size={200}>{"请输入您的新密码。"}</Text>}
       />
       <div className={styles.body}>
         <form
@@ -129,7 +117,7 @@ export function ResetPasswordPage() {
             name="password"
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::Password")}
+                label={"密码"}
                 inputProps={{ type: "password", autoComplete: "new-password" }}
               />
             )}
@@ -141,20 +129,17 @@ export function ResetPasswordPage() {
             }}
             children={(field) => (
               <field.TextField
-                label={t("AbpAccount::ConfirmPassword")}
+                label={"确认密码"}
                 inputProps={{ type: "password", autoComplete: "new-password" }}
               />
             )}
           />
           <form.AppForm>
-            <form.SubmitButton
-              label={t("AbpAccount::ResetPassword")}
-              className={styles.fullWidthButton}
-            />
+            <form.SubmitButton label={"重置密码"} className={styles.fullWidthButton} />
           </form.AppForm>
           <Text as="p" size={200} align="center" block>
             <Link to="/account/login" className={styles.link}>
-              {t("AbpAccount::Login")}
+              {"登录"}
             </Link>
           </Text>
         </form>

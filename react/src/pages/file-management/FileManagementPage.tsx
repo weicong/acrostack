@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Breadcrumb,
@@ -276,7 +275,6 @@ type MoveTarget =
   | { kind: "folder"; id: string; name: string };
 
 export function FileManagementPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const { isGranted } = usePermissions();
   const { dispatchToast } = useToastController();
@@ -289,9 +287,7 @@ export function FileManagementPage() {
   const canShare = isGranted("AcroStack.FileManagement.Share");
 
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbCrumb[]>([
-    { id: null, name: t("FileManagement:Root") },
-  ]);
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbCrumb[]>([{ id: null, name: "根目录" }]);
   const [newFolderName, setNewFolderName] = useState("");
   const [deleteFolderId, setDeleteFolderId] = useState<string | null>(null);
   const [deleteFileId, setDeleteFileId] = useState<string | null>(null);
@@ -318,17 +314,11 @@ export function FileManagementPage() {
   const moveFileMutation = useFileManagementMoveFile();
   const moveFolderMutation = useFileManagementMoveFolder();
 
-  const handleOpenFolder = useCallback(
-    (folder: FileFolderDto) => {
-      const folderId = folder.id ?? null;
-      setCurrentFolderId(folderId);
-      setBreadcrumbs((prev) => [
-        ...prev,
-        { id: folderId, name: folder.name ?? t("FileManagement:Folders") },
-      ]);
-    },
-    [t],
-  );
+  const handleOpenFolder = useCallback((folder: FileFolderDto) => {
+    const folderId = folder.id ?? null;
+    setCurrentFolderId(folderId);
+    setBreadcrumbs((prev) => [...prev, { id: folderId, name: folder.name ?? "文件夹" }]);
+  }, []);
 
   const handleNavigateTo = useCallback(
     (index: number) => {
@@ -349,12 +339,12 @@ export function FileManagementPage() {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
           setNewFolderName("");
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
     );
-  }, [newFolderName, currentFolderId, createFolderMutation, queryClient, dispatchToast, t]);
+  }, [newFolderName, currentFolderId, createFolderMutation, queryClient, dispatchToast]);
 
   const handleFileSelected = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -371,7 +361,7 @@ export function FileManagementPage() {
             void queryClient.invalidateQueries({
               queryKey: fileManagementGetStorageInfoQueryKey(),
             });
-            dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+            dispatchToast("保存成功", { intent: "success" });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
           onSettled: () => {
@@ -380,7 +370,7 @@ export function FileManagementPage() {
         },
       );
     },
-    [currentFolderId, uploadFileMutation, queryClient, dispatchToast, t],
+    [currentFolderId, uploadFileMutation, queryClient, dispatchToast],
   );
 
   const handleDeleteFolderConfirm = useCallback(() => {
@@ -395,12 +385,12 @@ export function FileManagementPage() {
             queryKey: fileManagementGetStorageInfoQueryKey(),
           });
           setDeleteFolderId(null);
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
     );
-  }, [deleteFolderId, deleteFolderMutation, queryClient, dispatchToast, t]);
+  }, [deleteFolderId, deleteFolderMutation, queryClient, dispatchToast]);
 
   const handleDeleteFileConfirm = useCallback(() => {
     if (!deleteFileId) return;
@@ -413,12 +403,12 @@ export function FileManagementPage() {
             queryKey: fileManagementGetStorageInfoQueryKey(),
           });
           setDeleteFileId(null);
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
     );
-  }, [deleteFileId, deleteFileMutation, queryClient, dispatchToast, t]);
+  }, [deleteFileId, deleteFileMutation, queryClient, dispatchToast]);
 
   const handleDownloadFile = useCallback(
     async (file: FileEntryDto) => {
@@ -449,7 +439,7 @@ export function FileManagementPage() {
         void queryClient.invalidateQueries({ queryKey: fileManagementGetFoldersQueryKey() });
         void queryClient.invalidateQueries({ queryKey: fileManagementGetFilesQueryKey() });
         setMoveTarget(null);
-        dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+        dispatchToast("保存成功", { intent: "success" });
       };
       const onMoveError = (err: unknown) => dispatchToast(String(err), { intent: "error" });
 
@@ -465,7 +455,7 @@ export function FileManagementPage() {
         );
       }
     },
-    [moveFileMutation, moveFolderMutation, queryClient, dispatchToast, t],
+    [moveFileMutation, moveFolderMutation, queryClient, dispatchToast],
   );
 
   const openShareDialog = useCallback((file: FileEntryDto) => {
@@ -496,8 +486,8 @@ export function FileManagementPage() {
               appearance="subtle"
               icon={<ArrowMove20Regular />}
               onClick={() => setMoveTarget({ kind: "folder", id: f.id!, name: f.name ?? "" })}
-              aria-label={t("FileManagement:Move")}
-              title={t("FileManagement:Move")}
+              aria-label={"移动"}
+              title={"移动"}
             />
           )}
           {canDelete && (
@@ -506,29 +496,20 @@ export function FileManagementPage() {
               appearance="subtle"
               icon={<Delete20Regular />}
               onClick={() => f.id && setDeleteFolderId(f.id)}
-              aria-label={t("AbpUi::Delete")}
+              aria-label={"删除"}
             />
           )}
           <Button
             size="small"
             appearance="subtle"
             onClick={() => handleOpenFolder(f)}
-            aria-label={t("AbpUi::Edit")}
+            aria-label={"编辑"}
           >
-            {t("AbpUi::Edit")}
+            {"编辑"}
           </Button>
         </div>
       )),
-    [
-      folders,
-      styles.item,
-      styles.itemIcon,
-      styles.itemName,
-      canDelete,
-      canMove,
-      t,
-      handleOpenFolder,
-    ],
+    [folders, styles.item, styles.itemIcon, styles.itemName, canDelete, canMove, handleOpenFolder],
   );
 
   const fileItems = useMemo(
@@ -553,8 +534,8 @@ export function FileManagementPage() {
                   appearance="subtle"
                   icon={<Share20Regular />}
                   onClick={() => openShareDialog(f)}
-                  aria-label={t("FileManagement:Share")}
-                  title={t("FileManagement:Share")}
+                  aria-label={"分享"}
+                  title={"分享"}
                 />
               )}
               {f.id && (
@@ -563,8 +544,8 @@ export function FileManagementPage() {
                   appearance="subtle"
                   icon={<History20Regular />}
                   onClick={() => openVersionsDialog(f)}
-                  aria-label={t("FileManagement:Versions")}
-                  title={t("FileManagement:Versions")}
+                  aria-label={"版本"}
+                  title={"版本"}
                 />
               )}
               {canMove && f.id && (
@@ -573,15 +554,15 @@ export function FileManagementPage() {
                   appearance="subtle"
                   icon={<ArrowMove20Regular />}
                   onClick={() => setMoveTarget({ kind: "file", id: f.id!, name: f.name ?? "" })}
-                  aria-label={t("FileManagement:Move")}
-                  title={t("FileManagement:Move")}
+                  aria-label={"移动"}
+                  title={"移动"}
                 />
               )}
               {canDownload && f.id && (
                 <FluentLink
                   onClick={() => void handleDownloadFile(f)}
-                  aria-label={t("FileManagement:Download")}
-                  title={t("FileManagement:Download")}
+                  aria-label={"下载"}
+                  title={"下载"}
                 >
                   <ArrowDownload20Regular />
                 </FluentLink>
@@ -592,7 +573,7 @@ export function FileManagementPage() {
                   appearance="subtle"
                   icon={<Delete20Regular />}
                   onClick={() => f.id && setDeleteFileId(f.id)}
-                  aria-label={t("AbpUi::Delete")}
+                  aria-label={"删除"}
                 />
               )}
             </div>
@@ -611,7 +592,6 @@ export function FileManagementPage() {
       canDelete,
       canMove,
       canShare,
-      t,
       handleDownloadFile,
       openShareDialog,
       openVersionsDialog,
@@ -619,7 +599,7 @@ export function FileManagementPage() {
   );
 
   return (
-    <PageLayout title={t("Menu:FileManagement")}>
+    <PageLayout title={"文件管理"}>
       {storageInfoQuery.data && <StorageInfoBar data={storageInfoQuery.data as StorageInfoDto} />}
 
       <div className={styles.toolbar}>
@@ -647,7 +627,7 @@ export function FileManagementPage() {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadFileMutation.isPending}
               >
-                {t("FileManagement:Upload")}
+                {"上传"}
               </Button>
               <input
                 ref={fileInputRef}
@@ -662,12 +642,12 @@ export function FileManagementPage() {
 
       <div className={styles.newFolderRow}>
         <div>
-          <Label htmlFor="new-folder-name">{t("FileManagement:NewFolder")}</Label>
+          <Label htmlFor="new-folder-name">{"新建文件夹"}</Label>
           <Input
             id="new-folder-name"
             value={newFolderName}
             onChange={(_, data) => setNewFolderName(data.value)}
-            placeholder={t("FileManagement:FolderName")}
+            placeholder={"文件夹名称"}
             appearance="outline"
           />
         </div>
@@ -677,12 +657,12 @@ export function FileManagementPage() {
           onClick={handleCreateFolder}
           disabled={!newFolderName.trim() || createFolderMutation.isPending}
         >
-          {t("AbpUi::Create")}
+          {"创建"}
         </Button>
       </div>
 
       {isEmpty && !foldersQuery.isLoading && !filesQuery.isLoading ? (
-        <div className={styles.empty}>{t("FileManagement:Root")}</div>
+        <div className={styles.empty}>{"根目录"}</div>
       ) : (
         <div className={styles.grid}>
           {folderItems}
@@ -693,9 +673,9 @@ export function FileManagementPage() {
       <ConfirmDialog
         open={deleteFolderId !== null}
         onOpenChange={(open) => !open && setDeleteFolderId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("FileManagement:FolderDeleteConfirmation")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此文件夹及其所有内容吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteFolderConfirm}
         isPending={deleteFolderMutation.isPending}
@@ -704,9 +684,9 @@ export function FileManagementPage() {
       <ConfirmDialog
         open={deleteFileId !== null}
         onOpenChange={(open) => !open && setDeleteFileId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("FileManagement:FileDeleteConfirmation")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此文件吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteFileConfirm}
         isPending={deleteFileMutation.isPending}
@@ -742,7 +722,6 @@ export function FileManagementPage() {
 
 /** Top-of-page storage usage bar (used/max/file count). */
 function StorageInfoBar({ data }: { data: StorageInfoDto }) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const used = data.usedBytes != null ? Number(data.usedBytes) : 0;
   const max = data.maxBytes != null ? Number(data.maxBytes) : 0;
@@ -750,9 +729,9 @@ function StorageInfoBar({ data }: { data: StorageInfoDto }) {
   const ratio = max > 0 ? Math.min(1, used / max) : 0;
   return (
     <div className={styles.storageBar} role="status" aria-live="polite">
-      <span className={styles.storageLabel}>{t("FileManagement:Storage")}</span>
+      <span className={styles.storageLabel}>{"存储"}</span>
       <span className={styles.storageValue}>
-        {t("FileManagement:Used")}: {formatBytes(used)} / {formatBytes(max)}
+        {"已用"}: {formatBytes(used)} / {formatBytes(max)}
       </span>
       <div
         className={styles.storageProgress}
@@ -760,12 +739,12 @@ function StorageInfoBar({ data }: { data: StorageInfoDto }) {
         aria-valuemin={0}
         aria-valuemax={max > 0 ? max : 1}
         aria-valuenow={used}
-        aria-label={t("FileManagement:Storage")}
+        aria-label={"存储"}
       >
         <div className={styles.storageProgressFill} style={{ width: `${ratio * 100}%` }} />
       </div>
       <span className={styles.storageValue}>
-        {t("FileManagement:FileCount")}: {fileCount}
+        {"文件数"}: {fileCount}
       </span>
     </div>
   );
@@ -815,12 +794,11 @@ interface MoveDialogProps {
  * after the API call — the server enforces the actual move constraints.
  */
 function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("move-");
   const [browseFolderId, setBrowseFolderId] = useState<string | null>(null);
   const [browseCrumbs, setBrowseCrumbs] = useState<BreadcrumbCrumb[]>([
-    { id: null, name: t("FileManagement:Root") },
+    { id: null, name: "根目录" },
   ]);
 
   const foldersQuery = useFileManagementGetFolders(
@@ -828,17 +806,11 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
   );
   const folders = foldersQuery.data?.items ?? [];
 
-  const openSubFolder = useCallback(
-    (folder: FileFolderDto) => {
-      const id = folder.id ?? null;
-      setBrowseFolderId(id);
-      setBrowseCrumbs((prev) => [
-        ...prev,
-        { id, name: folder.name ?? t("FileManagement:Folders") },
-      ]);
-    },
-    [t],
-  );
+  const openSubFolder = useCallback((folder: FileFolderDto) => {
+    const id = folder.id ?? null;
+    setBrowseFolderId(id);
+    setBrowseCrumbs((prev) => [...prev, { id, name: folder.name ?? "文件夹" }]);
+  }, []);
 
   const navigateCrumb = useCallback(
     (index: number) => {
@@ -850,10 +822,7 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
     [browseCrumbs],
   );
 
-  const title =
-    target.kind === "file"
-      ? t("FileManagement:MoveFile", { name: target.name })
-      : t("FileManagement:MoveFolder", { name: target.name });
+  const title = target.kind === "file" ? `移动文件 ${target.name}` : `移动文件夹 ${target.name}`;
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
@@ -873,7 +842,7 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
               {foldersQuery.isLoading ? (
                 <Spinner size="tiny" />
               ) : folders.length === 0 ? (
-                <Text size={200}>{t("FileManagement:NoSubfolders")}</Text>
+                <Text size={200}>{"暂无子文件夹"}</Text>
               ) : (
                 <div className={styles.folderList}>
                   {folders.map((f) => (
@@ -891,8 +860,7 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
                 </div>
               )}
               <Text size={200}>
-                {t("FileManagement:MoveTargetHint")}{" "}
-                <strong>{browseCrumbs[browseCrumbs.length - 1]?.name}</strong>
+                {"选择目标文件夹"} <strong>{browseCrumbs[browseCrumbs.length - 1]?.name}</strong>
               </Text>
             </div>
           </DialogContent>
@@ -903,12 +871,12 @@ function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveDialogPr
                 disabled={isPending}
                 onClick={() => onConfirm(browseFolderId)}
               >
-                {t("FileManagement:MoveHere")}
+                {"移至此处"}
               </Button>
             </DialogTrigger>
             <DialogTrigger disableButtonEnhancement>
               <Button appearance="secondary" disabled={isPending}>
-                {t("AbpUi::Cancel")}
+                {"取消"}
               </Button>
             </DialogTrigger>
           </DialogActions>
@@ -926,7 +894,6 @@ interface ShareLinksDialogProps {
 
 /** Lists existing share links for a file and lets the user create new ones. */
 function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("share-");
   const queryClient = useQueryClient();
@@ -969,7 +936,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
           invalidate();
           setExpirationTime("");
           setMaxDownloadCount(null);
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
@@ -981,7 +948,6 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
     fileId,
     invalidate,
     dispatchToast,
-    t,
   ]);
 
   const handleRevoke = useCallback(
@@ -991,25 +957,23 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
         {
           onSuccess: () => {
             invalidate();
-            dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+            dispatchToast("删除成功", { intent: "success" });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
         },
       );
     },
-    [revokeShareLinkMutation, invalidate, dispatchToast, t],
+    [revokeShareLinkMutation, invalidate, dispatchToast],
   );
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {t("FileManagement:ShareFile", { name: fileName })}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{`分享文件 ${fileName}`}</DialogTitle>
           <DialogContent>
             <div className={styles.dialogBody}>
-              <Field label={t("FileManagement:ExpirationTime")}>
+              <Field label={"过期时间"}>
                 <Input
                   type="datetime-local"
                   value={expirationTime}
@@ -1017,10 +981,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
                   contentBefore={null}
                 />
               </Field>
-              <Field
-                label={t("FileManagement:MaxDownloadCount")}
-                hint={t("FileManagement:MaxDownloadCountHint")}
-              >
+              <Field label={"最大下载次数"} hint={"留空表示不限制"}>
                 <SpinButton
                   value={maxDownloadCount ?? 0}
                   min={0}
@@ -1035,16 +996,16 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
                 onClick={handleCreate}
                 disabled={createShareLinkMutation.isPending}
               >
-                {t("FileManagement:CreateShareLink")}
+                {"创建分享链接"}
               </Button>
 
               <div>
-                <Text weight="semibold">{t("FileManagement:ShareLinks")}</Text>
+                <Text weight="semibold">{"分享链接"}</Text>
               </div>
               {shareLinksQuery.isLoading ? (
                 <Spinner size="tiny" />
               ) : shareLinks.length === 0 ? (
-                <Text size={200}>{t("FileManagement:NoShareLinks")}</Text>
+                <Text size={200}>{"暂无分享链接"}</Text>
               ) : (
                 shareLinks.map((link) => (
                   <div key={link.id} className={styles.shareLinkRow}>
@@ -1054,22 +1015,19 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
                     <div className={styles.shareLinkMeta}>
                       {link.expirationTime && (
                         <span>
-                          {t("FileManagement:ExpirationTime")}:{" "}
-                          {format(new Date(link.expirationTime), "yyyy-MM-dd HH:mm")}
+                          {"过期时间"}: {format(new Date(link.expirationTime), "yyyy-MM-dd HH:mm")}
                         </span>
                       )}
                       {link.maxDownloadCount != null && (
                         <span>
-                          {t("FileManagement:MaxDownloadCount")}: {link.maxDownloadCount}
+                          {"最大下载次数"}: {link.maxDownloadCount}
                         </span>
                       )}
                       <span>
-                        {t("FileManagement:DownloadCount")}: {link.downloadCount ?? 0}
+                        {"下载次数"}: {link.downloadCount ?? 0}
                       </span>
                       {link.isRevoked && (
-                        <span style={{ color: tokens.colorPaletteRedForeground3 }}>
-                          {t("FileManagement:Revoked")}
-                        </span>
+                        <span style={{ color: tokens.colorPaletteRedForeground3 }}>{"已撤销"}</span>
                       )}
                     </div>
                     {!link.isRevoked && link.id && (
@@ -1080,7 +1038,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
                         onClick={() => handleRevoke(link.id!)}
                         disabled={revokeShareLinkMutation.isPending}
                       >
-                        {t("FileManagement:RevokeShareLink")}
+                        {"撤销分享链接"}
                       </Button>
                     )}
                   </div>
@@ -1090,7 +1048,7 @@ function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksDialogPr
           </DialogContent>
           <DialogActions>
             <DialogTrigger disableButtonEnhancement>
-              <Button appearance="secondary">{t("AbpUi::Close")}</Button>
+              <Button appearance="secondary">{"关闭"}</Button>
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
@@ -1107,7 +1065,6 @@ interface VersionsDialogProps {
 
 /** Lists file versions and lets the user restore a previous one. */
 function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("versions-");
   const queryClient = useQueryClient();
@@ -1140,26 +1097,24 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
         onSuccess: () => {
           invalidateAll();
           setConfirmVersionId(null);
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
     );
-  }, [confirmVersionId, fileId, restoreVersionMutation, invalidateAll, dispatchToast, t]);
+  }, [confirmVersionId, fileId, restoreVersionMutation, invalidateAll, dispatchToast]);
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {t("FileManagement:VersionsFor", { name: fileName })}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{`版本记录：${fileName}`}</DialogTitle>
           <DialogContent>
             <div className={styles.dialogBody}>
               {versionsQuery.isLoading ? (
                 <Spinner size="tiny" />
               ) : versions.length === 0 ? (
-                <Text size={200}>{t("FileManagement:NoVersions")}</Text>
+                <Text size={200}>{"暂无版本"}</Text>
               ) : (
                 <div className={styles.folderList}>
                   {versions.map((v) => {
@@ -1175,10 +1130,10 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
                         <ArrowUpload24Regular />
                         <div style={{ flex: 1 }}>
                           <div>
-                            {t("FileManagement:Version")} #{v.versionNumber ?? "?"}
+                            {"版本"} #{v.versionNumber ?? "?"}
                             {isCurrent && (
                               <span style={{ marginLeft: tokens.spacingHorizontalS }}>
-                                ({t("FileManagement:CurrentVersion")})
+                                ({"当前版本"})
                               </span>
                             )}
                           </div>
@@ -1197,7 +1152,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
                             onClick={() => setConfirmVersionId(v.id!)}
                             disabled={restoreVersionMutation.isPending}
                           >
-                            {t("FileManagement:RestoreVersion")}
+                            {"恢复此版本"}
                           </Button>
                         )}
                       </div>
@@ -1209,7 +1164,7 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
           </DialogContent>
           <DialogActions>
             <DialogTrigger disableButtonEnhancement>
-              <Button appearance="secondary">{t("AbpUi::Close")}</Button>
+              <Button appearance="secondary">{"关闭"}</Button>
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
@@ -1218,9 +1173,9 @@ function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialogProps)
       <ConfirmDialog
         open={confirmVersionId !== null}
         onOpenChange={(open) => !open && setConfirmVersionId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("FileManagement:RestoreVersionConfirmation")}
-        confirmLabel={t("FileManagement:RestoreVersion")}
+        title={"你确定吗?"}
+        description={"确定要恢复到此版本吗？"}
+        confirmLabel={"恢复此版本"}
         variant="destructive"
         onConfirm={handleRestoreConfirm}
         isPending={restoreVersionMutation.isPending}

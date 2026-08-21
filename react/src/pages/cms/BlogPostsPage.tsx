@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Badge,
   Button,
@@ -83,7 +82,6 @@ const useStyles = makeStyles({
 });
 
 export function BlogPostsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
@@ -149,14 +147,14 @@ export function BlogPostsPage() {
         onSuccess: () => {
           setDeletePostId(null);
           invalidateList();
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deletePostId, deleteMutation, invalidateList, dispatchToast, t]);
+  }, [deletePostId, deleteMutation, invalidateList, dispatchToast]);
 
   const handlePublish = useCallback(
     (id: string) => {
@@ -165,7 +163,7 @@ export function BlogPostsPage() {
         {
           onSuccess: () => {
             invalidateList();
-            dispatchToast(t("Cms:BlogPostPublished"), { intent: "success" });
+            dispatchToast("博客文章已发布", { intent: "success" });
           },
           onError: (err) => {
             dispatchToast(String(err), { intent: "error" });
@@ -173,7 +171,7 @@ export function BlogPostsPage() {
         },
       );
     },
-    [publishMutation, invalidateList, dispatchToast, t],
+    [publishMutation, invalidateList, dispatchToast],
   );
 
   const handleDraft = useCallback(
@@ -183,7 +181,7 @@ export function BlogPostsPage() {
         {
           onSuccess: () => {
             invalidateList();
-            dispatchToast(t("Cms:BlogPostDrafted"), { intent: "success" });
+            dispatchToast("博客文章已转为草稿", { intent: "success" });
           },
           onError: (err) => {
             dispatchToast(String(err), { intent: "error" });
@@ -191,72 +189,69 @@ export function BlogPostsPage() {
         },
       );
     },
-    [draftMutation, invalidateList, dispatchToast, t],
+    [draftMutation, invalidateList, dispatchToast],
   );
 
-  const renderStatusBadge = useCallback(
-    (status: number | undefined) => {
-      switch (status) {
-        case BlogPostStatus.Published:
-          return (
-            <Badge appearance="filled" color="success">
-              {t("Cms:BlogPostStatusPublished")}
-            </Badge>
-          );
-        case BlogPostStatus.SentToReview:
-          return (
-            <Badge appearance="filled" color="informative">
-              {t("Cms:BlogPostStatusSentToReview")}
-            </Badge>
-          );
-        case BlogPostStatus.Rejected:
-          return (
-            <Badge appearance="filled" color="danger">
-              {t("Cms:BlogPostStatusRejected")}
-            </Badge>
-          );
-        case BlogPostStatus.Draft:
-        default:
-          return (
-            <Badge appearance="filled" color="warning">
-              {t("Cms:BlogPostStatusDraft")}
-            </Badge>
-          );
-      }
-    },
-    [t],
-  );
+  const renderStatusBadge = useCallback((status: number | undefined) => {
+    switch (status) {
+      case BlogPostStatus.Published:
+        return (
+          <Badge appearance="filled" color="success">
+            {"已发布"}
+          </Badge>
+        );
+      case BlogPostStatus.SentToReview:
+        return (
+          <Badge appearance="filled" color="informative">
+            {"待审核"}
+          </Badge>
+        );
+      case BlogPostStatus.Rejected:
+        return (
+          <Badge appearance="filled" color="danger">
+            {"已拒绝"}
+          </Badge>
+        );
+      case BlogPostStatus.Draft:
+      default:
+        return (
+          <Badge appearance="filled" color="warning">
+            {"草稿"}
+          </Badge>
+        );
+    }
+  }, []);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, BlogPostItem>[]>(
     () => [
       {
         id: "title",
         accessorKey: "title",
-        header: t("Cms:Title"),
+        header: "标题",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "blogName",
         accessorKey: "blogName",
-        header: t("Cms:Blog"),
+        header: "博客",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "slug",
         accessorKey: "slug",
-        header: t("Cms:Slug"),
+        header: "Slug",
         cell: (info) => (info.getValue() as string) || "-",
       },
       {
         id: "status",
         accessorKey: "status",
-        header: t("Cms:Status"),
+        header: "状态",
         cell: (info) => renderStatusBadge(info.getValue() as number | undefined),
       },
       {
         id: "creationTime",
         accessorKey: "creationTime",
-        header: t("AbpUi::CreationTime"),
+        header: "创建时间",
         cell: (info) => {
           const date = info.getValue() as string | undefined;
           return date ? format(new Date(date), "yyyy-MM-dd HH:mm") : "-";
@@ -264,7 +259,7 @@ export function BlogPostsPage() {
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             {canUpdate && row.original.status !== BlogPostStatus.Published && row.original.id && (
@@ -273,8 +268,8 @@ export function BlogPostsPage() {
                 appearance="subtle"
                 icon={<DocumentCheckmark20Regular />}
                 onClick={() => row.original.id && handlePublish(row.original.id)}
-                aria-label={t("Cms:Publish")}
-                title={t("Cms:Publish")}
+                aria-label={"发布"}
+                title={"发布"}
               />
             )}
             {canUpdate && row.original.status !== BlogPostStatus.Draft && row.original.id && (
@@ -283,8 +278,8 @@ export function BlogPostsPage() {
                 appearance="subtle"
                 icon={<DocumentEdit20Regular />}
                 onClick={() => row.original.id && handleDraft(row.original.id)}
-                aria-label={t("Cms:RevertToDraft")}
-                title={t("Cms:RevertToDraft")}
+                aria-label={"转为草稿"}
+                title={"转为草稿"}
               />
             )}
             {canUpdate && (
@@ -293,8 +288,8 @@ export function BlogPostsPage() {
                 appearance="subtle"
                 icon={<Edit20Regular />}
                 onClick={() => handleEdit(row.original)}
-                aria-label={t("AbpUi::Edit")}
-                title={t("AbpUi::Edit")}
+                aria-label={"编辑"}
+                title={"编辑"}
               />
             )}
             {canDelete && (
@@ -303,8 +298,8 @@ export function BlogPostsPage() {
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 onClick={() => row.original.id && handleDelete(row.original.id)}
-                aria-label={t("AbpUi::Delete")}
-                title={t("AbpUi::Delete")}
+                aria-label={"删除"}
+                title={"删除"}
               />
             )}
           </div>
@@ -312,7 +307,6 @@ export function BlogPostsPage() {
       },
     ],
     [
-      t,
       styles.actionsCell,
       canUpdate,
       canDelete,
@@ -345,26 +339,26 @@ export function BlogPostsPage() {
   }, [searchValue, tableState.state]);
 
   return (
-    <PageLayout title={t("Cms:BlogPosts")}>
+    <PageLayout title={"博客文章"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
             className={styles.search}
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
           />
           <Dropdown
             className={styles.blogFilter}
-            placeholder={t("Cms:AllBlogs")}
+            placeholder={"全部博客"}
             value={blogs.find((b) => b.id === selectedBlogId)?.name ?? ""}
             onOptionSelect={(_, data) =>
               setSelectedBlogId(data.optionValue === "" ? "" : String(data.optionValue))
             }
             clearable
           >
-            <Option value="">{t("Cms:AllBlogs")}</Option>
+            <Option value="">{"全部博客"}</Option>
             {blogs.map((b) => (
               <Option key={b.id} value={b.id ?? ""}>
                 {b.name ?? ""}
@@ -375,7 +369,7 @@ export function BlogPostsPage() {
         {canCreate && (
           <div className={styles.actionButtons}>
             <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {t("Cms:NewBlogPost")}
+              {"新建博客文章"}
             </Button>
           </div>
         )}
@@ -398,9 +392,9 @@ export function BlogPostsPage() {
       <ConfirmDialog
         open={deletePostId !== null}
         onOpenChange={(open) => !open && setDeletePostId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

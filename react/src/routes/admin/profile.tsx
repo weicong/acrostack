@@ -1,5 +1,5 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as adminRoute } from "./route";
 import { ProfilePage } from "@/pages/account/ProfilePage";
 import { authGuard } from "@/lib/routing/guards";
 
@@ -10,7 +10,7 @@ import { authGuard } from "@/lib/routing/guards";
  * navigation menu.
  */
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => adminRoute,
   path: "/profile",
   component: ProfilePage,
   beforeLoad: authGuard,

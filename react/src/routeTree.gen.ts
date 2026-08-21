@@ -10,45 +10,54 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as R403RouteImport } from './routes/403'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
-import { Route as AuditLogsRouteImport } from './routes/audit-logs'
-import { Route as BackgroundJobsRouteImport } from './routes/background-jobs'
-import { Route as BooksRouteImport } from './routes/books'
-import { Route as ChatRouteImport } from './routes/chat'
-import { Route as FeaturesRouteImport } from './routes/features'
-import { Route as IdentityRouteRouteImport } from './routes/identity/route'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as TenantsRouteImport } from './routes/tenants'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as ClassroomRouteRouteImport } from './routes/classroom/route'
+import { Route as PresentationRouteRouteImport } from './routes/presentation/route'
+import { Route as StudentRouteRouteImport } from './routes/student/route'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
 import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
-import { Route as CmsBlogPostsRouteImport } from './routes/cms/blog-posts'
-import { Route as CmsBlogsRouteImport } from './routes/cms/blogs'
-import { Route as CmsCommentsRouteImport } from './routes/cms/comments'
-import { Route as CmsMenusRouteImport } from './routes/cms/menus'
-import { Route as CmsPagesRouteImport } from './routes/cms/pages'
-import { Route as CmsTagsRouteImport } from './routes/cms/tags'
-import { Route as FileManagementIndexRouteImport } from './routes/file-management/index'
-import { Route as IdentityIndexRouteImport } from './routes/identity/index'
-import { Route as IdentityClaimTypesRouteImport } from './routes/identity/claim-types'
-import { Route as IdentityPermissionsRouteImport } from './routes/identity/permissions'
-import { Route as IdentityRolesRouteImport } from './routes/identity/roles'
-import { Route as IdentityUsersRouteImport } from './routes/identity/users'
-import { Route as OpeniddictApplicationsRouteImport } from './routes/openiddict/applications'
-import { Route as OpeniddictScopesRouteImport } from './routes/openiddict/scopes'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as Admin403RouteImport } from './routes/admin/403'
+import { Route as AdminAuditLogsRouteImport } from './routes/admin/audit-logs'
+import { Route as AdminBackgroundJobsRouteImport } from './routes/admin/background-jobs'
+import { Route as AdminBooksRouteImport } from './routes/admin/books'
+import { Route as AdminChatRouteImport } from './routes/admin/chat'
+import { Route as AdminFeaturesRouteImport } from './routes/admin/features'
+import { Route as AdminIdentityRouteRouteImport } from './routes/admin/identity/route'
+import { Route as AdminProfileRouteImport } from './routes/admin/profile'
+import { Route as AdminSaasRouteRouteImport } from './routes/admin/saas/route'
+import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
+import { Route as ClassroomIndexRouteImport } from './routes/classroom/index'
+import { Route as ClassroomSessionIdRouteImport } from './routes/classroom/$sessionId'
+import { Route as ClassroomQuestionsRouteImport } from './routes/classroom/questions'
+import { Route as ClassroomQuizzesRouteImport } from './routes/classroom/quizzes'
+import { Route as ClassroomSessionsRouteImport } from './routes/classroom/sessions'
+import { Route as PresentationSessionIdRouteImport } from './routes/presentation/$sessionId'
+import { Route as StudentJoinRouteImport } from './routes/student/join'
+import { Route as AdminCmsBlogPostsRouteImport } from './routes/admin/cms/blog-posts'
+import { Route as AdminCmsBlogsRouteImport } from './routes/admin/cms/blogs'
+import { Route as AdminCmsCommentsRouteImport } from './routes/admin/cms/comments'
+import { Route as AdminCmsMenusRouteImport } from './routes/admin/cms/menus'
+import { Route as AdminCmsPagesRouteImport } from './routes/admin/cms/pages'
+import { Route as AdminCmsTagsRouteImport } from './routes/admin/cms/tags'
+import { Route as AdminFileManagementIndexRouteImport } from './routes/admin/file-management/index'
+import { Route as AdminIdentityIndexRouteImport } from './routes/admin/identity/index'
+import { Route as AdminIdentityClaimTypesRouteImport } from './routes/admin/identity/claim-types'
+import { Route as AdminIdentityPermissionsRouteImport } from './routes/admin/identity/permissions'
+import { Route as AdminIdentityRolesRouteImport } from './routes/admin/identity/roles'
+import { Route as AdminIdentityUsersRouteImport } from './routes/admin/identity/users'
+import { Route as AdminOpeniddictApplicationsRouteImport } from './routes/admin/openiddict/applications'
+import { Route as AdminOpeniddictScopesRouteImport } from './routes/admin/openiddict/scopes'
+import { Route as AdminSaasTenantsRouteImport } from './routes/admin/saas/tenants'
+import { Route as StudentSessionsSessionIdRouteImport } from './routes/student/sessions/$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const R403Route = R403RouteImport.update({
-  id: '/403',
-  path: '/403',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
@@ -56,49 +65,24 @@ const AccountRouteRoute = AccountRouteRouteImport.update({
   path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuditLogsRoute = AuditLogsRouteImport.update({
-  id: '/audit-logs',
-  path: '/audit-logs',
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BackgroundJobsRoute = BackgroundJobsRouteImport.update({
-  id: '/background-jobs',
-  path: '/background-jobs',
+const ClassroomRouteRoute = ClassroomRouteRouteImport.update({
+  id: '/classroom',
+  path: '/classroom',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BooksRoute = BooksRouteImport.update({
-  id: '/books',
-  path: '/books',
+const PresentationRouteRoute = PresentationRouteRouteImport.update({
+  id: '/presentation',
+  path: '/presentation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeaturesRoute = FeaturesRouteImport.update({
-  id: '/features',
-  path: '/features',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IdentityRouteRoute = IdentityRouteRouteImport.update({
-  id: '/identity',
-  path: '/identity',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TenantsRoute = TenantsRouteImport.update({
-  id: '/tenants',
-  path: '/tenants',
+const StudentRouteRoute = StudentRouteRouteImport.update({
+  id: '/student',
+  path: '/student',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
@@ -126,297 +110,466 @@ const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const CmsBlogPostsRoute = CmsBlogPostsRouteImport.update({
-  id: '/cms/blog-posts',
-  path: '/cms/blog-posts',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CmsBlogsRoute = CmsBlogsRouteImport.update({
-  id: '/cms/blogs',
-  path: '/cms/blogs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CmsCommentsRoute = CmsCommentsRouteImport.update({
-  id: '/cms/comments',
-  path: '/cms/comments',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CmsMenusRoute = CmsMenusRouteImport.update({
-  id: '/cms/menus',
-  path: '/cms/menus',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CmsPagesRoute = CmsPagesRouteImport.update({
-  id: '/cms/pages',
-  path: '/cms/pages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CmsTagsRoute = CmsTagsRouteImport.update({
-  id: '/cms/tags',
-  path: '/cms/tags',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FileManagementIndexRoute = FileManagementIndexRouteImport.update({
-  id: '/file-management/',
-  path: '/file-management/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IdentityIndexRoute = IdentityIndexRouteImport.update({
+const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => IdentityRouteRoute,
+  getParentRoute: () => AdminRouteRoute,
 } as any)
-const IdentityClaimTypesRoute = IdentityClaimTypesRouteImport.update({
+const Admin403Route = Admin403RouteImport.update({
+  id: '/403',
+  path: '/403',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAuditLogsRoute = AdminAuditLogsRouteImport.update({
+  id: '/audit-logs',
+  path: '/audit-logs',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBackgroundJobsRoute = AdminBackgroundJobsRouteImport.update({
+  id: '/background-jobs',
+  path: '/background-jobs',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBooksRoute = AdminBooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminChatRoute = AdminChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminFeaturesRoute = AdminFeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminIdentityRouteRoute = AdminIdentityRouteRouteImport.update({
+  id: '/identity',
+  path: '/identity',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminSaasRouteRoute = AdminSaasRouteRouteImport.update({
+  id: '/saas',
+  path: '/saas',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const ClassroomIndexRoute = ClassroomIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClassroomRouteRoute,
+} as any)
+const ClassroomSessionIdRoute = ClassroomSessionIdRouteImport.update({
+  id: '/$sessionId',
+  path: '/$sessionId',
+  getParentRoute: () => ClassroomRouteRoute,
+} as any)
+const ClassroomQuestionsRoute = ClassroomQuestionsRouteImport.update({
+  id: '/questions',
+  path: '/questions',
+  getParentRoute: () => ClassroomRouteRoute,
+} as any)
+const ClassroomQuizzesRoute = ClassroomQuizzesRouteImport.update({
+  id: '/quizzes',
+  path: '/quizzes',
+  getParentRoute: () => ClassroomRouteRoute,
+} as any)
+const ClassroomSessionsRoute = ClassroomSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => ClassroomRouteRoute,
+} as any)
+const PresentationSessionIdRoute = PresentationSessionIdRouteImport.update({
+  id: '/$sessionId',
+  path: '/$sessionId',
+  getParentRoute: () => PresentationRouteRoute,
+} as any)
+const StudentJoinRoute = StudentJoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => StudentRouteRoute,
+} as any)
+const AdminCmsBlogPostsRoute = AdminCmsBlogPostsRouteImport.update({
+  id: '/cms/blog-posts',
+  path: '/cms/blog-posts',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCmsBlogsRoute = AdminCmsBlogsRouteImport.update({
+  id: '/cms/blogs',
+  path: '/cms/blogs',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCmsCommentsRoute = AdminCmsCommentsRouteImport.update({
+  id: '/cms/comments',
+  path: '/cms/comments',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCmsMenusRoute = AdminCmsMenusRouteImport.update({
+  id: '/cms/menus',
+  path: '/cms/menus',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCmsPagesRoute = AdminCmsPagesRouteImport.update({
+  id: '/cms/pages',
+  path: '/cms/pages',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCmsTagsRoute = AdminCmsTagsRouteImport.update({
+  id: '/cms/tags',
+  path: '/cms/tags',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminFileManagementIndexRoute =
+  AdminFileManagementIndexRouteImport.update({
+    id: '/file-management/',
+    path: '/file-management/',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
+const AdminIdentityIndexRoute = AdminIdentityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminIdentityRouteRoute,
+} as any)
+const AdminIdentityClaimTypesRoute = AdminIdentityClaimTypesRouteImport.update({
   id: '/claim-types',
   path: '/claim-types',
-  getParentRoute: () => IdentityRouteRoute,
+  getParentRoute: () => AdminIdentityRouteRoute,
 } as any)
-const IdentityPermissionsRoute = IdentityPermissionsRouteImport.update({
-  id: '/permissions',
-  path: '/permissions',
-  getParentRoute: () => IdentityRouteRoute,
-} as any)
-const IdentityRolesRoute = IdentityRolesRouteImport.update({
+const AdminIdentityPermissionsRoute =
+  AdminIdentityPermissionsRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => AdminIdentityRouteRoute,
+  } as any)
+const AdminIdentityRolesRoute = AdminIdentityRolesRouteImport.update({
   id: '/roles',
   path: '/roles',
-  getParentRoute: () => IdentityRouteRoute,
+  getParentRoute: () => AdminIdentityRouteRoute,
 } as any)
-const IdentityUsersRoute = IdentityUsersRouteImport.update({
+const AdminIdentityUsersRoute = AdminIdentityUsersRouteImport.update({
   id: '/users',
   path: '/users',
-  getParentRoute: () => IdentityRouteRoute,
+  getParentRoute: () => AdminIdentityRouteRoute,
 } as any)
-const OpeniddictApplicationsRoute = OpeniddictApplicationsRouteImport.update({
-  id: '/openiddict/applications',
-  path: '/openiddict/applications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpeniddictScopesRoute = OpeniddictScopesRouteImport.update({
+const AdminOpeniddictApplicationsRoute =
+  AdminOpeniddictApplicationsRouteImport.update({
+    id: '/openiddict/applications',
+    path: '/openiddict/applications',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
+const AdminOpeniddictScopesRoute = AdminOpeniddictScopesRouteImport.update({
   id: '/openiddict/scopes',
   path: '/openiddict/scopes',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminSaasTenantsRoute = AdminSaasTenantsRouteImport.update({
+  id: '/tenants',
+  path: '/tenants',
+  getParentRoute: () => AdminSaasRouteRoute,
+} as any)
+const StudentSessionsSessionIdRoute =
+  StudentSessionsSessionIdRouteImport.update({
+    id: '/sessions/$sessionId',
+    path: '/sessions/$sessionId',
+    getParentRoute: () => StudentRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/identity': typeof IdentityRouteRouteWithChildren
-  '/403': typeof R403Route
-  '/audit-logs': typeof AuditLogsRoute
-  '/background-jobs': typeof BackgroundJobsRoute
-  '/books': typeof BooksRoute
-  '/chat': typeof ChatRoute
-  '/features': typeof FeaturesRoute
-  '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
-  '/tenants': typeof TenantsRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/classroom': typeof ClassroomRouteRouteWithChildren
+  '/presentation': typeof PresentationRouteRouteWithChildren
+  '/student': typeof StudentRouteRouteWithChildren
+  '/admin/identity': typeof AdminIdentityRouteRouteWithChildren
+  '/admin/saas': typeof AdminSaasRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/cms/blog-posts': typeof CmsBlogPostsRoute
-  '/cms/blogs': typeof CmsBlogsRoute
-  '/cms/comments': typeof CmsCommentsRoute
-  '/cms/menus': typeof CmsMenusRoute
-  '/cms/pages': typeof CmsPagesRoute
-  '/cms/tags': typeof CmsTagsRoute
-  '/identity/claim-types': typeof IdentityClaimTypesRoute
-  '/identity/permissions': typeof IdentityPermissionsRoute
-  '/identity/roles': typeof IdentityRolesRoute
-  '/identity/users': typeof IdentityUsersRoute
-  '/openiddict/applications': typeof OpeniddictApplicationsRoute
-  '/openiddict/scopes': typeof OpeniddictScopesRoute
+  '/admin/403': typeof Admin403Route
+  '/admin/audit-logs': typeof AdminAuditLogsRoute
+  '/admin/background-jobs': typeof AdminBackgroundJobsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/chat': typeof AdminChatRoute
+  '/admin/features': typeof AdminFeaturesRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/classroom/$sessionId': typeof ClassroomSessionIdRoute
+  '/classroom/questions': typeof ClassroomQuestionsRoute
+  '/classroom/quizzes': typeof ClassroomQuizzesRoute
+  '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/presentation/$sessionId': typeof PresentationSessionIdRoute
+  '/student/join': typeof StudentJoinRoute
   '/account/': typeof AccountIndexRoute
-  '/file-management/': typeof FileManagementIndexRoute
-  '/identity/': typeof IdentityIndexRoute
+  '/admin/': typeof AdminIndexRoute
+  '/classroom/': typeof ClassroomIndexRoute
+  '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
+  '/admin/cms/blogs': typeof AdminCmsBlogsRoute
+  '/admin/cms/comments': typeof AdminCmsCommentsRoute
+  '/admin/cms/menus': typeof AdminCmsMenusRoute
+  '/admin/cms/pages': typeof AdminCmsPagesRoute
+  '/admin/cms/tags': typeof AdminCmsTagsRoute
+  '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
+  '/admin/identity/roles': typeof AdminIdentityRolesRoute
+  '/admin/identity/users': typeof AdminIdentityUsersRoute
+  '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
+  '/admin/file-management/': typeof AdminFileManagementIndexRoute
+  '/admin/identity/': typeof AdminIdentityIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/403': typeof R403Route
-  '/audit-logs': typeof AuditLogsRoute
-  '/background-jobs': typeof BackgroundJobsRoute
-  '/books': typeof BooksRoute
-  '/chat': typeof ChatRoute
-  '/features': typeof FeaturesRoute
-  '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
-  '/tenants': typeof TenantsRoute
+  '/presentation': typeof PresentationRouteRouteWithChildren
+  '/student': typeof StudentRouteRouteWithChildren
+  '/admin/saas': typeof AdminSaasRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/cms/blog-posts': typeof CmsBlogPostsRoute
-  '/cms/blogs': typeof CmsBlogsRoute
-  '/cms/comments': typeof CmsCommentsRoute
-  '/cms/menus': typeof CmsMenusRoute
-  '/cms/pages': typeof CmsPagesRoute
-  '/cms/tags': typeof CmsTagsRoute
-  '/identity/claim-types': typeof IdentityClaimTypesRoute
-  '/identity/permissions': typeof IdentityPermissionsRoute
-  '/identity/roles': typeof IdentityRolesRoute
-  '/identity/users': typeof IdentityUsersRoute
-  '/openiddict/applications': typeof OpeniddictApplicationsRoute
-  '/openiddict/scopes': typeof OpeniddictScopesRoute
+  '/admin/403': typeof Admin403Route
+  '/admin/audit-logs': typeof AdminAuditLogsRoute
+  '/admin/background-jobs': typeof AdminBackgroundJobsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/chat': typeof AdminChatRoute
+  '/admin/features': typeof AdminFeaturesRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/classroom/$sessionId': typeof ClassroomSessionIdRoute
+  '/classroom/questions': typeof ClassroomQuestionsRoute
+  '/classroom/quizzes': typeof ClassroomQuizzesRoute
+  '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/presentation/$sessionId': typeof PresentationSessionIdRoute
+  '/student/join': typeof StudentJoinRoute
   '/account': typeof AccountIndexRoute
-  '/file-management': typeof FileManagementIndexRoute
-  '/identity': typeof IdentityIndexRoute
+  '/admin': typeof AdminIndexRoute
+  '/classroom': typeof ClassroomIndexRoute
+  '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
+  '/admin/cms/blogs': typeof AdminCmsBlogsRoute
+  '/admin/cms/comments': typeof AdminCmsCommentsRoute
+  '/admin/cms/menus': typeof AdminCmsMenusRoute
+  '/admin/cms/pages': typeof AdminCmsPagesRoute
+  '/admin/cms/tags': typeof AdminCmsTagsRoute
+  '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
+  '/admin/identity/roles': typeof AdminIdentityRolesRoute
+  '/admin/identity/users': typeof AdminIdentityUsersRoute
+  '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
+  '/admin/file-management': typeof AdminFileManagementIndexRoute
+  '/admin/identity': typeof AdminIdentityIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/identity': typeof IdentityRouteRouteWithChildren
-  '/403': typeof R403Route
-  '/audit-logs': typeof AuditLogsRoute
-  '/background-jobs': typeof BackgroundJobsRoute
-  '/books': typeof BooksRoute
-  '/chat': typeof ChatRoute
-  '/features': typeof FeaturesRoute
-  '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
-  '/tenants': typeof TenantsRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/classroom': typeof ClassroomRouteRouteWithChildren
+  '/presentation': typeof PresentationRouteRouteWithChildren
+  '/student': typeof StudentRouteRouteWithChildren
+  '/admin/identity': typeof AdminIdentityRouteRouteWithChildren
+  '/admin/saas': typeof AdminSaasRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/cms/blog-posts': typeof CmsBlogPostsRoute
-  '/cms/blogs': typeof CmsBlogsRoute
-  '/cms/comments': typeof CmsCommentsRoute
-  '/cms/menus': typeof CmsMenusRoute
-  '/cms/pages': typeof CmsPagesRoute
-  '/cms/tags': typeof CmsTagsRoute
-  '/identity/claim-types': typeof IdentityClaimTypesRoute
-  '/identity/permissions': typeof IdentityPermissionsRoute
-  '/identity/roles': typeof IdentityRolesRoute
-  '/identity/users': typeof IdentityUsersRoute
-  '/openiddict/applications': typeof OpeniddictApplicationsRoute
-  '/openiddict/scopes': typeof OpeniddictScopesRoute
+  '/admin/403': typeof Admin403Route
+  '/admin/audit-logs': typeof AdminAuditLogsRoute
+  '/admin/background-jobs': typeof AdminBackgroundJobsRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/chat': typeof AdminChatRoute
+  '/admin/features': typeof AdminFeaturesRoute
+  '/admin/profile': typeof AdminProfileRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/classroom/$sessionId': typeof ClassroomSessionIdRoute
+  '/classroom/questions': typeof ClassroomQuestionsRoute
+  '/classroom/quizzes': typeof ClassroomQuizzesRoute
+  '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/presentation/$sessionId': typeof PresentationSessionIdRoute
+  '/student/join': typeof StudentJoinRoute
   '/account/': typeof AccountIndexRoute
-  '/file-management/': typeof FileManagementIndexRoute
-  '/identity/': typeof IdentityIndexRoute
+  '/admin/': typeof AdminIndexRoute
+  '/classroom/': typeof ClassroomIndexRoute
+  '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
+  '/admin/cms/blogs': typeof AdminCmsBlogsRoute
+  '/admin/cms/comments': typeof AdminCmsCommentsRoute
+  '/admin/cms/menus': typeof AdminCmsMenusRoute
+  '/admin/cms/pages': typeof AdminCmsPagesRoute
+  '/admin/cms/tags': typeof AdminCmsTagsRoute
+  '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
+  '/admin/identity/roles': typeof AdminIdentityRolesRoute
+  '/admin/identity/users': typeof AdminIdentityUsersRoute
+  '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
+  '/admin/file-management/': typeof AdminFileManagementIndexRoute
+  '/admin/identity/': typeof AdminIdentityIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/account'
-    | '/identity'
-    | '/403'
-    | '/audit-logs'
-    | '/background-jobs'
-    | '/books'
-    | '/chat'
-    | '/features'
-    | '/profile'
-    | '/settings'
-    | '/tenants'
+    | '/admin'
+    | '/classroom'
+    | '/presentation'
+    | '/student'
+    | '/admin/identity'
+    | '/admin/saas'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
-    | '/cms/blog-posts'
-    | '/cms/blogs'
-    | '/cms/comments'
-    | '/cms/menus'
-    | '/cms/pages'
-    | '/cms/tags'
-    | '/identity/claim-types'
-    | '/identity/permissions'
-    | '/identity/roles'
-    | '/identity/users'
-    | '/openiddict/applications'
-    | '/openiddict/scopes'
+    | '/admin/403'
+    | '/admin/audit-logs'
+    | '/admin/background-jobs'
+    | '/admin/books'
+    | '/admin/chat'
+    | '/admin/features'
+    | '/admin/profile'
+    | '/admin/settings'
+    | '/classroom/$sessionId'
+    | '/classroom/questions'
+    | '/classroom/quizzes'
+    | '/classroom/sessions'
+    | '/presentation/$sessionId'
+    | '/student/join'
     | '/account/'
-    | '/file-management/'
-    | '/identity/'
+    | '/admin/'
+    | '/classroom/'
+    | '/admin/cms/blog-posts'
+    | '/admin/cms/blogs'
+    | '/admin/cms/comments'
+    | '/admin/cms/menus'
+    | '/admin/cms/pages'
+    | '/admin/cms/tags'
+    | '/admin/identity/claim-types'
+    | '/admin/identity/permissions'
+    | '/admin/identity/roles'
+    | '/admin/identity/users'
+    | '/admin/openiddict/applications'
+    | '/admin/openiddict/scopes'
+    | '/admin/saas/tenants'
+    | '/student/sessions/$sessionId'
+    | '/admin/file-management/'
+    | '/admin/identity/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/403'
-    | '/audit-logs'
-    | '/background-jobs'
-    | '/books'
-    | '/chat'
-    | '/features'
-    | '/profile'
-    | '/settings'
-    | '/tenants'
+    | '/presentation'
+    | '/student'
+    | '/admin/saas'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
-    | '/cms/blog-posts'
-    | '/cms/blogs'
-    | '/cms/comments'
-    | '/cms/menus'
-    | '/cms/pages'
-    | '/cms/tags'
-    | '/identity/claim-types'
-    | '/identity/permissions'
-    | '/identity/roles'
-    | '/identity/users'
-    | '/openiddict/applications'
-    | '/openiddict/scopes'
+    | '/admin/403'
+    | '/admin/audit-logs'
+    | '/admin/background-jobs'
+    | '/admin/books'
+    | '/admin/chat'
+    | '/admin/features'
+    | '/admin/profile'
+    | '/admin/settings'
+    | '/classroom/$sessionId'
+    | '/classroom/questions'
+    | '/classroom/quizzes'
+    | '/classroom/sessions'
+    | '/presentation/$sessionId'
+    | '/student/join'
     | '/account'
-    | '/file-management'
-    | '/identity'
+    | '/admin'
+    | '/classroom'
+    | '/admin/cms/blog-posts'
+    | '/admin/cms/blogs'
+    | '/admin/cms/comments'
+    | '/admin/cms/menus'
+    | '/admin/cms/pages'
+    | '/admin/cms/tags'
+    | '/admin/identity/claim-types'
+    | '/admin/identity/permissions'
+    | '/admin/identity/roles'
+    | '/admin/identity/users'
+    | '/admin/openiddict/applications'
+    | '/admin/openiddict/scopes'
+    | '/admin/saas/tenants'
+    | '/student/sessions/$sessionId'
+    | '/admin/file-management'
+    | '/admin/identity'
   id:
     | '__root__'
     | '/'
     | '/account'
-    | '/identity'
-    | '/403'
-    | '/audit-logs'
-    | '/background-jobs'
-    | '/books'
-    | '/chat'
-    | '/features'
-    | '/profile'
-    | '/settings'
-    | '/tenants'
+    | '/admin'
+    | '/classroom'
+    | '/presentation'
+    | '/student'
+    | '/admin/identity'
+    | '/admin/saas'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
-    | '/cms/blog-posts'
-    | '/cms/blogs'
-    | '/cms/comments'
-    | '/cms/menus'
-    | '/cms/pages'
-    | '/cms/tags'
-    | '/identity/claim-types'
-    | '/identity/permissions'
-    | '/identity/roles'
-    | '/identity/users'
-    | '/openiddict/applications'
-    | '/openiddict/scopes'
+    | '/admin/403'
+    | '/admin/audit-logs'
+    | '/admin/background-jobs'
+    | '/admin/books'
+    | '/admin/chat'
+    | '/admin/features'
+    | '/admin/profile'
+    | '/admin/settings'
+    | '/classroom/$sessionId'
+    | '/classroom/questions'
+    | '/classroom/quizzes'
+    | '/classroom/sessions'
+    | '/presentation/$sessionId'
+    | '/student/join'
     | '/account/'
-    | '/file-management/'
-    | '/identity/'
+    | '/admin/'
+    | '/classroom/'
+    | '/admin/cms/blog-posts'
+    | '/admin/cms/blogs'
+    | '/admin/cms/comments'
+    | '/admin/cms/menus'
+    | '/admin/cms/pages'
+    | '/admin/cms/tags'
+    | '/admin/identity/claim-types'
+    | '/admin/identity/permissions'
+    | '/admin/identity/roles'
+    | '/admin/identity/users'
+    | '/admin/openiddict/applications'
+    | '/admin/openiddict/scopes'
+    | '/admin/saas/tenants'
+    | '/student/sessions/$sessionId'
+    | '/admin/file-management/'
+    | '/admin/identity/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
-  IdentityRouteRoute: typeof IdentityRouteRouteWithChildren
-  R403Route: typeof R403Route
-  AuditLogsRoute: typeof AuditLogsRoute
-  BackgroundJobsRoute: typeof BackgroundJobsRoute
-  BooksRoute: typeof BooksRoute
-  ChatRoute: typeof ChatRoute
-  FeaturesRoute: typeof FeaturesRoute
-  ProfileRoute: typeof ProfileRoute
-  SettingsRoute: typeof SettingsRoute
-  TenantsRoute: typeof TenantsRoute
-  CmsBlogPostsRoute: typeof CmsBlogPostsRoute
-  CmsBlogsRoute: typeof CmsBlogsRoute
-  CmsCommentsRoute: typeof CmsCommentsRoute
-  CmsMenusRoute: typeof CmsMenusRoute
-  CmsPagesRoute: typeof CmsPagesRoute
-  CmsTagsRoute: typeof CmsTagsRoute
-  OpeniddictApplicationsRoute: typeof OpeniddictApplicationsRoute
-  OpeniddictScopesRoute: typeof OpeniddictScopesRoute
-  FileManagementIndexRoute: typeof FileManagementIndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  ClassroomRouteRoute: typeof ClassroomRouteRouteWithChildren
+  PresentationRouteRoute: typeof PresentationRouteRouteWithChildren
+  StudentRouteRoute: typeof StudentRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -428,13 +581,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/403': {
-      id: '/403'
-      path: '/403'
-      fullPath: '/403'
-      preLoaderRoute: typeof R403RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -442,67 +588,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/audit-logs': {
-      id: '/audit-logs'
-      path: '/audit-logs'
-      fullPath: '/audit-logs'
-      preLoaderRoute: typeof AuditLogsRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/background-jobs': {
-      id: '/background-jobs'
-      path: '/background-jobs'
-      fullPath: '/background-jobs'
-      preLoaderRoute: typeof BackgroundJobsRouteImport
+    '/classroom': {
+      id: '/classroom'
+      path: '/classroom'
+      fullPath: '/classroom'
+      preLoaderRoute: typeof ClassroomRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/books': {
-      id: '/books'
-      path: '/books'
-      fullPath: '/books'
-      preLoaderRoute: typeof BooksRouteImport
+    '/presentation': {
+      id: '/presentation'
+      path: '/presentation'
+      fullPath: '/presentation'
+      preLoaderRoute: typeof PresentationRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/features': {
-      id: '/features'
-      path: '/features'
-      fullPath: '/features'
-      preLoaderRoute: typeof FeaturesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/identity': {
-      id: '/identity'
-      path: '/identity'
-      fullPath: '/identity'
-      preLoaderRoute: typeof IdentityRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tenants': {
-      id: '/tenants'
-      path: '/tenants'
-      fullPath: '/tenants'
-      preLoaderRoute: typeof TenantsRouteImport
+    '/student': {
+      id: '/student'
+      path: '/student'
+      fullPath: '/student'
+      preLoaderRoute: typeof StudentRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/': {
@@ -540,103 +651,243 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountResetPasswordRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/cms/blog-posts': {
-      id: '/cms/blog-posts'
-      path: '/cms/blog-posts'
-      fullPath: '/cms/blog-posts'
-      preLoaderRoute: typeof CmsBlogPostsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cms/blogs': {
-      id: '/cms/blogs'
-      path: '/cms/blogs'
-      fullPath: '/cms/blogs'
-      preLoaderRoute: typeof CmsBlogsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cms/comments': {
-      id: '/cms/comments'
-      path: '/cms/comments'
-      fullPath: '/cms/comments'
-      preLoaderRoute: typeof CmsCommentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cms/menus': {
-      id: '/cms/menus'
-      path: '/cms/menus'
-      fullPath: '/cms/menus'
-      preLoaderRoute: typeof CmsMenusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cms/pages': {
-      id: '/cms/pages'
-      path: '/cms/pages'
-      fullPath: '/cms/pages'
-      preLoaderRoute: typeof CmsPagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cms/tags': {
-      id: '/cms/tags'
-      path: '/cms/tags'
-      fullPath: '/cms/tags'
-      preLoaderRoute: typeof CmsTagsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/file-management/': {
-      id: '/file-management/'
-      path: '/file-management'
-      fullPath: '/file-management/'
-      preLoaderRoute: typeof FileManagementIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/identity/': {
-      id: '/identity/'
+    '/admin/': {
+      id: '/admin/'
       path: '/'
-      fullPath: '/identity/'
-      preLoaderRoute: typeof IdentityIndexRouteImport
-      parentRoute: typeof IdentityRouteRoute
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
-    '/identity/claim-types': {
-      id: '/identity/claim-types'
+    '/admin/403': {
+      id: '/admin/403'
+      path: '/403'
+      fullPath: '/admin/403'
+      preLoaderRoute: typeof Admin403RouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/audit-logs': {
+      id: '/admin/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/admin/audit-logs'
+      preLoaderRoute: typeof AdminAuditLogsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/background-jobs': {
+      id: '/admin/background-jobs'
+      path: '/background-jobs'
+      fullPath: '/admin/background-jobs'
+      preLoaderRoute: typeof AdminBackgroundJobsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/books': {
+      id: '/admin/books'
+      path: '/books'
+      fullPath: '/admin/books'
+      preLoaderRoute: typeof AdminBooksRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/chat': {
+      id: '/admin/chat'
+      path: '/chat'
+      fullPath: '/admin/chat'
+      preLoaderRoute: typeof AdminChatRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/features': {
+      id: '/admin/features'
+      path: '/features'
+      fullPath: '/admin/features'
+      preLoaderRoute: typeof AdminFeaturesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/identity': {
+      id: '/admin/identity'
+      path: '/identity'
+      fullPath: '/admin/identity'
+      preLoaderRoute: typeof AdminIdentityRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/profile': {
+      id: '/admin/profile'
+      path: '/profile'
+      fullPath: '/admin/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/saas': {
+      id: '/admin/saas'
+      path: '/saas'
+      fullPath: '/admin/saas'
+      preLoaderRoute: typeof AdminSaasRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/classroom/': {
+      id: '/classroom/'
+      path: '/'
+      fullPath: '/classroom/'
+      preLoaderRoute: typeof ClassroomIndexRouteImport
+      parentRoute: typeof ClassroomRouteRoute
+    }
+    '/classroom/$sessionId': {
+      id: '/classroom/$sessionId'
+      path: '/$sessionId'
+      fullPath: '/classroom/$sessionId'
+      preLoaderRoute: typeof ClassroomSessionIdRouteImport
+      parentRoute: typeof ClassroomRouteRoute
+    }
+    '/classroom/questions': {
+      id: '/classroom/questions'
+      path: '/questions'
+      fullPath: '/classroom/questions'
+      preLoaderRoute: typeof ClassroomQuestionsRouteImport
+      parentRoute: typeof ClassroomRouteRoute
+    }
+    '/classroom/quizzes': {
+      id: '/classroom/quizzes'
+      path: '/quizzes'
+      fullPath: '/classroom/quizzes'
+      preLoaderRoute: typeof ClassroomQuizzesRouteImport
+      parentRoute: typeof ClassroomRouteRoute
+    }
+    '/classroom/sessions': {
+      id: '/classroom/sessions'
+      path: '/sessions'
+      fullPath: '/classroom/sessions'
+      preLoaderRoute: typeof ClassroomSessionsRouteImport
+      parentRoute: typeof ClassroomRouteRoute
+    }
+    '/presentation/$sessionId': {
+      id: '/presentation/$sessionId'
+      path: '/$sessionId'
+      fullPath: '/presentation/$sessionId'
+      preLoaderRoute: typeof PresentationSessionIdRouteImport
+      parentRoute: typeof PresentationRouteRoute
+    }
+    '/student/join': {
+      id: '/student/join'
+      path: '/join'
+      fullPath: '/student/join'
+      preLoaderRoute: typeof StudentJoinRouteImport
+      parentRoute: typeof StudentRouteRoute
+    }
+    '/admin/cms/blog-posts': {
+      id: '/admin/cms/blog-posts'
+      path: '/cms/blog-posts'
+      fullPath: '/admin/cms/blog-posts'
+      preLoaderRoute: typeof AdminCmsBlogPostsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/cms/blogs': {
+      id: '/admin/cms/blogs'
+      path: '/cms/blogs'
+      fullPath: '/admin/cms/blogs'
+      preLoaderRoute: typeof AdminCmsBlogsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/cms/comments': {
+      id: '/admin/cms/comments'
+      path: '/cms/comments'
+      fullPath: '/admin/cms/comments'
+      preLoaderRoute: typeof AdminCmsCommentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/cms/menus': {
+      id: '/admin/cms/menus'
+      path: '/cms/menus'
+      fullPath: '/admin/cms/menus'
+      preLoaderRoute: typeof AdminCmsMenusRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/cms/pages': {
+      id: '/admin/cms/pages'
+      path: '/cms/pages'
+      fullPath: '/admin/cms/pages'
+      preLoaderRoute: typeof AdminCmsPagesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/cms/tags': {
+      id: '/admin/cms/tags'
+      path: '/cms/tags'
+      fullPath: '/admin/cms/tags'
+      preLoaderRoute: typeof AdminCmsTagsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/file-management/': {
+      id: '/admin/file-management/'
+      path: '/file-management'
+      fullPath: '/admin/file-management/'
+      preLoaderRoute: typeof AdminFileManagementIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/identity/': {
+      id: '/admin/identity/'
+      path: '/'
+      fullPath: '/admin/identity/'
+      preLoaderRoute: typeof AdminIdentityIndexRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
+    }
+    '/admin/identity/claim-types': {
+      id: '/admin/identity/claim-types'
       path: '/claim-types'
-      fullPath: '/identity/claim-types'
-      preLoaderRoute: typeof IdentityClaimTypesRouteImport
-      parentRoute: typeof IdentityRouteRoute
+      fullPath: '/admin/identity/claim-types'
+      preLoaderRoute: typeof AdminIdentityClaimTypesRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
     }
-    '/identity/permissions': {
-      id: '/identity/permissions'
+    '/admin/identity/permissions': {
+      id: '/admin/identity/permissions'
       path: '/permissions'
-      fullPath: '/identity/permissions'
-      preLoaderRoute: typeof IdentityPermissionsRouteImport
-      parentRoute: typeof IdentityRouteRoute
+      fullPath: '/admin/identity/permissions'
+      preLoaderRoute: typeof AdminIdentityPermissionsRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
     }
-    '/identity/roles': {
-      id: '/identity/roles'
+    '/admin/identity/roles': {
+      id: '/admin/identity/roles'
       path: '/roles'
-      fullPath: '/identity/roles'
-      preLoaderRoute: typeof IdentityRolesRouteImport
-      parentRoute: typeof IdentityRouteRoute
+      fullPath: '/admin/identity/roles'
+      preLoaderRoute: typeof AdminIdentityRolesRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
     }
-    '/identity/users': {
-      id: '/identity/users'
+    '/admin/identity/users': {
+      id: '/admin/identity/users'
       path: '/users'
-      fullPath: '/identity/users'
-      preLoaderRoute: typeof IdentityUsersRouteImport
-      parentRoute: typeof IdentityRouteRoute
+      fullPath: '/admin/identity/users'
+      preLoaderRoute: typeof AdminIdentityUsersRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
     }
-    '/openiddict/applications': {
-      id: '/openiddict/applications'
+    '/admin/openiddict/applications': {
+      id: '/admin/openiddict/applications'
       path: '/openiddict/applications'
-      fullPath: '/openiddict/applications'
-      preLoaderRoute: typeof OpeniddictApplicationsRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/admin/openiddict/applications'
+      preLoaderRoute: typeof AdminOpeniddictApplicationsRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
-    '/openiddict/scopes': {
-      id: '/openiddict/scopes'
+    '/admin/openiddict/scopes': {
+      id: '/admin/openiddict/scopes'
       path: '/openiddict/scopes'
-      fullPath: '/openiddict/scopes'
-      preLoaderRoute: typeof OpeniddictScopesRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/admin/openiddict/scopes'
+      preLoaderRoute: typeof AdminOpeniddictScopesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/saas/tenants': {
+      id: '/admin/saas/tenants'
+      path: '/tenants'
+      fullPath: '/admin/saas/tenants'
+      preLoaderRoute: typeof AdminSaasTenantsRouteImport
+      parentRoute: typeof AdminSaasRouteRoute
+    }
+    '/student/sessions/$sessionId': {
+      id: '/student/sessions/$sessionId'
+      path: '/sessions/$sessionId'
+      fullPath: '/student/sessions/$sessionId'
+      preLoaderRoute: typeof StudentSessionsSessionIdRouteImport
+      parentRoute: typeof StudentRouteRoute
     }
   }
 }
@@ -661,48 +912,139 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
   AccountRouteRouteChildren,
 )
 
-interface IdentityRouteRouteChildren {
-  IdentityClaimTypesRoute: typeof IdentityClaimTypesRoute
-  IdentityPermissionsRoute: typeof IdentityPermissionsRoute
-  IdentityRolesRoute: typeof IdentityRolesRoute
-  IdentityUsersRoute: typeof IdentityUsersRoute
-  IdentityIndexRoute: typeof IdentityIndexRoute
+interface AdminIdentityRouteRouteChildren {
+  AdminIdentityClaimTypesRoute: typeof AdminIdentityClaimTypesRoute
+  AdminIdentityPermissionsRoute: typeof AdminIdentityPermissionsRoute
+  AdminIdentityRolesRoute: typeof AdminIdentityRolesRoute
+  AdminIdentityUsersRoute: typeof AdminIdentityUsersRoute
+  AdminIdentityIndexRoute: typeof AdminIdentityIndexRoute
 }
 
-const IdentityRouteRouteChildren: IdentityRouteRouteChildren = {
-  IdentityClaimTypesRoute: IdentityClaimTypesRoute,
-  IdentityPermissionsRoute: IdentityPermissionsRoute,
-  IdentityRolesRoute: IdentityRolesRoute,
-  IdentityUsersRoute: IdentityUsersRoute,
-  IdentityIndexRoute: IdentityIndexRoute,
+const AdminIdentityRouteRouteChildren: AdminIdentityRouteRouteChildren = {
+  AdminIdentityClaimTypesRoute: AdminIdentityClaimTypesRoute,
+  AdminIdentityPermissionsRoute: AdminIdentityPermissionsRoute,
+  AdminIdentityRolesRoute: AdminIdentityRolesRoute,
+  AdminIdentityUsersRoute: AdminIdentityUsersRoute,
+  AdminIdentityIndexRoute: AdminIdentityIndexRoute,
 }
 
-const IdentityRouteRouteWithChildren = IdentityRouteRoute._addFileChildren(
-  IdentityRouteRouteChildren,
+const AdminIdentityRouteRouteWithChildren =
+  AdminIdentityRouteRoute._addFileChildren(AdminIdentityRouteRouteChildren)
+
+interface AdminSaasRouteRouteChildren {
+  AdminSaasTenantsRoute: typeof AdminSaasTenantsRoute
+}
+
+const AdminSaasRouteRouteChildren: AdminSaasRouteRouteChildren = {
+  AdminSaasTenantsRoute: AdminSaasTenantsRoute,
+}
+
+const AdminSaasRouteRouteWithChildren = AdminSaasRouteRoute._addFileChildren(
+  AdminSaasRouteRouteChildren,
+)
+
+interface AdminRouteRouteChildren {
+  AdminIdentityRouteRoute: typeof AdminIdentityRouteRouteWithChildren
+  AdminSaasRouteRoute: typeof AdminSaasRouteRouteWithChildren
+  Admin403Route: typeof Admin403Route
+  AdminAuditLogsRoute: typeof AdminAuditLogsRoute
+  AdminBackgroundJobsRoute: typeof AdminBackgroundJobsRoute
+  AdminBooksRoute: typeof AdminBooksRoute
+  AdminChatRoute: typeof AdminChatRoute
+  AdminFeaturesRoute: typeof AdminFeaturesRoute
+  AdminProfileRoute: typeof AdminProfileRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminCmsBlogPostsRoute: typeof AdminCmsBlogPostsRoute
+  AdminCmsBlogsRoute: typeof AdminCmsBlogsRoute
+  AdminCmsCommentsRoute: typeof AdminCmsCommentsRoute
+  AdminCmsMenusRoute: typeof AdminCmsMenusRoute
+  AdminCmsPagesRoute: typeof AdminCmsPagesRoute
+  AdminCmsTagsRoute: typeof AdminCmsTagsRoute
+  AdminOpeniddictApplicationsRoute: typeof AdminOpeniddictApplicationsRoute
+  AdminOpeniddictScopesRoute: typeof AdminOpeniddictScopesRoute
+  AdminFileManagementIndexRoute: typeof AdminFileManagementIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIdentityRouteRoute: AdminIdentityRouteRouteWithChildren,
+  AdminSaasRouteRoute: AdminSaasRouteRouteWithChildren,
+  Admin403Route: Admin403Route,
+  AdminAuditLogsRoute: AdminAuditLogsRoute,
+  AdminBackgroundJobsRoute: AdminBackgroundJobsRoute,
+  AdminBooksRoute: AdminBooksRoute,
+  AdminChatRoute: AdminChatRoute,
+  AdminFeaturesRoute: AdminFeaturesRoute,
+  AdminProfileRoute: AdminProfileRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminCmsBlogPostsRoute: AdminCmsBlogPostsRoute,
+  AdminCmsBlogsRoute: AdminCmsBlogsRoute,
+  AdminCmsCommentsRoute: AdminCmsCommentsRoute,
+  AdminCmsMenusRoute: AdminCmsMenusRoute,
+  AdminCmsPagesRoute: AdminCmsPagesRoute,
+  AdminCmsTagsRoute: AdminCmsTagsRoute,
+  AdminOpeniddictApplicationsRoute: AdminOpeniddictApplicationsRoute,
+  AdminOpeniddictScopesRoute: AdminOpeniddictScopesRoute,
+  AdminFileManagementIndexRoute: AdminFileManagementIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface ClassroomRouteRouteChildren {
+  ClassroomSessionIdRoute: typeof ClassroomSessionIdRoute
+  ClassroomQuestionsRoute: typeof ClassroomQuestionsRoute
+  ClassroomQuizzesRoute: typeof ClassroomQuizzesRoute
+  ClassroomSessionsRoute: typeof ClassroomSessionsRoute
+  ClassroomIndexRoute: typeof ClassroomIndexRoute
+}
+
+const ClassroomRouteRouteChildren: ClassroomRouteRouteChildren = {
+  ClassroomSessionIdRoute: ClassroomSessionIdRoute,
+  ClassroomQuestionsRoute: ClassroomQuestionsRoute,
+  ClassroomQuizzesRoute: ClassroomQuizzesRoute,
+  ClassroomSessionsRoute: ClassroomSessionsRoute,
+  ClassroomIndexRoute: ClassroomIndexRoute,
+}
+
+const ClassroomRouteRouteWithChildren = ClassroomRouteRoute._addFileChildren(
+  ClassroomRouteRouteChildren,
+)
+
+interface PresentationRouteRouteChildren {
+  PresentationSessionIdRoute: typeof PresentationSessionIdRoute
+}
+
+const PresentationRouteRouteChildren: PresentationRouteRouteChildren = {
+  PresentationSessionIdRoute: PresentationSessionIdRoute,
+}
+
+const PresentationRouteRouteWithChildren =
+  PresentationRouteRoute._addFileChildren(PresentationRouteRouteChildren)
+
+interface StudentRouteRouteChildren {
+  StudentJoinRoute: typeof StudentJoinRoute
+  StudentSessionsSessionIdRoute: typeof StudentSessionsSessionIdRoute
+}
+
+const StudentRouteRouteChildren: StudentRouteRouteChildren = {
+  StudentJoinRoute: StudentJoinRoute,
+  StudentSessionsSessionIdRoute: StudentSessionsSessionIdRoute,
+}
+
+const StudentRouteRouteWithChildren = StudentRouteRoute._addFileChildren(
+  StudentRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
-  IdentityRouteRoute: IdentityRouteRouteWithChildren,
-  R403Route: R403Route,
-  AuditLogsRoute: AuditLogsRoute,
-  BackgroundJobsRoute: BackgroundJobsRoute,
-  BooksRoute: BooksRoute,
-  ChatRoute: ChatRoute,
-  FeaturesRoute: FeaturesRoute,
-  ProfileRoute: ProfileRoute,
-  SettingsRoute: SettingsRoute,
-  TenantsRoute: TenantsRoute,
-  CmsBlogPostsRoute: CmsBlogPostsRoute,
-  CmsBlogsRoute: CmsBlogsRoute,
-  CmsCommentsRoute: CmsCommentsRoute,
-  CmsMenusRoute: CmsMenusRoute,
-  CmsPagesRoute: CmsPagesRoute,
-  CmsTagsRoute: CmsTagsRoute,
-  OpeniddictApplicationsRoute: OpeniddictApplicationsRoute,
-  OpeniddictScopesRoute: OpeniddictScopesRoute,
-  FileManagementIndexRoute: FileManagementIndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  ClassroomRouteRoute: ClassroomRouteRouteWithChildren,
+  PresentationRouteRoute: PresentationRouteRouteWithChildren,
+  StudentRouteRoute: StudentRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

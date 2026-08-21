@@ -33,7 +33,7 @@
  * reactively without bespoke local state sync.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Avatar,
@@ -73,6 +73,7 @@ import {
   Prohibited20Regular,
 } from "@fluentui/react-icons";
 import { formatDistanceToNow, format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { useChatConnection } from "@/lib/chat/useChatConnection";
@@ -584,7 +585,6 @@ function MessageBubble({
   onToggleReaction,
   onDownloadAttachment,
 }: MessageBubbleProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const reactionsQuery = useConversationGetReactions(
     { path: { messageId: message.id ?? "" } },
@@ -628,8 +628,8 @@ function MessageBubble({
               className={styles.bubbleActionButton}
               icon={<MoreHorizontal20Regular />}
               onClick={onPickerToggle}
-              title={t("Chat:Reactions")}
-              aria-label={t("Chat:Reactions")}
+              title={"反应"}
+              aria-label={"反应"}
             />
             {isSent && (
               <>
@@ -639,8 +639,8 @@ function MessageBubble({
                   className={styles.bubbleActionButton}
                   icon={<Edit20Regular />}
                   onClick={onEditStart}
-                  title={t("AbpUi::Edit")}
-                  aria-label={t("AbpUi::Edit")}
+                  title={"编辑"}
+                  aria-label={"编辑"}
                 />
                 <Button
                   size="small"
@@ -648,8 +648,8 @@ function MessageBubble({
                   className={styles.bubbleActionButton}
                   icon={<Delete20Regular />}
                   onClick={onDeleteRequest}
-                  title={t("AbpUi::Delete")}
-                  aria-label={t("AbpUi::Delete")}
+                  title={"删除"}
+                  aria-label={"删除"}
                 />
               </>
             )}
@@ -697,10 +697,10 @@ function MessageBubble({
             />
             <div className={styles.editActions}>
               <Button size="small" appearance="primary" onClick={onEditSave} disabled={editPending}>
-                {t("AbpUi::Save")}
+                {"保存"}
               </Button>
               <Button size="small" onClick={onEditCancel} disabled={editPending}>
-                {t("AbpUi::Cancel")}
+                {"取消"}
               </Button>
             </div>
           </div>
@@ -709,7 +709,7 @@ function MessageBubble({
             className={`${styles.bubble} ${isSent ? styles.bubbleSent : styles.bubbleReceived} ${isDeleted ? styles.bubbleDeleted : ""}`}
           >
             {isDeleted
-              ? t("Chat:MessageDeleted")
+              ? "此消息已被删除"
               : highlightText(message.text ?? "", searchKeyword, styles.searchHighlight)}
             {hasAttachment && !isDeleted && (
               <Link
@@ -721,7 +721,7 @@ function MessageBubble({
                 }}
               >
                 <Attach20Regular />
-                {message.attachmentName ?? t("Chat:Attachment")}
+                {message.attachmentName ?? "附件"}
               </Link>
             )}
           </div>
@@ -736,7 +736,7 @@ function MessageBubble({
                 type="button"
                 className={`${styles.reactionChip} ${info.mine ? styles.reactionChipMine : ""}`}
                 onClick={() => onToggleReaction(emoji)}
-                title={info.mine ? t("Chat:RemoveReaction") : t("Chat:AddReaction")}
+                title={info.mine ? "移除反应" : "添加反应"}
               >
                 <span>{emoji}</span>
                 <span className={styles.reactionChipCount}>{info.count}</span>
@@ -748,8 +748,8 @@ function MessageBubble({
         {/* Meta line */}
         <div className={styles.bubbleMeta}>
           {message.sendTime ? format(new Date(message.sendTime), "yyyy-MM-dd HH:mm") : ""}
-          {isEdited && <span className={styles.bubbleEdited}> · {t("Chat:MessageEdited")}</span>}
-          {isSent && message.isRead ? ` · ✓ ${t("Chat:MarkAsRead")}` : ""}
+          {isEdited && <span className={styles.bubbleEdited}> · {"已编辑"}</span>}
+          {isSent && message.isRead ? ` · ✓ ${"标记为已读"}` : ""}
         </div>
       </div>
     </div>
@@ -770,7 +770,6 @@ interface TypingSender {
 }
 
 export function ChatPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -1301,7 +1300,7 @@ export function ChatPage() {
               },
             }),
           });
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
@@ -1313,7 +1312,6 @@ export function ChatPage() {
     editMessageMutation,
     queryClient,
     dispatchToast,
-    t,
   ]);
 
   const handleConfirmDelete = useCallback(() => {
@@ -1337,7 +1335,7 @@ export function ChatPage() {
           void queryClient.invalidateQueries({
             queryKey: conversationGetReactionsQueryKey({ path: { messageId } }),
           });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => dispatchToast(String(err), { intent: "error" }),
       },
@@ -1348,7 +1346,6 @@ export function ChatPage() {
     deleteMessageMutation,
     queryClient,
     dispatchToast,
-    t,
   ]);
 
   // ----- Reactions ----------------------------------------------------------
@@ -1440,13 +1437,13 @@ export function ChatPage() {
             void queryClient.invalidateQueries({
               queryKey: chatBlockGetBlockedUsersQueryKey(),
             });
-            dispatchToast(t("Chat:UserBlocked"), { intent: "success" });
+            dispatchToast("您已屏蔽此用户", { intent: "success" });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
         },
       );
     },
-    [blockUserMutation, queryClient, dispatchToast, t],
+    [blockUserMutation, queryClient, dispatchToast],
   );
 
   const handleUnblockUser = useCallback(
@@ -1459,13 +1456,13 @@ export function ChatPage() {
             void queryClient.invalidateQueries({
               queryKey: chatBlockGetBlockedUsersQueryKey(),
             });
-            dispatchToast(t("Chat:UserUnblocked"), { intent: "success" });
+            dispatchToast("您已取消屏蔽此用户", { intent: "success" });
           },
           onError: (err) => dispatchToast(String(err), { intent: "error" }),
         },
       );
     },
-    [unblockUserMutation, queryClient, dispatchToast, t],
+    [unblockUserMutation, queryClient, dispatchToast],
   );
 
   // ----- Render helpers -----------------------------------------------------
@@ -1487,11 +1484,9 @@ export function ChatPage() {
     const fullName = [name, surname].filter(Boolean).join(" ").trim() || userName || email || "?";
     const initials = fullName.slice(0, 2).toUpperCase();
     const timeAgo = previewDate
-      ? formatDistanceToNow(new Date(previewDate), { addSuffix: true })
+      ? formatDistanceToNow(new Date(previewDate), { addSuffix: true, locale: zhCN })
       : "";
-    const previewText = preview
-      ? `${side === 0 ? t("Chat:SendMessage") + ": " : ""}${preview}`
-      : "";
+    const previewText = preview ? `${side === 0 ? "发送" + ": " : ""}${preview}` : "";
 
     const badge: BadgeProps | null =
       unread > 0 ? { appearance: "filled", color: "danger", size: "small" } : null;
@@ -1527,7 +1522,7 @@ export function ChatPage() {
                   className={`${styles.conversationName} ${unread > 0 ? styles.conversationNameUnread : ""}`}
                 >
                   {fullName}
-                  {isBlocked && <span className={styles.blockedTag}> · {t("Chat:Blocked")}</span>}
+                  {isBlocked && <span className={styles.blockedTag}> · {"已屏蔽"}</span>}
                 </span>
                 {timeAgo && <span className={styles.conversationTime}>{timeAgo}</span>}
               </div>
@@ -1548,7 +1543,7 @@ export function ChatPage() {
               icon={<Chat20Regular />}
               onClick={() => handleSelectConversation(targetUserId)}
             >
-              {t("Chat:OpenConversation")}
+              {"打开会话"}
             </MenuItem>
             <MenuDivider />
             {isBlocked ? (
@@ -1557,7 +1552,7 @@ export function ChatPage() {
                 onClick={() => handleUnblockUser(targetUserId)}
                 disabled={unblockUserMutation.isPending}
               >
-                {t("Chat:UnblockUser")}
+                {"取消屏蔽"}
               </MenuItem>
             ) : (
               <MenuItem
@@ -1565,7 +1560,7 @@ export function ChatPage() {
                 onClick={() => handleBlockUser(targetUserId)}
                 disabled={blockUserMutation.isPending}
               >
-                {t("Chat:BlockUser")}
+                {"屏蔽用户"}
               </MenuItem>
             )}
           </MenuList>
@@ -1576,7 +1571,7 @@ export function ChatPage() {
 
   // ----- Render -------------------------------------------------------------
   return (
-    <PageLayout title={totalUnread > 0 ? `${t("Chat:Title")} (${totalUnread})` : t("Chat:Title")}>
+    <PageLayout title={totalUnread > 0 ? `${"聊天"} (${totalUnread})` : "聊天"}>
       <div className={styles.root}>
         {/* Sidebar: conversations / contacts */}
         <aside className={styles.sidebar}>
@@ -1587,18 +1582,18 @@ export function ChatPage() {
                 icon={<Chat20Regular />}
                 onClick={() => setState((s) => ({ ...s, sidebarTab: "conversations" }))}
               >
-                {t("Chat:Conversations")}
+                {"会话"}
               </Button>
               <Button
                 appearance={state.sidebarTab === "contacts" ? "primary" : "subtle"}
                 icon={<PersonAdd20Regular />}
                 onClick={() => setState((s) => ({ ...s, sidebarTab: "contacts" }))}
               >
-                {t("Chat:Contacts")}
+                {"联系人"}
               </Button>
             </div>
             <SearchBox
-              placeholder={t("Chat:SearchContacts")}
+              placeholder={"搜索联系人..."}
               value={state.search}
               onChange={(_, data) => setState((s) => ({ ...s, search: data.value }))}
               contentBefore={<Search20Regular />}
@@ -1613,7 +1608,7 @@ export function ChatPage() {
               ) : filteredConversations.length === 0 ? (
                 <div className={styles.emptyPane}>
                   <Chat20Regular fontSize={28} />
-                  <Text size={200}>{t("Chat:NoConversations")}</Text>
+                  <Text size={200}>{"暂无会话"}</Text>
                 </div>
               ) : (
                 filteredConversations.map((c) => {
@@ -1641,7 +1636,7 @@ export function ChatPage() {
               ) : filteredContacts.length === 0 ? (
                 <div className={styles.emptyPane}>
                   <PersonAdd20Regular fontSize={28} />
-                  <Text size={200}>{t("Chat:NoContacts")}</Text>
+                  <Text size={200}>{"暂无联系人"}</Text>
                 </div>
               ) : (
                 filteredContacts.map((c) =>
@@ -1668,7 +1663,7 @@ export function ChatPage() {
           {!state.selectedTargetUserId ? (
             <div className={styles.emptyPane}>
               <ChatMultiple20Regular fontSize={36} />
-              <Text size={400}>{t("Chat:NoConversationSelected")}</Text>
+              <Text size={400}>{"选择一个联系人开始聊天"}</Text>
               {hubError && (
                 <Text size={200} style={{ color: tokens.colorPaletteRedForeground3 }}>
                   {String(hubError)}
@@ -1700,7 +1695,7 @@ export function ChatPage() {
                   />
                   <SearchBox
                     className={styles.headerSearchBox}
-                    placeholder={t("Chat:SearchMessages")}
+                    placeholder={"搜索消息"}
                     value={messageSearchKeyword}
                     onChange={(_, data) => handleMessageSearch(data.value)}
                     contentBefore={<Search20Regular />}
@@ -1713,7 +1708,7 @@ export function ChatPage() {
                   {isSearchingMessages ? (
                     <Spinner size="tiny" />
                   ) : searchResults.length === 0 ? (
-                    <Text size={200}>{t("Chat:NoSearchResults")}</Text>
+                    <Text size={200}>{"未找到相关消息"}</Text>
                   ) : (
                     searchResults.map((m) => {
                       const peerId =
@@ -1802,9 +1797,7 @@ export function ChatPage() {
 
               {typingSenders[state.selectedTargetUserId] && (
                 <div className={styles.typingHint}>
-                  {t("Chat:TypingHint", {
-                    "0": typingSenders[state.selectedTargetUserId].userName ?? "",
-                  })}
+                  {`${typingSenders[state.selectedTargetUserId].userName ?? ""} 正在输入...`}
                 </div>
               )}
 
@@ -1819,7 +1812,7 @@ export function ChatPage() {
                       className={styles.composerAttachmentDismiss}
                       icon={<Dismiss20Regular />}
                       onClick={handleClearAttachment}
-                      aria-label={t("Chat:RemoveAttachment")}
+                      aria-label={"移除附件"}
                     />
                   </div>
                 </div>
@@ -1839,12 +1832,12 @@ export function ChatPage() {
                   disabled={
                     sendMessageMutation.isPending || sendMessageWithAttachmentMutation.isPending
                   }
-                  aria-label={t("Chat:AttachFile")}
-                  title={t("Chat:AttachFile")}
+                  aria-label={"添加附件"}
+                  title={"添加附件"}
                 />
                 <Input
                   className={styles.composerInput}
-                  placeholder={t("Chat:TypeMessage")}
+                  placeholder={"输入消息..."}
                   value={state.composerValue}
                   onChange={handleComposerChange}
                   onKeyDown={handleComposerKeyDown}
@@ -1862,7 +1855,7 @@ export function ChatPage() {
                     sendMessageWithAttachmentMutation.isPending
                   }
                 >
-                  {t("Chat:SendMessage")}
+                  {"发送"}
                 </Button>
               </div>
 
@@ -1871,10 +1864,10 @@ export function ChatPage() {
                 onOpenChange={(open) => {
                   if (!open) setDeleteMessageId(null);
                 }}
-                title={t("Chat:DeleteMessage")}
-                description={t("Chat:DeleteMessageConfirm")}
-                confirmLabel={t("AbpUi::Delete")}
-                cancelLabel={t("AbpUi::Cancel")}
+                title={"删除"}
+                description={"确定要删除此消息吗？"}
+                confirmLabel={"删除"}
+                cancelLabel={"取消"}
                 variant="destructive"
                 onConfirm={handleConfirmDelete}
                 isPending={deleteMessageMutation.isPending}

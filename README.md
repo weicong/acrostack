@@ -82,6 +82,7 @@ Navigate to [etc/docker](./etc/docker) folder and run the `stop-docker.ps1` scri
 You can find detailed setup and configuration guide(s) for your solution below:
 
 - [React](./react/README.md)
+- [Classroom 课堂实时答题模块](./modules/classroom/README.md)
 
 #### External Resources
 

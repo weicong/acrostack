@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
+
 import {
   Button,
   Card,
@@ -31,7 +31,6 @@ const useStyles = makeStyles({
 });
 
 export function LoginPage() {
-  const { t } = useTranslation();
   const { isAuthenticated, isLoading, login } = useAuth();
   const styles = useStyles();
 
@@ -45,10 +44,8 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
-          description={
-            <Text size={200}>{t("AbpAccount::LoginSubtitle", "Redirecting to sign in...")}</Text>
-          }
+          header={<Text weight="semibold">{"登录"}</Text>}
+          description={<Text size={200}>{"正在跳转到登录..."}</Text>}
         />
         <div className={styles.body}>
           <Spinner />
@@ -61,14 +58,12 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
-          description={
-            <Text size={200}>{t("AbpAccount::AlreadyLoggedIn", "You are already logged in.")}</Text>
-          }
+          header={<Text weight="semibold">{"登录"}</Text>}
+          description={<Text size={200}>{"您已登录。"}</Text>}
         />
         <div className={styles.body}>
           <Link to="/">
-            <Button>{t("AbpUi::BackToTheApplication")}</Button>
+            <Button>{"返回应用"}</Button>
           </Link>
         </div>
       </Card>
@@ -78,25 +73,23 @@ export function LoginPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{t("AbpAccount::Login")}</Text>}
-        description={
-          <Text size={200}>{t("AbpAccount::LoginSubtitle", "Sign in to your account")}</Text>
-        }
+        header={<Text weight="semibold">{"登录"}</Text>}
+        description={<Text size={200}>{"正在跳转到登录..."}</Text>}
       />
       <div className={styles.body}>
         <div className={styles.form}>
           <Button className={styles.fullWidthButton} onClick={() => void login()}>
-            {t("AbpAccount::Login")}
+            {"登录"}
           </Button>
           <Text as="p" size={200} align="center" block>
             <Link to="/account/forgot-password" className={styles.link}>
-              {t("AbpAccount::ForgotPassword")}
+              {"忘记密码？"}
             </Link>
           </Text>
           <Text as="p" size={200} align="center" block>
-            {t("AbpAccount::DontHaveAnAccount", "Don't have an account?")}{" "}
+            {"还没有账户？"}{" "}
             <Link to="/account/register" className={styles.link}>
-              {t("AbpAccount::Register")}
+              {"注册"}
             </Link>
           </Text>
         </div>

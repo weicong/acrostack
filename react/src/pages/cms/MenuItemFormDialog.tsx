@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -82,7 +81,6 @@ export function MenuItemFormDialog({
   parentOptions,
   onSuccess,
 }: MenuItemFormDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("menuitem-form-");
   const { dispatchToast } = useToastController();
@@ -129,7 +127,7 @@ export function MenuItemFormDialog({
           { path: { id: menuItem.id }, body: payload },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -152,7 +150,7 @@ export function MenuItemFormDialog({
           { body: payload },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -170,9 +168,7 @@ export function MenuItemFormDialog({
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("Cms:EditMenuItem") : t("Cms:NewMenuItem")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑菜单项" : "新建菜单项"}</DialogTitle>
           <DialogContent>
             {open && (
               <form.AppForm>
@@ -185,17 +181,17 @@ export function MenuItemFormDialog({
                 >
                   <form.AppField
                     name="displayName"
-                    children={(field) => <field.TextField label={t("Cms:DisplayName")} required />}
+                    children={(field) => <field.TextField label={"显示名称"} required />}
                   />
                   <div className={styles.row}>
                     <form.AppField
                       name="parentId"
                       children={(field) => (
                         <field.SelectField
-                          label={t("Cms:Parent")}
+                          label={"父级"}
                           fieldProps={{ className: styles.rowItem }}
                         >
-                          <option value="">{t("Cms:None")}</option>
+                          <option value="">{"无"}</option>
                           {parentOptions.map((opt) => (
                             <option key={opt.id} value={opt.id}>
                               {opt.label}
@@ -208,10 +204,10 @@ export function MenuItemFormDialog({
                       name="pageId"
                       children={(field) => (
                         <field.SelectField
-                          label={t("Cms:Page")}
+                          label={"页面"}
                           fieldProps={{ className: styles.rowItem }}
                         >
-                          <option value="">{t("Cms:None")}</option>
+                          <option value="">{"无"}</option>
                           {pages.map((p) => (
                             <option key={p.id} value={p.id ?? ""}>
                               {p.title ?? ""}
@@ -223,14 +219,14 @@ export function MenuItemFormDialog({
                   </div>
                   <form.AppField
                     name="url"
-                    children={(field) => <field.TextField label={t("Cms:Url")} />}
+                    children={(field) => <field.TextField label={"URL"} />}
                   />
                   <div className={styles.row}>
                     <form.AppField
                       name="order"
                       children={(field) => (
                         <field.NumberField
-                          label={t("Cms:Order")}
+                          label={"排序"}
                           min={0}
                           step={1}
                           fieldProps={{ className: styles.rowItem }}
@@ -241,29 +237,29 @@ export function MenuItemFormDialog({
                       name="target"
                       children={(field) => (
                         <field.SelectField
-                          label={t("Cms:Target")}
+                          label={"打开方式"}
                           fieldProps={{ className: styles.rowItem }}
                         >
-                          <option value="">{t("Cms:TargetDefault")}</option>
-                          <option value="_self">{t("Cms:TargetSelf")}</option>
-                          <option value="_blank">{t("Cms:TargetBlank")}</option>
+                          <option value="">{"默认"}</option>
+                          <option value="_self">{"当前窗口"}</option>
+                          <option value="_blank">{"新窗口"}</option>
                         </field.SelectField>
                       )}
                     />
                   </div>
                   <form.AppField
                     name="icon"
-                    children={(field) => <field.TextField label={t("Cms:Icon")} />}
+                    children={(field) => <field.TextField label={"图标"} />}
                   />
                   <form.AppField
                     name="isActive"
-                    children={(field) => <field.SwitchField label={t("Cms:Active")} />}
+                    children={(field) => <field.SwitchField label={"激活"} />}
                   />
                   <div className={styles.actions}>
-                    <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+                    <form.SubmitButton label={isEdit ? "保存" : "创建"} />
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary" disabled={isPending}>
-                        {t("AbpUi::Cancel")}
+                        {"取消"}
                       </Button>
                     </DialogTrigger>
                   </div>

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Badge,
   Button,
@@ -46,7 +45,6 @@ const useStyles = makeStyles({
 });
 
 export function OpenIddictApplicationsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -72,7 +70,7 @@ export function OpenIddictApplicationsPage() {
         onSuccess: () => {
           setDeleteAppId(null);
           void queryClient.invalidateQueries({ queryKey: openIddictApplicationGetListQueryKey() });
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -85,17 +83,17 @@ export function OpenIddictApplicationsPage() {
     () => [
       {
         id: "clientId",
-        header: t("AbpOpenIddict::ClientId"),
+        header: "客户端 ID",
         cell: ({ row }) => <code>{row.original.clientId ?? "-"}</code>,
       },
       {
         id: "displayName",
-        header: t("AbpOpenIddict::DisplayName"),
+        header: "显示名称",
         cell: ({ row }) => row.original.displayName ?? "-",
       },
       {
         id: "clientType",
-        header: t("AbpOpenIddict::ClientType"),
+        header: "客户端类型",
         cell: ({ row }) => (
           <Badge
             appearance="filled"
@@ -107,28 +105,28 @@ export function OpenIddictApplicationsPage() {
       },
       {
         id: "consentType",
-        header: t("AbpOpenIddict::ConsentType"),
+        header: "授权类型",
         cell: ({ row }) => row.original.consentType ?? "-",
       },
       {
         id: "permissions",
-        header: t("AbpOpenIddict::Permissions"),
+        header: "权限",
         cell: ({ row }) => row.original.permissions?.length ?? 0,
       },
       {
         id: "redirectUris",
-        header: t("AbpOpenIddict::RedirectUris"),
+        header: "重定向 URI",
         cell: ({ row }) => row.original.redirectUris?.length ?? 0,
       },
       {
         id: "creationTime",
-        header: t("AbpUi::CreationTime"),
+        header: "创建时间",
         cell: ({ row }) =>
           row.original.creationTime ? new Date(row.original.creationTime).toLocaleString() : "-",
       },
       {
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => (
           <div className={styles.actionsCell}>
             <Button
@@ -136,13 +134,13 @@ export function OpenIddictApplicationsPage() {
               appearance="subtle"
               icon={<Delete20Regular />}
               onClick={() => setDeleteAppId(row.original.id ?? "")}
-              title={t("AbpUi::Delete")}
+              title={"删除"}
             />
           </div>
         ),
       },
     ],
-    [t, styles.actionsCell],
+    [styles.actionsCell],
   );
 
   const table = useDataTable({
@@ -165,11 +163,11 @@ export function OpenIddictApplicationsPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AbpOpenIddict::Applications")}>
+    <PageLayout title={"应用"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"
@@ -187,9 +185,9 @@ export function OpenIddictApplicationsPage() {
       <ConfirmDialog
         open={deleteAppId !== null}
         onOpenChange={(open) => !open && setDeleteAppId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpOpenIddict::ApplicationDeleteConfirmation")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"确定要删除此应用吗？"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

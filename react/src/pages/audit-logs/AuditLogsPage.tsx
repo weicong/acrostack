@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Badge,
   Card,
@@ -105,14 +104,14 @@ function statusBadgeColor(
   return "informative";
 }
 
-function changeTypeLabel(changeType: number, t: (key: string) => string): string {
+function changeTypeLabel(changeType: number): string {
   switch (changeType) {
     case 0:
-      return t("AbpAuditLogging::Created");
+      return "创建";
     case 1:
-      return t("AbpAuditLogging::Updated");
+      return "已更新";
     case 2:
-      return t("AbpAuditLogging::Deleted");
+      return "已删除";
     default:
       return String(changeType);
   }
@@ -134,7 +133,6 @@ function changeTypeBadgeColor(
 }
 
 export function AuditLogsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const [selectedLog, setSelectedLog] = useState<AuditLogItem | null>(null);
   const [activeTab, setActiveTab] = useState<AuditLogTabValue>("logs");
@@ -154,7 +152,7 @@ export function AuditLogsPage() {
     () => [
       {
         id: "executionTime",
-        header: t("AbpAuditLogging::ExecutionTime"),
+        header: "时间",
         cell: ({ row }) => {
           const time = row.original.executionTime;
           return time ? new Date(time).toLocaleString() : "";
@@ -162,17 +160,17 @@ export function AuditLogsPage() {
       },
       {
         id: "userName",
-        header: t("AbpAuditLogging::UserName"),
+        header: "用户名",
         cell: ({ row }) => row.original.userName ?? "-",
       },
       {
         id: "httpMethod",
-        header: t("AbpAuditLogging::HttpMethod"),
+        header: "HTTP 方法",
         cell: ({ row }) => row.original.httpMethod ?? "-",
       },
       {
         id: "url",
-        header: t("AbpAuditLogging::Url"),
+        header: "网址",
         cell: ({ row }) => (
           <FluentLink
             onClick={() => setSelectedLog(row.original)}
@@ -186,7 +184,7 @@ export function AuditLogsPage() {
       },
       {
         id: "httpStatusCode",
-        header: t("AbpAuditLogging::HttpStatusCode"),
+        header: "HTTP 状态代码",
         cell: ({ row }) => {
           const code = row.original.httpStatusCode;
           return code ? (
@@ -200,16 +198,16 @@ export function AuditLogsPage() {
       },
       {
         id: "executionDuration",
-        header: t("AbpAuditLogging::Duration"),
+        header: "持续时间",
         cell: ({ row }) => `${row.original.executionDuration ?? 0}ms`,
       },
       {
         id: "clientIpAddress",
-        header: t("AbpAuditLogging::ClientIpAddress"),
+        header: "客户端 IP 地址",
         cell: ({ row }) => row.original.clientIpAddress ?? "-",
       },
     ],
-    [t, styles.badge],
+    [styles.badge],
   );
 
   const table = useDataTable({
@@ -238,15 +236,15 @@ export function AuditLogsPage() {
   };
 
   return (
-    <PageLayout title={t("AbpAuditLogging::AuditLogs")}>
+    <PageLayout title={"审计日志"}>
       <TabList
         selectedValue={activeTab}
         onTabSelect={handleTabSelect}
         className={styles.tabs}
         size="medium"
       >
-        <Tab value="logs">{t("AbpAuditLogging::AuditLogs")}</Tab>
-        <Tab value="statistics">{t("AbpAuditLogging::Statistics")}</Tab>
+        <Tab value="logs">{"审计日志"}</Tab>
+        <Tab value="statistics">{"统计"}</Tab>
       </TabList>
 
       {activeTab === "logs" && (
@@ -254,7 +252,7 @@ export function AuditLogsPage() {
           <div className={styles.toolbar}>
             <div className={styles.filters}>
               <SearchBox
-                placeholder={t("AbpUi::Search")}
+                placeholder={"搜索"}
                 value={searchValue}
                 onChange={(_, data) => setSearchValue(data.value)}
                 appearance="outline"
@@ -280,25 +278,25 @@ export function AuditLogsPage() {
         size="large"
       >
         <DrawerHeader>
-          <DrawerHeaderTitle>{t("AbpAuditLogging::AuditLogDetail")}</DrawerHeaderTitle>
+          <DrawerHeaderTitle>{"审计日志详情"}</DrawerHeaderTitle>
         </DrawerHeader>
         <DrawerBody>
           {selectedLog && (
             <div className={styles.detailSection}>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::UserName")}</span>
+                <span>{"用户名"}</span>
                 <span>{selectedLog.userName ?? "-"}</span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::HttpMethod")}</span>
+                <span>{"HTTP 方法"}</span>
                 <span>{selectedLog.httpMethod ?? "-"}</span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::Url")}</span>
+                <span>{"网址"}</span>
                 <span>{selectedLog.url ?? "-"}</span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::HttpStatusCode")}</span>
+                <span>{"HTTP 状态代码"}</span>
                 <span>
                   {selectedLog.httpStatusCode ? (
                     <Badge appearance="filled" color={statusBadgeColor(selectedLog.httpStatusCode)}>
@@ -310,7 +308,7 @@ export function AuditLogsPage() {
                 </span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::ExecutionTime")}</span>
+                <span>{"时间"}</span>
                 <span>
                   {selectedLog.executionTime
                     ? new Date(selectedLog.executionTime).toLocaleString()
@@ -318,21 +316,21 @@ export function AuditLogsPage() {
                 </span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::Duration")}</span>
+                <span>{"持续时间"}</span>
                 <span>{selectedLog.executionDuration ?? 0}ms</span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::ClientIpAddress")}</span>
+                <span>{"客户端 IP 地址"}</span>
                 <span>{selectedLog.clientIpAddress ?? "-"}</span>
               </div>
               <div className={styles.detailRow}>
-                <span>{t("AbpAuditLogging::BrowserInfo")}</span>
+                <span>{"浏览器信息"}</span>
                 <span>{selectedLog.browserInfo ?? "-"}</span>
               </div>
 
               {selectedLog.exceptions && (
                 <>
-                  <Text weight="semibold">{t("AbpAuditLogging::Exceptions")}</Text>
+                  <Text weight="semibold">{"异常"}</Text>
                   <Text size={200} className={styles.exceptions}>
                     {selectedLog.exceptions}
                   </Text>
@@ -341,7 +339,7 @@ export function AuditLogsPage() {
 
               {selectedLog.entityChanges && selectedLog.entityChanges.length > 0 && (
                 <>
-                  <Text weight="semibold">{t("AbpAuditLogging::EntityChanges")}</Text>
+                  <Text weight="semibold">{"实体变化"}</Text>
                   {selectedLog.entityChanges.map((change, idx) => {
                     const changeType = change.changeType ?? 0;
                     return (
@@ -353,17 +351,16 @@ export function AuditLogsPage() {
                               color={changeTypeBadgeColor(changeType)}
                               size="small"
                             >
-                              {changeTypeLabel(changeType, t)}
+                              {changeTypeLabel(changeType)}
                             </Badge>{" "}
                             {change.entityTypeFullName?.split(".").pop() ?? "-"}
                           </Text>
                           <Text size={200}>
-                            {t("AbpAuditLogging::EntityId")}: {change.entityId ?? "-"}
+                            {"实体 ID"}: {change.entityId ?? "-"}
                           </Text>
                           {change.changeTime && (
                             <Text size={200}>
-                              {t("AbpAuditLogging::ChangeTime")}:{" "}
-                              {new Date(change.changeTime).toLocaleString()}
+                              {"时间"}: {new Date(change.changeTime).toLocaleString()}
                             </Text>
                           )}
                         </div>
@@ -391,7 +388,7 @@ export function AuditLogsPage() {
 
               {selectedLog.actions && selectedLog.actions.length > 0 && (
                 <>
-                  <Text weight="semibold">{t("AbpAuditLogging::Actions")}</Text>
+                  <Text weight="semibold">{"操作"}</Text>
                   {selectedLog.actions.map((action, idx) => (
                     <div key={idx} className={styles.actionItem}>
                       <Text>

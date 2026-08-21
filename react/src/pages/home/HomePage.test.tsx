@@ -24,7 +24,7 @@ describe("HomePage", () => {
     } as unknown as ReturnType<typeof auth.useAuth>);
 
     render(<HomePage />);
-    expect(screen.getByText("Welcome")).toBeInTheDocument();
+    expect(screen.getByText("欢迎")).toBeInTheDocument();
     expect(screen.getByText("ABP React UI")).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe("HomePage", () => {
     } as unknown as ReturnType<typeof auth.useAuth>);
 
     render(<HomePage />);
-    expect(screen.getByText("Welcome")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByText("欢迎")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
   });
 });

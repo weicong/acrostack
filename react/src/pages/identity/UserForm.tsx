@@ -1,5 +1,4 @@
 import { useEffect, useMemo, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm, type ComboboxOption } from "@/components/form";
 import { useUserCreate } from "@/api/hooks/user/useUserCreate";
@@ -36,7 +35,6 @@ const useStyles = makeStyles({
 // ── Component ───────────────────────────────────────────────────────
 
 export function UserForm({ user, onSuccess, footer }: UserFormProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const isEdit = !!user;
 
@@ -130,55 +128,42 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
       >
         <form.AppField
           name="userName"
-          children={(field) => <field.TextField label={t("AbpIdentity::UserName")} required />}
+          children={(field) => <field.TextField label={"用户名称"} required />}
         />
-        <form.AppField
-          name="name"
-          children={(field) => <field.TextField label={t("AbpIdentity::DisplayName")} />}
-        />
-        <form.AppField
-          name="surname"
-          children={(field) => <field.TextField label={t("AbpIdentity::Surname")} />}
-        />
+        <form.AppField name="name" children={(field) => <field.TextField label={"显示名称"} />} />
+        <form.AppField name="surname" children={(field) => <field.TextField label={"姓"} />} />
         <form.AppField
           name="email"
-          children={(field) => <field.TextField label={t("AbpIdentity::Email")} required />}
+          children={(field) => <field.TextField label={"邮箱"} required />}
         />
         <form.AppField
           name="phoneNumber"
-          children={(field) => <field.TextField label={t("AbpIdentity::PhoneNumber")} />}
+          children={(field) => <field.TextField label={"手机号"} />}
         />
         <form.AppField
           name="password"
           children={(field) => (
-            <field.TextField
-              label={t("AbpIdentity::Password")}
-              required={!isEdit}
-              inputProps={{ type: "password" }}
-            />
+            <field.TextField label={"密码"} required={!isEdit} inputProps={{ type: "password" }} />
           )}
         />
         <form.AppField
           name="roleNames"
           children={(field) => (
             <field.ComboboxField
-              label={t("AbpIdentity::Roles")}
+              label={"角色"}
               options={roleOptions}
-              placeholder={t("AbpIdentity::SelectRole")}
+              placeholder={"请选择角色"}
               comboboxProps={{ multiselect: true }}
             />
           )}
         />
-        <form.AppField
-          name="isActive"
-          children={(field) => <field.SwitchField label={t("AbpIdentity::Active")} />}
-        />
+        <form.AppField name="isActive" children={(field) => <field.SwitchField label={"激活"} />} />
         <form.AppField
           name="lockoutEnabled"
-          children={(field) => <field.SwitchField label={t("AbpIdentity::LockoutEnabled")} />}
+          children={(field) => <field.SwitchField label={"启用锁定"} />}
         />
         <div className={styles.actions}>
-          <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
           {footer}
         </div>
       </form>

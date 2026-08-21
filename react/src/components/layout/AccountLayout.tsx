@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
 import { makeStyles, tokens, Text } from "@fluentui/react-components";
 import type { ReactNode } from "react";
 
@@ -24,14 +23,13 @@ const useStyles = makeStyles({
 });
 
 export function AccountLayout({ children }: { children: ReactNode }) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   return (
     <div className={styles.root}>
       <div className={styles.container}>{children}</div>
       <Text as="p" size={200} align="center" className={styles.backLink} block>
-        <Link to="/">{t("AbpUi::BackToTheApplication")}</Link>
+        <Link to="/">{"返回应用"}</Link>
       </Text>
     </div>
   );

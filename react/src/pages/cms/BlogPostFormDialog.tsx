@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -65,7 +64,6 @@ export function BlogPostFormDialog({
   blogPost,
   onSuccess,
 }: BlogPostFormDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("blogpost-form-");
   const { dispatchToast } = useToastController();
@@ -112,7 +110,7 @@ export function BlogPostFormDialog({
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -133,7 +131,7 @@ export function BlogPostFormDialog({
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -153,7 +151,7 @@ export function BlogPostFormDialog({
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("Cms:EditBlogPost") : t("Cms:NewBlogPost")}
+            {isEdit ? "编辑博客文章" : "新建博客文章"}
           </DialogTitle>
           <DialogContent>
             {open && (
@@ -168,16 +166,12 @@ export function BlogPostFormDialog({
                   <form.AppField
                     name="blogId"
                     children={(field) => (
-                      <field.SelectField
-                        label={t("Cms:Blog")}
-                        required
-                        selectProps={{ disabled: isEdit }}
-                      >
+                      <field.SelectField label={"博客"} required selectProps={{ disabled: isEdit }}>
                         {blogsLoading ? (
-                          <option value="">{t("AbpUi::Loading")}</option>
+                          <option value="">{"加载中..."}</option>
                         ) : (
                           <>
-                            <option value="">{t("Cms:SelectBlog")}</option>
+                            <option value="">{"请选择博客"}</option>
                             {blogs.map((b) => (
                               <option key={b.id} value={b.id ?? ""}>
                                 {b.name ?? ""}
@@ -190,27 +184,27 @@ export function BlogPostFormDialog({
                   />
                   <form.AppField
                     name="title"
-                    children={(field) => <field.TextField label={t("Cms:Title")} required />}
+                    children={(field) => <field.TextField label={"标题"} required />}
                   />
                   <form.AppField
                     name="slug"
-                    children={(field) => <field.TextField label={t("Cms:Slug")} required />}
+                    children={(field) => <field.TextField label={"Slug"} required />}
                   />
                   <form.AppField
                     name="shortDescription"
-                    children={(field) => <field.TextareaField label={t("Cms:ShortDescription")} />}
+                    children={(field) => <field.TextareaField label={"简短描述"} />}
                   />
                   <form.AppField
                     name="content"
                     children={(field) => (
-                      <field.TextareaField label={t("Cms:Content")} textareaProps={{ rows: 10 }} />
+                      <field.TextareaField label={"内容"} textareaProps={{ rows: 10 }} />
                     )}
                   />
                   <div className={styles.actions}>
-                    <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+                    <form.SubmitButton label={isEdit ? "保存" : "创建"} />
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary" disabled={isPending}>
-                        {t("AbpUi::Cancel")}
+                        {"取消"}
                       </Button>
                     </DialogTrigger>
                   </div>

@@ -1,5 +1,5 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as adminRoute } from "./route";
 import { ChatPage } from "@/pages/chat/ChatPage";
 import { authGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
@@ -7,16 +7,16 @@ import { Chat20Regular } from "@fluentui/react-icons";
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
-  nameKey: "Menu:Chat",
+  name: "聊天",
   icon: Chat20Regular,
   order: 20,
   requiresAuth: true,
 };
 
-export const routeConfig: MenuRoute[] = [{ path: "/chat", menu }];
+export const routeConfig: MenuRoute[] = [{ path: "/admin/chat", menu }];
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => adminRoute,
   path: "/chat",
   component: ChatPage,
   beforeLoad: authGuard,

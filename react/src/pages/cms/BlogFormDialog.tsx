@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -55,7 +54,6 @@ const useStyles = makeStyles({
 // ── Component ───────────────────────────────────────────────────────
 
 export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogFormDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const dialogId = useId("blog-form-");
   const { dispatchToast } = useToastController();
@@ -90,7 +88,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -108,7 +106,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
           },
           {
             onSuccess: () => {
-              dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+              dispatchToast("保存成功", { intent: "success" });
               onSuccess();
             },
             onError: (err) => {
@@ -126,9 +124,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
       <DialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>
-            {isEdit ? t("Cms:EditBlog") : t("Cms:NewBlog")}
-          </DialogTitle>
+          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑博客" : "新建博客"}</DialogTitle>
           <DialogContent>
             {open && (
               <form.AppForm>
@@ -141,17 +137,17 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
                 >
                   <form.AppField
                     name="name"
-                    children={(field) => <field.TextField label={t("Cms:Name")} required />}
+                    children={(field) => <field.TextField label={"名称"} required />}
                   />
                   <form.AppField
                     name="slug"
-                    children={(field) => <field.TextField label={t("Cms:Slug")} required />}
+                    children={(field) => <field.TextField label={"Slug"} required />}
                   />
                   <div className={styles.actions}>
-                    <form.SubmitButton label={isEdit ? t("AbpUi::Save") : t("AbpUi::Create")} />
+                    <form.SubmitButton label={isEdit ? "保存" : "创建"} />
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary" disabled={isPending}>
-                        {t("AbpUi::Cancel")}
+                        {"取消"}
                       </Button>
                     </DialogTrigger>
                   </div>

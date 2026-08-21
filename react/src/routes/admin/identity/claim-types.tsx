@@ -7,7 +7,7 @@ import { TagMultiple20Regular } from "@fluentui/react-icons";
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
-  nameKey: "AcroStack::ClaimTypes",
+  name: "声明类型",
   icon: TagMultiple20Regular,
   requiredPolicy: "AcroStack.IdentityClaims.ClaimTypes",
 };

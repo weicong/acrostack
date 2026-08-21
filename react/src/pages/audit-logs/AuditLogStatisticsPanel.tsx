@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Badge,
   type BadgeProps,
@@ -13,6 +12,7 @@ import {
 } from "@fluentui/react-components";
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 import { Search20Regular } from "@fluentui/react-icons";
+import { zhCNDatePickerDefaults } from "@/lib/ui/datePickerLocalization";
 import { useQuery } from "@tanstack/react-query";
 import {
   auditLogGetStatisticsQueryOptions,
@@ -157,7 +157,6 @@ function UrlStatisticRow({ stat, rank }: { stat: UrlStatisticDto; rank: number }
 }
 
 export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatisticsPanelProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
 
   // Default range: last 7 days.
@@ -199,18 +198,20 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
   return (
     <div className={styles.root}>
       <div className={styles.filterBar}>
-        <Field label={t("AbpAuditLogging::StartTime")} className={styles.datePicker}>
+        <Field label={"开始时间"} className={styles.datePicker}>
           <DatePicker
             value={startDate}
             onSelectDate={(date) => setStartDate(date ? toStartOfDay(date) : null)}
-            placeholder={t("AbpAuditLogging::StartTime")}
+            placeholder={"开始时间"}
+            {...zhCNDatePickerDefaults}
           />
         </Field>
-        <Field label={t("AbpAuditLogging::EndTime")} className={styles.datePicker}>
+        <Field label={"结束时间"} className={styles.datePicker}>
           <DatePicker
             value={endDate}
             onSelectDate={(date) => setEndDate(date ? toEndOfDay(date) : null)}
-            placeholder={t("AbpAuditLogging::EndTime")}
+            placeholder={"结束时间"}
+            {...zhCNDatePickerDefaults}
           />
         </Field>
         <Button
@@ -219,14 +220,14 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
           onClick={() => query.refetch()}
           disabled={query.isFetching}
         >
-          {t("AbpUi::Refresh")}
+          {"刷新"}
         </Button>
       </div>
 
-      {query.isLoading && <Spinner label={t("AbpUi::Loading")} />}
+      {query.isLoading && <Spinner label={"加载中..."} />}
       {query.isError && (
         <Text className={styles.errorState}>
-          {query.error ? String(query.error) : t("AbpUi::InternalServerError")}
+          {query.error ? String(query.error) : "内部服务器错误"}
         </Text>
       )}
 
@@ -234,34 +235,34 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
         <>
           <div className={styles.statsGrid}>
             <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{t("AbpAuditLogging::TotalRequestCount")}</Text>
+              <Text className={styles.statLabel}>{"总请求数"}</Text>
               <Text className={styles.statValue}>{formatBigint(stats.totalRequestCount)}</Text>
             </Card>
             <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{t("AbpAuditLogging::AverageDuration")}</Text>
+              <Text className={styles.statLabel}>{"平均耗时"}</Text>
               <Text className={styles.statValue}>
                 {formatDuration(stats.averageExecutionDuration)}
               </Text>
             </Card>
             <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{t("AbpAuditLogging::MaxDuration")}</Text>
+              <Text className={styles.statLabel}>{"最大持续时间"}</Text>
               <Text className={styles.statValue}>{formatDuration(stats.maxExecutionDuration)}</Text>
             </Card>
             <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{t("AbpAuditLogging::MinDuration")}</Text>
+              <Text className={styles.statLabel}>{"分钟持续时间"}</Text>
               <Text className={styles.statValue}>{formatDuration(stats.minExecutionDuration)}</Text>
             </Card>
             <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{t("AbpAuditLogging::ErrorCount")}</Text>
+              <Text className={styles.statLabel}>{"错误数"}</Text>
               <Text className={styles.statValue}>{formatBigint(stats.errorCount)}</Text>
             </Card>
           </div>
 
           <Text as="h3" className={styles.sectionTitle}>
-            {t("AbpAuditLogging::HttpMethodDistribution")}
+            {"HTTP 方法分布"}
           </Text>
           {httpMethodEntries.length === 0 ? (
-            <Text size={200}>{t("AbpUi::NoRecords")}</Text>
+            <Text size={200}>{"暂无记录"}</Text>
           ) : (
             <div className={styles.methodBadges}>
               {httpMethodEntries.map(([method, count]) => (
@@ -273,7 +274,7 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
           )}
 
           <Text as="h3" className={styles.sectionTitle}>
-            {t("AbpAuditLogging::TopSlowUrls")}
+            {"最慢 URL"}
           </Text>
           <Card className={styles.listCard}>
             {stats.topSlowUrls && stats.topSlowUrls.length > 0 ? (
@@ -281,12 +282,12 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
                 <UrlStatisticRow key={`${stat.url}-${idx}`} stat={stat} rank={idx + 1} />
               ))
             ) : (
-              <Text size={200}>{t("AbpUi::NoRecords")}</Text>
+              <Text size={200}>{"暂无记录"}</Text>
             )}
           </Card>
 
           <Text as="h3" className={styles.sectionTitle}>
-            {t("AbpAuditLogging::TopFrequentUrls")}
+            {"最频繁 URL"}
           </Text>
           <Card className={styles.listCard}>
             {stats.topFrequentUrls && stats.topFrequentUrls.length > 0 ? (
@@ -294,7 +295,7 @@ export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatis
                 <UrlStatisticRow key={`${stat.url}-${idx}`} stat={stat} rank={idx + 1} />
               ))
             ) : (
-              <Text size={200}>{t("AbpUi::NoRecords")}</Text>
+              <Text size={200}>{"暂无记录"}</Text>
             )}
           </Card>
         </>

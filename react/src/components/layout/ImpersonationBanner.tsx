@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import { Button, makeStyles, tokens, Text, useToastController } from "@fluentui/react-components";
 import { PersonArrowBack20Regular } from "@fluentui/react-icons";
 import { useImpersonationState, backToMyAccount } from "@/lib/auth/impersonation";
@@ -26,7 +26,6 @@ const useStyles = makeStyles({
  * admin session via {@link backToMyAccount}.
  */
 export function ImpersonationBanner() {
-  const { t } = useTranslation();
   const state = useImpersonationState();
   const { dispatchToast } = useToastController();
   const [isRestoring, setIsRestoring] = useState(false);
@@ -35,13 +34,9 @@ export function ImpersonationBanner() {
   if (!state.isImpersonating) return null;
 
   const impersonatorLabel =
-    state.impersonatorUserName ??
-    (state.impersonatorTenantId ? t("AbpTenantManagement::Tenant") : t("AbpAccount::User"));
+    state.impersonatorUserName ?? (state.impersonatorTenantId ? "租户" : "用户");
 
-  // AbpAccount::BackToMyAccount = "Back to: {0}" — names the impersonator.
-  // The .NET-style {0} placeholder is resolved by the dotNetPlaceholder
-  // post-processor (see @/lib/i18n/i18n.ts).
-  const message = t("AbpAccount::BackToMyAccount", { "0": impersonatorLabel });
+  const message = `返回 ${impersonatorLabel} 的账户`;
 
   async function handleBack() {
     setIsRestoring(true);
@@ -67,7 +62,7 @@ export function ImpersonationBanner() {
         onClick={() => void handleBack()}
         disabled={isRestoring}
       >
-        {t("AbpAccount::BackToImpersonator")}
+        {"返回原账户"}
       </Button>
     </div>
   );

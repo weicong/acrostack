@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as adminRoute } from "./route";
 import { ForbiddenPage } from "@/pages/forbidden/ForbiddenPage";
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => adminRoute,
   path: "/403",
   component: ForbiddenPage,
 });

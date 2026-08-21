@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -78,7 +77,6 @@ function validate(values: {
 }
 
 export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserClaimsDialogProps) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -133,7 +131,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
           setAddValues(emptyValues());
           setAddErrors(null);
           invalidate();
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -175,7 +173,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
         onSuccess: () => {
           handleCancelEdit();
           invalidate();
-          dispatchToast(t("AbpUi::SavedSuccessfully"), { intent: "success" });
+          dispatchToast("保存成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -191,7 +189,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
       {
         onSuccess: () => {
           invalidate();
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
@@ -209,7 +207,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
       <DialogSurface>
         <DialogBody>
           <DialogTitle>
-            {t("AbpIdentity::Claims")}
+            {"声明"}
             {userName ? ` — ${userName}` : ""}
           </DialogTitle>
           <DialogContent>
@@ -217,7 +215,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
               {/* Add new claim */}
               <div className={styles.addRow}>
                 <Field
-                  label={t("AbpIdentity::ClaimType")}
+                  label={"声明类型"}
                   validationState={addErrors?.claimType ? "error" : undefined}
                   validationMessage={addErrors?.claimType}
                 >
@@ -227,11 +225,11 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                       setAddValues((v) => ({ ...v, claimType: d.value }));
                       setAddErrors(null);
                     }}
-                    placeholder={t("AbpIdentity::ClaimType")}
+                    placeholder={"声明类型"}
                   />
                 </Field>
                 <Field
-                  label={t("AbpIdentity::ClaimValue")}
+                  label={"声明值"}
                   validationState={addErrors?.claimValue ? "error" : undefined}
                   validationMessage={addErrors?.claimValue}
                 >
@@ -241,7 +239,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                       setAddValues((v) => ({ ...v, claimValue: d.value }));
                       setAddErrors(null);
                     }}
-                    placeholder={t("AbpIdentity::ClaimValue")}
+                    placeholder={"声明值"}
                   />
                 </Field>
                 <Button
@@ -250,26 +248,24 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                   onClick={handleAdd}
                   disabled={!userId || isAddPending}
                 >
-                  {t("AbpUi::Add")}
+                  {"添加"}
                 </Button>
               </div>
 
               {/* Claims list */}
-              {claimsQuery.isLoading && <Spinner label={t("AbpUi::Loading")} />}
+              {claimsQuery.isLoading && <Spinner label={"加载中..."} />}
               {claimsQuery.isError && (
                 <span>{claimsQuery.error ? String(claimsQuery.error) : ""}</span>
               )}
 
-              {!claimsQuery.isLoading && claims.length === 0 && (
-                <span>{t("AbpUi::NoRecords")}</span>
-              )}
+              {!claimsQuery.isLoading && claims.length === 0 && <span>{"暂无记录"}</span>}
 
               {claims.length > 0 && (
                 <Table className={styles.table} size="small">
                   <TableHeader>
                     <TableRow>
-                      <TableHeaderCell>{t("AbpIdentity::ClaimType")}</TableHeaderCell>
-                      <TableHeaderCell>{t("AbpIdentity::ClaimValue")}</TableHeaderCell>
+                      <TableHeaderCell>{"声明类型"}</TableHeaderCell>
+                      <TableHeaderCell>{"声明值"}</TableHeaderCell>
                       <TableHeaderCell>{""}</TableHeaderCell>
                     </TableRow>
                   </TableHeader>
@@ -327,7 +323,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                                     icon={<Save20Regular />}
                                     onClick={handleSaveEdit}
                                     disabled={isSavePending}
-                                    aria-label={t("AbpUi::Save")}
+                                    aria-label={"保存"}
                                   />
                                   <Button
                                     size="small"
@@ -335,7 +331,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                                     onClick={handleCancelEdit}
                                     disabled={isSavePending}
                                   >
-                                    {t("AbpUi::Cancel")}
+                                    {"取消"}
                                   </Button>
                                 </>
                               ) : (
@@ -345,7 +341,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                                     appearance="subtle"
                                     icon={<Edit20Regular />}
                                     onClick={() => handleStartEdit(claim)}
-                                    aria-label={t("AbpUi::Edit")}
+                                    aria-label={"编辑"}
                                     disabled={isDeleting}
                                   />
                                   <Button
@@ -353,7 +349,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
                                     appearance="subtle"
                                     icon={<Delete20Regular />}
                                     onClick={() => handleDelete(claim)}
-                                    aria-label={t("AbpUi::Delete")}
+                                    aria-label={"删除"}
                                     disabled={isDeleting}
                                   />
                                 </>
@@ -370,7 +366,7 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
           </DialogContent>
           <DialogTrigger disableButtonEnhancement>
             <Button appearance="secondary" style={{ alignSelf: "flex-end" }}>
-              {t("AbpUi::Close")}
+              {"关闭"}
             </Button>
           </DialogTrigger>
         </DialogBody>

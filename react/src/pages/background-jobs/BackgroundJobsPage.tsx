@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import {
   Badge,
   Button,
@@ -66,7 +66,6 @@ const useStyles = makeStyles({
 });
 
 export function BackgroundJobsPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { dispatchToast } = useToastController();
@@ -101,13 +100,9 @@ export function BackgroundJobsPage() {
     const onSuccess = () => {
       setConfirmAction(null);
       invalidateList();
-      const toastKey =
-        action.kind === "delete"
-          ? "AbpUi::DeletedSuccessfully"
-          : action.kind === "requeue"
-            ? "AbpBackgroundJobs::Requeued"
-            : "AbpBackgroundJobs::Abandoned";
-      dispatchToast(t(toastKey), { intent: "success" });
+      const toastMessage =
+        action.kind === "delete" ? "删除成功" : action.kind === "requeue" ? "已重新排队" : "已放弃";
+      dispatchToast(toastMessage, { intent: "success" });
     };
     const onError = (err: unknown) => {
       dispatchToast(String(err), { intent: "error" });
@@ -124,7 +119,6 @@ export function BackgroundJobsPage() {
     confirmAction,
     invalidateList,
     dispatchToast,
-    t,
     deleteMutation,
     requeueMutation,
     abandonMutation,
@@ -135,33 +129,33 @@ export function BackgroundJobsPage() {
 
   const confirmTitle =
     confirmAction?.kind === "delete"
-      ? t("AbpUi::AreYouSure")
+      ? "你确定吗?"
       : confirmAction?.kind === "requeue"
-        ? t("AbpBackgroundJobs::Requeue")
-        : t("AbpBackgroundJobs::Abandon");
+        ? "重新排队"
+        : "放弃";
   const confirmDescription =
     confirmAction?.kind === "delete"
-      ? t("AbpBackgroundJobs::JobDeleteConfirmation")
+      ? "确定要删除此后台任务吗？"
       : confirmAction?.kind === "requeue"
-        ? t("AbpBackgroundJobs::RequeueConfirmation")
-        : t("AbpBackgroundJobs::AbandonConfirmation");
+        ? "确定要重新排队此后台任务吗？"
+        : "确定要放弃此后台任务吗？";
   const confirmLabel =
     confirmAction?.kind === "delete"
-      ? t("AbpUi::Delete")
+      ? "删除"
       : confirmAction?.kind === "requeue"
-        ? t("AbpBackgroundJobs::Requeue")
-        : t("AbpBackgroundJobs::Abandon");
+        ? "重新排队"
+        : "放弃";
 
   const columns = useMemo<ColumnDef<AppTableFeatures, JobItem>[]>(() => {
     const base: ColumnDef<AppTableFeatures, JobItem>[] = [
       {
         id: "jobName",
-        header: t("AbpBackgroundJobs::JobName"),
+        header: "任务名称",
         cell: ({ row }) => row.original.jobName ?? "-",
       },
       {
         id: "jobArgs",
-        header: t("AbpBackgroundJobs::JobArgs"),
+        header: "任务参数",
         cell: ({ row }) => (
           <span className={styles.jobArgs} title={row.original.jobArgs ?? undefined}>
             {row.original.jobArgs ?? "-"}
@@ -170,38 +164,38 @@ export function BackgroundJobsPage() {
       },
       {
         id: "tryCount",
-        header: t("AbpBackgroundJobs::TryCount"),
+        header: "尝试次数",
         cell: ({ row }) => row.original.tryCount ?? 0,
       },
       {
         id: "isAbandoned",
-        header: t("AbpBackgroundJobs::Status"),
+        header: "状态",
         cell: ({ row }) =>
           row.original.isAbandoned ? (
             <Badge appearance="filled" color="danger">
-              {t("AbpBackgroundJobs::Abandoned")}
+              {"已放弃"}
             </Badge>
           ) : (
             <Badge appearance="filled" color="success">
-              {t("AbpBackgroundJobs::Waiting")}
+              {"等待中"}
             </Badge>
           ),
       },
       {
         id: "creationTime",
-        header: t("AbpBackgroundJobs::CreationTime"),
+        header: "创建时间",
         cell: ({ row }) =>
           row.original.creationTime ? new Date(row.original.creationTime).toLocaleString() : "-",
       },
       {
         id: "lastTryTime",
-        header: t("AbpBackgroundJobs::LastTryTime"),
+        header: "上次尝试时间",
         cell: ({ row }) =>
           row.original.lastTryTime ? new Date(row.original.lastTryTime).toLocaleString() : "-",
       },
       {
         id: "nextTryTime",
-        header: t("AbpBackgroundJobs::NextTryTime"),
+        header: "下次重试时间",
         cell: ({ row }) =>
           row.original.nextTryTime ? new Date(row.original.nextTryTime).toLocaleString() : "-",
       },
@@ -210,7 +204,7 @@ export function BackgroundJobsPage() {
     if (canDelete) {
       base.push({
         id: "actions",
-        header: t("AbpUi::Actions"),
+        header: "操作",
         cell: ({ row }) => {
           const id = row.original.id ?? "";
           const isAbandoned = row.original.isAbandoned === true;
@@ -221,8 +215,8 @@ export function BackgroundJobsPage() {
                 appearance="subtle"
                 icon={<ArrowCounterclockwise20Regular />}
                 onClick={() => setConfirmAction({ kind: "requeue", id })}
-                title={t("AbpBackgroundJobs::Requeue")}
-                aria-label={t("AbpBackgroundJobs::Requeue")}
+                title={"重新排队"}
+                aria-label={"重新排队"}
               />
               <Button
                 size="small"
@@ -230,16 +224,16 @@ export function BackgroundJobsPage() {
                 icon={<Pause20Regular />}
                 onClick={() => setConfirmAction({ kind: "abandon", id })}
                 disabled={isAbandoned}
-                title={t("AbpBackgroundJobs::Abandon")}
-                aria-label={t("AbpBackgroundJobs::Abandon")}
+                title={"放弃"}
+                aria-label={"放弃"}
               />
               <Button
                 size="small"
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 onClick={() => setConfirmAction({ kind: "delete", id })}
-                title={t("AbpUi::Delete")}
-                aria-label={t("AbpUi::Delete")}
+                title={"删除"}
+                aria-label={"删除"}
               />
             </div>
           );
@@ -248,7 +242,7 @@ export function BackgroundJobsPage() {
     }
 
     return base;
-  }, [t, styles.jobArgs, styles.actionsCell, canDelete]);
+  }, [styles.jobArgs, styles.actionsCell, canDelete]);
 
   const table = useDataTable({
     columns,
@@ -270,11 +264,11 @@ export function BackgroundJobsPage() {
   }, [searchValue]);
 
   return (
-    <PageLayout title={t("AbpBackgroundJobs::BackgroundJobs")}>
+    <PageLayout title={"后台任务"}>
       <div className={styles.toolbar}>
         <div className={styles.filters}>
           <SearchBox
-            placeholder={t("AbpUi::Search")}
+            placeholder={"搜索"}
             value={searchValue}
             onChange={(_, data) => setSearchValue(data.value)}
             appearance="outline"

@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Badge,
@@ -162,7 +161,6 @@ const useStyles = makeStyles({
 // ── Component ───────────────────────────────────────────────────────
 
 export function MenusPage() {
-  const { t } = useTranslation();
   const styles = useStyles();
   const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
@@ -219,14 +217,14 @@ export function MenusPage() {
         onSuccess: () => {
           setDeleteItemId(null);
           invalidateList();
-          dispatchToast(t("AbpUi::DeletedSuccessfully"), { intent: "success" });
+          dispatchToast("删除成功", { intent: "success" });
         },
         onError: (err) => {
           dispatchToast(String(err), { intent: "error" });
         },
       },
     );
-  }, [deleteItemId, deleteMutation, invalidateList, dispatchToast, t]);
+  }, [deleteItemId, deleteMutation, invalidateList, dispatchToast]);
 
   const renderMenuTreeNode = (node: MenuTreeNode, depth: number) => {
     const item = node.item;
@@ -244,7 +242,7 @@ export function MenusPage() {
                   color="severe"
                   size="small"
                 >
-                  {t("Cms:Inactive")}
+                  {"未激活"}
                 </Badge>
               )}
             </span>
@@ -258,8 +256,8 @@ export function MenusPage() {
                   appearance="subtle"
                   icon={<Edit20Regular />}
                   onClick={() => handleEdit(item)}
-                  aria-label={t("AbpUi::Edit")}
-                  title={t("AbpUi::Edit")}
+                  aria-label={"编辑"}
+                  title={"编辑"}
                 />
               )}
               {canDelete && (
@@ -268,8 +266,8 @@ export function MenusPage() {
                   appearance="subtle"
                   icon={<Delete20Regular />}
                   onClick={() => item.id && handleDelete(item.id)}
-                  aria-label={t("AbpUi::Delete")}
-                  title={t("AbpUi::Delete")}
+                  aria-label={"删除"}
+                  title={"删除"}
                 />
               )}
             </div>
@@ -281,26 +279,26 @@ export function MenusPage() {
   };
 
   return (
-    <PageLayout title={t("Cms:Menus")}>
+    <PageLayout title={"菜单"}>
       <div className={styles.toolbar}>
         {canCreate && (
           <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-            {t("Cms:NewMenuItem")}
+            {"新建菜单项"}
           </Button>
         )}
       </div>
 
       <div className={styles.pane}>
         <div className={styles.paneHeader}>
-          <Text className={styles.paneTitle}>{t("Cms:MenuItems")}</Text>
+          <Text className={styles.paneTitle}>{"菜单项"}</Text>
         </div>
         <div className={styles.paneBody}>
           {itemsQuery.isLoading ? (
-            <Text size={200}>{t("AbpUi::Loading")}</Text>
+            <Text size={200}>{"加载中..."}</Text>
           ) : menuTree.length === 0 ? (
             <div className={styles.emptyPane}>
               <Navigation20Regular fontSize={24} />
-              <Text size={200}>{t("Cms:NoMenuItems")}</Text>
+              <Text size={200}>{"暂无菜单项"}</Text>
             </div>
           ) : (
             menuTree.map((node) => renderMenuTreeNode(node, 0))
@@ -319,9 +317,9 @@ export function MenusPage() {
       <ConfirmDialog
         open={deleteItemId !== null}
         onOpenChange={(open) => !open && setDeleteItemId(null)}
-        title={t("AbpUi::AreYouSure")}
-        description={t("AbpUi::ItemWillBeDeleted")}
-        confirmLabel={t("AbpUi::Delete")}
+        title={"你确定吗?"}
+        description={"此项将被删除！"}
+        confirmLabel={"删除"}
         variant="destructive"
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}

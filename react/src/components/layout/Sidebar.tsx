@@ -1,6 +1,5 @@
 import { useMemo, useCallback } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
-import { useTranslation } from "react-i18next";
 import { makeStyles, mergeClasses } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
 import {
@@ -37,12 +36,10 @@ interface SidebarProps {
 }
 
 function isActivePath(pathname: string, itemPath: string): boolean {
-  if (itemPath === "/") return pathname === "/";
   return pathname === itemPath || pathname.startsWith(itemPath + "/");
 }
 
 export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
@@ -177,13 +174,11 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
 
             return (
               <NavCategory key={path} value={path}>
-                <NavCategoryItem icon={Icon ? <Icon /> : undefined}>
-                  {t(menu.nameKey)}
-                </NavCategoryItem>
+                <NavCategoryItem icon={Icon ? <Icon /> : undefined}>{menu.name}</NavCategoryItem>
                 <NavSubItemGroup>
                   {visibleChildren.map((child) => (
                     <NavSubItem key={path + child.path} value={path + child.path}>
-                      {t(child.nameKey)}
+                      {child.name}
                     </NavSubItem>
                   ))}
                 </NavSubItemGroup>
@@ -200,7 +195,7 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
               value={path}
               icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
             >
-              {!collapsed && t(menu.nameKey)}
+              {!collapsed && menu.name}
             </NavItem>
           );
         })}

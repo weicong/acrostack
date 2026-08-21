@@ -11,9 +11,9 @@ import { menu as scopesMenu } from "./scopes";
 
 export const routeConfig: MenuRoute[] = [
   {
-    path: "/openiddict",
+    path: "/admin/openiddict",
     menu: {
-      nameKey: "Menu:OpenIddict",
+      name: "OpenIddict",
       icon: ShieldKeyhole20Regular,
       order: 110,
       children: [asChild("/applications", applicationsMenu), asChild("/scopes", scopesMenu)],
