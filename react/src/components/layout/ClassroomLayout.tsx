@@ -46,8 +46,12 @@ const useStyles = makeStyles({
     padding: `0 ${tokens.spacingHorizontalL}`,
     background: tokens.colorBrandBackground,
     color: tokens.colorNeutralForegroundOnBrand,
+    // 品牌底上的交互态：沿用 Fluent on-brand 配方（PrimaryButton 同款色阶），
+    // 明色主题下压暗、暗色主题下提亮，随主题自适应
     "& button": {
       color: tokens.colorNeutralForegroundOnBrand,
+      ":hover": { backgroundColor: tokens.colorBrandBackgroundHover },
+      ":active": { backgroundColor: tokens.colorBrandBackgroundPressed },
     },
   },
   brand: {
@@ -64,8 +68,36 @@ const useStyles = makeStyles({
   nav: {
     flex: 1,
     minWidth: 0,
-    // TabList 品牌色顶栏内的反色样式
     "& [role='tablist']": { gap: tokens.spacingHorizontalS },
+    // 品牌色顶栏内的反色适配：Tab 文本色由内部 .fui-Tab__content 显式指定
+    // （未选中 Foreground2、选中 Foreground1），不继承 header 的 OnBrand 前景，
+    // 需逐状态覆盖；悬停底色（Subtle 灰）与选中指示条（品牌蓝）在蓝底上同样失效，
+    // 分别改为 on-brand 品牌色阶（Hover/Pressed）与 OnBrand 白色叠加。
+    "& [role='tab']": {
+      ":hover": { backgroundColor: tokens.colorBrandBackgroundHover },
+      ":active": { backgroundColor: tokens.colorBrandBackgroundPressed },
+      // 未选中 Tab 的悬停指示条（::before）：OnBrand 前景 + 透明度模拟半透明白
+      // （无白色 alpha token；StrokeOnBrand 在暗色主题为深灰，蓝底上不可用）
+      ":hover::before": {
+        backgroundColor: tokens.colorNeutralForegroundOnBrand,
+        opacity: 0.4,
+      },
+    },
+    "& [role='tab'] .fui-Tab__content": {
+      color: tokens.colorNeutralForegroundOnBrand,
+    },
+    "& [role='tab']:hover .fui-Tab__content": {
+      color: tokens.colorNeutralForegroundOnBrand,
+    },
+    "& [role='tab']:active .fui-Tab__content": {
+      color: tokens.colorNeutralForegroundOnBrand,
+    },
+    "& [role='tab'][aria-selected='true'] .fui-Tab__content": {
+      color: tokens.colorNeutralForegroundOnBrand,
+    },
+    "& [role='tab'][aria-selected='true']::after": {
+      backgroundColor: tokens.colorNeutralForegroundOnBrand,
+    },
   },
   actions: {
     display: "flex",
