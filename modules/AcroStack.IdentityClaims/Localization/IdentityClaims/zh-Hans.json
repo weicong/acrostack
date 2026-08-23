@@ -6,6 +6,9 @@
     "Permission:IdentityClaims.RoleClaims": "管理角色 Claims",
     "Permission:IdentityClaims.ClaimTypes": "管理 Claim 类型",
     "IdentityClaims:StaticClaimTypeNameCannotBeChanged": "静态 Claim 类型名称不能修改",
-    "IdentityClaims:StaticClaimTypeCannotBeDeleted": "静态 Claim 类型不能删除"
+    "IdentityClaims:StaticClaimTypeCannotBeDeleted": "静态 Claim 类型不能删除",
+    "IdentityClaims:ClaimTypeInUse": "该声明类型正在被使用，无法删除",
+    "IdentityClaims:IdentityUserClaimOperationFailed": "用户声明操作失败",
+    "IdentityClaims:IdentityRoleClaimOperationFailed": "角色声明操作失败"
   }
 }

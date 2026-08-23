@@ -3,6 +3,10 @@
   "texts": {
     "Permission:OpenIddictManagement": "OpenIddict 管理",
     "Permission:OpenIddictManagement.Applications": "管理应用",
-    "Permission:OpenIddictManagement.Scopes": "管理 Scope"
+    "Permission:OpenIddictManagement.Scopes": "管理 Scope",
+    "OpenIddictManagement:InvalidRedirectUri": "重定向 URI 无效",
+    "OpenIddictManagement:InvalidPermission": "权限无效",
+    "OpenIddictManagement:InvalidClientType": "客户端类型无效",
+    "OpenIddictManagement:InvalidConsentType": "同意类型无效"
   }
 }

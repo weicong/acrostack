@@ -3,6 +3,10 @@
   "texts": {
     "Permission:OpenIddictManagement": "OpenIddict Management",
     "Permission:OpenIddictManagement.Applications": "Manage Applications",
-    "Permission:OpenIddictManagement.Scopes": "Manage Scopes"
+    "Permission:OpenIddictManagement.Scopes": "Manage Scopes",
+    "OpenIddictManagement:InvalidRedirectUri": "The redirect URI is invalid",
+    "OpenIddictManagement:InvalidPermission": "The permission is invalid",
+    "OpenIddictManagement:InvalidClientType": "The client type is invalid",
+    "OpenIddictManagement:InvalidConsentType": "The consent type is invalid"
   }
 }

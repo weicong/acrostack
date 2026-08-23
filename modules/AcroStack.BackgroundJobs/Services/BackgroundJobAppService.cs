@@ -10,7 +10,7 @@ using System.Linq.Dynamic.Core;
 namespace AcroStack.BackgroundJobs;
 
 [Authorize(BackgroundJobsPermissions.Default)]
-public class BackgroundJobAppService : AcroStackAppService, IBackgroundJobAppService
+public class BackgroundJobAppService : BackgroundJobsAppServiceBase, IBackgroundJobAppService
 {
     private readonly IRepository<BackgroundJobRecord, Guid> _jobRepository;
 

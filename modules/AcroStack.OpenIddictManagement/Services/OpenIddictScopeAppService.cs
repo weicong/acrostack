@@ -13,7 +13,7 @@ using Volo.Abp.OpenIddict.Scopes;
 namespace AcroStack.OpenIddictManagement;
 
 [Authorize(OpenIddictManagementPermissions.Scopes)]
-public class OpenIddictScopeAppService : AcroStackAppService, IOpenIddictScopeAppService
+public class OpenIddictScopeAppService : OpenIddictManagementAppServiceBase, IOpenIddictScopeAppService
 {
     private readonly IRepository<OpenIddictScope, Guid> _repository;
     private readonly IOpenIddictScopeManager _scopeManager;

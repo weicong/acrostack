@@ -13,7 +13,9 @@ using Volo.Abp.Identity;
 namespace AcroStack.IdentityClaims;
 
 [Authorize(IdentityClaimsPermissions.RoleClaims)]
-public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleClaimAppService
+public class IdentityRoleClaimAppService
+    : IdentityClaimsAppServiceBase,
+        IIdentityRoleClaimAppService
 {
     private readonly IdentityRoleManager _roleManager;
     private readonly IIdentityRoleRepository _roleRepository;
@@ -22,7 +24,8 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
     public IdentityRoleClaimAppService(
         IdentityRoleManager roleManager,
         IIdentityRoleRepository roleRepository,
-        IRepository<IdentityRoleClaim, Guid> claimRepository)
+        IRepository<IdentityRoleClaim, Guid> claimRepository
+    )
     {
         _roleManager = roleManager;
         _roleRepository = roleRepository;
@@ -39,11 +42,9 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
         // Manager 返回的 Claim 不携带数据库行主键，
         // 这里从仓储补充 (Type, Value) -> Id 映射，供前端更新/删除时定位行。
         var queryable = await _claimRepository.GetQueryableAsync();
-        var rows = await AsyncExecuter.ToListAsync(
-            queryable.Where(x => x.RoleId == roleId));
+        var rows = await AsyncExecuter.ToListAsync(queryable.Where(x => x.RoleId == roleId));
 
-        var rowMap = rows
-            .GroupBy(x => (x.ClaimType, x.ClaimValue))
+        var rowMap = rows.GroupBy(x => (x.ClaimType, x.ClaimValue))
             .ToDictionary(g => g.Key, g => g.First().Id);
 
         return claims
@@ -67,22 +68,27 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
         // 走 RoleManager 新增声明，发布声明变更缓存失效事件，
         // 不直接写仓储绕过领域逻辑。
         var result = await _roleManager.AddClaimAsync(
-            role, new Claim(input.ClaimType, input.ClaimValue));
+            role,
+            new Claim(input.ClaimType, input.ClaimValue)
+        );
 
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "IdentityClaims:IdentityRoleClaimOperationFailed",
-                string.Join("; ", result.Errors.Select(e => e.Description)));
+                IdentityClaimsErrorCodes.IdentityRoleClaimOperationFailed,
+                string.Join("; ", result.Errors.Select(e => e.Description))
+            );
         }
 
         // Manager 不返回新行主键，读回该行以补全 DTO 的 Id。
         var queryable = await _claimRepository.GetQueryableAsync();
         var row = await AsyncExecuter.FirstOrDefaultAsync(
             queryable.Where(x =>
-                x.RoleId == input.RoleId &&
-                x.ClaimType == input.ClaimType &&
-                x.ClaimValue == input.ClaimValue));
+                x.RoleId == input.RoleId
+                && x.ClaimType == input.ClaimType
+                && x.ClaimValue == input.ClaimValue
+            )
+        );
 
         return new IdentityClaimDto
         {
@@ -111,25 +117,29 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
             if (!removeResult.Succeeded)
             {
                 throw new BusinessException(
-                    "IdentityClaims:IdentityRoleClaimOperationFailed",
-                    string.Join("; ", removeResult.Errors.Select(e => e.Description)));
+                    IdentityClaimsErrorCodes.IdentityRoleClaimOperationFailed,
+                    string.Join("; ", removeResult.Errors.Select(e => e.Description))
+                );
             }
 
             var addResult = await _roleManager.AddClaimAsync(role, newClaim);
             if (!addResult.Succeeded)
             {
                 throw new BusinessException(
-                    "IdentityClaims:IdentityRoleClaimOperationFailed",
-                    string.Join("; ", addResult.Errors.Select(e => e.Description)));
+                    IdentityClaimsErrorCodes.IdentityRoleClaimOperationFailed,
+                    string.Join("; ", addResult.Errors.Select(e => e.Description))
+                );
             }
 
             // 读回新行以补全 DTO 的新主键。
             var queryable = await _claimRepository.GetQueryableAsync();
             var row = await AsyncExecuter.FirstOrDefaultAsync(
                 queryable.Where(x =>
-                    x.RoleId == existing.RoleId &&
-                    x.ClaimType == input.ClaimType &&
-                    x.ClaimValue == input.ClaimValue));
+                    x.RoleId == existing.RoleId
+                    && x.ClaimType == input.ClaimType
+                    && x.ClaimValue == input.ClaimValue
+                )
+            );
 
             return new IdentityClaimDto
             {
@@ -156,13 +166,16 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
         // 通过 RoleManager 移除声明，保证缓存失效事件被正确发布。
         var role = await FindRoleAsync(existing.RoleId);
         var result = await _roleManager.RemoveClaimAsync(
-            role, new Claim(existing.ClaimType, existing.ClaimValue));
+            role,
+            new Claim(existing.ClaimType, existing.ClaimValue)
+        );
 
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "IdentityClaims:IdentityRoleClaimOperationFailed",
-                string.Join("; ", result.Errors.Select(e => e.Description)));
+                IdentityClaimsErrorCodes.IdentityRoleClaimOperationFailed,
+                string.Join("; ", result.Errors.Select(e => e.Description))
+            );
         }
     }
 

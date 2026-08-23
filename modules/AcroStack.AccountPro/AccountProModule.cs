@@ -3,6 +3,7 @@ using Volo.Abp.Identity;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.AccountPro;
@@ -19,8 +20,9 @@ public class AccountProModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<AccountProResource>("zh-Hans")
+            options
+                .Resources.Add<AccountProResource>("en")
+                .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/AccountPro");
         });
     }

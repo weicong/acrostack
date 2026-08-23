@@ -9,10 +9,10 @@ using Microsoft.Extensions.Options;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.BlobStoring;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.BlobStoring;
 using Volo.Abp.Data;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.MultiTenancy;
 // Disambiguate FileShare: System.IO.FileShare (from System.IO above) collides
 // with our AcroStack.FileManagement.FileShare entity.
@@ -30,7 +30,7 @@ namespace AcroStack.FileManagement;
 /// </summary>
 [RemoteService(false)]
 [Authorize(FileManagementPermissions.Default)]
-public class FileManagementAppService : AcroStackAppService, IFileManagementAppService
+public class FileManagementAppService : FileManagementAppServiceBase, IFileManagementAppService
 {
     /// <summary>
     /// 缩略图预览允许的光栅图 Content-Type 白名单。
@@ -61,7 +61,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         IRepository<FileVersion, Guid> fileVersionRepository,
         IBlobContainer<FileManagementContainer> blobContainer,
         IOptions<FileManagementOptions> options,
-        IDataFilter dataFilter)
+        IDataFilter dataFilter
+    )
     {
         _folderRepository = folderRepository;
         _fileRepository = fileRepository;
@@ -80,7 +81,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         var query = queryable.Where(f => f.ParentId == parentId);
         var folders = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileFolderDto>(
-            ObjectMapper.Map<List<FileFolder>, List<FileFolderDto>>(folders));
+            ObjectMapper.Map<List<FileFolder>, List<FileFolderDto>>(folders)
+        );
     }
 
     public async Task<FileFolderDto> CreateFolderAsync(CreateFileFolderDto input)
@@ -129,13 +131,16 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         }
 
         // 先收集范围内所有文件及其历史版本对应的 Blob 名称。
-        var files = await _fileRepository.GetListAsync(
-            f => f.FolderId != null && allFolderIds.Contains(f.FolderId.Value));
+        var files = await _fileRepository.GetListAsync(f =>
+            f.FolderId != null && allFolderIds.Contains(f.FolderId.Value)
+        );
         var fileIds = files.Select(f => f.Id).ToList();
-        var versions = fileIds.Count > 0
-            ? await _fileVersionRepository.GetListAsync(v => fileIds.Contains(v.FileEntryId))
-            : new List<FileVersion>();
-        var blobNames = files.Select(f => f.BlobName)
+        var versions =
+            fileIds.Count > 0
+                ? await _fileVersionRepository.GetListAsync(v => fileIds.Contains(v.FileEntryId))
+                : new List<FileVersion>();
+        var blobNames = files
+            .Select(f => f.BlobName)
             .Concat(versions.Select(v => v.BlobName))
             .Distinct()
             .ToList();
@@ -183,7 +188,9 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             {
                 if (ancestorId.Value == id)
                 {
-                    throw new BusinessException("FileManagement:FolderCannotBeMovedIntoDescendant");
+                    throw new BusinessException(
+                        FileManagementErrorCodes.FolderCannotBeMovedIntoDescendant
+                    );
                 }
                 ancestorId = (await _folderRepository.GetAsync(ancestorId.Value)).ParentId;
             }
@@ -202,7 +209,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         var query = queryable.Where(f => f.FolderId == folderId);
         var files = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileEntryDto>(
-            ObjectMapper.Map<List<FileEntry>, List<FileEntryDto>>(files));
+            ObjectMapper.Map<List<FileEntry>, List<FileEntryDto>>(files)
+        );
     }
 
     [Authorize(FileManagementPermissions.Upload)]
@@ -226,8 +234,9 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         // Check whether a file with the same name already exists in the
         // target folder. If so, treat this upload as a new version of the
         // existing entry (mirrors ABP Commercial File Management Pro).
-        var existing = await _fileRepository.FirstOrDefaultAsync(
-            f => f.FolderId == folderId && f.Name == fileName);
+        var existing = await _fileRepository.FirstOrDefaultAsync(f =>
+            f.FolderId == folderId && f.Name == fileName
+        );
 
         if (existing != null)
         {
@@ -247,7 +256,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             blobName,
             file.Length,
             file.ContentType,
-            folderId);
+            folderId
+        );
 
         try
         {
@@ -302,18 +312,27 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     {
         if (file.Length > _options.MaxFileSize)
         {
-            throw new BusinessException("FileManagement:FileExceedsMaxSize")
-                .WithData("MaxSize", _options.MaxFileSize);
+            throw new BusinessException("FileManagement:FileExceedsMaxSize").WithData(
+                "MaxSize",
+                _options.MaxFileSize
+            );
         }
 
         if (_options.AllowedFileExtensions is { Count: > 0 })
         {
             var extension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
-            if (string.IsNullOrEmpty(extension) ||
-                !_options.AllowedFileExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            if (
+                string.IsNullOrEmpty(extension)
+                || !_options.AllowedFileExtensions.Contains(
+                    extension,
+                    StringComparer.OrdinalIgnoreCase
+                )
+            )
             {
-                throw new BusinessException("FileManagement:FileExtensionNotAllowed")
-                    .WithData("Extension", extension ?? string.Empty);
+                throw new BusinessException("FileManagement:FileExtensionNotAllowed").WithData(
+                    "Extension",
+                    extension ?? string.Empty
+                );
             }
         }
 
@@ -323,8 +342,10 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         var usedBytes = await AsyncExecuter.SumAsync(queryable, f => f.ByteSize);
         if (usedBytes + file.Length > _options.MaxStoragePerTenant)
         {
-            throw new BusinessException("FileManagement:StorageQuotaExceeded")
-                .WithData("MaxStorage", _options.MaxStoragePerTenant);
+            throw new BusinessException(FileManagementErrorCodes.StorageQuotaExceeded).WithData(
+                "MaxStorage",
+                _options.MaxStoragePerTenant
+            );
         }
     }
 
@@ -345,7 +366,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             existing.ByteSize,
             existing.ContentType,
             CurrentUser.Id,
-            CurrentTenant.Id);
+            CurrentTenant.Id
+        );
         await _fileVersionRepository.InsertAsync(versionSnapshot);
 
         // Save the new bytes under a fresh blob name.
@@ -375,7 +397,9 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     }
 
     [Authorize(FileManagementPermissions.Download)]
-    public async Task<(Stream Stream, string FileName, string? ContentType)> DownloadFileAsync(Guid id)
+    public async Task<(Stream Stream, string FileName, string? ContentType)> DownloadFileAsync(
+        Guid id
+    )
     {
         var entry = await _fileRepository.GetAsync(id);
         var stream = await _blobContainer.GetAsync(entry.BlobName);
@@ -394,10 +418,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         // 先收集要删除的 Blob 名称（当前 Blob + 所有历史版本 Blob，去重
         // 以兼容历史上多版本行可能共享同一 Blob 的旧数据）。
         var versions = await _fileVersionRepository.GetListAsync(v => v.FileEntryId == entry.Id);
-        var blobNames = versions.Select(v => v.BlobName)
-            .Append(entry.BlobName)
-            .Distinct()
-            .ToList();
+        var blobNames = versions.Select(v => v.BlobName).Append(entry.BlobName).Distinct().ToList();
 
         // 顺序要点：先完成元数据删除并立即 SaveChanges（autoSave: true），
         // 数据库状态落定后再物理删除 Blob 字节。若颠倒顺序，一旦 SaveChanges
@@ -466,7 +487,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             token,
             input.ExpirationTime,
             input.MaxDownloadCount,
-            CurrentTenant.Id);
+            CurrentTenant.Id
+        );
 
         await _fileShareRepository.InsertAsync(share);
         return ObjectMapper.Map<FileShare, FileShareDto>(share);
@@ -479,7 +501,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         var query = queryable.Where(s => s.FileEntryId == fileId);
         var shares = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileShareDto>(
-            ObjectMapper.Map<List<FileShare>, List<FileShareDto>>(shares));
+            ObjectMapper.Map<List<FileShare>, List<FileShareDto>>(shares)
+        );
     }
 
     [Authorize(FileManagementPermissions.Share)]
@@ -496,7 +519,9 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     /// identifier on the URL), validates expiry / download cap / revoked
     /// state, then streams the underlying file's bytes.
     /// </summary>
-    public async Task<(Stream Stream, string FileName, string? ContentType)> DownloadSharedAsync(string token)
+    public async Task<(Stream Stream, string FileName, string? ContentType)> DownloadSharedAsync(
+        string token
+    )
     {
         // The endpoint is anonymous, so the ABP IMultiTenant query filter
         // would scope the lookup to the host tenant only. Disable the filter
@@ -505,11 +530,12 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         {
             var queryable = await _fileShareRepository.GetQueryableAsync();
             var share = await AsyncExecuter.FirstOrDefaultAsync(
-                queryable.Where(s => s.Token == token));
+                queryable.Where(s => s.Token == token)
+            );
 
             if (share == null)
             {
-                throw new BusinessException("FileManagement:ShareLinkNotFound");
+                throw new BusinessException(FileManagementErrorCodes.ShareLinkNotFound);
             }
 
             if (share.IsRevoked)
@@ -522,7 +548,10 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
                 throw new BusinessException("FileManagement:ShareLinkExpired");
             }
 
-            if (share.MaxDownloadCount.HasValue && share.DownloadCount >= share.MaxDownloadCount.Value)
+            if (
+                share.MaxDownloadCount.HasValue
+                && share.DownloadCount >= share.MaxDownloadCount.Value
+            )
             {
                 throw new BusinessException("FileManagement:ShareLinkDownloadLimitReached");
             }
@@ -560,7 +589,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             .OrderByDescending(v => v.VersionNumber);
         var versions = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileVersionDto>(
-            ObjectMapper.Map<List<FileVersion>, List<FileVersionDto>>(versions));
+            ObjectMapper.Map<List<FileVersion>, List<FileVersionDto>>(versions)
+        );
     }
 
     [Authorize(FileManagementPermissions.Upload)]
@@ -568,11 +598,12 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     {
         var entry = await _fileRepository.GetAsync(fileId);
 
-        var version = await _fileVersionRepository.FirstOrDefaultAsync(
-            v => v.Id == versionId && v.FileEntryId == fileId);
+        var version = await _fileVersionRepository.FirstOrDefaultAsync(v =>
+            v.Id == versionId && v.FileEntryId == fileId
+        );
         if (version == null)
         {
-            throw new BusinessException("FileManagement:FileVersionNotFound");
+            throw new BusinessException(FileManagementErrorCodes.FileVersionNotFound);
         }
 
         // Snapshot the *current* state as a new historical version row so
@@ -585,7 +616,8 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             entry.ByteSize,
             entry.ContentType,
             CurrentUser.Id,
-            CurrentTenant.Id);
+            CurrentTenant.Id
+        );
         await _fileVersionRepository.InsertAsync(snapshot);
 
         // 将目标版本的 Blob 复制为一份独立的新副本，再把新 Blob 名赋给
@@ -629,11 +661,16 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         // 【XSS 防护】仅允许光栅图 Content-Type 白名单通过缩略图端点流式返回。
         // 不能用 image/* 前缀放行：image/svg+xml 可内联执行 <script>，
         // 浏览器内联渲染即触发存储型 XSS。
-        if (string.IsNullOrEmpty(entry.ContentType) ||
-            !ThumbnailContentTypeWhitelist.Contains(entry.ContentType, StringComparer.OrdinalIgnoreCase))
+        if (
+            string.IsNullOrEmpty(entry.ContentType)
+            || !ThumbnailContentTypeWhitelist.Contains(
+                entry.ContentType,
+                StringComparer.OrdinalIgnoreCase
+            )
+        )
         {
             // 白名单之外的类型（含 SVG 及所有非图片类型）一律拒绝预览。
-            throw new UserFriendlyException("该文件类型不支持缩略图预览");
+            throw new BusinessException(FileManagementErrorCodes.ThumbnailNotAvailable);
         }
 
         // NOTE: A real implementation would downscale the image to a max of
@@ -659,7 +696,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         {
             UsedBytes = usedBytes,
             MaxBytes = _options.MaxStoragePerTenant,
-            FileCount = fileCount
+            FileCount = fileCount,
         };
     }
 }

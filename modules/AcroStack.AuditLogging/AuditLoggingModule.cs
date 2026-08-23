@@ -6,11 +6,16 @@ using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.AuditLogging;
 
-[DependsOn(typeof(AbpDddApplicationModule), typeof(AbpAuditLoggingDomainModule), typeof(AbpBackgroundWorkersModule))]
+[DependsOn(
+    typeof(AbpDddApplicationModule),
+    typeof(AbpAuditLoggingDomainModule),
+    typeof(AbpBackgroundWorkersModule)
+)]
 public class AuditLoggingModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -26,13 +31,15 @@ public class AuditLoggingModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<AuditLoggingResource>("zh-Hans")
+            options
+                .Resources.Add<AuditLoggingResource>("zh-Hans")
                 .AddVirtualJson("/Localization/AuditLogging");
         });
     }
 
-    public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
+    public override async Task OnApplicationInitializationAsync(
+        ApplicationInitializationContext context
+    )
     {
         await context.AddBackgroundWorkerAsync<AuditLogCleanupWorker>();
     }

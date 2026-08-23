@@ -18,7 +18,7 @@ using System.Linq.Dynamic.Core;
 namespace AcroStack.AuditLogging;
 
 [Authorize(AuditLoggingPermissions.Default)]
-public class AuditLogAppService : AcroStackAppService, IAuditLogAppService
+public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppService
 {
     private readonly IRepository<AuditLog, Guid> _auditLogRepository;
     private readonly IRepository<EntityChange, Guid> _entityChangeRepository;

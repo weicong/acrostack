@@ -16,14 +16,15 @@ namespace AcroStack.Chat;
 /// blocked them, and blocked users are filtered out of the contact list.
 /// </summary>
 [Authorize]
-public class ChatBlockAppService : AcroStackAppService, IChatBlockAppService
+public class ChatBlockAppService : ChatAppServiceBase, IChatBlockAppService
 {
     private readonly IRepository<ChatBlockedUser, Guid> _blockedUserRepository;
     private readonly IRepository<AppUser, Guid> _appUserRepository;
 
     public ChatBlockAppService(
         IRepository<ChatBlockedUser, Guid> blockedUserRepository,
-        IRepository<AppUser, Guid> appUserRepository)
+        IRepository<AppUser, Guid> appUserRepository
+    )
     {
         _blockedUserRepository = blockedUserRepository;
         _appUserRepository = appUserRepository;
@@ -34,25 +35,28 @@ public class ChatBlockAppService : AcroStackAppService, IChatBlockAppService
         var currentUserId = CurrentUser.GetId();
         if (blockedUserId == currentUserId)
         {
-            throw new BusinessException("Chat:YouCannotBlockYourself");
+            throw new BusinessException(ChatErrorCodes.YouCannotBlockYourself);
         }
 
-        var existing = await _blockedUserRepository.FirstOrDefaultAsync(
-            b => b.UserId == currentUserId && b.BlockedUserId == blockedUserId);
+        var existing = await _blockedUserRepository.FirstOrDefaultAsync(b =>
+            b.UserId == currentUserId && b.BlockedUserId == blockedUserId
+        );
         if (existing != null)
         {
             return;
         }
 
         await _blockedUserRepository.InsertAsync(
-            new ChatBlockedUser(GuidGenerator.Create(), currentUserId, blockedUserId));
+            new ChatBlockedUser(GuidGenerator.Create(), currentUserId, blockedUserId)
+        );
     }
 
     public async Task UnblockUserAsync(Guid blockedUserId)
     {
         var currentUserId = CurrentUser.GetId();
-        var existing = await _blockedUserRepository.FirstOrDefaultAsync(
-            b => b.UserId == currentUserId && b.BlockedUserId == blockedUserId);
+        var existing = await _blockedUserRepository.FirstOrDefaultAsync(b =>
+            b.UserId == currentUserId && b.BlockedUserId == blockedUserId
+        );
         if (existing == null)
         {
             return;
@@ -77,20 +81,22 @@ public class ChatBlockAppService : AcroStackAppService, IChatBlockAppService
         );
 
         var dtos = rows.Select(r => new BlockedUserDto
-        {
-            Id = r.b.Id,
-            BlockedUserId = r.b.BlockedUserId,
-            BlockedUserName = r.u.UserName,
-            CreationTime = r.b.CreationTime,
-        }).ToList();
+            {
+                Id = r.b.Id,
+                BlockedUserId = r.b.BlockedUserId,
+                BlockedUserName = r.u.UserName,
+                CreationTime = r.b.CreationTime,
+            })
+            .ToList();
 
         return new ListResultDto<BlockedUserDto>(dtos);
     }
 
     public async Task<bool> IsUserBlockedAsync(Guid userId, Guid targetUserId)
     {
-        var existing = await _blockedUserRepository.FirstOrDefaultAsync(
-            b => b.UserId == userId && b.BlockedUserId == targetUserId);
+        var existing = await _blockedUserRepository.FirstOrDefaultAsync(b =>
+            b.UserId == userId && b.BlockedUserId == targetUserId
+        );
         return existing != null;
     }
 }

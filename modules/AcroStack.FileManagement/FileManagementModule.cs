@@ -8,18 +8,26 @@ using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.FileManagement;
 
-[DependsOn(typeof(AbpDddApplicationModule), typeof(AbpAspNetCoreMvcModule), typeof(AbpBlobStoringModule), typeof(AbpMapperlyModule))]
+[DependsOn(
+    typeof(AbpDddApplicationModule),
+    typeof(AbpAspNetCoreMvcModule),
+    typeof(AbpBlobStoringModule),
+    typeof(AbpMapperlyModule)
+)]
 public class FileManagementModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         context.Services.AddMapperlyObjectMapper<FileManagementModule>();
 
-        Configure<FileManagementOptions>(context.Services.GetConfiguration().GetSection("FileManagement"));
+        Configure<FileManagementOptions>(
+            context.Services.GetConfiguration().GetSection("FileManagement")
+        );
 
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
@@ -28,8 +36,8 @@ public class FileManagementModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<FileManagementResource>("zh-Hans")
+            options
+                .Resources.Add<FileManagementResource>("zh-Hans")
                 .AddVirtualJson("/Localization/FileManagement");
         });
 

@@ -6,6 +6,9 @@
     "Permission:IdentityClaims.RoleClaims": "Manage Role Claims",
     "Permission:IdentityClaims.ClaimTypes": "Manage Claim Types",
     "IdentityClaims:StaticClaimTypeNameCannotBeChanged": "Static claim type name cannot be changed",
-    "IdentityClaims:StaticClaimTypeCannotBeDeleted": "Static claim type cannot be deleted"
+    "IdentityClaims:StaticClaimTypeCannotBeDeleted": "Static claim type cannot be deleted",
+    "IdentityClaims:ClaimTypeInUse": "The claim type is in use and cannot be deleted",
+    "IdentityClaims:IdentityUserClaimOperationFailed": "User claim operation failed",
+    "IdentityClaims:IdentityRoleClaimOperationFailed": "Role claim operation failed"
   }
 }

@@ -4,6 +4,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.OpenIddictManagement;
@@ -20,8 +21,9 @@ public class OpenIddictManagementModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<OpenIddictManagementResource>("zh-Hans")
+            options
+                .Resources.Add<OpenIddictManagementResource>("en")
+                .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/OpenIddictManagement");
         });
 

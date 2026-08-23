@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenIddict.Abstractions;
-using System.Linq.Dynamic.Core;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -17,7 +17,9 @@ using Volo.Abp.OpenIddict.Applications;
 namespace AcroStack.OpenIddictManagement;
 
 [Authorize(OpenIddictManagementPermissions.Applications)]
-public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictApplicationAppService
+public class OpenIddictApplicationAppService
+    : OpenIddictManagementAppServiceBase,
+        IOpenIddictApplicationAppService
 {
     /// <summary>
     /// 已知权限白名单：OpenIddict 内置端点/授权类型/scope 常量，
@@ -56,7 +58,8 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
     public OpenIddictApplicationAppService(
         IRepository<OpenIddictApplication, Guid> repository,
         IAbpApplicationManager applicationManager,
-        IHostEnvironment hostEnvironment)
+        IHostEnvironment hostEnvironment
+    )
     {
         _repository = repository;
         _applicationManager = applicationManager;
@@ -69,15 +72,18 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         return MapToDto(app);
     }
 
-    public async Task<PagedResultDto<OpenIddictApplicationDto>> GetListAsync(GetOpenIddictApplicationListInput input)
+    public async Task<PagedResultDto<OpenIddictApplicationDto>> GetListAsync(
+        GetOpenIddictApplicationListInput input
+    )
     {
         var queryable = await _repository.GetQueryableAsync();
 
         if (!input.Filter.IsNullOrWhiteSpace())
         {
             queryable = queryable.Where(x =>
-                (x.ClientId != null && x.ClientId.Contains(input.Filter)) ||
-                (x.DisplayName != null && x.DisplayName.Contains(input.Filter)));
+                (x.ClientId != null && x.ClientId.Contains(input.Filter))
+                || (x.DisplayName != null && x.DisplayName.Contains(input.Filter))
+            );
         }
 
         var totalCount = await AsyncExecuter.CountAsync(queryable);
@@ -98,8 +104,13 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
     [Authorize(OpenIddictManagementPermissions.Applications)]
     public async Task<OpenIddictApplicationDto> CreateAsync(CreateOpenIddictApplicationDto input)
     {
-        ValidateApplicationInput(input.RedirectUris, input.PostLogoutRedirectUris,
-            input.Permissions, input.ClientType, input.ConsentType);
+        ValidateApplicationInput(
+            input.RedirectUris,
+            input.PostLogoutRedirectUris,
+            input.Permissions,
+            input.ClientType,
+            input.ConsentType
+        );
 
         // IAbpApplicationManager handles ClientSecret hashing and JSON
         // serialization of list fields (Permissions, RedirectUris, ...).
@@ -112,22 +123,34 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             ClientSecret = input.ClientSecret,
         };
 
-        foreach (var p in input.Permissions) descriptor.Permissions.Add(p);
-        foreach (var u in input.RedirectUris) descriptor.RedirectUris.Add(new Uri(u));
-        foreach (var u in input.PostLogoutRedirectUris) descriptor.PostLogoutRedirectUris.Add(new Uri(u));
-        foreach (var r in input.Requirements) descriptor.Requirements.Add(r);
+        foreach (var p in input.Permissions)
+            descriptor.Permissions.Add(p);
+        foreach (var u in input.RedirectUris)
+            descriptor.RedirectUris.Add(new Uri(u));
+        foreach (var u in input.PostLogoutRedirectUris)
+            descriptor.PostLogoutRedirectUris.Add(new Uri(u));
+        foreach (var r in input.Requirements)
+            descriptor.Requirements.Add(r);
 
         var created = (OpenIddictApplication)await _applicationManager.CreateAsync(descriptor);
         return MapToDto(created);
     }
 
     [Authorize(OpenIddictManagementPermissions.Applications)]
-    public async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, UpdateOpenIddictApplicationDto input)
+    public async Task<OpenIddictApplicationDto> UpdateAsync(
+        Guid id,
+        UpdateOpenIddictApplicationDto input
+    )
     {
         var app = await _repository.GetAsync(id);
 
-        ValidateApplicationInput(input.RedirectUris, input.PostLogoutRedirectUris,
-            input.Permissions, input.ClientType, input.ConsentType);
+        ValidateApplicationInput(
+            input.RedirectUris,
+            input.PostLogoutRedirectUris,
+            input.Permissions,
+            input.ClientType,
+            input.ConsentType
+        );
 
         var descriptor = new OpenIddictApplicationDescriptor
         {
@@ -146,10 +169,14 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             descriptor.ClientSecret = input.ClientSecret;
         }
 
-        foreach (var p in input.Permissions) descriptor.Permissions.Add(p);
-        foreach (var u in input.RedirectUris) descriptor.RedirectUris.Add(new Uri(u));
-        foreach (var u in input.PostLogoutRedirectUris) descriptor.PostLogoutRedirectUris.Add(new Uri(u));
-        foreach (var r in input.Requirements) descriptor.Requirements.Add(r);
+        foreach (var p in input.Permissions)
+            descriptor.Permissions.Add(p);
+        foreach (var u in input.RedirectUris)
+            descriptor.RedirectUris.Add(new Uri(u));
+        foreach (var u in input.PostLogoutRedirectUris)
+            descriptor.PostLogoutRedirectUris.Add(new Uri(u));
+        foreach (var r in input.Requirements)
+            descriptor.Requirements.Add(r);
 
         // PopulateAsync copies descriptor values onto the existing entity
         // (including re-hashing ClientSecret when it's a new plain-text value).
@@ -169,7 +196,8 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         List<string> postLogoutRedirectUris,
         List<string> permissions,
         string? clientType,
-        string? consentType)
+        string? consentType
+    )
     {
         ValidateRedirectUris(redirectUris);
         ValidateRedirectUris(postLogoutRedirectUris);
@@ -184,8 +212,9 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         if (invalid.Count > 0)
         {
             throw new BusinessException(
-                "OpenIddictManagement:InvalidRedirectUri",
-                $"以下回调地址不合法（必须为 https 绝对地址）: {string.Join(", ", invalid)}");
+                OpenIddictManagementErrorCodes.InvalidRedirectUri,
+                $"以下回调地址不合法（必须为 https 绝对地址）: {string.Join(", ", invalid)}"
+            );
         }
     }
 
@@ -210,24 +239,32 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
 
     private static bool IsLocalHost(string host)
     {
-        return host.Equals("localhost", StringComparison.OrdinalIgnoreCase)
-            || host == "127.0.0.1";
+        return host.Equals("localhost", StringComparison.OrdinalIgnoreCase) || host == "127.0.0.1";
     }
 
     private static void ValidatePermissions(List<string> permissions)
     {
         var invalid = permissions
-            .Where(p => !KnownPermissions.Contains(p)
-                && !p.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal)
-                && !p.StartsWith(OpenIddictConstants.Permissions.Prefixes.ResponseType, StringComparison.Ordinal)
-                && !p.StartsWith("role:", StringComparison.Ordinal))
+            .Where(p =>
+                !KnownPermissions.Contains(p)
+                && !p.StartsWith(
+                    OpenIddictConstants.Permissions.Prefixes.Scope,
+                    StringComparison.Ordinal
+                )
+                && !p.StartsWith(
+                    OpenIddictConstants.Permissions.Prefixes.ResponseType,
+                    StringComparison.Ordinal
+                )
+                && !p.StartsWith("role:", StringComparison.Ordinal)
+            )
             .ToList();
 
         if (invalid.Count > 0)
         {
             throw new BusinessException(
-                "OpenIddictManagement:InvalidPermission",
-                $"以下权限不在白名单内: {string.Join(", ", invalid)}");
+                OpenIddictManagementErrorCodes.InvalidPermission,
+                $"以下权限不在白名单内: {string.Join(", ", invalid)}"
+            );
         }
     }
 
@@ -238,12 +275,15 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             return;
         }
 
-        if (clientType != OpenIddictConstants.ClientTypes.Public
-            && clientType != OpenIddictConstants.ClientTypes.Confidential)
+        if (
+            clientType != OpenIddictConstants.ClientTypes.Public
+            && clientType != OpenIddictConstants.ClientTypes.Confidential
+        )
         {
             throw new BusinessException(
-                "OpenIddictManagement:InvalidClientType",
-                $"ClientType 只允许 {OpenIddictConstants.ClientTypes.Public} 或 {OpenIddictConstants.ClientTypes.Confidential}: {clientType}");
+                OpenIddictManagementErrorCodes.InvalidClientType,
+                $"ClientType 只允许 {OpenIddictConstants.ClientTypes.Public} 或 {OpenIddictConstants.ClientTypes.Confidential}: {clientType}"
+            );
         }
     }
 
@@ -254,13 +294,16 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             return;
         }
 
-        if (consentType != OpenIddictConstants.ConsentTypes.Implicit
+        if (
+            consentType != OpenIddictConstants.ConsentTypes.Implicit
             && consentType != OpenIddictConstants.ConsentTypes.Explicit
-            && consentType != OpenIddictConstants.ConsentTypes.External)
+            && consentType != OpenIddictConstants.ConsentTypes.External
+        )
         {
             throw new BusinessException(
-                "OpenIddictManagement:InvalidConsentType",
-                $"ConsentType 只允许 {OpenIddictConstants.ConsentTypes.Implicit}/{OpenIddictConstants.ConsentTypes.Explicit}/{OpenIddictConstants.ConsentTypes.External}: {consentType}");
+                OpenIddictManagementErrorCodes.InvalidConsentType,
+                $"ConsentType 只允许 {OpenIddictConstants.ConsentTypes.Implicit}/{OpenIddictConstants.ConsentTypes.Explicit}/{OpenIddictConstants.ConsentTypes.External}: {consentType}"
+            );
         }
     }
 
@@ -298,7 +341,11 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         {
             // JSON 反序列化失败时记录警告而不是静默吞掉异常，
             // 便于排查数据库中残留的脏数据。
-            Logger.LogWarning(ex, "OpenIddict 应用的 JSON 列字段解析失败，已返回空列表。原始内容: {Json}", json);
+            Logger.LogWarning(
+                ex,
+                "OpenIddict 应用的 JSON 列字段解析失败，已返回空列表。原始内容: {Json}",
+                json
+            );
             return new List<string>();
         }
     }

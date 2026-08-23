@@ -10,16 +10,24 @@ public class OpenIddictManagementPermissionDefinitionProvider : PermissionDefini
     public override void Define(IPermissionDefinitionContext context)
     {
         // Host-only: OpenIddict applications/scopes are global SSO config.
-        var group = context.GetGroupOrNull(AcroStackPermissionConsts.GroupName)
-            ?? context.AddGroup(AcroStackPermissionConsts.GroupName);
+        var group = context.AddGroup(
+            OpenIddictManagementPermissions.GroupName,
+            L("Permission:OpenIddictManagement")
+        );
 
         var oidcPermission = group.AddPermission(
-            OpenIddictManagementPermissions.Default, L("Permission:OpenIddictManagement"),
-            MultiTenancySides.Host);
+            OpenIddictManagementPermissions.Default,
+            L("Permission:OpenIddictManagement"),
+            MultiTenancySides.Host
+        );
         oidcPermission.AddChild(
-            OpenIddictManagementPermissions.Applications, L("Permission:OpenIddictManagement.Applications"));
+            OpenIddictManagementPermissions.Applications,
+            L("Permission:OpenIddictManagement.Applications")
+        );
         oidcPermission.AddChild(
-            OpenIddictManagementPermissions.Scopes, L("Permission:OpenIddictManagement.Scopes"));
+            OpenIddictManagementPermissions.Scopes,
+            L("Permission:OpenIddictManagement.Scopes")
+        );
     }
 
     private static LocalizableString L(string name)

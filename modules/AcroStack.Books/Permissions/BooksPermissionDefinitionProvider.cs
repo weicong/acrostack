@@ -8,10 +8,7 @@ public class BooksPermissionDefinitionProvider : PermissionDefinitionProvider
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        // 权限组名与权限名（AcroStack.*）持久化在数据库，保持与集中式定义一致；
-        // 多个模块 Provider 共享同一分组，用 GetGroupOrNull 兜底避免重复注册。
-        var group = context.GetGroupOrNull(AcroStackPermissionConsts.GroupName)
-            ?? context.AddGroup(AcroStackPermissionConsts.GroupName);
+        var group = context.AddGroup(BooksPermissions.GroupName, L("Permission:Books"));
 
         var booksPermission = group.AddPermission(BooksPermissions.Default, L("Permission:Books"));
         booksPermission.AddChild(BooksPermissions.Create, L("Permission:Books.Create"));

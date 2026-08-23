@@ -8,6 +8,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.Chat;
@@ -20,7 +21,8 @@ namespace AcroStack.Chat;
     typeof(AbpDddApplicationModule),
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpBlobStoringModule),
-    typeof(AbpMapperlyModule))]
+    typeof(AbpMapperlyModule)
+)]
 public class ChatModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -34,8 +36,9 @@ public class ChatModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<ChatResource>("zh-Hans")
+            options
+                .Resources.Add<ChatResource>("en")
+                .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/Chat");
         });
 

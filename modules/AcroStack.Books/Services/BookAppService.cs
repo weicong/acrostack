@@ -10,7 +10,7 @@ using System.Linq.Dynamic.Core;
 namespace AcroStack.Books;
 
 [Authorize(BooksPermissions.Default)]
-public class BookAppService : AcroStackAppService, IBookAppService
+public class BookAppService : BooksAppServiceBase, IBookAppService
 {
     private readonly IRepository<Book, Guid> _repository;
 

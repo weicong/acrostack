@@ -21,7 +21,6 @@
     <Project Path="modules/classroom/src/Classroom.Tests/Classroom.Tests.csproj"/>
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/AcroStack.Core/AcroStack.Core.csproj"/>
     <Project Path="src/AcroStack/AcroStack.csproj"/>
   </Folder>
 </Solution>

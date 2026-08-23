@@ -12,7 +12,7 @@ using IdentityPermissions = Volo.Abp.Identity.IdentityPermissions;
 namespace AcroStack.AppUsers;
 
 [Authorize(IdentityPermissions.Users.Default)]
-public class AppUserAppService : AcroStackAppService, IAppUserAppService
+public class AppUserAppService : ApplicationService, IAppUserAppService
 {
     private readonly IRepository<AppUser, Guid> _appUserRepository;
 

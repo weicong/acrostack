@@ -4,6 +4,7 @@ using Volo.Abp.Application;
 using Volo.Abp.Localization;
 using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.Books;
@@ -22,8 +23,9 @@ public class BooksModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<BooksResource>("zh-Hans")
+            options
+                .Resources.Add<BooksResource>("en")
+                .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/Books");
         });
     }

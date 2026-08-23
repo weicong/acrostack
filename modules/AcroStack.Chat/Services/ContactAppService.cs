@@ -18,7 +18,7 @@ namespace AcroStack.Chat;
 /// out users blocked by the current user.
 /// </summary>
 [Authorize]
-public class ContactAppService : AcroStackAppService, IContactAppService
+public class ContactAppService : ChatAppServiceBase, IContactAppService
 {
     private readonly IRepository<AppUser, Guid> _appUserRepository;
     private readonly IRepository<Conversation, Guid> _conversationRepository;

@@ -3,6 +3,7 @@ using Volo.Abp.Application;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.BackgroundJobs;
@@ -19,8 +20,8 @@ public class BackgroundJobsModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<BackgroundJobsResource>("zh-Hans")
+            options
+                .Resources.Add<BackgroundJobsResource>("zh-Hans")
                 .AddVirtualJson("/Localization/BackgroundJobs");
         });
     }

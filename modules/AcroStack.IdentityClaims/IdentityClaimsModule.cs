@@ -6,6 +6,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
+using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.IdentityClaims;
@@ -14,7 +15,8 @@ namespace AcroStack.IdentityClaims;
     typeof(AbpDddApplicationModule),
     typeof(AbpIdentityDomainModule),
     typeof(AbpIdentityDomainSharedModule),
-    typeof(AbpMapperlyModule))]
+    typeof(AbpMapperlyModule)
+)]
 public class IdentityClaimsModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -28,8 +30,8 @@ public class IdentityClaimsModule : AbpModule
 
         Configure<AbpLocalizationOptions>(options =>
         {
-            options.Resources
-                .Add<IdentityClaimsResource>("zh-Hans")
+            options
+                .Resources.Add<IdentityClaimsResource>("zh-Hans")
                 .AddVirtualJson("/Localization/IdentityClaims");
         });
 

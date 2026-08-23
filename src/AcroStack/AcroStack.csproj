@@ -109,7 +109,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AcroStack.Core\AcroStack.Core.csproj" />
+    <EmbeddedResource Include="Localization\AcroStack\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\modules\AcroStack.Books\AcroStack.Books.csproj" />
     <ProjectReference Include="..\..\modules\AcroStack.BackgroundJobs\AcroStack.BackgroundJobs.csproj" />
     <ProjectReference Include="..\..\modules\AcroStack.OpenIddictManagement\AcroStack.OpenIddictManagement.csproj" />
