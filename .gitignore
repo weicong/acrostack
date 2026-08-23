@@ -264,7 +264,7 @@ paket-files/
 *.code-workspace
 
 # AcroStack
-src/AcroStack/Logs/*
+main/AcroStack/Logs/*
 
 # Local secrets (loaded via AddAppSettingsSecretsJson; production uses env vars)
 **/appsettings.secrets.json

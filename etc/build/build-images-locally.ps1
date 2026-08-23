@@ -2,7 +2,7 @@ param ($version='latest')
 
 $currentFolder = $PSScriptRoot
 $slnFolder = Join-Path $currentFolder "../../"
-$appFolder = Join-Path $slnFolder "src/AcroStack"
+$appFolder = Join-Path $slnFolder "main/AcroStack"
 
 $reactAppFolder = Join-Path $appFolder "../react"
 

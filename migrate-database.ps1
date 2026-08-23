@@ -1,3 +1,3 @@
-dotnet run --project src/AcroStack --migrate-database
+dotnet run --project main/AcroStack --migrate-database
 
 exit $LASTEXITCODE

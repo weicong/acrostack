@@ -1,4 +1,4 @@
-﻿{
+{
   "applications": {
     "AcroStack.React": {
       "type": "cli",
@@ -14,7 +14,7 @@
       "launchUrl": "https://localhost:44320",
       "healthCheckEndpoint": "/health-status",
       "healthUiEndpoint": "/health-ui",
-      "path": "../../src/AcroStack/AcroStack.csproj",
+      "path": "../../main/AcroStack/AcroStack.csproj",
       "execution": {
         "order": 1
       }

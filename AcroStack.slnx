@@ -1,26 +1,26 @@
 <Solution>
   <Configurations>
-    <Platform Name="Any CPU"/>
+    <Platform Name="Any CPU" />
   </Configurations>
   <Folder Name="/modules/">
-    <Project Path="modules/AcroStack.AccountPro/AcroStack.AccountPro.csproj"/>
-    <Project Path="modules/AcroStack.AppUsers/AcroStack.AppUsers.csproj"/>
-    <Project Path="modules/AcroStack.AuditLogging/AcroStack.AuditLogging.csproj"/>
-    <Project Path="modules/AcroStack.BackgroundJobs/AcroStack.BackgroundJobs.csproj"/>
-    <Project Path="modules/AcroStack.Books/AcroStack.Books.csproj"/>
-    <Project Path="modules/AcroStack.Chat/AcroStack.Chat.csproj"/>
-    <Project Path="modules/AcroStack.FileManagement/AcroStack.FileManagement.csproj"/>
-    <Project Path="modules/AcroStack.IdentityClaims/AcroStack.IdentityClaims.csproj"/>
-    <Project Path="modules/AcroStack.OpenIddictManagement/AcroStack.OpenIddictManagement.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.Application/Classroom.Application.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.Application.Contracts/Classroom.Application.Contracts.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.Domain/Classroom.Domain.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.Domain.Shared/Classroom.Domain.Shared.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.EntityFrameworkCore/Classroom.EntityFrameworkCore.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.HttpApi/Classroom.HttpApi.csproj"/>
-    <Project Path="modules/classroom/src/Classroom.Tests/Classroom.Tests.csproj"/>
+    <Project Path="modules/AcroStack.AccountPro/AcroStack.AccountPro.csproj" />
+    <Project Path="modules/AcroStack.AppUsers/AcroStack.AppUsers.csproj" />
+    <Project Path="modules/AcroStack.AuditLogging/AcroStack.AuditLogging.csproj" />
+    <Project Path="modules/AcroStack.BackgroundJobs/AcroStack.BackgroundJobs.csproj" />
+    <Project Path="modules/AcroStack.Books/AcroStack.Books.csproj" />
+    <Project Path="modules/AcroStack.Chat/AcroStack.Chat.csproj" />
+    <Project Path="modules/AcroStack.FileManagement/AcroStack.FileManagement.csproj" />
+    <Project Path="modules/AcroStack.IdentityClaims/AcroStack.IdentityClaims.csproj" />
+    <Project Path="modules/AcroStack.OpenIddictManagement/AcroStack.OpenIddictManagement.csproj" />
+    <Project Path="modules/classroom/src/Classroom.Application/Classroom.Application.csproj" />
+    <Project Path="modules/classroom/src/Classroom.Application.Contracts/Classroom.Application.Contracts.csproj" />
+    <Project Path="modules/classroom/src/Classroom.Domain/Classroom.Domain.csproj" />
+    <Project Path="modules/classroom/src/Classroom.Domain.Shared/Classroom.Domain.Shared.csproj" />
+    <Project Path="modules/classroom/src/Classroom.EntityFrameworkCore/Classroom.EntityFrameworkCore.csproj" />
+    <Project Path="modules/classroom/src/Classroom.HttpApi/Classroom.HttpApi.csproj" />
+    <Project Path="modules/classroom/src/Classroom.Tests/Classroom.Tests.csproj" />
   </Folder>
-  <Folder Name="/src/">
-    <Project Path="src/AcroStack/AcroStack.csproj"/>
+  <Folder Name="/main/">
+    <Project Path="main/AcroStack/AcroStack.csproj" />
   </Folder>
 </Solution>

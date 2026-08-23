@@ -107,7 +107,7 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>
 ### Adding Migrations
 
 ```bash
-cd src/AcroStack
+cd main/AcroStack
 dotnet ef migrations add Added_Book
 dotnet ef database update
 ```

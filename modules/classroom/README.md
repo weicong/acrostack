@@ -23,7 +23,7 @@
 
 ## 模块结构（模块化单体）
 
-模块位于 `modules/classroom/src/`，由宿主 `src/AcroStack`（ABP app-nolayer 单层模板）直接引用并挂载，不单独部署：
+模块位于 `modules/classroom/src/`，由宿主 `main/AcroStack`（ABP app-nolayer 单层模板）直接引用并挂载，不单独部署：
 
 ```
 modules/classroom/src/
@@ -42,10 +42,10 @@ modules/classroom/src/
 
 ```bash
 # 1. 后端（首次或实体变更后先迁移+种子）
-dotnet run --project src/AcroStack --migrate-database   # 迁移 + 种子（示例试卷）
+dotnet run --project main/AcroStack --migrate-database   # 迁移 + 种子（示例试卷）
 
 # 2. 常规启动后端
-dotnet run --project src/AcroStack                       # https://localhost:44320
+dotnet run --project main/AcroStack                       # https://localhost:44320
 
 # 3. 前端
 cd react
@@ -57,9 +57,9 @@ vp install && vp dev                                    # http://localhost:5173
 EF Core 迁移落在宿主项目（仓储实现方），在仓库根目录执行：
 
 ```bash
-dotnet ef migrations add <Name> --project src/AcroStack --startup-project src/AcroStack
-dotnet ef database update   --project src/AcroStack --startup-project src/AcroStack
-# 或直接：dotnet run --project src/AcroStack --migrate-database（迁移+种子一步完成）
+dotnet ef migrations add <Name> --project main/AcroStack --startup-project main/AcroStack
+dotnet ef database update   --project main/AcroStack --startup-project main/AcroStack
+# 或直接：dotnet run --project main/AcroStack --migrate-database（迁移+种子一步完成）
 ```
 
 ### 测试账号
