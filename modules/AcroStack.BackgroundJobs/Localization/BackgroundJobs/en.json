@@ -1,0 +1,10 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:BackgroundJobs": "Background Jobs",
+    "Permission:BackgroundJobs.ViewJobs": "View Background Jobs",
+    "Permission:BackgroundJobs.Delete": "Delete Background Jobs",
+    "Permission:BackgroundJobs.Requeue": "Requeue Background Jobs",
+    "Permission:BackgroundJobs.Abandon": "Abandon Background Jobs"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Chat:YouCannotBlockYourself": "不能屏蔽自己",
+    "Chat:YouCannotSendMessageToYourself": "不能给自己发送消息",
+    "Chat:CannotSendMessageToBlockedYou": "无法向此用户发送消息（对方已屏蔽您）",
+    "Chat:AttachmentExceedsMaxSize": "附件大小超过最大限制",
+    "Chat:MessageNotFound": "消息不存在",
+    "Chat:CannotEditOthersMessage": "不能编辑他人的消息",
+    "Chat:CannotDeleteOthersMessage": "不能删除他人的消息",
+    "Chat:InvalidReaction": "无效的消息反应",
+    "Chat:MessageHasNoAttachment": "消息没有附件"
+  }
+}

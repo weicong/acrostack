@@ -1,0 +1,11 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:IdentityClaims": "Identity Claims",
+    "Permission:IdentityClaims.UserClaims": "Manage User Claims",
+    "Permission:IdentityClaims.RoleClaims": "Manage Role Claims",
+    "Permission:IdentityClaims.ClaimTypes": "Manage Claim Types",
+    "IdentityClaims:StaticClaimTypeNameCannotBeChanged": "Static claim type name cannot be changed",
+    "IdentityClaims:StaticClaimTypeCannotBeDeleted": "Static claim type cannot be deleted"
+  }
+}

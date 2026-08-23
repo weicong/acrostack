@@ -34,7 +34,7 @@ public class ChatBlockAppService : AcroStackAppService, IChatBlockAppService
         var currentUserId = CurrentUser.GetId();
         if (blockedUserId == currentUserId)
         {
-            throw new BusinessException("AcroStack:YouCannotBlockYourself");
+            throw new BusinessException("Chat:YouCannotBlockYourself");
         }
 
         var existing = await _blockedUserRepository.FirstOrDefaultAsync(

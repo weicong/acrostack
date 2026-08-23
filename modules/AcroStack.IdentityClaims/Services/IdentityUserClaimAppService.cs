@@ -68,7 +68,7 @@ public class IdentityUserClaimAppService : AcroStackAppService, IIdentityUserCla
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "AcroStack:IdentityUserClaimOperationFailed",
+                "IdentityClaims:IdentityUserClaimOperationFailed",
                 string.Join("; ", result.Errors.Select(e => e.Description)));
         }
 
@@ -105,7 +105,7 @@ public class IdentityUserClaimAppService : AcroStackAppService, IIdentityUserCla
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "AcroStack:IdentityUserClaimOperationFailed",
+                "IdentityClaims:IdentityUserClaimOperationFailed",
                 string.Join("; ", result.Errors.Select(e => e.Description)));
         }
 
@@ -130,7 +130,7 @@ public class IdentityUserClaimAppService : AcroStackAppService, IIdentityUserCla
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "AcroStack:IdentityUserClaimOperationFailed",
+                "IdentityClaims:IdentityUserClaimOperationFailed",
                 string.Join("; ", result.Errors.Select(e => e.Description)));
         }
     }

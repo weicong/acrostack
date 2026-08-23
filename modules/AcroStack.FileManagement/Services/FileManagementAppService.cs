@@ -168,7 +168,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
         if (targetFolderId == id)
         {
-            throw new BusinessException("AcroStack:FolderCannotBeMovedIntoItself");
+            throw new BusinessException("FileManagement:FolderCannotBeMovedIntoItself");
         }
 
         if (targetFolderId.HasValue)
@@ -183,7 +183,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             {
                 if (ancestorId.Value == id)
                 {
-                    throw new BusinessException("AcroStack:FolderCannotBeMovedIntoDescendant");
+                    throw new BusinessException("FileManagement:FolderCannotBeMovedIntoDescendant");
                 }
                 ancestorId = (await _folderRepository.GetAsync(ancestorId.Value)).ParentId;
             }
@@ -210,7 +210,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     {
         if (file == null || file.Length == 0)
         {
-            throw new BusinessException("AcroStack:EmptyFile");
+            throw new BusinessException("FileManagement:EmptyFile");
         }
 
         // 净化上传文件名：拒绝携带路径分隔符/路径穿越片段或超长的文件名
@@ -302,7 +302,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
     {
         if (file.Length > _options.MaxFileSize)
         {
-            throw new BusinessException("AcroStack:FileExceedsMaxSize")
+            throw new BusinessException("FileManagement:FileExceedsMaxSize")
                 .WithData("MaxSize", _options.MaxFileSize);
         }
 
@@ -312,7 +312,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             if (string.IsNullOrEmpty(extension) ||
                 !_options.AllowedFileExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
             {
-                throw new BusinessException("AcroStack:FileExtensionNotAllowed")
+                throw new BusinessException("FileManagement:FileExtensionNotAllowed")
                     .WithData("Extension", extension ?? string.Empty);
             }
         }
@@ -323,7 +323,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
         var usedBytes = await AsyncExecuter.SumAsync(queryable, f => f.ByteSize);
         if (usedBytes + file.Length > _options.MaxStoragePerTenant)
         {
-            throw new BusinessException("AcroStack:StorageQuotaExceeded")
+            throw new BusinessException("FileManagement:StorageQuotaExceeded")
                 .WithData("MaxStorage", _options.MaxStoragePerTenant);
         }
     }
@@ -509,22 +509,22 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
 
             if (share == null)
             {
-                throw new BusinessException("AcroStack:ShareLinkNotFound");
+                throw new BusinessException("FileManagement:ShareLinkNotFound");
             }
 
             if (share.IsRevoked)
             {
-                throw new BusinessException("AcroStack:ShareLinkRevoked");
+                throw new BusinessException("FileManagement:ShareLinkRevoked");
             }
 
             if (share.ExpirationTime.HasValue && share.ExpirationTime.Value < Clock.Now)
             {
-                throw new BusinessException("AcroStack:ShareLinkExpired");
+                throw new BusinessException("FileManagement:ShareLinkExpired");
             }
 
             if (share.MaxDownloadCount.HasValue && share.DownloadCount >= share.MaxDownloadCount.Value)
             {
-                throw new BusinessException("AcroStack:ShareLinkDownloadLimitReached");
+                throw new BusinessException("FileManagement:ShareLinkDownloadLimitReached");
             }
 
             // Increment the download counter (within the cross-tenant scope
@@ -572,7 +572,7 @@ public class FileManagementAppService : AcroStackAppService, IFileManagementAppS
             v => v.Id == versionId && v.FileEntryId == fileId);
         if (version == null)
         {
-            throw new BusinessException("AcroStack:FileVersionNotFound");
+            throw new BusinessException("FileManagement:FileVersionNotFound");
         }
 
         // Snapshot the *current* state as a new historical version row so

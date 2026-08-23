@@ -34,7 +34,6 @@ using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.Emailing;
 using Volo.Abp.Localization;
-using Volo.Abp.Localization.ExceptionHandling;
 using Localization.Resources.AbpUi;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
@@ -385,11 +384,6 @@ public class AcroStackModule : AbpModule
 
             options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
 
-        });
-
-        Configure<AbpExceptionLocalizationOptions>(options =>
-        {
-            options.MapCodeNamespace("AcroStack", typeof(AcroStackResource));
         });
     }
 

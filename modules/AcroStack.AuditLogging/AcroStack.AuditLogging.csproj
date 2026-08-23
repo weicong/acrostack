@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>AcroStack.AuditLogging</RootNamespace>
     <IsPackable>false</IsPackable>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +18,17 @@
     <PackageReference Include="Volo.Abp.AuditLogging.Domain" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.BackgroundWorkers" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Localization" Version="10.6.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.9" />
     <PackageReference Include="MiniExcel" Version="1.45.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AcroStack.Core\AcroStack.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\AuditLogging\*.json" />
   </ItemGroup>
 
 </Project>

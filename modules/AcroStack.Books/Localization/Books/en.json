@@ -1,0 +1,9 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:Books": "Books",
+    "Permission:Books.Create": "Create",
+    "Permission:Books.Edit": "Edit",
+    "Permission:Books.Delete": "Delete"
+  }
+}

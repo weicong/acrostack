@@ -1,0 +1,8 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Permission:OpenIddictManagement": "OpenIddict 管理",
+    "Permission:OpenIddictManagement.Applications": "管理应用",
+    "Permission:OpenIddictManagement.Scopes": "管理 Scope"
+  }
+}

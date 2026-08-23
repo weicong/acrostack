@@ -86,7 +86,7 @@ public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTy
         // name changed (mirrors ABP Commercial Identity Pro behavior).
         if (claimType.IsStatic && claimType.Name != input.Name)
         {
-            throw new BusinessException("AcroStack:StaticClaimTypeNameCannotBeChanged");
+            throw new BusinessException("IdentityClaims:StaticClaimTypeNameCannotBeChanged");
         }
 
         claimType.SetName(input.Name);
@@ -107,7 +107,7 @@ public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTy
 
         if (claimType.IsStatic)
         {
-            throw new BusinessException("AcroStack:StaticClaimTypeCannotBeDeleted");
+            throw new BusinessException("IdentityClaims:StaticClaimTypeCannotBeDeleted");
         }
 
         // 删除前统计用户声明与角色声明中对该类型的使用量，
@@ -123,7 +123,7 @@ public class IdentityClaimTypeAppService : AcroStackAppService, IIdentityClaimTy
         if (userUsageCount + roleUsageCount > 0)
         {
             throw new BusinessException(
-                "AcroStack:ClaimTypeInUse",
+                "IdentityClaims:ClaimTypeInUse",
                 "该声明类型正在被使用，无法删除");
         }
 

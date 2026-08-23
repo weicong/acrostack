@@ -1,0 +1,23 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Permission:FileManagement": "文件管理",
+    "Permission:FileManagement.Upload": "上传文件",
+    "Permission:FileManagement.Download": "下载文件",
+    "Permission:FileManagement.Delete": "删除文件",
+    "Permission:FileManagement.Move": "移动文件",
+    "Permission:FileManagement.Share": "共享文件",
+    "FileManagement:FolderCannotBeMovedIntoItself": "文件夹不能移动到自身",
+    "FileManagement:FolderCannotBeMovedIntoDescendant": "文件夹不能移动到其子文件夹",
+    "FileManagement:EmptyFile": "上传的文件为空",
+    "FileManagement:FileExceedsMaxSize": "文件大小超过最大限制",
+    "FileManagement:FileExtensionNotAllowed": "不允许的文件扩展名",
+    "FileManagement:StorageQuotaExceeded": "存储空间配额已用尽",
+    "FileManagement:ShareLinkNotFound": "共享链接不存在",
+    "FileManagement:ShareLinkRevoked": "共享链接已被撤销",
+    "FileManagement:ShareLinkExpired": "共享链接已过期",
+    "FileManagement:ShareLinkDownloadLimitReached": "共享链接下载次数已达上限",
+    "FileManagement:FileVersionNotFound": "文件版本不存在",
+    "FileManagement:ThumbnailNotAvailable": "缩略图不可用"
+  }
+}

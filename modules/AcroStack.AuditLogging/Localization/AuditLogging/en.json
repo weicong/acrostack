@@ -1,0 +1,10 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:AuditLogging": "Audit Logging",
+    "Permission:AuditLogging.ViewLogs": "View Audit Logs",
+    "Permission:AuditLogging.ViewEntityChanges": "View Entity Changes",
+    "Permission:AuditLogging.ViewStatistics": "View Statistics",
+    "Permission:AuditLogging.Delete": "Delete Audit Logs"
+  }
+}

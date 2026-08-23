@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>AcroStack.Chat</RootNamespace>
     <IsPackable>false</IsPackable>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,8 @@
     <PackageReference Include="Volo.Abp.MultiTenancy" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.Mapperly" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Localization" Version="10.6.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AcroStack.Core\AcroStack.Core.csproj" />
     <ProjectReference Include="..\AcroStack.AppUsers\AcroStack.AppUsers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\Chat\*.json" />
   </ItemGroup>
 
 </Project>

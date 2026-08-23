@@ -1,0 +1,23 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:FileManagement": "File Management",
+    "Permission:FileManagement.Upload": "Upload Files",
+    "Permission:FileManagement.Download": "Download Files",
+    "Permission:FileManagement.Delete": "Delete Files",
+    "Permission:FileManagement.Move": "Move Files",
+    "Permission:FileManagement.Share": "Share Files",
+    "FileManagement:FolderCannotBeMovedIntoItself": "A folder cannot be moved into itself",
+    "FileManagement:FolderCannotBeMovedIntoDescendant": "A folder cannot be moved into its descendant",
+    "FileManagement:EmptyFile": "The uploaded file is empty",
+    "FileManagement:FileExceedsMaxSize": "File size exceeds the maximum limit",
+    "FileManagement:FileExtensionNotAllowed": "File extension is not allowed",
+    "FileManagement:StorageQuotaExceeded": "Storage quota has been exceeded",
+    "FileManagement:ShareLinkNotFound": "Share link not found",
+    "FileManagement:ShareLinkRevoked": "Share link has been revoked",
+    "FileManagement:ShareLinkExpired": "Share link has expired",
+    "FileManagement:ShareLinkDownloadLimitReached": "Share link download limit has been reached",
+    "FileManagement:FileVersionNotFound": "File version not found",
+    "FileManagement:ThumbnailNotAvailable": "Thumbnail not available"
+  }
+}

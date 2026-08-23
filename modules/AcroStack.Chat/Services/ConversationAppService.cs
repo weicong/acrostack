@@ -139,7 +139,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         var currentUserId = CurrentUser.GetId();
         if (input.TargetUserId == currentUserId)
         {
-            throw new BusinessException("AcroStack:YouCannotSendMessageToYourself");
+            throw new BusinessException("Chat:YouCannotSendMessageToYourself");
         }
 
         // 【跨租户防护】校验目标用户属于当前租户：对 AppUser 的查询自动应用
@@ -156,12 +156,12 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
             b => b.UserId == input.TargetUserId && b.BlockedUserId == currentUserId);
         if (recipientBlockedSender != null)
         {
-            throw new BusinessException("AcroStack:CannotSendMessageToBlockedYou");
+            throw new BusinessException("Chat:CannotSendMessageToBlockedYou");
         }
 
         if (attachment != null && attachment.Length > MaxAttachmentSize)
         {
-            throw new BusinessException("AcroStack:AttachmentExceedsMaxSize")
+            throw new BusinessException("Chat:AttachmentExceedsMaxSize")
                 .WithData("MaxSize", MaxAttachmentSize);
         }
 
@@ -283,7 +283,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("AcroStack:MessageNotFound");
+            throw new BusinessException("Chat:MessageNotFound");
         }
 
         // Only the sender may edit the message. The sender's UserMessage copy
@@ -295,7 +295,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
                 && um.Side == ChatMessageSide.Send));
         if (senderCopy == null)
         {
-            throw new BusinessException("AcroStack:CannotEditOthersMessage");
+            throw new BusinessException("Chat:CannotEditOthersMessage");
         }
 
         message.EditText(input.Text);
@@ -335,7 +335,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
                 && um.Side == ChatMessageSide.Send));
         if (senderCopy == null)
         {
-            throw new BusinessException("AcroStack:CannotDeleteOthersMessage");
+            throw new BusinessException("Chat:CannotDeleteOthersMessage");
         }
 
         var targetUserId = senderCopy.TargetUserId;
@@ -366,14 +366,14 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         var currentUserId = CurrentUser.GetId();
         if (string.IsNullOrWhiteSpace(reaction))
         {
-            throw new BusinessException("AcroStack:InvalidReaction");
+            throw new BusinessException("Chat:InvalidReaction");
         }
 
         // FindAsync returns null for soft-deleted messages.
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("AcroStack:MessageNotFound");
+            throw new BusinessException("Chat:MessageNotFound");
         }
 
         // 【同租户越权防护】仅会话参与者可操作表情回应：校验当前用户在该
@@ -499,12 +499,12 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("AcroStack:MessageNotFound");
+            throw new BusinessException("Chat:MessageNotFound");
         }
 
         if (string.IsNullOrEmpty(message.AttachmentBlobName))
         {
-            throw new BusinessException("AcroStack:MessageHasNoAttachment");
+            throw new BusinessException("Chat:MessageHasNoAttachment");
         }
 
         // Only allow participants of the conversation to download.
@@ -515,7 +515,7 @@ public class ConversationAppService : AcroStackAppService, IConversationAppServi
                 && um.UserId == currentUserId));
         if (isParticipant == null)
         {
-            throw new BusinessException("AcroStack:MessageNotFound");
+            throw new BusinessException("Chat:MessageNotFound");
         }
 
         var stream = await _attachmentBlobContainer.GetAsync(message.AttachmentBlobName);

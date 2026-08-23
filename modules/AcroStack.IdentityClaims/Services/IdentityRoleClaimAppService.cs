@@ -72,7 +72,7 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "AcroStack:IdentityRoleClaimOperationFailed",
+                "IdentityClaims:IdentityRoleClaimOperationFailed",
                 string.Join("; ", result.Errors.Select(e => e.Description)));
         }
 
@@ -111,7 +111,7 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
             if (!removeResult.Succeeded)
             {
                 throw new BusinessException(
-                    "AcroStack:IdentityRoleClaimOperationFailed",
+                    "IdentityClaims:IdentityRoleClaimOperationFailed",
                     string.Join("; ", removeResult.Errors.Select(e => e.Description)));
             }
 
@@ -119,7 +119,7 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
             if (!addResult.Succeeded)
             {
                 throw new BusinessException(
-                    "AcroStack:IdentityRoleClaimOperationFailed",
+                    "IdentityClaims:IdentityRoleClaimOperationFailed",
                     string.Join("; ", addResult.Errors.Select(e => e.Description)));
             }
 
@@ -161,7 +161,7 @@ public class IdentityRoleClaimAppService : AcroStackAppService, IIdentityRoleCla
         if (!result.Succeeded)
         {
             throw new BusinessException(
-                "AcroStack:IdentityRoleClaimOperationFailed",
+                "IdentityClaims:IdentityRoleClaimOperationFailed",
                 string.Join("; ", result.Errors.Select(e => e.Description)));
         }
     }

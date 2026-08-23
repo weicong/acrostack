@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>AcroStack.IdentityClaims</RootNamespace>
     <IsPackable>false</IsPackable>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,10 +17,16 @@
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.Identity.Domain" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.Mapperly" Version="10.6.0" />
+    <PackageReference Include="Volo.Abp.Localization" Version="10.6.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AcroStack.Core\AcroStack.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\IdentityClaims\*.json" />
   </ItemGroup>
 
 </Project>

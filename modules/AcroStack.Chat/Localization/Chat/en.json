@@ -1,0 +1,14 @@
+{
+  "culture": "en",
+  "texts": {
+    "Chat:YouCannotBlockYourself": "You cannot block yourself",
+    "Chat:YouCannotSendMessageToYourself": "You cannot send a message to yourself",
+    "Chat:CannotSendMessageToBlockedYou": "Cannot send message to this user (they have blocked you)",
+    "Chat:AttachmentExceedsMaxSize": "Attachment size exceeds the maximum limit",
+    "Chat:MessageNotFound": "Message not found",
+    "Chat:CannotEditOthersMessage": "You cannot edit someone else's message",
+    "Chat:CannotDeleteOthersMessage": "You cannot delete someone else's message",
+    "Chat:InvalidReaction": "Invalid message reaction",
+    "Chat:MessageHasNoAttachment": "The message has no attachment"
+  }
+}

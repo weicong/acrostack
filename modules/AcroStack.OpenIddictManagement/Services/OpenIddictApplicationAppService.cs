@@ -184,7 +184,7 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         if (invalid.Count > 0)
         {
             throw new BusinessException(
-                "AcroStack:InvalidRedirectUri",
+                "OpenIddictManagement:InvalidRedirectUri",
                 $"以下回调地址不合法（必须为 https 绝对地址）: {string.Join(", ", invalid)}");
         }
     }
@@ -226,7 +226,7 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
         if (invalid.Count > 0)
         {
             throw new BusinessException(
-                "AcroStack:InvalidPermission",
+                "OpenIddictManagement:InvalidPermission",
                 $"以下权限不在白名单内: {string.Join(", ", invalid)}");
         }
     }
@@ -242,7 +242,7 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             && clientType != OpenIddictConstants.ClientTypes.Confidential)
         {
             throw new BusinessException(
-                "AcroStack:InvalidClientType",
+                "OpenIddictManagement:InvalidClientType",
                 $"ClientType 只允许 {OpenIddictConstants.ClientTypes.Public} 或 {OpenIddictConstants.ClientTypes.Confidential}: {clientType}");
         }
     }
@@ -259,7 +259,7 @@ public class OpenIddictApplicationAppService : AcroStackAppService, IOpenIddictA
             && consentType != OpenIddictConstants.ConsentTypes.External)
         {
             throw new BusinessException(
-                "AcroStack:InvalidConsentType",
+                "OpenIddictManagement:InvalidConsentType",
                 $"ConsentType 只允许 {OpenIddictConstants.ConsentTypes.Implicit}/{OpenIddictConstants.ConsentTypes.Explicit}/{OpenIddictConstants.ConsentTypes.External}: {consentType}");
         }
     }
