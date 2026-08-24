@@ -17,8 +17,8 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { useToastController } from "@fluentui/react-components";
-import { joinClassroom, classroomErrorMessage } from "@/lib/classroom/studentApi";
-import { saveStudentSession } from "@/lib/classroom/studentSession";
+import { joinClassroom, classroomErrorMessage } from "@/pages/classroom/studentApi";
+import { saveStudentSession } from "@/pages/classroom/studentSession";
 
 const useStyles = makeStyles({
   page: {

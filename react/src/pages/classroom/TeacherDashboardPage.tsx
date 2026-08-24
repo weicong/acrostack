@@ -40,8 +40,8 @@ import {
   type ClassroomEventBase,
   type DashboardUpdatedEvent,
   type ParticipantChangedEvent,
-} from "@/lib/classroom/classroomEvents";
-import { buildTeacherHubConnection } from "@/lib/classroom/classroomHub";
+} from "@/pages/classroom/classroomEvents";
+import { buildTeacherHubConnection } from "@/pages/classroom/classroomHub";
 import {
   closeQuestion,
   createPresentationToken,
@@ -52,7 +52,7 @@ import {
   publishStatistics,
   startSession,
   teacherApiErrorMessage,
-} from "@/lib/classroom/teacherApi";
+} from "@/pages/classroom/teacherApi";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
 import type { ClassroomDtosParticipantStateDto } from "@/api/models/classroom/dtos/ParticipantStateDto";
 import type { ClassroomDtosTeacherSnapshotDto } from "@/api/models/classroom/dtos/TeacherSnapshotDto";

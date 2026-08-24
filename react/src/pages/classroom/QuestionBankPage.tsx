@@ -47,7 +47,7 @@ import { questionDelete } from "@/api/clients/question/questionDelete";
 import { questionGetList } from "@/api/clients/question/questionGetList";
 import { questionUpdate } from "@/api/clients/question/questionUpdate";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { teacherApiErrorMessage } from "@/lib/classroom/teacherApi";
+import { teacherApiErrorMessage } from "@/pages/classroom/teacherApi";
 
 const MAX_OPTIONS = 8;
 const PAGE_SIZE = 20;

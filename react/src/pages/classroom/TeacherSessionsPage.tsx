@@ -36,13 +36,16 @@ import {
 } from "@fluentui/react-components";
 import { useToastController } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { ClassSessionStatusValue, classSessionStatusLabel } from "@/lib/classroom/classroomEvents";
+import {
+  ClassSessionStatusValue,
+  classSessionStatusLabel,
+} from "@/pages/classroom/classroomEvents";
 import {
   createSession,
   getQuizzes,
   getTeacherSessions,
   teacherApiErrorMessage,
-} from "@/lib/classroom/teacherApi";
+} from "@/pages/classroom/teacherApi";
 import type { ClassroomDtosClassSessionDto } from "@/api/models/classroom/dtos/ClassSessionDto";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
 

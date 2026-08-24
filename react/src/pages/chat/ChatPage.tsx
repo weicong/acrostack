@@ -76,8 +76,8 @@ import { formatDistanceToNow, format } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { useChatConnection } from "@/lib/chat/useChatConnection";
-import { ChatClientMethods, ChatHubMethods } from "@/lib/chat/chatHub";
+import { useChatConnection } from "@/pages/chat/useChatConnection";
+import { ChatClientMethods, ChatHubMethods } from "@/pages/chat/chatHub";
 import { useCurrentUser } from "@/lib/auth/permissions";
 import {
   useConversationGetList,

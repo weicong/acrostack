@@ -32,15 +32,15 @@ import {
   type AnswerPublishedEvent,
   type QuestionOpenedEvent,
   type StatisticsPublishedEvent,
-} from "@/lib/classroom/classroomEvents";
-import { buildClassroomTokenHubConnection } from "@/lib/classroom/classroomHub";
+} from "@/pages/classroom/classroomEvents";
+import { buildClassroomTokenHubConnection } from "@/pages/classroom/classroomHub";
 import {
   classroomErrorMessage,
   getMyAnswerHistory,
   getStudentSnapshot,
   submitAnswer,
-} from "@/lib/classroom/studentApi";
-import { clearStudentSession, loadStudentSession } from "@/lib/classroom/studentSession";
+} from "@/pages/classroom/studentApi";
+import { clearStudentSession, loadStudentSession } from "@/pages/classroom/studentSession";
 import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dtos/StudentSnapshotDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import type { ClassroomDtosStudentAnswerHistoryDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryDto";

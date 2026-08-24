@@ -50,7 +50,7 @@ import { quizGetList } from "@/api/clients/quiz/quizGetList";
 import { quizUpdate } from "@/api/clients/quiz/quizUpdate";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { teacherApiErrorMessage } from "@/lib/classroom/teacherApi";
+import { teacherApiErrorMessage } from "@/pages/classroom/teacherApi";
 
 const PAGE_SIZE = 20;
 /** 选题器单次加载上限（题库较大时用关键字过滤）。 */
