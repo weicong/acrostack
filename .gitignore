@@ -277,5 +277,6 @@ main/AcroStack/Logs/*
 **/wwwroot/libs/*
 
 # AI assistants
+.arts/
 .codeartsdoer/
 .trae/
