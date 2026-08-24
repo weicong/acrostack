@@ -19,10 +19,10 @@ import {
   ClassroomClientMethods,
   ClassSessionStatusValue,
   SessionQuestionStatusValue,
-  type ClassroomEventBase,
-} from "@/pages/classroom/classroomEvents";
-import { buildClassroomTokenHubConnection } from "@/pages/classroom/classroomHub";
-import { classroomErrorMessage, getPresentationSnapshot } from "@/pages/classroom/studentApi";
+} from "@/pages/classroom/constants/classroom";
+import type { ClassroomEventBase } from "@/pages/classroom/types/classroom-events";
+import { buildClassroomTokenHubConnection } from "@/pages/classroom/utils/classroomHub";
+import { classroomErrorMessage, getPresentationSnapshot } from "@/pages/classroom/utils/studentApi";
 import type { ClassroomDtosPresentationSnapshotDto } from "@/api/models/classroom/dtos/PresentationSnapshotDto";
 
 type ConnectionState = "connecting" | "connected" | "reconnecting" | "offline";

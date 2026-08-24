@@ -47,7 +47,7 @@ import { questionDelete } from "@/api/clients/question/questionDelete";
 import { questionGetList } from "@/api/clients/question/questionGetList";
 import { questionUpdate } from "@/api/clients/question/questionUpdate";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { teacherApiErrorMessage } from "@/pages/classroom/teacherApi";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 const MAX_OPTIONS = 8;
 const PAGE_SIZE = 20;
@@ -264,7 +264,7 @@ export function QuestionBankPage() {
         setTotalCount(Number(data.totalCount ?? 0));
         setLoadError(null);
       } catch (err) {
-        setLoadError(teacherApiErrorMessage(err));
+        setLoadError(extractAbpErrorMessage(err));
       }
     },
     [pageIndex, typeFilter, keyword],
@@ -366,7 +366,7 @@ export function QuestionBankPage() {
       setDialogOpen(false);
       void refresh();
     } catch (err) {
-      setFormError(teacherApiErrorMessage(err));
+      setFormError(extractAbpErrorMessage(err));
     } finally {
       setSaving(false);
     }
@@ -385,7 +385,7 @@ export function QuestionBankPage() {
       setPageIndex(targetPage);
       void refresh(targetPage);
     } catch (err) {
-      dispatchToast(`删除失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
+      dispatchToast(`删除失败：${extractAbpErrorMessage(err)}`, { intent: "error" });
     } finally {
       setDeleteBusy(false);
     }

@@ -11,187 +11,69 @@
  * 实时通道：SignalR 教师分组（OpenIddict 令牌）。
  * - DashboardUpdated 直接替换统计（服务端节流合并推送）
  * - 其余事件刷新教师快照；版本跳跃（丢事件）时也刷新快照校准
+ *
+ * 数据获取：全部使用 Kubb 生成的 react-query hooks，不再手写请求封装。
+ * 本文件只负责编排：快照/实时接线与子组件组装；
+ * 样式见 styles/teacherDashboard，控制动作见 hooks/useSessionControl，
+ * 展示卡片见 components/。
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
-import {
-  Badge,
-  Button,
-  Card,
-  Input,
-  Spinner,
-  Text,
-  Title2,
-  Title3,
-  makeStyles,
-  tokens,
-} from "@fluentui/react-components";
-import { useToastController } from "@fluentui/react-components";
+import { Badge, Button, Card, Spinner, Text, Title2 } from "@fluentui/react-components";
 import { Copy20Regular, ProjectionScreen20Regular } from "@fluentui/react-icons";
 import type { HubConnection } from "@microsoft/signalr";
+import { useClassSessionGetSnapshot } from "@/api/hooks/classSession/useClassSessionGetSnapshot";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 import {
   ClassroomClientMethods,
   ClassSessionStatusValue,
-  SessionQuestionStatusValue,
   classSessionStatusLabel,
-  onlineStatusLabel,
-  participantAnswerStateLabel,
-  questionTypeLabel,
-  type ClassroomEventBase,
-  type DashboardUpdatedEvent,
-  type ParticipantChangedEvent,
-} from "@/pages/classroom/classroomEvents";
-import { buildTeacherHubConnection } from "@/pages/classroom/classroomHub";
-import {
-  closeQuestion,
-  createPresentationToken,
-  finishSession,
-  getTeacherSnapshot,
-  openNextQuestion,
-  publishAnswer,
-  publishStatistics,
-  startSession,
-  teacherApiErrorMessage,
-} from "@/pages/classroom/teacherApi";
+} from "@/pages/classroom/constants/classroom";
+import type {
+  ClassroomEventBase,
+  DashboardUpdatedEvent,
+  ParticipantChangedEvent,
+} from "@/pages/classroom/types/classroom-events";
+import { buildTeacherHubConnection } from "@/pages/classroom/utils/classroomHub";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
-import type { ClassroomDtosParticipantStateDto } from "@/api/models/classroom/dtos/ParticipantStateDto";
-import type { ClassroomDtosTeacherSnapshotDto } from "@/api/models/classroom/dtos/TeacherSnapshotDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
-
-type ConnectionState = "connecting" | "connected" | "reconnecting" | "offline";
-
-const useStyles = makeStyles({
-  page: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-    padding: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
-    maxWidth: "1200px",
-    margin: "0 auto",
-    width: "100%",
-    paddingBottom: tokens.spacingVerticalXXL,
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: tokens.spacingHorizontalM,
-    flexWrap: "wrap",
-  },
-  headerLeft: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalM,
-    flexWrap: "wrap",
-  },
-  classroomCode: {
-    fontFamily: tokens.fontFamilyMonospace,
-    fontSize: tokens.fontSizeHero800,
-    fontWeight: tokens.fontWeightBold,
-    letterSpacing: "0.12em",
-    lineHeight: 1,
-  },
-  card: {
-    padding: tokens.spacingVerticalM + " " + tokens.spacingHorizontalL,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  controls: {
-    display: "flex",
-    alignItems: "flex-end",
-    gap: tokens.spacingHorizontalS,
-    flexWrap: "wrap",
-  },
-  statGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-    gap: tokens.spacingHorizontalS,
-  },
-  statItem: {
-    background: tokens.colorNeutralBackground3,
-    borderRadius: tokens.borderRadiusMedium,
-    padding: tokens.spacingVerticalS + " " + tokens.spacingHorizontalM,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalXS,
-  },
-  statValue: {
-    fontSize: tokens.fontSizeHero700,
-    fontWeight: tokens.fontWeightBold,
-    lineHeight: 1.1,
-  },
-  statLabel: { color: tokens.colorNeutralForeground3 },
-  distribution: { display: "flex", flexDirection: "column", gap: tokens.spacingVerticalS },
-  statRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  statBar: {
-    height: "16px",
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorBrandBackground,
-    transitionProperty: "width",
-    transitionDuration: "500ms",
-    minWidth: 0,
-  },
-  countdown: {
-    fontSize: tokens.fontSizeHero700,
-    fontWeight: tokens.fontWeightBold,
-    fontVariantNumeric: "tabular-nums",
-  },
-  participants: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalXS,
-    maxHeight: "420px",
-    overflowY: "auto",
-  },
-  participantRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-    padding: tokens.spacingVerticalXS + " " + tokens.spacingHorizontalS,
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorNeutralBackground3,
-  },
-  center: { textAlign: "center", padding: tokens.spacingVerticalXXL },
-});
+import { useTeacherDashboardStyles } from "./styles/teacherDashboard";
+import { useSessionControl } from "./hooks/useSessionControl";
+import { useServerClockCountdown } from "./hooks/useServerClockCountdown";
+import { ConnectionBadge, type ConnectionState } from "./components/ConnectionBadge";
+import { ControlsCard } from "./components/ControlsCard";
+import { CurrentQuestionCard } from "./components/CurrentQuestionCard";
+import { LiveStatisticsCard } from "./components/LiveStatisticsCard";
+import { ParticipantsCard } from "./components/ParticipantsCard";
 
 export function TeacherDashboardPage() {
-  const styles = useStyles();
+  const styles = useTeacherDashboardStyles();
   const { sessionId = "" } = useParams({ strict: false }) as { sessionId?: string };
-  const { dispatchToast } = useToastController();
 
-  const [snapshot, setSnapshot] = useState<ClassroomDtosTeacherSnapshotDto | null>(null);
   const [dashboard, setDashboard] = useState<ClassroomDtosDashboardDto | null>(null);
   const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [busyAction, setBusyAction] = useState<string | null>(null);
-  const [durationSeconds, setDurationSeconds] = useState("60");
-  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
+  const [hubError, setHubError] = useState<string | null>(null);
 
+  // 服务端时钟偏移 + 事件去重 + 版本跳跃检测
   const clockOffsetRef = useRef(0);
   const seenEventIdsRef = useRef(new Set<string>());
   const lastVersionRef = useRef(0);
 
-  const refreshSnapshot = useCallback(async () => {
-    try {
-      const snap = await getTeacherSnapshot(sessionId);
-      setSnapshot(snap);
-      if (snap.dashboard) setDashboard(snap.dashboard);
-      setLoadError(null);
-      clockOffsetRef.current = Date.parse(snap.serverTime ?? "") - Date.now() || 0;
-      lastVersionRef.current = snap.version ?? 0;
-    } catch (err) {
-      setLoadError(teacherApiErrorMessage(err));
-    }
-  }, [sessionId]);
+  // 教师快照：初始加载 + 各类事件后重新校准均走同一查询
+  const snapshotQuery = useClassSessionGetSnapshot(
+    { path: { id: sessionId } },
+    { query: { enabled: Boolean(sessionId) } },
+  );
+  const refreshSnapshot = snapshotQuery.refetch;
+  const snapshot = snapshotQuery.data ?? null;
 
+  // 快照到达后：同步仪表盘基线 + 服务端时钟偏移 + 版本号（供事件去重/跳跃检测）
   useEffect(() => {
-    void refreshSnapshot();
-  }, [refreshSnapshot]);
+    if (!snapshot) return;
+    if (snapshot.dashboard) setDashboard(snapshot.dashboard);
+    clockOffsetRef.current = Date.parse(snapshot.serverTime ?? "") - Date.now() || 0;
+    lastVersionRef.current = snapshot.version ?? 0;
+  }, [snapshot]);
 
   // SignalR 教师连接
   useEffect(() => {
@@ -204,7 +86,7 @@ export function TeacherDashboardPage() {
       } catch (err) {
         if (!cancelled) {
           setConnectionState("offline");
-          setLoadError(teacherApiErrorMessage(err));
+          setHubError(extractAbpErrorMessage(err));
         }
         return;
       }
@@ -289,119 +171,27 @@ export function TeacherDashboardPage() {
   }, [sessionId, refreshSnapshot]);
 
   // 当前题倒计时（服务端时钟校正）
-  useEffect(() => {
-    const endsAt = snapshot?.currentQuestion?.endsAt;
-    if (!endsAt) {
-      setRemainingSeconds(null);
-      return;
-    }
-    const compute = () => {
-      const serverNow = Date.now() + clockOffsetRef.current;
-      const diff = Math.floor((Date.parse(endsAt) - serverNow) / 1000);
-      setRemainingSeconds(diff > 0 ? diff : 0);
-    };
-    compute();
-    const timer = setInterval(compute, 1000);
-    return () => clearInterval(timer);
-  }, [snapshot?.currentQuestion?.endsAt]);
+  const remainingSeconds = useServerClockCountdown(
+    snapshot?.currentQuestion?.endsAt,
+    clockOffsetRef,
+  );
 
   const status = snapshot?.status ?? 0;
   const question: ClassroomDtosQuestionViewDto | null = snapshot?.currentQuestion?.question ?? null;
   const questionStatus = snapshot?.currentQuestion?.status ?? 0;
-  const questionCount = snapshot?.questionCount ?? 0;
-  const currentQuestionNumber = snapshot?.currentQuestionNumber ?? 0;
-  const statistics = dashboard?.statistics ?? null;
-  const participants = dashboard?.participants ?? [];
+  const loadError = snapshotQuery.error ? extractAbpErrorMessage(snapshotQuery.error) : hubError;
 
-  // 控制按钮可用性（前端禁用只是体验优化；服务端仍校验状态机与权限）
-  const canStart = status === ClassSessionStatusValue.Preparing;
-  const hasOpenQuestion = questionStatus === SessionQuestionStatusValue.Open;
-  const canNext =
-    !canStart &&
-    status !== ClassSessionStatusValue.Finished &&
-    !hasOpenQuestion &&
-    currentQuestionNumber < questionCount;
-  const canClose = hasOpenQuestion;
-  const canPublishStatistics =
-    question !== null &&
-    (questionStatus === SessionQuestionStatusValue.Closed ||
-      questionStatus === SessionQuestionStatusValue.StatisticsPublished);
-  const canPublishAnswer =
-    question !== null &&
-    (questionStatus === SessionQuestionStatusValue.Closed ||
-      questionStatus === SessionQuestionStatusValue.StatisticsPublished);
-  const canFinish =
-    status !== ClassSessionStatusValue.Preparing && status !== ClassSessionStatusValue.Finished;
-
-  async function runAction(name: string, action: () => Promise<unknown>) {
-    if (busyAction) return;
-    setBusyAction(name);
-    try {
-      await action();
-      await refreshSnapshot();
-    } catch (err) {
-      dispatchToast(`操作失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
-    } finally {
-      setBusyAction(null);
-    }
-  }
-
-  const connectionBadge = useMemo(() => {
-    switch (connectionState) {
-      case "connected":
-        return (
-          <Badge appearance="filled" color="success">
-            已连接
-          </Badge>
-        );
-      case "reconnecting":
-        return (
-          <Badge appearance="filled" color="severe">
-            重连中…
-          </Badge>
-        );
-      case "connecting":
-        return (
-          <Badge appearance="filled" color="informative">
-            连接中…
-          </Badge>
-        );
-      default:
-        return (
-          <Badge appearance="filled" color="danger">
-            离线
-          </Badge>
-        );
-    }
-  }, [connectionState]);
-
-  async function handleCopyInvite() {
-    const code = snapshot?.classroomCode ?? "";
-    try {
-      await navigator.clipboard.writeText(`课堂码：${code}`);
-      dispatchToast("已复制课堂码", { intent: "success" });
-    } catch {
-      dispatchToast(`复制失败，课堂码：${code}`, { intent: "warning" });
-    }
-  }
-
-  async function handleOpenPresentation() {
-    if (busyAction) return;
-    setBusyAction("presentation");
-    try {
-      const result = await createPresentationToken(sessionId);
-      if (!result.accessToken) throw new Error("服务端未返回投屏令牌");
-      window.open(
-        `/presentation/${sessionId}?t=${encodeURIComponent(result.accessToken)}`,
-        "_blank",
-        "noopener",
-      );
-    } catch (err) {
-      dispatchToast(`投屏令牌生成失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
-    } finally {
-      setBusyAction(null);
-    }
-  }
+  // 控制动作：7 个 mutation + busy 状态 + 可用性标志 + 投屏/复制课堂码
+  const control = useSessionControl({
+    sessionId,
+    status,
+    question,
+    questionStatus,
+    currentQuestionNumber: snapshot?.currentQuestionNumber ?? 0,
+    questionCount: snapshot?.questionCount ?? 0,
+    classroomCode: snapshot?.classroomCode,
+    refreshSnapshot,
+  });
 
   if (loadError && !snapshot) {
     return (
@@ -428,17 +218,6 @@ export function TeacherDashboardPage() {
     );
   }
 
-  const optionLabelMap = new Map<string, string>();
-  question?.options?.forEach((opt) => optionLabelMap.set(opt.key ?? "", opt.text ?? ""));
-
-  const optionCounts = statistics?.optionCounts ?? null;
-  const totalSubmitted = optionCounts ? Object.values(optionCounts).reduce((a, b) => a + b, 0) : 0;
-  const notSubmitted = statistics
-    ? (statistics.notStartedCount ?? 0) + (statistics.answeringCount ?? 0)
-    : 0;
-
-  const duration = Number.parseInt(durationSeconds, 10);
-
   return (
     <div className={styles.page}>
       {/* 头部：课堂码 + 状态 + 连接 */}
@@ -451,21 +230,21 @@ export function TeacherDashboardPage() {
           >
             {classSessionStatusLabel[status] ?? "未知"}
           </Badge>
-          {connectionBadge}
+          <ConnectionBadge state={connectionState} />
         </div>
         <div className={styles.headerLeft}>
           <Button
             icon={<Copy20Regular />}
             appearance="secondary"
-            onClick={() => void handleCopyInvite()}
+            onClick={() => void control.copyClassroomCode()}
           >
             复制课堂码
           </Button>
           <Button
             icon={<ProjectionScreen20Regular />}
             appearance="secondary"
-            onClick={() => void handleOpenPresentation()}
-            disabled={busyAction !== null}
+            onClick={() => void control.openPresentation()}
+            disabled={control.busyAction !== null}
           >
             打开投屏
           </Button>
@@ -473,282 +252,29 @@ export function TeacherDashboardPage() {
       </div>
 
       {/* 控制台 */}
-      <Card className={styles.card}>
-        <Title3>课堂控制</Title3>
-        <div className={styles.controls}>
-          <Button
-            appearance="primary"
-            disabled={!canStart || busyAction !== null}
-            onClick={() => void runAction("start", () => startSession(sessionId))}
-          >
-            {busyAction === "start" ? <Spinner size="tiny" /> : "开始课堂"}
-          </Button>
-
-          <Input
-            type="number"
-            min={10}
-            max={600}
-            step={10}
-            style={{ width: "110px" }}
-            value={durationSeconds}
-            onChange={(_, d) => setDurationSeconds(d.value)}
-            contentBefore="时长"
-            contentAfter="秒"
-            disabled={!canNext}
-          />
-          <Button
-            appearance="primary"
-            disabled={!canNext || busyAction !== null || !Number.isFinite(duration) || duration < 1}
-            onClick={() =>
-              void runAction("next", () => openNextQuestion(sessionId, duration || undefined))
-            }
-            title={canNext ? "开放下一题" : "当前题开放中或已无剩余题目"}
-          >
-            {busyAction === "next" ? <Spinner size="tiny" /> : "下一题"}
-          </Button>
-
-          <Button
-            appearance="primary"
-            disabled={!canClose || busyAction !== null}
-            onClick={() =>
-              void runAction("close", () => closeQuestion(sessionId, question!.sessionQuestionId!))
-            }
-          >
-            {busyAction === "close" ? <Spinner size="tiny" /> : "截止当前题"}
-          </Button>
-
-          <Button
-            disabled={!canPublishStatistics || busyAction !== null}
-            onClick={() =>
-              void runAction("publishStats", () =>
-                publishStatistics(sessionId, question!.sessionQuestionId!),
-              )
-            }
-          >
-            {busyAction === "publishStats" ? <Spinner size="tiny" /> : "公布匿名统计"}
-          </Button>
-
-          <Button
-            disabled={!canPublishAnswer || busyAction !== null}
-            onClick={() =>
-              void runAction("publishAnswer", () =>
-                publishAnswer(sessionId, question!.sessionQuestionId!),
-              )
-            }
-          >
-            {busyAction === "publishAnswer" ? <Spinner size="tiny" /> : "公布正确答案"}
-          </Button>
-
-          <Button
-            appearance="primary"
-            style={{ marginLeft: "auto" }}
-            disabled={!canFinish || busyAction !== null}
-            onClick={() => void runAction("finish", () => finishSession(sessionId))}
-          >
-            {busyAction === "finish" ? <Spinner size="tiny" /> : "结束课堂"}
-          </Button>
-        </div>
-        <Text size={200}>
-          进度：第 {currentQuestionNumber} / {questionCount} 题 · 学员加入地址
-          {snapshot.classroomCode ? `/student/join?code=${snapshot.classroomCode}` : "—"}
-        </Text>
-      </Card>
+      <ControlsCard
+        control={control}
+        classroomCode={snapshot.classroomCode}
+        currentQuestionNumber={snapshot.currentQuestionNumber ?? 0}
+        questionCount={snapshot.questionCount ?? 0}
+      />
 
       {/* 当前题 */}
-      <Card className={styles.card}>
-        <div className={styles.header}>
-          <Title3>
-            {question
-              ? `第 ${question.order} 题 · ${questionTypeLabel[question.type ?? 0] ?? "题目"}`
-              : "暂无开放题目"}
-          </Title3>
-          {hasOpenQuestion && remainingSeconds !== null && (
-            <span className={styles.countdown}>
-              {Math.floor(remainingSeconds / 60)}:{String(remainingSeconds % 60).padStart(2, "0")}
-            </span>
-          )}
-        </div>
-        {question ? (
-          <>
-            <Title2 as="p">{question.stem}</Title2>
-            {question.options && question.options.length > 0 && (
-              <div className={styles.distribution}>
-                {question.options.map((opt) => (
-                  <Text key={opt.key} block size={300}>
-                    {opt.key}. {opt.text}
-                    {snapshot?.currentQuestion?.correctAnswer &&
-                      questionStatus === SessionQuestionStatusValue.AnswerPublished && (
-                        <Text
-                          weight="semibold"
-                          style={{
-                            marginLeft: tokens.spacingHorizontalS,
-                            color: tokens.colorPaletteGreenForeground1,
-                          }}
-                        >
-                          {snapshot?.currentQuestion?.correctAnswer === opt.key ? "✓ 正确答案" : ""}
-                        </Text>
-                      )}
-                  </Text>
-                ))}
-              </div>
-            )}
-            {questionStatus === SessionQuestionStatusValue.AnswerPublished &&
-              snapshot?.currentQuestion?.explanation && (
-                <Text block size={300}>
-                  解析：{snapshot.currentQuestion.explanation}
-                </Text>
-              )}
-          </>
-        ) : (
-          <Text size={300}>
-            {status === ClassSessionStatusValue.Waiting
-              ? '点击"下一题"开放第一题'
-              : status === ClassSessionStatusValue.Finished
-                ? "课堂已结束"
-                : "等待题目状态更新…"}
-          </Text>
-        )}
-      </Card>
+      <CurrentQuestionCard
+        status={status}
+        questionStatus={questionStatus}
+        hasOpenQuestion={control.hasOpenQuestion}
+        question={question}
+        correctAnswer={snapshot.currentQuestion?.correctAnswer}
+        explanation={snapshot.currentQuestion?.explanation}
+        remainingSeconds={remainingSeconds}
+      />
 
       {/* 实时统计 */}
-      <Card className={styles.card}>
-        <div className={styles.header}>
-          <Title3>实时统计</Title3>
-          {dashboard?.lastStatisticsUpdatedAt && (
-            <Text size={200} className={styles.statLabel}>
-              更新于 {new Date(dashboard.lastStatisticsUpdatedAt).toLocaleTimeString()}
-            </Text>
-          )}
-        </div>
-        <div className={styles.statGrid}>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{dashboard?.onlineCount ?? 0}</span>
-            <span className={styles.statLabel}>在线人数</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{dashboard?.totalParticipants ?? 0}</span>
-            <span className={styles.statLabel}>参与总人数</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{statistics?.notStartedCount ?? 0}</span>
-            <span className={styles.statLabel}>未开始</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{statistics?.answeringCount ?? 0}</span>
-            <span className={styles.statLabel}>作答中</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{statistics?.submittedCount ?? 0}</span>
-            <span className={styles.statLabel}>已提交</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>{notSubmitted}</span>
-            <span className={styles.statLabel}>截止未交</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>
-              {Math.round((statistics?.completionRate ?? 0) * 100)}%
-            </span>
-            <span className={styles.statLabel}>完成率</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>
-              {statistics?.correctRate != null
-                ? `${Math.round(statistics.correctRate * 100)}%`
-                : "—"}
-            </span>
-            <span className={styles.statLabel}>正确率</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statValue}>
-              {statistics?.averageAnswerSeconds != null
-                ? `${Math.round(statistics.averageAnswerSeconds)}s`
-                : "—"}
-            </span>
-            <span className={styles.statLabel}>平均用时</span>
-          </div>
-        </div>
-
-        {optionCounts && (
-          <div className={styles.distribution}>
-            <Text weight="semibold">选项分布（{totalSubmitted} 人已提交）</Text>
-            {Object.entries(optionCounts).map(([key, count]) => (
-              <div key={key} className={styles.statRow}>
-                <Text style={{ width: "3em" }}>
-                  {key}. {optionLabelMap.get(key) ?? ""}
-                </Text>
-                <div
-                  className={styles.statBar}
-                  style={{
-                    width: `${totalSubmitted > 0 ? Math.round((count / totalSubmitted) * 100) : 0}%`,
-                    minWidth: count > 0 ? "12px" : 0,
-                  }}
-                />
-                <Text size={300}>
-                  {count} 人（{totalSubmitted > 0 ? Math.round((count / totalSubmitted) * 100) : 0}
-                  %）
-                </Text>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
+      <LiveStatisticsCard dashboard={dashboard} question={question} />
 
       {/* 学员列表 */}
-      <Card className={styles.card}>
-        <div className={styles.header}>
-          <Title3>学员（{participants.length}）</Title3>
-          <Text size={200} className={styles.statLabel}>
-            断线学员以灰色展示
-          </Text>
-        </div>
-        {participants.length === 0 ? (
-          <Text size={300}>还没有学员加入。等待学员通过课堂码加入。</Text>
-        ) : (
-          <div className={styles.participants}>
-            {participants.map((p) => (
-              <ParticipantRow key={p.participantId} participant={p} />
-            ))}
-          </div>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function ParticipantRow({ participant }: { participant: ClassroomDtosParticipantStateDto }) {
-  const styles = useStyles();
-  const online = participant.onlineStatus === 1;
-  const answerState = participant.answerState ?? 0;
-  return (
-    <div className={styles.participantRow} style={{ opacity: online ? 1 : 0.55 }}>
-      <Badge appearance={online ? "filled" : "ghost"} color={online ? "success" : "subtle"}>
-        {onlineStatusLabel[participant.onlineStatus ?? 0] ?? "未知"}
-      </Badge>
-      <Text weight="semibold" style={{ minWidth: "8em" }}>
-        {participant.nickname ?? "匿名"}
-      </Text>
-      {participant.studentNumber && (
-        <Text size={200} className={styles.statLabel}>
-          {participant.studentNumber}
-        </Text>
-      )}
-      <Badge
-        appearance="outline"
-        color={answerState === 2 ? "success" : answerState === 1 ? "informative" : "subtle"}
-      >
-        {participantAnswerStateLabel[answerState] ?? "未知"}
-      </Badge>
-      {participant.isCorrect != null && (
-        <Badge appearance="outline" color={participant.isCorrect ? "success" : "danger"}>
-          {participant.isCorrect ? "正确" : "错误"}
-        </Badge>
-      )}
-      {participant.submittedAt && (
-        <Text size={200} className={styles.statLabel}>
-          {new Date(participant.submittedAt).toLocaleTimeString()}
-        </Text>
-      )}
+      <ParticipantsCard participants={dashboard?.participants ?? []} />
     </div>
   );
 }

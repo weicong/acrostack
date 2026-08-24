@@ -8,7 +8,7 @@
  * 提示词四节"课堂管理"：创建课堂即从试卷复制题目生成 SessionQuestions；
  * 课堂码 6 位，用于学员加入。
  */
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
   Badge,
@@ -33,21 +33,17 @@ import {
   Title3,
   makeStyles,
   tokens,
+  useToastController,
 } from "@fluentui/react-components";
-import { useToastController } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
+import { useClassSessionCreate } from "@/api/hooks/classSession/useClassSessionCreate";
+import { useClassSessionGetList as useClassSessionGetListQuery } from "@/api/hooks/classSession/useClassSessionGetList";
+import { useQuizGetList } from "@/api/hooks/quiz/useQuizGetList";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 import {
   ClassSessionStatusValue,
   classSessionStatusLabel,
-} from "@/pages/classroom/classroomEvents";
-import {
-  createSession,
-  getQuizzes,
-  getTeacherSessions,
-  teacherApiErrorMessage,
-} from "@/pages/classroom/teacherApi";
-import type { ClassroomDtosClassSessionDto } from "@/api/models/classroom/dtos/ClassSessionDto";
-import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
+} from "@/pages/classroom/constants/classroom";
 
 const useStyles = makeStyles({
   page: {
@@ -116,53 +112,37 @@ export function TeacherSessionsPage() {
   const navigate = useNavigate();
   const { dispatchToast } = useToastController();
 
-  const [sessions, setSessions] = useState<ClassroomDtosClassSessionDto[] | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [quizzes, setQuizzes] = useState<ClassroomDtosQuizDto[]>([]);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const refresh = useCallback(async () => {
-    try {
-      const result = await getTeacherSessions();
-      setSessions(result.items ?? []);
-      setLoadError(null);
-    } catch (err) {
-      setLoadError(teacherApiErrorMessage(err));
-    }
-  }, []);
+  const sessionsQuery = useClassSessionGetListQuery({
+    query: { SkipCount: 0, MaxResultCount: 50 },
+  });
+  // 仅在创建对话框打开时拉取试卷列表
+  const quizzesQuery = useQuizGetList(
+    { query: { SkipCount: 0, MaxResultCount: 100 } },
+    { query: { enabled: dialogOpen } },
+  );
+  const createSessionMutation = useClassSessionCreate();
 
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
-
-  // 打开创建对话框时加载试卷列表
-  useEffect(() => {
-    if (!dialogOpen || quizzes.length > 0) return;
-    getQuizzes()
-      .then((result) => setQuizzes(result.items ?? []))
-      .catch((err) => {
-        dispatchToast(`试卷加载失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
-      });
-  }, [dialogOpen, quizzes.length, dispatchToast]);
+  const sessions = sessionsQuery.data?.items ?? [];
+  const selectableQuizzes = (quizzesQuery.data?.items ?? []).filter(
+    (q) => (q.questionCount ?? 0) > 0,
+  );
 
   async function handleCreate() {
-    if (!selectedQuizId || creating) return;
-    setCreating(true);
+    if (!selectedQuizId || createSessionMutation.isPending) return;
     try {
-      const session = await createSession(selectedQuizId);
+      const session = await createSessionMutation.mutateAsync({
+        body: { quizId: selectedQuizId },
+      });
       setDialogOpen(false);
       dispatchToast(`课堂已创建，课堂码 ${session.classroomCode ?? ""}`, { intent: "success" });
       void navigate({ to: "/classroom/$sessionId", params: { sessionId: session.id! } });
     } catch (err) {
-      dispatchToast(`创建失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
-    } finally {
-      setCreating(false);
+      dispatchToast(`创建失败：${extractAbpErrorMessage(err)}`, { intent: "error" });
     }
   }
-
-  const selectableQuizzes = quizzes.filter((q) => (q.questionCount ?? 0) > 0);
 
   return (
     <div className={styles.page}>
@@ -196,16 +176,21 @@ export function TeacherSessionsPage() {
                   </Dropdown>
                 )}
               </Field>
+              {quizzesQuery.error && (
+                <Text size={200} style={{ color: tokens.colorPaletteRedForeground1 }}>
+                  试卷加载失败：{extractAbpErrorMessage(quizzesQuery.error)}
+                </Text>
+              )}
               <DialogActions>
                 <DialogTrigger disableButtonEnhancement>
                   <Button appearance="secondary">取消</Button>
                 </DialogTrigger>
                 <Button
                   appearance="primary"
-                  disabled={!selectedQuizId || creating}
+                  disabled={!selectedQuizId || createSessionMutation.isPending}
                   onClick={() => void handleCreate()}
                 >
-                  {creating ? <Spinner size="tiny" /> : "创建并进入"}
+                  {createSessionMutation.isPending ? <Spinner size="tiny" /> : "创建并进入"}
                 </Button>
               </DialogActions>
             </DialogBody>
@@ -213,9 +198,13 @@ export function TeacherSessionsPage() {
         </Dialog>
       </div>
 
-      {loadError && <Text style={{ color: tokens.colorPaletteRedForeground1 }}>{loadError}</Text>}
+      {sessionsQuery.error && (
+        <Text style={{ color: tokens.colorPaletteRedForeground1 }}>
+          {extractAbpErrorMessage(sessionsQuery.error)}
+        </Text>
+      )}
 
-      {sessions === null ? (
+      {sessionsQuery.isLoading ? (
         <div className={styles.empty}>
           <Spinner />
           <Text>正在加载课堂…</Text>

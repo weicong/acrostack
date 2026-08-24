@@ -50,7 +50,7 @@ import { quizGetList } from "@/api/clients/quiz/quizGetList";
 import { quizUpdate } from "@/api/clients/quiz/quizUpdate";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { teacherApiErrorMessage } from "@/pages/classroom/teacherApi";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 const PAGE_SIZE = 20;
 /** 选题器单次加载上限（题库较大时用关键字过滤）。 */
@@ -199,7 +199,7 @@ export function QuizzesPage() {
         setTotalCount(Number(data.totalCount ?? 0));
         setLoadError(null);
       } catch (err) {
-        setLoadError(teacherApiErrorMessage(err));
+        setLoadError(extractAbpErrorMessage(err));
       }
     },
     [pageIndex, keyword],
@@ -234,7 +234,7 @@ export function QuizzesPage() {
             (data.totalCount ?? 0),
         );
       } catch (err) {
-        dispatchToast(`题库加载失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
+        dispatchToast(`题库加载失败：${extractAbpErrorMessage(err)}`, { intent: "error" });
       } finally {
         setPickerLoading(false);
       }
@@ -283,7 +283,7 @@ export function QuizzesPage() {
           .filter((s): s is SelectedQuestion => s !== null),
       }));
     } catch (err) {
-      dispatchToast(`已选题回填失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
+      dispatchToast(`已选题回填失败：${extractAbpErrorMessage(err)}`, { intent: "error" });
     }
   }
 
@@ -338,7 +338,7 @@ export function QuizzesPage() {
       setDialogOpen(false);
       void refresh();
     } catch (err) {
-      setFormError(teacherApiErrorMessage(err));
+      setFormError(extractAbpErrorMessage(err));
     } finally {
       setSaving(false);
     }
@@ -356,7 +356,7 @@ export function QuizzesPage() {
       setPageIndex(targetPage);
       void refresh(targetPage);
     } catch (err) {
-      dispatchToast(`删除失败：${teacherApiErrorMessage(err)}`, { intent: "error" });
+      dispatchToast(`删除失败：${extractAbpErrorMessage(err)}`, { intent: "error" });
     } finally {
       setDeleteBusy(false);
     }

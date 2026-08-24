@@ -12,7 +12,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
-import { buildChatHubConnection } from "./chatHub";
+import { buildChatHubConnection } from "../constants/chatHub";
 import { userManager } from "@/lib/auth/userManager";
 import { useAuth } from "@/lib/auth/AuthContext";
 

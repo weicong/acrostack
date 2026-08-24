@@ -7,8 +7,12 @@
  * - 倒计时 = 服务端 EndsAt - ServerTime（含时钟偏移校正）
  * - 截止后立即禁用编辑；刷新页面通过快照恢复
  * - SignalR 版本跳跃（事件丢失）时重新拉取快照校准
+ *
+ * 数据获取：学员端持课堂短期 JWT（与 OIDC 共享客户端冲突），
+ * 必须经 utils/studentApi 直连，不能替换为 Kubb hooks。
+ * 样式见 styles/studentSession，答题记录视图见 components/HistoryView。
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import {
   Badge,
@@ -18,114 +22,39 @@ import {
   Text,
   Textarea,
   Title2,
-  makeStyles,
   tokens,
+  useToastController,
 } from "@fluentui/react-components";
-import { useToastController } from "@fluentui/react-components";
 import type { HubConnection } from "@microsoft/signalr";
 import {
   ClassroomClientMethods,
   ClassSessionStatusValue,
-  SessionQuestionStatusValue,
   classSessionStatusLabel,
-  questionTypeLabel,
-  type AnswerPublishedEvent,
-  type QuestionOpenedEvent,
-  type StatisticsPublishedEvent,
-} from "@/pages/classroom/classroomEvents";
-import { buildClassroomTokenHubConnection } from "@/pages/classroom/classroomHub";
+} from "@/pages/classroom/constants/classroom";
+import type {
+  AnswerPublishedEvent,
+  QuestionOpenedEvent,
+  StatisticsPublishedEvent,
+} from "@/pages/classroom/types/classroom-events";
+import { buildClassroomTokenHubConnection } from "@/pages/classroom/utils/classroomHub";
 import {
   classroomErrorMessage,
   getMyAnswerHistory,
   getStudentSnapshot,
   submitAnswer,
-} from "@/pages/classroom/studentApi";
-import { clearStudentSession, loadStudentSession } from "@/pages/classroom/studentSession";
+} from "@/pages/classroom/utils/studentApi";
+import { clearStudentSession, loadStudentSession } from "@/pages/classroom/utils/studentSession";
+import { trueFalseLabel } from "@/pages/classroom/utils/answerFormat";
 import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dtos/StudentSnapshotDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import type { ClassroomDtosStudentAnswerHistoryDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryDto";
-import type { ClassroomDtosStudentAnswerHistoryItemDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryItemDto";
-
-type ConnectionState = "connecting" | "connected" | "reconnecting" | "offline";
-
-/** 判断题答案编码 "true"/"false" 的显示文案（对/错）。 */
-function trueFalseLabel(value: string | null | undefined): string {
-  if (value === "true") return "对";
-  if (value === "false") return "错";
-  return value ?? "";
-}
-
-const useStyles = makeStyles({
-  page: {
-    minHeight: "100vh",
-    padding: tokens.spacingVerticalM + " " + tokens.spacingHorizontalM,
-    maxWidth: "640px",
-    margin: "0 auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-    paddingBottom: tokens.spacingVerticalXXL,
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: tokens.spacingHorizontalS,
-  },
-  card: {
-    padding: tokens.spacingVerticalL + " " + tokens.spacingHorizontalL,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  options: { display: "flex", flexDirection: "column", gap: tokens.spacingVerticalS },
-  optionButton: {
-    justifyContent: "flex-start",
-    minHeight: "48px",
-    fontSize: tokens.fontSizeBase300,
-  },
-  statistics: { display: "flex", flexDirection: "column", gap: tokens.spacingVerticalXS },
-  statRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  statBar: {
-    height: "12px",
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorBrandBackground,
-    transitionProperty: "width",
-    transitionDuration: "500ms",
-  },
-  explanation: {
-    background: tokens.colorNeutralBackground3,
-    borderRadius: tokens.borderRadiusMedium,
-    padding: tokens.spacingVerticalS + " " + tokens.spacingHorizontalS,
-  },
-  countdown: { fontSize: tokens.fontSizeHero700, fontWeight: tokens.fontWeightBold },
-  center: { textAlign: "center", padding: tokens.spacingVerticalXXL },
-  viewTabs: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-  summaryRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalM,
-    flexWrap: "wrap",
-  },
-  historyOptions: { display: "flex", flexDirection: "column", gap: tokens.spacingVerticalXS },
-  historyOptionRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  historyOptionText: { flex: 1 },
-  myAnswerBadge: { marginLeft: "auto" },
-});
+import { useStudentSessionStyles } from "./styles/studentSession";
+import { useServerClockCountdown } from "./hooks/useServerClockCountdown";
+import { ConnectionBadge, type ConnectionState } from "./components/ConnectionBadge";
+import { HistoryView } from "./components/HistoryView";
 
 export function StudentSessionPage() {
-  const styles = useStyles();
+  const styles = useStudentSessionStyles();
   const { sessionId = "" } = useParams({ strict: false }) as { sessionId?: string };
   const { dispatchToast } = useToastController();
 
@@ -136,7 +65,6 @@ export function StudentSessionPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // 视图切换：当前题目 / 答题记录
@@ -325,21 +253,10 @@ export function StudentSessionPage() {
   }, [sessionId, token, refreshSnapshot, refreshHistory]);
 
   // 倒计时：EndsAt - 服务端校正后的当前时间
-  useEffect(() => {
-    const endsAt = session?.currentQuestion?.endsAt;
-    if (!endsAt) {
-      setRemainingSeconds(null);
-      return;
-    }
-    const compute = () => {
-      const serverNow = Date.now() + clockOffsetRef.current;
-      const diff = Math.floor((Date.parse(endsAt) - serverNow) / 1000);
-      setRemainingSeconds(diff > 0 ? diff : 0);
-    };
-    compute();
-    const timer = setInterval(compute, 1000);
-    return () => clearInterval(timer);
-  }, [session?.currentQuestion?.endsAt]);
+  const remainingSeconds = useServerClockCountdown(
+    session?.currentQuestion?.endsAt,
+    clockOffsetRef,
+  );
 
   const question: ClassroomDtosQuestionViewDto | null = session?.currentQuestion?.question ?? null;
   const isAccepting =
@@ -349,35 +266,6 @@ export function StudentSessionPage() {
   const isChoiceQuestion = question?.type === 1 || question?.type === 2;
   const isMultipleChoice = question?.type === 2;
   const isTrueOrFalse = question?.type === 3;
-
-  const connectionBadge = useMemo(() => {
-    switch (connectionState) {
-      case "connected":
-        return (
-          <Badge appearance="filled" color="success">
-            已连接
-          </Badge>
-        );
-      case "reconnecting":
-        return (
-          <Badge appearance="filled" color="severe">
-            重连中…
-          </Badge>
-        );
-      case "connecting":
-        return (
-          <Badge appearance="filled" color="informative">
-            连接中…
-          </Badge>
-        );
-      default:
-        return (
-          <Badge appearance="filled" color="danger">
-            离线
-          </Badge>
-        );
-    }
-  }, [connectionState]);
 
   async function handleSubmit() {
     if (!token || !question || submitting) return;
@@ -402,167 +290,6 @@ export function StudentSessionPage() {
     } finally {
       setSubmitting(false);
     }
-  }
-
-  /** 答题记录：单题回顾卡片。 */
-  function renderHistoryItem(item: ClassroomDtosStudentAnswerHistoryItemDto) {
-    const published = item.questionStatus === SessionQuestionStatusValue.AnswerPublished;
-    const type = item.questionType ?? 1;
-    const isChoice = type === 1 || type === 2;
-    const isTF = type === 3;
-    const answered = Boolean(item.myAnswerContent);
-    const myKeys = new Set(
-      (item.myAnswerContent ?? "")
-        .split(",")
-        .map((k) => k.trim())
-        .filter(Boolean),
-    );
-    const correctKeys = new Set(
-      isTF
-        ? [item.correctAnswer ?? ""]
-        : (item.correctAnswer ?? "")
-            .split(",")
-            .map((k) => k.trim())
-            .filter(Boolean),
-    );
-
-    return (
-      <Card key={item.order} className={styles.card}>
-        <div className={styles.header}>
-          <Text size={300}>
-            第 {item.order} 题 · {questionTypeLabel[type] ?? "未知"}
-          </Text>
-          {answered ? (
-            item.myIsCorrect != null ? (
-              <Badge appearance="filled" color={item.myIsCorrect ? "success" : "danger"}>
-                {item.myIsCorrect ? "回答正确" : "回答错误"}
-              </Badge>
-            ) : (
-              <Badge appearance="filled" color="informative">
-                已作答
-              </Badge>
-            )
-          ) : (
-            <Badge appearance="filled" color="subtle">
-              未答
-            </Badge>
-          )}
-        </div>
-
-        <Text block weight="semibold">
-          {item.stem}
-        </Text>
-
-        {(isChoice || isTF) && (
-          <div className={styles.historyOptions}>
-            {(item.options ?? []).map((opt) => {
-              const value = isTF ? (opt.key === "A" ? "true" : "false") : (opt.key ?? "");
-              const mine = myKeys.has(value);
-              const correct = published && correctKeys.has(value);
-              return (
-                <div key={opt.key} className={styles.historyOptionRow}>
-                  <Text className={styles.historyOptionText}>
-                    {opt.key}. {opt.text}
-                  </Text>
-                  {mine && (
-                    <Badge appearance="ghost" color="brand">
-                      我的答案
-                    </Badge>
-                  )}
-                  {correct && (
-                    <Badge appearance="ghost" color="success">
-                      正确答案
-                    </Badge>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {type === 4 && (
-          <div className={styles.explanation}>
-            <Text block size={300}>
-              我的回答：{item.myAnswerContent ?? "（未答）"}
-            </Text>
-          </div>
-        )}
-
-        {answered && (item.myRevision ?? 0) > 1 && (
-          <Text size={200}>已修订 {item.myRevision} 次</Text>
-        )}
-
-        {published ? (
-          <div className={styles.explanation}>
-            {item.correctAnswer && (
-              <Text block size={300} weight="semibold">
-                正确答案：{isTF ? trueFalseLabel(item.correctAnswer) : item.correctAnswer}
-              </Text>
-            )}
-            {item.explanation && (
-              <Text block size={300}>
-                解析：{item.explanation}
-              </Text>
-            )}
-          </div>
-        ) : (
-          <Text size={300}>等待老师公布答案</Text>
-        )}
-      </Card>
-    );
-  }
-
-  /** 答题记录视图：汇总条 + 逐题卡片。 */
-  function renderHistory() {
-    if (!history && historyLoading) {
-      return (
-        <Card className={styles.card}>
-          <div className={styles.center}>
-            <Spinner />
-            <Text block>正在加载答题记录…</Text>
-          </div>
-        </Card>
-      );
-    }
-    if (!history) {
-      return (
-        <Card className={styles.card}>
-          <Text block>{historyError ?? "暂无答题记录"}</Text>
-        </Card>
-      );
-    }
-    const items = history.items ?? [];
-    return (
-      <>
-        <Card className={styles.card}>
-          <div className={styles.summaryRow}>
-            <Text weight="semibold">答题记录</Text>
-            <Badge appearance="filled" color="informative">
-              共 {history.questionCount ?? 0} 题
-            </Badge>
-            <Badge appearance="filled" color="brand">
-              已答 {history.answeredCount ?? 0}
-            </Badge>
-            <Badge appearance="filled" color="success">
-              答对 {history.correctCount ?? 0}
-            </Badge>
-            {historyLoading && <Spinner size="tiny" />}
-          </div>
-          {historyError && (
-            <Text size={300} style={{ color: tokens.colorPaletteRedForeground1 }}>
-              {historyError}（数据可能不是最新）
-            </Text>
-          )}
-        </Card>
-        {items.length === 0 ? (
-          <Card className={styles.card}>
-            <Text>老师还没有开放题目。</Text>
-          </Card>
-        ) : (
-          items.map((item) => renderHistoryItem(item))
-        )}
-      </>
-    );
   }
 
   if (loadError && !session) {
@@ -615,7 +342,7 @@ export function StudentSessionPage() {
           >
             答题记录
           </Button>
-          {connectionBadge}
+          <ConnectionBadge state={connectionState} />
         </div>
       </div>
 
@@ -626,7 +353,7 @@ export function StudentSessionPage() {
       )}
 
       {view === "history" ? (
-        renderHistory()
+        <HistoryView history={history} loading={historyLoading} error={historyError} />
       ) : status === ClassSessionStatusValue.Finished ? (
         <Card className={styles.card}>
           <Title2>课堂已结束</Title2>
