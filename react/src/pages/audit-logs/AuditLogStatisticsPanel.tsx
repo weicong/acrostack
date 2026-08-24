@@ -1,308 +1,88 @@
+/**
+ * 审计日志统计面板（AuditLogStatisticsPanel）。
+ *
+ * 本文件只负责编排：日期范围状态、统计数据查询与各分区组装；
+ * 筛选栏与各分区子组件见 components/，样式见 styles/auditStatistics，数据加工助手见 utils/auditStatistics。
+ */
 import { useMemo, useState } from "react";
-import {
-  Badge,
-  type BadgeProps,
-  Card,
-  Spinner,
-  Text,
-  makeStyles,
-  tokens,
-  Field,
-  Button,
-} from "@fluentui/react-components";
-import { DatePicker } from "@fluentui/react-datepicker-compat";
-import { Search20Regular } from "@fluentui/react-icons";
-import { zhCNDatePickerDefaults } from "@/lib/ui/datePickerLocalization";
+import { Spinner, Text } from "@fluentui/react-components";
 import { useQuery } from "@tanstack/react-query";
 import {
   auditLogGetStatisticsQueryOptions,
   auditLogGetStatisticsQueryKey,
 } from "@/api/hooks/auditLog/useAuditLogGetStatistics";
 import type { AcroStackAuditLoggingAuditLogStatisticsDto as AuditLogStatisticsDto } from "@/api/models/acroStack/auditLogging/AuditLogStatisticsDto";
-import type { AcroStackAuditLoggingUrlStatisticDto as UrlStatisticDto } from "@/api/models/acroStack/auditLogging/UrlStatisticDto";
+import { extractAbpErrorMessage } from "@/lib/api/error";
+import {
+  AuditStatisticsFilterBar,
+  type AuditLogDateRange,
+} from "./components/AuditStatisticsFilterBar";
+import { AuditStatisticsSummaryCards } from "./components/AuditStatisticsSummaryCards";
+import { AuditHttpMethodDistribution } from "./components/AuditHttpMethodDistribution";
+import { AuditUrlStatisticListCard } from "./components/AuditUrlStatisticListCard";
+import { useAuditStatisticsStyles } from "./styles/auditStatistics";
+import { defaultEndDate, defaultStartDate } from "./utils/auditStatistics";
 
 interface AuditLogStatisticsPanelProps {
-  /** Pass a tenant/key scope buster if needed; unused for now. */
+  /** 预留：按租户/键范围调整返回条数上限；当前未使用。 */
   defaultTopCount?: number;
 }
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  filterBar: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-end",
-    gap: tokens.spacingHorizontalS,
-  },
-  datePicker: {
-    minWidth: "220px",
-  },
-  statsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-    gap: tokens.spacingHorizontalM,
-  },
-  statCard: {
-    padding: `${tokens.spacingVerticalM} ${tokens.spacingHorizontalM}`,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalXS,
-  },
-  statLabel: {
-    color: tokens.colorNeutralForeground2,
-    fontSize: tokens.fontSizeBase200,
-  },
-  statValue: {
-    fontSize: tokens.fontSizeBase500,
-    fontWeight: 600,
-  },
-  sectionTitle: {
-    marginTop: tokens.spacingVerticalM,
-    marginBottom: tokens.spacingVerticalXS,
-    fontWeight: 600,
-  },
-  listCard: {
-    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalM}`,
-  },
-  urlRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr auto auto",
-    gap: tokens.spacingHorizontalM,
-    alignItems: "center",
-    paddingBlock: tokens.spacingVerticalXS,
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    "&:last-child": {
-      borderBottom: "none",
-    },
-  },
-  urlText: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    fontFamily: "monospace",
-    fontSize: tokens.fontSizeBase200,
-  },
-  methodBadges: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: tokens.spacingHorizontalXS,
-  },
-  errorState: {
-    color: tokens.colorPaletteRedForeground1,
-  },
-});
-
-function toStartOfDay(date: Date): Date {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
-function toEndOfDay(date: Date): Date {
-  const d = new Date(date);
-  d.setHours(23, 59, 59, 999);
-  return d;
-}
-
-function formatDuration(ms: number | undefined | null): string {
-  if (ms === undefined || ms === null) return "-";
-  return `${ms} ms`;
-}
-
-function formatBigint(value: bigint | number | undefined | null): string {
-  if (value === undefined || value === null) return "0";
-  if (typeof value === "bigint") return value.toLocaleString();
-  return value.toLocaleString();
-}
-
-function methodBadgeColor(method: string): BadgeProps["color"] {
-  switch (method) {
-    case "GET":
-      return "success";
-    case "POST":
-      return "brand";
-    case "PUT":
-    case "PATCH":
-      return "warning";
-    case "DELETE":
-      return "danger";
-    default:
-      return "informative";
-  }
-}
-
-function HttpMethodBadge({ method }: { method: string }) {
-  return (
-    <Badge appearance="filled" color={methodBadgeColor(method)} size="small">
-      {method}
-    </Badge>
-  );
-}
-
-function UrlStatisticRow({ stat, rank }: { stat: UrlStatisticDto; rank: number }) {
-  const styles = useStyles();
-  return (
-    <div className={styles.urlRow}>
-      <Text className={styles.urlText} title={stat.url ?? undefined}>
-        {rank}. {stat.url || "-"}
-      </Text>
-      <Text size={200}>{formatDuration(stat.averageExecutionDuration)}</Text>
-      <Text size={200}>×{stat.count ?? 0}</Text>
-    </div>
-  );
-}
-
 export function AuditLogStatisticsPanel({ defaultTopCount = 10 }: AuditLogStatisticsPanelProps) {
-  const styles = useStyles();
+  const styles = useAuditStatisticsStyles();
 
-  // Default range: last 7 days.
-  const [startDate, setStartDate] = useState<Date | null>(() => {
-    const d = new Date();
-    d.setDate(d.getDate() - 7);
-    return toStartOfDay(d);
-  });
-  const [endDate, setEndDate] = useState<Date | null>(() => toEndOfDay(new Date()));
+  // 日期范围（ISO 时间串）：初始默认最近 7 天，与筛选栏的本地初始值保持一致
+  const [dateRange, setDateRange] = useState<AuditLogDateRange>(() => ({
+    StartTime: defaultStartDate().toISOString(),
+    EndTime: defaultEndDate().toISOString(),
+  }));
 
   const params = useMemo(
     () => ({
       query: {
-        StartTime: startDate ? startDate.toISOString() : undefined,
-        EndTime: endDate ? endDate.toISOString() : undefined,
+        StartTime: dateRange.StartTime,
+        EndTime: dateRange.EndTime,
         TopCount: defaultTopCount,
       },
     }),
-    [startDate, endDate, defaultTopCount],
+    [dateRange, defaultTopCount],
   );
 
-  // Use the generated queryOptions fn so the query key matches what useAuditLogGetStatistics
-  // would produce, allowing shared cache invalidation.
+  // 使用生成的 queryOptions 工厂，保证查询缓存键与 useAuditLogGetStatistics 一致以便共享失效
   const query = useQuery({
     ...auditLogGetStatisticsQueryOptions(params),
-    // Re-fetch when filters change; default staleTime is fine.
+    // 筛选条件变化时重新拉取；默认 staleTime 即可
     refetchOnMount: true,
   });
 
   const stats = query.data as AuditLogStatisticsDto | undefined;
 
-  const httpMethodEntries = useMemo(() => {
-    const map = stats?.httpRequestMethodCounts ?? {};
-    return Object.entries(map)
-      .filter(([method]) => Boolean(method))
-      .sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0));
-  }, [stats]);
-
   return (
     <div className={styles.root}>
-      <div className={styles.filterBar}>
-        <Field label={"开始时间"} className={styles.datePicker}>
-          <DatePicker
-            value={startDate}
-            onSelectDate={(date) => setStartDate(date ? toStartOfDay(date) : null)}
-            placeholder={"开始时间"}
-            {...zhCNDatePickerDefaults}
-          />
-        </Field>
-        <Field label={"结束时间"} className={styles.datePicker}>
-          <DatePicker
-            value={endDate}
-            onSelectDate={(date) => setEndDate(date ? toEndOfDay(date) : null)}
-            placeholder={"结束时间"}
-            {...zhCNDatePickerDefaults}
-          />
-        </Field>
-        <Button
-          appearance="primary"
-          icon={<Search20Regular />}
-          onClick={() => query.refetch()}
-          disabled={query.isFetching}
-        >
-          {"刷新"}
-        </Button>
-      </div>
+      <AuditStatisticsFilterBar
+        onRangeChange={setDateRange}
+        onRefresh={() => query.refetch()}
+        refreshing={query.isFetching}
+      />
 
       {query.isLoading && <Spinner label={"加载中..."} />}
       {query.isError && (
         <Text className={styles.errorState}>
-          {query.error ? String(query.error) : "内部服务器错误"}
+          {query.error ? extractAbpErrorMessage(query.error) : "内部服务器错误"}
         </Text>
       )}
 
       {stats && (
         <>
-          <div className={styles.statsGrid}>
-            <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{"总请求数"}</Text>
-              <Text className={styles.statValue}>{formatBigint(stats.totalRequestCount)}</Text>
-            </Card>
-            <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{"平均耗时"}</Text>
-              <Text className={styles.statValue}>
-                {formatDuration(stats.averageExecutionDuration)}
-              </Text>
-            </Card>
-            <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{"最大持续时间"}</Text>
-              <Text className={styles.statValue}>{formatDuration(stats.maxExecutionDuration)}</Text>
-            </Card>
-            <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{"分钟持续时间"}</Text>
-              <Text className={styles.statValue}>{formatDuration(stats.minExecutionDuration)}</Text>
-            </Card>
-            <Card className={styles.statCard}>
-              <Text className={styles.statLabel}>{"错误数"}</Text>
-              <Text className={styles.statValue}>{formatBigint(stats.errorCount)}</Text>
-            </Card>
-          </div>
-
-          <Text as="h3" className={styles.sectionTitle}>
-            {"HTTP 方法分布"}
-          </Text>
-          {httpMethodEntries.length === 0 ? (
-            <Text size={200}>{"暂无记录"}</Text>
-          ) : (
-            <div className={styles.methodBadges}>
-              {httpMethodEntries.map(([method, count]) => (
-                <Badge key={method} appearance="outline" size="large">
-                  <HttpMethodBadge method={method} /> {String(count)}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          <Text as="h3" className={styles.sectionTitle}>
-            {"最慢 URL"}
-          </Text>
-          <Card className={styles.listCard}>
-            {stats.topSlowUrls && stats.topSlowUrls.length > 0 ? (
-              stats.topSlowUrls.map((stat, idx) => (
-                <UrlStatisticRow key={`${stat.url}-${idx}`} stat={stat} rank={idx + 1} />
-              ))
-            ) : (
-              <Text size={200}>{"暂无记录"}</Text>
-            )}
-          </Card>
-
-          <Text as="h3" className={styles.sectionTitle}>
-            {"最频繁 URL"}
-          </Text>
-          <Card className={styles.listCard}>
-            {stats.topFrequentUrls && stats.topFrequentUrls.length > 0 ? (
-              stats.topFrequentUrls.map((stat, idx) => (
-                <UrlStatisticRow key={`${stat.url}-${idx}`} stat={stat} rank={idx + 1} />
-              ))
-            ) : (
-              <Text size={200}>{"暂无记录"}</Text>
-            )}
-          </Card>
+          <AuditStatisticsSummaryCards stats={stats} />
+          <AuditHttpMethodDistribution stats={stats} />
+          <AuditUrlStatisticListCard title={"最慢 URL"} urls={stats.topSlowUrls} />
+          <AuditUrlStatisticListCard title={"最频繁 URL"} urls={stats.topFrequentUrls} />
         </>
       )}
     </div>
   );
 }
 
-// Re-export for callers that need to invalidate the statistics query (e.g. on tenant switch).
+// 为需要在租户切换等场景失效统计查询的调用方保留再导出
 export { auditLogGetStatisticsQueryKey };

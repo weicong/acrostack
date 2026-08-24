@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useAppForm } from "@/components/form";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 import { useState } from "react";
+import { useAccountCardStyles } from "./styles/account";
 
 const registerSchema = z
   .object({
@@ -18,35 +20,10 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-const useStyles = makeStyles({
-  body: {
-    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  errorAlert: {
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorPaletteRedBackground1,
-    padding: tokens.spacingVerticalS,
-    fontSize: "0.875rem",
-    color: tokens.colorPaletteRedForeground3,
-  },
-  fullWidthButton: {
-    width: "100%",
-  },
-  link: {
-    fontWeight: 500,
-    color: tokens.colorBrandForegroundLink,
-  },
-});
-
 export function RegisterPage() {
   const { login } = useAuth();
   const [rootError, setRootError] = useState<string | null>(null);
-  const styles = useStyles();
+  const styles = useAccountCardStyles();
 
   const form = useAppForm({
     defaultValues: {
@@ -69,13 +46,8 @@ export function RegisterPage() {
           },
         });
         void login();
-      } catch (err: unknown) {
-        const msg =
-          err && typeof err === "object" && "response" in err
-            ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
-                ?.error?.message
-            : undefined;
-        setRootError(msg ?? "注册失败");
+      } catch (err) {
+        setRootError(extractAbpErrorMessage(err));
       }
     },
   });

@@ -1,23 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Input,
-  Option,
-  makeStyles,
-  tokens,
-  useToastController,
-} from "@fluentui/react-components";
-import {
-  CheckmarkCircle20Regular,
-  Circle20Regular,
-  Delete20Regular,
-  Search20Regular,
-} from "@fluentui/react-icons";
+/**
+ * 评论管理页（CommentsPage）。
+ *
+ * 本文件只负责编排：权限判定、筛选状态、表格状态与列定义、数据查询；
+ * 样式见 styles/comments，常量与助手见 utils/comments，
+ * 筛选栏与审核徽标见 components/，动作聚合见 hooks/useCommentActions。
+ */
+import { useCallback, useMemo, useState } from "react";
+import { Button } from "@fluentui/react-components";
+import { CheckmarkCircle20Regular, Circle20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
-import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
@@ -25,63 +17,18 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import {
-  commentAdminGetListQueryOptions,
-  commentAdminGetListQueryKey,
-} from "@/api/hooks/commentAdmin/useCommentAdminGetList";
-import { useCommentAdminDelete } from "@/api/hooks/commentAdmin/useCommentAdminDelete";
-import { useCommentAdminUpdateApprovalStatus } from "@/api/hooks/commentAdmin/useCommentAdminUpdateApprovalStatus";
+import { commentAdminGetListQueryOptions } from "@/api/hooks/commentAdmin/useCommentAdminGetList";
 import type { VoloCmsKitAdminCommentsCommentWithAuthorDto as CommentItem } from "@/api/models/volo/cmsKit/admin/comments/CommentWithAuthorDto";
-
-const TEXT_MAX = 80;
-
-// ABP CommentApproveState enum (Volo.CmsKit.Comments.CommentApproveState)
-const CommentApproveState = {
-  Approved: 0,
-  WaitingForApproval: 1,
-} as const;
-
-const useStyles = makeStyles({
-  toolbar: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-end",
-    gap: tokens.spacingHorizontalS,
-    marginBottom: tokens.spacingHorizontalM,
-  },
-  field: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalXXS,
-  },
-  entityTypeInput: {
-    minWidth: "180px",
-  },
-  stateFilter: {
-    minWidth: "160px",
-  },
-  actionsCell: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-});
-
-function getAuthorName(comment: CommentItem): string {
-  const author = comment.author;
-  if (!author) return "-";
-  const name = author.name ?? author.userName;
-  const surname = author.surname;
-  if (name && surname) return `${name} ${surname}`;
-  return name ?? author.userName ?? "-";
-}
+import { useCommentsStyles } from "./styles/comments";
+import { TEXT_MAX, getAuthorName } from "./utils/comments";
+import { ApprovalStatusBadge } from "./components/ApprovalStatusBadge";
+import { CommentsFilterBar } from "./components/CommentsFilterBar";
+import { useCommentActions } from "./hooks/useCommentActions";
 
 export function CommentsPage() {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
+  const styles = useCommentsStyles();
   const { isGranted } = usePermissions();
-  const { dispatchToast } = useToastController();
-  const deleteMutation = useCommentAdminDelete();
-  const approvalMutation = useCommentAdminUpdateApprovalStatus();
+  const actions = useCommentActions();
 
   const canManage = isGranted("CmsKit.Comments");
   const canDelete = isGranted("CmsKit.Comments.Delete");
@@ -112,80 +59,6 @@ export function CommentsPage() {
     globalFilter: tableState.state.globalFilter,
     extraParams,
   });
-
-  const invalidateList = useCallback(() => {
-    void queryClient.invalidateQueries({
-      queryKey: commentAdminGetListQueryKey(),
-    });
-  }, [queryClient]);
-
-  const handleDelete = useCallback((id: string) => {
-    setDeleteCommentId(id);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(() => {
-    if (!deleteCommentId) return;
-    deleteMutation.mutate(
-      { path: { id: deleteCommentId } },
-      {
-        onSuccess: () => {
-          setDeleteCommentId(null);
-          invalidateList();
-          dispatchToast("删除成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  }, [deleteCommentId, deleteMutation, invalidateList, dispatchToast]);
-
-  const handleToggleApproval = useCallback(
-    (comment: CommentItem) => {
-      if (!comment.id) return;
-      const newApproved = !comment.isApproved;
-      approvalMutation.mutate(
-        {
-          path: { id: comment.id },
-          body: { isApproved: newApproved },
-        },
-        {
-          onSuccess: () => {
-            invalidateList();
-            dispatchToast(newApproved ? "评论已通过" : "评论已取消通过", {
-              intent: "success",
-            });
-          },
-          onError: (err) => {
-            dispatchToast(String(err), { intent: "error" });
-          },
-        },
-      );
-    },
-    [approvalMutation, invalidateList, dispatchToast],
-  );
-
-  const renderApprovalBadge = useCallback((isApproved: boolean | null | undefined) => {
-    if (isApproved === true) {
-      return (
-        <Badge appearance="filled" color="success">
-          {"评论已通过"}
-        </Badge>
-      );
-    }
-    if (isApproved === false) {
-      return (
-        <Badge appearance="filled" color="danger">
-          {"评论已拒绝"}
-        </Badge>
-      );
-    }
-    return (
-      <Badge appearance="filled" color="warning">
-        {"评论已标记为等待"}
-      </Badge>
-    );
-  }, []);
 
   const columns = useMemo<ColumnDef<AppTableFeatures, CommentItem>[]>(
     () => [
@@ -224,7 +97,9 @@ export function CommentsPage() {
         id: "isApproved",
         accessorKey: "isApproved",
         header: "审核状态",
-        cell: (info) => renderApprovalBadge(info.getValue() as boolean | null | undefined),
+        cell: (info) => (
+          <ApprovalStatusBadge isApproved={info.getValue() as boolean | null | undefined} />
+        ),
       },
       {
         id: "creationTime",
@@ -245,7 +120,7 @@ export function CommentsPage() {
                 size="small"
                 appearance="subtle"
                 icon={row.original.isApproved ? <Circle20Regular /> : <CheckmarkCircle20Regular />}
-                onClick={() => handleToggleApproval(row.original)}
+                onClick={() => void actions.toggleApproval(row.original)}
                 aria-label={row.original.isApproved ? "取消通过" : "通过"}
                 title={row.original.isApproved ? "取消通过" : "通过"}
               />
@@ -255,7 +130,7 @@ export function CommentsPage() {
                 size="small"
                 appearance="subtle"
                 icon={<Delete20Regular />}
-                onClick={() => row.original.id && handleDelete(row.original.id)}
+                onClick={() => row.original.id && setDeleteCommentId(row.original.id)}
                 aria-label={"删除"}
                 title={"删除"}
               />
@@ -264,14 +139,7 @@ export function CommentsPage() {
         ),
       },
     ],
-    [
-      styles.actionsCell,
-      canManage,
-      canDelete,
-      renderApprovalBadge,
-      handleToggleApproval,
-      handleDelete,
-    ],
+    [styles.actionsCell, canManage, canDelete, actions.toggleApproval],
   );
 
   const table = useDataTable({
@@ -285,76 +153,16 @@ export function CommentsPage() {
     pageCount: query.pageCount,
   });
 
-  const [searchValue, setSearchValue] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      tableState.state.onGlobalFilterChange(searchValue);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchValue, tableState.state]);
-
   return (
     <PageLayout title={"评论"}>
-      <div className={styles.toolbar}>
-        <div className={styles.field}>
-          <label htmlFor="comment-entity-type">{"实体类型"}</label>
-          <Input
-            id="comment-entity-type"
-            className={styles.entityTypeInput}
-            value={entityType}
-            onChange={(_, data) => setEntityType(data.value)}
-            placeholder={"全部类型"}
-            contentAfter={
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Search20Regular />}
-                onClick={goToFirstPage}
-                disabled={!entityType.trim()}
-                aria-label={"搜索"}
-              />
-            }
-          />
-        </div>
-        <div className={styles.field}>
-          <label htmlFor="comment-state-filter">{"审核状态"}</label>
-          <Dropdown
-            id="comment-state-filter"
-            className={styles.stateFilter}
-            placeholder={"全部状态"}
-            value={
-              approvalState === CommentApproveState.Approved
-                ? "评论已通过"
-                : approvalState === CommentApproveState.WaitingForApproval
-                  ? "评论已标记为等待"
-                  : ""
-            }
-            onOptionSelect={(_, data) => {
-              const val = data.optionValue;
-              setApprovalState(val === "" ? "" : Number(val));
-              goToFirstPage();
-            }}
-            clearable
-          >
-            <Option value="">{"全部状态"}</Option>
-            <Option value={String(CommentApproveState.Approved)}>{"评论已通过"}</Option>
-            <Option value={String(CommentApproveState.WaitingForApproval)}>
-              {"评论已标记为等待"}
-            </Option>
-          </Dropdown>
-        </div>
-        <div className={styles.field} style={{ flex: 1, minWidth: "200px" }}>
-          <label htmlFor="comment-search">{"搜索"}</label>
-          <Input
-            id="comment-search"
-            value={searchValue}
-            onChange={(_, data) => setSearchValue(data.value)}
-            placeholder={"搜索评论..."}
-            contentBefore={<Search20Regular />}
-          />
-        </div>
-      </div>
+      <CommentsFilterBar
+        entityType={entityType}
+        onEntityTypeChange={setEntityType}
+        approvalState={approvalState}
+        onApprovalStateChange={setApprovalState}
+        onFilterSubmit={goToFirstPage}
+        onSearch={tableState.state.onGlobalFilterChange}
+      />
 
       <DataTable
         table={table}
@@ -370,8 +178,10 @@ export function CommentsPage() {
         description={"此项将被删除！"}
         confirmLabel={"删除"}
         variant="destructive"
-        onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
+        onConfirm={() =>
+          void actions.deleteComment(deleteCommentId).then((ok) => ok && setDeleteCommentId(null))
+        }
+        isPending={actions.deletePending}
       />
     </PageLayout>
   );

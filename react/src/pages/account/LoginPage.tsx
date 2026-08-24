@@ -1,38 +1,13 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 
-import {
-  Button,
-  Card,
-  CardHeader,
-  makeStyles,
-  Spinner,
-  tokens,
-  Text,
-} from "@fluentui/react-components";
+import { Button, Card, CardHeader, Spinner, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
-
-const useStyles = makeStyles({
-  body: {
-    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  fullWidthButton: {
-    width: "100%",
-  },
-  link: {
-    fontWeight: 500,
-    color: tokens.colorBrandForegroundLink,
-  },
-});
+import { useAccountCardStyles } from "./styles/account";
 
 export function LoginPage() {
   const { isAuthenticated, isLoading, login } = useAuth();
-  const styles = useStyles();
+  const styles = useAccountCardStyles();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {

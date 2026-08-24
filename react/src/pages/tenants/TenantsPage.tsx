@@ -1,185 +1,45 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  Button,
-  SearchBox,
-  makeStyles,
-  tokens,
-  useToastController,
-} from "@fluentui/react-components";
-import {
-  Add20Regular,
-  Delete20Regular,
-  Edit20Regular,
-  PersonArrowLeft20Regular,
-} from "@fluentui/react-icons";
+/**
+ * 租户管理页（TenantsPage）。
+ *
+ * 本文件只负责编排：权限判定、对话框开关状态与各子组件组装；
+ * 样式见 styles/tenants，表格聚合见 hooks/useTenantsTable，
+ * 动作聚合见 hooks/useTenantActions，工具栏见 components/TenantsToolbar。
+ */
+import { useCallback, useMemo, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { type ColumnDef } from "@tanstack/react-table";
-import {
-  tenantGetListQueryKey,
-  tenantGetListQueryOptions,
-} from "@/api/hooks/tenant/useTenantGetList";
-import { useTenantDelete } from "@/api/hooks/tenant/useTenantDelete";
-import type { VoloAbpTenantManagementTenantDto } from "@/api/models/volo/abp/tenantManagement/TenantDto";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
-import { impersonateTenant } from "@/lib/auth/impersonation";
+import type {
+  TenantItem,
+  TenantsTableHandlers,
+  TenantsTablePermissions,
+} from "./hooks/useTenantsTable";
+import { useTenantsTable } from "./hooks/useTenantsTable";
+import { useTenantActions } from "./hooks/useTenantActions";
+import { TenantsToolbar } from "./components/TenantsToolbar";
 import { TenantFormDialog } from "./TenantFormDialog";
-
-type TenantItem = VoloAbpTenantManagementTenantDto;
 
 type TenantFormTenant = Pick<TenantItem, "id" | "name" | "concurrencyStamp">;
 
-const useStyles = makeStyles({
-  toolbar: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    gap: tokens.spacingHorizontalM,
-  },
-  filters: {
-    display: "flex",
-    flex: 1,
-    flexWrap: "wrap",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-    minWidth: 0,
-  },
-  actionButtons: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  actionsCell: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-});
-
-interface TenantsTableHandlers {
-  onEdit: (tenant: TenantItem) => void;
-  onDelete: (tenant: TenantItem) => void;
-  onImpersonate: (tenant: TenantItem) => void;
-}
-
-interface TenantsTablePermissions {
-  canUpdate: boolean;
-  canDelete: boolean;
-  canImpersonate: boolean;
-}
-
-function useTenantsTable(handlers: TenantsTableHandlers, perms: TenantsTablePermissions) {
-  const styles = useStyles();
-
-  const tableState = useDataTableState({
-    sorting: [{ id: "name", desc: false }],
-  });
-
-  const query = useDataTableQuery<TenantItem, AbpGridParams>({
-    queryOptions: tenantGetListQueryOptions,
-    sorting: tableState.state.sorting,
-    pagination: tableState.state.pagination,
-    globalFilter: tableState.state.globalFilter,
-  });
-
-  const columns = useMemo<ColumnDef<AppTableFeatures, TenantItem>[]>(
-    () => [
-      {
-        id: "name",
-        accessorKey: "name",
-        header: "名称",
-        cell: (info) => (info.getValue() as string) || "-",
-      },
-      {
-        id: "actions",
-        header: "",
-        cell: (info) => {
-          const row = info.row.original;
-          return (
-            <div className={styles.actionsCell}>
-              {perms.canUpdate && !!row.id && (
-                <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<Edit20Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlers.onEdit(row);
-                  }}
-                  aria-label={"编辑"}
-                  title={"编辑"}
-                />
-              )}
-              {perms.canDelete && !!row.id && (
-                <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<Delete20Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlers.onDelete(row);
-                  }}
-                  aria-label={"删除"}
-                  title={"删除"}
-                />
-              )}
-              {perms.canImpersonate && !!row.id && (
-                <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<PersonArrowLeft20Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlers.onImpersonate(row);
-                  }}
-                  aria-label={"模拟登录"}
-                  title={"模拟登录"}
-                />
-              )}
-            </div>
-          );
-        },
-      },
-    ],
-    [styles.actionsCell, handlers, perms],
-  );
-
-  const table = useDataTable({
-    data: query.data,
-    columns,
-    rowCount: query.totalCount,
-    getRowId: (row) => row.id!,
-    state: tableState.state,
-    manualPagination: true,
-    manualSorting: true,
-    pageCount: query.pageCount,
-  });
-
-  return { table, query, tableState };
-}
-
 export function TenantsPage() {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
-  const deleteMutation = useTenantDelete();
   const { isGranted } = usePermissions();
   const currentUser = useCurrentUser();
-  const { dispatchToast } = useToastController();
 
-  // Tenant impersonation is host-only: a tenant user cannot impersonate another tenant.
+  // 租户模拟登录仅宿主可用：租户用户不能模拟登录其他租户。
   const isHostUser = !currentUser?.tenantId;
   const canCreate = isGranted("AbpTenantManagement.Tenants.Create");
   const canUpdate = isGranted("AbpTenantManagement.Tenants.Update");
   const canDelete = isGranted("AbpTenantManagement.Tenants.Delete");
   const canImpersonate = isHostUser && isGranted("AbpTenantManagement.Tenants.Impersonation");
 
+  // 对话框开关状态
   const [formOpen, setFormOpen] = useState(false);
   const [formTenant, setFormTenant] = useState<TenantFormTenant | undefined>();
   const [deleteTenant, setDeleteTenant] = useState<TenantItem | null>(null);
+
+  // 动作聚合：删除/模拟登录（内含列表失效与统一错误提示）
+  const { remove, deletePending, impersonate, invalidateList } = useTenantActions();
 
   const handleCreate = useCallback(() => {
     setFormTenant(undefined);
@@ -199,21 +59,14 @@ export function TenantsPage() {
     setDeleteTenant(tenant);
   }, []);
 
-  const handleImpersonate = useCallback(
-    (tenant: TenantItem) => {
-      if (!tenant.id) return;
-      void impersonateTenant(tenant.id).catch((err: unknown) => {
-        const message = err instanceof Error ? err.message : String(err);
-        console.error("[impersonation] failed:", err);
-        dispatchToast(message, { intent: "error" });
-      });
-    },
-    [dispatchToast],
-  );
+  const handleFormSuccess = useCallback(() => {
+    setFormOpen(false);
+    invalidateList();
+  }, [invalidateList]);
 
   const handlers = useMemo<TenantsTableHandlers>(
-    () => ({ onEdit: handleEdit, onDelete: handleDelete, onImpersonate: handleImpersonate }),
-    [handleEdit, handleDelete, handleImpersonate],
+    () => ({ onEdit: handleEdit, onDelete: handleDelete, onImpersonate: impersonate }),
+    [handleEdit, handleDelete, impersonate],
   );
   const perms = useMemo<TenantsTablePermissions>(
     () => ({ canUpdate, canDelete, canImpersonate }),
@@ -222,56 +75,13 @@ export function TenantsPage() {
 
   const { table, query, tableState } = useTenantsTable(handlers, perms);
 
-  const handleFormSuccess = useCallback(() => {
-    setFormOpen(false);
-    void queryClient.invalidateQueries({ queryKey: tenantGetListQueryKey() });
-  }, [queryClient]);
-
-  const handleDeleteConfirm = useCallback(() => {
-    if (!deleteTenant?.id) return;
-    deleteMutation.mutate(
-      { path: { id: deleteTenant.id } },
-      {
-        onSuccess: () => {
-          setDeleteTenant(null);
-          void queryClient.invalidateQueries({ queryKey: tenantGetListQueryKey() });
-          dispatchToast("删除成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  }, [deleteTenant, deleteMutation, queryClient, dispatchToast]);
-
-  const [searchValue, setSearchValue] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      tableState.state.onGlobalFilterChange(searchValue);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-
   return (
     <PageLayout title={"租户"}>
-      <div className={styles.toolbar}>
-        <div className={styles.filters}>
-          <SearchBox
-            placeholder={"搜索"}
-            value={searchValue}
-            onChange={(_, data) => setSearchValue(data.value)}
-            appearance="outline"
-          />
-        </div>
-        {canCreate && (
-          <div className={styles.actionButtons}>
-            <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {"新建租户"}
-            </Button>
-          </div>
-        )}
-      </div>
+      <TenantsToolbar
+        canCreate={canCreate}
+        onCreate={handleCreate}
+        onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+      />
 
       <DataTable
         table={table}
@@ -296,8 +106,8 @@ export function TenantsPage() {
         description={deleteTenant ? `确定要删除租户「${deleteTenant.name}」吗？` : undefined}
         confirmLabel={"删除"}
         variant="destructive"
-        onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
+        onConfirm={() => void remove(deleteTenant).then((ok) => ok && setDeleteTenant(null))}
+        isPending={deletePending}
       />
     </PageLayout>
   );

@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Dialog,
@@ -8,27 +7,14 @@ import {
   DialogSurface,
   DialogTitle,
   DialogTrigger,
-  Field,
-  Input,
-  Spinner,
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableHeaderCell,
-  TableRow,
-  makeStyles,
-  tokens,
-  useToastController,
 } from "@fluentui/react-components";
-import { Add20Regular, Delete20Regular, Edit20Regular, Save20Regular } from "@fluentui/react-icons";
-import { identityUserClaimGetListQueryKey } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
 import { useIdentityUserClaimGetList } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
-import { useIdentityUserClaimCreate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimCreate";
-import { useIdentityUserClaimUpdate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimUpdate";
-import { useIdentityUserClaimDelete } from "@/api/hooks/identityUserClaim/useIdentityUserClaimDelete";
-import { claimSchema } from "./claim-schemas";
+import { ClaimAddRow } from "./components/ClaimAddRow";
+import { ClaimTable } from "./components/ClaimTable";
 import type { ClaimItem } from "./claim-types";
+import { useUserClaimActions } from "./hooks/useUserClaimActions";
+import { useClaimsStyles } from "./styles/claims";
+import { emptyValues, validate } from "./utils/claimsForm";
 
 type UserClaimsDialogProps = {
   open: boolean;
@@ -37,49 +23,9 @@ type UserClaimsDialogProps = {
   userName?: string | null;
 };
 
-const useStyles = makeStyles({
-  body: {
-    minWidth: "560px",
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  addRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr auto",
-    gap: tokens.spacingHorizontalS,
-    alignItems: "flex-end",
-  },
-  table: {
-    marginTop: tokens.spacingVerticalS,
-  },
-  actionsCell: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-});
-
-function emptyValues() {
-  return { claimType: "", claimValue: "" };
-}
-
-function validate(values: {
-  claimType: string;
-  claimValue: string;
-}): Record<string, string> | null {
-  const result = claimSchema.safeParse(values);
-  if (result.success) return null;
-  const errors: Record<string, string> = {};
-  const fieldErrors = result.error.flatten().fieldErrors;
-  if (fieldErrors.claimType) errors.claimType = fieldErrors.claimType[0];
-  if (fieldErrors.claimValue) errors.claimValue = fieldErrors.claimValue[0];
-  return errors;
-}
-
+/** 用户声明管理对话框：只负责查询编排与子组件组装。 */
 export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserClaimsDialogProps) {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
-  const { dispatchToast } = useToastController();
+  const styles = useClaimsStyles();
 
   const claimsQuery = useIdentityUserClaimGetList(
     open && userId ? { query: { userId } } : undefined,
@@ -88,15 +34,11 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
     },
   );
 
-  const createMutation = useIdentityUserClaimCreate();
-  const updateMutation = useIdentityUserClaimUpdate();
-  const deleteMutation = useIdentityUserClaimDelete();
+  const { add, save, remove, isAddPending, isSavePending, deletePendingId } =
+    useUserClaimActions(userId);
 
   const [addValues, setAddValues] = useState(emptyValues());
   const [addErrors, setAddErrors] = useState<Record<string, string> | null>(null);
-  const [editId, setEditId] = useState<string | null>(null);
-  const [editValues, setEditValues] = useState(emptyValues());
-  const [editErrors, setEditErrors] = useState<Record<string, string> | null>(null);
 
   const claims: ClaimItem[] = useMemo(() => {
     const data = claimsQuery.data;
@@ -104,103 +46,20 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
     return Array.isArray(data) ? data : [];
   }, [claimsQuery.data]);
 
-  const invalidate = () => {
-    if (userId) {
-      void queryClient.invalidateQueries({
-        queryKey: identityUserClaimGetListQueryKey({ query: { userId } }),
-      });
-    }
-  };
-
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!userId) return;
     const errors = validate(addValues);
     setAddErrors(errors);
     if (errors) return;
-
-    createMutation.mutate(
-      {
-        body: {
-          userId,
-          claimType: addValues.claimType,
-          claimValue: addValues.claimValue,
-        },
-      },
-      {
-        onSuccess: () => {
-          setAddValues(emptyValues());
-          setAddErrors(null);
-          invalidate();
-          dispatchToast("保存成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  };
-
-  const handleStartEdit = (claim: ClaimItem) => {
-    setEditId(claim.id ?? null);
-    setEditValues({
-      claimType: claim.claimType ?? "",
-      claimValue: claim.claimValue ?? "",
-    });
-    setEditErrors(null);
-  };
-
-  const handleCancelEdit = () => {
-    setEditId(null);
-    setEditValues(emptyValues());
-    setEditErrors(null);
-  };
-
-  const handleSaveEdit = () => {
-    if (!editId) return;
-    const errors = validate(editValues);
-    setEditErrors(errors);
-    if (errors) return;
-
-    updateMutation.mutate(
-      {
-        path: { id: editId },
-        body: {
-          claimType: editValues.claimType,
-          claimValue: editValues.claimValue,
-        },
-      },
-      {
-        onSuccess: () => {
-          handleCancelEdit();
-          invalidate();
-          dispatchToast("保存成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
+    if (await add(addValues)) {
+      setAddValues(emptyValues());
+      setAddErrors(null);
+    }
   };
 
   const handleDelete = (claim: ClaimItem) => {
-    if (!claim.id) return;
-    deleteMutation.mutate(
-      { path: { id: claim.id } },
-      {
-        onSuccess: () => {
-          invalidate();
-          dispatchToast("删除成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
+    if (claim.id) void remove(claim.id);
   };
-
-  const isAddPending = createMutation.isPending;
-  const isSavePending = updateMutation.isPending;
-  const deletePendingId = deleteMutation.isPending ? deleteMutation.variables?.path?.id : null;
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
@@ -212,156 +71,25 @@ export function UserClaimsDialog({ open, onOpenChange, userId, userName }: UserC
           </DialogTitle>
           <DialogContent>
             <div className={styles.body}>
-              {/* Add new claim */}
-              <div className={styles.addRow}>
-                <Field
-                  label={"声明类型"}
-                  validationState={addErrors?.claimType ? "error" : undefined}
-                  validationMessage={addErrors?.claimType}
-                >
-                  <Input
-                    value={addValues.claimType}
-                    onChange={(_, d) => {
-                      setAddValues((v) => ({ ...v, claimType: d.value }));
-                      setAddErrors(null);
-                    }}
-                    placeholder={"声明类型"}
-                  />
-                </Field>
-                <Field
-                  label={"声明值"}
-                  validationState={addErrors?.claimValue ? "error" : undefined}
-                  validationMessage={addErrors?.claimValue}
-                >
-                  <Input
-                    value={addValues.claimValue}
-                    onChange={(_, d) => {
-                      setAddValues((v) => ({ ...v, claimValue: d.value }));
-                      setAddErrors(null);
-                    }}
-                    placeholder={"声明值"}
-                  />
-                </Field>
-                <Button
-                  appearance="primary"
-                  icon={<Add20Regular />}
-                  onClick={handleAdd}
-                  disabled={!userId || isAddPending}
-                >
-                  {"添加"}
-                </Button>
-              </div>
-
-              {/* Claims list */}
-              {claimsQuery.isLoading && <Spinner label={"加载中..."} />}
-              {claimsQuery.isError && (
-                <span>{claimsQuery.error ? String(claimsQuery.error) : ""}</span>
-              )}
-
-              {!claimsQuery.isLoading && claims.length === 0 && <span>{"暂无记录"}</span>}
-
-              {claims.length > 0 && (
-                <Table className={styles.table} size="small">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHeaderCell>{"声明类型"}</TableHeaderCell>
-                      <TableHeaderCell>{"声明值"}</TableHeaderCell>
-                      <TableHeaderCell>{""}</TableHeaderCell>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {claims.map((claim) => {
-                      const isEditing = editId === claim.id;
-                      const isDeleting = deletePendingId === claim.id;
-                      return (
-                        <TableRow key={claim.id}>
-                          <TableCell>
-                            {isEditing ? (
-                              <Field
-                                validationState={editErrors?.claimType ? "error" : undefined}
-                                validationMessage={editErrors?.claimType}
-                              >
-                                <Input
-                                  size="small"
-                                  value={editValues.claimType}
-                                  onChange={(_, d) => {
-                                    setEditValues((v) => ({ ...v, claimType: d.value }));
-                                    setEditErrors(null);
-                                  }}
-                                />
-                              </Field>
-                            ) : (
-                              (claim.claimType ?? "-")
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {isEditing ? (
-                              <Field
-                                validationState={editErrors?.claimValue ? "error" : undefined}
-                                validationMessage={editErrors?.claimValue}
-                              >
-                                <Input
-                                  size="small"
-                                  value={editValues.claimValue}
-                                  onChange={(_, d) => {
-                                    setEditValues((v) => ({ ...v, claimValue: d.value }));
-                                    setEditErrors(null);
-                                  }}
-                                />
-                              </Field>
-                            ) : (
-                              (claim.claimValue ?? "-")
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <div className={styles.actionsCell}>
-                              {isEditing ? (
-                                <>
-                                  <Button
-                                    size="small"
-                                    appearance="subtle"
-                                    icon={<Save20Regular />}
-                                    onClick={handleSaveEdit}
-                                    disabled={isSavePending}
-                                    aria-label={"保存"}
-                                  />
-                                  <Button
-                                    size="small"
-                                    appearance="subtle"
-                                    onClick={handleCancelEdit}
-                                    disabled={isSavePending}
-                                  >
-                                    {"取消"}
-                                  </Button>
-                                </>
-                              ) : (
-                                <>
-                                  <Button
-                                    size="small"
-                                    appearance="subtle"
-                                    icon={<Edit20Regular />}
-                                    onClick={() => handleStartEdit(claim)}
-                                    aria-label={"编辑"}
-                                    disabled={isDeleting}
-                                  />
-                                  <Button
-                                    size="small"
-                                    appearance="subtle"
-                                    icon={<Delete20Regular />}
-                                    onClick={() => handleDelete(claim)}
-                                    aria-label={"删除"}
-                                    disabled={isDeleting}
-                                  />
-                                </>
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              )}
+              <ClaimAddRow
+                values={addValues}
+                errors={addErrors}
+                onChange={(field, value) => {
+                  setAddValues((v) => ({ ...v, [field]: value }));
+                  setAddErrors(null);
+                }}
+                onAdd={() => void handleAdd()}
+                disabled={!userId || isAddPending}
+              />
+              <ClaimTable
+                claims={claims}
+                isLoading={claimsQuery.isLoading}
+                errorText={claimsQuery.isError ? String(claimsQuery.error ?? "") : null}
+                onSave={save}
+                onDelete={handleDelete}
+                isSavePending={isSavePending}
+                deletePendingId={deletePendingId}
+              />
             </div>
           </DialogContent>
           <DialogTrigger disableButtonEnhancement>

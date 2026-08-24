@@ -1,72 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  Button,
-  Card,
-  Input,
-  Spinner,
-  Switch,
-  Text,
-  makeStyles,
-  tokens,
-  useToastController,
-} from "@fluentui/react-components";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { useFeaturesGet, featuresGetQueryKey } from "@/api/hooks/features/useFeaturesGet";
-import { useFeaturesUpdate } from "@/api/hooks/features/useFeaturesUpdate";
-import { useFeaturesDelete } from "@/api/hooks/features/useFeaturesDelete";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import type { VoloAbpFeatureManagementFeatureDto } from "@/api/models/volo/abp/featureManagement/FeatureDto";
-
-const useStyles = makeStyles({
-  groups: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  groupCard: {
-    padding: tokens.spacingHorizontalM,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalS,
-  },
-  groupTitle: {
-    marginBottom: tokens.spacingVerticalXXS,
-  },
-  featureRow: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalXXS,
-  },
-  actions: {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: tokens.spacingHorizontalS,
-    marginTop: tokens.spacingVerticalM,
-  },
-  leftActions: {
-    display: "flex",
-    gap: tokens.spacingHorizontalS,
-  },
-});
-
 /**
- * Determine if a feature is boolean by inspecting the valueType name.
- * ABP's ToggleStringValueType uses "TOGGLESTRINGVALUE" as the name.
+ * 功能页（FeaturesPage）。
+ *
+ * 本文件只负责编排：功能组卡片列表与底部保存/重置动作；
+ * 卡片渲染见 components/FeatureGroupCard，保存/重置动作见 hooks/useFeatureActions，
+ * 助手见 utils/features，样式见 styles/features。
  */
-function isBooleanFeature(feature: VoloAbpFeatureManagementFeatureDto): boolean {
-  const name = feature.valueType?.name?.toUpperCase();
-  return name === "TOGGLESTRINGVALUE" || name === "BOOLEAN";
-}
+import { useEffect, useMemo, useState } from "react";
+import { Button, Spinner, Text } from "@fluentui/react-components";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { useFeaturesGet } from "@/api/hooks/features/useFeaturesGet";
+import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { FeatureGroupCard } from "./components/FeatureGroupCard";
+import { useFeatureActions } from "./hooks/useFeatureActions";
+import { useFeaturesStyles } from "./styles/features";
 
 export function FeaturesPage() {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
-  const { dispatchToast } = useToastController();
-  const updateMutation = useFeaturesUpdate();
-  const deleteMutation = useFeaturesDelete();
+  const styles = useFeaturesStyles();
 
-  // Host-level features (no provider).
+  // 宿主级功能（不指定提供者）
   const featuresQuery = useFeaturesGet();
 
   const [valueMap, setValueMap] = useState<Record<string, string>>({});
@@ -98,45 +49,11 @@ export function FeaturesPage() {
     setValueMap((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    const changedFeatures = Object.entries(valueMap)
-      .filter(([name, value]) => originalMap[name] !== value)
-      .map(([name, value]) => ({ name, value }));
-
-    if (changedFeatures.length === 0) {
-      dispatchToast("保存成功", { intent: "info" });
-      return;
-    }
-
-    updateMutation.mutate(
-      { body: { features: changedFeatures } },
-      {
-        onSuccess: () => {
-          void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
-          dispatchToast("保存成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  };
-
-  const handleReset = () => {
-    deleteMutation.mutate(
-      {},
-      {
-        onSuccess: () => {
-          void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
-          setResetOpen(false);
-          dispatchToast("已重置为默认值", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  };
+  const { saveFeatures, resetFeatures, isSaving, isResetting } = useFeatureActions({
+    originalMap,
+    valueMap,
+    onResetSuccess: () => setResetOpen(false),
+  });
 
   return (
     <PageLayout title={"功能"}>
@@ -150,38 +67,12 @@ export function FeaturesPage() {
         <>
           <div className={styles.groups}>
             {groups.map((group) => (
-              <Card key={group.name} className={styles.groupCard}>
-                <Text as="h2" size={500} weight="semibold" className={styles.groupTitle}>
-                  {group.displayName || group.name}
-                </Text>
-                {(group.features ?? []).map((feature) => {
-                  const featureName = feature.name ?? "";
-                  const value = valueMap[featureName] ?? "";
-                  const isBool = isBooleanFeature(feature);
-                  return (
-                    <div key={featureName} className={styles.featureRow}>
-                      {isBool ? (
-                        <Switch
-                          checked={value === "true"}
-                          onChange={(_, data) =>
-                            handleValueChange(featureName, data.checked ? "true" : "false")
-                          }
-                          label={feature.displayName || featureName}
-                        />
-                      ) : (
-                        <>
-                          <Text weight="semibold">{feature.displayName || featureName}</Text>
-                          <Input
-                            value={value}
-                            onChange={(_, data) => handleValueChange(featureName, data.value)}
-                          />
-                          {feature.description && <Text size={200}>{feature.description}</Text>}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </Card>
+              <FeatureGroupCard
+                key={group.name}
+                group={group}
+                valueMap={valueMap}
+                onValueChange={handleValueChange}
+              />
             ))}
           </div>
 
@@ -189,7 +80,7 @@ export function FeaturesPage() {
             <div className={styles.leftActions}>
               <Button onClick={() => setResetOpen(true)}>{"重置为默认值"}</Button>
             </div>
-            <Button appearance="primary" onClick={handleSave} disabled={updateMutation.isPending}>
+            <Button appearance="primary" onClick={() => void saveFeatures()} disabled={isSaving}>
               {"保存"}
             </Button>
           </div>
@@ -203,8 +94,8 @@ export function FeaturesPage() {
         description={"您确定要重置为默认设置吗？"}
         confirmLabel={"重置为默认值"}
         variant="destructive"
-        onConfirm={handleReset}
-        isPending={deleteMutation.isPending}
+        onConfirm={() => void resetFeatures()}
+        isPending={isResetting}
       />
     </PageLayout>
   );

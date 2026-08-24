@@ -1,66 +1,36 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  SearchBox,
-  makeStyles,
-  tokens,
-  useToastController,
-} from "@fluentui/react-components";
-import { Add20Regular, Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
-import { type ColumnDef } from "@tanstack/react-table";
-import { useQueryClient } from "@tanstack/react-query";
+/**
+ * 博客管理页（BlogsPage）。
+ *
+ * 本文件只负责编排：权限判定、列表查询、对话框开关状态与各子组件组装；
+ * 样式见 styles/cmsList，动作聚合见 hooks/useBlogActions，
+ * 列定义见 hooks/useBlogColumns，工具栏见 components/BlogsToolbar。
+ */
+import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import {
-  blogAdminGetListQueryOptions,
-  blogAdminGetListQueryKey,
-} from "@/api/hooks/blogAdmin/useBlogAdminGetList";
-import { useBlogAdminDelete } from "@/api/hooks/blogAdmin/useBlogAdminDelete";
-import type { VoloCmsKitAdminBlogsBlogDto as BlogDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
+import { blogAdminGetListQueryOptions } from "@/api/hooks/blogAdmin/useBlogAdminGetList";
+import type { VoloCmsKitAdminBlogsBlogDto as BlogItem } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
+import { useBlogActions } from "./hooks/useBlogActions";
+import { useBlogColumns } from "./hooks/useBlogColumns";
+import { BlogsToolbar } from "./components/BlogsToolbar";
 import { BlogFormDialog } from "./BlogFormDialog";
 
-type BlogItem = BlogDto;
-
-const useStyles = makeStyles({
-  toolbar: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    gap: tokens.spacingHorizontalM,
-    marginBottom: tokens.spacingHorizontalM,
-  },
-  filters: {
-    display: "flex",
-    flex: 1,
-    minWidth: 0,
-  },
-  actionButtons: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  actionsCell: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-});
-
 export function BlogsPage() {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
   const { isGranted } = usePermissions();
-  const { dispatchToast } = useToastController();
-  const deleteMutation = useBlogAdminDelete();
+
+  // 动作聚合：删除（内含列表失效与统一错误提示）
+  const { remove, removePending, invalidateList } = useBlogActions();
 
   const canCreate = isGranted("CmsKit.Blogs.Create");
   const canUpdate = isGranted("CmsKit.Blogs.Update");
   const canDelete = isGranted("CmsKit.Blogs.Delete");
 
+  // 对话框开关与待删除 Id
   const [formOpen, setFormOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<BlogItem | undefined>();
   const [deleteBlogId, setDeleteBlogId] = useState<string | null>(null);
@@ -93,81 +63,15 @@ export function BlogsPage() {
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     setEditingBlog(undefined);
-    void queryClient.invalidateQueries({
-      queryKey: blogAdminGetListQueryKey(),
-    });
-  }, [queryClient]);
+    invalidateList();
+  }, [invalidateList]);
 
-  const handleDeleteConfirm = useCallback(() => {
-    if (!deleteBlogId) return;
-    deleteMutation.mutate(
-      { path: { id: deleteBlogId } },
-      {
-        onSuccess: () => {
-          setDeleteBlogId(null);
-          void queryClient.invalidateQueries({
-            queryKey: blogAdminGetListQueryKey(),
-          });
-          dispatchToast("删除成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  }, [deleteBlogId, deleteMutation, queryClient, dispatchToast]);
-
-  const columns = useMemo<ColumnDef<AppTableFeatures, BlogItem>[]>(
-    () => [
-      {
-        id: "name",
-        accessorKey: "name",
-        header: "名称",
-        cell: (info) => (info.getValue() as string) || "-",
-      },
-      {
-        id: "slug",
-        accessorKey: "slug",
-        header: "Slug",
-        cell: (info) => (info.getValue() as string) || "-",
-      },
-      {
-        id: "blogPostCount",
-        accessorKey: "blogPostCount",
-        header: "文章数",
-        cell: (info) => String((info.getValue() as number | null | undefined) ?? 0),
-      },
-      {
-        id: "actions",
-        header: "操作",
-        cell: ({ row }) => (
-          <div className={styles.actionsCell}>
-            {canUpdate && (
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Edit20Regular />}
-                onClick={() => handleEdit(row.original)}
-                aria-label={"编辑"}
-                title={"编辑"}
-              />
-            )}
-            {canDelete && (
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Delete20Regular />}
-                onClick={() => row.original.id && handleDelete(row.original.id)}
-                aria-label={"删除"}
-                title={"删除"}
-              />
-            )}
-          </div>
-        ),
-      },
-    ],
-    [styles.actionsCell, canUpdate, canDelete, handleEdit, handleDelete],
-  );
+  const columns = useBlogColumns({
+    canUpdate,
+    canDelete,
+    onEdit: handleEdit,
+    onDelete: handleDelete,
+  });
 
   const table = useDataTable({
     columns,
@@ -180,34 +84,13 @@ export function BlogsPage() {
     pageCount: query.pageCount,
   });
 
-  const [searchValue, setSearchValue] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      tableState.state.onGlobalFilterChange(searchValue);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchValue, tableState.state]);
-
   return (
     <PageLayout title={"博客"}>
-      <div className={styles.toolbar}>
-        <div className={styles.filters}>
-          <SearchBox
-            placeholder={"搜索"}
-            value={searchValue}
-            onChange={(_, data) => setSearchValue(data.value)}
-            appearance="outline"
-          />
-        </div>
-        {canCreate && (
-          <div className={styles.actionButtons}>
-            <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-              {"新建博客"}
-            </Button>
-          </div>
-        )}
-      </div>
+      <BlogsToolbar
+        canCreate={canCreate}
+        onCreate={handleCreate}
+        onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+      />
 
       <DataTable
         table={table}
@@ -230,8 +113,8 @@ export function BlogsPage() {
         description={"此项将被删除！"}
         confirmLabel={"删除"}
         variant="destructive"
-        onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
+        onConfirm={() => void remove(deleteBlogId).then((ok) => ok && setDeleteBlogId(null))}
+        isPending={removePending}
       />
     </PageLayout>
   );

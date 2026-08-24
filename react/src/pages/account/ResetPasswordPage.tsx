@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 
 import { z } from "zod";
-import { Button, Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Button, Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
 import { useAppForm } from "@/components/form";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 import { useState } from "react";
+import { useAccountCardStyles } from "./styles/account";
 
 const resetPasswordSchema = z
   .object({
@@ -16,38 +18,13 @@ const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-const useStyles = makeStyles({
-  body: {
-    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  errorAlert: {
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorPaletteRedBackground1,
-    padding: tokens.spacingVerticalS,
-    fontSize: "0.875rem",
-    color: tokens.colorPaletteRedForeground3,
-  },
-  fullWidthButton: {
-    width: "100%",
-  },
-  link: {
-    fontWeight: 500,
-    color: tokens.colorBrandForegroundLink,
-  },
-});
-
 export function ResetPasswordPage() {
   const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
   const userId = params.get("userId") ?? params.get("cid") ?? "";
   const resetToken =
     params.get("resetToken") ?? params.get("token") ?? params.get("resetCode") ?? "";
   const [rootError, setRootError] = useState<string | null>(null);
-  const styles = useStyles();
+  const styles = useAccountCardStyles();
 
   const form = useAppForm({
     defaultValues: { password: "", confirmPassword: "" },
@@ -64,13 +41,8 @@ export function ResetPasswordPage() {
           },
         });
         window.location.href = "/account/login";
-      } catch (err: unknown) {
-        const msg =
-          err && typeof err === "object" && "response" in err
-            ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
-                ?.error?.message
-            : undefined;
-        setRootError(msg ?? "重置密码失败");
+      } catch (err) {
+        setRootError(extractAbpErrorMessage(err));
       }
     },
   });

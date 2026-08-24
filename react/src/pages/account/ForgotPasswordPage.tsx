@@ -1,43 +1,20 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Button, Card, CardHeader, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Button, Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
 import { useAppForm } from "@/components/form";
+import { extractAbpErrorMessage } from "@/lib/api/error";
+import { useAccountCardStyles } from "./styles/account";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),
 });
 
-const useStyles = makeStyles({
-  body: {
-    padding: `0 ${tokens.spacingHorizontalL} ${tokens.spacingVerticalL}`,
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  errorAlert: {
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorPaletteRedBackground1,
-    padding: tokens.spacingVerticalS,
-    fontSize: "0.875rem",
-    color: tokens.colorPaletteRedForeground3,
-  },
-  fullWidthButton: {
-    width: "100%",
-  },
-  link: {
-    fontWeight: 500,
-    color: tokens.colorBrandForegroundLink,
-  },
-});
-
 export function ForgotPasswordPage() {
   const [sent, setSent] = useState(false);
   const [rootError, setRootError] = useState<string | null>(null);
-  const styles = useStyles();
+  const styles = useAccountCardStyles();
 
   const form = useAppForm({
     defaultValues: { email: "" },
@@ -48,13 +25,8 @@ export function ForgotPasswordPage() {
       try {
         await accountSendPasswordResetCode({ body: { appName: "React", email: value.email } });
         setSent(true);
-      } catch (err: unknown) {
-        const msg =
-          err && typeof err === "object" && "response" in err
-            ? (err as { response?: { data?: { error?: { message?: string } } } })?.response?.data
-                ?.error?.message
-            : undefined;
-        setRootError(msg ?? "发送重置密码邮件失败");
+      } catch (err) {
+        setRootError(extractAbpErrorMessage(err));
       }
     },
   });

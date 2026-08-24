@@ -1,199 +1,35 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  Button,
-  Badge,
-  SearchBox,
-  makeStyles,
-  tokens,
-  useToastController,
-} from "@fluentui/react-components";
-import { Add20Regular, Edit20Regular, Delete20Regular, Tag20Regular } from "@fluentui/react-icons";
+/**
+ * 角色管理页（RolesPage）。
+ *
+ * 本文件只负责编排：权限判定、对话框开关状态与各子组件组装；
+ * 样式见 styles/roles，表格聚合见 hooks/useRolesTable，
+ * 动作聚合见 hooks/useRoleActions，工具栏见 components/RolesToolbar。
+ */
+import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { type ColumnDef } from "@tanstack/react-table";
-import { roleGetListQueryOptions, roleGetListQueryKey } from "@/api/hooks/role/useRoleGetList";
-import { useRoleDelete } from "@/api/hooks/role/useRoleDelete";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
+import { toFormRole, type RoleFormRole } from "./role-types";
+import type { RoleItemRow } from "./hooks/useRolesTable";
+import { useRolesTable } from "./hooks/useRolesTable";
+import { useRoleActions } from "./hooks/useRoleActions";
+import { RolesToolbar } from "./components/RolesToolbar";
 import { RoleFormDialog } from "./RoleFormDialog";
 import { RoleClaimsDialog } from "./RoleClaimsDialog";
-import { toFormRole, type RoleFormRole, type RoleItem } from "./role-types";
-
-type RoleItemRow = RoleItem;
-
-const useStyles = makeStyles({
-  toolbar: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    gap: tokens.spacingHorizontalM,
-  },
-  filters: {
-    display: "flex",
-    flex: 1,
-    flexWrap: "wrap",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-    minWidth: 0,
-  },
-  actionButtons: {
-    display: "flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-  },
-  actionsCell: {
-    display: "flex",
-    gap: tokens.spacingHorizontalXS,
-  },
-});
-
-function useRolesTable(
-  onEdit: (role: RoleItemRow) => void,
-  onDelete: (id: string) => void,
-  onManageClaims: (role: RoleItemRow) => void,
-  canManageClaims: boolean,
-) {
-  const styles = useStyles();
-
-  const tableState = useDataTableState({
-    sorting: [{ id: "name", desc: false }],
-  });
-
-  const query = useDataTableQuery<RoleItemRow, AbpGridParams>({
-    queryOptions: roleGetListQueryOptions,
-    sorting: tableState.state.sorting,
-    pagination: tableState.state.pagination,
-    globalFilter: tableState.state.globalFilter,
-  });
-
-  const columns = useMemo<ColumnDef<AppTableFeatures, RoleItemRow>[]>(
-    () => [
-      {
-        id: "name",
-        accessorKey: "name",
-        header: "角色名称",
-        cell: (info) => (info.getValue() as string) || "-",
-      },
-      {
-        id: "isDefault",
-        accessorKey: "isDefault",
-        header: "默认",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="brand" size="small">
-              {"默认"}
-            </Badge>
-          ) : (
-            "-"
-          ),
-      },
-      {
-        id: "isPublic",
-        accessorKey: "isPublic",
-        header: "公开",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="success" size="small">
-              {"公开"}
-            </Badge>
-          ) : (
-            "-"
-          ),
-      },
-      {
-        id: "isStatic",
-        accessorKey: "isStatic",
-        header: "静态",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="warning" size="small">
-              {"是"}
-            </Badge>
-          ) : (
-            "-"
-          ),
-      },
-      {
-        id: "actions",
-        header: "",
-        cell: (info) => {
-          const row = info.row.original;
-          const isStatic = row.isStatic === true;
-          const canManageClaimsRow = canManageClaims && !!row.id;
-          return (
-            <div className={styles.actionsCell}>
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Edit20Regular />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(row);
-                }}
-                aria-label={"编辑"}
-              />
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Delete20Regular />}
-                disabled={isStatic}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(row.id!);
-                }}
-                aria-label={"删除"}
-              />
-              {canManageClaimsRow && (
-                <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<Tag20Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onManageClaims(row);
-                  }}
-                  aria-label={"声明"}
-                  title={"声明"}
-                />
-              )}
-            </div>
-          );
-        },
-      },
-    ],
-    [styles.actionsCell, onEdit, onDelete, onManageClaims, canManageClaims],
-  );
-
-  const table = useDataTable({
-    data: query.data,
-    columns,
-    rowCount: query.totalCount,
-    getRowId: (row) => row.id!,
-    state: tableState.state,
-    manualPagination: true,
-    manualSorting: true,
-    pageCount: query.pageCount,
-  });
-
-  return { table, query, tableState };
-}
 
 export function RolesPage() {
-  const styles = useStyles();
-  const queryClient = useQueryClient();
-  const deleteMutation = useRoleDelete();
-  const { dispatchToast } = useToastController();
   const { isGranted } = usePermissions();
   const canManageRoleClaims = isGranted("AcroStack.IdentityClaims.RoleClaims");
 
+  // 对话框开关状态
   const [formOpen, setFormOpen] = useState(false);
   const [formRole, setFormRole] = useState<RoleFormRole | undefined>();
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
   const [claimsRole, setClaimsRole] = useState<RoleItemRow | null>(null);
+
+  // 动作聚合：删除角色（内含列表失效与统一错误提示）
+  const { remove, removePending, notifySaved } = useRoleActions();
 
   const handleCreate = useCallback(() => {
     setFormRole(undefined);
@@ -215,60 +51,22 @@ export function RolesPage() {
 
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
-    void queryClient.invalidateQueries({ queryKey: roleGetListQueryKey() });
-    dispatchToast("保存成功", { intent: "success" });
-  }, [queryClient, dispatchToast]);
+    notifySaved();
+  }, [notifySaved]);
 
-  const handleDeleteConfirm = useCallback(() => {
-    if (!deleteRoleId) return;
-    deleteMutation.mutate(
-      { path: { id: deleteRoleId } },
-      {
-        onSuccess: () => {
-          setDeleteRoleId(null);
-          void queryClient.invalidateQueries({ queryKey: roleGetListQueryKey() });
-          dispatchToast("删除成功", { intent: "success" });
-        },
-        onError: (err) => {
-          dispatchToast(String(err), { intent: "error" });
-        },
-      },
-    );
-  }, [deleteRoleId, deleteMutation, queryClient, dispatchToast]);
-
-  const { table, query, tableState } = useRolesTable(
-    handleEdit,
-    handleDelete,
-    handleManageClaims,
-    canManageRoleClaims,
-  );
-
-  const [searchValue, setSearchValue] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      tableState.state.onGlobalFilterChange(searchValue);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchValue]);
+  const { table, query, tableState } = useRolesTable({
+    onEdit: handleEdit,
+    onDelete: handleDelete,
+    onManageClaims: handleManageClaims,
+    canManageClaims: canManageRoleClaims,
+  });
 
   return (
     <PageLayout title={"角色"}>
-      <div className={styles.toolbar}>
-        <div className={styles.filters}>
-          <SearchBox
-            placeholder={"搜索"}
-            value={searchValue}
-            onChange={(_, data) => setSearchValue(data.value)}
-            appearance="outline"
-          />
-        </div>
-        <div className={styles.actionButtons}>
-          <Button appearance="primary" icon={<Add20Regular />} onClick={handleCreate}>
-            {"新角色"}
-          </Button>
-        </div>
-      </div>
+      <RolesToolbar
+        onCreate={handleCreate}
+        onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+      />
 
       <DataTable
         table={table}
@@ -302,8 +100,8 @@ export function RolesPage() {
         description={"确定要删除此角色吗？"}
         confirmLabel={"删除"}
         variant="destructive"
-        onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
+        onConfirm={() => void remove(deleteRoleId).then((ok) => ok && setDeleteRoleId(null))}
+        isPending={removePending}
       />
     </PageLayout>
   );
