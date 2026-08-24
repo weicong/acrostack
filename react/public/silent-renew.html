@@ -8,14 +8,30 @@
   <body>
     <script>
       (function () {
-        var config = {
-          authority: "https://localhost:/",
+        var FALLBACK = {
+          authority: "https://localhost:44320/",
           client_id: "AcroStack_App",
-          redirect_uri: window.location.origin + "/silent-renew.html",
           scope: "offline_access AcroStack",
-          response_type: "code",
         };
-        new Oidc.UserManager(config).signinSilentCallback();
+        fetch("/dynamic-env.json", { cache: "no-store" })
+          .then(function (res) {
+            return res.ok ? res.json() : null;
+          })
+          .catch(function () {
+            return null;
+          })
+          .then(function (env) {
+            var oauth = (env && env.oAuthConfig) || {};
+            var authority = oauth.issuer || FALLBACK.authority;
+            if (authority.charAt(authority.length - 1) !== "/") authority += "/";
+            new Oidc.UserManager({
+              authority: authority,
+              client_id: oauth.clientId || FALLBACK.client_id,
+              redirect_uri: window.location.origin + "/silent-renew.html",
+              scope: oauth.scope || FALLBACK.scope,
+              response_type: "code",
+            }).signinSilentCallback();
+          });
       })();
     </script>
   </body>
