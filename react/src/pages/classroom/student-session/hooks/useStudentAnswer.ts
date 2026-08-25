@@ -3,8 +3,8 @@
  */
 import { useCallback, useState } from "react";
 import type { useToastController } from "@fluentui/react-components";
-import { submitAnswer } from "../utils/studentApi";
-import { classroomErrorMessage } from "../utils/studentApi";
+import { submitAnswer } from "../../shared/utils/studentApi";
+import { classroomErrorMessage } from "../../shared/utils/studentApi";
 
 interface UseStudentAnswerOptions {
   sessionId: string;

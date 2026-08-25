@@ -32,14 +32,14 @@ import {
 } from "@fluentui/react-components";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { useStudentSessionStyles } from "./styles/studentSession";
-import { useServerClockCountdown } from "./hooks/useServerClockCountdown";
+import { useServerClockCountdown } from "../shared/hooks/useServerClockCountdown";
 import { useStudentAnswer } from "./hooks/useStudentAnswer";
 import { useStudentHistory } from "./hooks/useStudentHistory";
 import { useStudentRealtime } from "./hooks/useStudentRealtime";
-import { ConnectionBadge } from "./components/ConnectionBadge";
+import { ConnectionBadge } from "../shared/components/ConnectionBadge";
 import { HistoryView } from "./components/HistoryView";
-import { ClassSessionStatusValue, classSessionStatusLabel } from "./constants/classroom";
-import { clearStudentSession, loadStudentSession } from "./utils/studentSession";
+import { ClassSessionStatusValue, classSessionStatusLabel } from "../shared/constants/classroom";
+import { clearStudentSession, loadStudentSession } from "../shared/utils/studentSession";
 import { trueFalseLabel } from "./utils/answerFormat";
 
 export function StudentSessionPage() {

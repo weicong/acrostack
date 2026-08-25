@@ -15,8 +15,8 @@ import type { RoleItemRow } from "./hooks/useRolesTable";
 import { useRolesTable } from "./hooks/useRolesTable";
 import { useRoleActions } from "./hooks/useRoleActions";
 import { RolesToolbar } from "./components/RolesToolbar";
-import { RoleFormDialog } from "./RoleFormDialog";
-import { RoleClaimsDialog } from "./RoleClaimsDialog";
+import { RoleFormDialog } from "./components/RoleFormDialog";
+import { RoleClaimsDialog } from "./components/RoleClaimsDialog";
 
 export function RolesPage() {
   const { isGranted } = usePermissions();

@@ -16,7 +16,7 @@ import {
 import { useMenuItemAdminDelete } from "@/api/hooks/menuItemAdmin/useMenuItemAdminDelete";
 import type { VoloCmsKitAdminMenusMenuItemWithDetailsDto as MenuItemDto } from "@/api/models/volo/cmsKit/admin/menus/MenuItemWithDetailsDto";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { MenuItemFormDialog } from "./MenuItemFormDialog";
+import { MenuItemFormDialog } from "./components/MenuItemFormDialog";
 import { buildMenuTree, flattenTreeForParentOptions } from "./utils/menuTree";
 import { MenuTreePane } from "./components/MenuTreePane";
 import { useMenusStyles } from "./styles/menus";

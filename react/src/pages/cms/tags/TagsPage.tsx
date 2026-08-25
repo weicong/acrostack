@@ -18,7 +18,7 @@ import type { VoloCmsKitTagsTagDto as TagItem } from "@/api/models/volo/cmsKit/t
 import { useTagActions } from "./hooks/useTagActions";
 import { useTagColumns } from "./hooks/useTagColumns";
 import { TagsToolbar } from "./components/TagsToolbar";
-import { TagFormDialog } from "./TagFormDialog";
+import { TagFormDialog } from "./components/TagFormDialog";
 
 export function TagsPage() {
   const { isGranted } = usePermissions();

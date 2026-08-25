@@ -2,9 +2,12 @@
  * 当前题卡片：题干、选项（含正确答案标记）、解析与倒计时。
  */
 import { Card, Text, Title2, Title3, tokens } from "@fluentui/react-components";
-import { ClassSessionStatusValue, SessionQuestionStatusValue } from "../constants/classroom";
-import { questionTypeLabel } from "../constants/question";
-import { formatCountdown } from "../hooks/useServerClockCountdown";
+import {
+  ClassSessionStatusValue,
+  SessionQuestionStatusValue,
+} from "../../shared/constants/classroom";
+import { questionTypeLabel } from "../../shared/constants/question";
+import { formatCountdown } from "../../shared/hooks/useServerClockCountdown";
 import { useTeacherDashboardStyles } from "../styles/teacherDashboard";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 

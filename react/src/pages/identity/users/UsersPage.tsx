@@ -15,8 +15,8 @@ import type { UserItem } from "./hooks/useUsersTable";
 import { useUsersTable } from "./hooks/useUsersTable";
 import { useUserActions } from "./hooks/useUserActions";
 import { UsersToolbar } from "./components/UsersToolbar";
-import { UserFormDialog } from "./UserFormDialog";
-import { UserClaimsDialog } from "./UserClaimsDialog";
+import { UserFormDialog } from "./components/UserFormDialog";
+import { UserClaimsDialog } from "./components/UserClaimsDialog";
 
 export function UsersPage() {
   const { isGranted } = usePermissions();

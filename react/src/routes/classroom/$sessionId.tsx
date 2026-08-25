@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as classroomRoute } from "./route";
-import { TeacherDashboardPage } from "@/pages/classroom/TeacherDashboardPage";
+import { TeacherDashboardPage } from "@/pages/classroom/teacher-dashboard/TeacherDashboardPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 
 /** 教师驾驶舱（/classroom/$sessionId）：实时统计 + 课堂控制 + 学员列表。

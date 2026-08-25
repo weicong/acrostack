@@ -3,7 +3,7 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import type { ClassroomDtosStudentAnswerHistoryDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryDto";
-import { getMyAnswerHistory, classroomErrorMessage } from "../utils/studentApi";
+import { getMyAnswerHistory, classroomErrorMessage } from "../../shared/utils/studentApi";
 
 interface UseStudentHistoryOptions {
   sessionId: string;

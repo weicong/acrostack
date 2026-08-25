@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   useId,
 } from "@fluentui/react-components";
-import type { BookFormBook } from "./types/book";
+import type { BookFormBook } from "../types/book";
 import { BookForm } from "./BookForm";
 
 // ── Props ───────────────────────────────────────────────────────────

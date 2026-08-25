@@ -28,19 +28,19 @@ import {
   ClassroomClientMethods,
   ClassSessionStatusValue,
   classSessionStatusLabel,
-} from "./constants/classroom";
+} from "../shared/constants/classroom";
 import type {
   ClassroomEventBase,
   DashboardUpdatedEvent,
   ParticipantChangedEvent,
-} from "./types/classroom-events";
-import { buildTeacherHubConnection } from "./utils/classroomHub";
+} from "../shared/types/classroom-events";
+import { buildTeacherHubConnection } from "../shared/utils/classroomHub";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { useTeacherDashboardStyles } from "./styles/teacherDashboard";
 import { useSessionControl } from "./hooks/useSessionControl";
-import { useServerClockCountdown } from "./hooks/useServerClockCountdown";
-import { ConnectionBadge, type ConnectionState } from "./components/ConnectionBadge";
+import { useServerClockCountdown } from "../shared/hooks/useServerClockCountdown";
+import { ConnectionBadge, type ConnectionState } from "../shared/components/ConnectionBadge";
 import { ControlsCard } from "./components/ControlsCard";
 import { CurrentQuestionCard } from "./components/CurrentQuestionCard";
 import { LiveStatisticsCard } from "./components/LiveStatisticsCard";

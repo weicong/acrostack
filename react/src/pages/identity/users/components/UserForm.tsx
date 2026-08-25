@@ -5,8 +5,8 @@ import { useUserCreate } from "@/api/hooks/user/useUserCreate";
 import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
 import { useUserGetAssignableRoles } from "@/api/hooks/user/useUserGetAssignableRoles";
 import { useUserGetRoles } from "@/api/hooks/user/useUserGetRoles";
-import type { UserFormUser } from "./types/user";
-import { createSchema, updateSchema } from "./user-schemas";
+import type { UserFormUser } from "../types/user";
+import { createSchema, updateSchema } from "../schemas/user";
 
 // ── Props ───────────────────────────────────────────────────────────
 

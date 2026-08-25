@@ -7,7 +7,7 @@ import { Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { AppTableFeatures } from "@/components/data-table/useDataTable";
 import type { VoloCmsKitTagsTagDto as TagItem } from "@/api/models/volo/cmsKit/tags/TagDto";
-import { useCmsListStyles } from "../styles/cmsList";
+import { useCmsListStyles } from "../../shared/styles/cmsList";
 
 interface UseTagColumnsOptions {
   canUpdate: boolean;

@@ -3,7 +3,7 @@
  */
 import { Badge, Card, Text, Title3 } from "@fluentui/react-components";
 import type { ClassroomDtosParticipantStateDto } from "@/api/models/classroom/dtos/ParticipantStateDto";
-import { onlineStatusLabel, participantAnswerStateLabel } from "../constants/classroom";
+import { onlineStatusLabel, participantAnswerStateLabel } from "../../shared/constants/classroom";
 import { useTeacherDashboardStyles } from "../styles/teacherDashboard";
 
 export function ParticipantsCard({

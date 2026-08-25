@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
-import { BookFormDialog } from "./BookFormDialog";
+import { BookFormDialog } from "./components/BookFormDialog";
 import { toFormBook, type BookFormBook, type BookListItem } from "./types/book";
 import { bookGetListQueryKey } from "@/api/hooks/book/useBookGetList";
 import { Route } from "@/routes/admin/books";

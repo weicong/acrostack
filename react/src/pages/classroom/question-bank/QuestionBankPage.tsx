@@ -36,7 +36,7 @@ import { Add20Regular, Delete20Regular, Edit20Regular } from "@fluentui/react-ic
 import { questionGetList } from "@/api/clients/question/questionGetList";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { questionTypeLabel } from "./constants/question";
+import { questionTypeLabel } from "../shared/constants/question";
 import { useQuestionActions } from "./hooks/useQuestionActions";
 import { QuestionFormDialog } from "./components/QuestionFormDialog";
 import { QuestionDeleteDialog } from "./components/QuestionDeleteDialog";

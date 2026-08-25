@@ -14,7 +14,10 @@ import { useClassSessionPublishAnswer } from "@/api/hooks/classSession/useClassS
 import { useClassSessionFinish } from "@/api/hooks/classSession/useClassSessionFinish";
 import { useClassSessionCreatePresentationToken } from "@/api/hooks/classSession/useClassSessionCreatePresentationToken";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { ClassSessionStatusValue, SessionQuestionStatusValue } from "../constants/classroom";
+import {
+  ClassSessionStatusValue,
+  SessionQuestionStatusValue,
+} from "../../shared/constants/classroom";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 
 export interface UseSessionControlOptions {

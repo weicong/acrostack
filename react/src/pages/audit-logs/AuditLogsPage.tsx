@@ -22,7 +22,7 @@ import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/u
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
 import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGetList";
 import type { AcroStackAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/auditLogging/AuditLogDto";
-import { AuditLogStatisticsPanel } from "./AuditLogStatisticsPanel";
+import { AuditLogStatisticsPanel } from "./components/AuditLogStatisticsPanel";
 import { useAuditLogsStyles } from "./styles/auditLogs";
 import { URL_DISPLAY_MAX_LENGTH } from "./constants/auditLogs";
 import { statusBadgeColor } from "./utils/auditLogs";

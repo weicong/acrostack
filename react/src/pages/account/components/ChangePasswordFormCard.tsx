@@ -2,7 +2,7 @@ import { Card, Text, useToastController } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { passwordSchema } from "../profile-schemas";
+import { passwordSchema } from "../schemas/profile";
 import { useProfileStyles } from "../styles/profile";
 
 /** 修改密码卡片：改密动作自包含，成功后清空表单。 */

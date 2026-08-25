@@ -13,15 +13,12 @@ import {
 } from "@/api/hooks/auditLog/useAuditLogGetStatistics";
 import type { AcroStackAuditLoggingAuditLogStatisticsDto as AuditLogStatisticsDto } from "@/api/models/acroStack/auditLogging/AuditLogStatisticsDto";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import {
-  AuditStatisticsFilterBar,
-  type AuditLogDateRange,
-} from "./components/AuditStatisticsFilterBar";
-import { AuditStatisticsSummaryCards } from "./components/AuditStatisticsSummaryCards";
-import { AuditHttpMethodDistribution } from "./components/AuditHttpMethodDistribution";
-import { AuditUrlStatisticListCard } from "./components/AuditUrlStatisticListCard";
-import { useAuditStatisticsStyles } from "./styles/auditStatistics";
-import { defaultEndDate, defaultStartDate } from "./utils/auditStatistics";
+import { AuditStatisticsFilterBar, type AuditLogDateRange } from "./AuditStatisticsFilterBar";
+import { AuditStatisticsSummaryCards } from "./AuditStatisticsSummaryCards";
+import { AuditHttpMethodDistribution } from "./AuditHttpMethodDistribution";
+import { AuditUrlStatisticListCard } from "./AuditUrlStatisticListCard";
+import { useAuditStatisticsStyles } from "../styles/auditStatistics";
+import { defaultEndDate, defaultStartDate } from "../utils/auditStatistics";
 
 interface AuditLogStatisticsPanelProps {
   /** 预留：按租户/键范围调整返回条数上限；当前未使用。 */

@@ -3,8 +3,8 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
 import { useRoleUpdate } from "@/api/hooks/role/useRoleUpdate";
-import type { RoleFormRole } from "./types/role";
-import { createSchema, updateSchema } from "./role-schemas";
+import type { RoleFormRole } from "../types/role";
+import { createSchema, updateSchema } from "../schemas/role";
 
 // ── Props ───────────────────────────────────────────────────────────
 

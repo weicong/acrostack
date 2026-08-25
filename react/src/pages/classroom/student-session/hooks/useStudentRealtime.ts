@@ -5,15 +5,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HubConnection } from "@microsoft/signalr";
 import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dtos/StudentSnapshotDto";
-import { ClassroomClientMethods, ClassSessionStatusValue } from "../constants/classroom";
+import { ClassroomClientMethods, ClassSessionStatusValue } from "../../shared/constants/classroom";
 import type {
   AnswerPublishedEvent,
   QuestionOpenedEvent,
   StatisticsPublishedEvent,
-} from "../types/classroom-events";
-import { buildClassroomTokenHubConnection } from "../utils/classroomHub";
-import { getStudentSnapshot, classroomErrorMessage } from "../utils/studentApi";
-import type { ConnectionState } from "../components/ConnectionBadge";
+} from "../../shared/types/classroom-events";
+import { buildClassroomTokenHubConnection } from "../../shared/utils/classroomHub";
+import { getStudentSnapshot, classroomErrorMessage } from "../../shared/utils/studentApi";
+import type { ConnectionState } from "../../shared/components/ConnectionBadge";
 
 interface UseStudentRealtimeOptions {
   sessionId: string;

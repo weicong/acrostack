@@ -4,7 +4,7 @@ import { useAppForm } from "@/components/form";
 import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { profileSchema } from "../profile-schemas";
+import { profileSchema } from "../schemas/profile";
 import { useProfileStyles } from "../styles/profile";
 
 /** 个人设置卡片：资料查询与更新自包含。 */

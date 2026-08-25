@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as identityRoute } from "./route";
-import { ClaimTypesPage } from "@/pages/identity/ClaimTypesPage";
+import { ClaimTypesPage } from "@/pages/identity/claim-types/ClaimTypesPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { TagMultiple20Regular } from "@fluentui/react-icons";

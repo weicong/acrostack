@@ -23,7 +23,7 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { questionTypeLabel } from "../constants/question";
+import { questionTypeLabel } from "../../shared/constants/question";
 import type { QuestionActions } from "../hooks/useQuestionActions";
 import { useQuestionBankStyles } from "../styles/questionBank";
 import { emptyForm, formFromQuestion, formToBody, validateForm } from "../utils/questionForm";

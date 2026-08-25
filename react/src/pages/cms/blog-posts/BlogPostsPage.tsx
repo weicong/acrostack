@@ -20,7 +20,7 @@ import type { BlogPostListParams } from "./types/blogPosts";
 import { useBlogPostActions } from "./hooks/useBlogPostActions";
 import { useBlogPostColumns } from "./hooks/useBlogPostColumns";
 import { BlogPostsToolbar } from "./components/BlogPostsToolbar";
-import { BlogPostFormDialog } from "./BlogPostFormDialog";
+import { BlogPostFormDialog } from "./components/BlogPostFormDialog";
 
 export function BlogPostsPage() {
   const { isGranted } = usePermissions();

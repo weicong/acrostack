@@ -1,6 +1,6 @@
 import { Button, Field, Input } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import type { ClaimFormValues } from "../claim-schemas";
+import type { ClaimFormValues } from "../schemas/claim";
 import { useClaimsStyles } from "../styles/claims";
 
 type ClaimAddRowProps = {

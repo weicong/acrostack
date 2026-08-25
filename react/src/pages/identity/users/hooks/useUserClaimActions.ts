@@ -5,7 +5,7 @@ import { useIdentityUserClaimCreate } from "@/api/hooks/identityUserClaim/useIde
 import { useIdentityUserClaimUpdate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimUpdate";
 import { useIdentityUserClaimDelete } from "@/api/hooks/identityUserClaim/useIdentityUserClaimDelete";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import type { ClaimFormValues } from "../claim-schemas";
+import type { ClaimFormValues } from "../../shared/schemas/claim";
 
 /**
  * 用户声明增删改动作聚合：

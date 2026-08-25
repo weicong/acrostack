@@ -5,7 +5,7 @@ import { useIdentityRoleClaimCreate } from "@/api/hooks/identityRoleClaim/useIde
 import { useIdentityRoleClaimUpdate } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimUpdate";
 import { useIdentityRoleClaimDelete } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimDelete";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import type { ClaimFormValues } from "../claim-schemas";
+import type { ClaimFormValues } from "../../shared/schemas/claim";
 
 /**
  * 角色声明增删改动作聚合：

@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { Button, SearchBox } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { useCmsListStyles } from "../styles/cmsList";
+import { useCmsListStyles } from "../../shared/styles/cmsList";
 
 interface PagesToolbarProps {
   canCreate: boolean;

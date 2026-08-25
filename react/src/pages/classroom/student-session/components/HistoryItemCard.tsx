@@ -3,8 +3,8 @@
  */
 import { Badge, Card, Text } from "@fluentui/react-components";
 import type { ClassroomDtosStudentAnswerHistoryItemDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryItemDto";
-import { SessionQuestionStatusValue } from "../constants/classroom";
-import { questionTypeLabel } from "../constants/question";
+import { SessionQuestionStatusValue } from "../../shared/constants/classroom";
+import { questionTypeLabel } from "../../shared/constants/question";
 import { trueFalseLabel } from "../utils/answerFormat";
 import { useStudentSessionStyles } from "../styles/studentSession";
 

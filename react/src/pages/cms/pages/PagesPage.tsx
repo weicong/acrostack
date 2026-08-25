@@ -18,7 +18,7 @@ import type { VoloCmsKitAdminPagesPageDto as PageItem } from "@/api/models/volo/
 import { usePageActions } from "./hooks/usePageActions";
 import { usePageColumns } from "./hooks/usePageColumns";
 import { PagesToolbar } from "./components/PagesToolbar";
-import { PageFormDialog } from "./PageFormDialog";
+import { PageFormDialog } from "./components/PageFormDialog";
 
 export function PagesPage() {
   const { isGranted } = usePermissions();

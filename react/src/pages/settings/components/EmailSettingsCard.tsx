@@ -20,7 +20,7 @@ import {
 } from "@/api/hooks/emailSettings/useEmailSettingsGet";
 import { useEmailSettingsUpdate } from "@/api/hooks/emailSettings/useEmailSettingsUpdate";
 import { extractAbpErrorMessage } from "@/lib/api/error";
-import { emailSchema } from "../email-settings-schemas";
+import { emailSchema } from "../schemas/emailSettings";
 import { useSettingsStyles } from "../styles/settings";
 
 export function EmailSettingsCard() {

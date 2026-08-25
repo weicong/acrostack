@@ -8,10 +8,10 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HubConnection } from "@microsoft/signalr";
-import { ClassroomClientMethods } from "../constants/classroom";
-import type { ClassroomEventBase } from "../types/classroom-events";
-import { buildClassroomTokenHubConnection } from "../utils/classroomHub";
-import { getPresentationSnapshot } from "../utils/studentApi";
+import { ClassroomClientMethods } from "../../shared/constants/classroom";
+import type { ClassroomEventBase } from "../../shared/types/classroom-events";
+import { buildClassroomTokenHubConnection } from "../../shared/utils/classroomHub";
+import { getPresentationSnapshot } from "../../shared/utils/studentApi";
 import { extractAbpErrorMessage } from "@/lib/api/error";
 import type { ClassroomDtosPresentationSnapshotDto } from "@/api/models/classroom/dtos/PresentationSnapshotDto";
 

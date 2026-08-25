@@ -18,7 +18,7 @@ import type {
 import { useTenantsTable } from "./hooks/useTenantsTable";
 import { useTenantActions } from "./hooks/useTenantActions";
 import { TenantsToolbar } from "./components/TenantsToolbar";
-import { TenantFormDialog } from "./TenantFormDialog";
+import { TenantFormDialog } from "./components/TenantFormDialog";
 
 type TenantFormTenant = Pick<TenantItem, "id" | "name" | "concurrencyStamp">;
 

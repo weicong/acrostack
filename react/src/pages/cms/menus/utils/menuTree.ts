@@ -2,7 +2,7 @@
  * 菜单树构建与父级选项扁平化助手。
  */
 import type { VoloCmsKitAdminMenusMenuItemWithDetailsDto as MenuItemDto } from "@/api/models/volo/cmsKit/admin/menus/MenuItemWithDetailsDto";
-import type { MenuItemParentOption } from "../MenuItemFormDialog";
+import type { MenuItemParentOption } from "../components/MenuItemFormDialog";
 
 export interface MenuTreeNode {
   item: MenuItemDto;

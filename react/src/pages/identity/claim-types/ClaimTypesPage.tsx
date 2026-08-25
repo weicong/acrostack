@@ -15,7 +15,7 @@ import type { ClaimTypeRow } from "./hooks/useClaimTypesTable";
 import { useClaimTypesTable } from "./hooks/useClaimTypesTable";
 import { useClaimTypeActions } from "./hooks/useClaimTypeActions";
 import { ClaimTypesToolbar } from "./components/ClaimTypesToolbar";
-import { ClaimTypeFormDialog } from "./ClaimTypeFormDialog";
+import { ClaimTypeFormDialog } from "./components/ClaimTypeFormDialog";
 
 export function ClaimTypesPage() {
   const { isGranted } = usePermissions();

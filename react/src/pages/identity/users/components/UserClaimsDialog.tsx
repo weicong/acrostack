@@ -9,12 +9,12 @@ import {
   DialogTrigger,
 } from "@fluentui/react-components";
 import { useIdentityUserClaimGetList } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
-import { ClaimAddRow } from "./components/ClaimAddRow";
-import { ClaimTable } from "./components/ClaimTable";
-import type { ClaimItem } from "./types/claim";
-import { useUserClaimActions } from "./hooks/useUserClaimActions";
-import { useClaimsStyles } from "./styles/claims";
-import { emptyValues, validate } from "./utils/claimsForm";
+import { ClaimAddRow } from "../../shared/components/ClaimAddRow";
+import { ClaimTable } from "../../shared/components/ClaimTable";
+import type { ClaimItem } from "../../shared/types/claim";
+import { useUserClaimActions } from "../hooks/useUserClaimActions";
+import { useClaimsStyles } from "../../shared/styles/claims";
+import { emptyValues, validate } from "../../shared/utils/claimsForm";
 
 type UserClaimsDialogProps = {
   open: boolean;

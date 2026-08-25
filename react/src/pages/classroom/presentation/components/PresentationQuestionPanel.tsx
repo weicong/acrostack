@@ -3,7 +3,7 @@
  * 匿名选项分布条形图与正确答案/解析。
  * 纯展示组件，所有数据经 props 显式传入。
  */
-import { SessionQuestionStatusValue } from "../constants/classroom";
+import { SessionQuestionStatusValue } from "../../shared/constants/classroom";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { usePresentationStyles } from "../styles/presentation";
 

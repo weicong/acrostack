@@ -1,5 +1,5 @@
-import { claimSchema } from "../claim-schemas";
-import type { ClaimFormValues } from "../claim-schemas";
+import { claimSchema } from "../schemas/claim";
+import type { ClaimFormValues } from "../schemas/claim";
 
 export function emptyValues(): ClaimFormValues {
   return { claimType: "", claimValue: "" };

@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as adminRoute } from "../route";
-import { BlogsPage } from "@/pages/cms/BlogsPage";
+import { BlogsPage } from "@/pages/cms/blogs/BlogsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { News20Regular } from "@fluentui/react-icons";

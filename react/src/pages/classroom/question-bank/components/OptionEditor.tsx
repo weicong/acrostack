@@ -4,7 +4,7 @@
  */
 import { Button, Checkbox, Input, Radio } from "@fluentui/react-components";
 import { Delete20Regular } from "@fluentui/react-icons";
-import { MAX_OPTIONS, OPTION_KEYS } from "../constants/question";
+import { MAX_OPTIONS, OPTION_KEYS } from "../../shared/constants/question";
 import { useQuestionBankStyles } from "../styles/questionBank";
 import type { OptionRow } from "../types/question";
 

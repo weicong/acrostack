@@ -18,7 +18,7 @@ import type { VoloCmsKitAdminBlogsBlogDto as BlogItem } from "@/api/models/volo/
 import { useBlogActions } from "./hooks/useBlogActions";
 import { useBlogColumns } from "./hooks/useBlogColumns";
 import { BlogsToolbar } from "./components/BlogsToolbar";
-import { BlogFormDialog } from "./BlogFormDialog";
+import { BlogFormDialog } from "./components/BlogFormDialog";
 
 export function BlogsPage() {
   const { isGranted } = usePermissions();

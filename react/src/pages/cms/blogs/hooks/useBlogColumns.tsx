@@ -7,7 +7,7 @@ import { Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { AppTableFeatures } from "@/components/data-table/useDataTable";
 import type { VoloCmsKitAdminBlogsBlogDto as BlogItem } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
-import { useCmsListStyles } from "../styles/cmsList";
+import { useCmsListStyles } from "../../shared/styles/cmsList";
 
 interface UseBlogColumnsOptions {
   canUpdate: boolean;

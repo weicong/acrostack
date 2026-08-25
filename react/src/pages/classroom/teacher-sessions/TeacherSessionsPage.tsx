@@ -25,7 +25,7 @@ import {
   Text,
   tokens,
 } from "@fluentui/react-components";
-import { ClassSessionStatusValue, classSessionStatusLabel } from "./constants/classroom";
+import { ClassSessionStatusValue, classSessionStatusLabel } from "../shared/constants/classroom";
 import { useTeacherSessionsStyles } from "./styles/teacherSessions";
 import { TeacherSessionsToolbar } from "./components/TeacherSessionsToolbar";
 import { useTeacherSessionsTable } from "./hooks/useTeacherSessionsTable";

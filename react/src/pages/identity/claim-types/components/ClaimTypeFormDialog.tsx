@@ -14,8 +14,8 @@ import {
 import { useAppForm } from "@/components/form";
 import { useIdentityClaimTypeCreate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeCreate";
 import { useIdentityClaimTypeUpdate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeUpdate";
-import type { ClaimTypeFormSeed } from "./types/claimType";
-import { createClaimTypeSchema, updateClaimTypeSchema } from "./claim-type-schemas";
+import type { ClaimTypeFormSeed } from "../types/claimType";
+import { createClaimTypeSchema, updateClaimTypeSchema } from "../schemas/claimType";
 
 // Mirrors Volo.Abp.Identity.IdentityClaimValueType enum (int32).
 const CLAIM_VALUE_TYPE_OPTIONS = [

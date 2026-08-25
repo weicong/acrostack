@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as presentationRoute } from "./route";
-import { PresentationPage } from "@/pages/classroom/PresentationPage";
+import { PresentationPage } from "@/pages/classroom/presentation/PresentationPage";
 
 /**
  * 投屏页（/presentation/$sessionId?t=token）。

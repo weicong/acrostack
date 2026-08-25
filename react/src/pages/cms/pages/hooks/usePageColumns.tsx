@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { AppTableFeatures } from "@/components/data-table/useDataTable";
 import type { VoloCmsKitAdminPagesPageDto as PageItem } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
-import { useCmsListStyles } from "../styles/cmsList";
+import { useCmsListStyles } from "../../shared/styles/cmsList";
 
 interface UsePageColumnsOptions {
   canUpdate: boolean;

@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Route as identityRoute } from "./route";
-import { PermissionsPage } from "@/pages/identity/PermissionsPage";
+import { PermissionsPage } from "@/pages/identity/permissions/PermissionsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Shield20Regular } from "@fluentui/react-icons";
