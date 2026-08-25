@@ -19,8 +19,26 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
-import { Badge, Button, Card, Spinner, Text, Title2 } from "@fluentui/react-components";
-import { Copy20Regular, ProjectionScreen20Regular } from "@fluentui/react-icons";
+import {
+  Badge,
+  Button,
+  Card,
+  Spinner,
+  Text,
+  Title2,
+  mergeClasses,
+} from "@fluentui/react-components";
+import type { ComponentProps } from "react";
+
+type BadgeColor = NonNullable<ComponentProps<typeof Badge>["color"]>;
+import {
+  Board20Regular,
+  Copy20Regular,
+  Link20Regular,
+  PeopleTeam20Regular,
+  ProjectionScreen20Regular,
+} from "@fluentui/react-icons";
+import { formatCountdown } from "../shared/hooks/useServerClockCountdown";
 import type { HubConnection } from "@microsoft/signalr";
 import { useClassSessionGetSnapshot } from "@/api/hooks/classSession/useClassSessionGetSnapshot";
 import { extractAbpErrorMessage } from "@/lib/api/error";
@@ -176,6 +194,15 @@ export function TeacherDashboardPage() {
     clockOffsetRef,
   );
 
+  // 倒计时总时长（openedAt→endsAt），用于进度条比例
+  const countdownTotal = (() => {
+    const openedAt = snapshot?.currentQuestion?.openedAt;
+    const endsAt = snapshot?.currentQuestion?.endsAt;
+    if (!openedAt || !endsAt) return null;
+    const ms = Date.parse(endsAt) - Date.parse(openedAt);
+    return Number.isFinite(ms) && ms > 0 ? Math.round(ms / 1000) : null;
+  })();
+
   const status = snapshot?.status ?? 0;
   const question: ClassroomDtosQuestionViewDto | null = snapshot?.currentQuestion?.question ?? null;
   const questionStatus = snapshot?.currentQuestion?.status ?? 0;
@@ -192,6 +219,24 @@ export function TeacherDashboardPage() {
     classroomCode: snapshot?.classroomCode,
     refreshSnapshot,
   });
+
+  const statusColor: BadgeColor =
+    status === ClassSessionStatusValue.Finished
+      ? "success"
+      : status === ClassSessionStatusValue.Answering
+        ? "brand"
+        : status === ClassSessionStatusValue.Explaining
+          ? "warning"
+          : status === ClassSessionStatusValue.Waiting
+            ? "informative"
+            : "subtle";
+
+  const showCountdown = control.hasOpenQuestion && remainingSeconds !== null;
+  const totalParticipants = dashboard?.totalParticipants ?? 0;
+  const countdownPct =
+    showCountdown && countdownTotal
+      ? Math.max(0, Math.min(100, (remainingSeconds! / countdownTotal) * 100))
+      : 0;
 
   if (loadError && !snapshot) {
     return (
@@ -211,70 +256,152 @@ export function TeacherDashboardPage() {
     return (
       <div className={styles.page}>
         <div className={styles.center}>
-          <Spinner />
+          <Spinner size="large" />
           <Text block>正在加载驾驶舱…</Text>
         </div>
       </div>
     );
   }
 
+  const questionCount = snapshot.questionCount ?? 0;
+  const currentQuestionNumber = snapshot.currentQuestionNumber ?? 0;
+
   return (
     <div className={styles.page}>
-      {/* 头部：课堂码 + 状态 + 连接 */}
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <span className={styles.classroomCode}>{snapshot.classroomCode ?? "—"}</span>
-          <Badge
-            appearance="filled"
-            color={status === ClassSessionStatusValue.Finished ? "subtle" : "brand"}
-          >
-            {classSessionStatusLabel[status] ?? "未知"}
-          </Badge>
-          <ConnectionBadge state={connectionState} />
+      {/* Hero 顶条：深色渐变 + 光斑 + 课堂码 + 状态 + 进度点 + 大倒计时进度条 + 操作 */}
+      <div className={styles.heroBar}>
+        <div className={styles.heroBlob + " " + styles.heroBlobA} />
+        <div className={styles.heroBlob + " " + styles.heroBlobB} />
+        <div className={styles.heroGrid} />
+        <div className={styles.heroStripe} />
+        <div className={styles.heroContent}>
+          <div className={styles.heroLeft}>
+            <span className={styles.heroCodeLabel}>课堂码</span>
+            <div className={styles.heroLeftTop}>
+              <span className={styles.classroomCode}>{snapshot.classroomCode ?? "—"}</span>
+              <Badge appearance="filled" color={statusColor}>
+                {classSessionStatusLabel[status] ?? "未知"}
+              </Badge>
+              <ConnectionBadge state={connectionState} />
+            </div>
+            <div className={styles.heroMeta}>
+              <PeopleTeam20Regular />
+              <span>{totalParticipants} 人参与</span>
+              <span className={styles.heroMetaDivider} />
+              <Board20Regular />
+              <span>共 {questionCount} 题</span>
+              {snapshot.classroomCode && (
+                <>
+                  <span className={styles.heroMetaDivider} />
+                  <Link20Regular />
+                  <span>加入地址 /student/join?code={snapshot.classroomCode}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.heroCenter}>
+            {questionCount > 0 && (
+              <div
+                className={styles.progressDots}
+                role="img"
+                aria-label={`进度：第 ${currentQuestionNumber} / ${questionCount} 题`}
+              >
+                {Array.from({ length: questionCount }, (_, i) => {
+                  const n = i + 1;
+                  return (
+                    <span
+                      key={n}
+                      className={mergeClasses(
+                        styles.progressDot,
+                        n < currentQuestionNumber && styles.progressDotDone,
+                        n === currentQuestionNumber &&
+                          status !== ClassSessionStatusValue.Finished &&
+                          styles.progressDotActive,
+                      )}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {showCountdown ? (
+              <>
+                <span
+                  className={mergeClasses(
+                    styles.heroCountdown,
+                    remainingSeconds! < 10 && styles.heroCountdownDanger,
+                  )}
+                >
+                  {formatCountdown(remainingSeconds!)}
+                </span>
+                <div className={styles.countdownTrack}>
+                  <div
+                    className={mergeClasses(
+                      styles.countdownFill,
+                      remainingSeconds! < 10 && styles.countdownFillDanger,
+                    )}
+                    style={{ width: `${countdownPct}%` }}
+                  />
+                </div>
+                <span className={styles.heroCountdownLabel}>剩余作答时间</span>
+              </>
+            ) : (
+              <>
+                <span className={styles.heroCountdown}>
+                  第 {currentQuestionNumber} / {questionCount} 题
+                </span>
+                <span className={styles.heroCountdownLabel}>
+                  {classSessionStatusLabel[status] ?? "课堂"}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div className={styles.heroRight}>
+            <Button
+              icon={<Copy20Regular />}
+              appearance="secondary"
+              onClick={() => void control.copyClassroomCode()}
+            >
+              复制课堂码
+            </Button>
+            <Button
+              icon={<ProjectionScreen20Regular />}
+              appearance="secondary"
+              onClick={() => void control.openPresentation()}
+              disabled={control.busyAction !== null}
+            >
+              打开投屏
+            </Button>
+          </div>
         </div>
-        <div className={styles.headerLeft}>
-          <Button
-            icon={<Copy20Regular />}
-            appearance="secondary"
-            onClick={() => void control.copyClassroomCode()}
-          >
-            复制课堂码
-          </Button>
-          <Button
-            icon={<ProjectionScreen20Regular />}
-            appearance="secondary"
-            onClick={() => void control.openPresentation()}
-            disabled={control.busyAction !== null}
-          >
-            打开投屏
-          </Button>
-        </div>
+
+        {/* 控制面板：内嵌于 Hero */}
+        <ControlsCard control={control} />
       </div>
 
-      {/* 控制台 */}
-      <ControlsCard
-        control={control}
-        classroomCode={snapshot.classroomCode}
-        currentQuestionNumber={snapshot.currentQuestionNumber ?? 0}
-        questionCount={snapshot.questionCount ?? 0}
-      />
-
-      {/* 当前题 */}
-      <CurrentQuestionCard
-        status={status}
-        questionStatus={questionStatus}
-        hasOpenQuestion={control.hasOpenQuestion}
-        question={question}
-        correctAnswer={snapshot.currentQuestion?.correctAnswer}
-        explanation={snapshot.currentQuestion?.explanation}
-        remainingSeconds={remainingSeconds}
-      />
-
-      {/* 实时统计 */}
-      <LiveStatisticsCard dashboard={dashboard} question={question} />
-
-      {/* 学员列表 */}
-      <ParticipantsCard participants={dashboard?.participants ?? []} />
+      {/* 双栏：左 当前题 + 学员列表 ｜ 右 实时统计 */}
+      <div className={styles.mainGrid}>
+        <div className={styles.mainCol}>
+          <CurrentQuestionCard
+            status={status}
+            questionStatus={questionStatus}
+            hasOpenQuestion={control.hasOpenQuestion}
+            question={question}
+            correctAnswer={snapshot.currentQuestion?.correctAnswer}
+            explanation={snapshot.currentQuestion?.explanation}
+            remainingSeconds={remainingSeconds}
+          />
+          <ParticipantsCard participants={dashboard?.participants ?? []} />
+        </div>
+        <div className={styles.mainCol}>
+          <LiveStatisticsCard
+            dashboard={dashboard}
+            question={question}
+            correctAnswer={snapshot.currentQuestion?.correctAnswer}
+          />
+        </div>
+      </div>
     </div>
   );
 }
