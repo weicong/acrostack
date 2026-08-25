@@ -61,6 +61,7 @@ import { useServerClockCountdown } from "../shared/hooks/useServerClockCountdown
 import { ConnectionBadge, type ConnectionState } from "../shared/components/ConnectionBadge";
 import { ControlsCard } from "./components/ControlsCard";
 import { CurrentQuestionCard } from "./components/CurrentQuestionCard";
+import { LeaderboardCard } from "./components/LeaderboardCard";
 import { LiveStatisticsCard } from "./components/LiveStatisticsCard";
 import { ParticipantsCard } from "./components/ParticipantsCard";
 
@@ -399,6 +400,11 @@ export function TeacherDashboardPage() {
             dashboard={dashboard}
             question={question}
             correctAnswer={snapshot.currentQuestion?.correctAnswer}
+          />
+          <LeaderboardCard
+            participants={dashboard?.participants ?? []}
+            openedAt={snapshot.currentQuestion?.openedAt}
+            questionNumber={currentQuestionNumber}
           />
         </div>
       </div>

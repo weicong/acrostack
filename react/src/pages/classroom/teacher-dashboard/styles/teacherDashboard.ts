@@ -618,6 +618,79 @@ export const useTeacherDashboardStyles = makeStyles({
     marginLeft: "auto",
   },
 
+  // ── 答题排行榜 ──────────────────────────────────────────────
+  lbTitleIcon: {
+    color: tokens.colorBrandForeground1,
+  },
+  leaderboard: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalXXS,
+    maxHeight: "420px",
+    overflowY: "auto",
+    overflowX: "hidden",
+  },
+  lbRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    padding: tokens.spacingVerticalXS + " " + tokens.spacingHorizontalS,
+    borderRadius: tokens.borderRadiusMedium,
+    background: tokens.colorNeutralBackground3,
+    transitionProperty: "background",
+    transitionDuration: "150ms",
+    ":hover": { background: tokens.colorNeutralBackground4 },
+  },
+  lbRowOffline: {
+    opacity: 0.55,
+  },
+  // 判对行：左侧绿色细条提示（与选项正确态呼应）
+  lbRowCorrect: {
+    boxShadow: `inset 3px 0 0 ${tokens.colorPaletteGreenForeground1}`,
+  },
+  lbRank: {
+    width: "26px",
+    height: "26px",
+    flexShrink: 0,
+    borderRadius: tokens.borderRadiusCircular,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: tokens.fontSizeBase300,
+    fontWeight: tokens.fontWeightBold,
+    fontVariantNumeric: "tabular-nums",
+    color: tokens.colorNeutralForeground3,
+    background: tokens.colorNeutralBackground4,
+  },
+  // 前三名奖牌色
+  lbRankGold: {
+    background: "linear-gradient(135deg, #f7c948, #e8a10c)",
+    color: "#3d2c00",
+  },
+  lbRankSilver: {
+    background: "linear-gradient(135deg, #e6e9ef, #b7bfcc)",
+    color: "#333a45",
+  },
+  lbRankBronze: {
+    background: "linear-gradient(135deg, #e8b28d, #b97444)",
+    color: "#40230d",
+  },
+  lbNameCol: {
+    display: "flex",
+    flexDirection: "column",
+    minWidth: 0,
+    flex: 1,
+  },
+  lbTime: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalXXS,
+    flexShrink: 0,
+    fontVariantNumeric: "tabular-nums",
+    fontWeight: tokens.fontWeightSemibold,
+    fontSize: tokens.fontSizeBase300,
+  },
+
   // ── 空状态 ──────────────────────────────────────────────
   emptyState: {
     display: "flex",
