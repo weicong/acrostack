@@ -27,8 +27,11 @@ export default defineConfig((({ mode }) => {
       tanstackRouter({
         target: "react",
         autoCodeSplitting: true,
-        routesDirectory: "./src/routes",
-        generatedRouteTree: "./src/routeTree.gen.ts",
+        // 绝对路径：防止以仓库根为 cwd 加载本配置的工具（IDE/vite-plus LSP 等）
+        // 把 ./src 解析到根目录 —— @tanstack/router-generator 构造时会无条件 mkdir
+        // generatedRouteTree 的父目录，从而在根目录留下空的 src/
+        routesDirectory: path.resolve(__dirname, "./src/routes"),
+        generatedRouteTree: path.resolve(__dirname, "./src/routeTree.gen.ts"),
         // route-config.ts files are module menu configs (not routes), so exclude
         // them from TanStack Router's file-based route generation.
         routeFileIgnorePattern: "route-config\\.ts$",
