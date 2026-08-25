@@ -10,113 +10,65 @@
  * - 判断："true" / "false"
  * - 简答：无正确答案，不自动判分
  *
- * 本文件只负责编排：列表查询状态、筛选/分页与子组件组装；
- * 样式见 styles/questionBank，表单助手见 utils/questionForm，
- * 动作聚合见 hooks/useQuestionActions，对话框见 components/。
+ * 本文件只负责编排：筛选/搜索 + 表格（hooks/useQuestionsTable）+ 对话框（components/）。
  */
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Input,
-  Option,
-  Spinner,
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  Title3,
-  tokens,
-} from "@fluentui/react-components";
-import { Add20Regular, Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
-import { questionGetList } from "@/api/clients/question/questionGetList";
+import { useCallback, useState } from "react";
+import { Button, Dropdown, Input, Option, Text, Title3, tokens } from "@fluentui/react-components";
+import { Add20Regular } from "@fluentui/react-icons";
+import { DataTable } from "@/components/data-table/DataTable";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
 import { questionTypeLabel } from "../shared/constants/question";
 import { useQuestionActions } from "./hooks/useQuestionActions";
+import { useQuestionsTable } from "./hooks/useQuestionsTable";
 import { QuestionFormDialog } from "./components/QuestionFormDialog";
 import { QuestionDeleteDialog } from "./components/QuestionDeleteDialog";
 import { useQuestionBankStyles } from "./styles/questionBank";
 
-const PAGE_SIZE = 20;
-
 export function QuestionBankPage() {
   const styles = useQuestionBankStyles();
 
-  const [questions, setQuestions] = useState<ClassroomDtosQuestionDto[] | null>(null);
-  const [totalCount, setTotalCount] = useState(0);
-  const [pageIndex, setPageIndex] = useState(0);
   const [typeFilter, setTypeFilter] = useState<number | null>(null);
   const [keyword, setKeyword] = useState("");
-  const [loadError, setLoadError] = useState<string | null>(null);
 
-  // 编辑/新建对话框（editing 非空=编辑该题；null=新建）
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<ClassroomDtosQuestionDto | null>(null);
-
-  // 删除确认
   const [deleting, setDeleting] = useState<ClassroomDtosQuestionDto | null>(null);
 
-  // 题目创建/更新/删除动作（Kubb mutation + 提示）
   const questionActions = useQuestionActions();
 
-  const refresh = useCallback(
-    async (page = pageIndex, type = typeFilter, filter = keyword) => {
-      try {
-        const res = await questionGetList({
-          query: {
-            SkipCount: page * PAGE_SIZE,
-            MaxResultCount: PAGE_SIZE,
-            ...(type ? { Type: type } : {}),
-            ...(filter.trim() ? { Filter: filter.trim() } : {}),
-          },
-        });
-        const data = res.data ?? { items: [], totalCount: 0 };
-        setQuestions(data.items ?? []);
-        setTotalCount(Number(data.totalCount ?? 0));
-        setLoadError(null);
-      } catch (err) {
-        setLoadError(extractAbpErrorMessage(err));
-      }
-    },
-    [pageIndex, typeFilter, keyword],
+  const handleEdit = useCallback((q: ClassroomDtosQuestionDto) => {
+    setEditing(q);
+    setDialogOpen(true);
+  }, []);
+
+  const handleDelete = useCallback((q: ClassroomDtosQuestionDto) => {
+    setDeleting(q);
+  }, []);
+
+  const { table, query, tableState } = useQuestionsTable(
+    handleEdit,
+    handleDelete,
+    typeFilter,
+    keyword,
   );
-
-  useEffect(() => {
-    setQuestions(null);
-    void refresh(0, typeFilter, keyword);
-    setPageIndex(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeFilter]);
-
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   function openCreate() {
     setEditing(null);
     setDialogOpen(true);
   }
 
-  function openEdit(q: ClassroomDtosQuestionDto) {
-    setEditing(q);
-    setDialogOpen(true);
+  function handleSaved() {
+    void query.refetch();
   }
 
-  /** 删除成功后：当前页只剩一条则回退一页并刷新。 */
   function handleDeleted() {
-    const remaining = (questions?.length ?? 0) - 1;
-    const targetPage = remaining === 0 && pageIndex > 0 ? pageIndex - 1 : pageIndex;
-    setPageIndex(targetPage);
-    void refresh(targetPage);
+    const currentPage = tableState.snapshot.pagination.pageIndex;
+    const currentData = query.data;
+    const remaining = currentData.length - 1;
+    const targetPage = remaining === 0 && currentPage > 0 ? currentPage - 1 : currentPage;
+    tableState.state.onPaginationChange({ pageIndex: targetPage, pageSize: 20 });
+    void query.refetch();
   }
-
-  const typeBadgeColor = useMemo<Record<number, "brand" | "success" | "warning" | "severe">>(
-    () => ({ 1: "brand", 2: "success", 3: "warning", 4: "severe" }),
-    [],
-  );
 
   return (
     <div className={styles.page}>
@@ -147,128 +99,38 @@ export function QuestionBankPage() {
           onChange={(_, d) => setKeyword(d.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setPageIndex(0);
-              void refresh(0, typeFilter, keyword);
+              tableState.state.onPaginationChange({ pageIndex: 0, pageSize: 20 });
             }
           }}
         />
         <Button
           appearance="secondary"
-          onClick={() => {
-            setPageIndex(0);
-            void refresh(0, typeFilter, keyword);
-          }}
+          onClick={() => tableState.state.onPaginationChange({ pageIndex: 0, pageSize: 20 })}
         >
           搜索
         </Button>
       </div>
 
-      {loadError && <Text style={{ color: tokens.colorPaletteRedForeground1 }}>{loadError}</Text>}
-
-      {questions === null ? (
-        <div className={styles.empty}>
-          <Spinner />
-          <Text>正在加载题目…</Text>
-        </div>
-      ) : questions.length === 0 ? (
-        <div className={styles.empty}>
-          <Text>题库为空。点击"新建题目"创建第一道题。</Text>
-        </div>
-      ) : (
-        <>
-          <Table size="small">
-            <TableHeader>
-              <TableRow>
-                <TableHeaderCell>题型</TableHeaderCell>
-                <TableHeaderCell>题干</TableHeaderCell>
-                <TableHeaderCell>选项数</TableHeaderCell>
-                <TableHeaderCell>正确答案</TableHeaderCell>
-                <TableHeaderCell>解析</TableHeaderCell>
-                <TableHeaderCell>操作</TableHeaderCell>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {questions.map((q) => (
-                <TableRow key={q.id}>
-                  <TableCell>
-                    <Badge appearance="filled" color={typeBadgeColor[q.type ?? 1]}>
-                      {questionTypeLabel[q.type ?? 1] ?? "未知"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Text title={q.stem ?? ""}>
-                      {(q.stem ?? "").length > 40 ? `${(q.stem ?? "").slice(0, 40)}…` : q.stem}
-                    </Text>
-                  </TableCell>
-                  <TableCell>{q.options?.length ?? 0}</TableCell>
-                  <TableCell>
-                    {q.type === 3
-                      ? q.correctAnswer === "true"
-                        ? "对"
-                        : q.correctAnswer === "false"
-                          ? "错"
-                          : "—"
-                      : (q.correctAnswer ?? "—")}
-                  </TableCell>
-                  <TableCell>{q.explanation ? "有" : "—"}</TableCell>
-                  <TableCell>
-                    <div className={styles.actions}>
-                      <Button size="small" icon={<Edit20Regular />} onClick={() => openEdit(q)}>
-                        编辑
-                      </Button>
-                      <Button
-                        size="small"
-                        icon={<Delete20Regular />}
-                        onClick={() => setDeleting(q)}
-                      >
-                        删除
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className={styles.pagination}>
-            <Button
-              size="small"
-              disabled={pageIndex === 0}
-              onClick={() => {
-                const p = pageIndex - 1;
-                setPageIndex(p);
-                void refresh(p);
-              }}
-            >
-              上一页
-            </Button>
-            <Text size={300}>
-              第 {pageIndex + 1} / {totalPages} 页（共 {totalCount} 题）
-            </Text>
-            <Button
-              size="small"
-              disabled={pageIndex + 1 >= totalPages}
-              onClick={() => {
-                const p = pageIndex + 1;
-                setPageIndex(p);
-                void refresh(p);
-              }}
-            >
-              下一页
-            </Button>
-          </div>
-        </>
+      {query.isError && (
+        <Text style={{ color: tokens.colorPaletteRedForeground1 }}>
+          {query.error ? String(query.error) : "加载失败"}
+        </Text>
       )}
 
-      {/* 新建/编辑对话框 */}
+      <DataTable
+        table={table}
+        isLoading={query.isLoading}
+        emptyMessage={'题库为空。点击"新建题目"创建第一道题。'}
+      />
+
       <QuestionFormDialog
         open={dialogOpen}
         editing={editing}
         actions={questionActions}
         onClose={() => setDialogOpen(false)}
-        onSaved={() => void refresh()}
+        onSaved={handleSaved}
       />
 
-      {/* 删除确认 */}
       <QuestionDeleteDialog
         question={deleting}
         actions={questionActions}

@@ -25,6 +25,7 @@ export const useTeacherSessionsStyles = makeStyles({
     fontSize: tokens.fontSizeBase400,
     letterSpacing: "0.08em",
   },
+  actionsCell: { display: "flex", gap: tokens.spacingHorizontalXS },
   empty: {
     textAlign: "center",
     padding: tokens.spacingVerticalXXL,
