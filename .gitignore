@@ -251,10 +251,6 @@ paket-files/
 **/.idea/
 *.sln.iml
 
-# ABP Studio
-**/.abpstudio/
-**/*.abppkg.analyze.json
-
 # VS Code files for those working on multiple tools
 .vscode/*
 !.vscode/settings.json

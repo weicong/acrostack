@@ -13,10 +13,4 @@
         </PropertyGroup>
     </Target>
 
-    <ItemGroup>
-        <None Remove="**\*.abppkg"/>
-        <None Remove="**\*.abppkg.analyze.json"/>
-        <Content Remove="$(UserProfile)\.nuget\packages\*\*\contentFiles\any\*\*.abppkg*"/>
-    </ItemGroup>
-
 </Project>

@@ -59,7 +59,6 @@ using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
-using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.CmsKit;
 using Volo.CmsKit.EntityFrameworkCore;
 using Volo.Abp.BackgroundWorkers;
@@ -84,7 +83,6 @@ namespace AcroStack;
     typeof(AbpCachingModule),
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpStudioClientAspNetCoreModule),
     typeof(AbpBackgroundWorkersModule),
 
     // theme
@@ -238,7 +236,6 @@ public class AcroStackModule : AbpModule
             context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
         }
 
-        ConfigureStudio(hostingEnvironment);
         ConfigureAuthentication(context);
         ConfigureBundles(hostingEnvironment);
         ConfigureMultiTenancy();
@@ -303,17 +300,6 @@ public class AcroStackModule : AbpModule
             // 避免被误开启后只读流量刷爆审计表）。
             options.IsEnabledForGetRequests = false;
         });
-    }
-
-    private void ConfigureStudio(IHostEnvironment hostingEnvironment)
-    {
-        if (hostingEnvironment.IsProduction())
-        {
-            Configure<AbpStudioClientOptions>(options =>
-            {
-                options.IsLinkEnabled = false;
-            });
-        }
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -549,7 +535,6 @@ public class AcroStackModule : AbpModule
         app.UseRouting();
         app.UseRateLimiter();
         app.UseStaticFiles();
-        app.UseAbpStudioLink();
         app.UseAbpSecurityHeaders();
         app.UseCors();
 
