@@ -1,3 +1,10 @@
+﻿---
+id: agnes-ai-multimodal
+name: Agnes AI Multimodal Generation
+description: "Integrate the Agnes AI API (OpenAI-compatible): image generation/editing with Agnes Image 2.0 Flash and async video generation with Agnes Video V2.0"
+enabled: true
+---
+
 # Agnes AI 多模态生成 Skill
 
 ## 概述

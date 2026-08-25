@@ -1,12 +1,10 @@
----
+﻿---
+id: abp-application-layer
+name: ABP Application Layer Patterns
 description: "ABP Application Services, DTOs, validation, and error handling patterns"
-globs:
-  - "**/*.Application/**/*.cs"
-  - "**/Application/**/*.cs"
-  - "**/*AppService*.cs"
-  - "**/*Dto*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Application Layer Patterns
 
@@ -234,3 +232,13 @@ public class BookAppService : ApplicationService
 
 ### AutoMapper (runtime)
 If the solution uses AutoMapper, mappings are typically defined in `Profile` classes and registered via ABP's AutoMapper integration.
+## Scope
+
+> Migrated from Cursor rule `application-layer.mdc`.
+
+Applies to file patterns:
+
+- `"**/*.Application/**/*.cs"`
+- `"**/Application/**/*.cs"`
+- `"**/*AppService*.cs"`
+- `"**/*Dto*.cs"`

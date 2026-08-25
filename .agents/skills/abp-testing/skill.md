@@ -1,12 +1,10 @@
----
+﻿---
+id: abp-testing
+name: ABP Testing Patterns
 description: "ABP testing patterns - unit tests and integration tests"
-globs:
-  - "test/**/*.cs"
-  - "tests/**/*.cs"
-  - "**/*Tests*/**/*.cs"
-  - "**/*Test*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Testing Patterns
 
@@ -272,3 +270,13 @@ public async Task Should_Filter_Books_By_Tenant()
 - Keep tests focused on single behavior
 - Use test data seeders for common data
 - Avoid testing framework internals
+## Scope
+
+> Migrated from Cursor rule `patterns.mdc`.
+
+Applies to file patterns:
+
+- `"test/**/*.cs"`
+- `"tests/**/*.cs"`
+- `"**/*Tests*/**/*.cs"`
+- `"**/*Test*.cs"`

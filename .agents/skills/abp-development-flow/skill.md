@@ -1,16 +1,10 @@
----
+﻿---
+id: abp-development-flow
+name: ABP Development Workflow
 description: "ABP development workflow - adding features, entities, and migrations"
-globs:
-  - "**/*AppService*.cs"
-  - "**/*Application*/**/*.cs"
-  - "**/*Application.Contracts*/**/*.cs"
-  - "**/*Dto*.cs"
-  - "**/*DbContext*.cs"
-  - "**/*.EntityFrameworkCore/**/*.cs"
-  - "**/*.MongoDB/**/*.cs"
-  - "**/*Permission*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Development Workflow
 
@@ -297,3 +291,17 @@ abp generate-proxy -t ng
 - [ ] Localization keys added
 - [ ] Permissions defined (if applicable)
 - [ ] Tests written
+## Scope
+
+> Migrated from Cursor rule `development-flow.mdc`.
+
+Applies to file patterns:
+
+- `"**/*AppService*.cs"`
+- `"**/*Application*/**/*.cs"`
+- `"**/*Application.Contracts*/**/*.cs"`
+- `"**/*Dto*.cs"`
+- `"**/*DbContext*.cs"`
+- `"**/*.EntityFrameworkCore/**/*.cs"`
+- `"**/*.MongoDB/**/*.cs"`
+- `"**/*Permission*.cs"`

@@ -1,11 +1,10 @@
----
+﻿---
+id: abp-authorization
+name: ABP Authorization
 description: "ABP permission system and authorization patterns"
-globs:
-  - "**/*Permission*.cs"
-  - "**/*AppService*.cs"
-  - "**/*Controller*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Authorization
 
@@ -184,3 +183,12 @@ public class MyService : ITransientDependency
 - Validate ownership in application service methods
 - Filter queries by current user when appropriate
 - Don't expose sensitive fields in DTOs
+## Scope
+
+> Migrated from Cursor rule `authorization.mdc`.
+
+Applies to file patterns:
+
+- `"**/*Permission*.cs"`
+- `"**/*AppService*.cs"`
+- `"**/*Controller*.cs"`

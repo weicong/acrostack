@@ -1,12 +1,10 @@
----
+﻿---
+id: abp-single-layer-template
+name: ABP Single-Layer Application Template
 description: "ABP Single-Layer (No-Layers) application template specific patterns"
-globs:
-  - "**/src/*/*Module.cs"
-  - "**/src/*/Entities/**/*.cs"
-  - "**/src/*/Services/**/*.cs"
-  - "**/src/*/Data/**/*.cs"
-alwaysApply: true
+enabled: true
 ---
+
 
 # ABP Single-Layer Application Template
 
@@ -127,3 +125,14 @@ This solution uses **React** for the UI layer.
 3. **Single module** - Keep everything in one module class for simplicity
 4. **Simpler entities** - Public setters are acceptable for simple CRUD scenarios
 5. **Auto API Controllers** - Let ABP generate controllers from app services
+## Scope
+
+> Migrated from Cursor rule `app-nolayers.mdc`.
+
+Applies to file patterns:
+
+- `"**/src/*/*Module.cs"`
+- `"**/src/*/Entities/**/*.cs"`
+- `"**/src/*/Services/**/*.cs"`
+- `"**/src/*/Data/**/*.cs"`
+- Always apply: yes

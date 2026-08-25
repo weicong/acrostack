@@ -1,10 +1,10 @@
----
+﻿---
+id: abp-cli-commands
+name: ABP CLI Commands
 description: "ABP CLI commands: generate-proxy, install-libs, add-package-ref, new-module, install-module, update, clean, suite generate (CRUD pages)"
-globs:
-  - "**/*.csproj"
-  - "**/appsettings*.json"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP CLI Commands
 
@@ -90,3 +90,11 @@ abp suite generate --entity .suite/entities/Book.json --solution ./Acme.BookStor
 | Clean solution | `abp clean` |
 | Suite CRUD | `abp suite generate -e entity.json -s solution.sln` |
 | Get help | `abp help [command]` |
+## Scope
+
+> Migrated from Cursor rule `cli-commands.mdc`.
+
+Applies to file patterns:
+
+- `"**/*.csproj"`
+- `"**/appsettings*.json"`

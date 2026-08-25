@@ -1,11 +1,10 @@
----
+﻿---
+id: abp-ef-core
+name: ABP Entity Framework Core
 description: "ABP Entity Framework Core patterns - DbContext, migrations, repositories"
-globs:
-  - "**/*.EntityFrameworkCore/**/*.cs"
-  - "**/EntityFrameworkCore/**/*.cs"
-  - "**/*DbContext*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Entity Framework Core
 
@@ -255,3 +254,12 @@ public class MyProjectDataSeedContributor : IDataSeedContributor, ITransientDepe
     }
 }
 ```
+## Scope
+
+> Migrated from Cursor rule `ef-core.mdc`.
+
+Applies to file patterns:
+
+- `"**/*.EntityFrameworkCore/**/*.cs"`
+- `"**/EntityFrameworkCore/**/*.cs"`
+- `"**/*DbContext*.cs"`

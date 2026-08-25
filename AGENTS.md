@@ -61,6 +61,6 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 
 ## Reference
 
-- `.cursor/rules/` — detailed ABP patterns (development flow, dependency rules, DDD, CLI commands, testing, EF Core, auth, multi-tenancy)
+- `.agents/` — agent configuration in the [.agents Protocol](https://dotagentsprotocol.com/) format: `agents.md` (project guidelines) + `skills/` — detailed ABP patterns (development flow, dependency rules, DDD, CLI commands, testing, EF Core, auth, multi-tenancy)
 - `react/AGENTS.md` — Vite+ toolchain details and review checklist
 - `react/README.md` — React app tech stack, env vars, Docker

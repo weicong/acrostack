@@ -1,11 +1,10 @@
----
+﻿---
+id: abp-multi-tenancy
+name: ABP Multi-Tenancy
 description: "ABP Multi-Tenancy patterns - tenant-aware entities, data isolation, and tenant switching"
-globs:
-  - "**/*Tenant*.cs"
-  - "**/*MultiTenant*.cs"
-  - "**/Entities/**/*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Multi-Tenancy
 
@@ -163,3 +162,12 @@ Configure<AbpTenantResolveOptions>(options =>
     options.AddDomainTenantResolver("{0}.mydomain.com");
 });
 ```
+## Scope
+
+> Migrated from Cursor rule `multi-tenancy.mdc`.
+
+Applies to file patterns:
+
+- `"**/*Tenant*.cs"`
+- `"**/*MultiTenant*.cs"`
+- `"**/Entities/**/*.cs"`

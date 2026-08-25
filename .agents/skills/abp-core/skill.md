@@ -1,7 +1,10 @@
----
+﻿---
+id: abp-core
+name: ABP Core Conventions
 description: "Core ABP Framework conventions - module system, dependency injection, and base classes"
-alwaysApply: true
+enabled: true
 ---
+
 
 # ABP Core Conventions
 
@@ -180,3 +183,7 @@ Configure<AbpExceptionLocalizationOptions>(options =>
 | Manual HTTP calls from UI | ABP client proxies (`generate-proxy`) |
 | Hardcoded role checks | Permission-based authorization |
 | Business logic in Controllers | Application Services |
+## Scope
+
+> Migrated from Cursor rule `abp-core.mdc`.
+- Always apply: yes

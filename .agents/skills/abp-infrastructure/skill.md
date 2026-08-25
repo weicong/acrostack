@@ -1,13 +1,10 @@
----
+﻿---
+id: abp-infrastructure
+name: ABP Infrastructure Services
 description: "ABP infrastructure services - Settings, Features, Caching, Events, Background Jobs"
-globs:
-  - "**/*Setting*.cs"
-  - "**/*Feature*.cs"
-  - "**/*Cache*.cs"
-  - "**/*Event*.cs"
-  - "**/*Job*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Infrastructure Services
 
@@ -247,3 +244,14 @@ public class MyModuleResource { }
 > - `AuthorizationService`, `FeatureChecker`, `DataFilter`
 > - `LoggerFactory`, `Logger`
 > - Methods like `CheckPolicyAsync()` for authorization checks
+## Scope
+
+> Migrated from Cursor rule `infrastructure.mdc`.
+
+Applies to file patterns:
+
+- `"**/*Setting*.cs"`
+- `"**/*Feature*.cs"`
+- `"**/*Cache*.cs"`
+- `"**/*Event*.cs"`
+- `"**/*Job*.cs"`

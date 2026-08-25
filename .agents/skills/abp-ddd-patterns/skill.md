@@ -1,11 +1,10 @@
----
+﻿---
+id: abp-ddd-patterns
+name: ABP DDD Patterns
 description: "ABP DDD patterns - Entities, Aggregate Roots, Repositories, Domain Services"
-globs:
-  - "**/*.Domain/**/*.cs"
-  - "**/Domain/**/*.cs"
-  - "**/Entities/**/*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP DDD Patterns
 
@@ -242,3 +241,12 @@ public class CompletedOrdersSpec : Specification<Order>
 // Usage
 var orders = await _orderRepository.GetListAsync(new CompletedOrdersSpec());
 ```
+## Scope
+
+> Migrated from Cursor rule `ddd-patterns.mdc`.
+
+Applies to file patterns:
+
+- `"**/*.Domain/**/*.cs"`
+- `"**/Domain/**/*.cs"`
+- `"**/Entities/**/*.cs"`

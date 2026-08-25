@@ -1,10 +1,10 @@
----
+﻿---
+id: abp-dependency-rules
+name: ABP Dependency Rules
 description: "ABP layer dependency rules and project structure guardrails"
-globs:
-  - "**/*.csproj"
-  - "**/*Module*.cs"
-alwaysApply: false
+enabled: true
 ---
+
 
 # ABP Dependency Rules
 
@@ -151,3 +151,11 @@ When adding a new feature:
 | Entity in DTO | Exposes internals | Map to DTO |
 | IQueryable in interface | Breaks abstraction | Return concrete types |
 | Cross-module app service call | Tight coupling | Use events or domain |
+## Scope
+
+> Migrated from Cursor rule `dependency-rules.mdc`.
+
+Applies to file patterns:
+
+- `"**/*.csproj"`
+- `"**/*Module*.cs"`
