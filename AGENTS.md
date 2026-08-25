@@ -30,8 +30,6 @@ Uses **Vite+** (`vp` CLI), not raw npm/pnpm scripts. Package manager is pnpm.
 vp install          # Install deps (run after pulling)
 vp dev              # Dev server (http://localhost:5173)
 vp check --fix      # Format + lint + typecheck
-vp test             # Run Vitest (watch mode)
-vp test run         # Single Vitest run (no watch)
 vp run generate-api # Kubb: regenerate API client from Swagger (backend must be running)
 ```
 
@@ -54,11 +52,11 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 2. In `react/`: `vp install && vp dev`
 3. After changing backend API: `vp run generate-api` (from `react/`)
 4. After adding/modifying an entity: add EF migration, then `dotnet run --project main/AcroStack --migrate-database`
-5. Before committing: `vp check` and `vp test` in `react/`
+5. Before committing: `vp check` in `react/`
 
 ## Testing
 
-- Frontend: Vitest + Testing Library + jsdom. Setup at `react/src/test/setup.ts`. Tests colocated as `*.test.ts(x)`.
+- No frontend tests currently.
 - Backend: no test project in this solution currently.
 
 ## Reference

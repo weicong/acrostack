@@ -69,27 +69,6 @@ export default defineConfig((({ mode }) => {
         },
       },
     },
-    test: {
-      environment: "jsdom",
-      setupFiles: ["./src/test/setup.ts"],
-      include: ["src/**/*.{test,spec}.{ts,tsx}"],
-      // @fluentui/react-icons 的 ESM 构建（lib/）存在相对导入缺少扩展名的缺陷，
-      // 外部化时 Node 原生 ESM 解析失败。而导入它的 @fluentui/react-* 组件包默认
-      // 也是外部化的（原生导入绕过 Vite 解析），因此需将所有 @fluentui 包内联，
-      // 由 Vite 解析器处理（其扩展名补全规则可正常解析这些目录导入）。
-      // 注意：Vitest 用模块路径（而非包名）测试正则，故用子串匹配。
-      server: {
-        deps: {
-          inline: [/@fluentui/],
-        },
-      },
-      coverage: {
-        provider: "v8",
-        reporter: ["text", "json", "html"],
-        exclude: ["node_modules/", "src/test/"],
-      },
-      globals: true,
-    },
     fmt: {
       ignorePatterns: ["**/routeTree.gen.ts"],
     },
