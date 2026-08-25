@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as ClassroomRouteRouteImport } from './routes/classroom/route'
+import { Route as DevRouteRouteImport } from './routes/dev/route'
 import { Route as PresentationRouteRouteImport } from './routes/presentation/route'
 import { Route as StudentRouteRouteImport } from './routes/student/route'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
@@ -36,6 +37,7 @@ import { Route as ClassroomSessionIdRouteImport } from './routes/classroom/$sess
 import { Route as ClassroomQuestionsRouteImport } from './routes/classroom/questions'
 import { Route as ClassroomQuizzesRouteImport } from './routes/classroom/quizzes'
 import { Route as ClassroomSessionsRouteImport } from './routes/classroom/sessions'
+import { Route as DevLeaderboardRouteImport } from './routes/dev/leaderboard'
 import { Route as PresentationSessionIdRouteImport } from './routes/presentation/$sessionId'
 import { Route as StudentJoinRouteImport } from './routes/student/join'
 import { Route as AdminCmsBlogPostsRouteImport } from './routes/admin/cms/blog-posts'
@@ -73,6 +75,11 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const ClassroomRouteRoute = ClassroomRouteRouteImport.update({
   id: '/classroom',
   path: '/classroom',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevRouteRoute = DevRouteRouteImport.update({
+  id: '/dev',
+  path: '/dev',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PresentationRouteRoute = PresentationRouteRouteImport.update({
@@ -190,6 +197,11 @@ const ClassroomSessionsRoute = ClassroomSessionsRouteImport.update({
   path: '/sessions',
   getParentRoute: () => ClassroomRouteRoute,
 } as any)
+const DevLeaderboardRoute = DevLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => DevRouteRoute,
+} as any)
 const PresentationSessionIdRoute = PresentationSessionIdRouteImport.update({
   id: '/$sessionId',
   path: '/$sessionId',
@@ -290,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/classroom': typeof ClassroomRouteRouteWithChildren
+  '/dev': typeof DevRouteRouteWithChildren
   '/presentation': typeof PresentationRouteRouteWithChildren
   '/student': typeof StudentRouteRouteWithChildren
   '/admin/identity': typeof AdminIdentityRouteRouteWithChildren
@@ -310,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/classroom/questions': typeof ClassroomQuestionsRoute
   '/classroom/quizzes': typeof ClassroomQuizzesRoute
   '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/dev/leaderboard': typeof DevLeaderboardRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
   '/account/': typeof AccountIndexRoute
@@ -334,6 +348,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dev': typeof DevRouteRouteWithChildren
   '/presentation': typeof PresentationRouteRouteWithChildren
   '/student': typeof StudentRouteRouteWithChildren
   '/admin/saas': typeof AdminSaasRouteRouteWithChildren
@@ -353,6 +368,7 @@ export interface FileRoutesByTo {
   '/classroom/questions': typeof ClassroomQuestionsRoute
   '/classroom/quizzes': typeof ClassroomQuizzesRoute
   '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/dev/leaderboard': typeof DevLeaderboardRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
   '/account': typeof AccountIndexRoute
@@ -381,6 +397,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/classroom': typeof ClassroomRouteRouteWithChildren
+  '/dev': typeof DevRouteRouteWithChildren
   '/presentation': typeof PresentationRouteRouteWithChildren
   '/student': typeof StudentRouteRouteWithChildren
   '/admin/identity': typeof AdminIdentityRouteRouteWithChildren
@@ -401,6 +418,7 @@ export interface FileRoutesById {
   '/classroom/questions': typeof ClassroomQuestionsRoute
   '/classroom/quizzes': typeof ClassroomQuizzesRoute
   '/classroom/sessions': typeof ClassroomSessionsRoute
+  '/dev/leaderboard': typeof DevLeaderboardRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
   '/account/': typeof AccountIndexRoute
@@ -430,6 +448,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/classroom'
+    | '/dev'
     | '/presentation'
     | '/student'
     | '/admin/identity'
@@ -450,6 +469,7 @@ export interface FileRouteTypes {
     | '/classroom/questions'
     | '/classroom/quizzes'
     | '/classroom/sessions'
+    | '/dev/leaderboard'
     | '/presentation/$sessionId'
     | '/student/join'
     | '/account/'
@@ -474,6 +494,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dev'
     | '/presentation'
     | '/student'
     | '/admin/saas'
@@ -493,6 +514,7 @@ export interface FileRouteTypes {
     | '/classroom/questions'
     | '/classroom/quizzes'
     | '/classroom/sessions'
+    | '/dev/leaderboard'
     | '/presentation/$sessionId'
     | '/student/join'
     | '/account'
@@ -520,6 +542,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/classroom'
+    | '/dev'
     | '/presentation'
     | '/student'
     | '/admin/identity'
@@ -540,6 +563,7 @@ export interface FileRouteTypes {
     | '/classroom/questions'
     | '/classroom/quizzes'
     | '/classroom/sessions'
+    | '/dev/leaderboard'
     | '/presentation/$sessionId'
     | '/student/join'
     | '/account/'
@@ -568,6 +592,7 @@ export interface RootRouteChildren {
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   ClassroomRouteRoute: typeof ClassroomRouteRouteWithChildren
+  DevRouteRoute: typeof DevRouteRouteWithChildren
   PresentationRouteRoute: typeof PresentationRouteRouteWithChildren
   StudentRouteRoute: typeof StudentRouteRouteWithChildren
 }
@@ -600,6 +625,13 @@ declare module '@tanstack/react-router' {
       path: '/classroom'
       fullPath: '/classroom'
       preLoaderRoute: typeof ClassroomRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dev': {
+      id: '/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof DevRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/presentation': {
@@ -762,6 +794,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/classroom/sessions'
       preLoaderRoute: typeof ClassroomSessionsRouteImport
       parentRoute: typeof ClassroomRouteRoute
+    }
+    '/dev/leaderboard': {
+      id: '/dev/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/dev/leaderboard'
+      preLoaderRoute: typeof DevLeaderboardRouteImport
+      parentRoute: typeof DevRouteRoute
     }
     '/presentation/$sessionId': {
       id: '/presentation/$sessionId'
@@ -1013,6 +1052,18 @@ const ClassroomRouteRouteWithChildren = ClassroomRouteRoute._addFileChildren(
   ClassroomRouteRouteChildren,
 )
 
+interface DevRouteRouteChildren {
+  DevLeaderboardRoute: typeof DevLeaderboardRoute
+}
+
+const DevRouteRouteChildren: DevRouteRouteChildren = {
+  DevLeaderboardRoute: DevLeaderboardRoute,
+}
+
+const DevRouteRouteWithChildren = DevRouteRoute._addFileChildren(
+  DevRouteRouteChildren,
+)
+
 interface PresentationRouteRouteChildren {
   PresentationSessionIdRoute: typeof PresentationSessionIdRoute
 }
@@ -1043,6 +1094,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRouteRoute: AccountRouteRouteWithChildren,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   ClassroomRouteRoute: ClassroomRouteRouteWithChildren,
+  DevRouteRoute: DevRouteRouteWithChildren,
   PresentationRouteRoute: PresentationRouteRouteWithChildren,
   StudentRouteRoute: StudentRouteRouteWithChildren,
 }
