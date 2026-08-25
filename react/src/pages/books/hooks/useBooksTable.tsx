@@ -10,8 +10,8 @@ import { bookGetListQueryOptions } from "@/api/hooks/book/useBookGetList";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
-import { bookTypeOptions } from "../bookTypeOptions";
-import type { BookListItem } from "../book-types";
+import { bookTypeOptions } from "../constants/bookType";
+import type { BookListItem } from "../types/book";
 import { useBooksStyles } from "../styles/books";
 
 type BookItem = BookListItem;

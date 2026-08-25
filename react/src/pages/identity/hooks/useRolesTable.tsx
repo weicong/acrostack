@@ -10,7 +10,7 @@ import { roleGetListQueryOptions } from "@/api/hooks/role/useRoleGetList";
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
-import type { RoleItem } from "../role-types";
+import type { RoleItem } from "../types/role";
 import { useRolesStyles } from "../styles/roles";
 
 /** 角色列表行类型（页面本地别名）。 */

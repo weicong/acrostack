@@ -2,7 +2,7 @@
  * 评论管理页（CommentsPage）。
  *
  * 本文件只负责编排：权限判定、筛选状态、表格状态与列定义、数据查询；
- * 样式见 styles/comments，常量与助手见 utils/comments，
+ * 样式见 styles/comments，常量见 constants/comments，助手见 utils/comments，
  * 筛选栏与审核徽标见 components/，动作聚合见 hooks/useCommentActions。
  */
 import { useCallback, useMemo, useState } from "react";
@@ -20,7 +20,8 @@ import { usePermissions } from "@/lib/auth/permissions";
 import { commentAdminGetListQueryOptions } from "@/api/hooks/commentAdmin/useCommentAdminGetList";
 import type { VoloCmsKitAdminCommentsCommentWithAuthorDto as CommentItem } from "@/api/models/volo/cmsKit/admin/comments/CommentWithAuthorDto";
 import { useCommentsStyles } from "./styles/comments";
-import { TEXT_MAX, getAuthorName } from "./utils/comments";
+import { TEXT_MAX } from "./constants/comments";
+import { getAuthorName } from "./utils/comments";
 import { ApprovalStatusBadge } from "./components/ApprovalStatusBadge";
 import { CommentsFilterBar } from "./components/CommentsFilterBar";
 import { useCommentActions } from "./hooks/useCommentActions";

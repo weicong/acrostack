@@ -10,7 +10,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
-import { toFormUser, type UserFormUser } from "./user-types";
+import { toFormUser, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";
 import { useUsersTable } from "./hooks/useUsersTable";
 import { useUserActions } from "./hooks/useUserActions";

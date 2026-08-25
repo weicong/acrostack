@@ -4,9 +4,9 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useBookCreate } from "@/api/hooks/book/useBookCreate";
 import { useBookUpdate } from "@/api/hooks/book/useBookUpdate";
-import type { BookFormBook } from "./book-types";
+import type { BookFormBook } from "./types/book";
 import { bookSchema } from "./book-schemas";
-import { bookTypeOptions } from "./bookTypeOptions";
+import { bookTypeOptions } from "./constants/bookType";
 
 // ── Props ───────────────────────────────────────────────────────────
 

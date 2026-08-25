@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { Button, SearchBox, Select } from "@fluentui/react-components";
 import { Add20Regular, Search20Regular, ArrowReset20Regular } from "@fluentui/react-icons";
-import { bookTypeOptions } from "../bookTypeOptions";
+import { bookTypeOptions } from "../constants/bookType";
 import { useBooksStyles } from "../styles/books";
 
 export interface BooksToolbarProps {

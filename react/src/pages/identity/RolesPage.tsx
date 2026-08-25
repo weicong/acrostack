@@ -10,7 +10,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import { toFormRole, type RoleFormRole } from "./role-types";
+import { toFormRole, type RoleFormRole } from "./types/role";
 import type { RoleItemRow } from "./hooks/useRolesTable";
 import { useRolesTable } from "./hooks/useRolesTable";
 import { useRoleActions } from "./hooks/useRoleActions";

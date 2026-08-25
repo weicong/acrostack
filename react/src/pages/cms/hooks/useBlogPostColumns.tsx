@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import type { AppTableFeatures } from "@/components/data-table/useDataTable";
 import type { VoloCmsKitAdminBlogsBlogPostListDto as BlogPostItem } from "@/api/models/volo/cmsKit/admin/blogs/BlogPostListDto";
-import { BlogPostStatus } from "../types/blogPosts";
+import { BlogPostStatus } from "../constants/blogPosts";
 import { useBlogPostsStyles } from "../styles/blogPosts";
 
 interface UseBlogPostColumnsOptions {

@@ -11,7 +11,7 @@ import {
 import { useIdentityUserClaimGetList } from "@/api/hooks/identityUserClaim/useIdentityUserClaimGetList";
 import { ClaimAddRow } from "./components/ClaimAddRow";
 import { ClaimTable } from "./components/ClaimTable";
-import type { ClaimItem } from "./claim-types";
+import type { ClaimItem } from "./types/claim";
 import { useUserClaimActions } from "./hooks/useUserClaimActions";
 import { useClaimsStyles } from "./styles/claims";
 import { emptyValues, validate } from "./utils/claimsForm";

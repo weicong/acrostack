@@ -10,9 +10,14 @@
  *
  * 数据获取：学员端持课堂短期 JWT（与 OIDC 共享客户端冲突），
  * 必须经 utils/studentApi 直连，不能替换为 Kubb hooks。
+ *
+ * 逻辑拆分到 hooks/：
+ *   - useStudentAnswer：答案状态 / 提交 / 重置 / 恢复
+ *   - useStudentHistory：答题记录拉取
+ *   - useStudentRealtime：快照 / SignalR 连接 / 事件处理
  * 样式见 styles/studentSession，答题记录视图见 components/HistoryView。
  */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import {
   Badge,
@@ -25,61 +30,24 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
-import type { HubConnection } from "@microsoft/signalr";
-import {
-  ClassroomClientMethods,
-  ClassSessionStatusValue,
-  classSessionStatusLabel,
-} from "@/pages/classroom/constants/classroom";
-import type {
-  AnswerPublishedEvent,
-  QuestionOpenedEvent,
-  StatisticsPublishedEvent,
-} from "@/pages/classroom/types/classroom-events";
-import { buildClassroomTokenHubConnection } from "@/pages/classroom/utils/classroomHub";
-import {
-  classroomErrorMessage,
-  getMyAnswerHistory,
-  getStudentSnapshot,
-  submitAnswer,
-} from "@/pages/classroom/utils/studentApi";
-import { clearStudentSession, loadStudentSession } from "@/pages/classroom/utils/studentSession";
-import { trueFalseLabel } from "@/pages/classroom/utils/answerFormat";
-import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dtos/StudentSnapshotDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
-import type { ClassroomDtosStudentAnswerHistoryDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryDto";
 import { useStudentSessionStyles } from "./styles/studentSession";
 import { useServerClockCountdown } from "./hooks/useServerClockCountdown";
-import { ConnectionBadge, type ConnectionState } from "./components/ConnectionBadge";
+import { useStudentAnswer } from "./hooks/useStudentAnswer";
+import { useStudentHistory } from "./hooks/useStudentHistory";
+import { useStudentRealtime } from "./hooks/useStudentRealtime";
+import { ConnectionBadge } from "./components/ConnectionBadge";
 import { HistoryView } from "./components/HistoryView";
+import { ClassSessionStatusValue, classSessionStatusLabel } from "./constants/classroom";
+import { clearStudentSession, loadStudentSession } from "./utils/studentSession";
+import { trueFalseLabel } from "./utils/answerFormat";
 
 export function StudentSessionPage() {
   const styles = useStudentSessionStyles();
   const { sessionId = "" } = useParams({ strict: false }) as { sessionId?: string };
   const { dispatchToast } = useToastController();
 
-  const [session, setSession] = useState<ClassroomDtosStudentSnapshotDto | null>(null);
-  const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
-  const [selected, setSelected] = useState<string>("");
-  const [textAnswer, setTextAnswer] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
-
-  // 视图切换：当前题目 / 答题记录
   const [view, setView] = useState<"current" | "history">("current");
-  const [history, setHistory] = useState<ClassroomDtosStudentAnswerHistoryDto | null>(null);
-  const [historyLoading, setHistoryLoading] = useState(false);
-  const [historyError, setHistoryError] = useState<string | null>(null);
-
-  // 服务端时钟偏移校正：offset = serverNow - localNow
-  const clockOffsetRef = useRef(0);
-  // 本会话已见事件 Id（去重）
-  const seenEventIdsRef = useRef(new Set<string>());
-  // 上次版本号（版本跳跃触发快照校准）
-  const lastVersionRef = useRef(0);
-  // 当前视图（供 SignalR 事件回调读取，避免视图切换导致重连）
   const viewRef = useRef<"current" | "history">("current");
   useEffect(() => {
     viewRef.current = view;
@@ -88,174 +56,24 @@ export function StudentSessionPage() {
   const stored = sessionId ? loadStudentSession(sessionId) : null;
   const token = stored?.accessToken ?? null;
 
-  const refreshSnapshot = useCallback(async () => {
-    if (!token) {
-      setLoadError("本地会话已失效，请重新加入课堂");
-      return;
-    }
-    try {
-      const snapshot = await getStudentSnapshot(sessionId, token);
-      setSession(snapshot);
-      setLoadError(null);
-      clockOffsetRef.current = Date.parse(snapshot.serverTime ?? "") - Date.now() || 0;
-      lastVersionRef.current = snapshot.version ?? 0;
+  const answer = useStudentAnswer({ sessionId, token, dispatchToast });
+  const history = useStudentHistory({ sessionId, token, view });
+  const realtime = useStudentRealtime({
+    sessionId,
+    token,
+    viewRef,
+    resetAnswer: answer.resetAnswer,
+    refreshHistory: history.refreshHistory,
+    restoreAnswer: answer.restoreAnswer,
+  });
 
-      // 恢复本人已提交答案
-      if (snapshot.myAnswer) {
-        setSubmitted(true);
-        setSelected(snapshot.myAnswer.answerContent ?? "");
-        setTextAnswer(snapshot.myAnswer.answerContent ?? "");
-      }
-    } catch (err) {
-      setLoadError(classroomErrorMessage(err));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, token]);
+  const session = realtime.session;
+  const connectionState = realtime.connectionState;
+  const loadError = realtime.loadError;
 
-  // 初始快照
-  useEffect(() => {
-    void refreshSnapshot();
-  }, [refreshSnapshot]);
-
-  // 答题记录：切到记录视图时拉取（其余时机由事件回调触发）
-  const refreshHistory = useCallback(async () => {
-    if (!token) return;
-    setHistoryLoading(true);
-    try {
-      const result = await getMyAnswerHistory(sessionId, token);
-      setHistory(result);
-      setHistoryError(null);
-    } catch (err) {
-      setHistoryError(classroomErrorMessage(err));
-    } finally {
-      setHistoryLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, token]);
-
-  useEffect(() => {
-    if (view === "history") void refreshHistory();
-  }, [view, refreshHistory]);
-
-  // SignalR 连接 + 事件处理
-  useEffect(() => {
-    if (!token || !sessionId) return;
-    let conn: HubConnection | null = null;
-    let cancelled = false;
-
-    async function start() {
-      conn = buildClassroomTokenHubConnection(sessionId, token!);
-      registerHandlers(conn!);
-
-      conn!.onreconnecting(() => setConnectionState("reconnecting"));
-      conn!.onreconnected(() => {
-        setConnectionState("connected");
-        // 重连成功：重新拉取快照校准（断线期间可能丢事件）
-        void refreshSnapshot();
-      });
-      conn!.onclose(() => {
-        if (!cancelled) setConnectionState("offline");
-      });
-
-      try {
-        await conn!.start();
-        if (!cancelled) setConnectionState("connected");
-      } catch {
-        if (!cancelled) setConnectionState("offline");
-      }
-    }
-
-    function registerHandlers(connection: HubConnection) {
-      const dedupe = (eventId: string | undefined) => {
-        if (!eventId) return true;
-        if (seenEventIdsRef.current.has(eventId)) return false;
-        seenEventIdsRef.current.add(eventId);
-        return true;
-      };
-
-      connection.on(ClassroomClientMethods.QuestionOpened, (evt: QuestionOpenedEvent) => {
-        if (!dedupe(evt.eventId)) return;
-        // 新题开放：重置作答状态
-        setSession((s) =>
-          s
-            ? {
-                ...s,
-                version: evt.version,
-                status: ClassSessionStatusValue.Answering,
-                currentQuestion: {
-                  question: evt.question,
-                  openedAt: evt.openedAt,
-                  endsAt: evt.endsAt,
-                  isAcceptingAnswers: true,
-                  status: 10,
-                },
-                myAnswer: undefined,
-                statisticsPublished: false,
-                answerPublished: false,
-                correctAnswer: null,
-                explanation: null,
-                publishedOptionCounts: null,
-              }
-            : s,
-        );
-        setSelected("");
-        setTextAnswer("");
-        setSubmitted(false);
-        setSubmitError(null);
-        lastVersionRef.current = evt.version;
-      });
-
-      connection.on(ClassroomClientMethods.StatisticsPublished, (evt: StatisticsPublishedEvent) => {
-        if (!dedupe(evt.eventId)) return;
-        setSession((s) =>
-          s
-            ? {
-                ...s,
-                version: evt.version,
-                statisticsPublished: true,
-                publishedOptionCounts: evt.optionCounts,
-              }
-            : s,
-        );
-        lastVersionRef.current = evt.version;
-      });
-
-      connection.on(ClassroomClientMethods.AnswerPublished, (evt: AnswerPublishedEvent) => {
-        if (!dedupe(evt.eventId)) return;
-        setSession((s) =>
-          s
-            ? {
-                ...s,
-                version: evt.version,
-                answerPublished: true,
-                correctAnswer: evt.correctAnswer,
-                explanation: evt.explanation ?? null,
-              }
-            : s,
-        );
-        lastVersionRef.current = evt.version;
-        // 记录视图中实时刷新（新公布的正确答案/解析）
-        if (viewRef.current === "history") void refreshHistory();
-      });
-
-      connection.on(ClassroomClientMethods.ClassroomEnded, () => {
-        void refreshSnapshot();
-        if (viewRef.current === "history") void refreshHistory();
-      });
-    }
-
-    void start();
-
-    return () => {
-      cancelled = true;
-      if (conn) void conn.stop().catch(() => {});
-    };
-  }, [sessionId, token, refreshSnapshot, refreshHistory]);
-
-  // 倒计时：EndsAt - 服务端校正后的当前时间
   const remainingSeconds = useServerClockCountdown(
     session?.currentQuestion?.endsAt,
-    clockOffsetRef,
+    realtime.clockOffsetRef,
   );
 
   const question: ClassroomDtosQuestionViewDto | null = session?.currentQuestion?.question ?? null;
@@ -268,28 +86,10 @@ export function StudentSessionPage() {
   const isTrueOrFalse = question?.type === 3;
 
   async function handleSubmit() {
-    if (!token || !question || submitting) return;
-    const content = isChoiceQuestion || isTrueOrFalse ? selected : textAnswer.trim();
+    if (!token || !question || answer.submitting) return;
+    const content = isChoiceQuestion || isTrueOrFalse ? answer.selected : answer.textAnswer.trim();
     if (!content) return;
-
-    setSubmitting(true);
-    setSubmitError(null);
-    try {
-      await submitAnswer(sessionId, token, {
-        sessionQuestionId: question.sessionQuestionId!,
-        requestId: crypto.randomUUID(),
-        answerContent: content,
-        clientSubmittedAt: new Date().toISOString(),
-      });
-      setSubmitted(true);
-      dispatchToast("提交成功", { intent: "success" });
-    } catch (err) {
-      // 失败：保留答案，允许重试（提示词十三节）
-      setSubmitError(classroomErrorMessage(err));
-      dispatchToast(`提交失败：${classroomErrorMessage(err)}`, { intent: "error" });
-    } finally {
-      setSubmitting(false);
-    }
+    await answer.submit(question.sessionQuestionId!, content);
   }
 
   if (loadError && !session) {
@@ -353,7 +153,11 @@ export function StudentSessionPage() {
       )}
 
       {view === "history" ? (
-        <HistoryView history={history} loading={historyLoading} error={historyError} />
+        <HistoryView
+          history={history.history}
+          loading={history.historyLoading}
+          error={history.historyError}
+        />
       ) : status === ClassSessionStatusValue.Finished ? (
         <Card className={styles.card}>
           <Title2>课堂已结束</Title2>
@@ -392,17 +196,15 @@ export function StudentSessionPage() {
             {(isChoiceQuestion || isTrueOrFalse) && (
               <div className={styles.options}>
                 {question.options?.map((opt) => {
-                  // 判断题提交值按后端 AnswerGrader 约定为 "true"/"false"（A=对，B=错）
                   const value = isTrueOrFalse
                     ? opt.key === "A"
                       ? "true"
                       : "false"
                     : (opt.key ?? "");
-                  // 多选可多选（提交 "A,C"）；单选/判断单选
                   const isSelected = isMultipleChoice
-                    ? selected.split(",").filter(Boolean).includes(value)
-                    : selected === value;
-                  const disabled = !isAccepting || submitted;
+                    ? answer.selected.split(",").filter(Boolean).includes(value)
+                    : answer.selected === value;
+                  const disabled = !isAccepting || answer.submitted;
                   return (
                     <Button
                       key={opt.key}
@@ -411,7 +213,7 @@ export function StudentSessionPage() {
                       disabled={disabled}
                       onClick={() => {
                         if (isMultipleChoice) {
-                          setSelected((prev) => {
+                          answer.setSelected((prev) => {
                             const keys = prev.split(",").filter(Boolean);
                             const next = keys.includes(value)
                               ? keys.filter((k) => k !== value)
@@ -419,7 +221,7 @@ export function StudentSessionPage() {
                             return next.join(",");
                           });
                         } else {
-                          setSelected(value);
+                          answer.setSelected(value);
                         }
                       }}
                     >
@@ -432,26 +234,27 @@ export function StudentSessionPage() {
 
             {question.type === 4 && (
               <Textarea
-                value={textAnswer}
-                onChange={(_, d) => setTextAnswer(d.value)}
+                value={answer.textAnswer}
+                onChange={(_, d) => answer.setTextAnswer(d.value)}
                 placeholder="输入你的回答"
-                disabled={!isAccepting || submitted}
+                disabled={!isAccepting || answer.submitted}
                 resize="vertical"
               />
             )}
 
-            {isAccepting && !submitted ? (
+            {isAccepting && !answer.submitted ? (
               <Button
                 appearance="primary"
                 size="large"
                 disabled={
-                  submitting || (isChoiceQuestion || isTrueOrFalse ? !selected : !textAnswer.trim())
+                  answer.submitting ||
+                  (isChoiceQuestion || isTrueOrFalse ? !answer.selected : !answer.textAnswer.trim())
                 }
                 onClick={() => void handleSubmit()}
               >
-                {submitting ? <Spinner size="tiny" /> : "提交答案"}
+                {answer.submitting ? <Spinner size="tiny" /> : "提交答案"}
               </Button>
-            ) : submitted ? (
+            ) : answer.submitted ? (
               <Badge appearance="filled" color="success">
                 已提交
                 {session.myAnswer?.revision && session.myAnswer.revision > 1
@@ -462,8 +265,8 @@ export function StudentSessionPage() {
               <Text>本题已截止，等待老师公布结果</Text>
             )}
 
-            {submitError && (
-              <Text style={{ color: tokens.colorPaletteRedForeground1 }}>{submitError}</Text>
+            {answer.submitError && (
+              <Text style={{ color: tokens.colorPaletteRedForeground1 }}>{answer.submitError}</Text>
             )}
           </Card>
 

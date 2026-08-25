@@ -10,7 +10,7 @@
  */
 import { useParams, useSearch } from "@tanstack/react-router";
 import { Button, Spinner, Text } from "@fluentui/react-components";
-import { ClassSessionStatusValue } from "@/pages/classroom/constants/classroom";
+import { ClassSessionStatusValue } from "./constants/classroom";
 import { usePresentationSession } from "./hooks/usePresentationSession";
 import { usePresentationStyles } from "./styles/presentation";
 import { PresentationStatusBar } from "./components/PresentationStatusBar";

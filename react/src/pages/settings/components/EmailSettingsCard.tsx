@@ -14,26 +14,14 @@ import {
   Text,
   useToastController,
 } from "@fluentui/react-components";
-import { z } from "zod";
 import {
   useEmailSettingsGet,
   emailSettingsGetQueryKey,
 } from "@/api/hooks/emailSettings/useEmailSettingsGet";
 import { useEmailSettingsUpdate } from "@/api/hooks/emailSettings/useEmailSettingsUpdate";
 import { extractAbpErrorMessage } from "@/lib/api/error";
+import { emailSchema } from "../email-settings-schemas";
 import { useSettingsStyles } from "../styles/settings";
-
-const emailSchema = z.object({
-  smtpHost: z.string().max(256).nullable(),
-  smtpPort: z.number().int().min(0).max(65535).nullable(),
-  smtpUserName: z.string().max(1024).nullable(),
-  smtpPassword: z.string().max(1024).nullable(),
-  smtpDomain: z.string().max(1024).nullable(),
-  smtpEnableSsl: z.boolean(),
-  smtpUseDefaultCredentials: z.boolean(),
-  defaultFromAddress: z.string().min(1).max(1024),
-  defaultFromDisplayName: z.string().min(1).max(1024),
-});
 
 export function EmailSettingsCard() {
   const styles = useSettingsStyles();

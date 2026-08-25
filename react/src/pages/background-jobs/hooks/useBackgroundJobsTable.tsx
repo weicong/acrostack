@@ -14,7 +14,7 @@ import type { AcroStackBackgroundJobsBackgroundJobDto as BackgroundJobDto } from
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
-import { useBackgroundJobsStyles } from "../styles/background-jobs";
+import { useBackgroundJobsStyles } from "../styles/backgroundJobs";
 import type { ConfirmAction } from "./useBackgroundJobActions";
 
 export type JobItem = BackgroundJobDto;

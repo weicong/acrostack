@@ -10,3 +10,6 @@ export const TYPING_HINT_TTL_MS = 5000;
 
 /** 输入中调用 SendTypingNotification 的防抖窗口（毫秒）。 */
 export const TYPING_NOTIFY_DEBOUNCE_MS = 2500;
+
+/** 消息列表分页参数（页面查询与缓存失效保持一致）。 */
+export const MESSAGE_PAGE = { SkipCount: 0, MaxResultCount: 100 };

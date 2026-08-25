@@ -2,7 +2,7 @@
  * 后台任务页（BackgroundJobsPage）。
  *
  * 本文件只负责编排：权限判定、确认对话框状态与各子组件组装；
- * 样式见 styles/background-jobs，表格聚合见 hooks/useBackgroundJobsTable，
+ * 样式见 styles/backgroundJobs，表格聚合见 hooks/useBackgroundJobsTable，
  * 动作聚合见 hooks/useBackgroundJobActions，工具栏见 components/BackgroundJobsToolbar。
  */
 import { useCallback, useState } from "react";

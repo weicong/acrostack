@@ -1,19 +1,9 @@
-import { Button, Card, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Button, Card, Text } from "@fluentui/react-components";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { useHomeStyles } from "./styles/home";
 
-const useStyles = makeStyles({
-  loginActions: {
-    marginTop: tokens.spacingVerticalM,
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalS,
-  },
-  docLink: {
-    marginTop: tokens.spacingVerticalM,
-    display: "inline-block",
-  },
-});
+const useStyles = useHomeStyles;
 
 export function HomePage() {
   const { isAuthenticated, navigateToLogin } = useAuth();

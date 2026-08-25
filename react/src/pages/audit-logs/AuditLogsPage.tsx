@@ -24,7 +24,8 @@ import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGet
 import type { AcroStackAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/auditLogging/AuditLogDto";
 import { AuditLogStatisticsPanel } from "./AuditLogStatisticsPanel";
 import { useAuditLogsStyles } from "./styles/auditLogs";
-import { URL_DISPLAY_MAX_LENGTH, statusBadgeColor } from "./utils/auditLogs";
+import { URL_DISPLAY_MAX_LENGTH } from "./constants/auditLogs";
+import { statusBadgeColor } from "./utils/auditLogs";
 import { AuditLogsToolbar } from "./components/AuditLogsToolbar";
 import { AuditLogDetailDrawer } from "./components/AuditLogDetailDrawer";
 

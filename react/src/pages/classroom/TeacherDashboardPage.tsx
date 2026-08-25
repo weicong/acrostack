@@ -28,13 +28,13 @@ import {
   ClassroomClientMethods,
   ClassSessionStatusValue,
   classSessionStatusLabel,
-} from "@/pages/classroom/constants/classroom";
+} from "./constants/classroom";
 import type {
   ClassroomEventBase,
   DashboardUpdatedEvent,
   ParticipantChangedEvent,
-} from "@/pages/classroom/types/classroom-events";
-import { buildTeacherHubConnection } from "@/pages/classroom/utils/classroomHub";
+} from "./types/classroom-events";
+import { buildTeacherHubConnection } from "./utils/classroomHub";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { useTeacherDashboardStyles } from "./styles/teacherDashboard";

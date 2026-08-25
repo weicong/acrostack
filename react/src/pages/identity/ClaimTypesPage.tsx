@@ -10,7 +10,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
-import { toFormSeed } from "./claim-type-types";
+import { toFormSeed } from "./types/claimType";
 import type { ClaimTypeRow } from "./hooks/useClaimTypesTable";
 import { useClaimTypesTable } from "./hooks/useClaimTypesTable";
 import { useClaimTypeActions } from "./hooks/useClaimTypeActions";

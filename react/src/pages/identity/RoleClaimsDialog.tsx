@@ -11,7 +11,7 @@ import {
 import { useIdentityRoleClaimGetList } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimGetList";
 import { ClaimAddRow } from "./components/ClaimAddRow";
 import { ClaimTable } from "./components/ClaimTable";
-import type { ClaimItem } from "./claim-types";
+import type { ClaimItem } from "./types/claim";
 import { useRoleClaimActions } from "./hooks/useRoleClaimActions";
 import { useClaimsStyles } from "./styles/claims";
 import { emptyValues, validate } from "./utils/claimsForm";

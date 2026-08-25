@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Button, Dropdown, Input, Option } from "@fluentui/react-components";
 import { Search20Regular } from "@fluentui/react-icons";
 import { useCommentsStyles } from "../styles/comments";
-import { CommentApproveState } from "../utils/comments";
+import { CommentApproveState } from "../constants/comments";
 
 interface CommentsFilterBarProps {
   /** 实体类型过滤值（受控）。 */

@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { Card, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Card, tokens, Text } from "@fluentui/react-components";
 import { Poll20Regular, Settings20Regular } from "@fluentui/react-icons";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { ensureAppConfig, usePermissions } from "@/lib/auth/permissions";
 import { queryClient } from "@/lib/queryClient";
+import { usePortalStyles } from "./styles/portal";
 
 /**
  * 门户入口页（/）。
@@ -25,75 +26,7 @@ interface WorkspaceEntry {
   description: string;
 }
 
-const useStyles = makeStyles({
-  root: {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: tokens.spacingVerticalXXL,
-    padding: tokens.spacingVerticalXXL + " " + tokens.spacingHorizontalL,
-    background: tokens.colorNeutralBackground2,
-  },
-  brand: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: tokens.spacingVerticalS,
-  },
-  logo: {
-    width: "3.5rem",
-    height: "3.5rem",
-    borderRadius: tokens.borderRadiusXLarge,
-    background: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: tokens.fontSizeHero700,
-    fontWeight: tokens.fontWeightBold,
-  },
-  cards: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 300px))",
-    gap: tokens.spacingHorizontalL,
-    justifyContent: "center",
-    width: "100%",
-    maxWidth: "720px",
-  },
-  cardLink: {
-    textDecoration: "none",
-    color: "inherit",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalS,
-    padding: tokens.spacingVerticalXL + " " + tokens.spacingHorizontalXL,
-    height: "100%",
-    transitionProperty: "transform, border-color, box-shadow",
-    transitionDuration: "150ms",
-    transitionTimingFunction: "ease",
-    ":hover": {
-      transform: "translateY(-2px)",
-      boxShadow: tokens.shadow16,
-    },
-  },
-  cardIcon: {
-    width: "2.5rem",
-    height: "2.5rem",
-    borderRadius: tokens.borderRadiusMedium,
-    background: tokens.colorBrandBackground2,
-    color: tokens.colorBrandForeground2,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  footer: {
-    color: tokens.colorNeutralForeground3,
-  },
-});
+const useStyles = usePortalStyles;
 
 export function PortalPage() {
   const styles = useStyles();

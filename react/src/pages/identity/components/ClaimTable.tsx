@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@fluentui/react-components";
 import { Delete20Regular, Edit20Regular, Save20Regular } from "@fluentui/react-icons";
-import type { ClaimItem } from "../claim-types";
+import type { ClaimItem } from "../types/claim";
 import { useClaimsStyles } from "../styles/claims";
 import { emptyValues, validate } from "../utils/claimsForm";
 

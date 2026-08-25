@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@fluentui/react-components";
 import { useId } from "@fluentui/react-components";
-import type { RoleFormRole } from "./role-types";
+import type { RoleFormRole } from "./types/role";
 import { RoleForm } from "./RoleForm";
 
 // ── Props ───────────────────────────────────────────────────────────

@@ -11,7 +11,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/data-table/DataTable";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { BookFormDialog } from "./BookFormDialog";
-import { toFormBook, type BookFormBook, type BookListItem } from "./book-types";
+import { toFormBook, type BookFormBook, type BookListItem } from "./types/book";
 import { bookGetListQueryKey } from "@/api/hooks/book/useBookGetList";
 import { Route } from "@/routes/admin/books";
 import { useBooksTable } from "./hooks/useBooksTable";

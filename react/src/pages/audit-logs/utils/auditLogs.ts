@@ -1,9 +1,6 @@
 /**
- * 审计日志页（AuditLogsPage）常量与非平凡助手。
+ * 审计日志页（AuditLogsPage）非平凡助手。
  */
-
-// URL 列展示的最大长度，超出部分截断显示省略号
-export const URL_DISPLAY_MAX_LENGTH = 60;
 
 /** HTTP 状态代码映射为徽标颜色。 */
 export function statusBadgeColor(

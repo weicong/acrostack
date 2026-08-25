@@ -42,13 +42,6 @@ export const classSessionStatusLabel: Record<number, string> = {
   [ClassSessionStatusValue.Finished]: "已结束",
 };
 
-export const questionTypeLabel: Record<number, string> = {
-  1: "单选题",
-  2: "多选题",
-  3: "判断题",
-  4: "简答题",
-};
-
 export const onlineStatusLabel: Record<number, string> = {
   0: "离线",
   1: "在线",

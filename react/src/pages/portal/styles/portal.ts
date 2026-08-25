@@ -1,0 +1,71 @@
+import { makeStyles, tokens } from "@fluentui/react-components";
+
+export const usePortalStyles = makeStyles({
+  root: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: tokens.spacingVerticalXXL,
+    padding: tokens.spacingVerticalXXL + " " + tokens.spacingHorizontalL,
+    background: tokens.colorNeutralBackground2,
+  },
+  brand: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: tokens.spacingVerticalS,
+  },
+  logo: {
+    width: "3.5rem",
+    height: "3.5rem",
+    borderRadius: tokens.borderRadiusXLarge,
+    background: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: tokens.fontSizeHero700,
+    fontWeight: tokens.fontWeightBold,
+  },
+  cards: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 300px))",
+    gap: tokens.spacingHorizontalL,
+    justifyContent: "center",
+    width: "100%",
+    maxWidth: "720px",
+  },
+  cardLink: {
+    textDecoration: "none",
+    color: "inherit",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalS,
+    padding: tokens.spacingVerticalXL + " " + tokens.spacingHorizontalXL,
+    height: "100%",
+    transitionProperty: "transform, border-color, box-shadow",
+    transitionDuration: "150ms",
+    transitionTimingFunction: "ease",
+    ":hover": {
+      transform: "translateY(-2px)",
+      boxShadow: tokens.shadow16,
+    },
+  },
+  cardIcon: {
+    width: "2.5rem",
+    height: "2.5rem",
+    borderRadius: tokens.borderRadiusMedium,
+    background: tokens.colorBrandBackground2,
+    color: tokens.colorBrandForeground2,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  footer: {
+    color: tokens.colorNeutralForeground3,
+  },
+});

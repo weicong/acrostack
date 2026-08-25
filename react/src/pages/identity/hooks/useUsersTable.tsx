@@ -15,7 +15,7 @@ import { appUserGetListQueryOptions } from "@/api/hooks/appUser/useAppUserGetLis
 import { useDataTableState } from "@/components/data-table/useDataTableState";
 import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
-import type { UserListItem } from "../user-types";
+import type { UserListItem } from "../types/user";
 import { useUsersStyles } from "../styles/users";
 
 /** 用户列表行类型（页面本地别名）。 */

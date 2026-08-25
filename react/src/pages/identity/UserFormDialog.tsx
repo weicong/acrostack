@@ -10,7 +10,7 @@ import {
   useId,
 } from "@fluentui/react-components";
 import { useUserGet } from "@/api/hooks/user/useUserGet";
-import { toFormUserFromIdentity, type UserFormUser } from "./user-types";
+import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import { UserForm } from "./UserForm";
 
 // ── Props ───────────────────────────────────────────────────────────

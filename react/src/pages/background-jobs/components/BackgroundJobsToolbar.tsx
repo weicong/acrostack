@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from "react";
 import { SearchBox } from "@fluentui/react-components";
-import { useBackgroundJobsStyles } from "../styles/background-jobs";
+import { useBackgroundJobsStyles } from "../styles/backgroundJobs";
 
 interface BackgroundJobsToolbarProps {
   /** 搜索防抖后的全局过滤回调（来自表格状态）。 */

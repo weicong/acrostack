@@ -1,28 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Button, makeStyles, tokens, Text } from "@fluentui/react-components";
+import { Button, Text } from "@fluentui/react-components";
 import { ShieldError20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { useForbiddenStyles } from "./styles/forbidden";
 
-const useStyles = makeStyles({
-  content: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: tokens.spacingVerticalL,
-    padding: tokens.spacingVerticalXL,
-  },
-  icon: {
-    fontSize: "4rem",
-    color: tokens.colorPaletteRedForeground3,
-  },
-  textBlock: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalS,
-    textAlign: "center",
-  },
-});
+const useStyles = useForbiddenStyles;
 
 export function ForbiddenPage() {
   const styles = useStyles();
