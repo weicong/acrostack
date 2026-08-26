@@ -3,6 +3,7 @@ import { Link, Outlet, useMatches, useNavigate, useRouterState } from "@tanstack
 import { makeStyles, Tab, TabList, Text, tokens } from "@fluentui/react-components";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { useAppName } from "@/lib/appName";
 import { UserMenu } from "./UserMenu";
 
 /**
@@ -116,6 +117,7 @@ export function ClassroomLayout() {
   const { pathname } = useRouterState().location;
   const { isAuthenticated } = useAuth();
   const { isGranted } = usePermissions();
+  const appName = useAppName();
 
   // 全屏变体：任一活动路由声明 fullscreen（如驾驶舱）
   const fullscreen = useMatches().some(
@@ -142,8 +144,8 @@ export function ClassroomLayout() {
     <div className={styles.root}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <Link to="/" className={styles.brandLink} aria-label="AcroStack">
-            <Text weight="semibold">AcroStack</Text>
+          <Link to="/" className={styles.brandLink} aria-label={appName}>
+            <Text weight="semibold">{appName}</Text>
           </Link>
           <Text size={300}>{"课堂答题"}</Text>
         </div>

@@ -4,6 +4,7 @@ import { Card, tokens, Text } from "@fluentui/react-components";
 import { Poll20Regular, Settings20Regular } from "@fluentui/react-icons";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { ensureAppConfig, usePermissions } from "@/lib/auth/permissions";
+import { useAppName } from "@/lib/appName";
 import { queryClient } from "@/lib/queryClient";
 import { usePortalStyles } from "./styles/portal";
 
@@ -32,6 +33,7 @@ export function PortalPage() {
   const styles = useStyles();
   const { isAuthenticated } = useAuth();
   const { isGranted } = usePermissions();
+  const appName = useAppName();
 
   // 已登录时加载应用配置以获取权限快照（去重缓存，见 guards.ts 同款用法）
   useEffect(() => {
@@ -95,7 +97,7 @@ export function PortalPage() {
       </div>
 
       <Text as="p" size={200} className={styles.footer}>
-        © {new Date().getFullYear()} AcroStack
+        © {new Date().getFullYear()} {appName}
       </Text>
     </div>
   );

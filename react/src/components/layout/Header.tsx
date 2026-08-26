@@ -8,6 +8,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { Button, tokens, makeStyles, Text } from "@fluentui/react-components";
 import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
+import { useAppName } from "@/lib/appName";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/lib/auth/AuthContext";
 
@@ -96,6 +97,7 @@ const useStyles = makeStyles({
 
 export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps) {
   const { isAuthenticated, isLoading, login } = useAuth();
+  const appName = useAppName();
   const styles = useStyles();
 
   return (
@@ -117,8 +119,8 @@ export function Header({ onMenuClick, collapsed, onToggleCollapse }: HeaderProps
         icon={<Navigation20Regular />}
       />
       <div className={styles.titleArea}>
-        <Link to="/" className={styles.brandLink} aria-label="AcroStack">
-          <Text weight="semibold">AcroStack</Text>
+        <Link to="/" className={styles.brandLink} aria-label={appName}>
+          <Text weight="semibold">{appName}</Text>
         </Link>
       </div>
       <div className={styles.actions}>

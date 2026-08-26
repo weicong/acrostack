@@ -1,4 +1,5 @@
 import { Divider, makeStyles, Text, tokens } from "@fluentui/react-components";
+import { useAppName } from "@/lib/appName";
 
 const useStyles = makeStyles({
   footer: {
@@ -27,12 +28,15 @@ const useStyles = makeStyles({
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const appName = useAppName();
   const styles = useStyles();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.left}>
-        <Text size={200}>{currentYear}&copy; AcroStack</Text>
+        <Text size={200}>
+          {currentYear}&copy; {appName}
+        </Text>
       </div>
       <div className={styles.right}>
         <Text size={200}>ABP React UI</Text>
