@@ -17,7 +17,7 @@ import { usePortalStyles } from "./styles/portal";
  * 自行按权限过滤。
  *
  * 学员不提供入口（既定设计：学员仅通过教师分享的课堂码/链接进入）。
- * 各布局顶栏的 "AcroStack" 品牌名均链接回本页。
+ * 各布局顶栏的品牌名（后端 AppName）均链接回本页。
  */
 
 interface WorkspaceEntry {
@@ -65,10 +65,10 @@ export function PortalPage() {
     <div className={styles.root}>
       <div className={styles.brand}>
         <div className={styles.logo} aria-hidden="true">
-          A
+          {appName.charAt(0)}
         </div>
         <Text as="h1" size={800} weight="bold">
-          AcroStack
+          {appName}
         </Text>
         <Text size={400} style={{ color: tokens.colorNeutralForeground2 }}>
           选择工作区
