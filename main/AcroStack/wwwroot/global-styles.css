@@ -1,205 +1,118 @@
 /* =========================================================
-   Fluent UI v9 风格覆写（ABP Basic 主题 · 账户页面）
-   设计令牌参考 Fluent 2：品牌色 #0078D4、中性灰阶、Segoe UI 字体
-   所有页面级规则限定在 body.abp-account-layout 作用域内，
-   不影响 React SPA 与其他 MVC 页面。
+   Fluent UI v9 配色 —— 仅通过覆盖 Bootstrap CSS 变量实现
+   ABP Basic 主题基于 Bootstrap 5.3，组件样式均引用 --bs-* 变量，
+   重定义变量即可完成换肤。
    ========================================================= */
 
-:root {
-    --fluent-brand: #0078d4;
-    --fluent-brand-hover: #106ebe;
-    --fluent-brand-active: #005a9e;
-    --fluent-text-primary: #242424;
-    --fluent-text-secondary: #616161;
-    --fluent-stroke: #d1d1d1;
-    --fluent-stroke-strong: #323232;
-    --fluent-canvas: #f5f5f5;
-    --fluent-danger: #c50f1f;
-    --fluent-radius: 4px;
-    /* Fluent elevation 4 / 16 */
-    --fluent-shadow-4: 0 2px 4px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
-    --fluent-shadow-16: 0 8px 16px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+:root,
+[data-bs-theme="light"] {
+  /* ---------- Fluent 设计令牌 ---------- */
+  --fluent-brand: #0078d4;
+  --fluent-brand-hover: #106ebe;
+  --fluent-brand-active: #005a9e;
+  /* rgba() 需要裸数字，故另存一份 rgb 令牌 */
+  --fluent-brand-rgb: 0, 120, 212;
+  --fluent-brand-active-rgb: 0, 90, 158;
+
+  /* ---------- 字体：Segoe UI ---------- */
+  --bs-font-sans-serif:
+    "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+
+  /* ---------- 正文与画布 ---------- */
+  --bs-body-color: #242424; /* Fluent colorNeutralForeground1 */
+  --bs-body-color-rgb: 36, 36, 36;
+  --bs-body-bg: #f5f5f5; /* Fluent colorNeutralBackground3 */
+  --bs-body-bg-rgb: 245, 245, 245;
+  --bs-secondary-color: #616161; /* Fluent colorNeutralForeground2（.text-muted 也引用它） */
+  --bs-emphasis-color: #000000;
+  --bs-heading-color: #242424;
+
+  /* ---------- 品牌色 ---------- */
+  --bs-primary: var(--fluent-brand); /* Fluent colorBrandBackground */
+  --bs-primary-rgb: var(--fluent-brand-rgb);
+  --bs-primary-text-emphasis: var(--fluent-brand-active);
+  --bs-primary-bg-subtle: #eff6fc; /* Fluent 品牌浅底 */
+  --bs-primary-border-subtle: #c7e0f4;
+
+  /* ---------- 深色中性（导航栏 bg-dark 引用 --bs-dark-rgb） ---------- */
+  --bs-dark-rgb: 36, 36, 36;
+
+  /* ---------- 危险色 ---------- */
+  --bs-danger: #c50f1f; /* Fluent colorPaletteRedForeground1 */
+  --bs-danger-rgb: 197, 15, 31;
+  --bs-danger-text-emphasis: #8a1019;
+
+  /* ---------- 链接 ---------- */
+  --bs-link-color-rgb: var(--fluent-brand-rgb);
+  --bs-link-hover-color-rgb: var(--fluent-brand-active-rgb);
+
+  /* ---------- 边框与圆角 ---------- */
+  --bs-border-color: #d1d1d1; /* Fluent colorNeutralStroke1 */
+  --bs-border-color-translucent: #e0e0e0;
+  --bs-border-radius: 4px; /* Fluent 控件圆角 */
+  --bs-border-radius-sm: 2px;
+  --bs-border-radius-lg: 6px;
+  --bs-border-radius-xl: 8px;
+
+  /* ---------- 阴影：Fluent elevation ---------- */
+  --bs-box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+  --bs-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+
+  /* ---------- 组件级变量 ---------- */
+  --bs-card-bg: #ffffff; /* 卡片固定白色（否则会跟随上面的灰色 body-bg） */
+  --bs-card-border-radius: 8px;
+
+  /* ---------- 聚焦环 ---------- */
+  --bs-focus-ring-color: rgba(var(--fluent-brand-rgb), 0.25);
 }
 
-/* ---------- 页面基底 ---------- */
+/* ---------- 按钮三态（状态色由组件级变量控制） ---------- */
 
-body.abp-account-layout {
-    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
-        BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--fluent-canvas);
-    color: var(--fluent-text-primary);
+.btn-primary {
+  --bs-btn-bg: var(--fluent-brand);
+  --bs-btn-border-color: var(--fluent-brand);
+  --bs-btn-hover-bg: var(--fluent-brand-hover);
+  --bs-btn-hover-border-color: var(--fluent-brand-hover);
+  --bs-btn-active-bg: var(--fluent-brand-active);
+  --bs-btn-active-border-color: var(--fluent-brand-active);
+  --bs-btn-focus-shadow-rgb: var(--fluent-brand-rgb);
+  --bs-btn-disabled-bg: var(--fluent-brand);
+  --bs-btn-disabled-border-color: var(--fluent-brand);
 }
 
-/* ---------- 顶部导航 ---------- */
-
-body.abp-account-layout #main-navbar {
-    background-color: #242424 !important; /* 覆盖 bg-dark 工具类 */
-    box-shadow: none;
+.btn-outline-primary {
+  --bs-btn-color: var(--fluent-brand);
+  --bs-btn-border-color: var(--fluent-brand);
+  --bs-btn-hover-bg: var(--fluent-brand);
+  --bs-btn-hover-border-color: var(--fluent-brand);
+  --bs-btn-active-bg: var(--fluent-brand-active);
+  --bs-btn-active-border-color: var(--fluent-brand-active);
+  --bs-btn-focus-shadow-rgb: var(--fluent-brand-rgb);
+  --bs-btn-disabled-color: var(--fluent-brand);
+  --bs-btn-disabled-border-color: var(--fluent-brand);
 }
 
-/* ---------- 品牌区 ---------- */
+/* =========================================================
+   兜底：以下颜色/样式被 Bootstrap 或 Basic 主题写死，
+   无法用变量覆盖，需少量规则修正。
+   ========================================================= */
 
-body.abp-account-layout .brand-container {
-    margin-top: 4rem; /* 默认 8rem，收紧留白 */
+/* 输入框聚焦, 复选框选 */
+body.abp-account-layout .form-control:focus,
+body.abp-account-layout .form-check-input:focus {
+  border-color: var(--fluent-brand);
+  outline: none;
+  box-shadow: none;
 }
 
-body.abp-account-layout .brand-text {
-    font-family: inherit; /* 替换主题默认 Lexend 字体 */
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--fluent-text-primary);
-}
-
-/* ---------- 卡片（租户切换 + 登录表单） ---------- */
-/* 注意：主题 layout.css 对 .container>.card 的阴影带 !important，
-   此处选择器优先级更高以覆盖之。 */
-
-body.abp-account-layout .container > .card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: var(--fluent-shadow-4) !important;
-}
-
-body.abp-account-layout .card-body {
-    border-radius: inherit;
-    padding: 2rem !important; /* 收紧 p-5/px-5 的过大内边距 */
-}
-
-body.abp-account-layout h4,
-body.abp-account-layout .card-title {
-    font-weight: 600;
-    color: var(--fluent-text-primary);
-}
-
-body.abp-account-layout .text-muted {
-    color: var(--fluent-text-secondary) !important;
-}
-
-/* ---------- 表单标签 ---------- */
-
-body.abp-account-layout label.form-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--fluent-text-secondary);
-    margin-bottom: 4px;
-}
-
-/* ---------- 输入框：Fluent 风格聚焦（底部 2px 品牌色下划线） ---------- */
-
-body.abp-account-layout .form-control {
-    border: 1px solid var(--fluent-stroke);
-    border-radius: var(--fluent-radius);
-    padding: 0.4375rem 0.75rem;
-    font-size: 0.875rem;
-    color: var(--fluent-text-primary);
-    background-color: #fff;
-    box-shadow: none;
-    transition: border-color 0.1s linear;
-}
-
-body.abp-account-layout .form-control::placeholder {
-    color: #707070;
-}
-
-body.abp-account-layout .form-control:hover {
-    border-color: var(--fluent-stroke-strong);
-}
-
-body.abp-account-layout .form-control:focus {
-    border-color: var(--fluent-brand);
-    box-shadow: inset 0 -2px 0 0 var(--fluent-brand);
-    outline: none;
-}
-
-/* 密码框输入组：统一圆角与边框 */
-
-body.abp-account-layout .input-group > .btn {
-    border: 1px solid var(--fluent-stroke);
-    border-left: none;
-    border-radius: 0 var(--fluent-radius) var(--fluent-radius) 0;
-    color: var(--fluent-text-secondary);
-    background-color: #fff;
-    box-shadow: none;
-}
-
-body.abp-account-layout .input-group > .btn:hover,
-body.abp-account-layout .input-group > .btn:focus {
-    background-color: #fafafa;
-    color: var(--fluent-text-primary);
-    outline: none;
-}
-
-/* ---------- 按钮 ---------- */
-
-body.abp-account-layout .btn {
-    border-radius: var(--fluent-radius);
-    font-weight: 600;
-}
-
-body.abp-account-layout .btn-primary {
-    background-color: var(--fluent-brand);
-    border-color: var(--fluent-brand);
-}
-
-body.abp-account-layout .btn-primary:hover,
-body.abp-account-layout .btn-primary:focus {
-    background-color: var(--fluent-brand-hover);
-    border-color: var(--fluent-brand-hover);
-}
-
-body.abp-account-layout .btn-primary:active {
-    background-color: var(--fluent-brand-active) !important;
-    border-color: var(--fluent-brand-active) !important;
-}
-
-body.abp-account-layout .btn-outline-primary {
-    color: var(--fluent-brand);
-    border-color: var(--fluent-brand);
-}
-
-body.abp-account-layout .btn-outline-primary:hover,
-body.abp-account-layout .btn-outline-primary:focus {
-    background-color: var(--fluent-brand);
-    border-color: var(--fluent-brand);
-}
-
-body.abp-account-layout .btn-lg {
-    font-size: 1rem;
-    padding: 0.625rem 1rem;
-}
-
-/* ---------- 复选框（Bootstrap 5 自绘勾选，需覆盖背景色） ---------- */
-
-body.abp-account-layout .form-check-input {
-    width: 1.0625rem;
-    height: 1.0625rem;
-    cursor: pointer;
-}
-
+/* 复选框选中态 */
 body.abp-account-layout .form-check-input:checked {
-    background-color: var(--fluent-brand);
-    border-color: var(--fluent-brand);
+  background-color: var(--fluent-brand);
 }
 
-body.abp-account-layout .form-check-label {
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-
-/* ---------- 链接 ---------- */
-
-body.abp-account-layout a:not(.nav-link):not(.navbar-brand) {
-    color: var(--fluent-brand);
-    text-decoration: none;
-}
-
-body.abp-account-layout a:not(.nav-link):not(.navbar-brand):hover {
-    color: var(--fluent-brand-active);
-    text-decoration: underline;
-}
-
-/* ---------- 校验错误文字改用 Fluent 错误红 ---------- */
-
-body.abp-account-layout .text-danger {
-    color: var(--fluent-danger) !important;
+/* Logo, 品牌文字隐藏 */
+body.abp-account-layout img.brand-logo,
+body.abp-account-layout .brand-text {
+  display: none;
 }
