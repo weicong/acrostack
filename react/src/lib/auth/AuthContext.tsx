@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { getAuthClient } from "./userManager";
 import { ensureAppConfig, invalidateAppConfig, appConfig } from "./permissions";
 import { queryClient } from "@/lib/queryClient";
@@ -7,9 +7,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const authClient = getAuthClient();
 
   // Handle OIDC redirect callback (?code=&state= in URL)
+  // useRef 防止 React StrictMode 双重渲染导致一次性授权码被重复兑换
+  const signinCallbackHandledRef = useRef(false);
   useEffect(() => {
+    if (signinCallbackHandledRef.current) return;
     const params = new URLSearchParams(window.location.search);
     if (!params.has("code") || !params.has("state")) return;
+    signinCallbackHandledRef.current = true;
     void authClient
       .handleSigninCallback()
       .then(() => window.history.replaceState({}, document.title, window.location.pathname))
