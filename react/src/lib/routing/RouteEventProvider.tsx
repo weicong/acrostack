@@ -1,21 +1,20 @@
 /**
  * Provider for route events.
  * Listens to events from httpClient and triggers router navigation.
+ * 直接使用 router 实例而非 useNavigate()，避免必须在 <RouterProvider> 内部使用的限制。
  */
 import { useEffect } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { addRouteListener } from "./routeEvents";
+import { router } from "./router";
 
 export function RouteEventProvider() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     return addRouteListener((event) => {
       if (event.type === "403") {
-        void navigate({ to: event.to });
+        void router.navigate({ to: event.to });
       }
     });
-  }, [navigate]);
+  }, []);
 
   return null;
 }
