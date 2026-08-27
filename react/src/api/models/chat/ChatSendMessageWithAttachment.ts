@@ -2,10 +2,22 @@
 
 import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageDto";
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ChatSendMessageWithAttachmentStatus200Plain = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ChatSendMessageWithAttachmentStatus200Json = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ChatSendMessageWithAttachmentStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ChatSendMessageWithAttachmentStatus200 =
@@ -16,12 +28,14 @@ export type ChatSendMessageWithAttachmentStatus200 =
 export type ChatSendMessageWithAttachmentBody =
   | {
       /**
-       * @description
+       * @description IdentityUser.Id of the message recipient.
+       *
        * Format: `uuid`
        * @type string | undefined
        */
       TargetUserId?: string;
       /**
+       * @description 消息文本。限制最长 4000 字符，与 ChatMessage.Text 的数据库列宽\r\n（见 ChatEfCoreDbContextExtensions.MaxMessageTextLength）一致，\r\n避免超长文本穿透到数据库层才抛异常。
        * @minLength 0
        * @maxLength 4000
        * @type string | undefined

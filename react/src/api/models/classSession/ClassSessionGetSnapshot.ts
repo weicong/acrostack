@@ -12,10 +12,22 @@ export type ClassSessionGetSnapshotPath = {
   id: string;
 };
 
+/**
+ * @description 教师快照：完整课堂状态 + 当前题 + 学员列表 + 当前统计 + 版本。
+ * @type object
+ */
 export type ClassSessionGetSnapshotStatus200Plain = ClassroomDtosTeacherSnapshotDto;
 
+/**
+ * @description 教师快照：完整课堂状态 + 当前题 + 学员列表 + 当前统计 + 版本。
+ * @type object
+ */
 export type ClassSessionGetSnapshotStatus200Json = ClassroomDtosTeacherSnapshotDto;
 
+/**
+ * @description 教师快照：完整课堂状态 + 当前题 + 学员列表 + 当前统计 + 版本。
+ * @type object
+ */
 export type ClassSessionGetSnapshotStatus200Json2 = ClassroomDtosTeacherSnapshotDto;
 
 export type ClassSessionGetSnapshotStatus200 =

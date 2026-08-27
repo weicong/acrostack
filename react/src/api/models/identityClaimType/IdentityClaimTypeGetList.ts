@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/identityClaims/identityClaimTypeDtoAcroStack/IdentityClaimsVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackIdentityClaimsIdentityClaimTypeDto } from "../pagedResultDtoOfAcroStack/identityClaims/IdentityClaimTypeDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type IdentityClaimTypeGetListQuery = {
@@ -21,13 +21,13 @@ export type IdentityClaimTypeGetListQuery = {
 };
 
 export type IdentityClaimTypeGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackIdentityClaimsIdentityClaimTypeDto;
 
 export type IdentityClaimTypeGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackIdentityClaimsIdentityClaimTypeDto;
 
 export type IdentityClaimTypeGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackIdentityClaimsIdentityClaimTypeDtoAcroStackIdentityClaimsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackIdentityClaimsIdentityClaimTypeDto;
 
 export type IdentityClaimTypeGetListStatus200 =
   | IdentityClaimTypeGetListStatus200Plain

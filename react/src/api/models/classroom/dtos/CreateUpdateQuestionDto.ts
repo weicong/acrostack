@@ -5,7 +5,8 @@ import type { ClassroomDtosQuestionOptionDto } from "./QuestionOptionDto";
 
 export type ClassroomDtosCreateUpdateQuestionDto = {
   /**
-   * @description
+   * @description 题型：单选 / 多选 / 判断 / 简答（主观题不自动判分）。
+   *
    * Format: `int32`
    * @type integer
    */
@@ -18,6 +19,7 @@ export type ClassroomDtosCreateUpdateQuestionDto = {
   stem: string;
   options: ClassroomDtosQuestionOptionDto[];
   /**
+   * @description 客观题必填；简答题忽略。
    * @minLength 0
    * @maxLength 128
    * @type string | undefined

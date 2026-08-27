@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/abp/tenantManagement/tenantDtoVolo/abp/tenantManagement/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloAbpTenantManagementTenantDto } from "../pagedResultDtoOfVolo/abp/tenantManagement/TenantDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type TenantGetListQuery = {
@@ -20,14 +20,11 @@ export type TenantGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type TenantGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TenantGetListStatus200Plain = PagedResultDtoOfVoloAbpTenantManagementTenantDto;
 
-export type TenantGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TenantGetListStatus200Json = PagedResultDtoOfVoloAbpTenantManagementTenantDto;
 
-export type TenantGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpTenantManagementTenantDtoVoloAbpTenantManagementApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TenantGetListStatus200Json2 = PagedResultDtoOfVoloAbpTenantManagementTenantDto;
 
 export type TenantGetListStatus200 =
   | TenantGetListStatus200Plain

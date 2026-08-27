@@ -1,16 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/contactDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfAcroStackChatContactDto } from "../listResultDtoOfAcroStack/chat/ContactDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
-export type ContactGetListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ContactGetListStatus200Plain = ListResultDtoOfAcroStackChatContactDto;
 
-export type ContactGetListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ContactGetListStatus200Json = ListResultDtoOfAcroStackChatContactDto;
 
-export type ContactGetListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatContactDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ContactGetListStatus200Json2 = ListResultDtoOfAcroStackChatContactDto;
 
 export type ContactGetListStatus200 =
   | ContactGetListStatus200Plain

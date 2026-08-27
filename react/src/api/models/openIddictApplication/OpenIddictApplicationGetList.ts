@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/openIddictManagement/openIddictApplicationDtoAcroStack/OpenIddictManagementVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackOpenIddictManagementOpenIddictApplicationDto } from "../pagedResultDtoOfAcroStack/openIddictManagement/OpenIddictApplicationDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type OpenIddictApplicationGetListQuery = {
@@ -21,13 +21,13 @@ export type OpenIddictApplicationGetListQuery = {
 };
 
 export type OpenIddictApplicationGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackOpenIddictManagementOpenIddictApplicationDtoAcroStackOpenIddictManagementVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackOpenIddictManagementOpenIddictApplicationDto;
 
 export type OpenIddictApplicationGetListStatus200 =
   | OpenIddictApplicationGetListStatus200Plain

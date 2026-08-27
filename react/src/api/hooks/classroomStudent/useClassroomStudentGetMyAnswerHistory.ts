@@ -48,6 +48,7 @@ export function classroomStudentGetMyAnswerHistoryQueryOptions(
 }
 
 /**
+ * @summary 本人本课堂答题记录（逐题回顾；正确答案仅公布后下发）。
  * {@link /api/student/class-sessions/:id/my-answers}
  */
 export function useClassroomStudentGetMyAnswerHistory<

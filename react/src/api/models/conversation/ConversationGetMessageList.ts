@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/chat/chatMessageDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackChatChatMessageDto } from "../pagedResultDtoOfAcroStack/chat/ChatMessageDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type ConversationGetMessageListQuery = {
@@ -24,14 +24,11 @@ export type ConversationGetMessageListQuery = {
   MaxResultCount?: number;
 };
 
-export type ConversationGetMessageListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetMessageListStatus200Plain = PagedResultDtoOfAcroStackChatChatMessageDto;
 
-export type ConversationGetMessageListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetMessageListStatus200Json = PagedResultDtoOfAcroStackChatChatMessageDto;
 
-export type ConversationGetMessageListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationGetMessageListStatus200Json2 = PagedResultDtoOfAcroStackChatChatMessageDto;
 
 export type ConversationGetMessageListStatus200 =
   | ConversationGetMessageListStatus200Plain

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/comments/commentWithAuthorDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloCmsKitAdminCommentsCommentWithAuthorDto } from "../pagedResultDtoOfVolo/cmsKit/admin/comments/CommentWithAuthorDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 import type { VoloCmsKitCommentsCommentApproveState } from "../volo/cmsKit/comments/CommentApproveState";
 
@@ -48,13 +48,13 @@ export type CommentAdminGetListQuery = {
 };
 
 export type CommentAdminGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminCommentsCommentWithAuthorDto;
 
 export type CommentAdminGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminCommentsCommentWithAuthorDto;
 
 export type CommentAdminGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminCommentsCommentWithAuthorDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminCommentsCommentWithAuthorDto;
 
 export type CommentAdminGetListStatus200 =
   | CommentAdminGetListStatus200Plain

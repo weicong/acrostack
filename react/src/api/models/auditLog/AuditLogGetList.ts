@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/auditLogging/auditLogDtoAcroStack/AuditLoggingVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackAuditLoggingAuditLogDto } from "../pagedResultDtoOfAcroStack/auditLogging/AuditLogDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type AuditLogGetListQuery = {
@@ -47,14 +47,11 @@ export type AuditLogGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type AuditLogGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+export type AuditLogGetListStatus200Plain = PagedResultDtoOfAcroStackAuditLoggingAuditLogDto;
 
-export type AuditLogGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+export type AuditLogGetListStatus200Json = PagedResultDtoOfAcroStackAuditLoggingAuditLogDto;
 
-export type AuditLogGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAuditLoggingAuditLogDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+export type AuditLogGetListStatus200Json2 = PagedResultDtoOfAcroStackAuditLoggingAuditLogDto;
 
 export type AuditLogGetListStatus200 =
   | AuditLogGetListStatus200Plain

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityUserDtoVolo/abp/identity/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloAbpIdentityIdentityUserDto } from "../pagedResultDtoOfVolo/abp/identity/IdentityUserDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type UserGetListQuery = {
@@ -23,14 +23,11 @@ export type UserGetListQuery = {
   };
 };
 
-export type UserGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type UserGetListStatus200Plain = PagedResultDtoOfVoloAbpIdentityIdentityUserDto;
 
-export type UserGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type UserGetListStatus200Json = PagedResultDtoOfVoloAbpIdentityIdentityUserDto;
 
-export type UserGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityUserDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type UserGetListStatus200Json2 = PagedResultDtoOfVoloAbpIdentityIdentityUserDto;
 
 export type UserGetListStatus200 =
   | UserGetListStatus200Plain

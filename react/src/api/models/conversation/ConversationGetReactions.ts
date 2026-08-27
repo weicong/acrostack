@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/chat/chatMessageReactionDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfAcroStackChatChatMessageReactionDto } from "../listResultDtoOfAcroStack/chat/ChatMessageReactionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type ConversationGetReactionsPath = {
@@ -13,13 +13,13 @@ export type ConversationGetReactionsPath = {
 };
 
 export type ConversationGetReactionsStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackChatChatMessageReactionDto;
 
 export type ConversationGetReactionsStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackChatChatMessageReactionDto;
 
 export type ConversationGetReactionsStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackChatChatMessageReactionDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackChatChatMessageReactionDto;
 
 export type ConversationGetReactionsStatus200 =
   | ConversationGetReactionsStatus200Plain

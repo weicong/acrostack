@@ -23,10 +23,22 @@ export type ClassroomStudentSubmitAnswerStatus200 =
   | ClassroomStudentSubmitAnswerStatus200Json
   | ClassroomStudentSubmitAnswerStatus200Json2;
 
+/**
+ * @description 提交/修改答案 DTO。\r\nParticipantId 从令牌获取（禁止信任请求体）；ClientSubmittedAt 仅用于诊断，不用于截止判定。
+ * @type object | undefined
+ */
 export type ClassroomStudentSubmitAnswerBodyJson = ClassroomDtosSubmitAnswerInputDto | undefined;
 
+/**
+ * @description 提交/修改答案 DTO。\r\nParticipantId 从令牌获取（禁止信任请求体）；ClientSubmittedAt 仅用于诊断，不用于截止判定。
+ * @type object | undefined
+ */
 export type ClassroomStudentSubmitAnswerBodyJson2 = ClassroomDtosSubmitAnswerInputDto | undefined;
 
+/**
+ * @description 提交/修改答案 DTO。\r\nParticipantId 从令牌获取（禁止信任请求体）；ClientSubmittedAt 仅用于诊断，不用于截止判定。
+ * @type object | undefined
+ */
 export type ClassroomStudentSubmitAnswerBodyJson3 = ClassroomDtosSubmitAnswerInputDto | undefined;
 
 export type ClassroomStudentSubmitAnswerBody =

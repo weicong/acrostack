@@ -1,16 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/menus/menuItemDtoVolo/cmsKit/common/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfVoloCmsKitMenusMenuItemDto } from "../listResultDtoOfVolo/cmsKit/menus/MenuItemDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
-export type MenuItemAdminGetListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type MenuItemAdminGetListStatus200Plain = ListResultDtoOfVoloCmsKitMenusMenuItemDto;
 
-export type MenuItemAdminGetListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type MenuItemAdminGetListStatus200Json = ListResultDtoOfVoloCmsKitMenusMenuItemDto;
 
-export type MenuItemAdminGetListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitMenusMenuItemDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type MenuItemAdminGetListStatus200Json2 = ListResultDtoOfVoloCmsKitMenusMenuItemDto;
 
 export type MenuItemAdminGetListStatus200 =
   | MenuItemAdminGetListStatus200Plain

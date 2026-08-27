@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/fileManagement/fileShareDtoAcroStack/FileManagementVersion1000CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfAcroStackFileManagementFileShareDto } from "../listResultDtoOfAcroStack/fileManagement/FileShareDto";
 
 export type FileManagementGetShareLinksPath = {
   /**
@@ -12,13 +12,13 @@ export type FileManagementGetShareLinksPath = {
 };
 
 export type FileManagementGetShareLinksStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileShareDto;
 
 export type FileManagementGetShareLinksStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileShareDto;
 
 export type FileManagementGetShareLinksStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileShareDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileShareDto;
 
 export type FileManagementGetShareLinksStatus200 =
   | FileManagementGetShareLinksStatus200Plain

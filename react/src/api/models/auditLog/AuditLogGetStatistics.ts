@@ -17,17 +17,30 @@ export type AuditLogGetStatisticsQuery = {
    */
   EndTime?: string;
   /**
-   * @description
+   * @description Maximum number of entries to return in the TopSlowUrls and\r\nTopFrequentUrls lists. Default 10.
+   *
    * Format: `int32`
    * @type integer | undefined
    */
   TopCount?: number;
 };
 
+/**
+ * @description Aggregated statistics over a set of audit logs. Mirrors ABP Commercial\r\nAuditLogging Pro\'s statistics endpoint.
+ * @type object
+ */
 export type AuditLogGetStatisticsStatus200Plain = AcroStackAuditLoggingAuditLogStatisticsDto;
 
+/**
+ * @description Aggregated statistics over a set of audit logs. Mirrors ABP Commercial\r\nAuditLogging Pro\'s statistics endpoint.
+ * @type object
+ */
 export type AuditLogGetStatisticsStatus200Json = AcroStackAuditLoggingAuditLogStatisticsDto;
 
+/**
+ * @description Aggregated statistics over a set of audit logs. Mirrors ABP Commercial\r\nAuditLogging Pro\'s statistics endpoint.
+ * @type object
+ */
 export type AuditLogGetStatisticsStatus200Json2 = AcroStackAuditLoggingAuditLogStatisticsDto;
 
 export type AuditLogGetStatisticsStatus200 =

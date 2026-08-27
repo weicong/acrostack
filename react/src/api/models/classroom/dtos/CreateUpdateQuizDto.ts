@@ -13,5 +13,9 @@ export type ClassroomDtosCreateUpdateQuizDto = {
    * @type string | undefined
    */
   description?: string | null;
+  /**
+   * @description 题目 Id 的有序列表（顺序即试卷顺序，服务端重新编号）。
+   * @type array
+   */
   questionIds: string[];
 };

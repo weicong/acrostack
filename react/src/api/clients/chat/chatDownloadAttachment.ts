@@ -8,6 +8,8 @@ import type {
 import { client } from "../../.kubb/client";
 
 /**
+ * @summary Downloads the attachment of a chat message. Only conversation
+ * participants may download.
  * {@link /api/app/chat/messages/:messageId/attachment}
  */
 export function chatDownloadAttachment<ThrowOnError extends boolean = true>(

@@ -90,14 +90,26 @@ export type OpenIddictScopeUpdateStatus501 =
   | OpenIddictScopeUpdateStatus501Json
   | OpenIddictScopeUpdateStatus501Json2;
 
+/**
+ * @description DTO for updating an existing OpenIddict scope. `Name` is\r\nintentionally omitted — changing it after creation is not supported.
+ * @type object | undefined
+ */
 export type OpenIddictScopeUpdateBodyJson =
   | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;
 
+/**
+ * @description DTO for updating an existing OpenIddict scope. `Name` is\r\nintentionally omitted — changing it after creation is not supported.
+ * @type object | undefined
+ */
 export type OpenIddictScopeUpdateBodyJson2 =
   | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;
 
+/**
+ * @description DTO for updating an existing OpenIddict scope. `Name` is\r\nintentionally omitted — changing it after creation is not supported.
+ * @type object | undefined
+ */
 export type OpenIddictScopeUpdateBodyJson3 =
   | AcroStackOpenIddictManagementUpdateOpenIddictScopeDto
   | undefined;

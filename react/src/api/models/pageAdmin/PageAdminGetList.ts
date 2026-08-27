@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminPagesPageDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/pages/pageDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloCmsKitAdminPagesPageDto } from "../pagedResultDtoOfVolo/cmsKit/admin/pages/PageDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 import type { VoloCmsKitPagesPageStatus } from "../volo/cmsKit/pages/PageStatus";
 
@@ -27,14 +27,11 @@ export type PageAdminGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type PageAdminGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminPagesPageDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type PageAdminGetListStatus200Plain = PagedResultDtoOfVoloCmsKitAdminPagesPageDto;
 
-export type PageAdminGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminPagesPageDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type PageAdminGetListStatus200Json = PagedResultDtoOfVoloCmsKitAdminPagesPageDto;
 
-export type PageAdminGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminPagesPageDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type PageAdminGetListStatus200Json2 = PagedResultDtoOfVoloCmsKitAdminPagesPageDto;
 
 export type PageAdminGetListStatus200 =
   | PageAdminGetListStatus200Plain

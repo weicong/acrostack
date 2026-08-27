@@ -2,7 +2,8 @@
 
 export type ClassroomDtosOpenQuestionDto = {
   /**
-   * @description
+   * @description 作答时长（秒）。
+   *
    * Format: `int32`
    * @type integer | undefined
    */

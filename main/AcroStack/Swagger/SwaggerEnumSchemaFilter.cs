@@ -9,7 +9,7 @@ public class SwaggerEnumSchemaFilter : ISchemaFilter
     public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var type = context.Type;
-        if (type is null || !type.IsEnum || schema.Extensions.ContainsKey("x-enumNames"))
+        if (type is null || !type.IsEnum || schema.Extensions is null || schema.Extensions.ContainsKey("x-enumNames"))
         {
             return;
         }

@@ -39,6 +39,9 @@ public interface IClassSessionAppService : IApplicationService
     /// <summary>结束课堂（-> Finished；课堂码失效）。</summary>
     Task<ClassSessionDto> FinishAsync(Guid id);
 
+    /// <summary>重新开始课堂：Finished -> Preparing，重置所有题目状态。</summary>
+    Task<ClassSessionDto> RestartAsync(Guid id);
+
     /// <summary>驾驶舱数据（教师权限）。</summary>
     Task<DashboardDto> GetDashboardAsync(Guid id);
 

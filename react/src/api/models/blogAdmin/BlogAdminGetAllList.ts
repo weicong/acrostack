@@ -1,16 +1,13 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminBlogsBlogDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/admin/blogs/blogDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfVoloCmsKitAdminBlogsBlogDto } from "../listResultDtoOfVolo/cmsKit/admin/blogs/BlogDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
-export type BlogAdminGetAllListStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminBlogsBlogDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type BlogAdminGetAllListStatus200Plain = ListResultDtoOfVoloCmsKitAdminBlogsBlogDto;
 
-export type BlogAdminGetAllListStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminBlogsBlogDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type BlogAdminGetAllListStatus200Json = ListResultDtoOfVoloCmsKitAdminBlogsBlogDto;
 
-export type BlogAdminGetAllListStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminBlogsBlogDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type BlogAdminGetAllListStatus200Json2 = ListResultDtoOfVoloCmsKitAdminBlogsBlogDto;
 
 export type BlogAdminGetAllListStatus200 =
   | BlogAdminGetAllListStatus200Plain

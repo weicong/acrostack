@@ -90,4 +90,15 @@ public class SessionQuestion : FullAuditedAggregateRoot<Guid>, IMultiTenant
                && EndsAt.HasValue
                && serverNow < EndsAt.Value;
     }
+
+    /// <summary>重置为 Pending（课堂重启时级联调用，不经过状态机校验）。</summary>
+    public void Reset()
+    {
+        Status = SessionQuestionStatus.Pending;
+        OpenedAt = null;
+        EndsAt = null;
+        ClosedAt = null;
+        StatisticsPublishedAt = null;
+        AnswerPublishedAt = null;
+    }
 }

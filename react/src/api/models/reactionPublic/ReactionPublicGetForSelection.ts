@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicReactionsReactionWithSelectionDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/public/reactions/reactionWithSelectionDtoVolo/cmsKit/public/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfVoloCmsKitPublicReactionsReactionWithSelectionDto } from "../listResultDtoOfVolo/cmsKit/public/reactions/ReactionWithSelectionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type ReactionPublicGetForSelectionPath = {
@@ -9,13 +9,13 @@ export type ReactionPublicGetForSelectionPath = {
 };
 
 export type ReactionPublicGetForSelectionStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicReactionsReactionWithSelectionDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitPublicReactionsReactionWithSelectionDto;
 
 export type ReactionPublicGetForSelectionStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicReactionsReactionWithSelectionDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitPublicReactionsReactionWithSelectionDto;
 
 export type ReactionPublicGetForSelectionStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitPublicReactionsReactionWithSelectionDtoVoloCmsKitPublicApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitPublicReactionsReactionWithSelectionDto;
 
 export type ReactionPublicGetForSelectionStatus200 =
   | ReactionPublicGetForSelectionStatus200Plain

@@ -1,17 +1,14 @@
 /* oxlint-disable */
 
 import type { AcroStackChatSearchMessagesInput } from "../acroStack/chat/SearchMessagesInput";
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/chat/chatMessageDtoAcroStack/ChatVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackChatChatMessageDto } from "../pagedResultDtoOfAcroStack/chat/ChatMessageDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
-export type ConversationSearchMessagesStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationSearchMessagesStatus200Plain = PagedResultDtoOfAcroStackChatChatMessageDto;
 
-export type ConversationSearchMessagesStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationSearchMessagesStatus200Json = PagedResultDtoOfAcroStackChatChatMessageDto;
 
-export type ConversationSearchMessagesStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackChatChatMessageDtoAcroStackChatVersion1000CultureneutralPublicKeyTokennull;
+export type ConversationSearchMessagesStatus200Json2 = PagedResultDtoOfAcroStackChatChatMessageDto;
 
 export type ConversationSearchMessagesStatus200 =
   | ConversationSearchMessagesStatus200Plain
@@ -84,10 +81,22 @@ export type ConversationSearchMessagesStatus501 =
   | ConversationSearchMessagesStatus501Json
   | ConversationSearchMessagesStatus501Json2;
 
+/**
+ * @description Input for searching chat messages by keyword across all conversations.
+ * @type object | undefined
+ */
 export type ConversationSearchMessagesBodyJson = AcroStackChatSearchMessagesInput | undefined;
 
+/**
+ * @description Input for searching chat messages by keyword across all conversations.
+ * @type object | undefined
+ */
 export type ConversationSearchMessagesBodyJson2 = AcroStackChatSearchMessagesInput | undefined;
 
+/**
+ * @description Input for searching chat messages by keyword across all conversations.
+ * @type object | undefined
+ */
 export type ConversationSearchMessagesBodyJson3 = AcroStackChatSearchMessagesInput | undefined;
 
 export type ConversationSearchMessagesBody =

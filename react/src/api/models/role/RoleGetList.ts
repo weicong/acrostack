@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/abp/identity/identityRoleDtoVolo/abp/identity/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloAbpIdentityIdentityRoleDto } from "../pagedResultDtoOfVolo/abp/identity/IdentityRoleDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type RoleGetListQuery = {
@@ -23,14 +23,11 @@ export type RoleGetListQuery = {
   };
 };
 
-export type RoleGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type RoleGetListStatus200Plain = PagedResultDtoOfVoloAbpIdentityIdentityRoleDto;
 
-export type RoleGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type RoleGetListStatus200Json = PagedResultDtoOfVoloAbpIdentityIdentityRoleDto;
 
-export type RoleGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloAbpIdentityIdentityRoleDtoVoloAbpIdentityApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type RoleGetListStatus200Json2 = PagedResultDtoOfVoloAbpIdentityIdentityRoleDto;
 
 export type RoleGetListStatus200 =
   | RoleGetListStatus200Plain

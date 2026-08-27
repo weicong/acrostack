@@ -2,6 +2,10 @@
 
 import type { AcroStackAuditLoggingUrlStatisticDto } from "./UrlStatisticDto";
 
+/**
+ * @description Aggregated statistics over a set of audit logs. Mirrors ABP Commercial\r\nAuditLogging Pro\'s statistics endpoint.
+ * @type object
+ */
 export type AcroStackAuditLoggingAuditLogStatisticsDto = {
   /**
    * @description

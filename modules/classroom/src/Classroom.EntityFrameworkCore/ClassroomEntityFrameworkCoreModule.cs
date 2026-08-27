@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
@@ -42,5 +43,16 @@ public class ClassroomTransactionExecutor : IClassroomTransactionExecutor, ITran
         await action();
         await dbContext.SaveChangesAsync();
         await transaction.CommitAsync();
+    }
+
+    public async Task HardDeleteAnswerRecordsAsync(Guid sessionId)
+    {
+        var dbContext = await _dbContextProvider.GetDbContextAsync();
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "DELETE FROM ClsAnswerRevisions WHERE AnswerRecordId IN (SELECT Id FROM ClsAnswerRecords WHERE SessionId = {0})",
+            sessionId);
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "DELETE FROM ClsAnswerRecords WHERE SessionId = {0}",
+            sessionId);
     }
 }

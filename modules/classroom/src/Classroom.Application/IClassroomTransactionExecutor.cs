@@ -12,4 +12,10 @@ public interface IClassroomTransactionExecutor
 {
     /// <summary>在显式事务中执行 action（内部统一 SaveChanges + Commit）。</summary>
     Task ExecuteAsync(System.Func<Task> action);
+
+    /// <summary>
+    /// 硬删除指定课堂的所有答案记录与修订历史（绕过软删除拦截器）。
+    /// 必须在 <see cref="ExecuteAsync"/> 内调用以共享事务。
+    /// </summary>
+    Task HardDeleteAnswerRecordsAsync(System.Guid sessionId);
 }

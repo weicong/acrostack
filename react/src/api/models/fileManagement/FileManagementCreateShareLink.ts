@@ -23,14 +23,26 @@ export type FileManagementCreateShareLinkStatus200 =
   | FileManagementCreateShareLinkStatus200Json
   | FileManagementCreateShareLinkStatus200Json2;
 
+/**
+ * @description Input for creating a share link for a file. Both fields are\r\noptional: when omitted, the link never expires / has no download cap.
+ * @type object | undefined
+ */
 export type FileManagementCreateShareLinkBodyJson =
   | AcroStackFileManagementCreateShareLinkDto
   | undefined;
 
+/**
+ * @description Input for creating a share link for a file. Both fields are\r\noptional: when omitted, the link never expires / has no download cap.
+ * @type object | undefined
+ */
 export type FileManagementCreateShareLinkBodyJson2 =
   | AcroStackFileManagementCreateShareLinkDto
   | undefined;
 
+/**
+ * @description Input for creating a share link for a file. Both fields are\r\noptional: when omitted, the link never expires / has no download cap.
+ * @type object | undefined
+ */
 export type FileManagementCreateShareLinkBodyJson3 =
   | AcroStackFileManagementCreateShareLinkDto
   | undefined;

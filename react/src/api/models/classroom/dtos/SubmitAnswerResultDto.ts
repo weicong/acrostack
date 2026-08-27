@@ -13,6 +13,10 @@ export type ClassroomDtosSubmitAnswerResultDto = {
    * @type string | undefined
    */
   answerRecordId?: string;
+  /**
+   * @description 是否为幂等命中的重放（未新建/未修订）。
+   * @type boolean | undefined
+   */
   isDuplicateRequest?: boolean;
   /**
    * @description
@@ -27,7 +31,8 @@ export type ClassroomDtosSubmitAnswerResultDto = {
    */
   serverSubmittedAt?: string;
   /**
-   * @description
+   * @description 当前课堂版本（供客户端校准）。
+   *
    * Format: `int32`
    * @type integer | undefined
    */

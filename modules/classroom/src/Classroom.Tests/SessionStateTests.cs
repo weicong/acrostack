@@ -107,6 +107,54 @@ public class ClassSessionTests
         Assert.Equal(ClassSessionStatus.Explaining, session.Status);
         Assert.Equal(versionBefore + 2, session.Version);
     }
+
+    [Fact]
+    public void CanTransition_Finished_To_Preparing_Succeeds()
+    {
+        Assert.True(ClassSessionStateMachine.CanTransition(ClassSessionStatus.Finished, ClassSessionStatus.Preparing));
+    }
+
+    [Fact]
+    public void Restart_FromFinished_Succeeds_AndBumpsVersion()
+    {
+        var session = CreateSession();
+        var question = CreateQuestion(session.Id);
+        session.Start(Now);
+        session.OpenQuestion(question, Now.AddMinutes(1));
+        session.CloseCurrentQuestion(Now.AddMinutes(3));
+        session.Finish(Now.AddMinutes(4));
+        var versionBefore = session.Version;
+
+        session.Restart(Now.AddMinutes(5));
+
+        Assert.Equal(ClassSessionStatus.Preparing, session.Status);
+        Assert.Null(session.CurrentSessionQuestionId);
+        Assert.Equal(0, session.CurrentQuestionNumber);
+        Assert.Null(session.FinishedAt);
+        Assert.Equal(versionBefore + 1, session.Version);
+    }
+
+    [Fact]
+    public void Restart_FromNonFinished_IsRejected()
+    {
+        var session = CreateSession();
+        session.Start(Now);
+
+        Assert.Throws<BusinessException>(() => session.Restart(Now.AddMinutes(1)));
+    }
+
+    [Fact]
+    public void Restart_CanStartAgain_AfterRestart()
+    {
+        var session = CreateSession();
+        session.Start(Now);
+        session.Finish(Now.AddMinutes(1));
+        session.Restart(Now.AddMinutes(2));
+
+        session.Start(Now.AddMinutes(3));
+
+        Assert.Equal(ClassSessionStatus.Waiting, session.Status);
+    }
 }
 
 /// <summary>课堂题目状态机与接收窗口测试（截止后不能提交）。</summary>
@@ -195,5 +243,38 @@ public class SessionQuestionTests
     public void IllegalQuestionTransitions_AreRejected(SessionQuestionStatus from, SessionQuestionStatus to)
     {
         Assert.False(SessionQuestionStateMachine.CanTransition(from, to));
+    }
+
+    [Fact]
+    public void Reset_FromAnswerPublished_RestoresToPending()
+    {
+        var question = CreateQuestion();
+        question.Open(Now, 60);
+        question.Close(Now.AddSeconds(60));
+        question.PublishStatistics(Now.AddSeconds(70));
+        question.PublishAnswer(Now.AddSeconds(80));
+
+        question.Reset();
+
+        Assert.Equal(SessionQuestionStatus.Pending, question.Status);
+        Assert.Null(question.OpenedAt);
+        Assert.Null(question.EndsAt);
+        Assert.Null(question.ClosedAt);
+        Assert.Null(question.StatisticsPublishedAt);
+        Assert.Null(question.AnswerPublishedAt);
+    }
+
+    [Fact]
+    public void Reset_CanOpenAgain_AfterReset()
+    {
+        var question = CreateQuestion();
+        question.Open(Now, 60);
+        question.Close(Now.AddSeconds(60));
+        question.PublishAnswer(Now.AddSeconds(70));
+        question.Reset();
+
+        question.Open(Now.AddSeconds(100), 30);
+
+        Assert.Equal(SessionQuestionStatus.Open, question.Status);
     }
 }

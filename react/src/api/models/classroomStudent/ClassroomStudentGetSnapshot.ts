@@ -11,10 +11,22 @@ export type ClassroomStudentGetSnapshotPath = {
   id: string;
 };
 
+/**
+ * @description 学员快照（提示词九节：当前状态/当前题/EndsAt/本人提交状态/本人最终答案/公布标记/版本号）。
+ * @type object
+ */
 export type ClassroomStudentGetSnapshotStatus200Plain = ClassroomDtosStudentSnapshotDto;
 
+/**
+ * @description 学员快照（提示词九节：当前状态/当前题/EndsAt/本人提交状态/本人最终答案/公布标记/版本号）。
+ * @type object
+ */
 export type ClassroomStudentGetSnapshotStatus200Json = ClassroomDtosStudentSnapshotDto;
 
+/**
+ * @description 学员快照（提示词九节：当前状态/当前题/EndsAt/本人提交状态/本人最终答案/公布标记/版本号）。
+ * @type object
+ */
 export type ClassroomStudentGetSnapshotStatus200Json2 = ClassroomDtosStudentSnapshotDto;
 
 export type ClassroomStudentGetSnapshotStatus200 =

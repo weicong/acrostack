@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuizDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Classroom/dtos/quizDtoClassroom/application/ContractsVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfClassroomDtosQuizDto } from "../pagedResultDtoOfClassroom/dtos/QuizDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type QuizGetListQuery = {
@@ -20,14 +20,11 @@ export type QuizGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type QuizGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuizDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuizGetListStatus200Plain = PagedResultDtoOfClassroomDtosQuizDto;
 
-export type QuizGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuizDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuizGetListStatus200Json = PagedResultDtoOfClassroomDtosQuizDto;
 
-export type QuizGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuizDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuizGetListStatus200Json2 = PagedResultDtoOfClassroomDtosQuizDto;
 
 export type QuizGetListStatus200 =
   | QuizGetListStatus200Plain

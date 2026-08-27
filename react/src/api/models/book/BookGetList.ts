@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 import type { AcroStackBooksBookType } from "../acroStack/books/BookType";
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/books/bookDtoAcroStack/BooksVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackBooksBookDto } from "../pagedResultDtoOfAcroStack/books/BookDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type BookGetListQuery = {
@@ -27,14 +27,11 @@ export type BookGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type BookGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
+export type BookGetListStatus200Plain = PagedResultDtoOfAcroStackBooksBookDto;
 
-export type BookGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
+export type BookGetListStatus200Json = PagedResultDtoOfAcroStackBooksBookDto;
 
-export type BookGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBooksBookDtoAcroStackBooksVersion1000CultureneutralPublicKeyTokennull;
+export type BookGetListStatus200Json2 = PagedResultDtoOfAcroStackBooksBookDto;
 
 export type BookGetListStatus200 =
   | BookGetListStatus200Plain

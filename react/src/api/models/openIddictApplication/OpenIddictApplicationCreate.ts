@@ -84,14 +84,26 @@ export type OpenIddictApplicationCreateStatus501 =
   | OpenIddictApplicationCreateStatus501Json
   | OpenIddictApplicationCreateStatus501Json2;
 
+/**
+ * @description DTO for creating a new OpenIddict application.\r\nMirrors `OpenIddictApplicationDescriptor` fields. The\r\n`ClientSecret` is hashed by `IAbpApplicationManager` on save.
+ * @type object | undefined
+ */
 export type OpenIddictApplicationCreateBodyJson =
   | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;
 
+/**
+ * @description DTO for creating a new OpenIddict application.\r\nMirrors `OpenIddictApplicationDescriptor` fields. The\r\n`ClientSecret` is hashed by `IAbpApplicationManager` on save.
+ * @type object | undefined
+ */
 export type OpenIddictApplicationCreateBodyJson2 =
   | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;
 
+/**
+ * @description DTO for creating a new OpenIddict application.\r\nMirrors `OpenIddictApplicationDescriptor` fields. The\r\n`ClientSecret` is hashed by `IAbpApplicationManager` on save.
+ * @type object | undefined
+ */
 export type OpenIddictApplicationCreateBodyJson3 =
   | AcroStackOpenIddictManagementCreateOpenIddictApplicationDto
   | undefined;

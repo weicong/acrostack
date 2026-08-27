@@ -8,6 +8,7 @@ import type {
 import { client } from "../../.kubb/client";
 
 /**
+ * @summary 学员快照：断线重连 / 刷新页面 / 版本跳跃时恢复状态。
  * {@link /api/student/class-sessions/:id/snapshot}
  */
 export function classroomStudentGetSnapshot<ThrowOnError extends boolean = true>(

@@ -33,6 +33,10 @@ export function chatSendMessageWithAttachmentMutationOptions<TContext = unknown>
 }
 
 /**
+ * @summary Sends a chat message with an optional file attachment. The request
+ * must be `multipart/form-data`: form fields bind to
+ * AcroStack.Chat.SendMessageInput and the file part binds to
+ * attachment.
  * {@link /api/app/chat/messages/send-with-attachment}
  */
 export function useChatSendMessageWithAttachment<TContext>(

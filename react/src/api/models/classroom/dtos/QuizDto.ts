@@ -9,6 +9,10 @@ export type ClassroomDtosQuizDto = {
   id?: string;
   name?: string | null;
   description?: string | null;
+  /**
+   * @description 按 Order 排序的题目 Id 列表。
+   * @type array | undefined
+   */
   questionIds?: string[] | null;
   /**
    * @description

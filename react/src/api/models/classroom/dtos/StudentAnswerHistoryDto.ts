@@ -3,6 +3,10 @@
 import type { ClassroomClassSessionStatus } from "../ClassSessionStatus";
 import type { ClassroomDtosStudentAnswerHistoryItemDto } from "./StudentAnswerHistoryItemDto";
 
+/**
+ * @description 学员答题记录（本课堂全部题目，按 Order 排序）。
+ * @type object
+ */
 export type ClassroomDtosStudentAnswerHistoryDto = {
   /**
    * @description
@@ -11,7 +15,8 @@ export type ClassroomDtosStudentAnswerHistoryDto = {
    */
   sessionId?: string;
   /**
-   * @description
+   * @description 课堂状态机（提示词第五节）：\r\nPreparing -> Waiting（开始课堂）\r\nWaiting  -> Answering（开放题目）\r\nAnswering -> Explaining（截止题目，进入讲评阶段）\r\nExplaining -> Answering（开放下一题）\r\n任意非 Finished -> Finished（结束课堂）
+   *
    * Format: `int32`
    * @type integer | undefined
    */
@@ -42,7 +47,8 @@ export type ClassroomDtosStudentAnswerHistoryDto = {
    */
   answeredCount?: number;
   /**
-   * @description
+   * @description 客观题答对数（仅统计已公布答案的题）。
+   *
    * Format: `int32`
    * @type integer | undefined
    */

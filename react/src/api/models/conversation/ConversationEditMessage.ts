@@ -13,10 +13,22 @@ export type ConversationEditMessagePath = {
   messageId: string;
 };
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationEditMessageStatus200Plain = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationEditMessageStatus200Json = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationEditMessageStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ConversationEditMessageStatus200 =
@@ -90,10 +102,22 @@ export type ConversationEditMessageStatus501 =
   | ConversationEditMessageStatus501Json
   | ConversationEditMessageStatus501Json2;
 
+/**
+ * @description Input for editing an existing chat message\'s text.
+ * @type object | undefined
+ */
 export type ConversationEditMessageBodyJson = AcroStackChatEditMessageInput | undefined;
 
+/**
+ * @description Input for editing an existing chat message\'s text.
+ * @type object | undefined
+ */
 export type ConversationEditMessageBodyJson2 = AcroStackChatEditMessageInput | undefined;
 
+/**
+ * @description Input for editing an existing chat message\'s text.
+ * @type object | undefined
+ */
 export type ConversationEditMessageBodyJson3 = AcroStackChatEditMessageInput | undefined;
 
 export type ConversationEditMessageBody =

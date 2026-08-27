@@ -37,11 +37,16 @@ export type AcroStackBackgroundJobsBackgroundJobDto = {
   lastTryTime?: string | null;
   isAbandoned?: boolean;
   /**
-   * @description
+   * @description 任务完成时间（未完成为 null）。
+   *
    * Format: `date-time`
    * @type string | undefined
    */
   completionTime?: string | null;
+  /**
+   * @description 产生任务的应用名称。
+   * @type string | undefined
+   */
   applicationName?: string | null;
   /**
    * @description

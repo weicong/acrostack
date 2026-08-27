@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/backgroundJobs/backgroundJobDtoAcroStack/BackgroundJobsVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackBackgroundJobsBackgroundJobDto } from "../pagedResultDtoOfAcroStack/backgroundJobs/BackgroundJobDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type BackgroundJobGetListQuery = {
@@ -35,13 +35,13 @@ export type BackgroundJobGetListQuery = {
 };
 
 export type BackgroundJobGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackBackgroundJobsBackgroundJobDto;
 
 export type BackgroundJobGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackBackgroundJobsBackgroundJobDto;
 
 export type BackgroundJobGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackBackgroundJobsBackgroundJobDtoAcroStackBackgroundJobsVersion1000CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfAcroStackBackgroundJobsBackgroundJobDto;
 
 export type BackgroundJobGetListStatus200 =
   | BackgroundJobGetListStatus200Plain

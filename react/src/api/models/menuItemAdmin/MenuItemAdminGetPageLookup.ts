@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/menus/pageLookupDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloCmsKitAdminMenusPageLookupDto } from "../pagedResultDtoOfVolo/cmsKit/admin/menus/PageLookupDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 import type { VoloCmsKitPagesPageStatus } from "../volo/cmsKit/pages/PageStatus";
 
@@ -28,13 +28,13 @@ export type MenuItemAdminGetPageLookupQuery = {
 };
 
 export type MenuItemAdminGetPageLookupStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminMenusPageLookupDto;
 
 export type MenuItemAdminGetPageLookupStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminMenusPageLookupDto;
 
 export type MenuItemAdminGetPageLookupStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminMenusPageLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminMenusPageLookupDto;
 
 export type MenuItemAdminGetPageLookupStatus200 =
   | MenuItemAdminGetPageLookupStatus200Plain

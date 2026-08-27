@@ -93,14 +93,26 @@ export type OpenIddictApplicationUpdateStatus501 =
   | OpenIddictApplicationUpdateStatus501Json
   | OpenIddictApplicationUpdateStatus501Json2;
 
+/**
+ * @description DTO for updating an existing OpenIddict application. `ClientId`\r\nis intentionally omitted — changing it after creation is not supported\r\n(it\'s the identifier clients use to authenticate).
+ * @type object | undefined
+ */
 export type OpenIddictApplicationUpdateBodyJson =
   | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;
 
+/**
+ * @description DTO for updating an existing OpenIddict application. `ClientId`\r\nis intentionally omitted — changing it after creation is not supported\r\n(it\'s the identifier clients use to authenticate).
+ * @type object | undefined
+ */
 export type OpenIddictApplicationUpdateBodyJson2 =
   | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;
 
+/**
+ * @description DTO for updating an existing OpenIddict application. `ClientId`\r\nis intentionally omitted — changing it after creation is not supported\r\n(it\'s the identifier clients use to authenticate).
+ * @type object | undefined
+ */
 export type OpenIddictApplicationUpdateBodyJson3 =
   | AcroStackOpenIddictManagementUpdateOpenIddictApplicationDto
   | undefined;

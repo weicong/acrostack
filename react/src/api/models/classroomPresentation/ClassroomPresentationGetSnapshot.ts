@@ -11,10 +11,22 @@ export type ClassroomPresentationGetSnapshotPath = {
   id: string;
 };
 
+/**
+ * @description 投屏快照：仅匿名数据。禁止包含学员姓名、学号、ParticipantId、个人答案\r\n（提示词五、六节）。
+ * @type object
+ */
 export type ClassroomPresentationGetSnapshotStatus200Plain = ClassroomDtosPresentationSnapshotDto;
 
+/**
+ * @description 投屏快照：仅匿名数据。禁止包含学员姓名、学号、ParticipantId、个人答案\r\n（提示词五、六节）。
+ * @type object
+ */
 export type ClassroomPresentationGetSnapshotStatus200Json = ClassroomDtosPresentationSnapshotDto;
 
+/**
+ * @description 投屏快照：仅匿名数据。禁止包含学员姓名、学号、ParticipantId、个人答案\r\n（提示词五、六节）。
+ * @type object
+ */
 export type ClassroomPresentationGetSnapshotStatus200Json2 = ClassroomDtosPresentationSnapshotDto;
 
 export type ClassroomPresentationGetSnapshotStatus200 =

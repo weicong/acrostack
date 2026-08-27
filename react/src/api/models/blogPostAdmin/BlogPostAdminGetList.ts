@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/admin/blogs/blogPostListDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloCmsKitAdminBlogsBlogPostListDto } from "../pagedResultDtoOfVolo/cmsKit/admin/blogs/BlogPostListDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 import type { VoloCmsKitBlogsBlogPostStatus } from "../volo/cmsKit/blogs/BlogPostStatus";
 
@@ -46,13 +46,12 @@ export type BlogPostAdminGetListQuery = {
 };
 
 export type BlogPostAdminGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminBlogsBlogPostListDto;
 
-export type BlogPostAdminGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type BlogPostAdminGetListStatus200Json = PagedResultDtoOfVoloCmsKitAdminBlogsBlogPostListDto;
 
 export type BlogPostAdminGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitAdminBlogsBlogPostListDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  PagedResultDtoOfVoloCmsKitAdminBlogsBlogPostListDto;
 
 export type BlogPostAdminGetListStatus200 =
   | BlogPostAdminGetListStatus200Plain

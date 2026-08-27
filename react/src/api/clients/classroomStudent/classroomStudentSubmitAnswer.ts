@@ -8,6 +8,7 @@ import type {
 import { client } from "../../.kubb/client";
 
 /**
+ * @summary 提交或修改答案（幂等：相同 RequestId 返回首次处理结果）。
  * {@link /api/student/class-sessions/:id/answers}
  */
 export function classroomStudentSubmitAnswer<ThrowOnError extends boolean = true>(

@@ -1,5 +1,9 @@
 /* oxlint-disable */
 
+/**
+ * @description Per-URL aggregation: how many requests hit this URL, average and max\r\nexecution duration.
+ * @type object
+ */
 export type AcroStackAuditLoggingUrlStatisticDto = {
   url?: string | null;
   /**

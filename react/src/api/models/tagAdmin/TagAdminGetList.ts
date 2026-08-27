@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1VoloCmsKitTagsTagDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Volo/cmsKit/tags/tagDtoVolo/cmsKit/common/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfVoloCmsKitTagsTagDto } from "../pagedResultDtoOfVolo/cmsKit/tags/TagDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type TagAdminGetListQuery = {
@@ -20,14 +20,11 @@ export type TagAdminGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type TagAdminGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitTagsTagDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TagAdminGetListStatus200Plain = PagedResultDtoOfVoloCmsKitTagsTagDto;
 
-export type TagAdminGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitTagsTagDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TagAdminGetListStatus200Json = PagedResultDtoOfVoloCmsKitTagsTagDto;
 
-export type TagAdminGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1VoloCmsKitTagsTagDtoVoloCmsKitCommonApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+export type TagAdminGetListStatus200Json2 = PagedResultDtoOfVoloCmsKitTagsTagDto;
 
 export type TagAdminGetListStatus200 =
   | TagAdminGetListStatus200Plain

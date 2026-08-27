@@ -6,6 +6,7 @@
 import { useState } from "react";
 import { Button, Input, Spinner } from "@fluentui/react-components";
 import {
+  ArrowClockwise20Regular,
   ArrowNext20Regular,
   ChartMultiple20Regular,
   CheckmarkCircle20Regular,
@@ -37,6 +38,15 @@ export function ControlsCard({ control }: ControlsCardProps) {
           onClick={() => void control.runStart()}
         >
           {busyAction === "start" ? <Spinner size="tiny" /> : "开始课堂"}
+        </Button>
+
+        <Button
+          icon={<ArrowClockwise20Regular />}
+          appearance="primary"
+          disabled={!control.canRestart || busyAction !== null}
+          onClick={() => void control.runRestart()}
+        >
+          {busyAction === "restart" ? <Spinner size="tiny" /> : "重新开始"}
         </Button>
 
         <Input

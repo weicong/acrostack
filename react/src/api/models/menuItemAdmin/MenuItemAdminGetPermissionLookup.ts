@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/cmsKit/admin/menus/permissionLookupDtoVolo/cmsKit/admin/application/ContractsVersion10600CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfVoloCmsKitAdminMenusPermissionLookupDto } from "../listResultDtoOfVolo/cmsKit/admin/menus/PermissionLookupDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type MenuItemAdminGetPermissionLookupQuery = {
@@ -8,13 +8,13 @@ export type MenuItemAdminGetPermissionLookupQuery = {
 };
 
 export type MenuItemAdminGetPermissionLookupStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitAdminMenusPermissionLookupDto;
 
 export type MenuItemAdminGetPermissionLookupStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitAdminMenusPermissionLookupDto;
 
 export type MenuItemAdminGetPermissionLookupStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloCmsKitAdminMenusPermissionLookupDtoVoloCmsKitAdminApplicationContractsVersion10600CultureneutralPublicKeyTokennull;
+  ListResultDtoOfVoloCmsKitAdminMenusPermissionLookupDto;
 
 export type MenuItemAdminGetPermissionLookupStatus200 =
   | MenuItemAdminGetPermissionLookupStatus200Plain

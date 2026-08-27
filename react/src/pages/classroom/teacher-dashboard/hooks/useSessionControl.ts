@@ -5,6 +5,7 @@
  * 前端禁用只是体验优化；服务端仍会校验状态机与权限。
  */
 import { useState } from "react";
+
 import { useToastController } from "@fluentui/react-components";
 import { useClassSessionStart } from "@/api/hooks/classSession/useClassSessionStart";
 import { useClassSessionNextQuestion } from "@/api/hooks/classSession/useClassSessionNextQuestion";
@@ -12,6 +13,7 @@ import { useClassSessionCloseQuestion } from "@/api/hooks/classSession/useClassS
 import { useClassSessionPublishStatistics } from "@/api/hooks/classSession/useClassSessionPublishStatistics";
 import { useClassSessionPublishAnswer } from "@/api/hooks/classSession/useClassSessionPublishAnswer";
 import { useClassSessionFinish } from "@/api/hooks/classSession/useClassSessionFinish";
+import { useClassSessionRestart } from "@/api/hooks/classSession/useClassSessionRestart";
 import { useClassSessionCreatePresentationToken } from "@/api/hooks/classSession/useClassSessionCreatePresentationToken";
 import { extractAbpErrorMessage } from "@/lib/api/error";
 import {
@@ -60,6 +62,8 @@ export function useSessionControl(options: UseSessionControlOptions) {
   const finishMutation = useClassSessionFinish();
   const presentationTokenMutation = useClassSessionCreatePresentationToken();
 
+  const restartMutation = useClassSessionRestart();
+
   async function run(name: string, action: () => Promise<unknown>) {
     if (busyAction) return;
     setBusyAction(name);
@@ -92,6 +96,7 @@ export function useSessionControl(options: UseSessionControlOptions) {
       questionStatus === SessionQuestionStatusValue.StatisticsPublished);
   const canFinish =
     status !== ClassSessionStatusValue.Preparing && status !== ClassSessionStatusValue.Finished;
+  const canRestart = status === ClassSessionStatusValue.Finished;
 
   async function runStart() {
     await run("start", () => startMutation.mutateAsync({ path: { id: sessionId } }));
@@ -107,33 +112,37 @@ export function useSessionControl(options: UseSessionControlOptions) {
   }
 
   async function runClose() {
-    if (!question?.sessionQuestionId) return;
-    const sessionQuestionId = question.sessionQuestionId;
+    if (!question?.questionId) return;
+    const questionId = question.questionId;
     await run("close", () =>
-      closeQuestionMutation.mutateAsync({ path: { id: sessionId, questionId: sessionQuestionId } }),
+      closeQuestionMutation.mutateAsync({ path: { id: sessionId, questionId } }),
     );
   }
 
   async function runPublishStatistics() {
-    if (!question?.sessionQuestionId) return;
-    const sessionQuestionId = question.sessionQuestionId;
+    if (!question?.questionId) return;
+    const questionId = question.questionId;
     await run("publishStats", () =>
       publishStatisticsMutation.mutateAsync({
-        path: { id: sessionId, questionId: sessionQuestionId },
+        path: { id: sessionId, questionId },
       }),
     );
   }
 
   async function runPublishAnswer() {
-    if (!question?.sessionQuestionId) return;
-    const sessionQuestionId = question.sessionQuestionId;
+    if (!question?.questionId) return;
+    const questionId = question.questionId;
     await run("publishAnswer", () =>
-      publishAnswerMutation.mutateAsync({ path: { id: sessionId, questionId: sessionQuestionId } }),
+      publishAnswerMutation.mutateAsync({ path: { id: sessionId, questionId } }),
     );
   }
 
   async function runFinish() {
     await run("finish", () => finishMutation.mutateAsync({ path: { id: sessionId } }));
+  }
+
+  async function runRestart() {
+    await run("restart", () => restartMutation.mutateAsync({ path: { id: sessionId } }));
   }
 
   async function copyClassroomCode() {
@@ -172,12 +181,14 @@ export function useSessionControl(options: UseSessionControlOptions) {
     canPublishStatistics,
     canPublishAnswer,
     canFinish,
+    canRestart,
     runStart,
     runNext,
     runClose,
     runPublishStatistics,
     runPublishAnswer,
     runFinish,
+    runRestart,
     copyClassroomCode,
     openPresentation,
   };

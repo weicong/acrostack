@@ -13,10 +13,22 @@ export type QuestionUpdatePath = {
   id: string;
 };
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionUpdateStatus200Plain = ClassroomDtosQuestionDto;
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionUpdateStatus200Json = ClassroomDtosQuestionDto;
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionUpdateStatus200Json2 = ClassroomDtosQuestionDto;
 
 export type QuestionUpdateStatus200 =

@@ -81,14 +81,26 @@ export type OpenIddictScopeCreateStatus501 =
   | OpenIddictScopeCreateStatus501Json
   | OpenIddictScopeCreateStatus501Json2;
 
+/**
+ * @description DTO for creating a new OpenIddict scope.\r\nMirrors `OpenIddictScopeDescriptor` fields.
+ * @type object | undefined
+ */
 export type OpenIddictScopeCreateBodyJson =
   | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
   | undefined;
 
+/**
+ * @description DTO for creating a new OpenIddict scope.\r\nMirrors `OpenIddictScopeDescriptor` fields.
+ * @type object | undefined
+ */
 export type OpenIddictScopeCreateBodyJson2 =
   | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
   | undefined;
 
+/**
+ * @description DTO for creating a new OpenIddict scope.\r\nMirrors `OpenIddictScopeDescriptor` fields.
+ * @type object | undefined
+ */
 export type OpenIddictScopeCreateBodyJson3 =
   | AcroStackOpenIddictManagementCreateOpenIddictScopeDto
   | undefined;

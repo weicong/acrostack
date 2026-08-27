@@ -4,10 +4,22 @@ import type { ClassroomDtosCreateUpdateQuestionDto } from "../classroom/dtos/Cre
 import type { ClassroomDtosQuestionDto } from "../classroom/dtos/QuestionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionCreateStatus200Plain = ClassroomDtosQuestionDto;
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionCreateStatus200Json = ClassroomDtosQuestionDto;
 
+/**
+ * @description 题目 DTO。CorrectAnswer/Explanation 仅返回给具有题库管理权限的教师。
+ * @type object
+ */
 export type QuestionCreateStatus200Json2 = ClassroomDtosQuestionDto;
 
 export type QuestionCreateStatus200 =

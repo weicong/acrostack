@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileFolderDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/fileManagement/fileFolderDtoAcroStack/FileManagementVersion1000CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfAcroStackFileManagementFileFolderDto } from "../listResultDtoOfAcroStack/fileManagement/FileFolderDto";
 
 export type FileManagementGetFoldersQuery = {
   /**
@@ -12,13 +12,13 @@ export type FileManagementGetFoldersQuery = {
 };
 
 export type FileManagementGetFoldersStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileFolderDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileFolderDto;
 
 export type FileManagementGetFoldersStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileFolderDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileFolderDto;
 
 export type FileManagementGetFoldersStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackFileManagementFileFolderDtoAcroStackFileManagementVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackFileManagementFileFolderDto;
 
 export type FileManagementGetFoldersStatus200 =
   | FileManagementGetFoldersStatus200Plain

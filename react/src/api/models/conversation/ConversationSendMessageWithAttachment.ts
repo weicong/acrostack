@@ -4,10 +4,22 @@ import type { AcroStackChatChatMessageDto } from "../acroStack/chat/ChatMessageD
 import type { AcroStackChatSendMessageInput } from "../acroStack/chat/SendMessageInput";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationSendMessageWithAttachmentStatus200Plain = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationSendMessageWithAttachmentStatus200Json = AcroStackChatChatMessageDto;
 
+/**
+ * @description A single chat message in a conversation history.
+ * @type object
+ */
 export type ConversationSendMessageWithAttachmentStatus200Json2 = AcroStackChatChatMessageDto;
 
 export type ConversationSendMessageWithAttachmentStatus200 =
@@ -99,14 +111,26 @@ export type ConversationSendMessageWithAttachmentStatus501 =
   | ConversationSendMessageWithAttachmentStatus501Json
   | ConversationSendMessageWithAttachmentStatus501Json2;
 
+/**
+ * @description Input for sending a chat message.
+ * @type object | undefined
+ */
 export type ConversationSendMessageWithAttachmentBodyJson =
   | AcroStackChatSendMessageInput
   | undefined;
 
+/**
+ * @description Input for sending a chat message.
+ * @type object | undefined
+ */
 export type ConversationSendMessageWithAttachmentBodyJson2 =
   | AcroStackChatSendMessageInput
   | undefined;
 
+/**
+ * @description Input for sending a chat message.
+ * @type object | undefined
+ */
 export type ConversationSendMessageWithAttachmentBodyJson3 =
   | AcroStackChatSendMessageInput
   | undefined;

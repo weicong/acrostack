@@ -95,6 +95,17 @@ public class ClassSession : FullAuditedAggregateRoot<Guid>, IMultiTenant
         BumpVersion();
     }
 
+    /// <summary>重新开始课堂：Finished -> Preparing，重置当前题目指针与计数。</summary>
+    public void Restart(DateTimeOffset now)
+    {
+        ClassSessionStateMachine.EnsureTransition(this, ClassSessionStatus.Preparing);
+        Status = ClassSessionStatus.Preparing;
+        CurrentSessionQuestionId = null;
+        CurrentQuestionNumber = 0;
+        FinishedAt = null;
+        BumpVersion();
+    }
+
     /// <summary>重置回讲评状态（公布统计/答案不改课堂状态，但版本号递增以驱动客户端刷新）。</summary>
     public void BumpVersionOnPublish()
     {

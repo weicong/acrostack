@@ -273,6 +273,32 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         return await MapToDtoAsync(session);
     }
 
+    public async Task<ClassSessionDto> RestartAsync(Guid id)
+    {
+        var session = await GetAuthorizedSessionAsync(id);
+        var now = DateTimeOffset.UtcNow;
+        session.Restart(now);
+
+        var sessionQuestions = await _sessionQuestionRepository.GetListAsync(q => q.SessionId == session.Id);
+        foreach (var sq in sessionQuestions)
+        {
+            sq.Reset();
+        }
+
+        await _transactionExecutor.ExecuteAsync(async () =>
+        {
+            await _transactionExecutor.HardDeleteAnswerRecordsAsync(session.Id);
+            await _sessionRepository.UpdateAsync(session);
+            foreach (var sq in sessionQuestions)
+            {
+                await _sessionQuestionRepository.UpdateAsync(sq);
+            }
+        });
+
+        await NotifyAfterCommit(session, new ClassroomStartedEvent());
+        return await MapToDtoAsync(session);
+    }
+
     public async Task<DashboardDto> GetDashboardAsync(Guid id)
     {
         await GetAuthorizedSessionAsync(id);

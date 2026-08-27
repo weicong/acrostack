@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1AcroStack/appUsers/appUserDtoAcroStack/AppUsersVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfAcroStackAppUsersAppUserDto } from "../pagedResultDtoOfAcroStack/appUsers/AppUserDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type AppUserGetListQuery = {
@@ -20,14 +20,11 @@ export type AppUserGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type AppUserGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
+export type AppUserGetListStatus200Plain = PagedResultDtoOfAcroStackAppUsersAppUserDto;
 
-export type AppUserGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
+export type AppUserGetListStatus200Json = PagedResultDtoOfAcroStackAppUsersAppUserDto;
 
-export type AppUserGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1AcroStackAppUsersAppUserDtoAcroStackAppUsersVersion1000CultureneutralPublicKeyTokennull;
+export type AppUserGetListStatus200Json2 = PagedResultDtoOfAcroStackAppUsersAppUserDto;
 
 export type AppUserGetListStatus200 =
   | AppUserGetListStatus200Plain

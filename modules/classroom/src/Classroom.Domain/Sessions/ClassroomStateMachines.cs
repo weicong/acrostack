@@ -11,6 +11,7 @@ namespace Classroom;
 ///   Answering  -> Explaining    （截止题目）
 ///   Explaining -> Answering     （开放下一题）
 ///   任意非 Finished -> Finished （结束课堂）
+///   Finished   -> Preparing     （重新开始课堂）
 /// </summary>
 public static class ClassSessionStateMachine
 {
@@ -20,7 +21,7 @@ public static class ClassSessionStateMachine
         [ClassSessionStatus.Waiting] = new() { ClassSessionStatus.Answering, ClassSessionStatus.Finished },
         [ClassSessionStatus.Answering] = new() { ClassSessionStatus.Explaining, ClassSessionStatus.Finished },
         [ClassSessionStatus.Explaining] = new() { ClassSessionStatus.Answering, ClassSessionStatus.Finished },
-        [ClassSessionStatus.Finished] = new(),
+        [ClassSessionStatus.Finished] = new() { ClassSessionStatus.Preparing },
     };
 
     public static bool CanTransition(ClassSessionStatus from, ClassSessionStatus to)

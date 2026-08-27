@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosPagedResultDto1ClassroomDtosClassSessionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Classroom/dtos/classSessionDtoClassroom/application/ContractsVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfClassroomDtosClassSessionDto } from "../pagedResultDtoOfClassroom/dtos/ClassSessionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type ClassSessionGetListQuery = {
@@ -19,14 +19,11 @@ export type ClassSessionGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type ClassSessionGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosClassSessionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type ClassSessionGetListStatus200Plain = PagedResultDtoOfClassroomDtosClassSessionDto;
 
-export type ClassSessionGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosClassSessionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type ClassSessionGetListStatus200Json = PagedResultDtoOfClassroomDtosClassSessionDto;
 
-export type ClassSessionGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosClassSessionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type ClassSessionGetListStatus200Json2 = PagedResultDtoOfClassroomDtosClassSessionDto;
 
 export type ClassSessionGetListStatus200 =
   | ClassSessionGetListStatus200Plain

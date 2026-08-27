@@ -1,12 +1,13 @@
 /* oxlint-disable */
 
 import type { ClassroomQuestionType } from "../classroom/QuestionType";
-import type { VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuestionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/pagedResultDto1Classroom/dtos/questionDtoClassroom/application/ContractsVersion1000CultureneutralPublicKeyTokennull";
+import type { PagedResultDtoOfClassroomDtosQuestionDto } from "../pagedResultDtoOfClassroom/dtos/QuestionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type QuestionGetListQuery = {
   /**
-   * @description
+   * @description 题型：单选 / 多选 / 判断 / 简答（主观题不自动判分）。
+   *
    * Format: `int32`
    * @type integer | undefined
    */
@@ -27,14 +28,11 @@ export type QuestionGetListQuery = {
   MaxResultCount?: number;
 };
 
-export type QuestionGetListStatus200Plain =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuestionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuestionGetListStatus200Plain = PagedResultDtoOfClassroomDtosQuestionDto;
 
-export type QuestionGetListStatus200Json =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuestionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuestionGetListStatus200Json = PagedResultDtoOfClassroomDtosQuestionDto;
 
-export type QuestionGetListStatus200Json2 =
-  VoloAbpApplicationDtosPagedResultDto1ClassroomDtosQuestionDtoClassroomApplicationContractsVersion1000CultureneutralPublicKeyTokennull;
+export type QuestionGetListStatus200Json2 = PagedResultDtoOfClassroomDtosQuestionDto;
 
 export type QuestionGetListStatus200 =
   | QuestionGetListStatus200Plain

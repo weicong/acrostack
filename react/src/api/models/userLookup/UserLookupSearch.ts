@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1Volo/abp/users/userDataVolo/abp/users/AbstractionsVersion10600CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfVoloAbpUsersUserData } from "../listResultDtoOfVolo/abp/users/UserData";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type UserLookupSearchQuery = {
@@ -23,14 +23,11 @@ export type UserLookupSearchQuery = {
   };
 };
 
-export type UserLookupSearchStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
+export type UserLookupSearchStatus200Plain = ListResultDtoOfVoloAbpUsersUserData;
 
-export type UserLookupSearchStatus200Json =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
+export type UserLookupSearchStatus200Json = ListResultDtoOfVoloAbpUsersUserData;
 
-export type UserLookupSearchStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1VoloAbpUsersUserDataVoloAbpUsersAbstractionsVersion10600CultureneutralPublicKeyTokennull;
+export type UserLookupSearchStatus200Json2 = ListResultDtoOfVoloAbpUsersUserData;
 
 export type UserLookupSearchStatus200 =
   | UserLookupSearchStatus200Plain

@@ -1,8 +1,13 @@
 /* oxlint-disable */
 
+/**
+ * @description A user that the current user can start a conversation with.
+ * @type object
+ */
 export type AcroStackChatContactDto = {
   /**
-   * @description
+   * @description IdentityUser.Id.
+   *
    * Format: `uuid`
    * @type string | undefined
    */
@@ -23,6 +28,14 @@ export type AcroStackChatContactDto = {
    * @type string | undefined
    */
   lastMessageDate?: string | null;
+  /**
+   * @description Whether the contact is currently online (based on the chat online tracker).
+   * @type boolean | undefined
+   */
   isOnline?: boolean;
+  /**
+   * @description Whether the current user has blocked this contact.
+   * @type boolean | undefined
+   */
   isBlocked?: boolean;
 };

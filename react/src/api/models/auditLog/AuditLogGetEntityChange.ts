@@ -12,10 +12,22 @@ export type AuditLogGetEntityChangePath = {
   entityChangeId: string;
 };
 
+/**
+ * @description Detailed view of a single Volo.Abp.AuditLogging.EntityChange\r\nincluding its AcroStack.AuditLogging.EntityChangeDetailDto.PropertyChanges. Mirrors ABP Commercial\r\nAuditLogging Pro\'s entity-change detail endpoint.
+ * @type object
+ */
 export type AuditLogGetEntityChangeStatus200Plain = AcroStackAuditLoggingEntityChangeDetailDto;
 
+/**
+ * @description Detailed view of a single Volo.Abp.AuditLogging.EntityChange\r\nincluding its AcroStack.AuditLogging.EntityChangeDetailDto.PropertyChanges. Mirrors ABP Commercial\r\nAuditLogging Pro\'s entity-change detail endpoint.
+ * @type object
+ */
 export type AuditLogGetEntityChangeStatus200Json = AcroStackAuditLoggingEntityChangeDetailDto;
 
+/**
+ * @description Detailed view of a single Volo.Abp.AuditLogging.EntityChange\r\nincluding its AcroStack.AuditLogging.EntityChangeDetailDto.PropertyChanges. Mirrors ABP Commercial\r\nAuditLogging Pro\'s entity-change detail endpoint.
+ * @type object
+ */
 export type AuditLogGetEntityChangeStatus200Json2 = AcroStackAuditLoggingEntityChangeDetailDto;
 
 export type AuditLogGetEntityChangeStatus200 =

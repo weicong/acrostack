@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull } from "../volo/abp/application/dtos/listResultDto1AcroStack/auditLogging/entityChangeDetailDtoAcroStack/AuditLoggingVersion1000CultureneutralPublicKeyTokennull";
+import type { ListResultDtoOfAcroStackAuditLoggingEntityChangeDetailDto } from "../listResultDtoOfAcroStack/auditLogging/EntityChangeDetailDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type AuditLogGetEntityChangesPath = {
@@ -13,13 +13,13 @@ export type AuditLogGetEntityChangesPath = {
 };
 
 export type AuditLogGetEntityChangesStatus200Plain =
-  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackAuditLoggingEntityChangeDetailDto;
 
 export type AuditLogGetEntityChangesStatus200Json =
-  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackAuditLoggingEntityChangeDetailDto;
 
 export type AuditLogGetEntityChangesStatus200Json2 =
-  VoloAbpApplicationDtosListResultDto1AcroStackAuditLoggingEntityChangeDetailDtoAcroStackAuditLoggingVersion1000CultureneutralPublicKeyTokennull;
+  ListResultDtoOfAcroStackAuditLoggingEntityChangeDetailDto;
 
 export type AuditLogGetEntityChangesStatus200 =
   | AuditLogGetEntityChangesStatus200Plain

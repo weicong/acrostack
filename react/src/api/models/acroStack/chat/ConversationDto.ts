@@ -2,9 +2,14 @@
 
 import type { AcroStackChatChatMessageSideDto } from "./ChatMessageSideDto";
 
+/**
+ * @description A conversation preview shown in the contact/chat list.
+ * @type object
+ */
 export type AcroStackChatConversationDto = {
   /**
-   * @description
+   * @description IdentityUser.Id of the other party.
+   *
    * Format: `uuid`
    * @type string | undefined
    */

@@ -11,10 +11,22 @@ export type ClassroomStudentGetMyAnswerHistoryPath = {
   id: string;
 };
 
+/**
+ * @description 学员答题记录（本课堂全部题目，按 Order 排序）。
+ * @type object
+ */
 export type ClassroomStudentGetMyAnswerHistoryStatus200Plain = ClassroomDtosStudentAnswerHistoryDto;
 
+/**
+ * @description 学员答题记录（本课堂全部题目，按 Order 排序）。
+ * @type object
+ */
 export type ClassroomStudentGetMyAnswerHistoryStatus200Json = ClassroomDtosStudentAnswerHistoryDto;
 
+/**
+ * @description 学员答题记录（本课堂全部题目，按 Order 排序）。
+ * @type object
+ */
 export type ClassroomStudentGetMyAnswerHistoryStatus200Json2 = ClassroomDtosStudentAnswerHistoryDto;
 
 export type ClassroomStudentGetMyAnswerHistoryStatus200 =

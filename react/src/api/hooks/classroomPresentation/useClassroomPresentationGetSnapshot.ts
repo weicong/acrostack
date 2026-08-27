@@ -48,6 +48,7 @@ export function classroomPresentationGetSnapshotQueryOptions(
 }
 
 /**
+ * @summary 投屏快照：当前题、倒计时（EndsAt/ServerTime）、匿名统计。
  * {@link /api/presentation/class-sessions/:id/snapshot}
  */
 export function useClassroomPresentationGetSnapshot<

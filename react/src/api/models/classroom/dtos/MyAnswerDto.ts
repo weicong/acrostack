@@ -14,5 +14,9 @@ export type ClassroomDtosMyAnswerDto = {
    * @type integer | undefined
    */
   revision?: number;
+  /**
+   * @description 仅公布答案后返回（客观题）。
+   * @type boolean | undefined
+   */
   isCorrect?: boolean | null;
 };
