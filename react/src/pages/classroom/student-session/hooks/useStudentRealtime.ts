@@ -5,10 +5,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HubConnection } from "@microsoft/signalr";
 import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dtos/StudentSnapshotDto";
-import { ClassroomClientMethods, ClassSessionStatusValue } from "../../shared/constants/classroom";
+import {
+  ClassroomClientMethods,
+  ClassSessionStatusValue,
+  SessionQuestionStatusValue,
+} from "../../shared/constants/classroom";
 import type {
   AnswerPublishedEvent,
   ClassroomEventBase,
+  ClassroomStartedEvent,
+  QuestionClosedEvent,
   QuestionOpenedEvent,
   StatisticsPublishedEvent,
 } from "../../shared/types/classroom-events";
@@ -104,6 +110,11 @@ export function useStudentRealtime({
         return !gap;
       };
 
+      connection.on(ClassroomClientMethods.ClassroomStarted, (evt: ClassroomStartedEvent) => {
+        if (!check(evt)) return;
+        void refreshSnapshot();
+      });
+
       connection.on(ClassroomClientMethods.QuestionOpened, (evt: QuestionOpenedEvent) => {
         if (!check(evt)) return;
         setSession((s) =>
@@ -129,6 +140,25 @@ export function useStudentRealtime({
             : s,
         );
         resetAnswer();
+      });
+
+      connection.on(ClassroomClientMethods.QuestionClosed, (evt: QuestionClosedEvent) => {
+        if (!check(evt)) return;
+        setSession((s) =>
+          s
+            ? {
+                ...s,
+                version: evt.version,
+                currentQuestion: s.currentQuestion
+                  ? {
+                      ...s.currentQuestion,
+                      isAcceptingAnswers: false,
+                      status: SessionQuestionStatusValue.Closed,
+                    }
+                  : s.currentQuestion,
+              }
+            : s,
+        );
       });
 
       connection.on(ClassroomClientMethods.StatisticsPublished, (evt: StatisticsPublishedEvent) => {
