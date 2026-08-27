@@ -16,6 +16,7 @@ import { useAppForm } from "@/components/form";
 import { useBlogAdminCreate } from "@/api/hooks/blogAdmin/useBlogAdminCreate";
 import { useBlogAdminUpdate } from "@/api/hooks/blogAdmin/useBlogAdminUpdate";
 import type { VoloCmsKitAdminBlogsBlogDto as BlogDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
@@ -92,7 +93,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );
@@ -110,7 +111,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );

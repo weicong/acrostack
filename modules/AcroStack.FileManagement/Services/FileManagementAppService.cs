@@ -75,10 +75,13 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
 
     // ── Folders ─────────────────────────────────────────────────────
 
+    /// <summary>单次列表返回的最大条数：防御异常膨胀的目录/文件/分享/版本集合拖垮内存。</summary>
+    public const int MaxListResultCount = 5_000;
+
     public async Task<ListResultDto<FileFolderDto>> GetFoldersAsync(Guid? parentId)
     {
         var queryable = await _folderRepository.GetQueryableAsync();
-        var query = queryable.Where(f => f.ParentId == parentId);
+        var query = queryable.Where(f => f.ParentId == parentId).Take(MaxListResultCount);
         var folders = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileFolderDto>(
             ObjectMapper.Map<List<FileFolder>, List<FileFolderDto>>(folders)
@@ -206,7 +209,7 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
     public async Task<ListResultDto<FileEntryDto>> GetFilesAsync(Guid? folderId)
     {
         var queryable = await _fileRepository.GetQueryableAsync();
-        var query = queryable.Where(f => f.FolderId == folderId);
+        var query = queryable.Where(f => f.FolderId == folderId).Take(MaxListResultCount);
         var files = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileEntryDto>(
             ObjectMapper.Map<List<FileEntry>, List<FileEntryDto>>(files)
@@ -498,7 +501,7 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
     public async Task<ListResultDto<FileShareDto>> GetShareLinksAsync(Guid fileId)
     {
         var queryable = await _fileShareRepository.GetQueryableAsync();
-        var query = queryable.Where(s => s.FileEntryId == fileId);
+        var query = queryable.Where(s => s.FileEntryId == fileId).Take(MaxListResultCount);
         var shares = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileShareDto>(
             ObjectMapper.Map<List<FileShare>, List<FileShareDto>>(shares)
@@ -586,7 +589,8 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
         var queryable = await _fileVersionRepository.GetQueryableAsync();
         var query = queryable
             .Where(v => v.FileEntryId == fileId)
-            .OrderByDescending(v => v.VersionNumber);
+            .OrderByDescending(v => v.VersionNumber)
+            .Take(MaxListResultCount);
         var versions = await AsyncExecuter.ToListAsync(query);
         return new ListResultDto<FileVersionDto>(
             ObjectMapper.Map<List<FileVersion>, List<FileVersionDto>>(versions)

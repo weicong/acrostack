@@ -18,6 +18,7 @@ import { useMenuItemAdminCreate } from "@/api/hooks/menuItemAdmin/useMenuItemAdm
 import { useMenuItemAdminUpdate } from "@/api/hooks/menuItemAdmin/useMenuItemAdminUpdate";
 import { useMenuItemAdminGetPageLookup } from "@/api/hooks/menuItemAdmin/useMenuItemAdminGetPageLookup";
 import type { VoloCmsKitAdminMenusMenuItemWithDetailsDto as MenuItemDto } from "@/api/models/volo/cmsKit/admin/menus/MenuItemWithDetailsDto";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
@@ -131,7 +132,7 @@ export function MenuItemFormDialog({
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );
@@ -154,7 +155,7 @@ export function MenuItemFormDialog({
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );

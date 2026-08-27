@@ -20,6 +20,7 @@
     "Classroom:TokenSessionMismatch": "The token does not match the current session",
     "Classroom:QuestionNotFound": "Question not found",
     "Classroom:QuizNotFound": "Quiz not found",
+    "Classroom:QuizInUse": "The quiz is referenced by class sessions and cannot be deleted",
     "Classroom:SessionNotFound": "Session not found",
     "Classroom:SessionQuestionNotFound": "Session question not found",
     "Classroom:InvalidAnswerFormat": "Answer format does not match the question type",

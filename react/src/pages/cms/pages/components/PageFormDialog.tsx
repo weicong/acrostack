@@ -16,6 +16,7 @@ import { useAppForm } from "@/components/form";
 import { usePageAdminCreate } from "@/api/hooks/pageAdmin/usePageAdminCreate";
 import { usePageAdminUpdate } from "@/api/hooks/pageAdmin/usePageAdminUpdate";
 import type { VoloCmsKitAdminPagesPageDto as PageDto } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
@@ -95,7 +96,7 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );
@@ -114,7 +115,7 @@ export function PageFormDialog({ open, onOpenChange, page, onSuccess }: PageForm
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );

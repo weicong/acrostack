@@ -2,6 +2,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Classroom.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -17,11 +18,13 @@ namespace Classroom;
 public class ClassroomTokenService : IClassroomTokenService, ITransientDependency
 {
     private readonly ClassroomOptions _options;
+    private readonly ILogger<ClassroomTokenService> _logger;
     private readonly JsonWebTokenHandler _handler = new();
 
-    public ClassroomTokenService(IOptions<ClassroomOptions> options)
+    public ClassroomTokenService(IOptions<ClassroomOptions> options, ILogger<ClassroomTokenService> logger)
     {
         _options = options.Value;
+        _logger = logger;
     }
 
     public Task<ClassroomTokenIssuance> IssueStudentTokenAsync(Guid sessionId, Guid participantId, Guid? tenantId)
@@ -43,14 +46,19 @@ public class ClassroomTokenService : IClassroomTokenService, ITransientDependenc
             var result = _handler.ValidateToken(accessToken, CreateValidationParameters());
             if (!result.IsValid)
             {
+                // 记录失败原因：密钥配置错误（如过短）会在这里持续失败，
+                // 静默吞掉会让"配置坏了"伪装成"令牌无效"而无法排查。
+                _logger.LogWarning("Classroom token validation failed: {Exception}",
+                    result.Exception?.Message);
                 return null;
             }
 
             var payload = ReadPayload(result.ClaimsIdentity);
             return payload;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogWarning(ex, "Classroom token validation threw; treating as invalid");
             return null;
         }
     }

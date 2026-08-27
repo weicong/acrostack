@@ -16,6 +16,7 @@ import { useIdentityClaimTypeCreate } from "@/api/hooks/identityClaimType/useIde
 import { useIdentityClaimTypeUpdate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeUpdate";
 import type { ClaimTypeFormSeed } from "../types/claimType";
 import { createClaimTypeSchema, updateClaimTypeSchema } from "../schemas/claimType";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // Mirrors Volo.Abp.Identity.IdentityClaimValueType enum (int32).
 const CLAIM_VALUE_TYPE_OPTIONS = [
@@ -112,7 +113,7 @@ export function ClaimTypeFormDialog({
         onSuccess();
       };
       const handleError = (err: unknown) => {
-        dispatchToast(String(err), { intent: "error" });
+        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
       };
 
       if (isEdit && seed?.id) {

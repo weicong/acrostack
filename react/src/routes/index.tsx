@@ -1,6 +1,7 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
-import { PortalPage } from "@/pages/portal/PortalPage";
+
+const PortalPage = lazyRouteComponent(() => import("@/pages/portal/PortalPage"), "PortalPage");
 
 /**
  * 门户入口（/）：工作区导航中心（后台管理 / 课堂答题）。

@@ -5,6 +5,4 @@ export { CheckboxField, type CheckboxFieldProps } from "./CheckboxField";
 export { SwitchField, type SwitchFieldProps } from "./SwitchField";
 export { SelectField, type SelectFieldProps } from "./SelectField";
 export { ComboboxField, type ComboboxFieldProps, type ComboboxOption } from "./ComboboxField";
-export { RadioGroupField, type RadioGroupFieldProps, type RadioOption } from "./RadioGroupField";
-export { SliderField, type SliderFieldProps } from "./SliderField";
 export { DatePickerField, type DatePickerFieldProps } from "./DatePickerField";

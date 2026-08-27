@@ -1,7 +1,8 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "./route";
-import { ProfilePage } from "@/pages/account/ProfilePage";
 import { authGuard } from "@/lib/routing/guards";
+
+const ProfilePage = lazyRouteComponent(() => import("@/pages/account/ProfilePage"), "ProfilePage");
 
 /**
  * Profile route. Not shown in the main sidebar — accessed via the user menu

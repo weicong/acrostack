@@ -1,10 +1,11 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { z } from "zod";
 import { Route as adminRoute } from "./route";
-import { BooksPage } from "@/pages/books/BooksPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Book20Regular } from "@fluentui/react-icons";
+
+const BooksPage = lazyRouteComponent(() => import("@/pages/books/BooksPage"), "BooksPage");
 
 const booksSearchSchema = z.object({
   q: z.string().catch(""),

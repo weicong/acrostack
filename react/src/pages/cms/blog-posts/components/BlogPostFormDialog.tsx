@@ -18,6 +18,7 @@ import { useBlogPostAdminCreate } from "@/api/hooks/blogPostAdmin/useBlogPostAdm
 import { useBlogPostAdminUpdate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminUpdate";
 import { useBlogAdminGetAllList } from "@/api/hooks/blogAdmin/useBlogAdminGetAllList";
 import type { VoloCmsKitAdminBlogsBlogPostListDto as BlogPostDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogPostListDto";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 
@@ -114,7 +115,7 @@ export function BlogPostFormDialog({
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );
@@ -135,7 +136,7 @@ export function BlogPostFormDialog({
               onSuccess();
             },
             onError: (err) => {
-              dispatchToast(String(err), { intent: "error" });
+              dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
             },
           },
         );

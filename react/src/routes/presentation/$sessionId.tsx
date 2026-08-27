@@ -1,6 +1,10 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as presentationRoute } from "./route";
-import { PresentationPage } from "@/pages/classroom/presentation/PresentationPage";
+
+const PresentationPage = lazyRouteComponent(
+  () => import("@/pages/classroom/presentation/PresentationPage"),
+  "PresentationPage",
+);
 
 /**
  * 投屏页（/presentation/$sessionId?t=token）。

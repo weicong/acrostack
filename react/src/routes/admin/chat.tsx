@@ -1,9 +1,10 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "./route";
-import { ChatPage } from "@/pages/chat/ChatPage";
 import { authGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Chat20Regular } from "@fluentui/react-icons";
+
+const ChatPage = lazyRouteComponent(() => import("@/pages/chat/ChatPage"), "ChatPage");
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {

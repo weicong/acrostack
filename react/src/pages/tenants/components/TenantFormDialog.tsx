@@ -26,6 +26,7 @@ import { useTenantDeleteDefaultConnectionString } from "@/api/hooks/tenant/useTe
 import { tenantGetListQueryKey } from "@/api/hooks/tenant/useTenantGetList";
 import type { VoloAbpTenantManagementTenantDto } from "@/api/models/volo/abp/tenantManagement/TenantDto";
 import { createSchema, updateSchema } from "../schemas/tenant";
+import { extractAbpErrorMessage } from "@/lib/api/error";
 
 // ── Types ───────────────────────────────────────────────────────────
 
@@ -120,7 +121,7 @@ function TenantForm({ tenant, initialConnectionString, onSuccess, footer }: Tena
           dispatchToast("保存成功", { intent: "success" });
           onSuccess();
         } catch (err) {
-          dispatchToast(String(err), { intent: "error" });
+          dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
         }
       } else {
         try {
@@ -135,7 +136,7 @@ function TenantForm({ tenant, initialConnectionString, onSuccess, footer }: Tena
           dispatchToast("保存成功", { intent: "success" });
           onSuccess();
         } catch (err) {
-          dispatchToast(String(err), { intent: "error" });
+          dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
         }
       }
     },

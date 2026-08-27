@@ -99,16 +99,30 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         var queryable = await _sessionRepository.GetQueryableAsync();
         var query = queryable.Where(s => s.TeacherId == teacherId);
 
-        var totalCount = query.Count();
-        var sessions = query
+        var totalCount = await AsyncExecuter.CountAsync(query);
+        var sessions = await AsyncExecuter.ToListAsync(query
             .OrderByDescending(s => s.CreationTime)
-            .PageBy(input.SkipCount, input.MaxResultCount)
-            .ToList();
+            .PageBy(input.SkipCount, input.MaxResultCount));
+
+        // 批量预加载本页会话的 Quiz 与题目数，避免逐行 GetAsync/CountAsync 的 2N+1
+        var quizIds = sessions.Select(s => s.QuizId).Distinct().ToList();
+        var quizQueryable = await _quizRepository.GetQueryableAsync();
+        var quizzes = await AsyncExecuter.ToListAsync(
+            quizQueryable.Where(q => quizIds.Contains(q.Id)));
+        var quizNames = quizzes.ToDictionary(q => q.Id, q => q.Name);
+
+        var sessionIds = sessions.Select(s => s.Id).ToList();
+        var sqQueryable = await _sessionQuestionRepository.GetQueryableAsync();
+        var questionCounts = (await AsyncExecuter.ToListAsync(
+                sqQueryable.Where(sq => sessionIds.Contains(sq.SessionId))
+                    .GroupBy(sq => sq.SessionId)
+                    .Select(g => new { SessionId = g.Key, Count = g.Count() })))
+            .ToDictionary(x => x.SessionId, x => x.Count);
 
         var dtos = new System.Collections.Generic.List<ClassSessionDto>();
         foreach (var session in sessions)
         {
-            dtos.Add(await MapToDtoAsync(session));
+            dtos.Add(MapToDto(session, quizNames, questionCounts.GetValueOrDefault(session.Id)));
         }
 
         return new PagedResultDto<ClassSessionDto>(totalCount, dtos);
@@ -120,7 +134,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         session.Start(DateTimeOffset.UtcNow);
         await _sessionRepository.UpdateAsync(session);
 
-        NotifyAfterCommit(session, new ClassroomStartedEvent());
+        await NotifyAfterCommit(session, new ClassroomStartedEvent());
         return await MapToDtoAsync(session);
     }
 
@@ -143,7 +157,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         });
 
         var question = await _questionRepository.GetAsync(sessionQuestion.QuestionId);
-        NotifyAfterCommit(session, new QuestionOpenedEvent
+        await NotifyAfterCommit(session, new QuestionOpenedEvent
         {
             SessionQuestionId = sessionQuestion.Id,
             Question = question.ToQuestionView(sessionQuestion),
@@ -169,7 +183,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
             await _sessionRepository.UpdateAsync(session);
         });
 
-        NotifyAfterCommit(session, new QuestionClosedEvent
+        await NotifyAfterCommit(session, new QuestionClosedEvent
         {
             SessionQuestionId = sessionQuestion.Id,
         });
@@ -187,7 +201,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         await _sessionQuestionRepository.UpdateAsync(sessionQuestion);
         await _sessionRepository.UpdateAsync(session);
 
-        NotifyStatisticsAfterCommit(session, sessionQuestion);
+        await NotifyStatisticsAfterCommit(session, sessionQuestion);
         return await MapToDtoAsync(session);
     }
 
@@ -202,7 +216,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         await _sessionRepository.UpdateAsync(session);
 
         var question = await _questionRepository.GetAsync(sessionQuestion.QuestionId);
-        NotifyAfterCommit(session, new AnswerPublishedEvent
+        await NotifyAfterCommit(session, new AnswerPublishedEvent
         {
             SessionQuestionId = sessionQuestion.Id,
             CorrectAnswer = question.CorrectAnswer ?? string.Empty,
@@ -238,7 +252,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         });
 
         var question = await _questionRepository.GetAsync(sessionQuestion.QuestionId);
-        NotifyAfterCommit(session, new QuestionOpenedEvent
+        await NotifyAfterCommit(session, new QuestionOpenedEvent
         {
             SessionQuestionId = sessionQuestion.Id,
             Question = question.ToQuestionView(sessionQuestion),
@@ -255,7 +269,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         session.Finish(DateTimeOffset.UtcNow);
         await _sessionRepository.UpdateAsync(session);
 
-        NotifyAfterCommit(session, new ClassroomEndedEvent());
+        await NotifyAfterCommit(session, new ClassroomEndedEvent());
         return await MapToDtoAsync(session);
     }
 
@@ -363,7 +377,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
     /// 注册 UoW 提交成功后的推送回调（提示词七节：数据库事务提交成功后才广播成功状态）。
     /// 事件公共字段（SessionId/Version/ServerTime/EventId）在此填充。
     /// </summary>
-    private void NotifyAfterCommit(ClassSession session, params ClassroomEventBase[] events)
+    private async Task NotifyAfterCommit(ClassSession session, params ClassroomEventBase[] events)
     {
         var version = session.Version;
         var sessionId = session.Id;
@@ -377,11 +391,11 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
             evt.EventId = Guid.NewGuid();
         }
 
-        RegisterOnCompleted(() => _notifier.BroadcastAsync(sessionId, tenantId, events));
+        await RegisterOnCompleted(() => _notifier.BroadcastAsync(sessionId, tenantId, events));
     }
 
     /// <summary>公布统计：提交后重新计算统计并随事件推送（匿名选项分布）。</summary>
-    private void NotifyStatisticsAfterCommit(ClassSession session, SessionQuestion sessionQuestion)
+    private async Task NotifyStatisticsAfterCommit(ClassSession session, SessionQuestion sessionQuestion)
     {
         var evt = new StatisticsPublishedEvent
         {
@@ -409,13 +423,13 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         });
     }
 
-    private void RegisterOnCompleted(Func<Task> callback)
+    private async Task RegisterOnCompleted(Func<Task> callback)
     {
         var uow = UnitOfWorkManager.Current;
         if (uow is null)
         {
             // 无 UoW 上下文（单元测试等）：立即推送
-            callback().GetAwaiter().GetResult();
+            await callback();
             return;
         }
 
@@ -457,6 +471,20 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         quiz ??= await _quizRepository.GetAsync(session.QuizId);
         var count = questionCount ?? await _sessionQuestionRepository.CountAsync(q => q.SessionId == session.Id);
 
+        return BuildDto(session, quiz.Name, count);
+    }
+
+    /// <summary>列表页专用：QuizName 与题目数由调用方批量预载，避免逐行查询。</summary>
+    private ClassSessionDto MapToDto(
+        ClassSession session,
+        System.Collections.Generic.Dictionary<Guid, string> quizNames,
+        int questionCount)
+    {
+        return BuildDto(session, quizNames[session.QuizId], questionCount);
+    }
+
+    private ClassSessionDto BuildDto(ClassSession session, string quizName, int count)
+    {
         var joinUrl = string.IsNullOrWhiteSpace(_options.FrontendBaseUrl)
             ? $"/student/join?code={session.ClassroomCode}"
             : $"{_options.FrontendBaseUrl.TrimEnd('/')}/student/join?code={session.ClassroomCode}";
@@ -465,7 +493,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         {
             Id = session.Id,
             QuizId = session.QuizId,
-            QuizName = quiz.Name,
+            QuizName = quizName,
             TeacherId = session.TeacherId,
             ClassroomCode = session.ClassroomCode,
             JoinUrl = joinUrl,

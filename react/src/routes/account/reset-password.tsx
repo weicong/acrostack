@@ -1,6 +1,10 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as accountRoute } from "./route";
-import { ResetPasswordPage } from "@/pages/account/ResetPasswordPage";
+
+const ResetPasswordPage = lazyRouteComponent(
+  () => import("@/pages/account/ResetPasswordPage"),
+  "ResetPasswordPage",
+);
 
 export const Route = createRoute({
   getParentRoute: () => accountRoute,

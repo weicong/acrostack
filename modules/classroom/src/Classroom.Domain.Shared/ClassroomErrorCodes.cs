@@ -19,6 +19,7 @@ public static class ClassroomErrorCodes
     public const string TokenSessionMismatch = "Classroom:TokenSessionMismatch";
     public const string QuestionNotFound = "Classroom:QuestionNotFound";
     public const string QuizNotFound = "Classroom:QuizNotFound";
+    public const string QuizInUse = "Classroom:QuizInUse";
     public const string SessionNotFound = "Classroom:SessionNotFound";
     public const string SessionQuestionNotFound = "Classroom:SessionQuestionNotFound";
     public const string InvalidAnswerFormat = "Classroom:InvalidAnswerFormat";

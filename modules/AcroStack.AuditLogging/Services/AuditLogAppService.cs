@@ -90,10 +90,14 @@ public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppServic
         await _auditLogRepository.DeleteManyAsync(ids);
     }
 
+    /// <summary>单次导出最大行数：防止无过滤条件时把整表加载进内存（OOM）。</summary>
+    public const int MaxExcelExportRows = 50_000;
+
     public async Task<IRemoteStreamContent> GetListToExcelAsync(GetAuditLogListInput input)
     {
         var queryable = ApplyFilters(await _auditLogRepository.GetQueryableAsync(), input)
-            .OrderBy(nameof(AuditLog.ExecutionTime) + " desc");
+            .OrderBy(nameof(AuditLog.ExecutionTime) + " desc")
+            .Take(MaxExcelExportRows);
 
         var auditLogs = await AsyncExecuter.ToListAsync(queryable);
 

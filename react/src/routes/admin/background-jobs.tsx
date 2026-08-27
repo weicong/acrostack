@@ -1,9 +1,13 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "./route";
-import { BackgroundJobsPage } from "@/pages/background-jobs/BackgroundJobsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Clock20Regular } from "@fluentui/react-icons";
+
+const BackgroundJobsPage = lazyRouteComponent(
+  () => import("@/pages/background-jobs/BackgroundJobsPage"),
+  "BackgroundJobsPage",
+);
 
 export const menu: RouteMenuConfig = {
   name: "后台任务",

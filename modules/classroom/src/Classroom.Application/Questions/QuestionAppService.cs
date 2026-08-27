@@ -78,11 +78,10 @@ public class QuestionAppService : ApplicationService, IQuestionAppService
             queryable = queryable.Where(q => q.Stem.Contains(input.Filter));
         }
 
-        var totalCount = queryable.Count();
-        var items = queryable
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+        var items = await AsyncExecuter.ToListAsync(queryable
             .OrderByDescending(q => q.CreationTime)
-            .PageBy(input.SkipCount, input.MaxResultCount)
-            .ToList();
+            .PageBy(input.SkipCount, input.MaxResultCount));
 
         return new PagedResultDto<QuestionDto>(
             totalCount,

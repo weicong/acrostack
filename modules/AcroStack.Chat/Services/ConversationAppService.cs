@@ -13,6 +13,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
 namespace AcroStack.Chat;
@@ -154,7 +155,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         var currentUserId = CurrentUser.GetId();
         if (input.TargetUserId == currentUserId)
         {
-            throw new BusinessException("Chat:YouCannotSendMessageToYourself");
+            throw new BusinessException(ChatErrorCodes.YouCannotSendMessageToYourself);
         }
 
         // 【跨租户防护】校验目标用户属于当前租户：对 AppUser 的查询自动应用
@@ -177,7 +178,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
 
         if (attachment != null && attachment.Length > MaxAttachmentSize)
         {
-            throw new BusinessException("Chat:AttachmentExceedsMaxSize").WithData(
+            throw new BusinessException(ChatErrorCodes.AttachmentExceedsMaxSize).WithData(
                 "MaxSize",
                 MaxAttachmentSize
             );
@@ -213,6 +214,13 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
             );
         }
 
+        // 一次发送跨 ChatMessage/UserMessage/Conversation 三个聚合共 5 次写入；
+        // 宿主全局禁用了 ABP UoW 事务（SQLite），此处显式开启事务型 UoW 保证原子性，
+        // 避免中途失败留下"消息有副本但会话预览缺失"之类的脏数据。
+        using var txUow = UnitOfWorkManager.Begin(
+            new AbpUnitOfWorkOptions { IsTransactional = true },
+            requiresNew: true
+        );
         await _messageRepository.InsertAsync(message);
 
         // 2. Sender's copy + 3. Receiver's copy
@@ -257,6 +265,8 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
             incrementUnread: true
         );
 
+        await txUow.CompleteAsync();
+
         var dto = MapMessageToDto(
             message,
             side: ChatMessageSide.Send,
@@ -264,7 +274,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
             receiverUserId: input.TargetUserId
         );
 
-        // 6. Real-time push to the recipient
+        // 6. Real-time push to the recipient — only after the transaction commits
         await _hubContext
             .Clients.Group(ChatHub.UserGroupName(CurrentTenant.Id, input.TargetUserId))
             .SendAsync(ChatClientMethods.ReceiveMessage, dto);
@@ -298,12 +308,18 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
             return;
         }
 
-        foreach (var um in unreadMessages)
-        {
-            um.IsRead = true;
-            um.ReadTime = now;
-            await _userMessageRepository.UpdateAsync(um);
-        }
+        // 批量置已读：绕过逐实体 Update 循环（单条 SQL）
+        await umQueryable
+            .Where(um =>
+                um.UserId == currentUserId
+                && um.TargetUserId == targetUserId
+                && um.Side == ChatMessageSide.Received
+                && !um.IsRead
+                && !um.IsDeleted
+            )
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(um => um.IsRead, true)
+                .SetProperty(um => um.ReadTime, now));
 
         // Reset the conversation's unread counter
         var convQueryable = await _conversationRepository.GetQueryableAsync();
@@ -316,18 +332,14 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
             await _conversationRepository.UpdateAsync(conversation);
         }
 
-        // Mark source messages as fully read
+        // Mark source messages as fully read（批量，无需先加载实体）
         var msgIds = unreadMessages.Select(um => um.ChatMessageId).ToList();
         var msgQueryable = await _messageRepository.GetQueryableAsync();
-        var messages = await AsyncExecuter.ToListAsync(
-            msgQueryable.Where(m => msgIds.Contains(m.Id))
-        );
-        foreach (var m in messages)
-        {
-            m.IsAllRead = true;
-            m.ReadTime = now;
-            await _messageRepository.UpdateAsync(m);
-        }
+        await msgQueryable
+            .Where(m => msgIds.Contains(m.Id))
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(m => m.IsAllRead, true)
+                .SetProperty(m => m.ReadTime, now));
 
         // Notify the sender that their messages were read
         await _hubContext
@@ -344,7 +356,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("Chat:MessageNotFound");
+            throw new BusinessException(ChatErrorCodes.MessageNotFound);
         }
 
         // Only the sender may edit the message. The sender's UserMessage copy
@@ -359,7 +371,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         );
         if (senderCopy == null)
         {
-            throw new BusinessException("Chat:CannotEditOthersMessage");
+            throw new BusinessException(ChatErrorCodes.CannotEditOthersMessage);
         }
 
         message.EditText(input.Text);
@@ -407,7 +419,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         );
         if (senderCopy == null)
         {
-            throw new BusinessException("Chat:CannotDeleteOthersMessage");
+            throw new BusinessException(ChatErrorCodes.CannotDeleteOthersMessage);
         }
 
         var targetUserId = senderCopy.TargetUserId;
@@ -416,16 +428,10 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         // ISoftDelete mechanism (DeleteAsync sets IsDeleted = true).
         await _messageRepository.DeleteAsync(message);
 
-        var copies = await AsyncExecuter.ToListAsync(
-            umQueryable.Where(um =>
-                um.ChatMessageId == messageId
-                && (um.UserId == currentUserId || um.UserId == targetUserId)
-            )
+        await _userMessageRepository.DeleteAsync(um =>
+            um.ChatMessageId == messageId
+            && (um.UserId == currentUserId || um.UserId == targetUserId)
         );
-        foreach (var um in copies)
-        {
-            await _userMessageRepository.DeleteAsync(um);
-        }
 
         // Notify both sender and recipient.
         await _hubContext
@@ -448,7 +454,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("Chat:MessageNotFound");
+            throw new BusinessException(ChatErrorCodes.MessageNotFound);
         }
 
         // 【同租户越权防护】仅会话参与者可操作表情回应：校验当前用户在该
@@ -593,12 +599,12 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         var message = await _messageRepository.FindAsync(messageId);
         if (message == null)
         {
-            throw new BusinessException("Chat:MessageNotFound");
+            throw new BusinessException(ChatErrorCodes.MessageNotFound);
         }
 
         if (string.IsNullOrEmpty(message.AttachmentBlobName))
         {
-            throw new BusinessException("Chat:MessageHasNoAttachment");
+            throw new BusinessException(ChatErrorCodes.MessageHasNoAttachment);
         }
 
         // Only allow participants of the conversation to download.
@@ -609,7 +615,7 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         );
         if (isParticipant == null)
         {
-            throw new BusinessException("Chat:MessageNotFound");
+            throw new BusinessException(ChatErrorCodes.MessageNotFound);
         }
 
         var stream = await _attachmentBlobContainer.GetAsync(message.AttachmentBlobName);

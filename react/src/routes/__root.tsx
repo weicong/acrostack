@@ -1,6 +1,7 @@
 import { createRootRoute, useRouter } from "@tanstack/react-router";
 import { Button, makeStyles, Spinner, Text, tokens } from "@fluentui/react-components";
 import { RootLayout } from "@/components/layout/RootLayout";
+import { RedirectingError } from "@/lib/routing/guards";
 
 const useNotFoundStyles = makeStyles({
   root: {
@@ -49,6 +50,16 @@ function NotFoundComponent() {
 function RouteErrorComponent({ error }: { error: unknown }) {
   const router = useRouter();
   const styles = useErrorStyles();
+
+  // 守卫已发起 OIDC 跳转：这是预期的"导航中断"，展示加载态而非错误页
+  if (error instanceof RedirectingError) {
+    return (
+      <div className={styles.root}>
+        <Spinner label="正在跳转到登录..." />
+      </div>
+    );
+  }
+
   const message = error instanceof Error ? error.message : String(error);
 
   return (

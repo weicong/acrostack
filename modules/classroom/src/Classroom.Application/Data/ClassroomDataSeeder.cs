@@ -91,11 +91,16 @@ public class ClassroomDataSeeder : IClassroomDataSeeder, ITransientDependency
 public class ClassroomDataSeedContributor : IDataSeedContributor, ITransientDependency
 {
     private readonly ClassroomDataSeeder _seeder;
+    private readonly MedicalExamTestDataSeeder _medicalExamTestDataSeeder;
     private readonly Microsoft.Extensions.Hosting.IHostEnvironment _environment;
 
-    public ClassroomDataSeedContributor(ClassroomDataSeeder seeder, Microsoft.Extensions.Hosting.IHostEnvironment environment)
+    public ClassroomDataSeedContributor(
+        ClassroomDataSeeder seeder,
+        MedicalExamTestDataSeeder medicalExamTestDataSeeder,
+        Microsoft.Extensions.Hosting.IHostEnvironment environment)
     {
         _seeder = seeder;
+        _medicalExamTestDataSeeder = medicalExamTestDataSeeder;
         _environment = environment;
     }
 
@@ -105,6 +110,7 @@ public class ClassroomDataSeedContributor : IDataSeedContributor, ITransientDepe
         if (_environment.IsDevelopment())
         {
             await _seeder.SeedAsync();
+            await _medicalExamTestDataSeeder.SeedAsync();
         }
     }
 }

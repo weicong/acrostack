@@ -1,9 +1,13 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "../route";
-import { BlogPostsPage } from "@/pages/cms/blog-posts/BlogPostsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { DocumentText20Regular } from "@fluentui/react-icons";
+
+const BlogPostsPage = lazyRouteComponent(
+  () => import("@/pages/cms/blog-posts/BlogPostsPage"),
+  "BlogPostsPage",
+);
 
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {

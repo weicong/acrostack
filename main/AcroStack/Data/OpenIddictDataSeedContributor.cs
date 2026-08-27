@@ -72,9 +72,10 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                 secret: null,
                 grantTypes: new List<string>
                 {
+                    // 公开客户端仅允许授权码 + PKCE + 刷新令牌（及自定义模拟登录 grant）；
+                    // Password/ClientCredentials 需要客户端密钥，公开客户端保留它们会使
+                    // 授权码流程的防护形同虚设。
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
-                    OpenIddictConstants.GrantTypes.Password,
-                    OpenIddictConstants.GrantTypes.ClientCredentials,
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     "LinkLogin",
                     "Impersonation"

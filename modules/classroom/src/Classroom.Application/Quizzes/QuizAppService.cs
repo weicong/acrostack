@@ -17,11 +17,16 @@ public class QuizAppService : ApplicationService, IQuizAppService
 {
     private readonly IRepository<Quiz, Guid> _quizRepository;
     private readonly IRepository<Question, Guid> _questionRepository;
+    private readonly IRepository<ClassSession, Guid> _sessionRepository;
 
-    public QuizAppService(IRepository<Quiz, Guid> quizRepository, IRepository<Question, Guid> questionRepository)
+    public QuizAppService(
+        IRepository<Quiz, Guid> quizRepository,
+        IRepository<Question, Guid> questionRepository,
+        IRepository<ClassSession, Guid> sessionRepository)
     {
         _quizRepository = quizRepository;
         _questionRepository = questionRepository;
+        _sessionRepository = sessionRepository;
     }
 
     public async Task<QuizDto> CreateAsync(CreateUpdateQuizDto input)
@@ -29,7 +34,10 @@ public class QuizAppService : ApplicationService, IQuizAppService
         await EnsureQuestionsExistAsync(input.QuestionIds);
 
         var quiz = new Quiz(GuidGenerator.Create(), input.Name, input.Description, CurrentTenant.Id);
-        quiz.SetQuestions(input.QuestionIds.Select(qid => new QuizQuestion(GuidGenerator.Create(), qid, 0)).ToList());
+        // 以输入顺序作为题目 Order，保证课堂复制题目时顺序与教师编排一致
+        quiz.SetQuestions(input.QuestionIds
+            .Select((qid, index) => new QuizQuestion(GuidGenerator.Create(), qid, index))
+            .ToList());
         await _quizRepository.InsertAsync(quiz, autoSave: true);
 
         return MapToDto(quiz);
@@ -42,7 +50,9 @@ public class QuizAppService : ApplicationService, IQuizAppService
         // 必须加载现有 Questions 集合：EF 变更追踪据此删除旧关联行，否则直接替换
         // List 会残留旧 QuizQuestion（聚合子实体无法被追踪为 Deleted）
         var quiz = await GetQuizWithQuestionsAsync(id);
-        quiz.SetQuestions(input.QuestionIds.Select(qid => new QuizQuestion(GuidGenerator.Create(), qid, 0)).ToList());
+        quiz.SetQuestions(input.QuestionIds
+            .Select((qid, index) => new QuizQuestion(GuidGenerator.Create(), qid, index))
+            .ToList());
         await _quizRepository.UpdateAsync(quiz, autoSave: true);
 
         return MapToDto(quiz);
@@ -50,6 +60,14 @@ public class QuizAppService : ApplicationService, IQuizAppService
 
     public async Task DeleteAsync(Guid id)
     {
+        // 已被课堂引用的试卷不允许删除（SessionQuestion 持有题目快照副本，
+        // 删除 Quiz 会使进行中课堂的溯源断裂）
+        if (await _sessionRepository.AnyAsync(s => s.QuizId == id))
+        {
+            throw new BusinessException(ClassroomErrorCodes.QuizInUse)
+                .WithData("QuizId", id);
+        }
+
         await _quizRepository.DeleteAsync(id);
     }
 
@@ -67,11 +85,10 @@ public class QuizAppService : ApplicationService, IQuizAppService
             queryable = queryable.Where(q => q.Name.Contains(input.Filter));
         }
 
-        var totalCount = queryable.Count();
-        var items = queryable
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+        var items = await AsyncExecuter.ToListAsync(queryable
             .OrderByDescending(q => q.CreationTime)
-            .PageBy(input.SkipCount, input.MaxResultCount)
-            .ToList();
+            .PageBy(input.SkipCount, input.MaxResultCount));
 
         return new PagedResultDto<QuizDto>(totalCount, items.Select(MapToDto).ToList());
     }
@@ -93,13 +110,16 @@ public class QuizAppService : ApplicationService, IQuizAppService
                 .WithData("Reason", "Quiz must contain at least one question.");
         }
 
-        foreach (var questionId in distinctIds)
+        // 单次查询取回已存在的 Id，在内存中求差集，避免逐题 AnyAsync 的 N+1
+        var queryable = await _questionRepository.GetQueryableAsync();
+        var existingIds = await AsyncExecuter.ToListAsync(
+            queryable.Where(q => distinctIds.Contains(q.Id)).Select(q => q.Id));
+        var missingIds = distinctIds.Except(existingIds).ToList();
+
+        if (missingIds.Count > 0)
         {
-            if (!await _questionRepository.AnyAsync(q => q.Id == questionId))
-            {
-                throw new BusinessException(ClassroomErrorCodes.QuestionNotFound)
-                    .WithData("QuestionId", questionId);
-            }
+            throw new BusinessException(ClassroomErrorCodes.QuestionNotFound)
+                .WithData("QuestionId", missingIds[0]);
         }
     }
 

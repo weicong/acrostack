@@ -8,8 +8,6 @@ import {
   SwitchField,
   SelectField,
   ComboboxField,
-  RadioGroupField,
-  SliderField,
   DatePickerField,
 } from "./field-components";
 import { SubmitButton, ResetButton } from "./form-components";
@@ -44,8 +42,6 @@ const formHook = createFormHook({
     SwitchField,
     SelectField,
     ComboboxField,
-    RadioGroupField,
-    SliderField,
     DatePickerField,
   },
   formComponents: {

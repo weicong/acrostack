@@ -20,6 +20,7 @@
     "Classroom:TokenSessionMismatch": "令牌与当前课堂不匹配",
     "Classroom:QuestionNotFound": "题目不存在",
     "Classroom:QuizNotFound": "试卷不存在",
+    "Classroom:QuizInUse": "试卷已被课堂引用，无法删除",
     "Classroom:SessionNotFound": "课堂不存在",
     "Classroom:SessionQuestionNotFound": "课堂题目不存在",
     "Classroom:InvalidAnswerFormat": "答案格式不符合题型要求",

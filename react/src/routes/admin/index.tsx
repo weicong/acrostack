@@ -1,8 +1,9 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "./route";
-import { HomePage } from "@/pages/home/HomePage";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { Home20Regular } from "@fluentui/react-icons";
+
+const HomePage = lazyRouteComponent(() => import("@/pages/home/HomePage"), "HomePage");
 
 export const menu: RouteMenuConfig = {
   name: "首页",

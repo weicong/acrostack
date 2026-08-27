@@ -1,9 +1,13 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as adminRoute } from "./route";
-import { AuditLogsPage } from "@/pages/audit-logs/AuditLogsPage";
 import { createPermissionGuard } from "@/lib/routing/guards";
 import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { History20Regular } from "@fluentui/react-icons";
+
+const AuditLogsPage = lazyRouteComponent(
+  () => import("@/pages/audit-logs/AuditLogsPage"),
+  "AuditLogsPage",
+);
 
 export const menu: RouteMenuConfig = {
   name: "审计日志",
