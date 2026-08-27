@@ -5,6 +5,7 @@
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NuGetAudit>false</NuGetAudit>
         <AbpProjectType>app-nolayer</AbpProjectType>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <Target Name="NoWarnOnRazorViewImportedTypeConflicts" BeforeTargets="RazorCoreCompile">
