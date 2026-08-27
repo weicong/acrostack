@@ -8,6 +8,7 @@ import type { ClassroomDtosStudentSnapshotDto } from "@/api/models/classroom/dto
 import { ClassroomClientMethods, ClassSessionStatusValue } from "../../shared/constants/classroom";
 import type {
   AnswerPublishedEvent,
+  ClassroomEventBase,
   QuestionOpenedEvent,
   StatisticsPublishedEvent,
 } from "../../shared/types/classroom-events";
@@ -77,6 +78,7 @@ export function useStudentRealtime({
       conn!.onreconnecting(() => setConnectionState("reconnecting"));
       conn!.onreconnected(() => {
         setConnectionState("connected");
+        seenEventIdsRef.current.clear();
         void refreshSnapshot();
       });
       conn!.onclose(() => {
@@ -92,15 +94,18 @@ export function useStudentRealtime({
     }
 
     function registerHandlers(connection: HubConnection) {
-      const dedupe = (eventId: string | undefined) => {
-        if (!eventId) return true;
-        if (seenEventIdsRef.current.has(eventId)) return false;
-        seenEventIdsRef.current.add(eventId);
-        return true;
+      // 事件去重 + 版本跳跃检测（丢事件时重新拉快照），与教师驾驶舱对齐
+      const check = (evt: ClassroomEventBase): boolean => {
+        if (evt.eventId && seenEventIdsRef.current.has(evt.eventId)) return false;
+        if (evt.eventId) seenEventIdsRef.current.add(evt.eventId);
+        const gap = lastVersionRef.current > 0 && evt.version > lastVersionRef.current + 1;
+        lastVersionRef.current = Math.max(lastVersionRef.current, evt.version);
+        if (gap) void refreshSnapshot();
+        return !gap;
       };
 
       connection.on(ClassroomClientMethods.QuestionOpened, (evt: QuestionOpenedEvent) => {
-        if (!dedupe(evt.eventId)) return;
+        if (!check(evt)) return;
         setSession((s) =>
           s
             ? {
@@ -124,11 +129,10 @@ export function useStudentRealtime({
             : s,
         );
         resetAnswer();
-        lastVersionRef.current = evt.version;
       });
 
       connection.on(ClassroomClientMethods.StatisticsPublished, (evt: StatisticsPublishedEvent) => {
-        if (!dedupe(evt.eventId)) return;
+        if (!check(evt)) return;
         setSession((s) =>
           s
             ? {
@@ -139,11 +143,10 @@ export function useStudentRealtime({
               }
             : s,
         );
-        lastVersionRef.current = evt.version;
       });
 
       connection.on(ClassroomClientMethods.AnswerPublished, (evt: AnswerPublishedEvent) => {
-        if (!dedupe(evt.eventId)) return;
+        if (!check(evt)) return;
         setSession((s) =>
           s
             ? {
@@ -155,7 +158,6 @@ export function useStudentRealtime({
               }
             : s,
         );
-        lastVersionRef.current = evt.version;
         if (viewRef.current === "history") refreshHistory();
       });
 

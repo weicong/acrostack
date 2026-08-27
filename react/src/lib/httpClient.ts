@@ -10,6 +10,7 @@ import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { emitRouteEvent } from "@/lib/routing/routeEvents";
+import { DEFAULT_CULTURE } from "@/env";
 
 // Re-export setTenantId for backward compatibility
 export { setTenantId } from "@/lib/tenant";
@@ -33,8 +34,8 @@ export async function applyRequestConfig(
     config.headers.__tenant = tenantId;
   }
 
-  // 系统仅支持简体中文：固定 Accept-Language，服务端据此返回中文本地化消息
-  config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? "zh-Hans";
+  // 默认文化从 VITE_DEFAULT_CULTURE 注入（默认 zh-Hans），服务端据此返回本地化消息
+  config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? DEFAULT_CULTURE;
 
   return config;
 }

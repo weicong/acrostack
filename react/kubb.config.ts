@@ -7,8 +7,12 @@ const BANNER = `/* oxlint-disable */`;
 
 const GROUP = { type: "tag" } as const;
 
+// 默认经 Vite dev server 代理读取后端 Swagger；
+// 可经 KUBB_INPUT 环境变量直连后端（如 CI：KUBB_INPUT=https://localhost:44320/swagger/v1/swagger.json）
+const INPUT = process.env.KUBB_INPUT ?? "http://localhost:5173/swagger/v1/swagger.json";
+
 export default defineConfig({
-  input: "http://localhost:5173/swagger/v1/swagger.json",
+  input: INPUT,
   output: { path: "./src/api", clean: true, defaultBanner: false },
   plugins: [
     pluginTs({

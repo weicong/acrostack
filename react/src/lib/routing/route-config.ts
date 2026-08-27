@@ -1,11 +1,10 @@
 /**
- * Top-level route menu aggregator.
+ * Top-level route menu aggregator — auto-discovery via import.meta.glob.
  *
- * Each route module independently owns and exports its own `routeConfig:
- * MenuRoute[]` — this file concatenates them into the single `menuRoutes`
- * array consumed by the Sidebar. This mirrors ABP's modular menu
- * registration: modules declare their own menu contributions, and the host
- * aggregates them here (analogous to an ABP module dependency list).
+ * Each route module exports `routeConfig: MenuRoute[]`. This file automatically
+ * discovers all flat routes (routes/admin/*.tsx) and folder modules
+ * (routes/admin/<module>/route-config.ts) via Vite's import.meta.glob,
+ * eliminating the need to manually add import lines when adding new pages.
  *
  * Layout areas (see components/layout/RootLayout.tsx):
  *   /              — portal (workspace launcher, no menu)
@@ -18,16 +17,10 @@
  * Workspace switching happens via the portal (/), not cross-domain menu
  * entries in the admin sidebar.
  *
- * Module config locations (all under routes/admin/):
- *   - Folder modules (grouped children): `routes/admin/<module>/route-config.ts`
- *     e.g. identity, openiddict, saas, cms. File-management is a folder
- *     module with a single flat entry.
- *   - Flat top-level routes: the route file itself exports `routeConfig`
- *     e.g. routes/admin/books.tsx.
- *
- * To add a new module: export `routeConfig` from it, then add one spread line
- * to the array below. Display order is driven by each entry's `menu.order`
- * (the Sidebar sorts), so the concatenation order here is informational.
+ * To add a new page: create the route .tsx (export `menu` + `Route` +
+ * `routeConfig`), or for folder modules add a `route-config.ts`. No changes
+ * needed here — auto-discovery picks it up. Display order is driven by each
+ * entry's `menu.order` (the Sidebar sorts), so discovery order is informational.
  *
  * Menu layering convention (mirrors ABP's startup template):
  *   order 1            — Home (dashboard, /admin)
@@ -39,36 +32,24 @@
  * The `requiredPolicy` in menu metadata is for display filtering only.
  * Actual access control is enforced by each route's `beforeLoad` guard.
  */
-import { routeConfig as homeConfig } from "@/routes/admin/index";
-import { routeConfig as booksConfig } from "@/routes/admin/books";
-import { routeConfig as chatConfig } from "@/routes/admin/chat";
-import { routeConfig as fileManagementConfig } from "@/routes/admin/file-management/route-config";
-import { routeConfig as cmsConfig } from "@/routes/admin/cms/route-config";
-import { routeConfig as identityConfig } from "@/routes/admin/identity/route-config";
-import { routeConfig as openiddictConfig } from "@/routes/admin/openiddict/route-config";
-import { routeConfig as saasConfig } from "@/routes/admin/saas/route-config";
-import { routeConfig as featuresConfig } from "@/routes/admin/features";
-import { routeConfig as auditLogsConfig } from "@/routes/admin/audit-logs";
-import { routeConfig as backgroundJobsConfig } from "@/routes/admin/background-jobs";
-import { routeConfig as settingsConfig } from "@/routes/admin/settings";
 import type { MenuRoute } from "./route-config-types";
 
 export type { MenuRoute } from "./route-config-types";
 
-export const menuRoutes: MenuRoute[] = [
-  // Home
-  ...homeConfig,
-  // Business
-  ...booksConfig,
-  ...chatConfig,
-  ...fileManagementConfig,
-  ...cmsConfig,
-  // System administration
-  ...identityConfig,
-  ...openiddictConfig,
-  ...saasConfig,
-  ...featuresConfig,
-  ...auditLogsConfig,
-  ...backgroundJobsConfig,
-  ...settingsConfig,
-];
+const flatRouteConfigs = import.meta.glob("../../routes/admin/*.tsx", {
+  eager: true,
+  import: "routeConfig",
+}) as Record<string, MenuRoute[] | undefined>;
+
+const folderConfigs = import.meta.glob("../../routes/admin/*/route-config.ts", {
+  eager: true,
+  import: "routeConfig",
+}) as Record<string, MenuRoute[] | undefined>;
+
+function collect(configs: Record<string, MenuRoute[] | undefined>): MenuRoute[] {
+  return Object.values(configs)
+    .filter((c): c is MenuRoute[] => c != null)
+    .flat();
+}
+
+export const menuRoutes: MenuRoute[] = [...collect(flatRouteConfigs), ...collect(folderConfigs)];

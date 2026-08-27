@@ -114,6 +114,7 @@ export function TeacherDashboardPage() {
       conn.onreconnecting(() => setConnectionState("reconnecting"));
       conn.onreconnected(() => {
         setConnectionState("connected");
+        seenEventIdsRef.current.clear();
         void refreshSnapshot(); // 断线期间可能丢事件，重连后校准
       });
       conn.onclose(() => {

@@ -88,6 +88,7 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
       conn.onreconnecting(() => setConnectionState("reconnecting"));
       conn.onreconnected(() => {
         setConnectionState("connected");
+        seenEventIdsRef.current.clear();
         void refreshSnapshot();
       });
       conn.onclose(() => {
