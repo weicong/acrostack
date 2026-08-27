@@ -36,20 +36,22 @@ import type { MenuRoute } from "./route-config-types";
 
 export type { MenuRoute } from "./route-config-types";
 
-const flatRouteConfigs = import.meta.glob("../../routes/admin/*.tsx", {
-  eager: true,
-  import: "routeConfig",
-}) as Record<string, MenuRoute[] | undefined>;
-
-const folderConfigs = import.meta.glob("../../routes/admin/*/route-config.ts", {
-  eager: true,
-  import: "routeConfig",
-}) as Record<string, MenuRoute[] | undefined>;
-
-function collect(configs: Record<string, MenuRoute[] | undefined>): MenuRoute[] {
-  return Object.values(configs)
-    .filter((c): c is MenuRoute[] => c != null)
-    .flat();
+interface RouteConfigModule {
+  routeConfig?: MenuRoute[];
 }
 
-export const menuRoutes: MenuRoute[] = [...collect(flatRouteConfigs), ...collect(folderConfigs)];
+const flatRouteModules = import.meta.glob("../../routes/admin/*.tsx", {
+  eager: true,
+}) as Record<string, RouteConfigModule>;
+
+const folderModules = import.meta.glob("../../routes/admin/*/route-config.ts", {
+  eager: true,
+}) as Record<string, RouteConfigModule>;
+
+function collect(modules: Record<string, RouteConfigModule>): MenuRoute[] {
+  return Object.values(modules)
+    .filter((m): m is { routeConfig: MenuRoute[] } => m.routeConfig != null)
+    .flatMap((m) => m.routeConfig);
+}
+
+export const menuRoutes: MenuRoute[] = [...collect(flatRouteModules), ...collect(folderModules)];
