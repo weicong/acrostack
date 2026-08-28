@@ -2,7 +2,7 @@
   "production": "true",
   "application": {
     "baseUrl": "http://localhost:5173",
-    "name": "AcroStack",
+    "name": "中卫云",
     "logoUrl": ""
   },
   "oAuthConfig": {

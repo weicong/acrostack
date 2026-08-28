@@ -9,6 +9,7 @@ export interface DynamicEnv {
   production?: string;
   application?: {
     baseUrl?: string;
+    /** 部署级应用名 = 品牌 UI 名的最终来源（见 getApplicationName），部署时按环境注入 */
     name?: string;
     logoUrl?: string;
   };
@@ -120,6 +121,18 @@ export function getBackendOrigin(): string {
 export function getBackendAccountUrl(subPath: string): string {
   const origin = getBackendOrigin();
   return stripTrailingSlash(origin) + "/admin-console" + subPath;
+}
+
+/** 与 index.html <title> 保持一致的兜底应用名 */
+const FALLBACK_APP_NAME = "AcroStack";
+
+/**
+ * 应用名称（同步）。品牌 UI 名直接取 dynamic-env.json 的 application.name
+ * （nginx 部署时按环境注入），缺失时回退 FALLBACK_APP_NAME。
+ * bootstrap 在首次渲染前已 await loadRuntimeConfig()，组件内可安全同步调用。
+ */
+export function getApplicationName(): string {
+  return loadedConfig?.application?.name?.trim() || FALLBACK_APP_NAME;
 }
 
 /**

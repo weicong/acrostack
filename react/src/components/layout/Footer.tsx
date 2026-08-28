@@ -1,5 +1,5 @@
 import { Divider, makeStyles, Text, tokens } from "@fluentui/react-components";
-import { useAppName } from "@/lib/appName";
+import { getApplicationName } from "@/lib/runtimeConfig";
 
 const useStyles = makeStyles({
   footer: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const appName = useAppName();
+  const appName = getApplicationName();
   const styles = useStyles();
 
   return (

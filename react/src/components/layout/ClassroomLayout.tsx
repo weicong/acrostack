@@ -3,7 +3,7 @@ import { Link, Outlet, useMatches, useNavigate, useRouterState } from "@tanstack
 import { makeStyles, Tab, TabList, Text, tokens } from "@fluentui/react-components";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { useAppName } from "@/lib/appName";
+import { getApplicationName } from "@/lib/runtimeConfig";
 import { UserMenu } from "./UserMenu";
 
 /**
@@ -117,7 +117,7 @@ export function ClassroomLayout() {
   const { pathname } = useRouterState().location;
   const { isAuthenticated } = useAuth();
   const { isGranted } = usePermissions();
-  const appName = useAppName();
+  const appName = getApplicationName();
 
   // 全屏变体：任一活动路由声明 fullscreen（如驾驶舱）
   const fullscreen = useMatches().some(
