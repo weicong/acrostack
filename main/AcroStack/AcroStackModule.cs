@@ -584,6 +584,7 @@ public class AcroStackModule : AbpModule
         {
             endpoints.MapHub<ChatHub>("/signalr-hubs/chat");
             endpoints.MapHub<ClassroomHub>(ClassroomHttpApiModule.HubPath);
+            endpoints.MapFallbackToFile("index.html");
         });
     }
 }
