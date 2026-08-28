@@ -1,6 +1,6 @@
 import { Field, type FieldProps } from "@fluentui/react-components";
 import { DatePicker, type DatePickerProps } from "@fluentui/react-datepicker-compat";
-import { zhCNDatePickerDefaults } from "@/lib/ui/datePickerLocalization";
+import { zhCNDatePickerDefaults } from "@/components/form/datePickerLocalization";
 import { useFieldContext } from "../form-context";
 import { getErrorMessage } from "./field-error";
 

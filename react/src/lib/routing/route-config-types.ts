@@ -33,25 +33,14 @@ export interface RouteMenuConfig {
   children?: RouteMenuConfigChild[];
 }
 
-/** Child menu item (excludes nested children, includes path). */
-export interface RouteMenuConfigChild {
+/**
+ * Child menu item: the parent's RouteMenuConfig flattened one level, with a
+ * path relative to the parent (nested children are not allowed).
+ */
+export type RouteMenuConfigChild = Omit<RouteMenuConfig, "children"> & {
   /** Relative path from parent route (e.g., "users" for /identity/users). */
   path: string;
-  /** Menu item display name (system is Chinese-only; no i18n lookup). */
-  name: string;
-  /** Icon component to display in the sidebar. */
-  icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  /** ABP policy required to view this menu item (checked by isGranted). */
-  requiredPolicy?: string;
-  /** Whether authentication is required to view this menu item. */
-  requiresAuth?: boolean;
-  /** External link URL (or function returning it) - opens in new tab. */
-  externalHref?: string | (() => string);
-  /** Target for external links ("_blank" or "_self"). */
-  externalTarget?: "_self" | "_blank";
-  /** Rel attribute for external links. */
-  externalRel?: string;
-}
+};
 
 /**
  * A top-level menu entry: an absolute route path paired with its menu metadata.
@@ -71,12 +60,6 @@ export interface MenuRoute {
 export function asChild(relativePath: string, menu: RouteMenuConfig): RouteMenuConfigChild {
   return {
     path: relativePath,
-    name: menu.name,
-    icon: menu.icon,
-    requiredPolicy: menu.requiredPolicy,
-    requiresAuth: menu.requiresAuth,
-    externalHref: menu.externalHref,
-    externalTarget: menu.externalTarget,
-    externalRel: menu.externalRel,
+    ...menu,
   };
 }

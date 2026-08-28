@@ -20,7 +20,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - `src/api/` — Kubb-generated API layer (`models/` `clients/` `hooks/`, grouped by Swagger tag). Never hand-edit; regenerate with `vp run generate-api` after backend contract changes.
 - `src/lib/` — framework-level, cross-cutting infrastructure: HTTP (`lib/http/`), auth (`lib/auth/`), routing (`lib/routing/`), runtime config, tenant, theme, global query client.
   - **Admission rule**: `lib/` holds framework concerns only — no business semantics. If a file names a business concept (e.g. `impersonation`) or serves a single feature, put it in that feature's folder instead.
-  - **Subdirectory threshold**: a subdirectory needs ≥2 strongly related files (`auth/`, `routing/`, `http/`, `theme/`, `ui/` qualify); single-file infrastructure (`runtimeConfig.ts`, `queryClient.ts`, `tenant.ts`) stays flat at the `lib/` root.
+  - **Subdirectory threshold**: a subdirectory needs ≥2 strongly related files (`auth/`, `routing/`, `http/` qualify); single-file infrastructure (`runtimeConfig.ts`, `queryClient.ts`, `tenant.ts`, `theme.tsx`) stays flat at the `lib/` root.
   - **Dependency edge**: `lib/` may import generated `src/api/` code only inside `lib/http/client.ts` (the axios adapter). Pages/routes/components consume generated hooks from `@/api/hooks/...` directly.
 - `src/pages/` — feature folders owning page UI, sub-components, hooks and schemas. `src/routes/` — thin TanStack Router file-route wrappers (guard + layout binding) that delegate to `pages/`.
 - Menus: route modules export `routeConfig`, auto-discovered by `lib/routing/route-config.ts` via `import.meta.glob` — no manual registration.

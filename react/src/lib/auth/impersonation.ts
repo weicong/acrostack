@@ -22,7 +22,7 @@
  *    reloads so the SPA re-initialises with the impersonated session.
  * 4. While impersonating, the ABP <c>application-configuration</c> API
  *    exposes the impersonator claims via <c>currentUser.impersonatorUserId</c>
- *    etc.; {@link useImpersonationState} reads them to show a banner.
+ *    etc.; ImpersonationBanner (components/layout) reads them to show a banner.
  * 5. {@link backToMyAccount} reads <c>impersonator_token</c> from the JWT
  *    and restores it as the active session.
  */
@@ -30,7 +30,7 @@ import { User } from "oidc-client-ts";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
-import { useCurrentUser } from "@/lib/auth/permissions";
+import { decodeJwtPayload } from "./jwt";
 
 /**
  * Custom OAuth2 grant type implemented by the backend's
@@ -38,13 +38,6 @@ import { useCurrentUser } from "@/lib/auth/permissions";
  * `ImpersonationGrantHandler.GrantType` on the server.
  */
 const IMPERSONATION_GRANT_TYPE = "Impersonation";
-
-export interface ImpersonationState {
-  isImpersonating: boolean;
-  impersonatorUserId?: string;
-  impersonatorTenantId?: string;
-  impersonatorUserName?: string;
-}
 
 /** Claim key used to embed the original admin's token in an impersonated JWT. */
 const CLAIM_IMPERSONATOR_TOKEN = "impersonator_token";
@@ -115,53 +108,13 @@ function localizeImpersonationError(description: string): string {
 }
 
 /**
- * Decodes the payload of a JWT without verifying its signature.
- * The token is trusted because it was issued by our own AuthServer.
- */
-export function decodeJwtPayload(token: string): Record<string, unknown> {
-  const parts = token.split(".");
-  if (parts.length !== 3) return {};
-  try {
-    const base64Url = parts[1]!;
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-    const json = atob(padded);
-    return JSON.parse(json) as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
-
-/**
- * React hook that derives the current impersonation state from the ABP
- * application-configuration <c>currentUser</c> section, which ABP populates
- * from the JWT's impersonator claims on the server side.
- */
-export function useImpersonationState(): ImpersonationState {
-  const currentUser = useCurrentUser();
-  if (!currentUser) return { isImpersonating: false };
-
-  const impersonatorUserId = currentUser.impersonatorUserId ?? undefined;
-  const impersonatorTenantId = currentUser.impersonatorTenantId ?? undefined;
-  if (!impersonatorUserId && !impersonatorTenantId) {
-    return { isImpersonating: false };
-  }
-  return {
-    isImpersonating: true,
-    impersonatorUserId,
-    impersonatorTenantId,
-    impersonatorUserName: currentUser.impersonatorUserName ?? undefined,
-  };
-}
-
-/**
  * Calls the /connect/token endpoint with the custom <c>Impersonation</c>
  * grant type (matching ABP Account Pro's API), stores the resulting token
  * as the active OIDC user session, then reloads the page.
  *
  * @param params Form parameters to send (e.g. `{ user_id }` or `{ tenant_id }`).
  * @param options.sendTenantHeader When `true` (default), sends the current
- *   sessionStorage tenant ID as the `__tenant` header so the backend
+ *   localStorage tenant ID as the `__tenant` header so the backend
  *   resolves the target user in the correct tenant. Set to `false` for
  *   tenant impersonation, where the caller is a host user and the backend
  *   switches tenant internally via `ICurrentTenant.Change`.

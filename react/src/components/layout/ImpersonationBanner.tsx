@@ -2,7 +2,37 @@ import { useState } from "react";
 
 import { Button, makeStyles, tokens, Text, useToastController } from "@fluentui/react-components";
 import { PersonArrowBack20Regular } from "@fluentui/react-icons";
-import { useImpersonationState, backToMyAccount } from "@/lib/auth/impersonation";
+import { backToMyAccount } from "@/lib/auth/impersonation";
+import { useCurrentUser } from "@/lib/auth/permissions";
+
+interface ImpersonationState {
+  isImpersonating: boolean;
+  impersonatorUserId?: string;
+  impersonatorTenantId?: string;
+  impersonatorUserName?: string;
+}
+
+/**
+ * Derives the current impersonation state from the ABP
+ * application-configuration currentUser section, which ABP populates from
+ * the JWT's impersonator claims on the server side.
+ */
+function useImpersonationState(): ImpersonationState {
+  const currentUser = useCurrentUser();
+  if (!currentUser) return { isImpersonating: false };
+
+  const impersonatorUserId = currentUser.impersonatorUserId ?? undefined;
+  const impersonatorTenantId = currentUser.impersonatorTenantId ?? undefined;
+  if (!impersonatorUserId && !impersonatorTenantId) {
+    return { isImpersonating: false };
+  }
+  return {
+    isImpersonating: true,
+    impersonatorUserId,
+    impersonatorTenantId,
+    impersonatorUserName: currentUser.impersonatorUserName ?? undefined,
+  };
+}
 
 const useStyles = makeStyles({
   root: {
