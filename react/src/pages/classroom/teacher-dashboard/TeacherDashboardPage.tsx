@@ -147,26 +147,68 @@ export function TeacherDashboardPage() {
 
       connection.on(ClassroomClientMethods.ParticipantChanged, (evt: ParticipantChangedEvent) => {
         if (!check(evt)) return;
-        // 单个学员状态变更：就地更新，避免整表刷新
-        setDashboard((d) =>
-          d
-            ? {
-                ...d,
-                version: evt.version,
-                participants: (d.participants ?? []).map((p) =>
-                  p.participantId === evt.participantId
-                    ? {
-                        ...p,
-                        nickname: evt.nickname,
-                        onlineStatus: evt.onlineStatus as 0 | 1,
-                        answerState: evt.answerState as 0 | 1 | 2,
-                        submittedAt: evt.submittedAt ?? null,
-                      }
-                    : p,
-                ),
-              }
-            : d,
-        );
+        // 单个学员状态变更：就地 upsert（新上线学员追加），避免整表刷新。
+        // 离线事件仅翻转在线状态，不覆盖昵称/作答状态（断开时后端不带这些字段）。
+        setDashboard((d) => {
+          if (!d) return d;
+          const list = d.participants ?? [];
+          const idx = list.findIndex((p) => p.participantId === evt.participantId);
+          const isOnline = evt.onlineStatus === 1;
+
+          // 离线：仅更新已存在学员的在线状态
+          if (!isOnline) {
+            if (idx === -1 || list[idx].onlineStatus === 0) {
+              return { ...d, version: evt.version };
+            }
+            return {
+              ...d,
+              version: evt.version,
+              onlineCount: Math.max(0, (d.onlineCount ?? 0) - 1),
+              participants: list.map((p, i) =>
+                i === idx ? { ...p, onlineStatus: 0 as 0 | 1 } : p,
+              ),
+            };
+          }
+
+          // 上线：upsert（新学员追加，已存在则合并；answerState=0 时保留原作答状态）
+          const evtAnswerState = evt.answerState as 0 | 1 | 2;
+          if (idx === -1) {
+            return {
+              ...d,
+              version: evt.version,
+              totalParticipants: (d.totalParticipants ?? 0) + 1,
+              onlineCount: (d.onlineCount ?? 0) + 1,
+              participants: [
+                ...list,
+                {
+                  participantId: evt.participantId,
+                  nickname: evt.nickname,
+                  onlineStatus: 1 as 0 | 1,
+                  answerState: evtAnswerState,
+                  submittedAt: evt.submittedAt ?? null,
+                },
+              ],
+            };
+          }
+          const prev = list[idx];
+          const wasOnline = prev.onlineStatus === 1;
+          return {
+            ...d,
+            version: evt.version,
+            onlineCount: wasOnline ? d.onlineCount : (d.onlineCount ?? 0) + 1,
+            participants: list.map((p, i) =>
+              i === idx
+                ? {
+                    ...p,
+                    nickname: evt.nickname || p.nickname,
+                    onlineStatus: 1 as 0 | 1,
+                    answerState: evtAnswerState || (p.answerState ?? 0),
+                    submittedAt: evt.submittedAt ?? p.submittedAt ?? null,
+                  }
+                : p,
+            ),
+          };
+        });
       });
 
       // 课堂/题目生命周期事件：快照重新校准（含 currentQuestion 状态）

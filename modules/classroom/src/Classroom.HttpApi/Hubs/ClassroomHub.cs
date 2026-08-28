@@ -192,6 +192,27 @@ public class ClassroomHub : Hub<IClassroomClient>
                 Context.ConnectionId,
                 StudentGroupName(payload.TenantId, sessionId));
             await _onlineTracker.SetOnlineAsync(sessionId, payload.ParticipantId.Value, payload.TenantId);
+
+            // 通知教师组：学员上线（增量，与 OnDisconnectedAsync 对称；重连场景亦触发）
+            try
+            {
+                var evt = new ParticipantChangedEvent
+                {
+                    SessionId = sessionId,
+                    ParticipantId = payload.ParticipantId.Value,
+                    Nickname = participant.Nickname,
+                    OnlineStatus = OnlineStatus.Online,
+                    AnswerState = ParticipantAnswerState.NotStarted,
+                    ServerTime = DateTimeOffset.UtcNow,
+                    EventId = Guid.NewGuid(),
+                };
+                await _notifier.NotifyTeachersAsync(sessionId, payload.TenantId, evt);
+            }
+            catch (Exception ex)
+            {
+                // 推送失败不影响连接流程
+                _logger.LogWarning(ex, "Failed to notify teacher group on participant connect.");
+            }
         }
         else
         {
