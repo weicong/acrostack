@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Button, Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
 import { useAppForm } from "@/components/form";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 import { useAccountCardStyles } from "./styles/account";
 

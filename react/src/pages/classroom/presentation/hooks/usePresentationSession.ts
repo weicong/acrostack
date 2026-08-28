@@ -12,7 +12,7 @@ import { ClassroomClientMethods } from "../../shared/constants/classroom";
 import type { ClassroomEventBase } from "../../shared/types/classroom-events";
 import { buildClassroomTokenHubConnection } from "../../shared/utils/classroomHub";
 import { getPresentationSnapshot } from "../../shared/utils/studentApi";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClassroomDtosPresentationSnapshotDto } from "@/api/models/classroom/dtos/PresentationSnapshotDto";
 
 export type PresentationConnectionState = "connecting" | "connected" | "reconnecting" | "offline";

@@ -1,7 +1,7 @@
 import { Card, Text, useToastController } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { passwordSchema } from "../schemas/profile";
 import { useProfileStyles } from "../styles/profile";
 

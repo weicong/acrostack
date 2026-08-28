@@ -10,7 +10,7 @@ import { useToastController } from "@fluentui/react-components";
 import { useQuizCreate } from "@/api/hooks/quiz/useQuizCreate";
 import { useQuizUpdate } from "@/api/hooks/quiz/useQuizUpdate";
 import { useQuizDelete } from "@/api/hooks/quiz/useQuizDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClassroomDtosCreateUpdateQuizDto } from "@/api/models/classroom/dtos/CreateUpdateQuizDto";
 
 export function useQuizActions() {

@@ -16,7 +16,7 @@ import { useAppForm } from "@/components/form";
 import { useBlogAdminCreate } from "@/api/hooks/blogAdmin/useBlogAdminCreate";
 import { useBlogAdminUpdate } from "@/api/hooks/blogAdmin/useBlogAdminUpdate";
 import type { VoloCmsKitAdminBlogsBlogDto as BlogDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 

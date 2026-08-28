@@ -8,7 +8,7 @@ import { useToastController } from "@fluentui/react-components";
 import { appUserGetListQueryKey } from "@/api/hooks/appUser/useAppUserGetList";
 import { useUserDelete } from "@/api/hooks/user/useUserDelete";
 import { impersonateUser } from "@/lib/auth/impersonation";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { UserItem } from "./useUsersTable";
 
 export function useUserActions() {

@@ -10,7 +10,7 @@ import { useToastController } from "@fluentui/react-components";
 import { useQuestionCreate } from "@/api/hooks/question/useQuestionCreate";
 import { useQuestionUpdate } from "@/api/hooks/question/useQuestionUpdate";
 import { useQuestionDelete } from "@/api/hooks/question/useQuestionDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClassroomDtosCreateUpdateQuestionDto } from "@/api/models/classroom/dtos/CreateUpdateQuestionDto";
 
 export function useQuestionActions() {

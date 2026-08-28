@@ -26,7 +26,7 @@ import { useTenantDeleteDefaultConnectionString } from "@/api/hooks/tenant/useTe
 import { tenantGetListQueryKey } from "@/api/hooks/tenant/useTenantGetList";
 import type { VoloAbpTenantManagementTenantDto } from "@/api/models/volo/abp/tenantManagement/TenantDto";
 import { createSchema, updateSchema } from "../schemas/tenant";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Types ───────────────────────────────────────────────────────────
 

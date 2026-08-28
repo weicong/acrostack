@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { useOpenIddictScopeDelete } from "@/api/hooks/openIddictScope/useOpenIddictScopeDelete";
 import { openIddictScopeGetListQueryKey } from "@/api/hooks/openIddictScope/useOpenIddictScopeGetList";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useScopeActions() {
   const queryClient = useQueryClient();

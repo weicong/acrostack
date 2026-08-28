@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useToastController } from "@fluentui/react-components";
 import { useClassSessionCreate } from "@/api/hooks/classSession/useClassSessionCreate";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseTeacherSessionActionsOptions {
   /** 当前选中的试卷 id；为空时不执行创建。 */

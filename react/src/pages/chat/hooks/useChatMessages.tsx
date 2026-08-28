@@ -14,7 +14,7 @@ import { useConversationMarkAsRead } from "@/api/hooks/conversation/useConversat
 import { useConversationEditMessage } from "@/api/hooks/conversation/useConversationEditMessage";
 import { useConversationDeleteMessage } from "@/api/hooks/conversation/useConversationDeleteMessage";
 import { conversationGetReactionsQueryKey } from "@/api/hooks/conversation/useConversationGetReactions";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { MESSAGE_PAGE } from "../constants/chat";
 import type { AcroStackChatChatMessageDto as ChatMessageDto } from "@/api/models/acroStack/chat/ChatMessageDto";
 

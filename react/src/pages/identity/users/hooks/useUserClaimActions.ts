@@ -4,7 +4,7 @@ import { identityUserClaimGetListQueryKey } from "@/api/hooks/identityUserClaim/
 import { useIdentityUserClaimCreate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimCreate";
 import { useIdentityUserClaimUpdate } from "@/api/hooks/identityUserClaim/useIdentityUserClaimUpdate";
 import { useIdentityUserClaimDelete } from "@/api/hooks/identityUserClaim/useIdentityUserClaimDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClaimFormValues } from "../../shared/schemas/claim";
 
 /**

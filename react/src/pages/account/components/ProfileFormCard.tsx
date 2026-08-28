@@ -3,7 +3,7 @@ import { Card, Text, useToastController } from "@fluentui/react-components";
 import { useAppForm } from "@/components/form";
 import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { profileSchema } from "../schemas/profile";
 import { useProfileStyles } from "../styles/profile";
 

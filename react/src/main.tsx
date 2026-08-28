@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { loadRuntimeConfig } from "@/lib/runtimeConfig";
 import { initUserManager } from "@/lib/auth/userManager";
-import { setupHttpClientInterceptors } from "@/lib/httpClient";
+import { setupHttpClientInterceptors } from "@/lib/http/client";
 import { syncDocumentTitle } from "@/lib/appName";
 import { queryClient } from "@/lib/queryClient";
 

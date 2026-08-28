@@ -9,7 +9,7 @@ import { useToastController } from "@fluentui/react-components";
 import { pageAdminGetListQueryKey } from "@/api/hooks/pageAdmin/usePageAdminGetList";
 import { usePageAdminDelete } from "@/api/hooks/pageAdmin/usePageAdminDelete";
 import { usePageAdminSetAsHomePage } from "@/api/hooks/pageAdmin/usePageAdminSetAsHomePage";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function usePageActions() {
   const { dispatchToast } = useToastController();

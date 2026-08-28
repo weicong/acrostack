@@ -15,7 +15,7 @@ import { useClassSessionPublishAnswer } from "@/api/hooks/classSession/useClassS
 import { useClassSessionFinish } from "@/api/hooks/classSession/useClassSessionFinish";
 import { useClassSessionRestart } from "@/api/hooks/classSession/useClassSessionRestart";
 import { useClassSessionCreatePresentationToken } from "@/api/hooks/classSession/useClassSessionCreatePresentationToken";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import {
   ClassSessionStatusValue,
   SessionQuestionStatusValue,

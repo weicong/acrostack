@@ -8,7 +8,7 @@ import { useToastController } from "@fluentui/react-components";
 import { featuresGetQueryKey } from "@/api/hooks/features/useFeaturesGet";
 import { useFeaturesUpdate } from "@/api/hooks/features/useFeaturesUpdate";
 import { useFeaturesDelete } from "@/api/hooks/features/useFeaturesDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseFeatureActionsOptions {
   /** 服务端当前值（用于计算变更项）。 */

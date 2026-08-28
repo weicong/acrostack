@@ -19,7 +19,7 @@ import { useFileManagementDeleteFile } from "@/api/hooks/fileManagement/useFileM
 import { useFileManagementMoveFile } from "@/api/hooks/fileManagement/useFileManagementMoveFile";
 import { useFileManagementMoveFolder } from "@/api/hooks/fileManagement/useFileManagementMoveFolder";
 import { fileManagementDownloadFile } from "@/api/clients/fileManagement/fileManagementDownloadFile";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { AcroStackFileManagementFileEntryDto as FileEntryDto } from "@/api/models/acroStack/fileManagement/FileEntryDto";
 import type { MoveTarget } from "../types/fileManagement";
 

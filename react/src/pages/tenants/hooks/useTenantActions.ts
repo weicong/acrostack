@@ -8,7 +8,7 @@ import { useToastController } from "@fluentui/react-components";
 import { tenantGetListQueryKey } from "@/api/hooks/tenant/useTenantGetList";
 import { useTenantDelete } from "@/api/hooks/tenant/useTenantDelete";
 import { impersonateTenant } from "@/lib/auth/impersonation";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { TenantItem } from "./useTenantsTable";
 
 export function useTenantActions() {

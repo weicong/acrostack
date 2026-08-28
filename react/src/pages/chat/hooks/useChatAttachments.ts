@@ -4,7 +4,7 @@
 import { useCallback } from "react";
 import type { useToastController } from "@fluentui/react-components";
 import { chatDownloadAttachment } from "@/api/clients/chat/chatDownloadAttachment";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseChatAttachmentsOptions {
   dispatchToast: ReturnType<typeof useToastController>["dispatchToast"];

@@ -18,7 +18,7 @@ import { useMenuItemAdminCreate } from "@/api/hooks/menuItemAdmin/useMenuItemAdm
 import { useMenuItemAdminUpdate } from "@/api/hooks/menuItemAdmin/useMenuItemAdminUpdate";
 import { useMenuItemAdminGetPageLookup } from "@/api/hooks/menuItemAdmin/useMenuItemAdminGetPageLookup";
 import type { VoloCmsKitAdminMenusMenuItemWithDetailsDto as MenuItemDto } from "@/api/models/volo/cmsKit/admin/menus/MenuItemWithDetailsDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 

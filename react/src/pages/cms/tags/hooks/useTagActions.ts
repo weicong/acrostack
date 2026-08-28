@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { tagAdminGetListQueryKey } from "@/api/hooks/tagAdmin/useTagAdminGetList";
 import { useTagAdminDelete } from "@/api/hooks/tagAdmin/useTagAdminDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useTagActions() {
   const { dispatchToast } = useToastController();

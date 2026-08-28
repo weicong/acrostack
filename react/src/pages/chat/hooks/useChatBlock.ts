@@ -7,7 +7,7 @@ import type { useToastController } from "@fluentui/react-components";
 import { useChatBlockBlockUser } from "@/api/hooks/chatBlock/useChatBlockBlockUser";
 import { useChatBlockUnblockUser } from "@/api/hooks/chatBlock/useChatBlockUnblockUser";
 import { contactGetListQueryKey } from "@/api/hooks/contact/useContactGetList";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseChatBlockOptions {
   queryClient: ReturnType<typeof useQueryClient>;

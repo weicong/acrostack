@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { blogAdminGetListQueryKey } from "@/api/hooks/blogAdmin/useBlogAdminGetList";
 import { useBlogAdminDelete } from "@/api/hooks/blogAdmin/useBlogAdminDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useBlogActions() {
   const { dispatchToast } = useToastController();

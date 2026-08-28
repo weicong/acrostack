@@ -8,7 +8,7 @@ import { useConversationSendMessage } from "@/api/hooks/conversation/useConversa
 import { useChatSendMessageWithAttachment } from "@/api/hooks/chat/useChatSendMessageWithAttachment";
 import { conversationGetMessageListQueryKey } from "@/api/hooks/conversation/useConversationGetMessageList";
 import { conversationGetListQueryKey } from "@/api/hooks/conversation/useConversationGetList";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { MESSAGE_PAGE } from "../constants/chat";
 import type { useTypingNotifier } from "./useTypingNotifier";
 

@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { useToastController } from "@fluentui/react-components";
 import { useConversationToggleReaction } from "@/api/hooks/conversation/useConversationToggleReaction";
 import { conversationGetReactionsQueryKey } from "@/api/hooks/conversation/useConversationGetReactions";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseChatReactionsOptions {
   queryClient: ReturnType<typeof useQueryClient>;

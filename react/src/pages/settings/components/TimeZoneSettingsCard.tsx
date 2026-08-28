@@ -20,7 +20,7 @@ import {
 } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsGet";
 import { useTimeZoneSettingsGetTimezones } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
 import { useTimeZoneSettingsUpdate } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useSettingsStyles } from "../styles/settings";
 
 export function TimeZoneSettingsCard() {

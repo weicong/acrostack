@@ -16,7 +16,7 @@ import { useAppForm } from "@/components/form";
 import { usePageAdminCreate } from "@/api/hooks/pageAdmin/usePageAdminCreate";
 import { usePageAdminUpdate } from "@/api/hooks/pageAdmin/usePageAdminUpdate";
 import type { VoloCmsKitAdminPagesPageDto as PageDto } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 

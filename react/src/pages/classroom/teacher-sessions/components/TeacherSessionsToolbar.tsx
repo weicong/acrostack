@@ -22,7 +22,7 @@ import {
 } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
 import { useQuizGetList } from "@/api/hooks/quiz/useQuizGetList";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useTeacherSessionActions } from "../hooks/useTeacherSessionActions";
 import { useTeacherSessionsStyles } from "../styles/teacherSessions";
 

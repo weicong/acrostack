@@ -12,9 +12,6 @@ import { getTenantId } from "@/lib/tenant";
 import { emitRouteEvent } from "@/lib/routing/routeEvents";
 import { DEFAULT_CULTURE } from "@/env";
 
-// Re-export setTenantId for backward compatibility
-export { setTenantId } from "@/lib/tenant";
-
 /**
  * Applies ABP auth/tenant/locale headers and resolves the base URL at request
  * time. Exported for unit testing; also used as the request interceptor.

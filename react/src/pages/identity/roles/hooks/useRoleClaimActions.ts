@@ -4,7 +4,7 @@ import { identityRoleClaimGetListQueryKey } from "@/api/hooks/identityRoleClaim/
 import { useIdentityRoleClaimCreate } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimCreate";
 import { useIdentityRoleClaimUpdate } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimUpdate";
 import { useIdentityRoleClaimDelete } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClaimFormValues } from "../../shared/schemas/claim";
 
 /**

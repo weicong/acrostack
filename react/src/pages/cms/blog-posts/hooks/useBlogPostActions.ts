@@ -10,7 +10,7 @@ import { blogPostAdminGetListQueryKey } from "@/api/hooks/blogPostAdmin/useBlogP
 import { useBlogPostAdminDelete } from "@/api/hooks/blogPostAdmin/useBlogPostAdminDelete";
 import { useBlogPostAdminPublish } from "@/api/hooks/blogPostAdmin/useBlogPostAdminPublish";
 import { useBlogPostAdminDraft } from "@/api/hooks/blogPostAdmin/useBlogPostAdminDraft";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useBlogPostActions() {
   const { dispatchToast } = useToastController();

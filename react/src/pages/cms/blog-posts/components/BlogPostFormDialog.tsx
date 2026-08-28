@@ -18,7 +18,7 @@ import { useBlogPostAdminCreate } from "@/api/hooks/blogPostAdmin/useBlogPostAdm
 import { useBlogPostAdminUpdate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminUpdate";
 import { useBlogAdminGetAllList } from "@/api/hooks/blogAdmin/useBlogAdminGetAllList";
 import type { VoloCmsKitAdminBlogsBlogPostListDto as BlogPostDto } from "@/api/models/volo/cmsKit/admin/blogs/BlogPostListDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 

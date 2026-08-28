@@ -27,7 +27,7 @@ import { questionGet } from "@/api/clients/question/questionGet";
 import { questionGetList } from "@/api/clients/question/questionGetList";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { questionTypeLabel } from "../../shared/constants/question";
 import type { QuizActions } from "../hooks/useQuizActions";
 import { useQuizzesStyles } from "../styles/quizzes";

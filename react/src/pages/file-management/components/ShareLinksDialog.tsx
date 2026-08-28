@@ -28,7 +28,7 @@ import { useFileManagementGetShareLinks } from "@/api/hooks/fileManagement/useFi
 import { fileManagementGetShareLinksQueryKey } from "@/api/hooks/fileManagement/useFileManagementGetShareLinks";
 import { useFileManagementCreateShareLink } from "@/api/hooks/fileManagement/useFileManagementCreateShareLink";
 import { useFileManagementRevokeShareLink } from "@/api/hooks/fileManagement/useFileManagementRevokeShareLink";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useFileManagementStyles } from "../styles/fileManagement";
 
 interface ShareLinksDialogProps {

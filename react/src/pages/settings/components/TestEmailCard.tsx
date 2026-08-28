@@ -14,7 +14,7 @@ import {
 } from "@fluentui/react-components";
 import { z } from "zod";
 import { useEmailSettingsSendTestEmail } from "@/api/hooks/emailSettings/useEmailSettingsSendTestEmail";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useSettingsStyles } from "../styles/settings";
 
 const testEmailSchema = z.object({

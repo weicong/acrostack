@@ -9,7 +9,7 @@ import { backgroundJobGetListQueryKey } from "@/api/hooks/backgroundJob/useBackg
 import { useBackgroundJobDelete } from "@/api/hooks/backgroundJob/useBackgroundJobDelete";
 import { useBackgroundJobRequeue } from "@/api/hooks/backgroundJob/useBackgroundJobRequeue";
 import { useBackgroundJobAbandon } from "@/api/hooks/backgroundJob/useBackgroundJobAbandon";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 /** 确认对话框承载的操作类型（删除/重新排队/放弃）。 */
 export type ConfirmAction =

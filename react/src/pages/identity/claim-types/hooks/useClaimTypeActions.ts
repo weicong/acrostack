@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { identityClaimTypeGetListQueryKey } from "@/api/hooks/identityClaimType/useIdentityClaimTypeGetList";
 import { useIdentityClaimTypeDelete } from "@/api/hooks/identityClaimType/useIdentityClaimTypeDelete";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useClaimTypeActions() {
   const { dispatchToast } = useToastController();

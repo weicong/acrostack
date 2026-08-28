@@ -26,7 +26,7 @@ import { fileManagementGetFileVersionsQueryKey } from "@/api/hooks/fileManagemen
 import { fileManagementGetFilesQueryKey } from "@/api/hooks/fileManagement/useFileManagementGetFiles";
 import { fileManagementGetStorageInfoQueryKey } from "@/api/hooks/fileManagement/useFileManagementGetStorageInfo";
 import { useFileManagementRestoreVersion } from "@/api/hooks/fileManagement/useFileManagementRestoreVersion";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { useFileManagementStyles } from "../styles/fileManagement";
 import { formatBytes } from "../utils/fileManagement";

@@ -4,7 +4,7 @@ import { Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useAppForm } from "@/components/form";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 import { useAccountCardStyles } from "./styles/account";
 

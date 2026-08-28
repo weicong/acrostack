@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { permissionsGetQueryKey } from "@/api/hooks/permissions/usePermissionsGet";
 import { usePermissionsUpdate } from "@/api/hooks/permissions/usePermissionsUpdate";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { VoloAbpPermissionManagementPermissionGroupDto } from "@/api/models/volo/abp/permissionManagement/PermissionGroupDto";
 import type { ProviderName } from "../utils/permissions";
 

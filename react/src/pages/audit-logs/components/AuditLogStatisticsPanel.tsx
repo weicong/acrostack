@@ -12,7 +12,7 @@ import {
   auditLogGetStatisticsQueryKey,
 } from "@/api/hooks/auditLog/useAuditLogGetStatistics";
 import type { AcroStackAuditLoggingAuditLogStatisticsDto as AuditLogStatisticsDto } from "@/api/models/acroStack/auditLogging/AuditLogStatisticsDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { AuditStatisticsFilterBar, type AuditLogDateRange } from "./AuditStatisticsFilterBar";
 import { AuditStatisticsSummaryCards } from "./AuditStatisticsSummaryCards";
 import { AuditHttpMethodDistribution } from "./AuditHttpMethodDistribution";

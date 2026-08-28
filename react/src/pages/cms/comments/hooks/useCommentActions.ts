@@ -9,7 +9,7 @@ import { useToastController } from "@fluentui/react-components";
 import { commentAdminGetListQueryKey } from "@/api/hooks/commentAdmin/useCommentAdminGetList";
 import { useCommentAdminDelete } from "@/api/hooks/commentAdmin/useCommentAdminDelete";
 import { useCommentAdminUpdateApprovalStatus } from "@/api/hooks/commentAdmin/useCommentAdminUpdateApprovalStatus";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { VoloCmsKitAdminCommentsCommentWithAuthorDto as CommentItem } from "@/api/models/volo/cmsKit/admin/comments/CommentWithAuthorDto";
 
 export function useCommentActions() {

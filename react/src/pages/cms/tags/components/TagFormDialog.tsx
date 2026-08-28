@@ -16,7 +16,7 @@ import { useAppForm } from "@/components/form";
 import { useTagAdminCreate } from "@/api/hooks/tagAdmin/useTagAdminCreate";
 import { useTagAdminUpdate } from "@/api/hooks/tagAdmin/useTagAdminUpdate";
 import type { VoloCmsKitTagsTagDto as TagDto } from "@/api/models/volo/cmsKit/tags/TagDto";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 
 // ── Schema ──────────────────────────────────────────────────────────
 

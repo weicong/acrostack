@@ -4,7 +4,7 @@
 import { useCallback, useState } from "react";
 import type { useToastController } from "@fluentui/react-components";
 import { useConversationSearchMessages } from "@/api/hooks/conversation/useConversationSearchMessages";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { AcroStackChatChatMessageDto as ChatMessageDto } from "@/api/models/acroStack/chat/ChatMessageDto";
 
 interface UseChatSearchOptions {

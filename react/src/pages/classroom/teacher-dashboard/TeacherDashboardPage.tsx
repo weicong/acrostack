@@ -41,7 +41,7 @@ import {
 import { formatCountdown } from "../shared/hooks/useServerClockCountdown";
 import type { HubConnection } from "@microsoft/signalr";
 import { useClassSessionGetSnapshot } from "@/api/hooks/classSession/useClassSessionGetSnapshot";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import {
   ClassroomClientMethods,
   ClassSessionStatusValue,

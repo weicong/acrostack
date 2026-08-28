@@ -19,7 +19,7 @@ import {
   emailSettingsGetQueryKey,
 } from "@/api/hooks/emailSettings/useEmailSettingsGet";
 import { useEmailSettingsUpdate } from "@/api/hooks/emailSettings/useEmailSettingsUpdate";
-import { extractAbpErrorMessage } from "@/lib/api/error";
+import { extractAbpErrorMessage } from "@/lib/http/error";
 import { emailSchema } from "../schemas/emailSettings";
 import { useSettingsStyles } from "../styles/settings";
 
