@@ -3,7 +3,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { router } from "@/lib/routing/router";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { Toaster } from "@fluentui/react-components";
-import { ThemeProvider } from "@/lib/theme";
+import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import { queryClient } from "@/lib/queryClient";
 import { RouteEventProvider } from "@/lib/routing/RouteEventProvider";
 
