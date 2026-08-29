@@ -1,6 +1,6 @@
 import { useEffect, useMemo, type ReactNode } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
-import { useAppForm, type ComboboxOption } from "@/components/form";
+import { useAppForm, type ComboboxOption } from "@/components/ui/form";
 import { useUserCreate } from "@/api/hooks/user/useUserCreate";
 import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
 import { useUserGetAssignableRoles } from "@/api/hooks/user/useUserGetAssignableRoles";

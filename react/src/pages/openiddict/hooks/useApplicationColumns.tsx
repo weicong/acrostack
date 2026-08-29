@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { Badge, Button } from "@fluentui/react-components";
 import { Delete20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import type { AppTableFeatures } from "@/components/data-table/useDataTable";
+import type { AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { AcroStackOpenIddictManagementOpenIddictApplicationDto as AppDto } from "@/api/models/acroStack/openIddictManagement/OpenIddictApplicationDto";
 import { useOpenIddictStyles } from "../styles/openiddict";
 

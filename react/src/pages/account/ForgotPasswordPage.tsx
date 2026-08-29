@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { Button, Card, CardHeader, Text } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useAccountCardStyles } from "./styles/account";
 

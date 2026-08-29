@@ -3,13 +3,16 @@
  */
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { DataTable } from "@/components/ui/data-table/DataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable } from "@/components/ui/data-table/useDataTable";
 import { openIddictApplicationGetListQueryOptions } from "@/api/hooks/openIddictApplication/useOpenIddictApplicationGetList";
 import type { AcroStackOpenIddictManagementOpenIddictApplicationDto as AppDto } from "@/api/models/acroStack/openIddictManagement/OpenIddictApplicationDto";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { OpenIddictToolbar } from "./components/OpenIddictToolbar";
 import { useApplicationActions } from "./hooks/useApplicationActions";
 import { useApplicationColumns } from "./hooks/useApplicationColumns";

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { Button } from "@fluentui/react-components";
 import { Delete20Regular, Edit20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import type { AppTableFeatures } from "@/components/data-table/useDataTable";
+import type { AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { VoloCmsKitTagsTagDto as TagItem } from "@/api/models/volo/cmsKit/tags/TagDto";
 import { useCmsListStyles } from "../../shared/styles/cmsList";
 

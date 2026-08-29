@@ -7,11 +7,14 @@
  */
 import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { DataTable } from "@/components/ui/data-table/DataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable } from "@/components/ui/data-table/useDataTable";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import { blogAdminGetListQueryOptions } from "@/api/hooks/blogAdmin/useBlogAdminGetList";
 import type { VoloCmsKitAdminBlogsBlogDto as BlogItem } from "@/api/models/volo/cmsKit/admin/blogs/BlogDto";

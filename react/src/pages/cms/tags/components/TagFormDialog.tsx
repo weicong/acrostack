@@ -12,7 +12,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { z } from "zod";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useTagAdminCreate } from "@/api/hooks/tagAdmin/useTagAdminCreate";
 import { useTagAdminUpdate } from "@/api/hooks/tagAdmin/useTagAdminUpdate";
 import type { VoloCmsKitTagsTagDto as TagDto } from "@/api/models/volo/cmsKit/tags/TagDto";

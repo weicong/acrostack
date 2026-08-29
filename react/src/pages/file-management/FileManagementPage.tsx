@@ -7,7 +7,7 @@
  */
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useFileManagementGetFolders } from "@/api/hooks/fileManagement/useFileManagementGetFolders";
 import { useFileManagementGetFiles } from "@/api/hooks/fileManagement/useFileManagementGetFiles";

@@ -16,10 +16,13 @@ import {
 } from "@fluentui/react-components";
 import { type ColumnDef } from "@tanstack/react-table";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { DataTable } from "@/components/ui/data-table/DataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import { auditLogGetListQueryOptions } from "@/api/hooks/auditLog/useAuditLogGetList";
 import type { AcroStackAuditLoggingAuditLogDto as AuditLogDto } from "@/api/models/acroStack/auditLogging/AuditLogDto";
 import { AuditLogStatisticsPanel } from "./components/AuditLogStatisticsPanel";

@@ -13,7 +13,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { z } from "zod";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useBlogPostAdminCreate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminCreate";
 import { useBlogPostAdminUpdate } from "@/api/hooks/blogPostAdmin/useBlogPostAdminUpdate";
 import { useBlogAdminGetAllList } from "@/api/hooks/blogAdmin/useBlogAdminGetAllList";

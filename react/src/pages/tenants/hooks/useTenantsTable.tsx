@@ -7,9 +7,12 @@ import { Delete20Regular, Edit20Regular, PersonArrowLeft20Regular } from "@fluen
 import { type ColumnDef } from "@tanstack/react-table";
 import { tenantGetListQueryOptions } from "@/api/hooks/tenant/useTenantGetList";
 import type { VoloAbpTenantManagementTenantDto } from "@/api/models/volo/abp/tenantManagement/TenantDto";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import { useTenantsStyles } from "../styles/tenants";
 
 export type TenantItem = VoloAbpTenantManagementTenantDto;

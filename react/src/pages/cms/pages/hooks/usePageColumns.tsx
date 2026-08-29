@@ -6,7 +6,7 @@ import { Button } from "@fluentui/react-components";
 import { Delete20Regular, Edit20Regular, Home20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
-import type { AppTableFeatures } from "@/components/data-table/useDataTable";
+import type { AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { VoloCmsKitAdminPagesPageDto as PageItem } from "@/api/models/volo/cmsKit/admin/pages/PageDto";
 import { useCmsListStyles } from "../../shared/styles/cmsList";
 

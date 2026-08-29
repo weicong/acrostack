@@ -3,9 +3,12 @@
  * 服务端分页 + 关键字搜索。
  */
 import { quizGetListQueryOptions } from "@/api/hooks/quiz/useQuizGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable } from "@/components/ui/data-table/useDataTable";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
 import { useQuizColumns } from "./useQuizColumns";
 

@@ -13,7 +13,7 @@
 import { useCallback, useState } from "react";
 import { Button, Input, Text, Title3, tokens } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { DataTable } from "@/components/data-table/DataTable";
+import { DataTable } from "@/components/ui/data-table/DataTable";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
 import { useQuizActions } from "./hooks/useQuizActions";
 import { useQuizzesTable } from "./hooks/useQuizzesTable";

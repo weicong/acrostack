@@ -12,9 +12,12 @@ import {
 } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { appUserGetListQueryOptions } from "@/api/hooks/appUser/useAppUserGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { UserListItem } from "../types/user";
 import { useUsersStyles } from "../styles/users";
 

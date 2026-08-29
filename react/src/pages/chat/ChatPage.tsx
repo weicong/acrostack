@@ -32,7 +32,7 @@ import {
 } from "@fluentui/react-components";
 import { ChatMultiple20Regular, Search20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { ChatSidebar } from "./components/ChatSidebar";
 import { MessageBubble } from "./components/MessageBubble";
 import { MessageComposer } from "./components/MessageComposer";

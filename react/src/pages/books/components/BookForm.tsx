@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { makeStyles, tokens } from "@fluentui/react-components";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useBookCreate } from "@/api/hooks/book/useBookCreate";
 import { useBookUpdate } from "@/api/hooks/book/useBookUpdate";
 import type { BookFormBook } from "../types/book";

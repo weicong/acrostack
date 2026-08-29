@@ -14,7 +14,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useTenantCreate } from "@/api/hooks/tenant/useTenantCreate";
 import { useTenantUpdate } from "@/api/hooks/tenant/useTenantUpdate";
 import {

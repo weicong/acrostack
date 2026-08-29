@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button, Field } from "@fluentui/react-components";
 import { DatePicker } from "@fluentui/react-datepicker-compat";
 import { Search20Regular } from "@fluentui/react-icons";
-import { zhCNDatePickerDefaults } from "@/components/form/datePickerLocalization";
+import { zhCNDatePickerDefaults } from "@/components/ui/form/datePickerLocalization";
 import {
   defaultEndDate,
   defaultStartDate,

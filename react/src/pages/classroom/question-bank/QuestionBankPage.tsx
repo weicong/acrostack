@@ -15,7 +15,7 @@
 import { useCallback, useState } from "react";
 import { Button, Dropdown, Input, Option, Text, Title3, tokens } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { DataTable } from "@/components/data-table/DataTable";
+import { DataTable } from "@/components/ui/data-table/DataTable";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import { questionTypeLabel } from "../shared/constants/question";
 import { useQuestionActions } from "./hooks/useQuestionActions";

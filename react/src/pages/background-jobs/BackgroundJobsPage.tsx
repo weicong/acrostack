@@ -7,8 +7,8 @@
  */
 import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { DataTable } from "@/components/ui/data-table/DataTable";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import type { ConfirmAction } from "./hooks/useBackgroundJobActions";
 import { useBackgroundJobActions } from "./hooks/useBackgroundJobActions";

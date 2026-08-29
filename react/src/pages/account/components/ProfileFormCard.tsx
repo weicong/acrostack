@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, Text, useToastController } from "@fluentui/react-components";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";

@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Spinner, Text } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useFeaturesGet } from "@/api/hooks/features/useFeaturesGet";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { FeatureGroupCard } from "./components/FeatureGroupCard";
 import { useFeatureActions } from "./hooks/useFeatureActions";
 import { useFeaturesStyles } from "./styles/features";

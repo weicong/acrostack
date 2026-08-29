@@ -12,7 +12,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { z } from "zod";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { usePageAdminCreate } from "@/api/hooks/pageAdmin/usePageAdminCreate";
 import { usePageAdminUpdate } from "@/api/hooks/pageAdmin/usePageAdminUpdate";
 import type { VoloCmsKitAdminPagesPageDto as PageDto } from "@/api/models/volo/cmsKit/admin/pages/PageDto";

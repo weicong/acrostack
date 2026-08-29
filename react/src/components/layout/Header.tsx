@@ -7,7 +7,7 @@ import {
 } from "@fluentui/react-icons";
 import { Link } from "@tanstack/react-router";
 import { Button, tokens, makeStyles, Text } from "@fluentui/react-components";
-import { useTheme, type Theme } from "@/lib/theme";
+import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
 import { getApplicationName } from "@/lib/runtimeConfig";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/lib/auth/AuthContext";

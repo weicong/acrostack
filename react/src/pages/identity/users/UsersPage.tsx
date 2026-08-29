@@ -7,8 +7,8 @@
  */
 import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { DataTable } from "@/components/ui/data-table/DataTable";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
 import { toFormUser, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";

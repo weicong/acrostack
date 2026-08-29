@@ -7,9 +7,12 @@ import { Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import { bookGetListQueryOptions } from "@/api/hooks/book/useBookGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import { bookTypeOptions } from "../constants/bookType";
 import type { BookListItem } from "../types/book";
 import { useBooksStyles } from "../styles/books";

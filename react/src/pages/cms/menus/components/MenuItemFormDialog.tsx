@@ -13,7 +13,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { z } from "zod";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useMenuItemAdminCreate } from "@/api/hooks/menuItemAdmin/useMenuItemAdminCreate";
 import { useMenuItemAdminUpdate } from "@/api/hooks/menuItemAdmin/useMenuItemAdminUpdate";
 import { useMenuItemAdminGetPageLookup } from "@/api/hooks/menuItemAdmin/useMenuItemAdminGetPageLookup";

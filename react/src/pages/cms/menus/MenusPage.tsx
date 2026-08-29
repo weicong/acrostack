@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button, useToastController } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions } from "@/lib/auth/permissions";
 import {
   useMenuItemAdminGetList,

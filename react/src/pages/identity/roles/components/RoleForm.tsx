@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
 import { useRoleUpdate } from "@/api/hooks/role/useRoleUpdate";
 import type { RoleFormRole } from "../types/role";

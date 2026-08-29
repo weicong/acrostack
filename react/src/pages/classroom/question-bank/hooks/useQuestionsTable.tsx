@@ -4,9 +4,12 @@
  */
 import { useMemo } from "react";
 import { questionGetListQueryOptions } from "@/api/hooks/question/useQuestionGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable } from "@/components/ui/data-table/useDataTable";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import { useQuestionColumns } from "./useQuestionColumns";
 

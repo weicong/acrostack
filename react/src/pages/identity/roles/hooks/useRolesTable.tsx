@@ -7,9 +7,12 @@ import { Badge, Button } from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular, Tag20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { roleGetListQueryOptions } from "@/api/hooks/role/useRoleGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { RoleItem } from "../types/role";
 import { useRolesStyles } from "../styles/roles";
 

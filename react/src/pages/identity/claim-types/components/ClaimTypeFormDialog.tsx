@@ -11,7 +11,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
-import { useAppForm } from "@/components/form";
+import { useAppForm } from "@/components/ui/form";
 import { useIdentityClaimTypeCreate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeCreate";
 import { useIdentityClaimTypeUpdate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeUpdate";
 import type { ClaimTypeFormSeed } from "../types/claimType";

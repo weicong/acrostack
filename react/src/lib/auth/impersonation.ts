@@ -30,6 +30,7 @@ import { User } from "oidc-client-ts";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
 import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
+import { localizeAbpError } from "@/lib/http/error";
 import { decodeJwtPayload } from "./jwt";
 
 /**
@@ -62,9 +63,9 @@ interface OAuth2ErrorResponse {
  *
  * The backend returns ABP localization resource keys (e.g.
  * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) as the OAuth2
- * <c>error_description</c> for known impersonation errors. We detect this
- * pattern and translate via a local message map. For unknown errors we
- * fall back to the raw description or HTTP status.
+ * <c>error_description</c> for known impersonation errors. Key translation is
+ * centralized in <c>lib/http/error.ts</c> (localizeAbpError). For unknown
+ * errors we fall back to the raw description or HTTP status.
  */
 async function extractImpersonationError(response: Response): Promise<string> {
   let rawBody: string | undefined;
@@ -78,10 +79,10 @@ async function extractImpersonationError(response: Response): Promise<string> {
     try {
       const parsed = JSON.parse(rawBody) as OAuth2ErrorResponse;
       if (parsed.error_description) {
-        return localizeImpersonationError(parsed.error_description);
+        return localizeAbpError(parsed.error_description);
       }
       if (parsed.error) {
-        return localizeImpersonationError(parsed.error);
+        return localizeAbpError(parsed.error);
       }
     } catch {
       // Not JSON — fall back to raw body if non-empty.
@@ -92,19 +93,6 @@ async function extractImpersonationError(response: Response): Promise<string> {
   }
 
   return `模拟登录失败 (${response.status})`;
-}
-
-/**
- * Translates known impersonation error keys returned by the backend
- * (e.g. <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) into Chinese.
- * Non-key strings are returned as-is.
- */
-const IMPERSONATION_ERROR_MESSAGES: Record<string, string> = {
-  "Volo.Account:NestedImpersonationIsNotAllowed": "不允许嵌套模拟登录",
-};
-
-function localizeImpersonationError(description: string): string {
-  return IMPERSONATION_ERROR_MESSAGES[description] ?? description;
 }
 
 /**

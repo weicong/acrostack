@@ -10,7 +10,7 @@
  */
 import { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { DataTable } from "@/components/data-table/DataTable";
+import { DataTable } from "@/components/ui/data-table/DataTable";
 import { useTeacherSessionsStyles } from "./styles/teacherSessions";
 import { TeacherSessionsToolbar } from "./components/TeacherSessionsToolbar";
 import { useTeacherSessionsTable } from "./hooks/useTeacherSessionsTable";

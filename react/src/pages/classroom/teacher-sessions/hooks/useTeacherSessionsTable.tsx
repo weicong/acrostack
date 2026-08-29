@@ -6,9 +6,12 @@ import { useMemo } from "react";
 import { Badge, Button } from "@fluentui/react-components";
 import { type ColumnDef } from "@tanstack/react-table";
 import { classSessionGetListQueryOptions } from "@/api/hooks/classSession/useClassSessionGetList";
-import { useDataTableState } from "@/components/data-table/useDataTableState";
-import { useDataTableQuery, type AbpGridParams } from "@/components/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/data-table/useDataTable";
+import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import {
+  useDataTableQuery,
+  type AbpGridParams,
+} from "@/components/ui/data-table/useDataTableQuery";
+import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { ClassroomDtosClassSessionDto } from "@/api/models/classroom/dtos/ClassSessionDto";
 import { ClassSessionStatusValue, classSessionStatusLabel } from "../../shared/constants/classroom";
 import { useTeacherSessionsStyles } from "../styles/teacherSessions";
