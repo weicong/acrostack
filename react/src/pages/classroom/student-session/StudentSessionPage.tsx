@@ -38,6 +38,7 @@ import { useStudentHistory } from "./hooks/useStudentHistory";
 import { useStudentRealtime } from "./hooks/useStudentRealtime";
 import { ConnectionBadge } from "../shared/components/ConnectionBadge";
 import { HistoryView } from "./components/HistoryView";
+import { distributionKeyLabel } from "../shared/utils/distribution";
 import { ClassSessionStatusValue, classSessionStatusLabel } from "../shared/constants/classroom";
 import { clearStudentSession, loadStudentSession } from "../shared/utils/studentSession";
 import { trueFalseLabel } from "./utils/answerFormat";
@@ -119,7 +120,8 @@ export function StudentSessionPage() {
 
   const status = session.status ?? 0;
   const optionCounts = session.publishedOptionCounts ?? null;
-  const totalSubmitted = optionCounts ? Object.values(optionCounts).reduce((a, b) => a + b, 0) : 0;
+  // 提交人数来自后端 submittedCount：optionCounts 是"人次"（多选一人贡献多个键），不能求和
+  const totalSubmitted = session.submittedCount ?? 0;
 
   return (
     <div className={styles.page}>
@@ -276,9 +278,7 @@ export function StudentSessionPage() {
               <div className={styles.statistics}>
                 {Object.entries(optionCounts).map(([key, count]) => (
                   <div key={key} className={styles.statRow}>
-                    <Text style={{ width: "2em" }}>
-                      {isTrueOrFalse ? trueFalseLabel(key) : key}
-                    </Text>
+                    <Text style={{ width: "2em" }}>{distributionKeyLabel(key)}</Text>
                     <div
                       className={styles.statBar}
                       style={{

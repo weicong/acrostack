@@ -353,6 +353,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         var answerPublished = currentSessionQuestion?.AnswerPublishedAt.HasValue == true;
 
         Dictionary<string, int>? publishedOptionCounts = null;
+        var submittedCount = 0;
         string? correctAnswer = null;
         string? explanation = null;
 
@@ -368,6 +369,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
                 .GetRequiredService<IClassroomStatisticsService>()
                 .RecalibrateAsync(session.Id, currentSessionQuestion.Id, payload.TenantId);
             publishedOptionCounts = statistics.OptionCounts;
+            submittedCount = statistics.SubmittedCount;
         }
 
         return new StudentSnapshotDto
@@ -394,6 +396,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
             CorrectAnswer = correctAnswer,
             Explanation = explanation,
             PublishedOptionCounts = publishedOptionCounts,
+            SubmittedCount = submittedCount,
         };
     }
 

@@ -78,6 +78,9 @@ public class StudentSnapshotDto
 
     /// <summary>已公布统计时的匿名选项分布（学员也可见教师公布的统计）。</summary>
     public Dictionary<string, int>? PublishedOptionCounts { get; set; }
+
+    /// <summary>已提交人数。选项分布的计数是"人次"（多选一人贡献多个键），提交人数不能由 counts 求和得出。</summary>
+    public int SubmittedCount { get; set; }
 }
 
 public class MyAnswerDto

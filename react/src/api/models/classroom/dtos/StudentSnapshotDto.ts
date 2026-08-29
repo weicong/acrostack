@@ -55,4 +55,11 @@ export type ClassroomDtosStudentSnapshotDto = {
   publishedOptionCounts?: {
     [key: string]: number;
   } | null;
+  /**
+   * @description 已提交人数。选项分布的计数是\"人次\"（多选一人贡献多个键），提交人数不能由 counts 求和得出。
+   *
+   * Format: `int32`
+   * @type integer | undefined
+   */
+  submittedCount?: number;
 };

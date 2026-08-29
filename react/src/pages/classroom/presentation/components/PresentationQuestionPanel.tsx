@@ -4,6 +4,7 @@
  * 纯展示组件，所有数据经 props 显式传入。
  */
 import { SessionQuestionStatusValue } from "../../shared/constants/classroom";
+import { distributionKeyLabel, isCorrectDistributionKey } from "../../shared/utils/distribution";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { usePresentationStyles } from "../styles/presentation";
 
@@ -15,6 +16,8 @@ interface PresentationQuestionPanelProps {
   explanation: string | null;
   /** 教师公布统计后的匿名选项计数；为空表示未公布。 */
   optionCounts: Record<string, number> | null;
+  /** 已提交人数（optionCounts 为"人次"，多选一人贡献多个键，不能求和得出）。 */
+  submittedCount: number;
 }
 
 export function PresentationQuestionPanel({
@@ -23,10 +26,16 @@ export function PresentationQuestionPanel({
   correctAnswer,
   explanation,
   optionCounts,
+  submittedCount,
 }: PresentationQuestionPanelProps) {
   const styles = usePresentationStyles();
 
-  const totalSubmitted = optionCounts ? Object.values(optionCounts).reduce((a, b) => a + b, 0) : 0;
+  const isAnswerPublished = questionStatus === SessionQuestionStatusValue.AnswerPublished;
+  const isTrueOrFalse = question.type === 3;
+
+  /** 选项对应的答案编码：判断题选项 A/B 映射为 "true"/"false"，其余为选项字母。 */
+  const optionAnswerValue = (key: string) =>
+    isTrueOrFalse ? (key === "A" ? "true" : "false") : (key ?? "");
 
   return (
     <>
@@ -36,8 +45,8 @@ export function PresentationQuestionPanel({
         <div className={styles.options}>
           {question.options.map((opt) => {
             const isCorrect =
-              questionStatus === SessionQuestionStatusValue.AnswerPublished &&
-              correctAnswer === opt.key;
+              isAnswerPublished &&
+              isCorrectDistributionKey(correctAnswer, optionAnswerValue(opt.key ?? ""));
             return (
               <div
                 key={opt.key}
@@ -57,17 +66,17 @@ export function PresentationQuestionPanel({
         <div className={styles.distribution}>
           {Object.entries(optionCounts).map(([key, count]) => (
             <div key={key} className={styles.statRow}>
-              <span style={{ width: "2.5em" }}>{key}</span>
+              <span style={{ width: "2.5em" }}>{distributionKeyLabel(key)}</span>
               <div
                 className={styles.statBar}
                 style={{
-                  width: `${totalSubmitted > 0 ? Math.round((count / totalSubmitted) * 100) : 0}%`,
+                  width: `${submittedCount > 0 ? Math.round((count / submittedCount) * 100) : 0}%`,
                   minWidth: count > 0 ? "16px" : 0,
                 }}
               />
               <span>
                 {count} 人（
-                {totalSubmitted > 0 ? Math.round((count / totalSubmitted) * 100) : 0}%）
+                {submittedCount > 0 ? Math.round((count / submittedCount) * 100) : 0}%）
               </span>
             </div>
           ))}
@@ -75,7 +84,7 @@ export function PresentationQuestionPanel({
       )}
 
       {/* 正确答案与解析（教师公布后） */}
-      {questionStatus === SessionQuestionStatusValue.AnswerPublished && (
+      {isAnswerPublished && (
         <div className={styles.explanation}>
           <div>正确答案：{correctAnswer}</div>
           {explanation && <div>解析：{explanation}</div>}

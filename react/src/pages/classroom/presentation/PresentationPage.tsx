@@ -88,6 +88,7 @@ export function PresentationPage() {
           correctAnswer={snapshot.correctAnswer ?? null}
           explanation={snapshot.explanation ?? null}
           optionCounts={optionCounts}
+          submittedCount={snapshot.submittedCount ?? 0}
         />
       ) : (
         <div className={styles.center}>

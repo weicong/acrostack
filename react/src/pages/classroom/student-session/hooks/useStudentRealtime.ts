@@ -136,6 +136,7 @@ export function useStudentRealtime({
                 correctAnswer: null,
                 explanation: null,
                 publishedOptionCounts: null,
+                submittedCount: 0,
               }
             : s,
         );
@@ -149,6 +150,8 @@ export function useStudentRealtime({
             ? {
                 ...s,
                 version: evt.version,
+                // 截止即进入讲评阶段：顶部状态标签随课堂状态机更新
+                status: ClassSessionStatusValue.Explaining,
                 currentQuestion: s.currentQuestion
                   ? {
                       ...s.currentQuestion,
@@ -170,6 +173,7 @@ export function useStudentRealtime({
                 version: evt.version,
                 statisticsPublished: true,
                 publishedOptionCounts: evt.optionCounts,
+                submittedCount: evt.submittedCount,
               }
             : s,
         );

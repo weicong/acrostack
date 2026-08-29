@@ -5,6 +5,7 @@ import { Card, Text, Title3, mergeClasses } from "@fluentui/react-components";
 import { CheckmarkCircle16Filled } from "@fluentui/react-icons";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
+import { distributionKeyLabel, isCorrectDistributionKey } from "../../shared/utils/distribution";
 import { useTeacherDashboardStyles } from "../styles/teacherDashboard";
 
 interface LiveStatisticsCardProps {
@@ -73,7 +74,8 @@ export function LiveStatisticsCard({
   const styles = useTeacherDashboardStyles();
   const statistics = dashboard?.statistics ?? null;
   const optionCounts = statistics?.optionCounts ?? null;
-  const totalSubmitted = optionCounts ? Object.values(optionCounts).reduce((a, b) => a + b, 0) : 0;
+  // 提交人数来自后端 submittedCount：optionCounts 是"人次"（多选一人贡献多个键），不能求和
+  const totalSubmitted = statistics?.submittedCount ?? 0;
   const notSubmittedCount = statistics
     ? (statistics.notStartedCount ?? 0) + (statistics.answeringCount ?? 0)
     : 0;
@@ -160,7 +162,9 @@ export function LiveStatisticsCard({
           </div>
           {Object.entries(optionCounts).map(([key, count]) => {
             const pct = totalSubmitted > 0 ? Math.round((count / totalSubmitted) * 100) : 0;
-            const isCorrect = correctAnswer != null && correctAnswer === key;
+            const isCorrect = isCorrectDistributionKey(correctAnswer, key);
+            const displayKey = distributionKeyLabel(key);
+            const optionText = optionLabelMap.get(displayKey) ?? "";
             return (
               <div key={key} className={styles.statRow}>
                 <Text
@@ -170,7 +174,7 @@ export function LiveStatisticsCard({
                   )}
                   size={300}
                 >
-                  {key}. {optionLabelMap.get(key) ?? ""}
+                  {optionText ? `${displayKey}. ${optionText}` : displayKey}
                 </Text>
                 <div className={styles.statBarTrack}>
                   <div
