@@ -55,9 +55,9 @@ function getSystemPreference(): "light" | "dark" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-/** 校正持久化的主题值：非法值（含 null）回退为 "system" */
+/** 校正持久化的主题值：默认浅色；非法值（含 null）回退为 "light"，显式存储的 "system" 仍跟随系统 */
 function clampStoredTheme(stored: Theme | null): Theme {
-  return stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+  return stored === "light" || stored === "dark" || stored === "system" ? stored : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
