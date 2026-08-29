@@ -39,6 +39,7 @@ import {
   ProjectionScreen20Regular,
 } from "@fluentui/react-icons";
 import { formatCountdown } from "../shared/hooks/useServerClockCountdown";
+import { usePageTitle } from "@/lib/usePageTitle";
 import type { HubConnection } from "@microsoft/signalr";
 import { useClassSessionGetSnapshot } from "@/api/hooks/classSession/useClassSessionGetSnapshot";
 import { extractAbpErrorMessage } from "@/lib/http/error";
@@ -85,6 +86,9 @@ export function TeacherDashboardPage() {
   );
   const refreshSnapshot = snapshotQuery.refetch;
   const snapshot = snapshotQuery.data ?? null;
+
+  // 标签页标题带课堂码，多课堂标签时可直接区分
+  usePageTitle(snapshot?.classroomCode ? `驾驶舱 ${snapshot.classroomCode}` : "课堂驾驶舱");
 
   // 快照到达后：同步仪表盘基线 + 服务端时钟偏移 + 版本号（供事件去重/跳跃检测）
   useEffect(() => {

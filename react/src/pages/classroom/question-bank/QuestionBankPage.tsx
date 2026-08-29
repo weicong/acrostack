@@ -17,6 +17,7 @@ import { Button, Dropdown, Input, Option, Text, Title3, tokens } from "@fluentui
 import { Add20Regular } from "@fluentui/react-icons";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { questionTypeLabel } from "../shared/constants/question";
 import { useQuestionActions } from "./hooks/useQuestionActions";
 import { useQuestionsTable } from "./hooks/useQuestionsTable";
@@ -26,6 +27,7 @@ import { useQuestionBankStyles } from "./styles/questionBank";
 
 export function QuestionBankPage() {
   const styles = useQuestionBankStyles();
+  usePageTitle("题库管理");
 
   const [typeFilter, setTypeFilter] = useState<number | null>(null);
   const [keyword, setKeyword] = useState("");

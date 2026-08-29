@@ -11,6 +11,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { DataTable } from "@/components/ui/data-table/DataTable";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { useTeacherSessionsStyles } from "./styles/teacherSessions";
 import { TeacherSessionsToolbar } from "./components/TeacherSessionsToolbar";
 import { useTeacherSessionsTable } from "./hooks/useTeacherSessionsTable";
@@ -18,6 +19,7 @@ import { useTeacherSessionsTable } from "./hooks/useTeacherSessionsTable";
 export function TeacherSessionsPage() {
   const styles = useTeacherSessionsStyles();
   const navigate = useNavigate();
+  usePageTitle("我的课堂");
 
   const handleEnterDashboard = useCallback(
     (sessionId: string) => {

@@ -10,6 +10,7 @@
  */
 import { useParams, useSearch } from "@tanstack/react-router";
 import { Button, Spinner, Text } from "@fluentui/react-components";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { ClassSessionStatusValue } from "../shared/constants/classroom";
 import { usePresentationSession } from "./hooks/usePresentationSession";
 import { usePresentationStyles } from "./styles/presentation";
@@ -20,6 +21,7 @@ export function PresentationPage() {
   const styles = usePresentationStyles();
   const { sessionId = "" } = useParams({ strict: false }) as { sessionId?: string };
   const search = useSearch({ strict: false }) as { t?: string | undefined };
+  usePageTitle("课堂投屏");
 
   const { snapshot, connectionState, fatalError, remainingSeconds, refreshSnapshot } =
     usePresentationSession({ sessionId, urlToken: search.t });

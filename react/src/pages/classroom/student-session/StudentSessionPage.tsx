@@ -39,6 +39,7 @@ import { useStudentRealtime } from "./hooks/useStudentRealtime";
 import { ConnectionBadge } from "../shared/components/ConnectionBadge";
 import { HistoryView } from "./components/HistoryView";
 import { distributionKeyLabel } from "../shared/utils/distribution";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { ClassSessionStatusValue, classSessionStatusLabel } from "../shared/constants/classroom";
 import { clearStudentSession, loadStudentSession } from "../shared/utils/studentSession";
 import { trueFalseLabel } from "./utils/answerFormat";
@@ -56,6 +57,8 @@ export function StudentSessionPage() {
 
   const stored = sessionId ? loadStudentSession(sessionId) : null;
   const token = stored?.accessToken ?? null;
+  // 标签页标题带昵称，多课堂标签时可直接区分
+  usePageTitle(stored?.nickname ? `${stored.nickname} · 课堂答题` : "课堂答题");
 
   const answer = useStudentAnswer({ sessionId, token, dispatchToast });
   const history = useStudentHistory({ sessionId, token, view });

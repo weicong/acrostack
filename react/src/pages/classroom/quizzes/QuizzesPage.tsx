@@ -15,6 +15,7 @@ import { Button, Input, Text, Title3, tokens } from "@fluentui/react-components"
 import { Add20Regular } from "@fluentui/react-icons";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import type { ClassroomDtosQuizDto } from "@/api/models/classroom/dtos/QuizDto";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { useQuizActions } from "./hooks/useQuizActions";
 import { useQuizzesTable } from "./hooks/useQuizzesTable";
 import { QuizFormDialog } from "./components/QuizFormDialog";
@@ -23,6 +24,7 @@ import { useQuizzesStyles } from "./styles/quizzes";
 
 export function QuizzesPage() {
   const styles = useQuizzesStyles();
+  usePageTitle("试卷管理");
 
   const [keyword, setKeyword] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);

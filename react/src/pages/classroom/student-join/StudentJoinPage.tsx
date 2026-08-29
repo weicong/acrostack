@@ -17,6 +17,7 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { useToastController } from "@fluentui/react-components";
+import { usePageTitle } from "@/lib/usePageTitle";
 import { joinClassroom, classroomErrorMessage } from "../shared/utils/studentApi";
 import { saveStudentSession } from "../shared/utils/studentSession";
 
@@ -45,6 +46,7 @@ export function StudentJoinPage() {
   const styles = useStyles();
   const navigate = useNavigate();
   const { dispatchToast } = useToastController();
+  usePageTitle("加入课堂");
 
   const search = useSearch({ strict: false }) as { code?: string | undefined };
   const [classroomCode, setClassroomCode] = useState(search.code?.toUpperCase() ?? "");
