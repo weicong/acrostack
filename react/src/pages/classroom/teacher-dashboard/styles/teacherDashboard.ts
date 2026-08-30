@@ -274,23 +274,42 @@ export const useTeacherDashboardStyles = makeStyles({
     gap: tokens.spacingHorizontalS,
   },
 
-  // ── 控制台 ──────────────────────────────────────────────
+  // ── 控制台（Fluent Toolbar，窄屏溢出折叠进"更多操作"菜单） ──────────────
+  // 独立操作行：与下方卡片同族的 token 化白卡（自动适配明暗主题），不再嵌入深色 Hero
   controls: {
     display: "flex",
     alignItems: "center",
-    gap: tokens.spacingHorizontalS,
     flexWrap: "wrap",
+    gap: tokens.spacingHorizontalS,
+    background: tokens.colorNeutralBackground1,
+    borderRadius: tokens.borderRadiusXLarge,
+    padding: tokens.spacingVerticalS + " " + tokens.spacingHorizontalM,
+    boxShadow: tokens.shadow8,
   },
-  controlsGroup: {
+  controlsToolbar: {
+    padding: 0,
+    flex: 1,
+    minWidth: 0,
+  },
+  finishToolbar: {
+    padding: 0,
+    flexShrink: 0,
+  },
+  // Overflow 的测量容器（Toolbar 要求单一子元素，溢出管理挂在这一层）。
+  // 子项禁止收缩/换行：放不下交给溢出管理器折叠，而不是把按钮文字挤成两行
+  controlsInner: {
     display: "flex",
     alignItems: "center",
-    gap: tokens.spacingHorizontalS,
-    flexWrap: "wrap",
+    gap: "4px",
+    minWidth: 0,
+    "& > *": { flexShrink: 0 },
+    "& button": { whiteSpace: "nowrap" },
   },
-  controlsDivider: {
-    width: "1px",
-    height: "26px",
-    background: tokens.colorNeutralStroke2,
+  // 时长输入 + 下一题捆绑组：同一 OverflowItem，放不下时一起收进菜单
+  nextGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalXS,
   },
   // 时长输入框：加宽避免“时长/秒”前后缀换行
   durationInput: {
@@ -304,16 +323,6 @@ export const useTeacherDashboardStyles = makeStyles({
     color: tokens.colorPaletteRedForeground1,
     ":hover": { color: tokens.colorPaletteRedForeground2 },
     ":active": { color: tokens.colorPaletteRedForeground2 },
-  },
-  heroControlsPanel: {
-    position: "relative",
-    zIndex: 1,
-    background: "rgba(255, 255, 255, 0.97)",
-    borderRadius: tokens.borderRadiusLarge,
-    padding: tokens.spacingVerticalXS + " " + tokens.spacingHorizontalM,
-    display: "flex",
-    alignItems: "center",
-    boxShadow: "0 10px 26px -14px rgba(12, 6, 32, 0.55)",
   },
 
   // ── 实时统计 ──────────────────────────────────────────────

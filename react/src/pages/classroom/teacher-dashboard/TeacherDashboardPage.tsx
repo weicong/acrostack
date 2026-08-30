@@ -423,10 +423,10 @@ export function TeacherDashboardPage() {
             </Button>
           </div>
         </div>
-
-        {/* 控制面板：内嵌于 Hero */}
-        <ControlsCard control={control} />
       </div>
+
+      {/* 控制条：独立于 Hero 的操作行，与下方卡片同族对齐 */}
+      <ControlsCard control={control} />
 
       {/* 双栏：左 当前题 + 学员列表 ｜ 右 实时统计 */}
       <div className={styles.mainGrid}>
