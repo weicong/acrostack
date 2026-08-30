@@ -1,5 +1,6 @@
 /**
- * 当前题卡片：题干、选项（含正确答案标记）、解析与倒计时。
+ * 当前题卡片：题干、选项（含正确答案标记）与解析。
+ * 倒计时只在 Hero 大字号展示（全局唯一时钟），卡片不再重复。
  */
 import { Badge, Card, Text, Title3, mergeClasses } from "@fluentui/react-components";
 import type { ComponentProps } from "react";
@@ -9,14 +10,12 @@ import {
   CheckmarkCircle20Filled,
   Clipboard20Regular,
   CheckmarkCircle20Regular,
-  Timer20Regular,
 } from "@fluentui/react-icons";
 import {
   ClassSessionStatusValue,
   SessionQuestionStatusValue,
 } from "../../shared/constants/classroom";
 import { questionTypeLabel } from "../../shared/constants/question";
-import { formatCountdown } from "../../shared/hooks/useServerClockCountdown";
 import { useTeacherDashboardStyles } from "../styles/teacherDashboard";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 
@@ -32,24 +31,19 @@ interface CurrentQuestionCardProps {
   status: number;
   /** 题目状态枚举值。 */
   questionStatus: number;
-  hasOpenQuestion: boolean;
   question: ClassroomDtosQuestionViewDto | null;
   correctAnswer?: string | null;
   explanation?: string | null;
-  remainingSeconds: number | null;
 }
 
 export function CurrentQuestionCard({
   status,
   questionStatus,
-  hasOpenQuestion,
   question,
   correctAnswer,
   explanation,
-  remainingSeconds,
 }: CurrentQuestionCardProps) {
   const styles = useTeacherDashboardStyles();
-  const showCountdown = hasOpenQuestion && remainingSeconds !== null;
   const answerPublished = questionStatus === SessionQuestionStatusValue.AnswerPublished;
 
   return (
@@ -63,17 +57,6 @@ export function CurrentQuestionCard({
             </Badge>
           )}
         </div>
-        {showCountdown && (
-          <span
-            className={mergeClasses(
-              styles.countdownPill,
-              remainingSeconds! < 10 && styles.countdownPillDanger,
-            )}
-          >
-            <Timer20Regular />
-            {formatCountdown(remainingSeconds!)}
-          </span>
-        )}
       </div>
 
       {question ? (

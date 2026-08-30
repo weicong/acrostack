@@ -434,11 +434,9 @@ export function TeacherDashboardPage() {
           <CurrentQuestionCard
             status={status}
             questionStatus={questionStatus}
-            hasOpenQuestion={control.hasOpenQuestion}
             question={question}
             correctAnswer={snapshot.currentQuestion?.correctAnswer}
             explanation={snapshot.currentQuestion?.explanation}
-            remainingSeconds={remainingSeconds}
           />
           <ParticipantsCard participants={dashboard?.participants ?? []} />
         </div>

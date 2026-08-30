@@ -523,29 +523,6 @@ export const useTeacherDashboardStyles = makeStyles({
     fontWeight: tokens.fontWeightSemibold,
   },
 
-  // ── 倒计时（卡片内胶囊样式） ──────────────────
-  countdownPill: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: tokens.spacingHorizontalXS,
-    padding: "4px " + tokens.spacingHorizontalM,
-    borderRadius: tokens.borderRadiusCircular,
-    background: tokens.colorBrandBackground2,
-    color: tokens.colorBrandForeground1,
-    fontSize: tokens.fontSizeBase400,
-    fontWeight: tokens.fontWeightBold,
-    fontVariantNumeric: "tabular-nums",
-    lineHeight: 1.4,
-  },
-  countdownPillDanger: {
-    background: tokens.colorPaletteRedBackground2,
-    color: tokens.colorStatusDangerForeground1,
-    animationName: "tdPulse",
-    animationDuration: "1s",
-    animationTimingFunction: "ease-in-out",
-    animationIterationCount: "infinite",
-  },
-
   // ── 学员列表（网格卡片） ──────────────────────────────────────────────
   participants: {
     display: "grid",
