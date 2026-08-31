@@ -8,7 +8,7 @@ const PresentationPage = lazyRouteComponent(
 
 /**
  * 投屏页（/presentation/$sessionId?t=token）。
- * 令牌由教师驾驶舱生成并经 URL 携带；页面存 sessionStorage 以便刷新恢复。
+ * 令牌由教师课堂面板生成并经 URL 携带；页面存 sessionStorage 以便刷新恢复。
  */
 export const Route = createRoute({
   getParentRoute: () => presentationRoute,

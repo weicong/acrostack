@@ -68,7 +68,7 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
 
   const refreshSnapshot = useCallback(async () => {
     if (!token) {
-      setFatalError('缺少投屏令牌。请从教师驾驶舱点击"打开投屏"进入本页。');
+      setFatalError('缺少投屏令牌。请从教师课堂面板点击"打开投屏"进入本页。');
       return;
     }
     try {
@@ -79,7 +79,7 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
     } catch (err) {
       const message = extractAbpErrorMessage(err);
       if (/401|403|令牌|token/i.test(message)) {
-        setFatalError('投屏令牌已失效。请在教师驾驶舱重新点击"打开投屏"。');
+        setFatalError('投屏令牌已失效。请在教师课堂面板重新点击"打开投屏"。');
       } else {
         setFatalError(message);
       }

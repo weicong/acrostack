@@ -19,7 +19,7 @@ public interface IClassroomRealtimeNotifier
 }
 
 /// <summary>
-/// 驾驶舱统计合并推送：提交答案后仅标记课堂"统计脏"，
+/// 课堂面板统计合并推送：提交答案后仅标记课堂"统计脏"，
 /// 合并窗口（约 ClassroomConsts.DashboardMergeWindowMs）内聚合一次 DashboardUpdated。
 /// </summary>
 public interface IClassroomDashboardThrottler
@@ -52,7 +52,7 @@ public interface IClassroomStatisticsService
     /// <summary>当前题统计（缓存优先；无当前题返回 null）。</summary>
     Task<QuestionStatisticsDto?> GetStatisticsAsync(Guid sessionId, Guid? tenantId);
 
-    /// <summary>教师驾驶舱完整数据（含学员列表）。</summary>
+    /// <summary>教师课堂面板完整数据（含学员列表）。</summary>
     Task<DashboardDto> GetDashboardAsync(Guid sessionId, Guid? tenantId);
 
     /// <summary>答案提交后递增轻量计数（缓存）。</summary>

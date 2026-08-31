@@ -1,7 +1,7 @@
 /**
- * 教师驾驶舱（/classroom/$sessionId）。
+ * 教师课堂面板（/classroom/$sessionId）。
  *
- * 提示词四节"教师驾驶舱"：
+ * 提示词四节"教师课堂面板"：
  * - 实时显示：课堂码、状态、当前题、在线/参与/未开始/作答中/已提交人数、
  *   截止未交、完成率、选项分布、正确率、平均用时、学员列表、断线状态、
  *   最近统计更新时间、连接状态
@@ -98,7 +98,7 @@ export function TeacherDashboardPage() {
   const snapshot = snapshotQuery.data ?? null;
 
   // 标签页标题带课堂码，多课堂标签时可直接区分
-  usePageTitle(snapshot?.classroomCode ? `驾驶舱 ${snapshot.classroomCode}` : "课堂驾驶舱");
+  usePageTitle(snapshot?.classroomCode ? `课堂面板 ${snapshot.classroomCode}` : "课堂课堂面板");
 
   // 快照到达后：同步仪表盘基线 + 服务端时钟偏移 + 版本号（供事件去重/跳跃检测）
   useEffect(() => {
@@ -334,7 +334,7 @@ export function TeacherDashboardPage() {
       <div className={styles.page}>
         <div className={styles.center}>
           <Spinner size="large" />
-          <Text block>正在加载驾驶舱…</Text>
+          <Text block>正在加载课堂面板…</Text>
         </div>
       </div>
     );

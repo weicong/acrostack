@@ -8,7 +8,7 @@
  * 4. 未提交学员垫底置灰（保持加入顺序）。
  *
  * 数据全部来自 DashboardDto.Participants（教师端即时可见判分结果），
- * 实时更新复用驾驶舱既有的 DashboardUpdated / ParticipantChanged 推送，无需额外请求。
+ * 实时更新复用课堂面板既有的 DashboardUpdated / ParticipantChanged 推送，无需额外请求。
  */
 import { useMemo } from "react";
 import { Avatar, Badge, Card, Text, Title3, mergeClasses } from "@fluentui/react-components";

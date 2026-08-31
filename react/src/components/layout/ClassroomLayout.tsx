@@ -12,7 +12,7 @@ import { UserMenu } from "./UserMenu";
  * 精简教学 chrome：品牌顶栏 + 课堂导航（我的课堂/题库管理/试卷管理）+ 用户菜单，
  * 无侧边栏/Footer——与管理后台（AppLayout）完全分离，教师进入课堂不被管理菜单打扰。
  *
- * 全屏变体：叶子路由声明 `staticData: { fullscreen: true }`（如驾驶舱
+ * 全屏变体：叶子路由声明 `staticData: { fullscreen: true }`（如课堂面板
  * /classroom/$sessionId）时隐藏顶栏，实时统计可用足屏宽度。
  */
 
@@ -126,7 +126,7 @@ export function ClassroomLayout() {
   const { isGranted } = usePermissions();
   const appName = getApplicationName();
 
-  // 全屏变体：任一活动路由声明 fullscreen（如驾驶舱）
+  // 全屏变体：任一活动路由声明 fullscreen（如课堂面板）
   const fullscreen = useMatches().some(
     (m) => (m.staticData as { fullscreen?: boolean } | undefined)?.fullscreen === true,
   );
@@ -136,7 +136,7 @@ export function ClassroomLayout() {
     [isAuthenticated, isGranted],
   );
 
-  // 驾驶舱（/classroom/$sessionId）归属"我的课堂"导航域
+  // 课堂面板（/classroom/$sessionId）归属"我的课堂"导航域
   const selectedValue = useMemo(() => {
     if (pathname.startsWith("/classroom/questions")) return "/classroom/questions";
     if (pathname.startsWith("/classroom/quizzes")) return "/classroom/quizzes";

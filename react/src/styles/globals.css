@@ -1,7 +1,7 @@
 /* 全局 box-sizing 重置：width 明确包含 padding/border。
    Fluent UI v9 组件自带 border-box 不受影响；缺失它时自定义样式
    （makeStyles）默认 content-box，"width: 100% + 水平 padding" 会恒定
-   溢出 padding 宽度，产生页面级横向滚动条（如教师驾驶舱页根节点）。 */
+   溢出 padding 宽度，产生页面级横向滚动条（如教师课堂面板页根节点）。 */
 *,
 *::before,
 *::after {
@@ -28,7 +28,7 @@ body {
   min-height: 100vh;
 }
 
-/* 教师驾驶舱动效（makeStyles 通过 animationName 字符串引用） */
+/* 教师课堂面板动效（makeStyles 通过 animationName 字符串引用） */
 @keyframes tdFadeIn {
   from {
     opacity: 0;

@@ -320,7 +320,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
                 continue;
             }
 
-            // 在线状态以内存追踪器为准（与驾驶舱统计同一口径）
+            // 在线状态以内存追踪器为准（与课堂面板统计同一口径）
             if (input.OnlineOnly && !await _onlineTracker.IsOnlineAsync(session.Id, p.Id, session.TenantId))
             {
                 continue;

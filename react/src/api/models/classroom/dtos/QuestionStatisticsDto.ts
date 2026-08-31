@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 /**
- * @description 当前题统计（教师驾驶舱 + 投屏端匿名数据）。
+ * @description 当前题统计（教师课堂面板 + 投屏端匿名数据）。
  * @type object
  */
 export type ClassroomDtosQuestionStatisticsDto = {

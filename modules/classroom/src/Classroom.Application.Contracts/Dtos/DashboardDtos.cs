@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Classroom.Dtos;
 
-/// <summary>学员个人作答状态（教师驾驶舱展示）。</summary>
+/// <summary>学员个人作答状态（教师课堂面板展示）。</summary>
 public enum ParticipantAnswerState
 {
     /// <summary>未开始作答。</summary>
@@ -16,7 +16,7 @@ public enum ParticipantAnswerState
     Submitted = 2
 }
 
-/// <summary>教师驾驶舱的学员条目（含个人状态；教师专用，绝不下发给学员/投屏端）。</summary>
+/// <summary>教师课堂面板的学员条目（含个人状态；教师专用，绝不下发给学员/投屏端）。</summary>
 public class ParticipantStateDto
 {
     public Guid ParticipantId { get; set; }
@@ -42,7 +42,7 @@ public class ParticipantStateDto
     public bool? IsCorrect { get; set; }
 }
 
-/// <summary>学习小组统计（教师驾驶舱；按加入顺序自动分组，每组默认 5 人）。</summary>
+/// <summary>学习小组统计（教师课堂面板；按加入顺序自动分组，每组默认 5 人）。</summary>
 public class GroupStatisticsDto
 {
     /// <summary>小组编号（1 起）。</summary>
@@ -61,7 +61,7 @@ public class GroupStatisticsDto
     public double? CorrectRate { get; set; }
 }
 
-/// <summary>当前题统计（教师驾驶舱 + 投屏端匿名数据）。</summary>
+/// <summary>当前题统计（教师课堂面板 + 投屏端匿名数据）。</summary>
 public class QuestionStatisticsDto
 {
     public Guid SessionQuestionId { get; set; }
@@ -91,7 +91,7 @@ public class QuestionStatisticsDto
     public double AverageAnswerSeconds { get; set; }
 }
 
-/// <summary>教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。</summary>
+/// <summary>教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。</summary>
 public class DashboardDto
 {
     public Guid SessionId { get; set; }

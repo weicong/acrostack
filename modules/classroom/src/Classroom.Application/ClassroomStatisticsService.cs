@@ -59,7 +59,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
         var currentQuestion = session.CurrentSessionQuestionId.HasValue
             ? await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value)
             : null;
-        // 到时惰性截止：驾驶舱读取时发现题目过期则顺手收卷并推进聚合
+        // 到时惰性截止：课堂面板读取时发现题目过期则顺手收卷并推进聚合
         if (currentQuestion is not null)
         {
             await _autoCloseService.CloseIfExpiredAsync(session, currentQuestion);

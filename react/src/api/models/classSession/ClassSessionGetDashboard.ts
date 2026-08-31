@@ -13,19 +13,19 @@ export type ClassSessionGetDashboardPath = {
 };
 
 /**
- * @description 教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
+ * @description 教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
  * @type object
  */
 export type ClassSessionGetDashboardStatus200Plain = ClassroomDtosDashboardDto;
 
 /**
- * @description 教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
+ * @description 教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
  * @type object
  */
 export type ClassSessionGetDashboardStatus200Json = ClassroomDtosDashboardDto;
 
 /**
- * @description 教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
+ * @description 教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
  * @type object
  */
 export type ClassSessionGetDashboardStatus200Json2 = ClassroomDtosDashboardDto;

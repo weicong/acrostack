@@ -282,7 +282,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
                 record = existingRecord;
             }
 
-            // 数据库写入成功后：心跳 + 教师组增量事件 + 驾驶舱合并推送（提示词十一节）
+            // 数据库写入成功后：心跳 + 教师组增量事件 + 课堂面板合并推送（提示词十一节）
             await _onlineTracker.MarkSeenAsync(sessionId, participantId, payload.TenantId);
 
             var participant = await _participantRepository.FindAsync(p => p.Id == participantId);

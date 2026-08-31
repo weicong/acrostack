@@ -3,7 +3,7 @@
  *
  * 功能：
  * - 列出我的课堂（状态、课堂码、题数、当前题号）
- * - 选择试卷创建新课堂，创建成功后进入教师驾驶舱
+ * - 选择试卷创建新课堂，创建成功后进入教师课堂面板
  *
  * 本文件只负责编排：顶部创建入口见 components/TeacherSessionsToolbar，
  * 表格数据源见 hooks/useTeacherSessionsTable，样式见 styles/teacherSessions。

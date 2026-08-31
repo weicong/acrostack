@@ -53,7 +53,7 @@ export type ClassroomDtosTeacherSnapshotDto = {
    */
   currentQuestion?: ClassroomDtosTeacherQuestionInfoDto;
   /**
-   * @description 教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
+   * @description 教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
    * @type object | undefined
    */
   dashboard?: ClassroomDtosDashboardDto;

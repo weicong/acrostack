@@ -1,15 +1,15 @@
 # 课堂实时答题系统（Classroom 模块）
 
-用于课堂随堂练习：教师按讲课进度逐题开放试题，约 100 名学员用手机浏览器通过课堂码加入并答题，教师通过"课堂驾驶舱"实时查看在线状态、作答进度、选项分布与正确率，投屏端展示匿名统计。
+用于课堂随堂练习：教师按讲课进度逐题开放试题，约 100 名学员用手机浏览器通过课堂码加入并答题，教师通过"课堂课堂面板"实时查看在线状态、作答进度、选项分布与正确率，投屏端展示匿名统计。
 
 五个界面：
 
-| 界面 | 前端路由 | 说明 |
-| --- | --- | --- |
-| 教师管理端 | `/classroom/sessions`、`/classroom/$sessionId` | 我的课堂：课堂列表 + 驾驶舱（控制/统计/学员列表） |
-| 教师管理端 | `/classroom/questions` | 题库管理：四种题型 CRUD（单选/多选/判断/简答） |
-| 教师管理端 | `/classroom/quizzes` | 试卷管理：从题库选题组卷、调整题目顺序 |
-| 教师投屏端 | `/presentation/$sessionId` | 大屏只读匿名视图（无学员姓名/学号/个人答案） |
+| 界面       | 前端路由                                        | 说明                                                                   |
+| ---------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| 教师管理端 | `/classroom/sessions`、`/classroom/$sessionId`  | 我的课堂：课堂列表 + 课堂面板（控制/统计/学员列表）                    |
+| 教师管理端 | `/classroom/questions`                          | 题库管理：四种题型 CRUD（单选/多选/判断/简答）                         |
+| 教师管理端 | `/classroom/quizzes`                            | 试卷管理：从题库选题组卷、调整题目顺序                                 |
+| 教师投屏端 | `/presentation/$sessionId`                      | 大屏只读匿名视图（无学员姓名/学号/个人答案）                           |
 | 学员移动端 | `/student/join`、`/student/sessions/$sessionId` | 手机优先，课堂码加入 + 实时答题 + 答题记录回顾（正确答案仅公布后可见） |
 
 > 教师端三页挂在侧边栏"课堂答题"子菜单组下，分别受 `Sessions.ViewDashboard` / `Questions.Manage` / `Quizzes.Manage` 权限控制。学员不加主菜单入口，仅通过教师分享的课堂码/链接进入。
@@ -64,8 +64,8 @@ dotnet ef database update   --project main/AcroStack --startup-project main/Acro
 
 ### 测试账号
 
-| 账号 | 密码 | 角色 |
-| --- | --- | --- |
+| 账号    | 密码      | 角色                                |
+| ------- | --------- | ----------------------------------- |
 | `admin` | `1q2w3E*` | 宿主管理员（含 Classroom 全部权限） |
 
 种子数据（仅 Development 环境、宿主租户）：自动创建示例试卷「示例试卷：随堂测验（默认）」，含单选/多选/判断/简答各 1 题；重复执行幂等。学员无需注册账号，凭课堂码加入。
@@ -74,45 +74,45 @@ dotnet ef database update   --project main/AcroStack --startup-project main/Acro
 
 ### 教师（OpenIddict 认证，ABP Auto API）
 
-| 方法 | 路径 | 说明 |
-| --- | --- | --- |
-| POST/PUT/DELETE | `/api/app/question`、`/api/app/question/{id}` | 题目管理 |
-| GET | `/api/app/question`、`/api/app/question/{id}` | 题目查询 |
-| POST/PUT/DELETE | `/api/app/quiz`、`/api/app/quiz/{id}` | 试卷管理（题目有序列表） |
-| POST | `/api/app/class-session` | 从试卷创建课堂（生成课堂码/加入地址） |
-| GET | `/api/app/class-session` | 课堂分页列表 |
-| GET | `/api/app/class-session/{id}/snapshot` | 教师快照（断线恢复） |
-| GET | `/api/app/class-session/{id}/dashboard` | 驾驶舱数据 |
-| POST | `/api/app/class-session/{id}/start` | 开始课堂 |
-| POST | `/api/app/class-session/{id}/next-question` | 下一题并开放 |
-| POST | `/api/app/class-session/{id}/start-question/{questionId}` | 开放指定题目 |
-| POST | `/api/app/class-session/{id}/close-question/{questionId}` | 截止当前题 |
-| POST | `/api/app/class-session/{id}/publish-statistics/{questionId}` | 公布匿名统计 |
-| POST | `/api/app/class-session/{id}/publish-answer/{questionId}` | 公布答案与解析 |
-| POST | `/api/app/class-session/{id}/finish` | 结束课堂（课堂码失效） |
-| POST | `/api/app/class-session/{id}/presentation-token` | 生成投屏令牌 |
+| 方法            | 路径                                                          | 说明                                  |
+| --------------- | ------------------------------------------------------------- | ------------------------------------- |
+| POST/PUT/DELETE | `/api/app/question`、`/api/app/question/{id}`                 | 题目管理                              |
+| GET             | `/api/app/question`、`/api/app/question/{id}`                 | 题目查询                              |
+| POST/PUT/DELETE | `/api/app/quiz`、`/api/app/quiz/{id}`                         | 试卷管理（题目有序列表）              |
+| POST            | `/api/app/class-session`                                      | 从试卷创建课堂（生成课堂码/加入地址） |
+| GET             | `/api/app/class-session`                                      | 课堂分页列表                          |
+| GET             | `/api/app/class-session/{id}/snapshot`                        | 教师快照（断线恢复）                  |
+| GET             | `/api/app/class-session/{id}/dashboard`                       | 课堂面板数据                          |
+| POST            | `/api/app/class-session/{id}/start`                           | 开始课堂                              |
+| POST            | `/api/app/class-session/{id}/next-question`                   | 下一题并开放                          |
+| POST            | `/api/app/class-session/{id}/start-question/{questionId}`     | 开放指定题目                          |
+| POST            | `/api/app/class-session/{id}/close-question/{questionId}`     | 截止当前题                            |
+| POST            | `/api/app/class-session/{id}/publish-statistics/{questionId}` | 公布匿名统计                          |
+| POST            | `/api/app/class-session/{id}/publish-answer/{questionId}`     | 公布答案与解析                        |
+| POST            | `/api/app/class-session/{id}/finish`                          | 结束课堂（课堂码失效）                |
+| POST            | `/api/app/class-session/{id}/presentation-token`              | 生成投屏令牌                          |
 
 ### 学员 / 投屏 / 公开（手写控制器）
 
-| 方法 | 路径 | 认证 | 说明 |
-| --- | --- | --- | --- |
-| POST | `/api/public/class-sessions/join` | 匿名（按 IP 限流） | 课堂码加入 → Participant + 短期令牌 |
-| GET | `/api/student/class-sessions/{id}/snapshot` | 课堂令牌 | 学员快照（含本人提交状态） |
-| GET | `/api/student/class-sessions/{id}/my-answers` | 课堂令牌 | 本人本课堂答题记录（逐题回顾；正确答案/解析仅 `AnswerPublished` 后下发） |
-| POST | `/api/student/class-sessions/{id}/answers` | 课堂令牌 | 提交/修改答案（RequestId 幂等） |
-| GET | `/api/presentation/class-sessions/{id}/snapshot` | 投屏令牌 | 匿名快照（严禁含个人信息） |
+| 方法 | 路径                                             | 认证               | 说明                                                                     |
+| ---- | ------------------------------------------------ | ------------------ | ------------------------------------------------------------------------ |
+| POST | `/api/public/class-sessions/join`                | 匿名（按 IP 限流） | 课堂码加入 → Participant + 短期令牌                                      |
+| GET  | `/api/student/class-sessions/{id}/snapshot`      | 课堂令牌           | 学员快照（含本人提交状态）                                               |
+| GET  | `/api/student/class-sessions/{id}/my-answers`    | 课堂令牌           | 本人本课堂答题记录（逐题回顾；正确答案/解析仅 `AnswerPublished` 后下发） |
+| POST | `/api/student/class-sessions/{id}/answers`       | 课堂令牌           | 提交/修改答案（RequestId 幂等）                                          |
+| GET  | `/api/presentation/class-sessions/{id}/snapshot` | 投屏令牌           | 匿名快照（严禁含个人信息）                                               |
 
 前端 API Client 由 Kubb 从 Swagger 生成（`react/src/api/`），后端变更后执行 `vp run generate-api`。
 
 ## 权限模型
 
-| 权限 | 说明 |
-| --- | --- |
-| `Classroom.Questions.Manage` | 题目管理 |
-| `Classroom.Quizzes.Manage` | 试卷管理 |
-| `Classroom.Sessions.Create` | 创建课堂（父权限） |
-| `Classroom.Sessions.Control` | 控制课堂（开始/开题/截止/公布/结束） |
-| `Classroom.Sessions.ViewDashboard` | 查看驾驶舱 |
+| 权限                               | 说明                                 |
+| ---------------------------------- | ------------------------------------ |
+| `Classroom.Questions.Manage`       | 题目管理                             |
+| `Classroom.Quizzes.Manage`         | 试卷管理                             |
+| `Classroom.Sessions.Create`        | 创建课堂（父权限）                   |
+| `Classroom.Sessions.Control`       | 控制课堂（开始/开题/截止/公布/结束） |
+| `Classroom.Sessions.ViewDashboard` | 查看课堂面板                         |
 
 仅课堂创建者可控制该课堂并加入教师 SignalR 分组（服务端二次校验，不依赖前端禁用）。
 
@@ -150,13 +150,13 @@ Preparing(0) → Waiting(10) → Answering(20) → Explaining(30) → Answering(
       └─────────────┴──────────────┴───────────────┴──→ Finished(40)
 ```
 
-| 转换 | 触发动作 |
-| --- | --- |
-| Preparing → Waiting | 开始课堂 |
-| Waiting → Answering | 开放题目 |
-| Answering → Explaining | 截止题目 |
-| Explaining → Answering | 开放下一题 |
-| 任意非 Finished → Finished | 结束课堂 |
+| 转换                       | 触发动作   |
+| -------------------------- | ---------- |
+| Preparing → Waiting        | 开始课堂   |
+| Waiting → Answering        | 开放题目   |
+| Answering → Explaining     | 截止题目   |
+| Explaining → Answering     | 开放下一题 |
+| 任意非 Finished → Finished | 结束课堂   |
 
 **题目状态（SessionQuestionStatus）**
 
@@ -182,16 +182,16 @@ Pending(0) → Open(10) → Closed(20) → StatisticsPublished(30) → AnswerPub
 
 **服务端 → 客户端事件**（所有课堂级事件公共字段：`sessionId`、`version`、`serverTime`、`eventId`）：
 
-| 事件 | 目标组 | 附加字段 | 说明 |
-| --- | --- | --- | --- |
-| `ClassroomStarted` | 全部 | — | 课堂开始 |
-| `QuestionOpened` | 全部 | `sessionQuestionId`、`question`（不含正确答案）、`openedAt`、`endsAt` | 开放题目 |
-| `QuestionClosed` | 全部 | `sessionQuestionId` | 截止题目 |
-| `StatisticsPublished` | 全部 | `sessionQuestionId`、`optionCounts`、`submittedCount`、`totalParticipants` | 匿名统计 |
-| `AnswerPublished` | 全部 | `sessionQuestionId`、`correctAnswer`、`explanation` | 正确答案与解析 |
-| `ParticipantChanged` | 教师 | `participantId`、`nickname`、`onlineStatus`、`answerState`、`submittedAt` | 学员加入/在线/离线/提交增量 |
-| `DashboardUpdated` | 仅教师 | `dashboard`（DashboardDto 全量） | 统计合并推送（300ms 窗口） |
-| `ClassroomEnded` | 全部 | — | 课堂结束 |
+| 事件                  | 目标组 | 附加字段                                                                   | 说明                        |
+| --------------------- | ------ | -------------------------------------------------------------------------- | --------------------------- |
+| `ClassroomStarted`    | 全部   | —                                                                          | 课堂开始                    |
+| `QuestionOpened`      | 全部   | `sessionQuestionId`、`question`（不含正确答案）、`openedAt`、`endsAt`      | 开放题目                    |
+| `QuestionClosed`      | 全部   | `sessionQuestionId`                                                        | 截止题目                    |
+| `StatisticsPublished` | 全部   | `sessionQuestionId`、`optionCounts`、`submittedCount`、`totalParticipants` | 匿名统计                    |
+| `AnswerPublished`     | 全部   | `sessionQuestionId`、`correctAnswer`、`explanation`                        | 正确答案与解析              |
+| `ParticipantChanged`  | 教师   | `participantId`、`nickname`、`onlineStatus`、`answerState`、`submittedAt`  | 学员加入/在线/离线/提交增量 |
+| `DashboardUpdated`    | 仅教师 | `dashboard`（DashboardDto 全量）                                           | 统计合并推送（300ms 窗口）  |
+| `ClassroomEnded`      | 全部   | —                                                                          | 课堂结束                    |
 
 **数据安全规则**：
 
@@ -217,11 +217,11 @@ SignalR 连接不是最终状态来源。客户端在以下情况重新拉快照
 
 ## 限流
 
-| 位置 | 规则 |
-| --- | --- |
-| 加入课堂 `/api/public/class-sessions/join` | 每 IP 200 次/分钟（内存固定窗口；需容纳单课堂约 100 人共用校园 WiFi 出口 IP 集中加入 + 重试余量） |
-| 答案提交 | 提交频率上限 `ClassroomConsts.MaxSubmitsPerMinute`（30 次/分钟/人）已定义但当前未强制执行；幂等与截止校验已覆盖刷提交的主要风险 |
-| `/connect/token` | 每 IP 30 次/分钟（宿主 ASP.NET RateLimiter） |
+| 位置                                       | 规则                                                                                                                            |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| 加入课堂 `/api/public/class-sessions/join` | 每 IP 200 次/分钟（内存固定窗口；需容纳单课堂约 100 人共用校园 WiFi 出口 IP 集中加入 + 重试余量）                               |
+| 答案提交                                   | 提交频率上限 `ClassroomConsts.MaxSubmitsPerMinute`（30 次/分钟/人）已定义但当前未强制执行；幂等与截止校验已覆盖刷提交的主要风险 |
+| `/connect/token`                           | 每 IP 30 次/分钟（宿主 ASP.NET RateLimiter）                                                                                    |
 
 ## 测试运行命令
 
@@ -277,12 +277,12 @@ location /signalr-hubs/ {
 
 ## 常见故障排查
 
-| 现象 | 排查 |
-| --- | --- |
-| 学员加入返回"请求过于频繁" | 触发每 IP 200 次/分钟限流；确认真为多人共用出口 IP 或有脚本刷接口 |
-| WebSocket 连不上 | 检查 Nginx `Upgrade`/`Connection` 头与 `proxy_buffering off`；前端固定用 WebSocket 传输 |
-| 学员看不到题目 | 确认教师已开题（课堂状态 = Answering）；学员端重连后是否重新拉了快照 |
-| 驾驶舱统计不更新 | `DashboardUpdated` 仅发教师组且按 300ms 合并；检查教师连接是否为课堂创建者（非创建者连不上教师组） |
-| 提交返回 401 | 课堂令牌过期（学员 4h/投屏 12h）或令牌与课堂不匹配；重新加入或重新生成投屏令牌 |
-| 种子数据没出现 | 种子仅在 Development 环境且 `--migrate-database` 启动时执行；普通 `dotnet run` 不触发 |
-| Swagger 打不开 | Swagger 仅开发环境开放（生产禁用） |
+| 现象                       | 排查                                                                                               |
+| -------------------------- | -------------------------------------------------------------------------------------------------- |
+| 学员加入返回"请求过于频繁" | 触发每 IP 200 次/分钟限流；确认真为多人共用出口 IP 或有脚本刷接口                                  |
+| WebSocket 连不上           | 检查 Nginx `Upgrade`/`Connection` 头与 `proxy_buffering off`；前端固定用 WebSocket 传输            |
+| 学员看不到题目             | 确认教师已开题（课堂状态 = Answering）；学员端重连后是否重新拉了快照                               |
+| 课堂面板统计不更新         | `DashboardUpdated` 仅发教师组且按 300ms 合并；检查教师连接是否为课堂创建者（非创建者连不上教师组） |
+| 提交返回 401               | 课堂令牌过期（学员 4h/投屏 12h）或令牌与课堂不匹配；重新加入或重新生成投屏令牌                     |
+| 种子数据没出现             | 种子仅在 Development 环境且 `--migrate-database` 启动时执行；普通 `dotnet run` 不触发              |
+| Swagger 打不开             | Swagger 仅开发环境开放（生产禁用）                                                                 |

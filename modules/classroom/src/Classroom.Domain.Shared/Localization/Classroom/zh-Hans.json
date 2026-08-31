@@ -6,7 +6,7 @@
     "Permission:Quizzes.Manage": "试卷管理",
     "Permission:Sessions.Create": "创建课堂",
     "Permission:Sessions.Control": "课堂控制",
-    "Permission:Sessions.ViewDashboard": "查看驾驶舱",
+    "Permission:Sessions.ViewDashboard": "查看课堂面板",
     "Classroom:InvalidStatusTransition": "非法的课堂状态转换：{0} -> {1}",
     "Classroom:QuestionNotOpen": "当前题目未开放，无法提交",
     "Classroom:QuestionClosed": "当前题目已截止，无法提交或修改答案",

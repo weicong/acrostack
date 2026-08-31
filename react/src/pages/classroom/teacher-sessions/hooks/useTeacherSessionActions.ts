@@ -1,6 +1,6 @@
 /**
  * 教师课堂动作 hook：选择试卷创建新课堂。
- * 使用 mutateAsync + try/catch：成功后提示课堂码并跳转教师驾驶舱；失败提示 ABP 错误消息。
+ * 使用 mutateAsync + try/catch：成功后提示课堂码并跳转教师课堂面板；失败提示 ABP 错误消息。
  */
 import { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -21,7 +21,7 @@ export function useTeacherSessionActions(options: UseTeacherSessionActionsOption
   const { dispatchToast } = useToastController();
   const createMutation = useClassSessionCreate();
 
-  /** 创建课堂：成功后关闭对话框、提示课堂码并进入教师驾驶舱。 */
+  /** 创建课堂：成功后关闭对话框、提示课堂码并进入教师课堂面板。 */
   const createSession = useCallback(async (): Promise<void> => {
     if (!selectedQuizId || createMutation.isPending) return;
     try {

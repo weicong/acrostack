@@ -6,7 +6,7 @@ import type { ClassroomDtosParticipantStateDto } from "./ParticipantStateDto";
 import type { ClassroomDtosQuestionStatisticsDto } from "./QuestionStatisticsDto";
 
 /**
- * @description 教师驾驶舱数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
+ * @description 教师课堂面板数据（提示词五节：在线/总数/各状态人数/统计/最近更新时间等）。
  * @type object
  */
 export type ClassroomDtosDashboardDto = {
@@ -55,7 +55,7 @@ export type ClassroomDtosDashboardDto = {
    */
   totalParticipants?: number;
   /**
-   * @description 当前题统计（教师驾驶舱 + 投屏端匿名数据）。
+   * @description 当前题统计（教师课堂面板 + 投屏端匿名数据）。
    * @type object | undefined
    */
   statistics?: ClassroomDtosQuestionStatisticsDto;

@@ -31,7 +31,7 @@ export function useRandomPicker(options: {
 
   const mutation = useClassSessionPickRandomParticipant();
 
-  /** 在线学员（与驾驶舱在线口径一致）。 */
+  /** 在线学员（与课堂面板在线口径一致）。 */
   const onlineParticipants = participants.filter((p) => p.onlineStatus === 1);
   const pickedOnlineCount = onlineParticipants.filter((p) =>
     pickedIds.includes(p.participantId ?? ""),

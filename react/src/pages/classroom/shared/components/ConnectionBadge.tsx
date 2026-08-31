@@ -1,5 +1,5 @@
 /**
- * SignalR 连接状态徽章（教师驾驶舱 / 学员答题页共用）。
+ * SignalR 连接状态徽章（教师课堂面板 / 学员答题页共用）。
  */
 import { Badge } from "@fluentui/react-components";
 

@@ -4,7 +4,7 @@ import type { ClassroomOnlineStatus } from "../OnlineStatus";
 import type { ClassroomDtosParticipantAnswerState } from "./ParticipantAnswerState";
 
 /**
- * @description 教师驾驶舱的学员条目（含个人状态；教师专用，绝不下发给学员/投屏端）。
+ * @description 教师课堂面板的学员条目（含个人状态；教师专用，绝不下发给学员/投屏端）。
  * @type object
  */
 export type ClassroomDtosParticipantStateDto = {
@@ -37,7 +37,7 @@ export type ClassroomDtosParticipantStateDto = {
    */
   lastSeenAt?: string;
   /**
-   * @description 学员个人作答状态（教师驾驶舱展示）。
+   * @description 学员个人作答状态（教师课堂面板展示）。
    *
    * Format: `int32`
    * @type integer | undefined

@@ -13,10 +13,10 @@ using Volo.Abp.MultiTenancy;
 namespace Classroom;
 
 /// <summary>
-/// 驾驶舱统计合并推送（提示词十一节）。
+/// 课堂面板统计合并推送（提示词十一节）。
 /// 每份答案提交后调用 ScheduleUpdate 标记"统计脏"；合并窗口
 /// （ClassroomOptions.DashboardMergeWindowMs，默认 300ms）内的多次提交只触发一次
-/// DashboardUpdated 推送，推送前从数据库重新计算完整驾驶舱数据。
+/// DashboardUpdated 推送，推送前从数据库重新计算完整课堂面板数据。
 /// 单实例内存实现；多实例部署时替换为 Redis 合并窗口（接口已隔离）。
 /// </summary>
 public class ClassroomDashboardThrottler : IClassroomDashboardThrottler, ISingletonDependency

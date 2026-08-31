@@ -103,7 +103,7 @@ export function useStudentRealtime({
     }
 
     function registerHandlers(connection: HubConnection) {
-      // 事件去重 + 版本跳跃检测（丢事件时重新拉快照），与教师驾驶舱对齐
+      // 事件去重 + 版本跳跃检测（丢事件时重新拉快照），与教师课堂面板对齐
       const check = (evt: ClassroomEventBase): boolean => {
         if (evt.eventId && seenEventIdsRef.current.has(evt.eventId)) return false;
         if (evt.eventId) seenEventIdsRef.current.add(evt.eventId);

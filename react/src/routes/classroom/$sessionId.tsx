@@ -7,7 +7,7 @@ const TeacherDashboardPage = lazyRouteComponent(
   "TeacherDashboardPage",
 );
 
-/** 教师驾驶舱（/classroom/$sessionId）：实时统计 + 课堂控制 + 学员列表。
+/** 教师课堂面板（/classroom/$sessionId）：实时统计 + 课堂控制 + 学员列表。
  * fullscreen：ClassroomLayout 检测后隐藏顶栏，统计大屏可用足屏宽度。 */
 export const Route = createRoute({
   getParentRoute: () => classroomRoute,

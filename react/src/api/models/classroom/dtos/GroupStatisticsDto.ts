@@ -1,7 +1,7 @@
 /* oxlint-disable */
 
 /**
- * @description 学习小组统计（教师驾驶舱；按加入顺序自动分组，每组默认 5 人）。
+ * @description 学习小组统计（教师课堂面板；按加入顺序自动分组，每组默认 5 人）。
  * @type object
  */
 export type ClassroomDtosGroupStatisticsDto = {

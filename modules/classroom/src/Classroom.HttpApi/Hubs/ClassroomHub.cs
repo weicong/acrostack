@@ -244,7 +244,7 @@ public class ClassroomHub : Hub<IClassroomClient>
 
         if (session is null)
         {
-            // 非课堂教师不得加入教师分组（防止越权监听驾驶舱数据）
+            // 非课堂教师不得加入教师分组（防止越权监听课堂面板数据）
             await RejectAsync("Only the session teacher can join the teachers group.");
             return;
         }

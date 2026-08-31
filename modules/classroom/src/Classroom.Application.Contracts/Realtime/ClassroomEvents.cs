@@ -74,7 +74,7 @@ public class ParticipantChangedEvent : ClassroomEventBase
     public DateTimeOffset? SubmittedAt { get; set; }
 }
 
-/// <summary>驾驶舱统计更新（仅教师组；合并窗口内聚合推送）。</summary>
+/// <summary>课堂面板统计更新（仅教师组；合并窗口内聚合推送）。</summary>
 public class DashboardUpdatedEvent : ClassroomEventBase
 {
     public DashboardDto Dashboard { get; set; } = default!;

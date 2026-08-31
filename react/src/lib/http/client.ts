@@ -34,7 +34,7 @@ export async function applyRequestConfig(
   // 默认文化从 VITE_DEFAULT_CULTURE 注入（默认 zh-Hans），服务端据此返回本地化消息
   config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? DEFAULT_CULTURE;
 
-  // GET 显式禁用 HTTP 缓存：轮询型读取（快照/驾驶舱/到时自动截止的 refetch）必须拿到
+  // GET 显式禁用 HTTP 缓存：轮询型读取（快照/课堂面板/到时自动截止的 refetch）必须拿到
   // 最新数据；浏览器启发式缓存会返回过期快照，使界面状态"卡"在上一刻
   if ((config.method ?? "get").toLowerCase() === "get") {
     config.headers["Cache-Control"] = "no-cache";
