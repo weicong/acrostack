@@ -76,10 +76,20 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
         var onlineCount = await _onlineTracker.GetOnlineCountAsync(sessionId, tenantId);
 
         var participantStates = new List<ParticipantStateDto>();
-        foreach (var p in participants.OrderBy(p => p.JoinedAt))
+        // 先查全员在线状态再排序：在线学员优先展示，同组内保持加入时间序
+        var onlineIds = new HashSet<Guid>();
+        foreach (var p in participants)
+        {
+            if (await _onlineTracker.IsOnlineAsync(sessionId, p.Id, tenantId))
+            {
+                onlineIds.Add(p.Id);
+            }
+        }
+
+        foreach (var p in participants.OrderBy(p => onlineIds.Contains(p.Id) ? 0 : 1).ThenBy(p => p.JoinedAt))
         {
             var answer = answers.FirstOrDefault(a => a.ParticipantId == p.Id);
-            var isOnline = await _onlineTracker.IsOnlineAsync(sessionId, p.Id, tenantId);
+            var isOnline = onlineIds.Contains(p.Id);
             participantStates.Add(new ParticipantStateDto
             {
                 ParticipantId = p.Id,
