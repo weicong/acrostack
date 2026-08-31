@@ -48,8 +48,10 @@ export function StudentJoinPage() {
   const { dispatchToast } = useToastController();
   usePageTitle("加入课堂");
 
-  const search = useSearch({ strict: false }) as { code?: string | undefined };
-  const [classroomCode, setClassroomCode] = useState(search.code?.toUpperCase() ?? "");
+  // TanStack Router 默认按 JSON 解析 search 参数：纯数字码（?code=1234）会解析成 number，须 String 化
+  const search = useSearch({ strict: false }) as { code?: string | number | undefined };
+  const prefillCode = search.code != null ? String(search.code).toUpperCase() : "";
+  const [classroomCode, setClassroomCode] = useState(prefillCode);
   const [nickname, setNickname] = useState("");
   const [studentNumber, setStudentNumber] = useState("");
   const [joining, setJoining] = useState(false);
@@ -61,7 +63,10 @@ export function StudentJoinPage() {
     }
   }, [search.code]);
 
-  const canJoin = classroomCode.trim().length === 6 && nickname.trim().length > 0 && !joining;
+  // 新课堂码为 4 位数字；兼容仍在进行中的历史 6 位字母数字码
+  const code = classroomCode.trim();
+  const canJoin =
+    (code.length === 4 || code.length === 6) && nickname.trim().length > 0 && !joining;
 
   async function handleJoin() {
     setJoining(true);
@@ -101,7 +106,7 @@ export function StudentJoinPage() {
         <div className={styles.center}>
           <Title1>加入课堂</Title1>
           <Text block size={300}>
-            输入老师提供的 6 位课堂码
+            输入老师提供的 4 位数字课堂码
           </Text>
         </div>
 
@@ -109,8 +114,10 @@ export function StudentJoinPage() {
           <Input
             value={classroomCode}
             onChange={(_, d) => setClassroomCode(d.value.toUpperCase().slice(0, 6))}
-            placeholder="如 AB2C3D"
+            placeholder="如 4832"
             size="large"
+            maxLength={6}
+            inputMode="numeric"
             autoFocus
           />
         </Field>

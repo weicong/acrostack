@@ -53,12 +53,14 @@ public class ClassroomPublicAppService : ClassroomAppServiceBase, IClassroomPubl
 
         var normalizedCode = input.ClassroomCode.Trim().ToUpperInvariant();
 
-        // 跨租户查找课堂（当前请求无租户上下文，禁用租户过滤）
+        // 跨租户查找课堂（当前请求无租户上下文，禁用租户过滤）；
+        // 仅匹配未结束课堂——4 位数字码会在课堂结束后回收复用，须排除同码的历史课堂
         ClassSession? session;
         using (DataFilter.Disable<IMultiTenant>())
         using (CurrentTenant.Change(null))
         {
-            session = await _sessionRepository.FindAsync(s => s.ClassroomCode == normalizedCode);
+            session = await _sessionRepository.FindAsync(
+                s => s.ClassroomCode == normalizedCode && s.Status != ClassSessionStatus.Finished);
         }
 
         if (session is null)

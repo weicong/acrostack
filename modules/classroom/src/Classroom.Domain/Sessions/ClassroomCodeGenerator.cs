@@ -4,21 +4,21 @@ using System.Security.Cryptography;
 namespace Classroom;
 
 /// <summary>
-/// 课堂码生成器：6 位大写字母 + 数字，排除易混淆字符（0/O、1/I/L）。
-/// 唯一性由数据库唯一索引兜底；生成方通过重试解决极小概率冲突。
+/// 课堂码生成器：4 位纯数字（学员手机直按数字键盘，无需切换输入法）。
+/// 码空间 10^4，唯一性仅约束未结束课堂（过滤唯一索引，已结束课堂的码回收复用）；
+/// 生成方按活跃课堂全局校验并重试解决冲突。
 /// </summary>
 public static class ClassroomCodeGenerator
 {
-    // 排除 0O1IL 后的安全字母表：32 个字符，6 位共 2^30 组合，单租户内冲突概率可忽略
-    private const string Alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+    private const string Alphabet = "0123456789";
 
     public static string Generate(int length = ClassroomConsts.ClassroomCodeLength)
     {
         Span<char> code = stackalloc char[length];
-        var bytes = RandomNumberGenerator.GetBytes(length);
         for (var i = 0; i < length; i++)
         {
-            code[i] = Alphabet[bytes[i] % Alphabet.Length];
+            // GetInt32 内部 rejection sampling，无模偏差
+            code[i] = Alphabet[RandomNumberGenerator.GetInt32(Alphabet.Length)];
         }
 
         return new string(code);

@@ -4,8 +4,9 @@ namespace Classroom.Dtos;
 
 public class JoinClassroomInputDto
 {
+    // 上限取 MaxLength（6）而非生成长度（4）：兼容历史 6 位字母数字课堂码的加入
     [Required]
-    [StringLength(ClassroomConsts.ClassroomCodeLength)]
+    [StringLength(ClassroomConsts.ClassroomCodeMaxLength)]
     public string ClassroomCode { get; set; } = default!;
 
     [Required]

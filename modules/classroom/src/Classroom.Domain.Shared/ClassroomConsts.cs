@@ -18,8 +18,11 @@ public static class ClassroomConsts
     public const int MaxQuizNameLength = 128;
     public const int MaxQuizDescriptionLength = 500;
 
-    /** 课堂码：6 位大写字母 + 数字，排除易混淆字符 */
-    public const int ClassroomCodeLength = 6;
+    /** 课堂码：4 位纯数字（手机直按数字键盘）。唯一性仅约束未结束课堂（过滤唯一索引），码在课堂结束后回收复用 */
+    public const int ClassroomCodeLength = 4;
+
+    /** 课堂码字段上限：兼容历史 6 位字母数字课堂码（加入校验放行；仅新生成为 4 位数字） */
+    public const int ClassroomCodeMaxLength = 6;
 
     /** 学员课堂令牌有效期（小时）——覆盖一次完整课堂 */
     public const int StudentTokenValidHours = 4;

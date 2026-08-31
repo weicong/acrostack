@@ -12,6 +12,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
@@ -465,12 +466,19 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
 
     private async Task<string> GenerateUniqueClassroomCodeAsync()
     {
-        for (var attempt = 0; attempt < 5; attempt++)
+        // 4 位数字码空间有限（10^4）：唯一性仅对未结束课堂（已结束课堂的码回收复用），
+        // 且需跨租户全局校验（加入接口按码全局查课堂，索引也是全局唯一）
+        using (DataFilter.Disable<IMultiTenant>())
+        using (CurrentTenant.Change(null))
         {
-            var code = ClassroomCodeGenerator.Generate();
-            if (!await _sessionRepository.AnyAsync(s => s.ClassroomCode == code))
+            for (var attempt = 0; attempt < 10; attempt++)
             {
-                return code;
+                var code = ClassroomCodeGenerator.Generate();
+                if (!await _sessionRepository.AnyAsync(s =>
+                        s.ClassroomCode == code && s.Status != ClassSessionStatus.Finished))
+                {
+                    return code;
+                }
             }
         }
 

@@ -213,20 +213,16 @@ public class AnswerRecordTests
     }
 }
 
-/// <summary>课堂码生成器测试（长度、字符集、排除易混淆字符）。</summary>
+/// <summary>课堂码生成器测试（长度、纯数字字符集）。</summary>
 public class ClassroomCodeGeneratorTests
 {
     [Fact]
-    public void Generate_ReturnsSixChars_FromSafeAlphabet()
+    public void Generate_ReturnsFourDigits()
     {
         var code = ClassroomCodeGenerator.Generate();
 
         Assert.Equal(ClassroomConsts.ClassroomCodeLength, code.Length);
-        Assert.All(code, c =>
-        {
-            Assert.InRange(c, '2', 'Z');
-            Assert.False(c is '0' or 'O' or '1' or 'I' or 'L', $"易混淆字符出现: {code}");
-        });
+        Assert.All(code, c => Assert.InRange(c, '0', '9'));
     }
 
     [Fact]
@@ -235,9 +231,8 @@ public class ClassroomCodeGeneratorTests
         for (var i = 0; i < 1000; i++)
         {
             var code = ClassroomCodeGenerator.Generate();
-            Assert.Equal(6, code.Length);
-            Assert.DoesNotContain('0', code);
-            Assert.DoesNotContain('1', code);
+            Assert.Equal(4, code.Length);
+            Assert.All(code, c => Assert.InRange(c, '0', '9'));
         }
     }
 }

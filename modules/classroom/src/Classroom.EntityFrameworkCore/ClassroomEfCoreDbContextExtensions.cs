@@ -57,11 +57,14 @@ public static class ClassroomEfCoreDbContextExtensions
             b.ToTable(tablePrefix + "ClassSessions", schema);
             b.ConfigureByConvention();
 
-            b.Property(x => x.ClassroomCode).IsRequired().HasMaxLength(ClassroomConsts.ClassroomCodeLength);
+            b.Property(x => x.ClassroomCode).IsRequired().HasMaxLength(ClassroomConsts.ClassroomCodeMaxLength);
             b.Property(x => x.Status).IsRequired();
 
-            // 课堂码索引（唯一；跨租户唯一由应用层生成时校验 + 此索引兜底）
-            b.HasIndex(x => x.ClassroomCode).IsUnique();
+            // 课堂码唯一索引：仅未结束课堂（4 位数字码空间 10^4，已结束课堂的码回收复用）；
+            // 跨租户全局唯一（加入接口按码跨租户查课堂）。列长保持 6 以兼容历史 6 位码
+            b.HasIndex(x => x.ClassroomCode)
+                .IsUnique()
+                .HasFilter($"[Status] <> {(int)ClassSessionStatus.Finished}");
             b.HasIndex(x => x.TeacherId);
             b.HasIndex(x => x.Status);
         });
