@@ -67,6 +67,24 @@ public class SessionQuestion : FullAuditedAggregateRoot<Guid>, IMultiTenant
         ClosedAt = now;
     }
 
+    /// <summary>
+    /// 倒计时归零惰性截止：题目仍为 Open 且已过 EndsAt 时收卷（服务端时间判定）。
+    /// EndsAt 之后服务端本就拒绝任何提交，此方法只是把状态流转补齐，
+    /// 使"公布统计/答案"不再依赖教师手动点击截止；由调用方负责持久化。
+    /// </summary>
+    public bool AutoCloseIfExpired(DateTimeOffset serverNow)
+    {
+        if (Status != SessionQuestionStatus.Open || EndsAt is null || serverNow < EndsAt.Value)
+        {
+            return false;
+        }
+
+        SessionQuestionStateMachine.EnsureTransition(this, SessionQuestionStatus.Closed);
+        Status = SessionQuestionStatus.Closed;
+        ClosedAt = serverNow;
+        return true;
+    }
+
     /// <summary>公布匿名统计：Closed/StatisticsPublished -> StatisticsPublished（幂等但版本号由课堂聚合负责）。</summary>
     public void PublishStatistics(DateTimeOffset now)
     {

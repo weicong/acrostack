@@ -27,6 +27,7 @@ import {
   Text,
   Title2,
   mergeClasses,
+  useToastController,
 } from "@fluentui/react-components";
 import type { ComponentProps } from "react";
 
@@ -267,6 +268,20 @@ export function TeacherDashboardPage() {
     classroomCode: snapshot?.classroomCode,
     refreshSnapshot,
   });
+
+  // 倒计时归零自动截止：服务端在读取快照时惰性截止过期题目（AutoCloseIfExpired）。
+  // 注意前端 Math.floor 使"显示归零"比服务端 EndsAt 早约 1 秒，单次刷新可能拿回未截止
+  // 状态；因此在归零状态下轮询刷新，直到快照确认题目已截止（hasOpenQuestion 离开）。
+  const { dispatchToast } = useToastController();
+  const { hasOpenQuestion, busyAction } = control;
+  const countdownExpired = hasOpenQuestion && remainingSeconds === 0;
+  useEffect(() => {
+    if (!countdownExpired || busyAction !== null) return;
+    void refreshSnapshot();
+    dispatchToast("作答时间到，正在自动截止当前题…", { intent: "info" });
+    const timer = setInterval(() => void refreshSnapshot(), 1500);
+    return () => clearInterval(timer);
+  }, [countdownExpired, busyAction, refreshSnapshot, dispatchToast]);
 
   const statusColor: BadgeColor =
     status === ClassSessionStatusValue.Finished

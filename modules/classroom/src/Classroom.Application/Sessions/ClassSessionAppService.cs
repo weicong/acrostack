@@ -33,6 +33,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
     private readonly IClassroomTransactionExecutor _transactionExecutor;
     private readonly IClassroomRealtimeNotifier _notifier;
     private readonly IClassroomTokenService _tokenService;
+    private readonly IClassroomAutoCloseService _autoCloseService;
     private readonly IServiceProvider _serviceProvider;
     private readonly ClassroomOptions _options;
 
@@ -44,6 +45,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         IClassroomTransactionExecutor transactionExecutor,
         IClassroomRealtimeNotifier notifier,
         IClassroomTokenService tokenService,
+        IClassroomAutoCloseService autoCloseService,
         IServiceProvider serviceProvider,
         IOptions<ClassroomOptions> options)
     {
@@ -54,6 +56,7 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         _transactionExecutor = transactionExecutor;
         _notifier = notifier;
         _tokenService = tokenService;
+        _autoCloseService = autoCloseService;
         _serviceProvider = serviceProvider;
         _options = options.Value;
     }
@@ -362,13 +365,26 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
 
     private async Task EnsureNoOpenQuestionAsync(ClassSession session)
     {
-        if (session.CurrentSessionQuestionId.HasValue)
+        if (session.CurrentSessionQuestionId is null)
         {
-            var current = await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value);
-            if (current is { Status: SessionQuestionStatus.Open })
-            {
-                throw new BusinessException(ClassroomErrorCodes.QuestionAlreadyOpen);
-            }
+            return;
+        }
+
+        var current = await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value);
+        if (current is null)
+        {
+            return;
+        }
+
+        // 到时惰性截止：上一题已过 EndsAt 时先收卷并推进聚合，教师无需手动"截止当前题"即可开下一题
+        if (await _autoCloseService.CloseIfExpiredAsync(session, current))
+        {
+            return;
+        }
+
+        if (current.Status == SessionQuestionStatus.Open)
+        {
+            throw new BusinessException(ClassroomErrorCodes.QuestionAlreadyOpen);
         }
     }
 
@@ -475,6 +491,9 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         }
 
         var sessionQuestion = await _sessionQuestionRepository.GetAsync(session.CurrentSessionQuestionId.Value);
+        // 到时惰性截止：读取教师快照时发现题目过期则顺手收卷并推进聚合
+        await _autoCloseService.CloseIfExpiredAsync(session, sessionQuestion);
+
         var question = await _questionRepository.GetAsync(sessionQuestion.QuestionId);
 
         return new TeacherQuestionInfoDto

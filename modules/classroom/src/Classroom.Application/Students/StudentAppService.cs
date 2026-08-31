@@ -32,6 +32,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
     private readonly IClassroomOnlineTracker _onlineTracker;
     private readonly IClassroomDashboardThrottler _dashboardThrottler;
     private readonly IClassroomRealtimeNotifier _notifier;
+    private readonly IClassroomAutoCloseService _autoCloseService;
     private readonly ICurrentPrincipalAccessor _principalAccessor;
     private readonly ICurrentTenant _currentTenant;
     private readonly IServiceProvider _serviceProvider;
@@ -47,6 +48,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         IClassroomOnlineTracker onlineTracker,
         IClassroomDashboardThrottler dashboardThrottler,
         IClassroomRealtimeNotifier notifier,
+        IClassroomAutoCloseService autoCloseService,
         ICurrentPrincipalAccessor principalAccessor,
         ICurrentTenant currentTenant,
         IServiceProvider serviceProvider)
@@ -61,6 +63,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         _onlineTracker = onlineTracker;
         _dashboardThrottler = dashboardThrottler;
         _notifier = notifier;
+        _autoCloseService = autoCloseService;
         _principalAccessor = principalAccessor;
         _currentTenant = currentTenant;
         _serviceProvider = serviceProvider;
@@ -340,6 +343,9 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
             currentSessionQuestion = await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value);
             if (currentSessionQuestion is not null)
             {
+                // 到时惰性截止：学员读取快照时发现题目过期则顺手收卷并推进聚合
+                await _autoCloseService.CloseIfExpiredAsync(session, currentSessionQuestion);
+
                 currentQuestion = await _questionRepository.FindAsync(currentSessionQuestion.QuestionId);
             }
         }

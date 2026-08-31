@@ -22,19 +22,22 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
     private readonly IRepository<Participant, Guid> _participantRepository;
     private readonly IRepository<AnswerRecord, Guid> _answerRepository;
     private readonly IClassroomOnlineTracker _onlineTracker;
+    private readonly IClassroomAutoCloseService _autoCloseService;
 
     public ClassroomStatisticsService(
         IRepository<ClassSession, Guid> sessionRepository,
         IRepository<SessionQuestion, Guid> sessionQuestionRepository,
         IRepository<Participant, Guid> participantRepository,
         IRepository<AnswerRecord, Guid> answerRepository,
-        IClassroomOnlineTracker onlineTracker)
+        IClassroomOnlineTracker onlineTracker,
+        IClassroomAutoCloseService autoCloseService)
     {
         _sessionRepository = sessionRepository;
         _sessionQuestionRepository = sessionQuestionRepository;
         _participantRepository = participantRepository;
         _answerRepository = answerRepository;
         _onlineTracker = onlineTracker;
+        _autoCloseService = autoCloseService;
     }
 
     public async Task<QuestionStatisticsDto?> GetStatisticsAsync(Guid sessionId, Guid? tenantId)
@@ -56,6 +59,11 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
         var currentQuestion = session.CurrentSessionQuestionId.HasValue
             ? await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value)
             : null;
+        // 到时惰性截止：驾驶舱读取时发现题目过期则顺手收卷并推进聚合
+        if (currentQuestion is not null)
+        {
+            await _autoCloseService.CloseIfExpiredAsync(session, currentQuestion);
+        }
 
         var answers = currentQuestion is not null
             ? await _answerRepository.GetListAsync(a => a.SessionQuestionId == currentQuestion.Id)
@@ -115,6 +123,10 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
     public async Task<QuestionStatisticsDto> RecalibrateAsync(Guid sessionId, Guid sessionQuestionId, Guid? tenantId)
     {
         var sessionQuestion = await _sessionQuestionRepository.GetAsync(sessionQuestionId);
+        var session = await _sessionRepository.GetAsync(sessionId);
+        // 到时惰性截止：统计校准读取时发现题目过期则顺手收卷并推进聚合
+        await _autoCloseService.CloseIfExpiredAsync(session, sessionQuestion);
+
         var participantCount = await _participantRepository.CountAsync(p => p.SessionId == sessionId);
         var answers = await _answerRepository.GetListAsync(a => a.SessionQuestionId == sessionQuestionId);
 

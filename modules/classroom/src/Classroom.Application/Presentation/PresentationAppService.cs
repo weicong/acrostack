@@ -24,6 +24,7 @@ public class PresentationAppService : ClassroomAppServiceBase, IPresentationAppS
     private readonly IRepository<Question, Guid> _questionRepository;
     private readonly IRepository<Participant, Guid> _participantRepository;
     private readonly IRepository<AnswerRecord, Guid> _answerRepository;
+    private readonly IClassroomAutoCloseService _autoCloseService;
     private readonly ICurrentPrincipalAccessor _principalAccessor;
     private readonly ICurrentTenant _currentTenant;
     private readonly IServiceProvider _serviceProvider;
@@ -34,6 +35,7 @@ public class PresentationAppService : ClassroomAppServiceBase, IPresentationAppS
         IRepository<Question, Guid> questionRepository,
         IRepository<Participant, Guid> participantRepository,
         IRepository<AnswerRecord, Guid> answerRepository,
+        IClassroomAutoCloseService autoCloseService,
         ICurrentPrincipalAccessor principalAccessor,
         ICurrentTenant currentTenant,
         IServiceProvider serviceProvider)
@@ -43,6 +45,7 @@ public class PresentationAppService : ClassroomAppServiceBase, IPresentationAppS
         _questionRepository = questionRepository;
         _participantRepository = participantRepository;
         _answerRepository = answerRepository;
+        _autoCloseService = autoCloseService;
         _principalAccessor = principalAccessor;
         _currentTenant = currentTenant;
         _serviceProvider = serviceProvider;
@@ -77,6 +80,9 @@ public class PresentationAppService : ClassroomAppServiceBase, IPresentationAppS
                 currentSessionQuestion = await _sessionQuestionRepository.FindAsync(session.CurrentSessionQuestionId.Value);
                 if (currentSessionQuestion is not null)
                 {
+                    // 到时惰性截止：投屏读取快照时发现题目过期则顺手收卷并推进聚合
+                    await _autoCloseService.CloseIfExpiredAsync(session, currentSessionQuestion);
+
                     question = await _questionRepository.FindAsync(currentSessionQuestion.QuestionId);
                     currentQuestion = question is not null
                         ? new OpenQuestionInfoDto
