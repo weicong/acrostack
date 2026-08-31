@@ -9,13 +9,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HubConnection } from "@microsoft/signalr";
 import { ClassroomClientMethods } from "../../shared/constants/classroom";
-import type { ClassroomEventBase } from "../../shared/types/classroom-events";
+import type {
+  ClassroomEventBase,
+  ParticipantPickedEvent,
+} from "../../shared/types/classroom-events";
 import { buildClassroomTokenHubConnection } from "../../shared/utils/classroomHub";
 import { getPresentationSnapshot } from "../../shared/utils/studentApi";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { ClassroomDtosPresentationSnapshotDto } from "@/api/models/classroom/dtos/PresentationSnapshotDto";
 
 export type PresentationConnectionState = "connecting" | "connected" | "reconnecting" | "offline";
+
+/** 随机点名结果（事件驱动：快照是匿名数据，点名信息只经实时事件下发）。 */
+export interface PresentationPickedParticipant {
+  participantId: string;
+  nickname: string;
+  groupIndex: number;
+}
 
 export interface UsePresentationSessionOptions {
   sessionId: string;
@@ -32,6 +42,9 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
   const [connectionState, setConnectionState] = useState<PresentationConnectionState>("connecting");
   const [fatalError, setFatalError] = useState<string | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
+  const [pickedParticipant, setPickedParticipant] = useState<PresentationPickedParticipant | null>(
+    null,
+  );
 
   const clockOffsetRef = useRef(0);
   const seenEventIdsRef = useRef(new Set<string>());
@@ -112,7 +125,21 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
       conn.on(ClassroomClientMethods.QuestionClosed, resync);
       conn.on(ClassroomClientMethods.StatisticsPublished, resync);
       conn.on(ClassroomClientMethods.AnswerPublished, resync);
-      conn.on(ClassroomClientMethods.ClassroomEnded, resync);
+      conn.on(ClassroomClientMethods.ClassroomEnded, (evt: ClassroomEventBase) => {
+        if (!dedupe(evt)) return;
+        setPickedParticipant(null);
+        void refreshSnapshot();
+      });
+
+      // 随机点名：大屏横幅展示被点学员（持续到下一次点名或课堂结束）
+      conn.on(ClassroomClientMethods.ParticipantPicked, (evt: ParticipantPickedEvent) => {
+        if (!dedupe(evt)) return;
+        setPickedParticipant({
+          participantId: evt.participantId,
+          nickname: evt.nickname,
+          groupIndex: evt.groupIndex,
+        });
+      });
 
       try {
         await conn.start();
@@ -151,6 +178,8 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
     connectionState,
     fatalError,
     remainingSeconds,
+    /** 最近一次随机点名的学员（SignalR 事件驱动；null 表示当前无点名）。 */
+    pickedParticipant,
     /** 手动重拉只读快照（重试按钮 / SignalR 重连后复用）。 */
     refreshSnapshot,
   };

@@ -29,4 +29,5 @@ public static class ClassroomErrorCodes
     public const string VersionConflict = "Classroom:VersionConflict";
     public const string RateLimited = "Classroom:RateLimited";
     public const string InvalidPresentationToken = "Classroom:InvalidPresentationToken";
+    public const string NoParticipantsToPick = "Classroom:NoParticipantsToPick";
 }

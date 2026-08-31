@@ -13,6 +13,7 @@ export const ClassroomClientMethods = {
   AnswerPublished: "AnswerPublished",
   ParticipantChanged: "ParticipantChanged",
   DashboardUpdated: "DashboardUpdated",
+  ParticipantPicked: "ParticipantPicked",
   ClassroomEnded: "ClassroomEnded",
 } as const;
 

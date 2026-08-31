@@ -17,7 +17,7 @@
  *   - useStudentRealtime：快照 / SignalR 连接 / 事件处理
  * 样式见 styles/studentSession，答题记录视图见 components/HistoryView。
  */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import {
   Badge,
@@ -30,6 +30,7 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
+import { Mic20Regular } from "@fluentui/react-icons";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { useStudentSessionStyles } from "./styles/studentSession";
 import { useServerClockCountdown } from "../shared/hooks/useServerClockCountdown";
@@ -42,6 +43,7 @@ import { distributionKeyLabel } from "../shared/utils/distribution";
 import { usePageTitle } from "@/lib/usePageTitle";
 import { ClassSessionStatusValue, classSessionStatusLabel } from "../shared/constants/classroom";
 import { clearStudentSession, loadStudentSession } from "../shared/utils/studentSession";
+import type { ParticipantPickedEvent } from "../shared/types/classroom-events";
 import { trueFalseLabel } from "./utils/answerFormat";
 
 export function StudentSessionPage() {
@@ -62,6 +64,20 @@ export function StudentSessionPage() {
 
   const answer = useStudentAnswer({ sessionId, token, dispatchToast });
   const history = useStudentHistory({ sessionId, token, view });
+
+  // 随机点名：点到自己时醒目提醒（存储的 participantId 与事件比对）
+  const [pickedMe, setPickedMe] = useState(false);
+  const participantIdRef = useRef<string | null>(stored?.participantId ?? null);
+  const handleParticipantPicked = useCallback(
+    (evt: ParticipantPickedEvent) => {
+      if (evt.participantId && evt.participantId === participantIdRef.current) {
+        setPickedMe(true);
+        dispatchToast("老师点名请你回答问题！", { intent: "warning" });
+      }
+    },
+    [dispatchToast],
+  );
+
   const realtime = useStudentRealtime({
     sessionId,
     token,
@@ -69,6 +85,7 @@ export function StudentSessionPage() {
     resetAnswer: answer.resetAnswer,
     refreshHistory: history.refreshHistory,
     restoreAnswer: answer.restoreAnswer,
+    onParticipantPicked: handleParticipantPicked,
   });
 
   const session = realtime.session;
@@ -156,6 +173,21 @@ export function StudentSessionPage() {
       {connectionState === "offline" && (
         <Card className={styles.card}>
           <Text>网络连接已断开。你的选择已保留，恢复网络后将自动重连。</Text>
+        </Card>
+      )}
+
+      {pickedMe && (
+        <Card className={styles.pickedCard} role="status">
+          <Mic20Regular className={styles.pickedIcon} />
+          <div className={styles.pickedText}>
+            <Text size={400} weight="semibold">
+              老师随机点名请你回答问题
+            </Text>
+            <Text size={300}>请整理思路，准备现场作答</Text>
+          </div>
+          <Button size="small" appearance="subtle" onClick={() => setPickedMe(false)}>
+            知道了
+          </Button>
         </Card>
       )}
 

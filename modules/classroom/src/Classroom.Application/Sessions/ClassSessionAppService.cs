@@ -30,10 +30,12 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
     private readonly IRepository<SessionQuestion, Guid> _sessionQuestionRepository;
     private readonly IRepository<Quiz, Guid> _quizRepository;
     private readonly IRepository<Question, Guid> _questionRepository;
+    private readonly IRepository<Participant, Guid> _participantRepository;
     private readonly IClassroomTransactionExecutor _transactionExecutor;
     private readonly IClassroomRealtimeNotifier _notifier;
     private readonly IClassroomTokenService _tokenService;
     private readonly IClassroomAutoCloseService _autoCloseService;
+    private readonly IClassroomOnlineTracker _onlineTracker;
     private readonly IServiceProvider _serviceProvider;
     private readonly ClassroomOptions _options;
 
@@ -42,10 +44,12 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         IRepository<SessionQuestion, Guid> sessionQuestionRepository,
         IRepository<Quiz, Guid> quizRepository,
         IRepository<Question, Guid> questionRepository,
+        IRepository<Participant, Guid> participantRepository,
         IClassroomTransactionExecutor transactionExecutor,
         IClassroomRealtimeNotifier notifier,
         IClassroomTokenService tokenService,
         IClassroomAutoCloseService autoCloseService,
+        IClassroomOnlineTracker onlineTracker,
         IServiceProvider serviceProvider,
         IOptions<ClassroomOptions> options)
     {
@@ -53,10 +57,12 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         _sessionQuestionRepository = sessionQuestionRepository;
         _quizRepository = quizRepository;
         _questionRepository = questionRepository;
+        _participantRepository = participantRepository;
         _transactionExecutor = transactionExecutor;
         _notifier = notifier;
         _tokenService = tokenService;
         _autoCloseService = autoCloseService;
+        _onlineTracker = onlineTracker;
         _serviceProvider = serviceProvider;
         _options = options.Value;
     }
@@ -306,6 +312,62 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
     {
         await GetAuthorizedSessionAsync(id);
         return await GetStatisticsService().GetDashboardAsync(id, CurrentTenant.Id);
+    }
+
+    public async Task<PickedParticipantDto> PickRandomParticipantAsync(Guid id, PickRandomParticipantDto input)
+    {
+        var session = await GetAuthorizedSessionAsync(id);
+        if (session.Status == ClassSessionStatus.Finished)
+        {
+            throw new BusinessException(ClassroomErrorCodes.ClassroomFinished);
+        }
+
+        var participants = await _participantRepository.GetListAsync(p => p.SessionId == session.Id);
+        var excluded = input.ExcludeParticipantIds?.ToHashSet() ?? new HashSet<Guid>();
+
+        var candidates = new List<Participant>();
+        foreach (var p in participants)
+        {
+            if (excluded.Contains(p.Id))
+            {
+                continue;
+            }
+
+            // 在线状态以内存追踪器为准（与驾驶舱统计同一口径）
+            if (input.OnlineOnly && !await _onlineTracker.IsOnlineAsync(session.Id, p.Id, session.TenantId))
+            {
+                continue;
+            }
+
+            candidates.Add(p);
+        }
+
+        if (candidates.Count == 0)
+        {
+            throw new BusinessException(ClassroomErrorCodes.NoParticipantsToPick);
+        }
+
+        var picked = candidates[Random.Shared.Next(candidates.Count)];
+
+        // 只读命令（无数据库写入）：无需等待 UoW 提交，结果直接广播
+        await _notifier.BroadcastAsync(session.Id, session.TenantId, new ParticipantPickedEvent
+        {
+            SessionId = session.Id,
+            Version = session.Version,
+            ServerTime = DateTimeOffset.UtcNow,
+            EventId = Guid.NewGuid(),
+            ParticipantId = picked.Id,
+            Nickname = picked.Nickname,
+            GroupIndex = picked.GroupIndex,
+        });
+
+        return new PickedParticipantDto
+        {
+            ParticipantId = picked.Id,
+            Nickname = picked.Nickname,
+            StudentNumber = picked.StudentNumber,
+            GroupIndex = picked.GroupIndex,
+        };
     }
 
     public async Task<TeacherSnapshotDto> GetSnapshotAsync(Guid id)

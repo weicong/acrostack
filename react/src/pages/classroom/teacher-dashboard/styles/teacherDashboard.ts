@@ -550,6 +550,52 @@ export const useTeacherDashboardStyles = makeStyles({
   participantRowOffline: {
     opacity: 0.55,
   },
+  // 被随机点到的学员：品牌色描边 + 品牌底 + 弹出动效，视觉上"跳出来"
+  participantRowPicked: {
+    background: tokens.colorBrandBackground2,
+    boxShadow: `0 0 0 2px ${tokens.colorBrandStroke1}`,
+    animationName: "tdPop",
+    animationDuration: "320ms",
+    animationFillMode: "both",
+  },
+  // ── 随机点名 ──────────────────────────────────────────────
+  pickActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    flexWrap: "wrap",
+  },
+  // 点名结果横幅：教师端醒目确认（投屏端有大屏版本）
+  pickBanner: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+    padding: tokens.spacingVerticalS + " " + tokens.spacingHorizontalM,
+    borderRadius: tokens.borderRadiusLarge,
+    background: `linear-gradient(130deg, ${tokens.colorBrandBackground2}, ${tokens.colorBrandBackground})`,
+    borderLeft: `4px solid ${tokens.colorBrandStroke1}`,
+    animationName: "tdPop",
+    animationDuration: "320ms",
+    animationFillMode: "both",
+  },
+  pickBannerText: {
+    display: "flex",
+    flexDirection: "column",
+    minWidth: 0,
+    flex: 1,
+  },
+  pickBannerLabel: {
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorBrandForeground1,
+    fontWeight: tokens.fontWeightSemibold,
+    letterSpacing: "0.12em",
+  },
+  pickBannerName: {
+    fontWeight: tokens.fontWeightSemibold,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
   participantTop: {
     display: "flex",
     alignItems: "center",

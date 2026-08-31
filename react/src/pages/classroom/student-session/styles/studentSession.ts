@@ -69,4 +69,20 @@ export const useStudentSessionStyles = makeStyles({
     gap: tokens.spacingHorizontalS,
   },
   historyOptionText: { flex: 1 },
+  // ── 随机点名：点到自己时的醒目提醒卡片 ─────────────────────
+  pickedCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+    background: tokens.colorPaletteMarigoldBackground2,
+    borderLeft: `4px solid ${tokens.colorPaletteMarigoldBorder1}`,
+    animationName: "tdPop",
+    animationDuration: "320ms",
+    animationFillMode: "both",
+  },
+  pickedIcon: {
+    fontSize: tokens.fontSizeHero700,
+    color: tokens.colorPaletteMarigoldForeground1,
+  },
+  pickedText: { display: "flex", flexDirection: "column", flex: 1, minWidth: 0 },
 });

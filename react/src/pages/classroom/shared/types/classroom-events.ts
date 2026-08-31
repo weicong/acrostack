@@ -53,3 +53,11 @@ export interface ParticipantChangedEvent extends ClassroomEventBase {
 export interface DashboardUpdatedEvent extends ClassroomEventBase {
   dashboard: ClassroomDtosDashboardDto;
 }
+
+/** 教师随机点名事件（全体组：教师高亮/投屏横幅/被选中学员提醒）。 */
+export interface ParticipantPickedEvent extends ClassroomEventBase {
+  participantId: string;
+  nickname: string;
+  /** 学习小组编号（1 起）。 */
+  groupIndex: number;
+}

@@ -45,6 +45,9 @@ public interface IClassSessionAppService : IApplicationService
     /// <summary>驾驶舱数据（教师权限）。</summary>
     Task<DashboardDto> GetDashboardAsync(Guid id);
 
+    /// <summary>随机点名：从（在线）学员中随机抽取一位现场回答，并向全体组广播点名事件。</summary>
+    Task<PickedParticipantDto> PickRandomParticipantAsync(Guid id, PickRandomParticipantDto input);
+
     /// <summary>教师快照（断线重连恢复）。</summary>
     Task<TeacherSnapshotDto> GetSnapshotAsync(Guid id);
 

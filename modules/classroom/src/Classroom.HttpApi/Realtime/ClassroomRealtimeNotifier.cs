@@ -75,6 +75,7 @@ public class ClassroomRealtimeNotifier : IClassroomRealtimeNotifier, ITransientD
         AnswerPublishedEvent e => _hubContext.Clients.Group(groupName).AnswerPublished(e),
         ParticipantChangedEvent e => _hubContext.Clients.Group(groupName).ParticipantChanged(e),
         DashboardUpdatedEvent e => _hubContext.Clients.Group(groupName).DashboardUpdated(e),
+        ParticipantPickedEvent e => _hubContext.Clients.Group(groupName).ParticipantPicked(e),
         _ => Task.CompletedTask,
     };
 }

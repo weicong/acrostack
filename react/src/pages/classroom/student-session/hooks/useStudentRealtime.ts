@@ -14,6 +14,7 @@ import type {
   AnswerPublishedEvent,
   ClassroomEventBase,
   ClassroomStartedEvent,
+  ParticipantPickedEvent,
   QuestionClosedEvent,
   QuestionOpenedEvent,
   StatisticsPublishedEvent,
@@ -29,6 +30,8 @@ interface UseStudentRealtimeOptions {
   resetAnswer: () => void;
   refreshHistory: () => void;
   restoreAnswer: (content: string) => void;
+  /** 教师随机点名事件（页面判断是否点到自己并提醒）。 */
+  onParticipantPicked: (evt: ParticipantPickedEvent) => void;
 }
 
 export function useStudentRealtime({
@@ -38,6 +41,7 @@ export function useStudentRealtime({
   resetAnswer,
   refreshHistory,
   restoreAnswer,
+  onParticipantPicked,
 }: UseStudentRealtimeOptions) {
   const [session, setSession] = useState<ClassroomDtosStudentSnapshotDto | null>(null);
   const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
@@ -199,6 +203,11 @@ export function useStudentRealtime({
         void refreshSnapshot();
         if (viewRef.current === "history") refreshHistory();
       });
+
+      connection.on(ClassroomClientMethods.ParticipantPicked, (evt: ParticipantPickedEvent) => {
+        if (!check(evt)) return;
+        onParticipantPicked(evt);
+      });
     }
 
     void start();
@@ -207,7 +216,15 @@ export function useStudentRealtime({
       cancelled = true;
       if (conn) void conn.stop().catch(() => {});
     };
-  }, [sessionId, token, refreshSnapshot, refreshHistory, resetAnswer, viewRef]);
+  }, [
+    sessionId,
+    token,
+    refreshSnapshot,
+    refreshHistory,
+    resetAnswer,
+    viewRef,
+    onParticipantPicked,
+  ]);
 
   return { session, connectionState, loadError, refreshSnapshot, clockOffsetRef };
 }

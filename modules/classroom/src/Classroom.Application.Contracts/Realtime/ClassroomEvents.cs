@@ -91,3 +91,17 @@ public class DashboardUpdatedEvent : ClassroomEventBase
 {
     public DashboardDto Dashboard { get; set; } = default!;
 }
+
+/// <summary>
+/// 教师随机点名（全体组）：教师端高亮、投屏端横幅展示、被选中学员端提醒。
+/// 不含学号（学员/投屏组不需要，且减少个人数据下发）。
+/// </summary>
+public class ParticipantPickedEvent : ClassroomEventBase
+{
+    public Guid ParticipantId { get; set; }
+
+    public string Nickname { get; set; } = default!;
+
+    /// <summary>学习小组编号（1 起）。</summary>
+    public int GroupIndex { get; set; }
+}

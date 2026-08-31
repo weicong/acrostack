@@ -29,6 +29,7 @@
     "Classroom:NoNextQuestion": "No more questions",
     "Classroom:VersionConflict": "Classroom version conflict; please refresh the snapshot and retry",
     "Classroom:RateLimited": "Too many requests, please retry later",
-    "Classroom:InvalidPresentationToken": "Presentation token is invalid or expired"
+    "Classroom:InvalidPresentationToken": "Presentation token is invalid or expired",
+    "Classroom:NoParticipantsToPick": "No participant available to pick (all offline or excluded this round)"
   }
 }

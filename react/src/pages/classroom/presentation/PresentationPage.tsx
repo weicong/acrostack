@@ -23,8 +23,14 @@ export function PresentationPage() {
   const search = useSearch({ strict: false }) as { t?: string | undefined };
   usePageTitle("课堂投屏");
 
-  const { snapshot, connectionState, fatalError, remainingSeconds, refreshSnapshot } =
-    usePresentationSession({ sessionId, urlToken: search.t });
+  const {
+    snapshot,
+    connectionState,
+    fatalError,
+    remainingSeconds,
+    pickedParticipant,
+    refreshSnapshot,
+  } = usePresentationSession({ sessionId, urlToken: search.t });
 
   if (fatalError) {
     return (
@@ -79,6 +85,19 @@ export function PresentationPage() {
           <span className={styles.countdown}>
             {Math.floor(remainingSeconds / 60)}:{String(remainingSeconds % 60).padStart(2, "0")}
           </span>
+        </div>
+      )}
+
+      {/* 随机点名横幅：持续展示被点学员，直到下一次点名或课堂结束 */}
+      {pickedParticipant && (
+        <div className={styles.pickBanner} role="status">
+          <span className={styles.pickBannerLabel}>随机点名</span>
+          <span className={styles.pickBannerName}>
+            请 {pickedParticipant.nickname || "匿名"} 回答
+          </span>
+          <span
+            className={styles.pickBannerGroup}
+          >{`第 ${pickedParticipant.groupIndex || 1} 组`}</span>
         </div>
       )}
 

@@ -53,11 +53,13 @@ import type {
   ClassroomEventBase,
   DashboardUpdatedEvent,
   ParticipantChangedEvent,
+  ParticipantPickedEvent,
 } from "../shared/types/classroom-events";
 import { buildTeacherHubConnection } from "../shared/utils/classroomHub";
 import type { ClassroomDtosDashboardDto } from "@/api/models/classroom/dtos/DashboardDto";
 import type { ClassroomDtosQuestionViewDto } from "@/api/models/classroom/dtos/QuestionViewDto";
 import { useTeacherDashboardStyles } from "./styles/teacherDashboard";
+import { useRandomPicker } from "./hooks/useRandomPicker";
 import { useSessionControl } from "./hooks/useSessionControl";
 import { useServerClockCountdown } from "../shared/hooks/useServerClockCountdown";
 import { ConnectionBadge, type ConnectionState } from "../shared/components/ConnectionBadge";
@@ -80,6 +82,12 @@ export function TeacherDashboardPage() {
   const clockOffsetRef = useRef(0);
   const seenEventIdsRef = useRef(new Set<string>());
   const lastVersionRef = useRef(0);
+
+  // 随机点名：状态由 mutation 结果与 SignalR 事件双路幂等合并（须在 SignalR effect 前声明）
+  const picker = useRandomPicker({
+    sessionId,
+    participants: dashboard?.participants ?? [],
+  });
 
   // 教师快照：初始加载 + 各类事件后重新校准均走同一查询
   const snapshotQuery = useClassSessionGetSnapshot(
@@ -217,6 +225,12 @@ export function TeacherDashboardPage() {
         });
       });
 
+      // 随机点名：更新点名结果（与本人点名的 mutation 结果幂等合并）
+      connection.on(ClassroomClientMethods.ParticipantPicked, (evt: ParticipantPickedEvent) => {
+        if (!check(evt)) return;
+        picker.applyEvent(evt);
+      });
+
       // 课堂/题目生命周期事件：快照重新校准（含 currentQuestion 状态）
       const resync = (evt: ClassroomEventBase) => {
         if (!check(evt)) return;
@@ -236,7 +250,7 @@ export function TeacherDashboardPage() {
       cancelled = true;
       if (conn) void conn.stop().catch(() => {});
     };
-  }, [sessionId, refreshSnapshot]);
+  }, [sessionId, refreshSnapshot, picker.applyEvent]);
 
   // 当前题倒计时（服务端时钟校正）
   const remainingSeconds = useServerClockCountdown(
@@ -454,7 +468,7 @@ export function TeacherDashboardPage() {
             correctAnswer={snapshot.currentQuestion?.correctAnswer}
             explanation={snapshot.currentQuestion?.explanation}
           />
-          <ParticipantsCard participants={dashboard?.participants ?? []} />
+          <ParticipantsCard participants={dashboard?.participants ?? []} picker={picker} />
           <GroupStatisticsCard dashboard={dashboard} />
         </div>
         <div className={styles.mainCol}>

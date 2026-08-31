@@ -29,6 +29,7 @@
     "Classroom:NoNextQuestion": "没有更多题目了",
     "Classroom:VersionConflict": "课堂版本冲突，请刷新快照后重试",
     "Classroom:RateLimited": "请求过于频繁，请稍后再试",
-    "Classroom:InvalidPresentationToken": "投屏令牌无效或已过期"
+    "Classroom:InvalidPresentationToken": "投屏令牌无效或已过期",
+    "Classroom:NoParticipantsToPick": "没有可抽取的学员（可能均离线或已被本轮点名排除）"
   }
 }

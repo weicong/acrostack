@@ -30,6 +30,9 @@ public interface IClassroomClient
     /// <summary>驾驶舱统计更新（仅教师组；合并窗口推送）。</summary>
     Task DashboardUpdated(DashboardUpdatedEvent evt);
 
+    /// <summary>教师随机点名（全体组：教师高亮/投屏横幅/被选中学员提醒）。</summary>
+    Task ParticipantPicked(ParticipantPickedEvent evt);
+
     /// <summary>课堂结束（全体组）。</summary>
     Task ClassroomEnded(ClassroomEndedEvent evt);
 }
