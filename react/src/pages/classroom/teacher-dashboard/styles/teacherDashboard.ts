@@ -139,6 +139,31 @@ export const useTeacherDashboardStyles = makeStyles({
     alignItems: "center",
     gap: tokens.spacingVerticalXS,
   },
+  // 倒计时/题号大字：两种形态等高（题号形态不含进度条，
+  // 以透明占位轨道填充同一槽位，避免状态切换时 Hero 高度跳动）
+  heroCountdown: {
+    fontSize: tokens.fontSizeHero900,
+    fontWeight: tokens.fontWeightBold,
+    fontVariantNumeric: "tabular-nums",
+    lineHeight: 1,
+    color: "#ffffff",
+    textShadow: "0 0 26px rgba(122, 82, 236, 0.7)",
+  },
+  countdownTrack: {
+    width: "240px",
+    maxWidth: "60vw",
+    height: "6px",
+    borderRadius: tokens.borderRadiusCircular,
+    background: "rgba(255, 255, 255, 0.18)",
+    overflow: "hidden",
+  },
+  // 题号形态的隐形轨道占位（与 countdownTrack 同尺寸，仅不可见）
+  countdownTrackGhost: {
+    width: "240px",
+    maxWidth: "60vw",
+    height: "6px",
+    visibility: "hidden",
+  },
   heroRight: {
     display: "flex",
     alignItems: "center",
@@ -192,14 +217,6 @@ export const useTeacherDashboardStyles = makeStyles({
     transform: "scale(1.25)",
     boxShadow: "0 0 0 4px rgba(255, 255, 255, 0.22)",
   },
-  heroCountdown: {
-    fontSize: tokens.fontSizeHero900,
-    fontWeight: tokens.fontWeightBold,
-    fontVariantNumeric: "tabular-nums",
-    lineHeight: 1,
-    color: "#ffffff",
-    textShadow: "0 0 26px rgba(122, 82, 236, 0.7)",
-  },
   heroCountdownDanger: {
     color: "#ffb3b3",
     textShadow: "0 0 20px rgba(255, 99, 99, 0.8)",
@@ -207,14 +224,6 @@ export const useTeacherDashboardStyles = makeStyles({
     animationDuration: "1s",
     animationTimingFunction: "ease-in-out",
     animationIterationCount: "infinite",
-  },
-  countdownTrack: {
-    width: "240px",
-    maxWidth: "60vw",
-    height: "6px",
-    borderRadius: tokens.borderRadiusCircular,
-    background: "rgba(255, 255, 255, 0.18)",
-    overflow: "hidden",
   },
   countdownFill: {
     height: "100%",
@@ -318,11 +327,33 @@ export const useTeacherDashboardStyles = makeStyles({
       whiteSpace: "nowrap",
     },
   },
+  // busy 标签：文字隐形占位 + Spinner 绝对居中覆盖，
+  // 按钮 busy 切换时宽度保持不变（防控制条抖动）
+  busyLabel: {
+    position: "relative",
+    display: "inline-flex",
+    justifyContent: "center",
+  },
+  busyLabelGhost: {
+    visibility: "hidden",
+  },
+  busyLabelSpinner: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+  },
   // 危险操作（结束课堂）：secondary 外观 + 红色前景
   dangerButton: {
     color: tokens.colorPaletteRedForeground1,
     ":hover": { color: tokens.colorPaletteRedForeground2 },
     ":active": { color: tokens.colorPaletteRedForeground2 },
+    // 禁用时清除悬停/按下反馈：disabled 伪类优先级高于 :hover/:active
+    ":disabled": {
+      color: tokens.colorNeutralForegroundDisabled,
+      ":hover": { color: tokens.colorNeutralForegroundDisabled },
+      ":active": { color: tokens.colorNeutralForegroundDisabled },
+    },
   },
 
   // ── 实时统计 ──────────────────────────────────────────────

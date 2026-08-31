@@ -8,6 +8,7 @@
  * 浅色浮层壳由父级 heroControlsPanel 提供，本组件只负责控制项本身。
  */
 import { useState, type ReactElement } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import {
   Input,
   Menu,
@@ -29,6 +30,7 @@ import {
 } from "@fluentui/react-components";
 import {
   ArrowClockwise20Regular,
+  ArrowLeft20Regular,
   ArrowNext20Regular,
   CheckmarkCircle20Regular,
   DoorArrowLeft20Regular,
@@ -38,6 +40,7 @@ import {
 } from "@fluentui/react-icons";
 import type { SessionControl } from "../hooks/useSessionControl";
 import { useTeacherDashboardStyles } from "../styles/teacherDashboard";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 
 interface ControlsCardProps {
   control: SessionControl;
@@ -81,9 +84,28 @@ function ControlOverflowMenu({ items }: { items: ControlButtonElement[] }) {
   );
 }
 
+/** busy 标签：文字隐形占位 + Spinner 居中覆盖，按钮宽度在 busy 切换时保持稳定。 */
+function BusyLabel({ busy, label }: { busy: boolean; label: string }) {
+  const styles = useTeacherDashboardStyles();
+  if (!busy) {
+    return <>{label}</>;
+  }
+  return (
+    <span className={styles.busyLabel}>
+      <span className={styles.busyLabelGhost} aria-hidden="true">
+        {label}
+      </span>
+      <Spinner size="tiny" className={styles.busyLabelSpinner} />
+    </span>
+  );
+}
+
 export function ControlsCard({ control }: ControlsCardProps) {
   const styles = useTeacherDashboardStyles();
+  const navigate = useNavigate();
   const [durationText, setDurationText] = useState("60");
+  // 结束课堂是不可逆操作：先弹确认再执行
+  const [confirmFinish, setConfirmFinish] = useState(false);
   const duration = Number.parseInt(durationText, 10);
   const nextDuration = Number.isFinite(duration) && duration >= 1 ? duration : undefined;
   const { busyAction } = control;
@@ -139,6 +161,14 @@ export function ControlsCard({ control }: ControlsCardProps) {
   return (
     <div className={styles.controls}>
       <Toolbar aria-label="课堂流程控制" className={styles.controlsToolbar}>
+        {/* 返回列表：固定项（不参与溢出折叠），导航出口与流程控制同排省一行 */}
+        <Tooltip content="返回课堂列表" relationship="label">
+          <ToolbarButton
+            icon={<ArrowLeft20Regular />}
+            onClick={() => void navigate({ to: "/classroom/sessions" })}
+          />
+        </Tooltip>
+        <ToolbarDivider />
         <Overflow>
           <div className={styles.controlsInner}>
             <OverflowItem id="start" groupId="flow">
@@ -149,11 +179,10 @@ export function ControlsCard({ control }: ControlsCardProps) {
                 disabled={startDisabled}
                 onClick={startAction}
               >
-                {busyAction === "start" || busyAction === "restart" ? (
-                  <Spinner size="tiny" />
-                ) : (
-                  startLabel
-                )}
+                <BusyLabel
+                  busy={busyAction === "start" || busyAction === "restart"}
+                  label={startLabel}
+                />
               </ToolbarButton>
             </OverflowItem>
             <OverflowDivider groupId="next">
@@ -184,7 +213,7 @@ export function ControlsCard({ control }: ControlsCardProps) {
                     disabled={!control.canNext || busy || nextDuration === undefined}
                     onClick={() => void control.runNext(nextDuration)}
                   >
-                    {busyAction === "next" ? <Spinner size="tiny" /> : "下一题"}
+                    <BusyLabel busy={busyAction === "next"} label="下一题" />
                   </ToolbarButton>
                 </Tooltip>
               </div>
@@ -212,7 +241,7 @@ export function ControlsCard({ control }: ControlsCardProps) {
                 disabled={!control.canPublishAnswer || busy}
                 onClick={() => void control.runPublishAnswer()}
               >
-                {busyAction === "publishAnswer" ? <Spinner size="tiny" /> : "公布正确答案"}
+                <BusyLabel busy={busyAction === "publishAnswer"} label="公布正确答案" />
               </ToolbarButton>
             </OverflowItem>
             <ControlOverflowMenu items={menuItems} />
@@ -226,11 +255,26 @@ export function ControlsCard({ control }: ControlsCardProps) {
           icon={<DoorArrowLeft20Regular />}
           className={styles.dangerButton}
           disabled={!control.canFinish || busy}
-          onClick={() => void control.runFinish()}
+          onClick={() => setConfirmFinish(true)}
         >
-          {busyAction === "finish" ? <Spinner size="tiny" /> : "结束课堂"}
+          <BusyLabel busy={busyAction === "finish"} label="结束课堂" />
         </ToolbarButton>
       </Toolbar>
+
+      <ConfirmDialog
+        open={confirmFinish}
+        onOpenChange={setConfirmFinish}
+        title="结束课堂？"
+        description="结束后学员将无法继续答题，课堂进入已结束状态且不可恢复。"
+        confirmLabel="结束课堂"
+        cancelLabel="取消"
+        variant="destructive"
+        isPending={busyAction === "finish"}
+        onConfirm={() => {
+          setConfirmFinish(false);
+          void control.runFinish();
+        }}
+      />
     </div>
   );
 }

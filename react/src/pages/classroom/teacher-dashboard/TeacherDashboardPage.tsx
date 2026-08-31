@@ -427,6 +427,8 @@ export function TeacherDashboardPage() {
                 <span className={styles.heroCountdown}>
                   第 {currentQuestionNumber} / {questionCount} 题
                 </span>
+                {/* 隐形轨道占位：与倒计时形态等高，避免切换时 Hero 高度跳动 */}
+                <div className={styles.countdownTrackGhost} aria-hidden="true" />
                 <span className={styles.heroCountdownLabel}>
                   {classSessionStatusLabel[status] ?? "课堂"}
                 </span>
