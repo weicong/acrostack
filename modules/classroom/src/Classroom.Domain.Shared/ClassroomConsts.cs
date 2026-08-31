@@ -41,4 +41,7 @@ public static class ClassroomConsts
 
     /** 加入课堂接口每 IP 限流（次/分钟）。需容纳单课堂约 100 名学员共用同一出口 IP（校园 WiFi）集中加入，并留出重试/重连余量 */
     public const int MaxJoinsPerMinute = 200;
+
+    /** 学习小组默认每组人数：加入时按当时人数顺序分配，学习小组1、学习小组2 依次编号 */
+    public const int DefaultGroupSize = 5;
 }

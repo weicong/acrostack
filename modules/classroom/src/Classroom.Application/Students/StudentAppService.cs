@@ -88,7 +88,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
 
             await _onlineTracker.MarkSeenAsync(sessionId, payload.ParticipantId!.Value, payload.TenantId);
 
-            var snapshot = await BuildSnapshotAsync(session, payload);
+            var snapshot = await BuildSnapshotAsync(session, payload, participant?.GroupIndex ?? 0);
 
             return snapshot;
         }
@@ -332,7 +332,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         return payload;
     }
 
-    private async Task<StudentSnapshotDto> BuildSnapshotAsync(ClassSession session, ClassroomTokenPayload payload)
+    private async Task<StudentSnapshotDto> BuildSnapshotAsync(ClassSession session, ClassroomTokenPayload payload, int groupIndex)
     {
         var serverNow = DateTimeOffset.UtcNow;
 
@@ -403,6 +403,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
             Explanation = explanation,
             PublishedOptionCounts = publishedOptionCounts,
             SubmittedCount = submittedCount,
+            GroupIndex = groupIndex,
         };
     }
 

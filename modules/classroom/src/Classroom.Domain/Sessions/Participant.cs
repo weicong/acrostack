@@ -18,6 +18,9 @@ public class Participant : FullAuditedAggregateRoot<Guid>, IMultiTenant
 
     public string? StudentNumber { get; private set; }
 
+    /// <summary>学习小组编号（1 起）。加入时按当时人数顺序分配：已有人数 / 每组人数 + 1。</summary>
+    public int GroupIndex { get; private set; }
+
     public DateTimeOffset JoinedAt { get; private set; }
 
     public DateTimeOffset LastSeenAt { get; private set; }
@@ -28,12 +31,13 @@ public class Participant : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
     }
 
-    public Participant(Guid id, Guid sessionId, string nickname, string? studentNumber, DateTimeOffset joinedAt, Guid? tenantId = null)
+    public Participant(Guid id, Guid sessionId, string nickname, string? studentNumber, int groupIndex, DateTimeOffset joinedAt, Guid? tenantId = null)
         : base(id)
     {
         SessionId = sessionId;
         Nickname = nickname;
         StudentNumber = studentNumber;
+        GroupIndex = groupIndex;
         JoinedAt = joinedAt;
         LastSeenAt = joinedAt;
         OnlineStatus = OnlineStatus.Online;

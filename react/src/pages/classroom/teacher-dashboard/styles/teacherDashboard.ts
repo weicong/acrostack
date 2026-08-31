@@ -604,6 +604,45 @@ export const useTeacherDashboardStyles = makeStyles({
     marginLeft: "auto",
   },
 
+  // ── 学习小组统计 ──────────────────────────────────────────────
+  groupList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalXS,
+  },
+  groupRow: {
+    display: "grid",
+    gridTemplateColumns: "104px 72px 1fr 96px 64px",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    padding: tokens.spacingVerticalXXS + " " + tokens.spacingHorizontalXXS,
+    borderRadius: tokens.borderRadiusMedium,
+    ":hover": { background: tokens.colorNeutralBackground3 },
+  },
+  groupName: { fontWeight: tokens.fontWeightSemibold },
+  groupBarTrack: {
+    height: "12px",
+    borderRadius: tokens.borderRadiusCircular,
+    background: tokens.colorNeutralBackground4,
+    boxShadow: `inset 0 1px 2px rgba(0, 0, 0, 0.06)`,
+    overflow: "hidden",
+    minWidth: "40px",
+  },
+  groupBar: {
+    height: "100%",
+    borderRadius: tokens.borderRadiusCircular,
+    background: `linear-gradient(90deg, ${tokens.colorBrandBackground2}, ${tokens.colorBrandBackground})`,
+    transitionProperty: "width",
+    transitionDuration: "500ms",
+    transitionTimingFunction: "ease-out",
+  },
+  groupSubmitted: { fontVariantNumeric: "tabular-nums" },
+  groupRate: { color: tokens.colorNeutralForeground3, textAlign: "right" },
+  groupRateValue: {
+    color: tokens.colorPaletteGreenForeground1,
+    fontWeight: tokens.fontWeightSemibold,
+  },
+
   // ── 答题排行榜 ──────────────────────────────────────────────
   lbTitleIcon: {
     color: tokens.colorBrandForeground1,

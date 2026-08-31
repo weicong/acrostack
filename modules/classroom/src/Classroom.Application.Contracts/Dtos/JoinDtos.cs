@@ -29,5 +29,8 @@ public class JoinResultDto
 
     public string Nickname { get; set; } = default!;
 
+    /// <summary>分配到的学习小组编号（1 起，每组默认 5 人顺序分配）。</summary>
+    public int GroupIndex { get; set; }
+
     public ClassSessionStatus SessionStatus { get; set; }
 }

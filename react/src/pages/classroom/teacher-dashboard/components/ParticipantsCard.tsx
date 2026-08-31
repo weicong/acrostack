@@ -86,6 +86,9 @@ function ParticipantRow({ participant }: { participant: ClassroomDtosParticipant
           ))}
       </div>
       <div className={styles.participantBottom}>
+        <Badge appearance="ghost" color="brand">
+          {`组${participant.groupIndex ?? 1}`}
+        </Badge>
         <Badge
           appearance="outline"
           color={answerState === 2 ? "success" : answerState === 1 ? "informative" : "subtle"}

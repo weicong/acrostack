@@ -1,6 +1,7 @@
 /* oxlint-disable */
 
 import type { ClassroomClassSessionStatus } from "../ClassSessionStatus";
+import type { ClassroomDtosGroupStatisticsDto } from "./GroupStatisticsDto";
 import type { ClassroomDtosParticipantStateDto } from "./ParticipantStateDto";
 import type { ClassroomDtosQuestionStatisticsDto } from "./QuestionStatisticsDto";
 
@@ -59,6 +60,11 @@ export type ClassroomDtosDashboardDto = {
    */
   statistics?: ClassroomDtosQuestionStatisticsDto;
   participants?: ClassroomDtosParticipantStateDto[] | null;
+  /**
+   * @description 学习小组统计（按组聚合当前题的提交与正确率）。
+   * @type array | undefined
+   */
+  groupStatistics?: ClassroomDtosGroupStatisticsDto[] | null;
   /**
    * @description
    * Format: `date-time`

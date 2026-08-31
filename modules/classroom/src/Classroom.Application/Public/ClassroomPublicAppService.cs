@@ -78,7 +78,10 @@ public class ClassroomPublicAppService : ClassroomAppServiceBase, IClassroomPubl
             throw new BusinessException(ClassroomErrorCodes.ClassroomCodeExpired);
         }
 
-        // 在课堂所属租户内创建 Participant
+        // 在课堂所属租户内创建 Participant，并按当时人数顺序分配学习小组（每组 5 人）：
+        // 学习小组1、学习小组2 依次编号。并发加入时组内人数最坏偏差 1 人（SQLite 单写，可接受）
+        var memberCount = await _participantRepository.CountAsync(p => p.SessionId == session.Id);
+        var groupIndex = (int)(memberCount / ClassroomConsts.DefaultGroupSize) + 1;
         Participant participant;
         using (CurrentTenant.Change(session.TenantId))
         {
@@ -87,6 +90,7 @@ public class ClassroomPublicAppService : ClassroomAppServiceBase, IClassroomPubl
                 session.Id,
                 input.Nickname.Trim(),
                 string.IsNullOrWhiteSpace(input.StudentNumber) ? null : input.StudentNumber.Trim(),
+                groupIndex,
                 DateTimeOffset.UtcNow,
                 session.TenantId);
 
@@ -119,6 +123,7 @@ public class ClassroomPublicAppService : ClassroomAppServiceBase, IClassroomPubl
             AccessToken = issuance.AccessToken,
             ExpiresInSeconds = issuance.ExpiresInSeconds,
             Nickname = participant.Nickname,
+            GroupIndex = participant.GroupIndex,
             SessionStatus = session.Status,
         };
     }

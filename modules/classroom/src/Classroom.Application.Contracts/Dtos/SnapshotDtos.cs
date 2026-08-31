@@ -81,6 +81,9 @@ public class StudentSnapshotDto
 
     /// <summary>已提交人数。选项分布的计数是"人次"（多选一人贡献多个键），提交人数不能由 counts 求和得出。</summary>
     public int SubmittedCount { get; set; }
+
+    /// <summary>学员所在学习小组编号（1 起）。</summary>
+    public int GroupIndex { get; set; }
 }
 
 public class MyAnswerDto

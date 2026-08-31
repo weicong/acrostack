@@ -62,4 +62,11 @@ export type ClassroomDtosStudentSnapshotDto = {
    * @type integer | undefined
    */
   submittedCount?: number;
+  /**
+   * @description 学员所在学习小组编号（1 起）。
+   *
+   * Format: `int32`
+   * @type integer | undefined
+   */
+  groupIndex?: number;
 };

@@ -81,7 +81,10 @@ export function StudentJoinPage() {
         storedAt: Date.now(),
       });
 
-      dispatchToast("加入成功", { intent: "success" });
+      const groupLabel = result.groupIndex ? `学习小组${result.groupIndex}` : null;
+      dispatchToast(groupLabel ? `加入成功，已分配至${groupLabel}` : "加入成功", {
+        intent: "success",
+      });
       void navigate({
         to: "/student/sessions/$sessionId",
         params: { sessionId: result.sessionId! },

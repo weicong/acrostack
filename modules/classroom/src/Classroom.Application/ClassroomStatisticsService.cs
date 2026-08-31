@@ -85,6 +85,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
                 ParticipantId = p.Id,
                 Nickname = p.Nickname,
                 StudentNumber = p.StudentNumber,
+                GroupIndex = p.GroupIndex,
                 OnlineStatus = isOnline ? OnlineStatus.Online : OnlineStatus.Offline,
                 LastSeenAt = p.LastSeenAt,
                 AnswerState = answer is null
@@ -108,6 +109,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
             TotalParticipants = participants.Count,
             Statistics = statistics,
             Participants = participantStates,
+            GroupStatistics = BuildGroupStatistics(participantStates, answers),
             LastStatisticsUpdatedAt = DateTimeOffset.UtcNow,
             ServerTime = DateTimeOffset.UtcNow,
         };
@@ -133,12 +135,43 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
         return BuildStatistics(participantCount, sessionQuestion, answers);
     }
 
+    /// <summary>
+    /// 按学习小组聚合当前题数据：人数/在线/已提交/正确率（已判分口径）。
+    /// 组编号来自学员加入时的顺序分配；无成员判分数据时 CorrectRate 为 null。
+    /// </summary>
+    private static List<GroupStatisticsDto> BuildGroupStatistics(
+        List<ParticipantStateDto> participantStates,
+        List<AnswerRecord> answers)
+    {
+        var answersByParticipant = answers.ToDictionary(a => a.ParticipantId);
+        return participantStates
+            .GroupBy(p => p.GroupIndex)
+            .OrderBy(g => g.Key)
+            .Select(g =>
+            {
+                var members = g.ToList();
+                var graded = members
+                    .Where(m => m.IsCorrect.HasValue)
+                    .ToList();
+                return new GroupStatisticsDto
+                {
+                    GroupIndex = g.Key,
+                    MemberCount = members.Count,
+                    OnlineCount = members.Count(m => m.OnlineStatus == OnlineStatus.Online),
+                    SubmittedCount = members.Count(m => m.AnswerState == ParticipantAnswerState.Submitted),
+                    CorrectRate = graded.Count > 0
+                        ? (double)graded.Count(m => m.IsCorrect!.Value) / graded.Count
+                        : null,
+                };
+            })
+            .ToList();
+    }
+
     private static QuestionStatisticsDto BuildStatistics(
         int totalParticipants,
         SessionQuestion sessionQuestion,
         List<AnswerRecord> answers)
-    {
-        var submittedCount = answers.Count;
+    {        var submittedCount = answers.Count;
         var graded = answers.Where(a => a.IsCorrect.HasValue).ToList();
 
         var optionCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);

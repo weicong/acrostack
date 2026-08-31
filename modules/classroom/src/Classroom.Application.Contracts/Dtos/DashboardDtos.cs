@@ -25,6 +25,9 @@ public class ParticipantStateDto
 
     public string? StudentNumber { get; set; }
 
+    /// <summary>学习小组编号（1 起）。</summary>
+    public int GroupIndex { get; set; }
+
     public OnlineStatus OnlineStatus { get; set; }
 
     public DateTimeOffset LastSeenAt { get; set; }
@@ -37,6 +40,25 @@ public class ParticipantStateDto
 
     /// <summary>客观题判分（公布答案前后均对教师可见）。</summary>
     public bool? IsCorrect { get; set; }
+}
+
+/// <summary>学习小组统计（教师驾驶舱；按加入顺序自动分组，每组默认 5 人）。</summary>
+public class GroupStatisticsDto
+{
+    /// <summary>小组编号（1 起）。</summary>
+    public int GroupIndex { get; set; }
+
+    /// <summary>组内人数。</summary>
+    public int MemberCount { get; set; }
+
+    /// <summary>组内在线人数。</summary>
+    public int OnlineCount { get; set; }
+
+    /// <summary>当前题已提交人数。</summary>
+    public int SubmittedCount { get; set; }
+
+    /// <summary>当前题组内正确率（0~1，已判分口径：正确数/已判分数；无人判分为 null）。</summary>
+    public double? CorrectRate { get; set; }
 }
 
 /// <summary>当前题统计（教师驾驶舱 + 投屏端匿名数据）。</summary>
@@ -91,6 +113,9 @@ public class DashboardDto
     public QuestionStatisticsDto? Statistics { get; set; }
 
     public List<ParticipantStateDto> Participants { get; set; } = new();
+
+    /// <summary>学习小组统计（按组聚合当前题的提交与正确率）。</summary>
+    public List<GroupStatisticsDto> GroupStatistics { get; set; } = new();
 
     public DateTimeOffset LastStatisticsUpdatedAt { get; set; }
 

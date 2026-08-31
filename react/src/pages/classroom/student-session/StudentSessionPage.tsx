@@ -130,7 +130,9 @@ export function StudentSessionPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <Text size={400} weight="semibold">
-          {stored?.nickname ? `${stored.nickname} · ` : ""}课堂答题
+          {[stored?.nickname, session.groupIndex ? `学习小组${session.groupIndex}` : null]
+            .filter(Boolean)
+            .join(" · ") || "课堂答题"}
         </Text>
         <div className={styles.viewTabs}>
           <Button
