@@ -201,20 +201,6 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         return await MapToDtoAsync(session);
     }
 
-    public async Task<ClassSessionDto> PublishStatisticsAsync(Guid id, Guid questionId)
-    {
-        var session = await GetAuthorizedSessionAsync(id);
-        var sessionQuestion = await GetSessionQuestionAsync(session.Id, questionId);
-
-        sessionQuestion.PublishStatistics(DateTimeOffset.UtcNow);
-        session.BumpVersionOnPublish();
-        await _sessionQuestionRepository.UpdateAsync(sessionQuestion);
-        await _sessionRepository.UpdateAsync(session);
-
-        await NotifyStatisticsAfterCommit(session, sessionQuestion);
-        return await MapToDtoAsync(session);
-    }
-
     public async Task<ClassSessionDto> PublishAnswerAsync(Guid id, Guid questionId)
     {
         var session = await GetAuthorizedSessionAsync(id);
@@ -504,35 +490,6 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         }
 
         await RegisterOnCompleted(() => _notifier.BroadcastAsync(sessionId, tenantId, events));
-    }
-
-    /// <summary>公布统计：提交后重新计算统计并随事件推送（匿名选项分布）。</summary>
-    private async Task NotifyStatisticsAfterCommit(ClassSession session, SessionQuestion sessionQuestion)
-    {
-        var evt = new StatisticsPublishedEvent
-        {
-            SessionId = session.Id,
-            Version = session.Version,
-            ServerTime = DateTimeOffset.UtcNow,
-            EventId = Guid.NewGuid(),
-            SessionQuestionId = sessionQuestion.Id,
-        };
-
-        var sessionId = session.Id;
-        var sessionQuestionId = sessionQuestion.Id;
-        var tenantId = session.TenantId;
-
-        RegisterOnCompleted(async () =>
-        {
-            // 事务提交后从数据库重新校准统计，确保公布的是最终数据
-            using var scope = _serviceProvider.CreateScope();
-            var statistics = scope.ServiceProvider.GetRequiredService<IClassroomStatisticsService>();
-            var recalibrated = await statistics.RecalibrateAsync(sessionId, sessionQuestionId, tenantId);
-            evt.OptionCounts = recalibrated.OptionCounts;
-            evt.SubmittedCount = recalibrated.SubmittedCount;
-            evt.TotalParticipants = recalibrated.TotalParticipants;
-            await _notifier.BroadcastAsync(sessionId, tenantId, evt);
-        });
     }
 
     private async Task RegisterOnCompleted(Func<Task> callback)

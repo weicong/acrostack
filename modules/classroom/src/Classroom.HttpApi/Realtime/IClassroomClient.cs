@@ -18,10 +18,7 @@ public interface IClassroomClient
     /// <summary>题目截止（全体组）。</summary>
     Task QuestionClosed(QuestionClosedEvent evt);
 
-    /// <summary>公布匿名统计（全体组）。</summary>
-    Task StatisticsPublished(StatisticsPublishedEvent evt);
-
-    /// <summary>公布正确答案与解析（全体组）。</summary>
+    /// <summary>公布正确答案与解析（全体组；匿名统计随答案一并可见）。</summary>
     Task AnswerPublished(AnswerPublishedEvent evt);
 
     /// <summary>学员状态增量变化（仅教师组）。</summary>

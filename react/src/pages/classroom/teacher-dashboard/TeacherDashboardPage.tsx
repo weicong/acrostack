@@ -239,7 +239,6 @@ export function TeacherDashboardPage() {
       connection.on(ClassroomClientMethods.ClassroomStarted, resync);
       connection.on(ClassroomClientMethods.QuestionOpened, resync);
       connection.on(ClassroomClientMethods.QuestionClosed, resync);
-      connection.on(ClassroomClientMethods.StatisticsPublished, resync);
       connection.on(ClassroomClientMethods.AnswerPublished, resync);
       connection.on(ClassroomClientMethods.ClassroomEnded, resync);
     }

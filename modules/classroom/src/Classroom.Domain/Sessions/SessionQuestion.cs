@@ -85,20 +85,14 @@ public class SessionQuestion : FullAuditedAggregateRoot<Guid>, IMultiTenant
         return true;
     }
 
-    /// <summary>公布匿名统计：Closed/StatisticsPublished -> StatisticsPublished（幂等但版本号由课堂聚合负责）。</summary>
-    public void PublishStatistics(DateTimeOffset now)
-    {
-        SessionQuestionStateMachine.EnsureTransition(this, SessionQuestionStatus.StatisticsPublished);
-        Status = SessionQuestionStatus.StatisticsPublished;
-        StatisticsPublishedAt = now;
-    }
-
-    /// <summary>公布正确答案与解析：Closed/StatisticsPublished -> AnswerPublished。</summary>
+    /// <summary>公布正确答案与解析（同时附带匿名统计：Closed -> AnswerPublished）。</summary>
     public void PublishAnswer(DateTimeOffset now)
     {
         SessionQuestionStateMachine.EnsureTransition(this, SessionQuestionStatus.AnswerPublished);
         Status = SessionQuestionStatus.AnswerPublished;
         AnswerPublishedAt = now;
+        // 答案公布时统计一并可见（学员端/投屏端据此展示答题分布）
+        StatisticsPublishedAt = now;
     }
 
     /// <summary>题目当前是否可接收提交（Open 且未到 EndsAt）。</summary>

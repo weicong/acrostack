@@ -213,24 +213,12 @@ public class SessionQuestionTests
         var question = CreateQuestion();
         question.Open(Now, 60);
         question.Close(Now.AddSeconds(60));
-        question.PublishStatistics(Now.AddSeconds(70));
         question.PublishAnswer(Now.AddSeconds(80));
 
         Assert.Equal(SessionQuestionStatus.AnswerPublished, question.Status);
-        Assert.Equal(Now.AddSeconds(70), question.StatisticsPublishedAt);
+        // 公布答案时统计一并可见
+        Assert.Equal(Now.AddSeconds(80), question.StatisticsPublishedAt);
         Assert.Equal(Now.AddSeconds(80), question.AnswerPublishedAt);
-    }
-
-    [Fact]
-    public void Closed_CanSkipStatistics_And_PublishAnswerDirectly()
-    {
-        var question = CreateQuestion();
-        question.Open(Now, 60);
-        question.Close(Now.AddSeconds(60));
-
-        question.PublishAnswer(Now.AddSeconds(70));
-
-        Assert.Equal(SessionQuestionStatus.AnswerPublished, question.Status);
     }
 
     [Theory]
@@ -239,7 +227,7 @@ public class SessionQuestionTests
     [InlineData(SessionQuestionStatus.Open, SessionQuestionStatus.Open)]
     [InlineData(SessionQuestionStatus.Open, SessionQuestionStatus.AnswerPublished)]
     [InlineData(SessionQuestionStatus.AnswerPublished, SessionQuestionStatus.Open)]
-    [InlineData(SessionQuestionStatus.AnswerPublished, SessionQuestionStatus.StatisticsPublished)]
+    [InlineData(SessionQuestionStatus.Closed, SessionQuestionStatus.Closed)]
     public void IllegalQuestionTransitions_AreRejected(SessionQuestionStatus from, SessionQuestionStatus to)
     {
         Assert.False(SessionQuestionStateMachine.CanTransition(from, to));
@@ -251,7 +239,6 @@ public class SessionQuestionTests
         var question = CreateQuestion();
         question.Open(Now, 60);
         question.Close(Now.AddSeconds(60));
-        question.PublishStatistics(Now.AddSeconds(70));
         question.PublishAnswer(Now.AddSeconds(80));
 
         question.Reset();

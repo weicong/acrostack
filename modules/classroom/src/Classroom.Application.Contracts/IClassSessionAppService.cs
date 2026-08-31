@@ -27,10 +27,7 @@ public interface IClassSessionAppService : IApplicationService
     /// <summary>截止当前题（Answering -> Explaining）。</summary>
     Task<ClassSessionDto> CloseQuestionAsync(Guid id, Guid questionId);
 
-    /// <summary>公布匿名统计（题目 -> StatisticsPublished）。</summary>
-    Task<ClassSessionDto> PublishStatisticsAsync(Guid id, Guid questionId);
-
-    /// <summary>公布正确答案与解析（题目 -> AnswerPublished）。</summary>
+    /// <summary>公布正确答案与匿名统计（题目 -> AnswerPublished）。</summary>
     Task<ClassSessionDto> PublishAnswerAsync(Guid id, Guid questionId);
 
     /// <summary>切换下一题并开放（Explaining/Waiting -> Answering）。</summary>

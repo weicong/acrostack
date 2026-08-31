@@ -9,7 +9,6 @@ export const ClassroomClientMethods = {
   ClassroomStarted: "ClassroomStarted",
   QuestionOpened: "QuestionOpened",
   QuestionClosed: "QuestionClosed",
-  StatisticsPublished: "StatisticsPublished",
   AnswerPublished: "AnswerPublished",
   ParticipantChanged: "ParticipantChanged",
   DashboardUpdated: "DashboardUpdated",
@@ -26,12 +25,11 @@ export const ClassSessionStatusValue = {
   Finished: 40,
 } as const;
 
-/** 题目状态枚举值。 */
+/** 题目状态枚举值（公布答案时匿名统计一并可见）。 */
 export const SessionQuestionStatusValue = {
   Pending: 0,
   Open: 10,
   Closed: 20,
-  StatisticsPublished: 30,
   AnswerPublished: 40,
 } as const;
 

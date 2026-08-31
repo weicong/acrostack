@@ -30,7 +30,6 @@ import {
 import {
   ArrowClockwise20Regular,
   ArrowNext20Regular,
-  ChartMultiple20Regular,
   CheckmarkCircle20Regular,
   DoorArrowLeft20Regular,
   MoreHorizontal20Regular,
@@ -125,16 +124,6 @@ export function ControlsCard({ control }: ControlsCardProps) {
         截止当前题
       </ToolbarButton>
     </ControlMenuItem>,
-    <ControlMenuItem key="publishStats">
-      <ToolbarButton
-        id="publishStats"
-        icon={<ChartMultiple20Regular />}
-        disabled={!control.canPublishStatistics || busy}
-        onClick={() => void control.runPublishStatistics()}
-      >
-        公布匿名统计
-      </ToolbarButton>
-    </ControlMenuItem>,
     <ControlMenuItem key="publishAnswer">
       <ToolbarButton
         id="publishAnswer"
@@ -216,16 +205,6 @@ export function ControlsCard({ control }: ControlsCardProps) {
             <OverflowDivider groupId="publish">
               <ToolbarDivider />
             </OverflowDivider>
-            <OverflowItem id="publishStats" groupId="publish">
-              <ToolbarButton
-                id="publishStats"
-                icon={<ChartMultiple20Regular />}
-                disabled={!control.canPublishStatistics || busy}
-                onClick={() => void control.runPublishStatistics()}
-              >
-                {busyAction === "publishStats" ? <Spinner size="tiny" /> : "公布匿名统计"}
-              </ToolbarButton>
-            </OverflowItem>
             <OverflowItem id="publishAnswer" groupId="publish">
               <ToolbarButton
                 id="publishAnswer"

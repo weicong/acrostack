@@ -50,19 +50,7 @@ public class QuestionClosedEvent : ClassroomEventBase
     public Guid SessionQuestionId { get; set; }
 }
 
-/// <summary>公布匿名统计（学员端与投屏端展示选项分布）。</summary>
-public class StatisticsPublishedEvent : ClassroomEventBase
-{
-    public Guid SessionQuestionId { get; set; }
-
-    public Dictionary<string, int> OptionCounts { get; set; } = new();
-
-    public int SubmittedCount { get; set; }
-
-    public int TotalParticipants { get; set; }
-}
-
-/// <summary>公布正确答案与解析（此前绝不下发）。</summary>
+/// <summary>公布正确答案与解析（此前绝不下发；匿名统计随答案一并可见，学员端/投屏端凭快照展示分布）。</summary>
 public class AnswerPublishedEvent : ClassroomEventBase
 {
     public Guid SessionQuestionId { get; set; }

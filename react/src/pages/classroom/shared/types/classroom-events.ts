@@ -29,13 +29,6 @@ export interface QuestionClosedEvent extends ClassroomEventBase {
   sessionQuestionId: string;
 }
 
-export interface StatisticsPublishedEvent extends ClassroomEventBase {
-  sessionQuestionId: string;
-  optionCounts: Record<string, number>;
-  submittedCount: number;
-  totalParticipants: number;
-}
-
 export interface AnswerPublishedEvent extends ClassroomEventBase {
   sessionQuestionId: string;
   correctAnswer: string;

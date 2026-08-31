@@ -17,7 +17,6 @@ import type {
   ParticipantPickedEvent,
   QuestionClosedEvent,
   QuestionOpenedEvent,
-  StatisticsPublishedEvent,
 } from "../../shared/types/classroom-events";
 import { buildClassroomTokenHubConnection } from "../../shared/utils/classroomHub";
 import { getStudentSnapshot, classroomErrorMessage } from "../../shared/utils/studentApi";
@@ -168,21 +167,6 @@ export function useStudentRealtime({
         );
       });
 
-      connection.on(ClassroomClientMethods.StatisticsPublished, (evt: StatisticsPublishedEvent) => {
-        if (!check(evt)) return;
-        setSession((s) =>
-          s
-            ? {
-                ...s,
-                version: evt.version,
-                statisticsPublished: true,
-                publishedOptionCounts: evt.optionCounts,
-                submittedCount: evt.submittedCount,
-              }
-            : s,
-        );
-      });
-
       connection.on(ClassroomClientMethods.AnswerPublished, (evt: AnswerPublishedEvent) => {
         if (!check(evt)) return;
         setSession((s) =>
@@ -196,6 +180,8 @@ export function useStudentRealtime({
               }
             : s,
         );
+        // 匿名统计随答案一并公布：拉快照补分布数据（publishedOptionCounts）
+        void refreshSnapshot();
         if (viewRef.current === "history") refreshHistory();
       });
 

@@ -1,5 +1,5 @@
 /**
- * 教师课堂控制聚合 hook：封装 7 个 Kubb mutation、busy 状态、
+ * 教师课堂控制聚合 hook：封装 6 个 Kubb mutation、busy 状态、
  * 状态机可用性标志与投屏/复制课堂码等动作。
  *
  * 前端禁用只是体验优化；服务端仍会校验状态机与权限。
@@ -10,7 +10,6 @@ import { useToastController } from "@fluentui/react-components";
 import { useClassSessionStart } from "@/api/hooks/classSession/useClassSessionStart";
 import { useClassSessionNextQuestion } from "@/api/hooks/classSession/useClassSessionNextQuestion";
 import { useClassSessionCloseQuestion } from "@/api/hooks/classSession/useClassSessionCloseQuestion";
-import { useClassSessionPublishStatistics } from "@/api/hooks/classSession/useClassSessionPublishStatistics";
 import { useClassSessionPublishAnswer } from "@/api/hooks/classSession/useClassSessionPublishAnswer";
 import { useClassSessionFinish } from "@/api/hooks/classSession/useClassSessionFinish";
 import { useClassSessionRestart } from "@/api/hooks/classSession/useClassSessionRestart";
@@ -57,7 +56,6 @@ export function useSessionControl(options: UseSessionControlOptions) {
   const startMutation = useClassSessionStart();
   const nextMutation = useClassSessionNextQuestion();
   const closeQuestionMutation = useClassSessionCloseQuestion();
-  const publishStatisticsMutation = useClassSessionPublishStatistics();
   const publishAnswerMutation = useClassSessionPublishAnswer();
   const finishMutation = useClassSessionFinish();
   const presentationTokenMutation = useClassSessionCreatePresentationToken();
@@ -86,14 +84,9 @@ export function useSessionControl(options: UseSessionControlOptions) {
     !hasOpenQuestion &&
     currentQuestionNumber < questionCount;
   const canClose = hasOpenQuestion;
-  const canPublishStatistics =
-    question !== null &&
-    (questionStatus === SessionQuestionStatusValue.Closed ||
-      questionStatus === SessionQuestionStatusValue.StatisticsPublished);
+  // 公布答案 = 同时公布匿名统计（后端 PublishAnswer 一并落 StatisticsPublishedAt）
   const canPublishAnswer =
-    question !== null &&
-    (questionStatus === SessionQuestionStatusValue.Closed ||
-      questionStatus === SessionQuestionStatusValue.StatisticsPublished);
+    question !== null && questionStatus === SessionQuestionStatusValue.Closed;
   const canFinish =
     status !== ClassSessionStatusValue.Preparing && status !== ClassSessionStatusValue.Finished;
   const canRestart = status === ClassSessionStatusValue.Finished;
@@ -116,16 +109,6 @@ export function useSessionControl(options: UseSessionControlOptions) {
     const questionId = question.questionId;
     await run("close", () =>
       closeQuestionMutation.mutateAsync({ path: { id: sessionId, questionId } }),
-    );
-  }
-
-  async function runPublishStatistics() {
-    if (!question?.questionId) return;
-    const questionId = question.questionId;
-    await run("publishStats", () =>
-      publishStatisticsMutation.mutateAsync({
-        path: { id: sessionId, questionId },
-      }),
     );
   }
 
@@ -178,14 +161,12 @@ export function useSessionControl(options: UseSessionControlOptions) {
     canStart,
     canNext,
     canClose,
-    canPublishStatistics,
     canPublishAnswer,
     canFinish,
     canRestart,
     runStart,
     runNext,
     runClose,
-    runPublishStatistics,
     runPublishAnswer,
     runFinish,
     runRestart,

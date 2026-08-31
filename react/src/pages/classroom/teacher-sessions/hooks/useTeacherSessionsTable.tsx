@@ -114,7 +114,7 @@ export function useTeacherSessionsTable(onEnterDashboard: (sessionId: string) =>
                 onEnterDashboard(info.row.original.id!);
               }}
             >
-              驾驶舱
+              打开课堂
             </Button>
           </div>
         ),

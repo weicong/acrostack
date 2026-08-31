@@ -45,8 +45,7 @@ public static class ClassSessionStateMachine
 /// 题目状态机。合法转换：
 ///   Pending -> Open
 ///   Open -> Closed
-///   Closed -> StatisticsPublished | AnswerPublished
-///   StatisticsPublished -> AnswerPublished
+///   Closed -> AnswerPublished（公布答案时匿名统计一并可见）
 /// </summary>
 public static class SessionQuestionStateMachine
 {
@@ -54,8 +53,7 @@ public static class SessionQuestionStateMachine
     {
         [SessionQuestionStatus.Pending] = new() { SessionQuestionStatus.Open },
         [SessionQuestionStatus.Open] = new() { SessionQuestionStatus.Closed },
-        [SessionQuestionStatus.Closed] = new() { SessionQuestionStatus.StatisticsPublished, SessionQuestionStatus.AnswerPublished },
-        [SessionQuestionStatus.StatisticsPublished] = new() { SessionQuestionStatus.AnswerPublished },
+        [SessionQuestionStatus.Closed] = new() { SessionQuestionStatus.AnswerPublished },
         [SessionQuestionStatus.AnswerPublished] = new(),
     };
 

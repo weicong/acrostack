@@ -123,7 +123,6 @@ export function usePresentationSession(options: UsePresentationSessionOptions) {
       conn.on(ClassroomClientMethods.ClassroomStarted, resync);
       conn.on(ClassroomClientMethods.QuestionOpened, resync);
       conn.on(ClassroomClientMethods.QuestionClosed, resync);
-      conn.on(ClassroomClientMethods.StatisticsPublished, resync);
       conn.on(ClassroomClientMethods.AnswerPublished, resync);
       conn.on(ClassroomClientMethods.ClassroomEnded, (evt: ClassroomEventBase) => {
         if (!dedupe(evt)) return;
