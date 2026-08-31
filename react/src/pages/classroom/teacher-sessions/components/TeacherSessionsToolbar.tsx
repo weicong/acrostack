@@ -48,7 +48,7 @@ export function TeacherSessionsToolbar() {
 
   return (
     <div className={styles.header}>
-      <Title3>我的课堂</Title3>
+      <Title3>课堂</Title3>
       <Dialog open={dialogOpen} onOpenChange={(_, d) => setDialogOpen(d.open)}>
         <DialogTrigger disableButtonEnhancement>
           <Button appearance="primary" icon={<Add20Regular />}>

@@ -9,7 +9,7 @@ import { UserMenu } from "./UserMenu";
 /**
  * 教师课堂布局（/classroom/*）。
  *
- * 精简教学 chrome：品牌顶栏 + 课堂导航（我的课堂/题库管理/试卷管理）+ 用户菜单，
+ * 精简教学 chrome：品牌顶栏 + 课堂导航（课堂/题库/试卷）+ 用户菜单，
  * 无侧边栏/Footer——与管理后台（AppLayout）完全分离，教师进入课堂不被管理菜单打扰。
  *
  * 全屏变体：叶子路由声明 `staticData: { fullscreen: true }`（如课堂面板
@@ -25,11 +25,11 @@ interface ClassroomNavItem {
 const NAV_ITEMS: ClassroomNavItem[] = [
   {
     value: "/classroom/sessions",
-    name: "我的课堂",
+    name: "课堂",
     requiredPolicy: "Classroom.Sessions.ViewDashboard",
   },
-  { value: "/classroom/questions", name: "题库管理", requiredPolicy: "Classroom.Questions.Manage" },
-  { value: "/classroom/quizzes", name: "试卷管理", requiredPolicy: "Classroom.Quizzes.Manage" },
+  { value: "/classroom/questions", name: "题库", requiredPolicy: "Classroom.Questions.Manage" },
+  { value: "/classroom/quizzes", name: "试卷", requiredPolicy: "Classroom.Quizzes.Manage" },
 ];
 
 const useStyles = makeStyles({

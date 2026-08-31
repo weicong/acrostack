@@ -7,7 +7,7 @@ const TeacherSessionsPage = lazyRouteComponent(
   "TeacherSessionsPage",
 );
 
-/** 我的课堂（/classroom/sessions）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
+/** 课堂（/classroom/sessions）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
 export const Route = createRoute({
   getParentRoute: () => classroomRoute,
   path: "/sessions",

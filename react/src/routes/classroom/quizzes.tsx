@@ -7,7 +7,7 @@ const QuizzesPage = lazyRouteComponent(
   "QuizzesPage",
 );
 
-/** 试卷管理（/classroom/quizzes）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
+/** 试卷（/classroom/quizzes）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
 export const Route = createRoute({
   getParentRoute: () => classroomRoute,
   path: "/quizzes",

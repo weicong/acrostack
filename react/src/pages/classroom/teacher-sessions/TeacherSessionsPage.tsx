@@ -19,7 +19,7 @@ import { useTeacherSessionsTable } from "./hooks/useTeacherSessionsTable";
 export function TeacherSessionsPage() {
   const styles = useTeacherSessionsStyles();
   const navigate = useNavigate();
-  usePageTitle("我的课堂");
+  usePageTitle("课堂");
 
   const handleEnterDashboard = useCallback(
     (sessionId: string) => {

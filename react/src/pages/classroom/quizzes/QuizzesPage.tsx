@@ -65,7 +65,7 @@ export function QuizzesPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <Title3>试卷管理</Title3>
+        <Title3>试卷</Title3>
         <Button appearance="primary" icon={<Add20Regular />} onClick={openCreate}>
           新建试卷
         </Button>

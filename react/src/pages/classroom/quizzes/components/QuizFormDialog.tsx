@@ -217,7 +217,7 @@ export function QuizFormDialog({ open, editing, actions, onClose, onSaved }: Qui
                 {pickerQuestions === null ? (
                   <Spinner size="tiny" />
                 ) : pickerQuestions.length === 0 ? (
-                  <Text size={300}>题库为空，请先到"题库管理"创建题目。</Text>
+                  <Text size={300}>题库为空，请先到"题库"创建题目。</Text>
                 ) : (
                   pickerQuestions.map((q) => (
                     <div key={q.id} className={styles.pickerRow}>

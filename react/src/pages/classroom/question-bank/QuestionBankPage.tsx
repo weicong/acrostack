@@ -27,7 +27,7 @@ import { useQuestionBankStyles } from "./styles/questionBank";
 
 export function QuestionBankPage() {
   const styles = useQuestionBankStyles();
-  usePageTitle("题库管理");
+  usePageTitle("题库");
 
   const [typeFilter, setTypeFilter] = useState<number | null>(null);
   const [keyword, setKeyword] = useState("");
@@ -75,7 +75,7 @@ export function QuestionBankPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <Title3>题库管理</Title3>
+        <Title3>题库</Title3>
         <Button appearance="primary" icon={<Add20Regular />} onClick={openCreate}>
           新建题目
         </Button>

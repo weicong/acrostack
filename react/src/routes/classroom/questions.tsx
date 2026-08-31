@@ -7,7 +7,7 @@ const QuestionBankPage = lazyRouteComponent(
   "QuestionBankPage",
 );
 
-/** 题库管理（/classroom/questions）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
+/** 题库（/classroom/questions）。导航由 ClassroomLayout 顶栏 Tab 渲染。 */
 export const Route = createRoute({
   getParentRoute: () => classroomRoute,
   path: "/questions",
