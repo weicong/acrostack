@@ -1,15 +1,6 @@
 import { useMemo } from "react";
 import { Link, Outlet, useMatches, useNavigate, useRouterState } from "@tanstack/react-router";
-import {
-  Button,
-  makeStyles,
-  Tab,
-  TabList,
-  Text,
-  tokens,
-  Tooltip,
-} from "@fluentui/react-components";
-import { ArrowLeft20Regular } from "@fluentui/react-icons";
+import { makeStyles, Tab, TabList, Text, tokens } from "@fluentui/react-components";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { getApplicationName } from "@/lib/runtimeConfig";
@@ -52,7 +43,7 @@ const useStyles = makeStyles({
     display: "flex",
     height: "3.5rem",
     alignItems: "center",
-    gap: tokens.spacingHorizontalM,
+    gap: tokens.spacingHorizontalXL,
     padding: `0 ${tokens.spacingHorizontalL}`,
     background: tokens.colorBrandBackground,
     color: tokens.colorNeutralForegroundOnBrand,
@@ -67,8 +58,15 @@ const useStyles = makeStyles({
   brand: {
     flexShrink: 0,
     display: "flex",
-    alignItems: "baseline",
-    gap: tokens.spacingHorizontalXS,
+    alignItems: "center",
+    gap: tokens.spacingHorizontalM,
+  },
+  // 品牌名与产品名之间的竖线分隔：OnBrand 白色半透明（与导航悬停指示条同配方）
+  brandDivider: {
+    width: "1px",
+    height: "20px",
+    backgroundColor: tokens.colorNeutralForegroundOnBrand,
+    opacity: 0.45,
   },
   // 品牌名回链：点击返回门户入口（/）
   brandLink: {
@@ -152,18 +150,11 @@ export function ClassroomLayout() {
   return (
     <div className={styles.root}>
       <header className={styles.header}>
-        <Tooltip content="返回门户" relationship="label">
-          <Button
-            appearance="subtle"
-            icon={<ArrowLeft20Regular />}
-            aria-label="返回门户"
-            onClick={() => void navigate({ to: "/" })}
-          />
-        </Tooltip>
         <div className={styles.brand}>
           <Link to="/" className={styles.brandLink} aria-label={appName}>
             <Text weight="semibold">{appName}</Text>
           </Link>
+          <span className={styles.brandDivider} aria-hidden="true" />
           <Text size={300}>{"课堂答题"}</Text>
         </div>
         <nav className={styles.nav}>
