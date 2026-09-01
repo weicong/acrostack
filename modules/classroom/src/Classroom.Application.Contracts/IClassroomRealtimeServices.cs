@@ -55,6 +55,9 @@ public interface IClassroomStatisticsService
     /// <summary>教师课堂面板完整数据（含学员列表）。</summary>
     Task<DashboardDto> GetDashboardAsync(Guid sessionId, Guid? tenantId);
 
+    /// <summary>教师题目记录（本课堂全部题目及各题统计，按题号排序）。</summary>
+    Task<TeacherQuestionHistoryDto> GetQuestionHistoryAsync(Guid sessionId, Guid? tenantId);
+
     /// <summary>答案提交后递增轻量计数（缓存）。</summary>
     Task OnAnswerSubmittedAsync(Guid sessionId, Guid sessionQuestionId, Guid participantId, Guid? tenantId);
 

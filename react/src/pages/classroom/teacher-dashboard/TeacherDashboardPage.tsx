@@ -69,12 +69,15 @@ import { GroupStatisticsCard } from "./components/GroupStatisticsCard";
 import { LeaderboardCard } from "./components/LeaderboardCard";
 import { LiveStatisticsCard } from "./components/LiveStatisticsCard";
 import { ParticipantsCard } from "./components/ParticipantsCard";
+import { QuestionHistoryDialog } from "./components/QuestionHistoryDialog";
 
 export function TeacherDashboardPage() {
   const styles = useTeacherDashboardStyles();
   const { sessionId = "" } = useParams({ strict: false }) as { sessionId?: string };
 
   const [dashboard, setDashboard] = useState<ClassroomDtosDashboardDto | null>(null);
+  // 题目记录弹窗（回看已讲过的题目及各题统计）
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
   const [hubError, setHubError] = useState<string | null>(null);
 
@@ -468,6 +471,13 @@ export function TeacherDashboardPage() {
             question={question}
             correctAnswer={snapshot.currentQuestion?.correctAnswer}
             explanation={snapshot.currentQuestion?.explanation}
+            onOpenHistory={() => setHistoryOpen(true)}
+          />
+          <QuestionHistoryDialog
+            open={historyOpen}
+            onOpenChange={setHistoryOpen}
+            sessionId={sessionId}
+            currentQuestionNumber={snapshot.currentQuestionNumber ?? 0}
           />
           <ParticipantsCard participants={dashboard?.participants ?? []} picker={picker} />
           <GroupStatisticsCard dashboard={dashboard} />

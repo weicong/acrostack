@@ -42,6 +42,9 @@ public interface IClassSessionAppService : IApplicationService
     /// <summary>课堂面板数据（教师权限）。</summary>
     Task<DashboardDto> GetDashboardAsync(Guid id);
 
+    /// <summary>题目记录：本课堂全部题目（含已讲过的题目）及各题统计，供教师回看。</summary>
+    Task<TeacherQuestionHistoryDto> GetQuestionHistoryAsync(Guid id);
+
     /// <summary>随机点名：从（在线）学员中随机抽取一位现场回答，并向全体组广播点名事件。</summary>
     Task<PickedParticipantDto> PickRandomParticipantAsync(Guid id, PickRandomParticipantDto input);
 

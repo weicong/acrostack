@@ -19,6 +19,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
 {
     private readonly IRepository<ClassSession, Guid> _sessionRepository;
     private readonly IRepository<SessionQuestion, Guid> _sessionQuestionRepository;
+    private readonly IRepository<Question, Guid> _questionRepository;
     private readonly IRepository<Participant, Guid> _participantRepository;
     private readonly IRepository<AnswerRecord, Guid> _answerRepository;
     private readonly IClassroomOnlineTracker _onlineTracker;
@@ -27,6 +28,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
     public ClassroomStatisticsService(
         IRepository<ClassSession, Guid> sessionRepository,
         IRepository<SessionQuestion, Guid> sessionQuestionRepository,
+        IRepository<Question, Guid> questionRepository,
         IRepository<Participant, Guid> participantRepository,
         IRepository<AnswerRecord, Guid> answerRepository,
         IClassroomOnlineTracker onlineTracker,
@@ -34,6 +36,7 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
     {
         _sessionRepository = sessionRepository;
         _sessionQuestionRepository = sessionQuestionRepository;
+        _questionRepository = questionRepository;
         _participantRepository = participantRepository;
         _answerRepository = answerRepository;
         _onlineTracker = onlineTracker;
@@ -122,6 +125,60 @@ public class ClassroomStatisticsService : IClassroomStatisticsService, ITransien
             GroupStatistics = BuildGroupStatistics(participantStates, answers),
             LastStatisticsUpdatedAt = DateTimeOffset.UtcNow,
             ServerTime = DateTimeOffset.UtcNow,
+        };
+    }
+
+    public async Task<TeacherQuestionHistoryDto> GetQuestionHistoryAsync(Guid sessionId, Guid? tenantId)
+    {
+        var session = await _sessionRepository.GetAsync(sessionId);
+
+        var participants = await _participantRepository.GetListAsync(p => p.SessionId == sessionId);
+        var sessionQuestions = (await _sessionQuestionRepository.GetListAsync(q => q.SessionId == sessionId))
+            .OrderBy(q => q.Order)
+            .ToList();
+
+        // 到时惰性截止：当前题过期则先收卷，保证题目记录与驾驶舱统计同一口径
+        var current = session.CurrentSessionQuestionId.HasValue
+            ? sessionQuestions.FirstOrDefault(q => q.Id == session.CurrentSessionQuestionId.Value)
+            : null;
+        if (current is not null)
+        {
+            await _autoCloseService.CloseIfExpiredAsync(session, current);
+        }
+
+        var sessionQuestionIds = sessionQuestions.Select(q => q.Id).ToList();
+        var answers = sessionQuestionIds.Count > 0
+            ? await _answerRepository.GetListAsync(a => sessionQuestionIds.Contains(a.SessionQuestionId))
+            : new List<AnswerRecord>();
+        var answersByQuestion = answers.ToLookup(a => a.SessionQuestionId);
+
+        var items = new List<TeacherQuestionHistoryItemDto>();
+        foreach (var sq in sessionQuestions)
+        {
+            var question = await _questionRepository.GetAsync(sq.QuestionId);
+            items.Add(new TeacherQuestionHistoryItemDto
+            {
+                SessionQuestionId = sq.Id,
+                Order = sq.Order,
+                Type = question.Type,
+                Stem = question.Stem,
+                Options = question.Options
+                    .Select(o => new QuestionOptionDto { Key = o.Key, Text = o.Text })
+                    .ToList(),
+                Status = sq.Status,
+                CorrectAnswer = question.CorrectAnswer,
+                Explanation = question.Explanation,
+                OpenedAt = sq.OpenedAt,
+                ClosedAt = sq.ClosedAt,
+                Statistics = BuildStatistics(participants.Count, sq, answersByQuestion[sq.Id].ToList()),
+            });
+        }
+
+        return new TeacherQuestionHistoryDto
+        {
+            SessionId = sessionId,
+            QuestionCount = items.Count,
+            Items = items,
         };
     }
 

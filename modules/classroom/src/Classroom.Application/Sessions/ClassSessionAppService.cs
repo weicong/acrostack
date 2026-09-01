@@ -301,6 +301,12 @@ public class ClassSessionAppService : ApplicationService, IClassSessionAppServic
         return await GetStatisticsService().GetDashboardAsync(id, CurrentTenant.Id);
     }
 
+    public async Task<TeacherQuestionHistoryDto> GetQuestionHistoryAsync(Guid id)
+    {
+        await GetAuthorizedSessionAsync(id);
+        return await GetStatisticsService().GetQuestionHistoryAsync(id, CurrentTenant.Id);
+    }
+
     public async Task<PickedParticipantDto> PickRandomParticipantAsync(Guid id, PickRandomParticipantDto input)
     {
         var session = await GetAuthorizedSessionAsync(id);

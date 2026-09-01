@@ -681,6 +681,69 @@ export const useTeacherDashboardStyles = makeStyles({
     marginLeft: "auto",
   },
 
+  // ── 题目记录弹窗（回看已讲过的题目） ────────────────────────
+  historySurface: {
+    maxWidth: "min(92vw, 860px)",
+  },
+  historyBody: {
+    display: "flex",
+    gap: tokens.spacingHorizontalL,
+    minHeight: "360px",
+    maxHeight: "64vh",
+  },
+  historyNav: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalXS,
+    width: "132px",
+    flexShrink: 0,
+    overflowY: "auto",
+    borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
+    paddingRight: tokens.spacingHorizontalS,
+  },
+  historyNavItem: {
+    justifyContent: "space-between",
+  },
+  historyDetail: {
+    flex: 1,
+    minWidth: 0,
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+  },
+  historyLoading: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "200px",
+  },
+  historyStatsRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    flexWrap: "wrap",
+  },
+  historyStatsText: {
+    color: tokens.colorNeutralForeground2,
+    fontVariantNumeric: "tabular-nums",
+  },
+  historyStem: {
+    fontWeight: tokens.fontWeightSemibold,
+    whiteSpace: "pre-wrap",
+  },
+  historyOptionCount: {
+    marginLeft: "auto",
+    flexShrink: 0,
+    color: tokens.colorNeutralForeground2,
+    fontVariantNumeric: "tabular-nums",
+  },
+  historyAnswerRow: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: tokens.spacingHorizontalS,
+  },
+
   // ── 学习小组统计 ──────────────────────────────────────────────
   groupList: {
     display: "flex",

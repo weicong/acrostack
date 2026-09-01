@@ -2,7 +2,15 @@
  * 当前题卡片：题干、选项（含正确答案标记）与解析。
  * 倒计时只在 Hero 大字号展示（全局唯一时钟），卡片不再重复。
  */
-import { Badge, Card, Text, Title3, mergeClasses } from "@fluentui/react-components";
+import {
+  Badge,
+  Button,
+  Card,
+  Text,
+  Title3,
+  Tooltip,
+  mergeClasses,
+} from "@fluentui/react-components";
 import type { ComponentProps } from "react";
 
 type BadgeColor = NonNullable<ComponentProps<typeof Badge>["color"]>;
@@ -10,6 +18,7 @@ import {
   CheckmarkCircle20Filled,
   Clipboard20Regular,
   CheckmarkCircle20Regular,
+  History20Regular,
 } from "@fluentui/react-icons";
 import {
   ClassSessionStatusValue,
@@ -34,6 +43,8 @@ interface CurrentQuestionCardProps {
   question: ClassroomDtosQuestionViewDto | null;
   correctAnswer?: string | null;
   explanation?: string | null;
+  /** 打开题目记录弹窗（回看已讲过的题目）。 */
+  onOpenHistory: () => void;
 }
 
 export function CurrentQuestionCard({
@@ -42,6 +53,7 @@ export function CurrentQuestionCard({
   question,
   correctAnswer,
   explanation,
+  onOpenHistory,
 }: CurrentQuestionCardProps) {
   const styles = useTeacherDashboardStyles();
   const answerPublished = questionStatus === SessionQuestionStatusValue.AnswerPublished;
@@ -57,6 +69,11 @@ export function CurrentQuestionCard({
             </Badge>
           )}
         </div>
+        <Tooltip content="回看本课堂全部题目及答题统计" relationship="label">
+          <Button size="small" icon={<History20Regular />} onClick={onOpenHistory}>
+            题目记录
+          </Button>
+        </Tooltip>
       </div>
 
       {question ? (

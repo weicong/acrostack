@@ -121,6 +121,48 @@ public class TeacherSnapshotDto
 }
 
 /// <summary>
+/// 教师视角的历史题目条目（题目记录）：切到下一题后回看已讲过的题目。
+/// 含正确答案与解析（教师权限口径）及该题最终统计。
+/// </summary>
+public class TeacherQuestionHistoryItemDto
+{
+    public Guid SessionQuestionId { get; set; }
+
+    /// <summary>课堂内题号（1 起）。</summary>
+    public int Order { get; set; }
+
+    public QuestionType Type { get; set; }
+
+    public string Stem { get; set; } = default!;
+
+    public List<QuestionOptionDto> Options { get; set; } = new();
+
+    public SessionQuestionStatus Status { get; set; }
+
+    /// <summary>正确答案（教师视角始终下发，未公布时教师可提前掌握）。</summary>
+    public string? CorrectAnswer { get; set; }
+
+    public string? Explanation { get; set; }
+
+    public DateTimeOffset? OpenedAt { get; set; }
+
+    public DateTimeOffset? ClosedAt { get; set; }
+
+    /// <summary>该题统计（提交/分布/正确率；开放中的题为实时值，已截止为终值）。</summary>
+    public QuestionStatisticsDto Statistics { get; set; } = default!;
+}
+
+/// <summary>教师题目记录（本课堂全部题目，按题号排序）。</summary>
+public class TeacherQuestionHistoryDto
+{
+    public Guid SessionId { get; set; }
+
+    public int QuestionCount { get; set; }
+
+    public List<TeacherQuestionHistoryItemDto> Items { get; set; } = new();
+}
+
+/// <summary>
 /// 学员答题记录条目（本课堂逐题回顾）。正确答案与解析仅在对应题目
 /// AnswerPublished 后下发，与快照安全规则一致。
 /// </summary>
