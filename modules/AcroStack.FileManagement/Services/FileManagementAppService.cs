@@ -14,6 +14,7 @@ using Volo.Abp.BlobStoring;
 using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Uow;
 // Disambiguate FileShare: System.IO.FileShare (from System.IO above) collides
 // with our AcroStack.FileManagement.FileShare entity.
 using FileShare = AcroStack.FileManagement.FileShare;
@@ -152,6 +153,13 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
         // 数据库状态落定后再物理删除 Blob 字节。若颠倒顺序，一旦 SaveChanges
         // 失败（如乐观并发冲突、连接中断），字节已删而元数据仍在，造成不可恢复
         // 的数据损坏；反过来失败只是遗留孤儿 Blob，后续可由清理任务回收。
+        // 跨 FileVersion / FileEntry / FileFolder 三个聚合写入；宿主全局禁用
+        // UoW 事务（SQLite），显式开启事务型 UoW，任一步失败整体回滚，
+        // 避免"版本已删而文件仍在"之类的半删除状态。
+        using var txUow = UnitOfWorkManager.Begin(
+            new AbpUnitOfWorkOptions { IsTransactional = true },
+            requiresNew: true
+        );
         if (versions.Count > 0)
         {
             await _fileVersionRepository.DeleteManyAsync(versions, autoSave: true);
@@ -161,6 +169,8 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
             await _fileRepository.DeleteManyAsync(files, autoSave: true);
         }
         await _folderRepository.DeleteManyAsync(allFolderIds, autoSave: true);
+
+        await txUow.CompleteAsync();
 
         // 元数据删除成功后再删除物理 Blob。
         foreach (var blobName in blobNames)
@@ -426,11 +436,20 @@ public class FileManagementAppService : FileManagementAppServiceBase, IFileManag
         // 顺序要点：先完成元数据删除并立即 SaveChanges（autoSave: true），
         // 数据库状态落定后再物理删除 Blob 字节。若颠倒顺序，一旦 SaveChanges
         // 失败，字节已删而元数据仍在，将造成不可恢复的数据损坏。
+        // 跨 FileVersion / FileEntry 两个聚合写入；宿主全局禁用 UoW 事务
+        // （SQLite），显式开启事务型 UoW，避免"历史版本已删而文件仍在"的
+        // 半删除状态（与 DeleteFolderRecursiveAsync 同一模式）。
+        using var txUow = UnitOfWorkManager.Begin(
+            new AbpUnitOfWorkOptions { IsTransactional = true },
+            requiresNew: true
+        );
         if (versions.Count > 0)
         {
             await _fileVersionRepository.DeleteManyAsync(versions, autoSave: true);
         }
         await _fileRepository.DeleteAsync(entry, autoSave: true);
+
+        await txUow.CompleteAsync();
 
         // 元数据删除成功后再删除物理 Blob。
         foreach (var blobName in blobNames)

@@ -199,73 +199,99 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
         // 1. Message content
         var message = new ChatMessage(GuidGenerator.Create(), input.Text);
 
-        if (attachment != null && attachment.Length > 0)
-        {
-            var blobName = $"{Guid.NewGuid():N}{Path.GetExtension(attachment.FileName)}";
-            await using (var stream = attachment.OpenReadStream())
-            {
-                await _attachmentBlobContainer.SaveAsync(blobName, stream);
-            }
-            message.SetAttachment(
-                attachment.FileName,
-                blobName,
-                attachment.ContentType,
-                attachment.Length
-            );
-        }
-
         // 一次发送跨 ChatMessage/UserMessage/Conversation 三个聚合共 5 次写入；
         // 宿主全局禁用了 ABP UoW 事务（SQLite），此处显式开启事务型 UoW 保证原子性，
         // 避免中途失败留下"消息有副本但会话预览缺失"之类的脏数据。
+        // 事务先于 Blob 写入开启：Blob 存储不参与数据库事务，DB 侧任一步失败
+        // （写入或提交）时由 catch 补偿删除已存 Blob，避免孤儿对象。
+        // 进程在 Blob 落盘与事务提交之间崩溃仍可能残留孤儿——Blob 本质非事务资源，
+        // 彻底消除需 Outbox/对账清理，与 FileManagement 采用同一取舍。
         using var txUow = UnitOfWorkManager.Begin(
             new AbpUnitOfWorkOptions { IsTransactional = true },
             requiresNew: true
         );
-        await _messageRepository.InsertAsync(message);
 
-        // 2. Sender's copy + 3. Receiver's copy
-        await _userMessageRepository.InsertAsync(
-            new UserMessage(
-                GuidGenerator.Create(),
-                message.Id,
+        string? savedBlobName = null;
+        try
+        {
+            if (attachment != null && attachment.Length > 0)
+            {
+                savedBlobName = $"{Guid.NewGuid():N}{Path.GetExtension(attachment.FileName)}";
+                await using (var stream = attachment.OpenReadStream())
+                {
+                    await _attachmentBlobContainer.SaveAsync(savedBlobName, stream);
+                }
+                message.SetAttachment(
+                    attachment.FileName,
+                    savedBlobName,
+                    attachment.ContentType,
+                    attachment.Length
+                );
+            }
+
+            await _messageRepository.InsertAsync(message);
+
+            // 2. Sender's copy + 3. Receiver's copy
+            await _userMessageRepository.InsertAsync(
+                new UserMessage(
+                    GuidGenerator.Create(),
+                    message.Id,
+                    currentUserId,
+                    input.TargetUserId,
+                    ChatMessageSide.Send
+                )
+            );
+            await _userMessageRepository.InsertAsync(
+                new UserMessage(
+                    GuidGenerator.Create(),
+                    message.Id,
+                    input.TargetUserId,
+                    currentUserId,
+                    ChatMessageSide.Received
+                )
+            );
+
+            // 4-5. Upsert both sides' conversation previews
+            var previewText =
+                string.IsNullOrEmpty(input.Text) && message.AttachmentName != null
+                    ? $"[{message.AttachmentName}]"
+                    : input.Text;
+            await UpsertConversationAsync(
                 currentUserId,
                 input.TargetUserId,
-                ChatMessageSide.Send
-            )
-        );
-        await _userMessageRepository.InsertAsync(
-            new UserMessage(
-                GuidGenerator.Create(),
-                message.Id,
+                ChatMessageSide.Send,
+                previewText,
+                now,
+                incrementUnread: false
+            );
+            await UpsertConversationAsync(
                 input.TargetUserId,
                 currentUserId,
-                ChatMessageSide.Received
-            )
-        );
+                ChatMessageSide.Received,
+                previewText,
+                now,
+                incrementUnread: true
+            );
 
-        // 4-5. Upsert both sides' conversation previews
-        var previewText =
-            string.IsNullOrEmpty(input.Text) && message.AttachmentName != null
-                ? $"[{message.AttachmentName}]"
-                : input.Text;
-        await UpsertConversationAsync(
-            currentUserId,
-            input.TargetUserId,
-            ChatMessageSide.Send,
-            previewText,
-            now,
-            incrementUnread: false
-        );
-        await UpsertConversationAsync(
-            input.TargetUserId,
-            currentUserId,
-            ChatMessageSide.Received,
-            previewText,
-            now,
-            incrementUnread: true
-        );
+            await txUow.CompleteAsync();
+        }
+        catch
+        {
+            if (savedBlobName != null)
+            {
+                // 补偿为尽力而为：失败不得吞掉原始异常
+                try
+                {
+                    await _attachmentBlobContainer.DeleteAsync(savedBlobName);
+                }
+                catch
+                {
+                    // 忽略补偿失败，保留原始异常向上抛出
+                }
+            }
 
-        await txUow.CompleteAsync();
+            throw;
+        }
 
         var dto = MapMessageToDto(
             message,
@@ -426,12 +452,21 @@ public class ConversationAppService : ChatAppServiceBase, IConversationAppServic
 
         // Soft-delete the chat message and both UserMessage copies via ABP's
         // ISoftDelete mechanism (DeleteAsync sets IsDeleted = true).
+        // 跨 ChatMessage + 双方 UserMessage 两个聚合的写入；宿主全局禁用 UoW 事务
+        // （SQLite），显式开启事务型 UoW 保证原子性，避免"消息已删但收件箱副本残留"
+        // 的不可自愈脏数据（与 SendMessage 同一模式）。
+        using var txUow = UnitOfWorkManager.Begin(
+            new AbpUnitOfWorkOptions { IsTransactional = true },
+            requiresNew: true
+        );
         await _messageRepository.DeleteAsync(message);
 
         await _userMessageRepository.DeleteAsync(um =>
             um.ChatMessageId == messageId
             && (um.UserId == currentUserId || um.UserId == targetUserId)
         );
+
+        await txUow.CompleteAsync();
 
         // Notify both sender and recipient.
         await _hubContext

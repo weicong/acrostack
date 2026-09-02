@@ -213,6 +213,31 @@ public class AcroStackModule : AbpModule
             });
         }
 
+        // Classroom 短期令牌签名密钥：与上面 OpenIddict 证书同等重要。
+        // 学员/投屏令牌是 HMAC-SHA256 对称密钥（无 PKI 兜底），密钥一旦泄露，
+        // 任何拿到代码的人都能伪造任意 sessionId/participantId 的令牌答题或看投屏。
+        // 因此对两种情形均 fail fast，而不是等到令牌校验阶段才以"令牌无效"的形式暴露：
+        //   1) 任何环境缺失密钥 —— 令牌服务构造时无法得到有效对称密钥；
+        //   2) 非 Development 环境沿用仓库历史内置的 dev-only 占位值。
+        var classroomSigningKey = configuration["Classroom:TokenSigningKey"];
+        if (classroomSigningKey.IsNullOrWhiteSpace())
+        {
+            throw new AbpInitializationException(
+                "Missing 'Classroom:TokenSigningKey' (HMAC-SHA256 key for classroom " +
+                "student/presentation tokens). Add it to appsettings.secrets.json " +
+                "(git-ignored), e.g. {\"Classroom\": {\"TokenSigningKey\": \"<random-64+-chars>\"}}, " +
+                "or set environment variable Classroom__TokenSigningKey.");
+        }
+
+        if (!hostingEnvironment.IsDevelopment() &&
+            classroomSigningKey.StartsWith("dev-only", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new AbpInitializationException(
+                "Production must not use the development placeholder classroom signing key " +
+                "(values prefixed with 'dev-only'). Provide a strong random value via " +
+                "appsettings.secrets.json or Classroom__TokenSigningKey.");
+        }
+
         AcroStackGlobalFeatureConfigurator.Configure();
         AcroStackModuleExtensionConfigurator.Configure();
         AcroStackEfCoreEntityExtensionMappings.Configure();
@@ -498,6 +523,10 @@ public class AcroStackModule : AbpModule
         {
             options.Configure(configurationContext =>
             {
+                // WAL / synchronous 等 PRAGMA 必须在每次连接打开时设定，
+                // 否则新环境建库会退回 rollback journal（见拦截器注释）。
+                configurationContext.DbContextOptions.AddInterceptors(
+                    SqliteWalConnectionInterceptor.Instance);
                 configurationContext.UseSqlite();
             });
         });
