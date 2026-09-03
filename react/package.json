@@ -20,7 +20,7 @@
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-router": "^1.170.32",
-    "@tanstack/react-table": "^9.2.3",
+    "@tanstack/react-table": "^9.2.4",
     "@volo/abp-app-config": "^10.6.0",
     "@volo/abp-oidc-auth": "^10.6.0",
     "@volo/abp-react-app-config": "^10.6.0",
@@ -30,18 +30,18 @@
     "oidc-client-ts": "^3.5.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
-    "@kubb/plugin-axios": "^5.1.1",
-    "@kubb/plugin-react-query": "^5.0.0",
+    "@kubb/plugin-axios": "^5.1.2",
+    "@kubb/plugin-react-query": "^5.0.1",
     "@kubb/plugin-ts": "^5.0.0",
     "@tanstack/router-plugin": "^1.168.35",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "@vitejs/plugin-react": "^6.1.0",
-    "kubb": "^5.0.3",
+    "@vitejs/plugin-react": "^6.1.1",
+    "kubb": "^5.0.5",
     "typescript": "~7.0.2",
     "vite-plus": "catalog:"
   },

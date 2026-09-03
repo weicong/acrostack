@@ -1,4 +1,5 @@
 using AcroStack.AccountPro.Localization;
+using Volo.Abp.Application;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -8,7 +9,10 @@ using Volo.Abp.VirtualFileSystem;
 
 namespace AcroStack.AccountPro;
 
-[DependsOn(typeof(AbpIdentityDomainModule), typeof(AbpOpenIddictDomainModule))]
+[DependsOn(
+    typeof(AbpDddApplicationModule),
+    typeof(AbpIdentityDomainModule),
+    typeof(AbpOpenIddictDomainModule))]
 public class AccountProModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

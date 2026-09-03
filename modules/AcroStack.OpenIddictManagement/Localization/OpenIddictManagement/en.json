@@ -4,9 +4,13 @@
     "Permission:OpenIddictManagement": "OpenIddict Management",
     "Permission:OpenIddictManagement.Applications": "Manage Applications",
     "Permission:OpenIddictManagement.Scopes": "Manage Scopes",
+    "Permission:OpenIddictManagement.Tokens": "Manage Tokens",
+    "Permission:OpenIddictManagement.Authorizations": "Manage Authorizations",
     "OpenIddictManagement:InvalidRedirectUri": "The redirect URI is invalid",
     "OpenIddictManagement:InvalidPermission": "The permission is invalid",
     "OpenIddictManagement:InvalidClientType": "The client type is invalid",
-    "OpenIddictManagement:InvalidConsentType": "The consent type is invalid"
+    "OpenIddictManagement:InvalidConsentType": "The consent type is invalid",
+    "OpenIddictManagement:TokenRevokeFailed": "The token could not be revoked (it may already be revoked or deleted)",
+    "OpenIddictManagement:AuthorizationRevokeFailed": "The authorization could not be revoked (it may already be revoked or deleted)"
   }
 }

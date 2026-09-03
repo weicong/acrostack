@@ -1,5 +1,16 @@
 # 交接文档：手写 ABP Pro 模块替代品的修复与补全（P0 / P1 / P2）
 
+> **进度更新（2026-09-03 接手会话）**：本文档所列任务已**全部完成**。
+> - §1 已写代码：编译通过（0 错误）。
+> - §2 宿主接线（2.1–2.7）：接手前已完成；迁移 `AddImpersonationSessions` / `RemoveAuditLogExcelFiles` 已生成。
+> - §2.8 前端：会话管理页面 + `generate-api` 产物已存在并验证通过（tsc + lint 0 错误）。
+> - §3.1：以变体实现完成——`AuditLogExcelFiles` DbSet 因 `IAuditLoggingDbContext` 接口强制要求而保留属性，通过 `builder.Ignore<AuditLogExcelFile>()` 排除映射，迁移已生成。
+> - §3.2：已新建 `modules/AcroStack.Common/`（`AcroStackCommonModule` + `Transactions/IAcroStackTransactionExecutor|AcroStackTransactionExecutor`，UoW 事务方式），`AuditLogAppService.DeleteManyAsync` 已接入；`AGENTS.md` 已更新约定说明。
+> - §4.1：已新增 `OpenIddictTokenAppService` / `OpenIddictAuthorizationAppService`（列表/删除/撤销），权限 `AcroStack.OpenIddictManagement.Tokens|.Authorizations` + 本地化 + 种子授权；前端 `OpenIddictTokensPage` / `OpenIddictAuthorizationsPage` + 路由（菜单自动发现）已落地，`generate-api` 已重跑。
+> - §4.2：`ChatOnlineTracker` 已改为类型化 `IDistributedCache<ChatOnlineCacheItem>`（CacheName `ChatOnlineUser`，TTL 60s 滑动过期，租户隔离靠 ABP key 规范化）；`ChatHub.Ping()` + 前端 20s 心跳已接入。
+> - 验证：`dotnet build` 0 错误；`vp exec tsc --noEmit` / `vp lint` 通过；`--migrate-database` 已执行（种子含新权限）。
+> - 注意：仓库存在**全局性 oxfmt 格式漂移**（HEAD 中未改动的文件也报格式差异，约 1392 个文件），本次未做全量格式化以避免污染 diff；仅对本次改动文件做了格式化。接手者如需统一，可单独跑 `vp fmt` 专项提交。
+
 > 目的：本项目用「单项目 + React SPA」手写替代了 ABP Commercial 的一组 Pro 模块（AccountPro 模拟登录、AuditLogging、OpenIddictManagement、Chat 等）。
 > 本次工作针对其中发现的缺陷做修复与功能补全。本文档供接手 AI 继续执行剩余任务。
 >

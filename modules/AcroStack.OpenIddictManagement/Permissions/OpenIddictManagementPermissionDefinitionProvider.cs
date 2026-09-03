@@ -28,6 +28,14 @@ public class OpenIddictManagementPermissionDefinitionProvider : PermissionDefini
             OpenIddictManagementPermissions.Scopes,
             L("Permission:OpenIddictManagement.Scopes")
         );
+        oidcPermission.AddChild(
+            OpenIddictManagementPermissions.Tokens,
+            L("Permission:OpenIddictManagement.Tokens")
+        );
+        oidcPermission.AddChild(
+            OpenIddictManagementPermissions.Authorizations,
+            L("Permission:OpenIddictManagement.Authorizations")
+        );
     }
 
     private static LocalizableString L(string name)

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AcroStack.Common.Transactions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -24,17 +25,20 @@ public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppServic
     private readonly IRepository<EntityChange, Guid> _entityChangeRepository;
     private readonly AuditLogOptions _auditLogOptions;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IAcroStackTransactionExecutor _transactionExecutor;
 
     public AuditLogAppService(
         IRepository<AuditLog, Guid> auditLogRepository,
         IRepository<EntityChange, Guid> entityChangeRepository,
         IOptions<AuditLogOptions> auditLogOptions,
-        IUnitOfWorkManager unitOfWorkManager)
+        IUnitOfWorkManager unitOfWorkManager,
+        IAcroStackTransactionExecutor transactionExecutor)
     {
         _auditLogRepository = auditLogRepository;
         _entityChangeRepository = entityChangeRepository;
         _auditLogOptions = auditLogOptions.Value;
         _unitOfWorkManager = unitOfWorkManager;
+        _transactionExecutor = transactionExecutor;
     }
 
     public async Task<AuditLogDto> GetAsync(Guid id)
@@ -87,7 +91,9 @@ public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppServic
     [Authorize(AuditLoggingPermissions.Delete)]
     public async Task DeleteManyAsync(List<Guid> ids)
     {
-        await _auditLogRepository.DeleteManyAsync(ids);
+        // 批量删除会级联清理 Actions/EntityChanges 子表（宿主禁用了全局
+        // UoW 事务），通过显式事务执行器保证多记录删除的原子性。
+        await _transactionExecutor.ExecuteAsync(() => _auditLogRepository.DeleteManyAsync(ids));
     }
 
     /// <summary>配置缺失或填 0 时的兜底行数，保证导出不会把整表加载进内存。</summary>

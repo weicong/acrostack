@@ -30,6 +30,8 @@ export const ChatClientMethods = {
 export const ChatHubMethods = {
   SendTypingNotification: "SendTypingNotification",
   StopTypingNotification: "StopTypingNotification",
+  /** Heartbeat that keeps the caller marked online (sliding TTL on the server). */
+  Ping: "Ping",
 } as const;
 
 /**

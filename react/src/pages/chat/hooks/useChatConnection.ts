@@ -12,9 +12,12 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
-import { buildChatHubConnection } from "../constants/chatHub";
+import { buildChatHubConnection, ChatHubMethods } from "../constants/chatHub";
 import { userManager } from "@/lib/auth/userManager";
 import { useAuth } from "@/lib/auth/AuthContext";
+
+/** Heartbeat interval: server uses a 60s sliding TTL, ping well before expiry. */
+const PING_INTERVAL_MS = 20_000;
 
 export interface ChatConnectionState {
   /** Current connection, or null while initializing/after teardown. */
@@ -43,6 +46,7 @@ export function useChatConnection(): ChatConnectionState {
   useEffect(() => {
     let cancelled = false;
     let conn: HubConnection | null = null;
+    let pingTimer: number | null = null;
 
     async function start() {
       // Skip if the user isn't signed in yet.
@@ -71,6 +75,12 @@ export function useChatConnection(): ChatConnectionState {
 
         await conn.start();
 
+        // Online-presence heartbeat: keeps the sliding expiration alive
+        // while the tab is open, even when no chat actions occur.
+        pingTimer = window.setInterval(() => {
+          void conn?.invoke(ChatHubMethods.Ping).catch(() => {});
+        }, PING_INTERVAL_MS);
+
         if (!cancelled) {
           setState({ connection: conn, isConnecting: false, error: null });
         } else {
@@ -91,6 +101,10 @@ export function useChatConnection(): ChatConnectionState {
 
     return () => {
       cancelled = true;
+      if (pingTimer !== null) {
+        window.clearInterval(pingTimer);
+        pingTimer = null;
+      }
       const c = connectionRef.current;
       connectionRef.current = null;
       if (c) {

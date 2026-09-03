@@ -47,11 +47,14 @@ import { Route as AdminCmsTagsRouteImport } from './routes/admin/cms/tags'
 import { Route as AdminFileManagementIndexRouteImport } from './routes/admin/file-management/index'
 import { Route as AdminIdentityIndexRouteImport } from './routes/admin/identity/index'
 import { Route as AdminIdentityClaimTypesRouteImport } from './routes/admin/identity/claim-types'
+import { Route as AdminIdentityImpersonationSessionsRouteImport } from './routes/admin/identity/impersonation-sessions'
 import { Route as AdminIdentityPermissionsRouteImport } from './routes/admin/identity/permissions'
 import { Route as AdminIdentityRolesRouteImport } from './routes/admin/identity/roles'
 import { Route as AdminIdentityUsersRouteImport } from './routes/admin/identity/users'
 import { Route as AdminOpeniddictApplicationsRouteImport } from './routes/admin/openiddict/applications'
+import { Route as AdminOpeniddictAuthorizationsRouteImport } from './routes/admin/openiddict/authorizations'
 import { Route as AdminOpeniddictScopesRouteImport } from './routes/admin/openiddict/scopes'
+import { Route as AdminOpeniddictTokensRouteImport } from './routes/admin/openiddict/tokens'
 import { Route as AdminSaasTenantsRouteImport } from './routes/admin/saas/tenants'
 import { Route as StudentSessionsSessionIdRouteImport } from './routes/student/sessions/$sessionId'
 
@@ -246,6 +249,12 @@ const AdminIdentityClaimTypesRoute = AdminIdentityClaimTypesRouteImport.update({
   path: '/claim-types',
   getParentRoute: () => AdminIdentityRouteRoute,
 } as any)
+const AdminIdentityImpersonationSessionsRoute =
+  AdminIdentityImpersonationSessionsRouteImport.update({
+    id: '/impersonation-sessions',
+    path: '/impersonation-sessions',
+    getParentRoute: () => AdminIdentityRouteRoute,
+  } as any)
 const AdminIdentityPermissionsRoute =
   AdminIdentityPermissionsRouteImport.update({
     id: '/permissions',
@@ -268,9 +277,20 @@ const AdminOpeniddictApplicationsRoute =
     path: '/openiddict/applications',
     getParentRoute: () => AdminRouteRoute,
   } as any)
+const AdminOpeniddictAuthorizationsRoute =
+  AdminOpeniddictAuthorizationsRouteImport.update({
+    id: '/openiddict/authorizations',
+    path: '/openiddict/authorizations',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminOpeniddictScopesRoute = AdminOpeniddictScopesRouteImport.update({
   id: '/openiddict/scopes',
   path: '/openiddict/scopes',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminOpeniddictTokensRoute = AdminOpeniddictTokensRouteImport.update({
+  id: '/openiddict/tokens',
+  path: '/openiddict/tokens',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSaasTenantsRoute = AdminSaasTenantsRouteImport.update({
@@ -322,11 +342,14 @@ export interface FileRoutesByFullPath {
   '/admin/cms/pages': typeof AdminCmsPagesRoute
   '/admin/cms/tags': typeof AdminCmsTagsRoute
   '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/impersonation-sessions': typeof AdminIdentityImpersonationSessionsRoute
   '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
   '/admin/identity/roles': typeof AdminIdentityRolesRoute
   '/admin/identity/users': typeof AdminIdentityUsersRoute
   '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/authorizations': typeof AdminOpeniddictAuthorizationsRoute
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management/': typeof AdminFileManagementIndexRoute
@@ -365,11 +388,14 @@ export interface FileRoutesByTo {
   '/admin/cms/pages': typeof AdminCmsPagesRoute
   '/admin/cms/tags': typeof AdminCmsTagsRoute
   '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/impersonation-sessions': typeof AdminIdentityImpersonationSessionsRoute
   '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
   '/admin/identity/roles': typeof AdminIdentityRolesRoute
   '/admin/identity/users': typeof AdminIdentityUsersRoute
   '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/authorizations': typeof AdminOpeniddictAuthorizationsRoute
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management': typeof AdminFileManagementIndexRoute
@@ -413,11 +439,14 @@ export interface FileRoutesById {
   '/admin/cms/pages': typeof AdminCmsPagesRoute
   '/admin/cms/tags': typeof AdminCmsTagsRoute
   '/admin/identity/claim-types': typeof AdminIdentityClaimTypesRoute
+  '/admin/identity/impersonation-sessions': typeof AdminIdentityImpersonationSessionsRoute
   '/admin/identity/permissions': typeof AdminIdentityPermissionsRoute
   '/admin/identity/roles': typeof AdminIdentityRolesRoute
   '/admin/identity/users': typeof AdminIdentityUsersRoute
   '/admin/openiddict/applications': typeof AdminOpeniddictApplicationsRoute
+  '/admin/openiddict/authorizations': typeof AdminOpeniddictAuthorizationsRoute
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
+  '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management/': typeof AdminFileManagementIndexRoute
@@ -462,11 +491,14 @@ export interface FileRouteTypes {
     | '/admin/cms/pages'
     | '/admin/cms/tags'
     | '/admin/identity/claim-types'
+    | '/admin/identity/impersonation-sessions'
     | '/admin/identity/permissions'
     | '/admin/identity/roles'
     | '/admin/identity/users'
     | '/admin/openiddict/applications'
+    | '/admin/openiddict/authorizations'
     | '/admin/openiddict/scopes'
+    | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
     | '/student/sessions/$sessionId'
     | '/admin/file-management/'
@@ -505,11 +537,14 @@ export interface FileRouteTypes {
     | '/admin/cms/pages'
     | '/admin/cms/tags'
     | '/admin/identity/claim-types'
+    | '/admin/identity/impersonation-sessions'
     | '/admin/identity/permissions'
     | '/admin/identity/roles'
     | '/admin/identity/users'
     | '/admin/openiddict/applications'
+    | '/admin/openiddict/authorizations'
     | '/admin/openiddict/scopes'
+    | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
     | '/student/sessions/$sessionId'
     | '/admin/file-management'
@@ -552,11 +587,14 @@ export interface FileRouteTypes {
     | '/admin/cms/pages'
     | '/admin/cms/tags'
     | '/admin/identity/claim-types'
+    | '/admin/identity/impersonation-sessions'
     | '/admin/identity/permissions'
     | '/admin/identity/roles'
     | '/admin/identity/users'
     | '/admin/openiddict/applications'
+    | '/admin/openiddict/authorizations'
     | '/admin/openiddict/scopes'
+    | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
     | '/student/sessions/$sessionId'
     | '/admin/file-management/'
@@ -840,6 +878,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIdentityClaimTypesRouteImport
       parentRoute: typeof AdminIdentityRouteRoute
     }
+    '/admin/identity/impersonation-sessions': {
+      id: '/admin/identity/impersonation-sessions'
+      path: '/impersonation-sessions'
+      fullPath: '/admin/identity/impersonation-sessions'
+      preLoaderRoute: typeof AdminIdentityImpersonationSessionsRouteImport
+      parentRoute: typeof AdminIdentityRouteRoute
+    }
     '/admin/identity/permissions': {
       id: '/admin/identity/permissions'
       path: '/permissions'
@@ -868,11 +913,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOpeniddictApplicationsRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/openiddict/authorizations': {
+      id: '/admin/openiddict/authorizations'
+      path: '/openiddict/authorizations'
+      fullPath: '/admin/openiddict/authorizations'
+      preLoaderRoute: typeof AdminOpeniddictAuthorizationsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/openiddict/scopes': {
       id: '/admin/openiddict/scopes'
       path: '/openiddict/scopes'
       fullPath: '/admin/openiddict/scopes'
       preLoaderRoute: typeof AdminOpeniddictScopesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/openiddict/tokens': {
+      id: '/admin/openiddict/tokens'
+      path: '/openiddict/tokens'
+      fullPath: '/admin/openiddict/tokens'
+      preLoaderRoute: typeof AdminOpeniddictTokensRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/saas/tenants': {
@@ -914,6 +973,7 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 
 interface AdminIdentityRouteRouteChildren {
   AdminIdentityClaimTypesRoute: typeof AdminIdentityClaimTypesRoute
+  AdminIdentityImpersonationSessionsRoute: typeof AdminIdentityImpersonationSessionsRoute
   AdminIdentityPermissionsRoute: typeof AdminIdentityPermissionsRoute
   AdminIdentityRolesRoute: typeof AdminIdentityRolesRoute
   AdminIdentityUsersRoute: typeof AdminIdentityUsersRoute
@@ -922,6 +982,8 @@ interface AdminIdentityRouteRouteChildren {
 
 const AdminIdentityRouteRouteChildren: AdminIdentityRouteRouteChildren = {
   AdminIdentityClaimTypesRoute: AdminIdentityClaimTypesRoute,
+  AdminIdentityImpersonationSessionsRoute:
+    AdminIdentityImpersonationSessionsRoute,
   AdminIdentityPermissionsRoute: AdminIdentityPermissionsRoute,
   AdminIdentityRolesRoute: AdminIdentityRolesRoute,
   AdminIdentityUsersRoute: AdminIdentityUsersRoute,
@@ -962,7 +1024,9 @@ interface AdminRouteRouteChildren {
   AdminCmsPagesRoute: typeof AdminCmsPagesRoute
   AdminCmsTagsRoute: typeof AdminCmsTagsRoute
   AdminOpeniddictApplicationsRoute: typeof AdminOpeniddictApplicationsRoute
+  AdminOpeniddictAuthorizationsRoute: typeof AdminOpeniddictAuthorizationsRoute
   AdminOpeniddictScopesRoute: typeof AdminOpeniddictScopesRoute
+  AdminOpeniddictTokensRoute: typeof AdminOpeniddictTokensRoute
   AdminFileManagementIndexRoute: typeof AdminFileManagementIndexRoute
 }
 
@@ -985,7 +1049,9 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminCmsPagesRoute: AdminCmsPagesRoute,
   AdminCmsTagsRoute: AdminCmsTagsRoute,
   AdminOpeniddictApplicationsRoute: AdminOpeniddictApplicationsRoute,
+  AdminOpeniddictAuthorizationsRoute: AdminOpeniddictAuthorizationsRoute,
   AdminOpeniddictScopesRoute: AdminOpeniddictScopesRoute,
+  AdminOpeniddictTokensRoute: AdminOpeniddictTokensRoute,
   AdminFileManagementIndexRoute: AdminFileManagementIndexRoute,
 }
 

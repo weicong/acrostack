@@ -10,4 +10,6 @@ public static class OpenIddictManagementErrorCodes
     public const string InvalidPermission = "OpenIddictManagement:InvalidPermission";
     public const string InvalidClientType = "OpenIddictManagement:InvalidClientType";
     public const string InvalidConsentType = "OpenIddictManagement:InvalidConsentType";
+    public const string TokenRevokeFailed = "OpenIddictManagement:TokenRevokeFailed";
+    public const string AuthorizationRevokeFailed = "OpenIddictManagement:AuthorizationRevokeFailed";
 }

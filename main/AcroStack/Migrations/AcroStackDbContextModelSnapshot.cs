@@ -20,6 +20,82 @@ namespace AcroStack.Migrations
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.Sqlite)
                 .HasAnnotation("ProductVersion", "10.0.9");
 
+            modelBuilder.Entity("AcroStack.AccountPro.ImpersonationSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientId")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid?>("ImpersonatorTenantId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ImpersonatorUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImpersonatorUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("RevocationTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("RevokedByUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TargetTenantId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TargetUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TargetUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "CreationTime");
+
+                    b.HasIndex("TenantId", "ImpersonatorUserId", "CreationTime");
+
+                    b.HasIndex("TenantId", "TargetUserId", "CreationTime");
+
+                    b.ToTable("AppImpersonationSessions", (string)null);
+                });
+
             modelBuilder.Entity("AcroStack.AppUsers.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1507,33 +1583,6 @@ namespace AcroStack.Migrations
                     b.HasIndex("TenantId", "ServiceName", "MethodName", "ExecutionTime");
 
                     b.ToTable("AbpAuditLogActions", (string)null);
-                });
-
-            modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogExcelFile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<string>("FileName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("FileName");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("TenantId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AbpAuditLogExcelFiles", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityChange", b =>

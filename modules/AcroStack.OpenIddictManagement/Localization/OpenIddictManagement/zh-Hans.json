@@ -4,9 +4,13 @@
     "Permission:OpenIddictManagement": "OpenIddict 管理",
     "Permission:OpenIddictManagement.Applications": "管理应用",
     "Permission:OpenIddictManagement.Scopes": "管理 Scope",
+    "Permission:OpenIddictManagement.Tokens": "管理令牌",
+    "Permission:OpenIddictManagement.Authorizations": "管理授权",
     "OpenIddictManagement:InvalidRedirectUri": "重定向 URI 无效",
     "OpenIddictManagement:InvalidPermission": "权限无效",
     "OpenIddictManagement:InvalidClientType": "客户端类型无效",
-    "OpenIddictManagement:InvalidConsentType": "同意类型无效"
+    "OpenIddictManagement:InvalidConsentType": "同意类型无效",
+    "OpenIddictManagement:TokenRevokeFailed": "令牌撤销失败（可能已被撤销或删除）",
+    "OpenIddictManagement:AuthorizationRevokeFailed": "授权撤销失败（可能已被撤销或删除）"
   }
 }

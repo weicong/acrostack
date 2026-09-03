@@ -179,12 +179,20 @@ public class AcroStackModule : AbpModule
         // mirroring ABP Account Pro's "Impersonation" grant type.
         // The open-source ABP Account module does not ship impersonation endpoints,
         // so we handle it via an OpenIddict custom flow (see ImpersonationGrantHandler).
+        // BackToImpersonator is the reverse flow: it exchanges the current
+        // impersonation token for a freshly issued admin token ("back to my account"),
+        // keyed by the server-side ImpersonationSession instead of an embedded token.
         PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
         {
             serverBuilder.AllowCustomFlow(ImpersonationGrantHandler.GrantType);
+            serverBuilder.AllowCustomFlow(BackToImpersonatorGrantHandler.GrantType);
 
             serverBuilder.AddEventHandler<HandleTokenRequestContext>(cfg =>
                 cfg.UseScopedHandler<ImpersonationGrantHandler>()
+                   .SetOrder(0));
+
+            serverBuilder.AddEventHandler<HandleTokenRequestContext>(cfg =>
+                cfg.UseScopedHandler<BackToImpersonatorGrantHandler>()
                    .SetOrder(0));
         });
 
@@ -411,6 +419,7 @@ public class AcroStackModule : AbpModule
             options.ConventionalControllers.Create(typeof(AppUsersModule).Assembly);
             options.ConventionalControllers.Create(typeof(FileManagementModule).Assembly);
             options.ConventionalControllers.Create(typeof(ChatModule).Assembly);
+            options.ConventionalControllers.Create(typeof(AccountProModule).Assembly);
             options.ConventionalControllers.Create(typeof(ClassroomApplicationModule).Assembly);
         });
     }

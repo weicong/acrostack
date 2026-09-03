@@ -8,4 +8,6 @@ public static class OpenIddictManagementPermissions
     public const string Default = "AcroStack.OpenIddictManagement";
     public const string Applications = Default + ".Applications";
     public const string Scopes = Default + ".Scopes";
+    public const string Tokens = Default + ".Tokens";
+    public const string Authorizations = Default + ".Authorizations";
 }

@@ -20,6 +20,13 @@ public class ImpersonationPermissionDefinitionProvider : PermissionDefinitionPro
             .AddChild(ImpersonationPermissions.UserImpersonation, L("Permission:Impersonation"))
             .WithProperty("MultiTenancySide", MultiTenancySides.Both);
 
+        // 模拟会话审计/撤销：仅 host 管理员可查看跨租户的全部会话记录。
+        context
+            .GetGroupOrNull("AbpIdentity")?
+            .GetPermissionOrNull("AbpIdentity.Users")?
+            .AddChild(ImpersonationPermissions.ManageImpersonationSessions, L("Permission:ManageImpersonationSessions"))
+            .WithProperty("MultiTenancySide", MultiTenancySides.Host);
+
         context
             .GetGroupOrNull("AbpTenantManagement")?
             .GetPermissionOrNull("AbpTenantManagement.Tenants")?

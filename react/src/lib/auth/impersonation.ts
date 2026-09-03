@@ -6,25 +6,29 @@
  * same <c>Impersonation</c> grant type at <c>/connect/token</c> (see
  * <c>ImpersonationGrantHandler</c>), mirroring ABP Account Pro's API.
  *
- * The impersonated JWT embeds ABP's official impersonator claims
- * (<c>impersonator_userid</c>, <c>impersonator_tenantid</c>,
+ * Impersonation is backed by a server-side session record
+ * (<c>ImpersonationSession</c>). The impersonated JWT embeds ABP's official
+ * impersonator claims (<c>impersonator_userid</c>, <c>impersonator_tenantid</c>,
  * <c>impersonator_username</c>) plus a project-specific
- * <c>impersonator_token</c> claim (the original admin's access token) so
- * the SPA can restore the admin session via {@link backToMyAccount}.
+ * <c>impersonation_session_id</c> claim pointing at that session. The admin's
+ * original access token is intentionally NOT embedded — exiting impersonation
+ * re-issues a fresh admin token from the session via the
+ * <c>BackToImpersonator</c> grant.
  *
  * Flow:
  * 1. Admin clicks "Impersonate" → {@link impersonateUser} calls
  *    <c>/connect/token</c> with <c>grant_type=Impersonation</c>.
  * 2. The backend validates the admin's bearer token, checks permissions,
- *    and issues a new access token for the target user as a standard
- *    OAuth2 token response JSON.
+ *    persists an <c>ImpersonationSession</c> and issues a new access token
+ *    for the target user as a standard OAuth2 token response JSON.
  * 3. The new token is stored via <c>userManager.storeUser</c> and the page
  *    reloads so the SPA re-initialises with the impersonated session.
  * 4. While impersonating, the ABP <c>application-configuration</c> API
  *    exposes the impersonator claims via <c>currentUser.impersonatorUserId</c>
  *    etc.; ImpersonationBanner (components/layout) reads them to show a banner.
- * 5. {@link backToMyAccount} reads <c>impersonator_token</c> from the JWT
- *    and restores it as the active session.
+ * 5. {@link backToMyAccount} reads <c>impersonation_session_id</c> from the
+ *    JWT and exchanges the impersonated token for a freshly issued admin
+ *    token via <c>grant_type=BackToImpersonator</c>.
  */
 import { User } from "oidc-client-ts";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
@@ -40,8 +44,15 @@ import { decodeJwtPayload } from "./jwt";
  */
 const IMPERSONATION_GRANT_TYPE = "Impersonation";
 
-/** Claim key used to embed the original admin's token in an impersonated JWT. */
-const CLAIM_IMPERSONATOR_TOKEN = "impersonator_token";
+/**
+ * Custom OAuth2 grant type implemented by the backend's
+ * `BackToImpersonatorGrantHandler`: exchanges the current impersonated
+ * token for a freshly issued admin token ("back to my account").
+ */
+const BACK_TO_IMPERSONATOR_GRANT_TYPE = "BackToImpersonator";
+
+/** Claim key carrying the server-side impersonation session id. */
+const CLAIM_IMPERSONATION_SESSION_ID = "impersonation_session_id";
 
 interface TokenResponse {
   access_token: string;
@@ -96,18 +107,17 @@ async function extractImpersonationError(response: Response): Promise<string> {
 }
 
 /**
- * Calls the /connect/token endpoint with the custom <c>Impersonation</c>
- * grant type (matching ABP Account Pro's API), stores the resulting token
- * as the active OIDC user session, then reloads the page.
+ * Requests a token for the given custom grant at <c>/connect/token</c>,
+ * stores the result as the active OIDC user session, then reloads the page.
  *
  * @param params Form parameters to send (e.g. `{ user_id }` or `{ tenant_id }`).
  * @param options.sendTenantHeader When `true` (default), sends the current
- *   localStorage tenant ID as the `__tenant` header so the backend
- *   resolves the target user in the correct tenant. Set to `false` for
- *   tenant impersonation, where the caller is a host user and the backend
- *   switches tenant internally via `ICurrentTenant.Change`.
+ *   localStorage tenant ID as the `__tenant` header so the backend resolves
+ *   the target user in the correct tenant. Set to `false` for flows where the
+ *   backend switches tenant internally via `ICurrentTenant.Change`.
  */
-async function callImpersonationEndpoint(
+async function requestTokenAndSwitchSession(
+  grantType: string,
   params: Record<string, string>,
   options: { sendTenantHeader?: boolean } = {},
 ): Promise<void> {
@@ -117,7 +127,7 @@ async function callImpersonationEndpoint(
   }
 
   const formBody = new URLSearchParams({
-    grant_type: IMPERSONATION_GRANT_TYPE,
+    grant_type: grantType,
     client_id: getOAuthConfig().clientId,
     ...params,
   });
@@ -151,7 +161,7 @@ async function callImpersonationEndpoint(
         ? Date.now() + token.expires_in * 1000
         : undefined;
 
-  const impersonatedUser = new User({
+  const nextUser = new User({
     access_token: token.access_token,
     refresh_token: token.refresh_token,
     token_type: token.token_type ?? "Bearer",
@@ -160,7 +170,7 @@ async function callImpersonationEndpoint(
     expires_at: expiresAt,
   });
 
-  await userManager.storeUser(impersonatedUser);
+  await userManager.storeUser(nextUser);
   // Full reload so OIDC state, app config and tenant context are reinitialized.
   window.location.replace("/");
 }
@@ -171,7 +181,7 @@ async function callImpersonationEndpoint(
  * The caller must hold the <c>AbpIdentity.Users.Impersonation</c> permission.
  */
 export async function impersonateUser(userId: string): Promise<void> {
-  await callImpersonationEndpoint({ user_id: userId });
+  await requestTokenAndSwitchSession(IMPERSONATION_GRANT_TYPE, { user_id: userId });
 }
 
 /**
@@ -184,13 +194,18 @@ export async function impersonateUser(userId: string): Promise<void> {
  * <c>ICurrentTenant.Change(tenantId)</c> while resolving the target admin.
  */
 export async function impersonateTenant(tenantId: string): Promise<void> {
-  await callImpersonationEndpoint({ tenant_id: tenantId }, { sendTenantHeader: false });
+  await requestTokenAndSwitchSession(
+    IMPERSONATION_GRANT_TYPE,
+    { tenant_id: tenantId },
+    { sendTenantHeader: false },
+  );
 }
 
 /**
- * Reads <c>impersonator_token</c> from the current session's JWT profile and
- * restores it as the active user, effectively exiting impersonation.
- * Throws if not currently impersonating or the impersonator token is missing.
+ * Exits impersonation: reads <c>impersonation_session_id</c> from the current
+ * JWT and calls the <c>BackToImpersonator</c> grant, which validates the
+ * server-side session and issues a fresh token for the original admin.
+ * Throws if not currently impersonating.
  */
 export async function backToMyAccount(): Promise<void> {
   const user = await userManager.getUser();
@@ -199,24 +214,16 @@ export async function backToMyAccount(): Promise<void> {
   }
 
   // user.profile is the decoded JWT payload (populated by oidc-client-ts).
-  const impersonatorToken = user.profile[CLAIM_IMPERSONATOR_TOKEN] as string | undefined;
-  if (!impersonatorToken) {
+  const sessionId = user.profile[CLAIM_IMPERSONATION_SESSION_ID];
+  if (!sessionId) {
     throw new Error("Not currently impersonating");
   }
 
-  const restoredPayload = decodeJwtPayload(impersonatorToken);
-  const expiresAt =
-    typeof restoredPayload.exp === "number" ? restoredPayload.exp * 1000 : undefined;
-
-  const restoredUser = new User({
-    access_token: impersonatorToken,
-    token_type: "Bearer",
-    profile: restoredPayload as User["profile"],
-    expires_at: expiresAt,
-    scope: user.scope,
-  });
-
-  await userManager.storeUser(restoredUser);
-  // Full reload so OIDC state, app config and tenant context are reinitialized.
-  window.location.replace("/");
+  // No __tenant header: the session record identifies the impersonator's
+  // tenant and the backend switches tenant internally.
+  await requestTokenAndSwitchSession(
+    BACK_TO_IMPERSONATOR_GRANT_TYPE,
+    {},
+    { sendTenantHeader: false },
+  );
 }

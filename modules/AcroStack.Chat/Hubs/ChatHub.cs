@@ -79,6 +79,20 @@ public class ChatHub : Hub
     }
 
     /// <summary>
+    /// Client-invoked heartbeat: refreshes the caller's sliding online
+    /// expiration in <see cref="IChatOnlineTracker"/>. The SPA invokes this
+    /// every ~20 seconds; the 60-second sliding TTL means a silently
+    /// disconnected client drops out of the online list within ~1 minute.
+    /// The hub-level [Authorize] already guards this method.
+    /// </summary>
+    public Task Ping()
+    {
+        return _currentUser.Id.HasValue
+            ? _onlineTracker.SetOnlineAsync(_currentUser.Id.Value)
+            : Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Client-invoked method to notify <paramref name="targetUserId"/> that
     /// the current user is typing. Server pushes a <see cref="ChatClientMethods.TypingNotification"/>
     /// event to the target user.

@@ -17,7 +17,8 @@ public class ImpersonationOptions
     /// The OAuth2 audience that access tokens must be issued for. Tokens
     /// with a different audience are rejected by the impersonation handler.
     /// Should match the audience registered via
-    /// <c>AddAudiences(...)</c> in <see cref="AcroStackModule.PreConfigureServices"/>.
+    /// <c>AddAudiences(...)</c> in the host module's
+    /// <c>PreConfigureServices</c> (see <c>AcroStackModule</c>).
     /// </summary>
     public string TokenAudience { get; set; } = "AcroStack";
 }

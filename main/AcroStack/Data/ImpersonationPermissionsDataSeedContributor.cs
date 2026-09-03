@@ -36,6 +36,10 @@ public class ImpersonationPermissionsDataSeedContributor
             await _permissionManager.SetForRoleAsync(
                 "admin", "AbpIdentity.Users.Impersonation", true);
 
+            // 模拟会话审计/撤销（对应 ImpersonationSessionAppService）。
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AbpIdentity.Users.ManageImpersonationSessions", true);
+
             await _permissionManager.SetForRoleAsync(
                 "admin", "AbpTenantManagement.Tenants.Impersonation", true);
 
@@ -71,6 +75,12 @@ public class ImpersonationPermissionsDataSeedContributor
 
             await _permissionManager.SetForRoleAsync(
                 "admin", "AcroStack.OpenIddictManagement.Scopes", true);
+
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.OpenIddictManagement.Tokens", true);
+
+            await _permissionManager.SetForRoleAsync(
+                "admin", "AcroStack.OpenIddictManagement.Authorizations", true);
         }
 
         // Tenant-available permissions: granted to the admin role at both

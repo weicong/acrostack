@@ -49,6 +49,7 @@ public class OpenIddictApplicationAppService
         // 本项目自定义授权类型。
         "LinkLogin",
         "Impersonation",
+        "BackToImpersonator",
     };
 
     private readonly IRepository<OpenIddictApplication, Guid> _repository;

@@ -15,6 +15,7 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.CmsKit.EntityFrameworkCore;
 using AcroStack.AppUsers;
 using AcroStack.Books;
+using AcroStack.AccountPro;
 using AcroStack.FileManagement;
 using AcroStack.Chat;
 using Classroom;
@@ -45,6 +46,7 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
     public DbSet<Conversation> ChatConversations { get; set; }
     public DbSet<ChatMessageReaction> ChatMessageReactions { get; set; }
     public DbSet<ChatBlockedUser> ChatBlockedUsers { get; set; }
+    public DbSet<ImpersonationSession> ImpersonationSessions { get; set; }
 
     public DbSet<Question> Questions { get; set; }
     public DbSet<Quiz> Quizzes { get; set; }
@@ -55,6 +57,10 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
     public DbSet<AnswerRevision> AnswerRevisions { get; set; }
 
     public DbSet<AuditLog> AuditLogs { get; set; }
+
+    // IAuditLoggingDbContext（ABP 官方接口）强制要求该 DbSet，故必须保留；
+    // 但本项目的审计导出走流式 IRemoteStreamContent，从不写入此表，
+    // 表在模型中被 Ignore 移除（见 OnModelCreating），数据库里不再创建。
     public DbSet<AuditLogExcelFile> AuditLogExcelFiles { get; set; }
 
     // EntityChange 是 AuditLog 聚合的子实体，ABP 审计日志模块不为其注册仓储。
@@ -96,6 +102,12 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
         builder.ConfigureFileManagement(DbTablePrefix, DbSchema);
 
         builder.ConfigureChat(DbTablePrefix, DbSchema);
+
+        // AuditLogExcelFile 由 ConfigureAuditLogging 默认映射，但本项目从不写入
+        // 该表（导出走流式响应），此处显式移除以保持数据库 schema 干净。
+        builder.Ignore<AuditLogExcelFile>();
+
+        builder.ConfigureAccountPro(DbTablePrefix, DbSchema);
 
         // Classroom 模块（表前缀 Cls，实体配置与 ClassroomDbContext 共享）
         builder.ConfigureClassroom();

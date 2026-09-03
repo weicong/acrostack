@@ -78,7 +78,8 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     "LinkLogin",
-                    "Impersonation"
+                    "Impersonation",
+                    "BackToImpersonator"
                 },
                 scopes: commonScopes,
                 redirectUris: new List<string> { appClientRootUrl, appClientRootUrl + "/silent-renew.html" },
