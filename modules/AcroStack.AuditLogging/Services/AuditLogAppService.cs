@@ -90,14 +90,21 @@ public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppServic
         await _auditLogRepository.DeleteManyAsync(ids);
     }
 
-    /// <summary>单次导出最大行数：防止无过滤条件时把整表加载进内存（OOM）。</summary>
-    public const int MaxExcelExportRows = 50_000;
+    /// <summary>配置缺失或填 0 时的兜底行数，保证导出不会把整表加载进内存。</summary>
+    private const int FallbackExcelExportRows = 50_000;
 
     public async Task<IRemoteStreamContent> GetListToExcelAsync(GetAuditLogListInput input)
     {
+        // 行数上限改由 AuditLogOptions.ExcelExportMaxRows 控制（appsettings.json:
+        // "AuditLog": { "ExcelExportMaxRows": ... }），配置项此前定义了却未被读取，
+        // 实际一直走硬编码值，导致配置形同虚设。
+        var maxRows = _auditLogOptions.ExcelExportMaxRows > 0
+            ? _auditLogOptions.ExcelExportMaxRows
+            : FallbackExcelExportRows;
+
         var queryable = ApplyFilters(await _auditLogRepository.GetQueryableAsync(), input)
             .OrderBy(nameof(AuditLog.ExecutionTime) + " desc")
-            .Take(MaxExcelExportRows);
+            .Take(maxRows);
 
         var auditLogs = await AsyncExecuter.ToListAsync(queryable);
 
@@ -312,6 +319,13 @@ public class AuditLogAppService : AuditLoggingAppServiceBase, IAuditLogAppServic
         if (input.HasException == true)
         {
             queryable = queryable.Where(x => x.Exceptions != null && x.Exceptions != "");
+        }
+
+        // HttpStatusCode 是 DTO 上已公布的过滤条件，ApplyFilters 必须兑现它，
+        // 否则前端按状态码筛选会静默返回全量数据。
+        if (input.HttpStatusCode.HasValue)
+        {
+            queryable = queryable.Where(x => x.HttpStatusCode == input.HttpStatusCode.Value);
         }
 
         if (!input.Filter.IsNullOrWhiteSpace())

@@ -1,6 +1,7 @@
 {
   "culture": "en",
   "texts": {
-    "Permission:Impersonation": "Impersonation"
+    "Permission:Impersonation": "Impersonation",
+    "Permission:ManageImpersonationSessions": "Impersonation sessions"
   }
 }
