@@ -60,6 +60,16 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 4. After adding/modifying an entity: add EF migration, then `dotnet run --project main/AcroStack --migrate-database`
 5. Before committing: `vp check` in `react/`
 
+## Documentation
+
+Only three kinds of docs are maintained (anything else tends to rot):
+
+- **Evergreen** (update alongside code): this file, root `README.md`, per-module `modules/<Feature>/README.md` (business scenario, which ABP Pro module it replaces, key design decisions + why, dependencies — no API listings, Swagger covers that), `react/README.md` + `react/AGENTS.md`.
+- **Process docs** (one-off): handoff/fix-plan documents live temporarily in repo root or `docs/`, and move to `docs/archive/` once their tasks are complete.
+- **ADRs** (`docs/adr/`): short records for "why we chose X over Y" decisions (e.g. why global UoW transactions are disabled).
+
+Rules: when adding/renaming a module, update that module's README and the module table in root `README.md`; when a process doc's tasks are done, archive it. Don't document volatile details (method names, file lists, directory trees beyond the top level) — the code and Swagger are the source of truth.
+
 ## Testing
 
 - No frontend tests currently.
@@ -67,6 +77,9 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 
 ## Reference
 
+- `README.md` — architecture overview, module table (which module replaces which ABP Pro module), quick start
+- `modules/*/README.md` — per-module business scenario, replaced Pro module, key design decisions
 - `.agents/` — agent configuration in the [.agents Protocol](https://dotagentsprotocol.com/) format: `agents.md` (project guidelines) + `skills/` — detailed ABP patterns (development flow, dependency rules, DDD, CLI commands, testing, EF Core, auth, multi-tenancy)
 - `react/AGENTS.md` — Vite+ toolchain details and review checklist
 - `react/README.md` — React app tech stack, env vars, Docker
+- `docs/archive/` — completed handoff/fix-plan documents (historical reference only)
