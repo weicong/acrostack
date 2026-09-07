@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   makeStyles,
@@ -12,6 +11,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { z } from "zod";
 import { useAppForm } from "@/components/ui/form";
 import { useMenuItemAdminCreate } from "@/api/hooks/menuItemAdmin/useMenuItemAdminCreate";
@@ -167,7 +167,7 @@ export function MenuItemFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑菜单项" : "新建菜单项"}</DialogTitle>
           <DialogContent>
@@ -269,7 +269,7 @@ export function MenuItemFormDialog({
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

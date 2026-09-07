@@ -68,6 +68,7 @@ export function useTeacherSessionsTable(onEnterDashboard: (sessionId: string) =>
         id: "classroomCode",
         accessorKey: "classroomCode",
         header: "课堂码",
+        meta: { width: 110 },
         cell: (info) => (
           <span className={styles.classroomCode}>{(info.getValue() as string) ?? "—"}</span>
         ),
@@ -82,11 +83,13 @@ export function useTeacherSessionsTable(onEnterDashboard: (sessionId: string) =>
         id: "status",
         accessorKey: "status",
         header: "状态",
+        meta: { width: 96 },
         cell: (info) => <SessionStatusBadge status={(info.getValue() as number) ?? 0} />,
       },
       {
         id: "progress",
         header: "进度",
+        meta: { width: 80 },
         cell: (info) => {
           const row = info.row.original;
           return `${row.currentQuestionNumber ?? 0} / ${row.questionCount ?? 0}`;
@@ -96,6 +99,7 @@ export function useTeacherSessionsTable(onEnterDashboard: (sessionId: string) =>
         id: "creationTime",
         accessorKey: "creationTime",
         header: "创建时间",
+        meta: { width: 170 },
         cell: (info) => {
           const time = info.getValue() as string | undefined;
           return time ? new Date(time).toLocaleString() : "—";
@@ -104,6 +108,7 @@ export function useTeacherSessionsTable(onEnterDashboard: (sessionId: string) =>
       {
         id: "actions",
         header: "操作",
+        meta: { width: 130 },
         cell: (info) => (
           <div className={styles.actionsCell}>
             <Button

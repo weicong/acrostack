@@ -4,11 +4,11 @@ import {
   DialogActions,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   useId,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -36,7 +36,10 @@ function ConfirmDialog({
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`} aria-describedby={`${dialogId}-content`}>
+      <AccessibleDialogSurface
+        aria-labelledby={`${dialogId}-title`}
+        aria-describedby={`${dialogId}-content`}
+      >
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{title}</DialogTitle>
           {description && <DialogContent id={`${dialogId}-content`}>{description}</DialogContent>}
@@ -53,7 +56,7 @@ function ConfirmDialog({
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

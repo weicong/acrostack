@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   makeStyles,
@@ -11,6 +10,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { z } from "zod";
 import { useAppForm } from "@/components/ui/form";
 import { useTagAdminCreate } from "@/api/hooks/tagAdmin/useTagAdminCreate";
@@ -122,7 +122,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑标签" : "新建标签"}</DialogTitle>
           <DialogContent>
@@ -162,7 +162,7 @@ export function TagFormDialog({ open, onOpenChange, tag, onSuccess }: TagFormDia
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

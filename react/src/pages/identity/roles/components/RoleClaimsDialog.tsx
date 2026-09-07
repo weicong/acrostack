@@ -4,10 +4,10 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { useIdentityRoleClaimGetList } from "@/api/hooks/identityRoleClaim/useIdentityRoleClaimGetList";
 import { ClaimAddRow } from "../../shared/components/ClaimAddRow";
 import { ClaimTable } from "../../shared/components/ClaimTable";
@@ -63,7 +63,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface>
+      <AccessibleDialogSurface>
         <DialogBody>
           <DialogTitle>
             {"声明"}
@@ -98,7 +98,7 @@ export function RoleClaimsDialog({ open, onOpenChange, roleId, roleName }: RoleC
             </Button>
           </DialogTrigger>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

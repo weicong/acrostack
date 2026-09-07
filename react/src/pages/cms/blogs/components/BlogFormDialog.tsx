@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   makeStyles,
@@ -11,6 +10,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { z } from "zod";
 import { useAppForm } from "@/components/ui/form";
 import { useBlogAdminCreate } from "@/api/hooks/blogAdmin/useBlogAdminCreate";
@@ -123,7 +123,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑博客" : "新建博客"}</DialogTitle>
           <DialogContent>
@@ -157,7 +157,7 @@ export function BlogFormDialog({ open, onOpenChange, blog, onSuccess }: BlogForm
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

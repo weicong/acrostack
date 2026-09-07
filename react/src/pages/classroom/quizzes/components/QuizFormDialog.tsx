@@ -11,7 +11,6 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Field,
@@ -22,6 +21,7 @@ import {
   tokens,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { ArrowDown20Regular, ArrowUp20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { questionGet } from "@/api/clients/question/questionGet";
 import { questionGetList } from "@/api/clients/question/questionGetList";
@@ -189,7 +189,7 @@ export function QuizFormDialog({ open, editing, actions, onClose, onSaved }: Qui
         if (!d.open) onClose();
       }}
     >
-      <DialogSurface>
+      <AccessibleDialogSurface>
         <DialogBody className={styles.dialogBody}>
           <DialogTitle>{editingId ? "编辑试卷" : "新建试卷"}</DialogTitle>
           <div className={styles.form}>
@@ -331,7 +331,7 @@ export function QuizFormDialog({ open, editing, actions, onClose, onSaved }: Qui
             </Button>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

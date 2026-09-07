@@ -29,6 +29,7 @@ export function useQuizColumns(
         id: "questionCount",
         accessorKey: "questionCount",
         header: "题数",
+        meta: { width: 72 },
         cell: (info) => (info.getValue() as number) ?? 0,
       },
       {
@@ -46,6 +47,7 @@ export function useQuizColumns(
         id: "creationTime",
         accessorKey: "creationTime",
         header: "创建时间",
+        meta: { width: 170 },
         cell: (info) => {
           const time = info.getValue() as string | undefined;
           return time ? new Date(time).toLocaleString("zh-CN", { hour12: false }) : "—";
@@ -54,6 +56,7 @@ export function useQuizColumns(
       {
         id: "actions",
         header: "操作",
+        meta: { width: 180 },
         cell: (info) => (
           <div className={styles.actions}>
             <Button

@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Dropdown,
@@ -20,6 +19,7 @@ import {
   Title3,
   tokens,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { Add20Regular } from "@fluentui/react-icons";
 import { useQuizGetList } from "@/api/hooks/quiz/useQuizGetList";
 import { extractAbpErrorMessage } from "@/lib/http/error";
@@ -55,7 +55,7 @@ export function TeacherSessionsToolbar() {
             创建课堂
           </Button>
         </DialogTrigger>
-        <DialogSurface>
+        <AccessibleDialogSurface>
           <DialogBody>
             <DialogTitle>选择试卷创建课堂</DialogTitle>
             <Field label="试卷（仅显示含题目的试卷）" style={{ minWidth: "360px" }}>
@@ -95,7 +95,7 @@ export function TeacherSessionsToolbar() {
               </Button>
             </DialogActions>
           </DialogBody>
-        </DialogSurface>
+        </AccessibleDialogSurface>
       </Dialog>
     </div>
   );

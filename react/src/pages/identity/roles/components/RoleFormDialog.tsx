@@ -3,10 +3,10 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { useId } from "@fluentui/react-components";
 import type { RoleFormRole } from "../types/role";
 import { RoleForm } from "./RoleForm";
@@ -28,7 +28,7 @@ export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleForm
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新角色"}</DialogTitle>
           <DialogContent>
@@ -44,7 +44,7 @@ export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleForm
             />
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

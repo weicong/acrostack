@@ -10,7 +10,6 @@ import {
   DialogActions,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Field,
@@ -22,6 +21,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { Add20Regular, Delete20Regular, Link20Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import { useFileManagementGetShareLinks } from "@/api/hooks/fileManagement/useFileManagementGetShareLinks";
@@ -112,7 +112,7 @@ export function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksD
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{`分享文件 ${fileName}`}</DialogTitle>
           <DialogContent>
@@ -196,7 +196,7 @@ export function ShareLinksDialog({ fileId, fileName, onOpenChange }: ShareLinksD
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   makeStyles,
@@ -11,6 +10,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { useAppForm } from "@/components/ui/form";
 import { useIdentityClaimTypeCreate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeCreate";
 import { useIdentityClaimTypeUpdate } from "@/api/hooks/identityClaimType/useIdentityClaimTypeUpdate";
@@ -131,7 +131,7 @@ export function ClaimTypeFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新建声明类型"}</DialogTitle>
           <DialogContent>
@@ -191,7 +191,7 @@ export function ClaimTypeFormDialog({
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

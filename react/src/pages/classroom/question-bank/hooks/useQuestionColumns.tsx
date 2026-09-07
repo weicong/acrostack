@@ -31,6 +31,7 @@ export function useQuestionColumns(
         id: "type",
         accessorKey: "type",
         header: "题型",
+        meta: { width: 96 },
         cell: (info) => {
           const type = (info.getValue() as number) ?? 1;
           return (
@@ -52,12 +53,14 @@ export function useQuestionColumns(
       {
         id: "options",
         header: "选项数",
+        meta: { width: 80 },
         cell: (info) => info.row.original.options?.length ?? 0,
       },
       {
         id: "correctAnswer",
         accessorKey: "correctAnswer",
         header: "正确答案",
+        meta: { width: 96 },
         cell: (info) => {
           const row = info.row.original;
           if (row.type === 3) {
@@ -70,11 +73,13 @@ export function useQuestionColumns(
         id: "explanation",
         accessorKey: "explanation",
         header: "解析",
+        meta: { width: 72 },
         cell: (info) => ((info.getValue() as string) ? "有" : "—"),
       },
       {
         id: "actions",
         header: "操作",
+        meta: { width: 180 },
         cell: (info) => (
           <div className={styles.actions}>
             <Button

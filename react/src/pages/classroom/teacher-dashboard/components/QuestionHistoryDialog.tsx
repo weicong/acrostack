@@ -10,12 +10,12 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
-  DialogSurface,
   DialogTitle,
   Spinner,
   Text,
   mergeClasses,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { CheckmarkCircle20Filled } from "@fluentui/react-icons";
 import { useClassSessionGetQuestionHistory } from "@/api/hooks/classSession/useClassSessionGetQuestionHistory";
 import type { ClassroomDtosTeacherQuestionHistoryItemDto } from "@/api/models/classroom/dtos/TeacherQuestionHistoryItemDto";
@@ -66,7 +66,7 @@ export function QuestionHistoryDialog({
 
   return (
     <Dialog open={open} onOpenChange={(_, d) => onOpenChange(d.open)}>
-      <DialogSurface className={styles.historySurface} aria-describedby={undefined}>
+      <AccessibleDialogSurface className={styles.historySurface} aria-describedby={undefined}>
         <DialogBody>
           <DialogTitle>题目记录（{data?.questionCount ?? items.length} 题）</DialogTitle>
           {isPending ? (
@@ -110,7 +110,7 @@ export function QuestionHistoryDialog({
             </Button>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Dropdown,
@@ -22,6 +21,7 @@ import {
   Textarea,
   tokens,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import { questionTypeLabel } from "../../shared/constants/question";
 import type { QuestionActions } from "../hooks/useQuestionActions";
@@ -94,7 +94,7 @@ export function QuestionFormDialog({
         if (!d.open) onClose();
       }}
     >
-      <DialogSurface>
+      <AccessibleDialogSurface>
         <DialogBody className={styles.dialogBody}>
           <DialogTitle>{editingId ? "编辑题目" : "新建题目"}</DialogTitle>
           <div className={styles.form}>
@@ -179,7 +179,7 @@ export function QuestionFormDialog({
             </Button>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

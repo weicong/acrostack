@@ -10,7 +10,6 @@ import {
   DialogActions,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Spinner,
@@ -19,6 +18,7 @@ import {
   useId,
   useToastController,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { ArrowUpload24Regular } from "@fluentui/react-icons";
 import { format } from "date-fns";
 import { useFileManagementGetFileVersions } from "@/api/hooks/fileManagement/useFileManagementGetFileVersions";
@@ -79,7 +79,7 @@ export function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialo
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{`版本记录：${fileName}`}</DialogTitle>
           <DialogContent>
@@ -141,7 +141,7 @@ export function VersionsDialog({ fileId, fileName, onOpenChange }: VersionsDialo
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
 
       <ConfirmDialog
         open={confirmVersionId !== null}

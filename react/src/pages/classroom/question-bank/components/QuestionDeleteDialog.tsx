@@ -7,12 +7,12 @@ import {
   Dialog,
   DialogActions,
   DialogBody,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Spinner,
   Text,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import type { ClassroomDtosQuestionDto } from "@/api/models/classroom/dtos/QuestionDto";
 import type { QuestionActions } from "../hooks/useQuestionActions";
 
@@ -47,7 +47,7 @@ export function QuestionDeleteDialog({
         if (!d.open) onClose();
       }}
     >
-      <DialogSurface>
+      <AccessibleDialogSurface>
         <DialogBody>
           <DialogTitle>删除题目</DialogTitle>
           <Text>
@@ -66,7 +66,7 @@ export function QuestionDeleteDialog({
             </Button>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

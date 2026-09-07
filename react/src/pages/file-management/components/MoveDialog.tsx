@@ -9,7 +9,6 @@ import {
   DialogActions,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Link as FluentLink,
@@ -17,6 +16,7 @@ import {
   Text,
   useId,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { Folder20Regular } from "@fluentui/react-icons";
 import { useFileManagementGetFolders } from "@/api/hooks/fileManagement/useFileManagementGetFolders";
 import type { AcroStackFileManagementFileFolderDto as FileFolderDto } from "@/api/models/acroStack/fileManagement/FileFolderDto";
@@ -63,7 +63,7 @@ export function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveD
 
   return (
     <Dialog open onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{title}</DialogTitle>
           <DialogContent>
@@ -118,7 +118,7 @@ export function MoveDialog({ target, onOpenChange, onConfirm, isPending }: MoveD
             </DialogTrigger>
           </DialogActions>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

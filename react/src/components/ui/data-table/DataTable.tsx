@@ -101,6 +101,17 @@ interface DataTableProps<TData extends RowData> {
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
 
+/**
+ * Fluent Table 使用 display:table + table-layout:fixed，列宽由表头单元格宽度决定。
+ * 列宽通过 columnDef.meta.width（px）显式设置；未设置的列平分剩余空间，
+ * 适合题干等内容主列。不使用 columnDef.size —— v9 sizing feature 会给所有列
+ * 注入默认 size: 150，无法区分显式设置。
+ */
+function columnWidthStyle(columnDef: { meta?: unknown }): React.CSSProperties | undefined {
+  const width = (columnDef.meta as { width?: number } | undefined)?.width;
+  return typeof width === "number" ? { width: `${width}px` } : undefined;
+}
+
 function DataTable<TData extends RowData>({
   table,
   ariaLabel,
@@ -155,6 +166,8 @@ function DataTable<TData extends RowData>({
                   const sortDirection =
                     sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined;
 
+                  const columnStyle = columnWidthStyle(header.column.columnDef);
+
                   let pinStyle: React.CSSProperties = {};
                   if (pinned === "start") {
                     pinStyle = {
@@ -176,7 +189,7 @@ function DataTable<TData extends RowData>({
                     <TableHeaderCell
                       key={header.id}
                       sortDirection={sortDirection}
-                      style={pinStyle}
+                      style={{ ...columnStyle, ...pinStyle }}
                       onClick={sortable ? header.column.getToggleSortingHandler() : undefined}
                       onKeyDown={(e) => {
                         if (sortable && (e.key === "Enter" || e.key === " ")) {
@@ -266,7 +279,10 @@ function DataTable<TData extends RowData>({
                         };
                       }
                       return (
-                        <TableCell key={cell.id} style={pinStyle}>
+                        <TableCell
+                          key={cell.id}
+                          style={{ ...columnWidthStyle(cell.column.columnDef), ...pinStyle }}
+                        >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
                       );

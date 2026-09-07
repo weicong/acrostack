@@ -3,12 +3,12 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   Spinner,
   useId,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import { useUserGet } from "@/api/hooks/user/useUserGet";
 import { toFormUserFromIdentity, type UserFormUser } from "../types/user";
 import { UserForm } from "./UserForm";
@@ -48,7 +48,7 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新用户"}</DialogTitle>
           <DialogContent>
@@ -67,7 +67,7 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }

@@ -3,11 +3,11 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogSurface,
   DialogTitle,
   DialogTrigger,
   useId,
 } from "@fluentui/react-components";
+import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
 import type { BookFormBook } from "../types/book";
 import { BookForm } from "./BookForm";
 
@@ -28,7 +28,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
 
   return (
     <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <DialogSurface aria-labelledby={`${dialogId}-title`}>
+      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
         <DialogBody>
           <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑图书" : "新增图书"}</DialogTitle>
           <DialogContent>
@@ -46,7 +46,7 @@ export function BookFormDialog({ open, onOpenChange, book, onSuccess }: BookForm
             )}
           </DialogContent>
         </DialogBody>
-      </DialogSurface>
+      </AccessibleDialogSurface>
     </Dialog>
   );
 }
