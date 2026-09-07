@@ -49,13 +49,12 @@ export function menuItemAdminGetPermissionLookupQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await menuItemAdminGetPermissionLookup({
+      return menuItemAdminGetPermissionLookup({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

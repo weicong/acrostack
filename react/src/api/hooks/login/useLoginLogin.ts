@@ -41,8 +41,7 @@ export function loginLoginMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await loginLogin({ ...config, body, throwOnError: true });
-      return data;
+      return loginLogin({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

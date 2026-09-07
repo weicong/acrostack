@@ -37,7 +37,9 @@ import { Route as ClassroomQuestionsRouteImport } from './routes/classroom/quest
 import { Route as ClassroomQuizzesRouteImport } from './routes/classroom/quizzes'
 import { Route as ClassroomSessionsRouteImport } from './routes/classroom/sessions'
 import { Route as PresentationSessionIdRouteImport } from './routes/presentation/$sessionId'
+import { Route as StudentIndexRouteImport } from './routes/student/index'
 import { Route as StudentJoinRouteImport } from './routes/student/join'
+import { Route as StudentProfileRouteImport } from './routes/student/profile'
 import { Route as AdminCmsBlogPostsRouteImport } from './routes/admin/cms/blog-posts'
 import { Route as AdminCmsBlogsRouteImport } from './routes/admin/cms/blogs'
 import { Route as AdminCmsCommentsRouteImport } from './routes/admin/cms/comments'
@@ -56,6 +58,7 @@ import { Route as AdminOpeniddictAuthorizationsRouteImport } from './routes/admi
 import { Route as AdminOpeniddictScopesRouteImport } from './routes/admin/openiddict/scopes'
 import { Route as AdminOpeniddictTokensRouteImport } from './routes/admin/openiddict/tokens'
 import { Route as AdminSaasTenantsRouteImport } from './routes/admin/saas/tenants'
+import { Route as StudentClassroomsSessionIdRouteImport } from './routes/student/classrooms/$sessionId'
 import { Route as StudentSessionsSessionIdRouteImport } from './routes/student/sessions/$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -198,9 +201,19 @@ const PresentationSessionIdRoute = PresentationSessionIdRouteImport.update({
   path: '/$sessionId',
   getParentRoute: () => PresentationRouteRoute,
 } as any)
+const StudentIndexRoute = StudentIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StudentRouteRoute,
+} as any)
 const StudentJoinRoute = StudentJoinRouteImport.update({
   id: '/join',
   path: '/join',
+  getParentRoute: () => StudentRouteRoute,
+} as any)
+const StudentProfileRoute = StudentProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => StudentRouteRoute,
 } as any)
 const AdminCmsBlogPostsRoute = AdminCmsBlogPostsRouteImport.update({
@@ -298,6 +311,12 @@ const AdminSaasTenantsRoute = AdminSaasTenantsRouteImport.update({
   path: '/tenants',
   getParentRoute: () => AdminSaasRouteRoute,
 } as any)
+const StudentClassroomsSessionIdRoute =
+  StudentClassroomsSessionIdRouteImport.update({
+    id: '/classrooms/$sessionId',
+    path: '/classrooms/$sessionId',
+    getParentRoute: () => StudentRouteRoute,
+  } as any)
 const StudentSessionsSessionIdRoute =
   StudentSessionsSessionIdRouteImport.update({
     id: '/sessions/$sessionId',
@@ -332,9 +351,11 @@ export interface FileRoutesByFullPath {
   '/classroom/sessions': typeof ClassroomSessionsRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
+  '/student/profile': typeof StudentProfileRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/classroom/': typeof ClassroomIndexRoute
+  '/student/': typeof StudentIndexRoute
   '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
   '/admin/cms/blogs': typeof AdminCmsBlogsRoute
   '/admin/cms/comments': typeof AdminCmsCommentsRoute
@@ -351,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
   '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/classrooms/$sessionId': typeof StudentClassroomsSessionIdRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management/': typeof AdminFileManagementIndexRoute
   '/admin/identity/': typeof AdminIdentityIndexRoute
@@ -358,7 +380,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/presentation': typeof PresentationRouteRouteWithChildren
-  '/student': typeof StudentRouteRouteWithChildren
   '/admin/saas': typeof AdminSaasRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
@@ -378,9 +399,11 @@ export interface FileRoutesByTo {
   '/classroom/sessions': typeof ClassroomSessionsRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
+  '/student/profile': typeof StudentProfileRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/classroom': typeof ClassroomIndexRoute
+  '/student': typeof StudentIndexRoute
   '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
   '/admin/cms/blogs': typeof AdminCmsBlogsRoute
   '/admin/cms/comments': typeof AdminCmsCommentsRoute
@@ -397,6 +420,7 @@ export interface FileRoutesByTo {
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
   '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/classrooms/$sessionId': typeof StudentClassroomsSessionIdRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management': typeof AdminFileManagementIndexRoute
   '/admin/identity': typeof AdminIdentityIndexRoute
@@ -429,9 +453,11 @@ export interface FileRoutesById {
   '/classroom/sessions': typeof ClassroomSessionsRoute
   '/presentation/$sessionId': typeof PresentationSessionIdRoute
   '/student/join': typeof StudentJoinRoute
+  '/student/profile': typeof StudentProfileRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/classroom/': typeof ClassroomIndexRoute
+  '/student/': typeof StudentIndexRoute
   '/admin/cms/blog-posts': typeof AdminCmsBlogPostsRoute
   '/admin/cms/blogs': typeof AdminCmsBlogsRoute
   '/admin/cms/comments': typeof AdminCmsCommentsRoute
@@ -448,6 +474,7 @@ export interface FileRoutesById {
   '/admin/openiddict/scopes': typeof AdminOpeniddictScopesRoute
   '/admin/openiddict/tokens': typeof AdminOpeniddictTokensRoute
   '/admin/saas/tenants': typeof AdminSaasTenantsRoute
+  '/student/classrooms/$sessionId': typeof StudentClassroomsSessionIdRoute
   '/student/sessions/$sessionId': typeof StudentSessionsSessionIdRoute
   '/admin/file-management/': typeof AdminFileManagementIndexRoute
   '/admin/identity/': typeof AdminIdentityIndexRoute
@@ -481,9 +508,11 @@ export interface FileRouteTypes {
     | '/classroom/sessions'
     | '/presentation/$sessionId'
     | '/student/join'
+    | '/student/profile'
     | '/account/'
     | '/admin/'
     | '/classroom/'
+    | '/student/'
     | '/admin/cms/blog-posts'
     | '/admin/cms/blogs'
     | '/admin/cms/comments'
@@ -500,6 +529,7 @@ export interface FileRouteTypes {
     | '/admin/openiddict/scopes'
     | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
+    | '/student/classrooms/$sessionId'
     | '/student/sessions/$sessionId'
     | '/admin/file-management/'
     | '/admin/identity/'
@@ -507,7 +537,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/presentation'
-    | '/student'
     | '/admin/saas'
     | '/account/forgot-password'
     | '/account/login'
@@ -527,9 +556,11 @@ export interface FileRouteTypes {
     | '/classroom/sessions'
     | '/presentation/$sessionId'
     | '/student/join'
+    | '/student/profile'
     | '/account'
     | '/admin'
     | '/classroom'
+    | '/student'
     | '/admin/cms/blog-posts'
     | '/admin/cms/blogs'
     | '/admin/cms/comments'
@@ -546,6 +577,7 @@ export interface FileRouteTypes {
     | '/admin/openiddict/scopes'
     | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
+    | '/student/classrooms/$sessionId'
     | '/student/sessions/$sessionId'
     | '/admin/file-management'
     | '/admin/identity'
@@ -577,9 +609,11 @@ export interface FileRouteTypes {
     | '/classroom/sessions'
     | '/presentation/$sessionId'
     | '/student/join'
+    | '/student/profile'
     | '/account/'
     | '/admin/'
     | '/classroom/'
+    | '/student/'
     | '/admin/cms/blog-posts'
     | '/admin/cms/blogs'
     | '/admin/cms/comments'
@@ -596,6 +630,7 @@ export interface FileRouteTypes {
     | '/admin/openiddict/scopes'
     | '/admin/openiddict/tokens'
     | '/admin/saas/tenants'
+    | '/student/classrooms/$sessionId'
     | '/student/sessions/$sessionId'
     | '/admin/file-management/'
     | '/admin/identity/'
@@ -808,11 +843,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PresentationSessionIdRouteImport
       parentRoute: typeof PresentationRouteRoute
     }
+    '/student/': {
+      id: '/student/'
+      path: '/'
+      fullPath: '/student/'
+      preLoaderRoute: typeof StudentIndexRouteImport
+      parentRoute: typeof StudentRouteRoute
+    }
     '/student/join': {
       id: '/student/join'
       path: '/join'
       fullPath: '/student/join'
       preLoaderRoute: typeof StudentJoinRouteImport
+      parentRoute: typeof StudentRouteRoute
+    }
+    '/student/profile': {
+      id: '/student/profile'
+      path: '/profile'
+      fullPath: '/student/profile'
+      preLoaderRoute: typeof StudentProfileRouteImport
       parentRoute: typeof StudentRouteRoute
     }
     '/admin/cms/blog-posts': {
@@ -940,6 +989,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/saas/tenants'
       preLoaderRoute: typeof AdminSaasTenantsRouteImport
       parentRoute: typeof AdminSaasRouteRoute
+    }
+    '/student/classrooms/$sessionId': {
+      id: '/student/classrooms/$sessionId'
+      path: '/classrooms/$sessionId'
+      fullPath: '/student/classrooms/$sessionId'
+      preLoaderRoute: typeof StudentClassroomsSessionIdRouteImport
+      parentRoute: typeof StudentRouteRoute
     }
     '/student/sessions/$sessionId': {
       id: '/student/sessions/$sessionId'
@@ -1092,11 +1148,17 @@ const PresentationRouteRouteWithChildren =
 
 interface StudentRouteRouteChildren {
   StudentJoinRoute: typeof StudentJoinRoute
+  StudentProfileRoute: typeof StudentProfileRoute
+  StudentIndexRoute: typeof StudentIndexRoute
+  StudentClassroomsSessionIdRoute: typeof StudentClassroomsSessionIdRoute
   StudentSessionsSessionIdRoute: typeof StudentSessionsSessionIdRoute
 }
 
 const StudentRouteRouteChildren: StudentRouteRouteChildren = {
   StudentJoinRoute: StudentJoinRoute,
+  StudentProfileRoute: StudentProfileRoute,
+  StudentIndexRoute: StudentIndexRoute,
+  StudentClassroomsSessionIdRoute: StudentClassroomsSessionIdRoute,
   StudentSessionsSessionIdRoute: StudentSessionsSessionIdRoute,
 }
 

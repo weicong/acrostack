@@ -47,13 +47,12 @@ export function mediaDescriptorDownloadQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await mediaDescriptorDownload({
+      return mediaDescriptorDownload({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

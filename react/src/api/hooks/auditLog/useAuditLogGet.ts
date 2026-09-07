@@ -45,13 +45,12 @@ export function auditLogGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await auditLogGet({
+      return auditLogGet({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

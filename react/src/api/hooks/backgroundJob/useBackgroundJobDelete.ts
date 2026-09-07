@@ -38,8 +38,7 @@ export function backgroundJobDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await backgroundJobDelete({ ...config, path, throwOnError: true });
-      return data;
+      return backgroundJobDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

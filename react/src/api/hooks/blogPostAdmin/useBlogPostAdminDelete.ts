@@ -38,8 +38,7 @@ export function blogPostAdminDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await blogPostAdminDelete({ ...config, path, throwOnError: true });
-      return data;
+      return blogPostAdminDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

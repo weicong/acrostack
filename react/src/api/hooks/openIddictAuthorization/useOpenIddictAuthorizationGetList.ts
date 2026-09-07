@@ -49,13 +49,12 @@ export function openIddictAuthorizationGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await openIddictAuthorizationGetList({
+      return openIddictAuthorizationGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

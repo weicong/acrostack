@@ -47,13 +47,12 @@ export function permissionsGetByGroupQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await permissionsGetByGroup({
+      return permissionsGetByGroup({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

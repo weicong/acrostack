@@ -42,8 +42,7 @@ export function openIddictScopeUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await openIddictScopeUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return openIddictScopeUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

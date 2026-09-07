@@ -45,12 +45,11 @@ export function blogPostAdminHasBlogPostWaitingForReviewQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogPostAdminHasBlogPostWaitingForReview({
+      return blogPostAdminHasBlogPostWaitingForReview({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

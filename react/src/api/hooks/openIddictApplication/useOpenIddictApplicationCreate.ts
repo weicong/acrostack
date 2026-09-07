@@ -42,8 +42,7 @@ export function openIddictApplicationCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await openIddictApplicationCreate({ ...config, body, throwOnError: true });
-      return data;
+      return openIddictApplicationCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

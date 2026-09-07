@@ -41,8 +41,7 @@ export function roleUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await roleUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return roleUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -45,13 +45,12 @@ export function roleGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await roleGet({
+      return roleGet({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

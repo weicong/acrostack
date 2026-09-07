@@ -47,13 +47,12 @@ export function userLookupGetCountQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await userLookupGetCount({
+      return userLookupGetCount({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

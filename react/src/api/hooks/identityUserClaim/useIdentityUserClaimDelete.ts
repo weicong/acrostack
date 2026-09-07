@@ -38,8 +38,7 @@ export function identityUserClaimDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await identityUserClaimDelete({ ...config, path, throwOnError: true });
-      return data;
+      return identityUserClaimDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

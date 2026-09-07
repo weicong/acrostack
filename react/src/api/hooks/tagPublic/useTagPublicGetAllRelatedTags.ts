@@ -47,13 +47,12 @@ export function tagPublicGetAllRelatedTagsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await tagPublicGetAllRelatedTags({
+      return tagPublicGetAllRelatedTags({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

@@ -34,13 +34,12 @@ export function fileManagementDownloadSharedQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await fileManagementDownloadShared({
+      return fileManagementDownloadShared({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

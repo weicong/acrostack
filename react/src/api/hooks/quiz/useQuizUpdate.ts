@@ -41,8 +41,7 @@ export function quizUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await quizUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return quizUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

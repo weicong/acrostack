@@ -42,8 +42,7 @@ export function identityUserClaimUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await identityUserClaimUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return identityUserClaimUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

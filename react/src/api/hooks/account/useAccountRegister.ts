@@ -41,8 +41,7 @@ export function accountRegisterMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await accountRegister({ ...config, body, throwOnError: true });
-      return data;
+      return accountRegister({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

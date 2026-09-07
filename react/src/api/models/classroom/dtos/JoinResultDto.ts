@@ -26,9 +26,13 @@ export type ClassroomDtosJoinResultDto = {
    * @type integer | undefined
    */
   expiresInSeconds?: number;
+  /**
+   * @description 展示名（= 学员姓名）。
+   * @type string | undefined
+   */
   nickname?: string | null;
   /**
-   * @description 分配到的学习小组编号（1 起，每组默认 5 人顺序分配）。
+   * @description 分配到的学习小组编号（1 起，每组默认 5 人顺序分配）。重复进入同一课堂时返回首次分配结果。
    *
    * Format: `int32`
    * @type integer | undefined
@@ -41,4 +45,24 @@ export type ClassroomDtosJoinResultDto = {
    * @type integer | undefined
    */
   sessionStatus?: ClassroomClassSessionStatus;
+  /**
+   * @description 学员档案 Id；历史匿名学员为 null。
+   *
+   * Format: `uuid`
+   * @type string | undefined
+   */
+  studentProfileId?: string | null;
+  /**
+   * @description 学员门户长期令牌（设备绑定，用于免填加入与课后浏览）。
+   * @type string | undefined
+   */
+  studentToken?: string | null;
+  /**
+   * @description
+   * Format: `int32`
+   * @type integer | undefined
+   */
+  studentTokenExpiresInSeconds?: number;
+  unit?: string | null;
+  position?: string | null;
 };

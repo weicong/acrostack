@@ -47,13 +47,12 @@ export function abpTenantFindTenantByIdQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await abpTenantFindTenantById({
+      return abpTenantFindTenantById({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

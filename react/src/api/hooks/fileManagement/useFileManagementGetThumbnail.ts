@@ -34,13 +34,12 @@ export function fileManagementGetThumbnailQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await fileManagementGetThumbnail({
+      return fileManagementGetThumbnail({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

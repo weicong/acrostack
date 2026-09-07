@@ -38,8 +38,7 @@ export function backgroundJobRequeueMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await backgroundJobRequeue({ ...config, path, throwOnError: true });
-      return data;
+      return backgroundJobRequeue({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

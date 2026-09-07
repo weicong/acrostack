@@ -28,12 +28,11 @@ export function fileManagementGetStorageInfoQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await fileManagementGetStorageInfo({
+      return fileManagementGetStorageInfo({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

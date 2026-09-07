@@ -39,8 +39,7 @@ export function chatBlockIsUserBlockedMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await chatBlockIsUserBlocked({ ...config, query, throwOnError: true });
-      return data;
+      return chatBlockIsUserBlocked({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

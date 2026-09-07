@@ -155,6 +155,34 @@ export type RequestResult<
     : ResultUnion<TResponses, TRequest, TResponse>;
 
 /**
+ * A `RequestResult` promise with an extra `unwrap()` method that resolves to the success body.
+ */
+export type Unwrappable<T extends { data: unknown; error: unknown }> = Promise<T> & {
+  unwrap: () => Promise<Extract<T, { error: undefined }>["data"]>;
+};
+
+/**
+ * Attaches `unwrap()` to a result promise, which rejects with `error` when the result carried one.
+ *
+ * @example Full result
+ * `const { data, error } = await getPetById({ path: { petId: 1 } })`
+ *
+ * @example Success body only
+ * `const pet = await getPetById({ path: { petId: 1 } }).unwrap()`
+ */
+export function withUnwrap<T extends { data: unknown; error: unknown }>(
+  promise: Promise<T>,
+): Unwrappable<T> {
+  const unwrappable = promise as Unwrappable<T>;
+  unwrappable.unwrap = () =>
+    promise.then((result) => {
+      if (result.error !== undefined) throw result.error;
+      return result.data as Extract<T, { error: undefined }>["data"];
+    });
+  return unwrappable;
+}
+
+/**
  * The data-shaped keys of the grouped options object, which `Options` re-adds typed per operation.
  */
 export type DataShape = {
@@ -484,12 +512,12 @@ export async function resolveAuth(params: {
       if (scheme.in === "query") {
         if (query[name] === undefined) query[name] = token;
       } else if (scheme.in === "cookie") {
-        headers.Cookie = [headers.Cookie, `${name}=${token}`].filter(Boolean).join("; ");
+        headers["Cookie"] = [headers["Cookie"], `${name}=${token}`].filter(Boolean).join("; ");
       } else if (!hasHeader(headers, name)) {
         headers[name] = token;
       }
     } else if (!hasHeader(headers, "Authorization")) {
-      headers.Authorization =
+      headers["Authorization"] =
         scheme.scheme === "basic" ? `Basic ${btoa(token)}` : `Bearer ${token}`;
     }
     return;
@@ -597,7 +625,7 @@ async function resolveRequest<TBody, TRequest, TResponse>({
 
   if (requestConfig.cookies) {
     const cookie = serializeCookies(requestConfig.cookies, requestConfig.styles?.cookie);
-    if (cookie) headers.Cookie = [headers.Cookie, cookie].filter(Boolean).join("; ");
+    if (cookie) headers["Cookie"] = [headers["Cookie"], cookie].filter(Boolean).join("; ");
   }
 
   const validatedBody = await runValidator(requestConfig.validator?.request, requestConfig.body);

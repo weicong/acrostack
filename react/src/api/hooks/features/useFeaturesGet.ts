@@ -45,13 +45,12 @@ export function featuresGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await featuresGet({
+      return featuresGet({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

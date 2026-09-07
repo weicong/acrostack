@@ -1,11 +1,11 @@
 /* oxlint-disable */
 
-import type { Options, RequestResult } from "../../.kubb/client";
+import type { Options, Unwrappable, RequestResult } from "../../.kubb/client";
 import type {
   ChatDownloadAttachmentOptions,
   ChatDownloadAttachmentResponses,
 } from "../../models/chat/ChatDownloadAttachment";
-import { client } from "../../.kubb/client";
+import { client, withUnwrap } from "../../.kubb/client";
 
 /**
  * @summary Downloads the attachment of a chat message. Only conversation
@@ -14,13 +14,15 @@ import { client } from "../../.kubb/client";
  */
 export function chatDownloadAttachment<ThrowOnError extends boolean = true>(
   options: Options<ChatDownloadAttachmentOptions, ThrowOnError>,
-): Promise<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>> {
+): Unwrappable<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>> {
   const { client: request = client, ...config } = options;
 
-  return request({
-    method: "GET",
-    url: "/api/app/chat/messages/{messageId}/attachment",
-    security: [{ type: "oauth2" }],
-    ...config,
-  }) as Promise<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>>;
+  return withUnwrap(
+    request({
+      method: "GET",
+      url: "/api/app/chat/messages/{messageId}/attachment",
+      security: [{ type: "oauth2" }],
+      ...config,
+    }) as Promise<RequestResult<ChatDownloadAttachmentResponses, ThrowOnError>>,
+  );
 }

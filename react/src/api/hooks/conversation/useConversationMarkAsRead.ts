@@ -38,8 +38,7 @@ export function conversationMarkAsReadMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await conversationMarkAsRead({ ...config, path, throwOnError: true });
-      return data;
+      return conversationMarkAsRead({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

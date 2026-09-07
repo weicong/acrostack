@@ -47,13 +47,12 @@ export function pagesPublicFindBySlugQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await pagesPublicFindBySlug({
+      return pagesPublicFindBySlug({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

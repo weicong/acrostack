@@ -38,8 +38,7 @@ export function timeZoneSettingsUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await timeZoneSettingsUpdate({ ...config, query, throwOnError: true });
-      return data;
+      return timeZoneSettingsUpdate({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

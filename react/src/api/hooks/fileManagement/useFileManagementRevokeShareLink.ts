@@ -24,8 +24,7 @@ export function fileManagementRevokeShareLinkMutationOptions<TContext = unknown>
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await fileManagementRevokeShareLink({ ...config, path, throwOnError: true });
-      return data;
+      return fileManagementRevokeShareLink({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

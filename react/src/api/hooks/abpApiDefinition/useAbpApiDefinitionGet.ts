@@ -47,13 +47,12 @@ export function abpApiDefinitionGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await abpApiDefinitionGet({
+      return abpApiDefinitionGet({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

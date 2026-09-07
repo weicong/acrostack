@@ -40,8 +40,7 @@ export function entityTagAdminSetEntityTagsMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await entityTagAdminSetEntityTags({ ...config, body, throwOnError: true });
-      return data;
+      return entityTagAdminSetEntityTags({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

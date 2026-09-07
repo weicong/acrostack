@@ -30,6 +30,10 @@
     "Classroom:VersionConflict": "Classroom version conflict; please refresh the snapshot and retry",
     "Classroom:RateLimited": "Too many requests, please retry later",
     "Classroom:InvalidPresentationToken": "Presentation token is invalid or expired",
-    "Classroom:NoParticipantsToPick": "No participant available to pick (all offline or excluded this round)"
+    "Classroom:NoParticipantsToPick": "No participant available to pick (all offline or excluded this round)",
+    "Classroom:InvalidPhoneFormat": "Invalid phone number format",
+    "Classroom:StudentProfileNotFound": "Student profile not found; please join a classroom first",
+    "Classroom:StudentProfileFieldsRequired": "First-time join requires your unit and position",
+    "Classroom:StudentProfileNameMismatch": "This phone number is already registered with a different name"
   }
 }

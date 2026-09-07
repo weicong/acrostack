@@ -45,12 +45,11 @@ export function globalResourcePublicGetGlobalScriptQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await globalResourcePublicGetGlobalScript({
+      return globalResourcePublicGetGlobalScript({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

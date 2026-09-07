@@ -47,13 +47,12 @@ export function conversationGetReactionsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await conversationGetReactions({
+      return conversationGetReactions({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

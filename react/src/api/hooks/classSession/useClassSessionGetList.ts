@@ -47,13 +47,12 @@ export function classSessionGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await classSessionGetList({
+      return classSessionGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

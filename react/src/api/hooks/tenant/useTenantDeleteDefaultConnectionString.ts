@@ -38,12 +38,7 @@ export function tenantDeleteDefaultConnectionStringMutationOptions<TContext = un
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await tenantDeleteDefaultConnectionString({
-        ...config,
-        path,
-        throwOnError: true,
-      });
-      return data;
+      return tenantDeleteDefaultConnectionString({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

@@ -41,8 +41,7 @@ export function tenantUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await tenantUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return tenantUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

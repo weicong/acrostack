@@ -42,13 +42,12 @@ export function classSessionPickRandomParticipantMutationOptions<TContext = unkn
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await classSessionPickRandomParticipant({
+      return classSessionPickRandomParticipant({
         ...config,
         path,
         body,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

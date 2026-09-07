@@ -47,13 +47,12 @@ export function menuItemAdminGetPageLookupQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await menuItemAdminGetPageLookup({
+      return menuItemAdminGetPageLookup({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

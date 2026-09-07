@@ -29,8 +29,7 @@ export function fileManagementMoveFileMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await fileManagementMoveFile({ ...config, path, body, throwOnError: true });
-      return data;
+      return fileManagementMoveFile({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

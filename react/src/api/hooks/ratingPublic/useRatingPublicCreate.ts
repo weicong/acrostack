@@ -42,8 +42,7 @@ export function ratingPublicCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await ratingPublicCreate({ ...config, path, body, throwOnError: true });
-      return data;
+      return ratingPublicCreate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

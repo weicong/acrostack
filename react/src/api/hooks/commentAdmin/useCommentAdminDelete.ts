@@ -38,8 +38,7 @@ export function commentAdminDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await commentAdminDelete({ ...config, path, throwOnError: true });
-      return data;
+      return commentAdminDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

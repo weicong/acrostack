@@ -38,8 +38,7 @@ export function featuresDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await featuresDelete({ ...config, query, throwOnError: true });
-      return data;
+      return featuresDelete({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

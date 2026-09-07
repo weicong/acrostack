@@ -40,8 +40,7 @@ export function blogFeatureAdminSetMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await blogFeatureAdminSet({ ...config, path, body, throwOnError: true });
-      return data;
+      return blogFeatureAdminSet({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

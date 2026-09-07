@@ -42,13 +42,7 @@ export function openIddictApplicationUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await openIddictApplicationUpdate({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return openIddictApplicationUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

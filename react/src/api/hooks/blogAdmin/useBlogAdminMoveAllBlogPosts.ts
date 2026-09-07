@@ -38,13 +38,7 @@ export function blogAdminMoveAllBlogPostsMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, query }) => {
-      const { data } = await blogAdminMoveAllBlogPosts({
-        ...config,
-        path,
-        query,
-        throwOnError: true,
-      });
-      return data;
+      return blogAdminMoveAllBlogPosts({ ...config, path, query, throwOnError: true }).unwrap();
     },
   });
 }

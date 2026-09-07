@@ -13,6 +13,9 @@ public static class ClassroomClaimTypes
     /// <summary>学员 Id（Guid 字符串）；投屏令牌为空。</summary>
     public const string ParticipantId = "classroom_participant_id";
 
-    /// <summary>客户端角色：student / presentation（<see cref="ClassroomClientRole"/>）。</summary>
+    /// <summary>学员档案 Id（Guid 字符串）；仅学员门户令牌携带，无 SessionId/ParticipantId。</summary>
+    public const string StudentProfileId = "classroom_student_profile_id";
+
+    /// <summary>客户端角色：student / presentation / studentportal（<see cref="ClassroomClientRole"/>）。</summary>
     public const string ClientRole = "classroom_client_role";
 }

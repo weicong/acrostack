@@ -34,13 +34,12 @@ export function fileManagementGetFoldersQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await fileManagementGetFolders({
+      return fileManagementGetFolders({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

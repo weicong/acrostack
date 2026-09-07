@@ -41,8 +41,7 @@ export function tagAdminCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await tagAdminCreate({ ...config, body, throwOnError: true });
-      return data;
+      return tagAdminCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

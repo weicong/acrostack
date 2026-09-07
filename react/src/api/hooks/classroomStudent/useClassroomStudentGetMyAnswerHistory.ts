@@ -36,13 +36,12 @@ export function classroomStudentGetMyAnswerHistoryQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await classroomStudentGetMyAnswerHistory({
+      return classroomStudentGetMyAnswerHistory({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

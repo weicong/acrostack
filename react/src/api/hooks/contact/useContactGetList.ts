@@ -42,12 +42,11 @@ export function contactGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await contactGetList({
+      return contactGetList({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

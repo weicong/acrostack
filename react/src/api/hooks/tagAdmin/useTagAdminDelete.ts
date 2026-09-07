@@ -37,8 +37,7 @@ export function tagAdminDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await tagAdminDelete({ ...config, path, throwOnError: true });
-      return data;
+      return tagAdminDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

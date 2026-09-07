@@ -47,13 +47,12 @@ export function auditLogGetStatisticsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await auditLogGetStatistics({
+      return auditLogGetStatistics({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

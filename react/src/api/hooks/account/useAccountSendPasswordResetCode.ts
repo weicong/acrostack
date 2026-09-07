@@ -40,8 +40,7 @@ export function accountSendPasswordResetCodeMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await accountSendPasswordResetCode({ ...config, body, throwOnError: true });
-      return data;
+      return accountSendPasswordResetCode({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

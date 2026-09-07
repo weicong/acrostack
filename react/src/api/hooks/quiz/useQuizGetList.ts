@@ -45,13 +45,12 @@ export function quizGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await quizGetList({
+      return quizGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

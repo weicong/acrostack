@@ -38,8 +38,7 @@ export function chatBlockBlockUserMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await chatBlockBlockUser({ ...config, path, throwOnError: true });
-      return data;
+      return chatBlockBlockUser({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

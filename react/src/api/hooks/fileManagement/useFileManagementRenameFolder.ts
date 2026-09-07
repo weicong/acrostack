@@ -29,13 +29,7 @@ export function fileManagementRenameFolderMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await fileManagementRenameFolder({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return fileManagementRenameFolder({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

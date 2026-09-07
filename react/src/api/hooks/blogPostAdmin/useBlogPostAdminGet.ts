@@ -45,13 +45,12 @@ export function blogPostAdminGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogPostAdminGet({
+      return blogPostAdminGet({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

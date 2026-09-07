@@ -43,12 +43,11 @@ export function tagAdminGetTagDefinitionsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await tagAdminGetTagDefinitions({
+      return tagAdminGetTagDefinitions({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

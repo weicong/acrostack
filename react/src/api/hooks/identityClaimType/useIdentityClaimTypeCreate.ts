@@ -42,8 +42,7 @@ export function identityClaimTypeCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await identityClaimTypeCreate({ ...config, body, throwOnError: true });
-      return data;
+      return identityClaimTypeCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -42,8 +42,7 @@ export function blogPostAdminCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await blogPostAdminCreate({ ...config, body, throwOnError: true });
-      return data;
+      return blogPostAdminCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

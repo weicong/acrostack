@@ -47,13 +47,12 @@ export function identityUserClaimGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await identityUserClaimGetList({
+      return identityUserClaimGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

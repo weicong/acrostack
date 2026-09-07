@@ -38,12 +38,7 @@ export function entityTagAdminRemoveTagFromEntityMutationOptions<TContext = unkn
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await entityTagAdminRemoveTagFromEntity({
-        ...config,
-        query,
-        throwOnError: true,
-      });
-      return data;
+      return entityTagAdminRemoveTagFromEntity({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

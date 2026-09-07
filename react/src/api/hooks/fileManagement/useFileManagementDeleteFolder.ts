@@ -24,8 +24,7 @@ export function fileManagementDeleteFolderMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await fileManagementDeleteFolder({ ...config, path, throwOnError: true });
-      return data;
+      return fileManagementDeleteFolder({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

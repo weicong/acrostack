@@ -42,13 +42,7 @@ export function classSessionStartQuestionMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await classSessionStartQuestion({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return classSessionStartQuestion({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

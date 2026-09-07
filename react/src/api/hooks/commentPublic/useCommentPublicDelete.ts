@@ -38,8 +38,7 @@ export function commentPublicDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await commentPublicDelete({ ...config, path, throwOnError: true });
-      return data;
+      return commentPublicDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

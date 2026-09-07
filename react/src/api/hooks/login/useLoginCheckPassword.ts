@@ -42,8 +42,7 @@ export function loginCheckPasswordMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await loginCheckPassword({ ...config, body, throwOnError: true });
-      return data;
+      return loginCheckPassword({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

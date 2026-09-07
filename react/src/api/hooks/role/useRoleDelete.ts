@@ -37,8 +37,7 @@ export function roleDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await roleDelete({ ...config, path, throwOnError: true });
-      return data;
+      return roleDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

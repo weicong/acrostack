@@ -39,6 +39,12 @@ public class ClassroomTokenService : IClassroomTokenService, ITransientDependenc
         return Task.FromResult(Issue(sessionId, null, ClassroomClientRole.Presentation, tenantId, validHours));
     }
 
+    public Task<ClassroomTokenIssuance> IssueStudentPortalTokenAsync(Guid studentProfileId, Guid? tenantId)
+    {
+        var validDays = ClassroomConsts.StudentPortalTokenValidDays;
+        return Task.FromResult(IssuePortal(studentProfileId, tenantId, validDays * 24));
+    }
+
     public ClassroomTokenPayload? TryValidate(string accessToken)
     {
         try
@@ -105,6 +111,50 @@ public class ClassroomTokenService : IClassroomTokenService, ITransientDependenc
         {
             claims.Add(new Claim(ClassroomClaimTypes.ParticipantId, participantId.Value.ToString()));
         }
+
+        if (tenantId.HasValue)
+        {
+            claims.Add(new Claim("tenantid", tenantId.Value.ToString()));
+        }
+
+        var descriptor = new SecurityTokenDescriptor
+        {
+            Issuer = _options.TokenIssuer,
+            Audience = _options.TokenAudience,
+            NotBefore = now.UtcDateTime,
+            Expires = expires.UtcDateTime,
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_options.TokenSigningKey)),
+                SecurityAlgorithms.HmacSha256),
+            Subject = new ClaimsIdentity(claims),
+        };
+
+        var token = _handler.CreateToken(descriptor);
+        return new ClassroomTokenIssuance
+        {
+            AccessToken = token,
+            ExpiresInSeconds = validHours * 3600,
+        };
+    }
+
+    /// <summary>
+    /// 学员门户令牌：不携带 SessionId/ParticipantId，身份为 StudentProfileId（sub）。
+    /// 与课堂令牌共享 issuer/audience/签名密钥，由同一 JwtBearer 方案验签，
+    /// 消费方通过 role=studentportal + StudentProfileId claim 识别并区分授权。
+    /// </summary>
+    private ClassroomTokenIssuance IssuePortal(Guid studentProfileId, Guid? tenantId, int validHours)
+    {
+        var now = DateTimeOffset.UtcNow;
+        var expires = now.AddHours(validHours);
+
+        var claims = new List<Claim>
+        {
+            // sub 令 ABP ICurrentUser.Id 生效（门户身份 = StudentProfileId）
+            new(JwtRegisteredClaimNames.Sub, studentProfileId.ToString()),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClassroomClaimTypes.ClientRole, ClassroomClientRole.StudentPortal.ToString().ToLowerInvariant()),
+            new(ClassroomClaimTypes.StudentProfileId, studentProfileId.ToString()),
+        };
 
         if (tenantId.HasValue)
         {

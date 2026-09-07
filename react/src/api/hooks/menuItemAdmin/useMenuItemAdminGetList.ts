@@ -43,12 +43,11 @@ export function menuItemAdminGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await menuItemAdminGetList({
+      return menuItemAdminGetList({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

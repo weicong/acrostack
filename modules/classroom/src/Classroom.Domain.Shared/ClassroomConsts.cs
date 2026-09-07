@@ -14,6 +14,12 @@ public static class ClassroomConsts
     public const int MaxNicknameLength = 32;
     public const int MaxStudentNumberLength = 32;
 
+    /** 学员档案：姓名 / 手机号 / 单位 / 职务 */
+    public const int MaxStudentNameLength = 32;
+    public const int MaxPhoneLength = 20;
+    public const int MaxUnitLength = 64;
+    public const int MaxPositionLength = 32;
+
     /** 试卷 */
     public const int MaxQuizNameLength = 128;
     public const int MaxQuizDescriptionLength = 500;
@@ -26,6 +32,9 @@ public static class ClassroomConsts
 
     /** 学员课堂令牌有效期（小时）——覆盖一次完整课堂 */
     public const int StudentTokenValidHours = 4;
+
+    /** 学员门户令牌有效期（天）——设备绑定，支持免填加入与课后浏览，过期后凭 手机号+姓名 重新认领 */
+    public const int StudentPortalTokenValidDays = 180;
 
     /** 投屏令牌有效期（小时）——大屏长时间挂着 */
     public const int PresentationTokenValidHours = 12;

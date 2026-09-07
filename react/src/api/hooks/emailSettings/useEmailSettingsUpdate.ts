@@ -40,8 +40,7 @@ export function emailSettingsUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await emailSettingsUpdate({ ...config, body, throwOnError: true });
-      return data;
+      return emailSettingsUpdate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

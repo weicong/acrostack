@@ -42,8 +42,7 @@ export function conversationSendMessageMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await conversationSendMessage({ ...config, body, throwOnError: true });
-      return data;
+      return conversationSendMessage({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

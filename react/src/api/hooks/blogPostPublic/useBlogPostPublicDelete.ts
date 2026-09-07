@@ -38,8 +38,7 @@ export function blogPostPublicDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await blogPostPublicDelete({ ...config, path, throwOnError: true });
-      return data;
+      return blogPostPublicDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

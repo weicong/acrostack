@@ -38,8 +38,7 @@ export function ratingPublicDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await ratingPublicDelete({ ...config, path, throwOnError: true });
-      return data;
+      return ratingPublicDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

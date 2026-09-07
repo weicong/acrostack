@@ -38,8 +38,7 @@ export function menuItemAdminDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await menuItemAdminDelete({ ...config, path, throwOnError: true });
-      return data;
+      return menuItemAdminDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

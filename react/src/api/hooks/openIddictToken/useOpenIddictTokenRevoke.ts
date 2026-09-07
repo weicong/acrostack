@@ -38,8 +38,7 @@ export function openIddictTokenRevokeMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await openIddictTokenRevoke({ ...config, path, throwOnError: true });
-      return data;
+      return openIddictTokenRevoke({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

@@ -45,12 +45,11 @@ export function globalResourcePublicGetGlobalStyleQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await globalResourcePublicGetGlobalStyle({
+      return globalResourcePublicGetGlobalStyle({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

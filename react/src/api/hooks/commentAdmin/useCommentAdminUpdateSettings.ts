@@ -40,8 +40,7 @@ export function commentAdminUpdateSettingsMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await commentAdminUpdateSettings({ ...config, body, throwOnError: true });
-      return data;
+      return commentAdminUpdateSettings({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

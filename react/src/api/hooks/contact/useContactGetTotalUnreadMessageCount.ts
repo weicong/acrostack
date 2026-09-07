@@ -45,12 +45,11 @@ export function contactGetTotalUnreadMessageCountQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await contactGetTotalUnreadMessageCount({
+      return contactGetTotalUnreadMessageCount({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

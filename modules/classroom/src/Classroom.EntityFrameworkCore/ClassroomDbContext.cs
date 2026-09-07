@@ -21,6 +21,8 @@ public interface IClassroomDbContext
 
     DbSet<Participant> Participants { get; }
 
+    DbSet<StudentProfile> StudentProfiles { get; }
+
     DbSet<AnswerRecord> AnswerRecords { get; }
 
     DbSet<AnswerRevision> AnswerRevisions { get; }
@@ -42,6 +44,8 @@ public class ClassroomDbContext : AbpDbContext<ClassroomDbContext>, IClassroomDb
     public DbSet<SessionQuestion> SessionQuestions { get; set; }
 
     public DbSet<Participant> Participants { get; set; }
+
+    public DbSet<StudentProfile> StudentProfiles { get; set; }
 
     public DbSet<AnswerRecord> AnswerRecords { get; set; }
 

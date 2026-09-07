@@ -41,8 +41,7 @@ export function profileUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await profileUpdate({ ...config, body, throwOnError: true });
-      return data;
+      return profileUpdate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

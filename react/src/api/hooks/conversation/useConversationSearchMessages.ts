@@ -42,8 +42,7 @@ export function conversationSearchMessagesMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await conversationSearchMessages({ ...config, body, throwOnError: true });
-      return data;
+      return conversationSearchMessages({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

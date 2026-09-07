@@ -34,13 +34,12 @@ export function fileManagementGetShareLinksQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await fileManagementGetShareLinks({
+      return fileManagementGetShareLinks({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

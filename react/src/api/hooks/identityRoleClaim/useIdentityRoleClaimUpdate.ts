@@ -42,8 +42,7 @@ export function identityRoleClaimUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await identityRoleClaimUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return identityRoleClaimUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

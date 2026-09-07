@@ -47,13 +47,12 @@ export function blogFeatureGetOrDefaultQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogFeatureGetOrDefault({
+      return blogFeatureGetOrDefault({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

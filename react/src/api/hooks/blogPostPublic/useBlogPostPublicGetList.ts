@@ -51,14 +51,13 @@ export function blogPostPublicGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogPostPublicGetList({
+      return blogPostPublicGetList({
         ...config,
         path,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

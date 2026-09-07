@@ -38,8 +38,7 @@ export function openIddictScopeDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await openIddictScopeDelete({ ...config, path, throwOnError: true });
-      return data;
+      return openIddictScopeDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

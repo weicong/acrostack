@@ -47,13 +47,12 @@ export function userLookupSearchQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await userLookupSearch({
+      return userLookupSearch({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

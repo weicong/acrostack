@@ -40,8 +40,7 @@ export function emailSettingsSendTestEmailMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await emailSettingsSendTestEmail({ ...config, body, throwOnError: true });
-      return data;
+      return emailSettingsSendTestEmail({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

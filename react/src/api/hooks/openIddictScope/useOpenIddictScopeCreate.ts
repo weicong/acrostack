@@ -42,8 +42,7 @@ export function openIddictScopeCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await openIddictScopeCreate({ ...config, body, throwOnError: true });
-      return data;
+      return openIddictScopeCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

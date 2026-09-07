@@ -41,8 +41,7 @@ export function questionUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await questionUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return questionUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

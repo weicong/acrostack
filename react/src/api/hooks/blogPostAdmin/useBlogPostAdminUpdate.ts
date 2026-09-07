@@ -42,8 +42,7 @@ export function blogPostAdminUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await blogPostAdminUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return blogPostAdminUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

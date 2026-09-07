@@ -41,8 +41,7 @@ export function bookUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await bookUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return bookUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

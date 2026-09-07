@@ -14,6 +14,12 @@ import type { ClassroomDtosSubmitAnswerResultDto } from "@/api/models/classroom/
 import type { ClassroomDtosPresentationSnapshotDto } from "@/api/models/classroom/dtos/PresentationSnapshotDto";
 import type { ClassroomDtosJoinClassroomInputDto } from "@/api/models/classroom/dtos/JoinClassroomInputDto";
 import type { ClassroomDtosStudentAnswerHistoryDto } from "@/api/models/classroom/dtos/StudentAnswerHistoryDto";
+import type { ClassroomDtosPreJoinClassroomInputDto } from "@/api/models/classroom/dtos/PreJoinClassroomInputDto";
+import type { ClassroomDtosPreJoinResultDto } from "@/api/models/classroom/dtos/PreJoinResultDto";
+import type { ClassroomDtosStudentProfileDto } from "@/api/models/classroom/dtos/StudentProfileDto";
+import type { ClassroomDtosUpdateStudentProfileInputDto } from "@/api/models/classroom/dtos/UpdateStudentProfileInputDto";
+import type { ClassroomDtosMyClassroomItemDto } from "@/api/models/classroom/dtos/MyClassroomItemDto";
+import type { ClassroomDtosResumeClassroomResultDto } from "@/api/models/classroom/dtos/ResumeClassroomResultDto";
 
 export class ClassroomApiError extends Error {
   /** ABP 错误码（如 Classroom:ClassroomCodeNotFound）。 */
@@ -29,7 +35,7 @@ export class ClassroomApiError extends Error {
 }
 
 async function request<T>(
-  method: "GET" | "POST",
+  method: "GET" | "POST" | "PUT",
   path: string,
   token: string | null,
   body?: unknown,
@@ -64,13 +70,68 @@ async function request<T>(
   return (await res.json()) as T;
 }
 
-/** 加入课堂（匿名）。返回课堂短期令牌。 */
+/** 加入课堂（匿名）。返回课堂短期令牌 + 学员门户长期令牌。 */
 export function joinClassroom(input: ClassroomDtosJoinClassroomInputDto) {
   return request<ClassroomDtosJoinResultDto>(
     "POST",
     "/api/public/class-sessions/join",
     null,
     input,
+  );
+}
+
+/** 探测加入：判断该手机号是否已有学员档案（决定是否展示 单位/职务 表单）。 */
+export function preJoinClassroom(input: ClassroomDtosPreJoinClassroomInputDto) {
+  return request<ClassroomDtosPreJoinResultDto>(
+    "POST",
+    "/api/public/class-sessions/pre-join",
+    null,
+    input,
+  );
+}
+
+/** 本人资料（学员门户令牌）。 */
+export function getMyProfile(studentToken: string) {
+  return request<ClassroomDtosStudentProfileDto>("GET", "/api/student-portal/me", studentToken);
+}
+
+/** 更新本人资料（姓名/单位/职务；手机号不可改）。 */
+export function updateMyProfile(
+  studentToken: string,
+  input: ClassroomDtosUpdateStudentProfileInputDto,
+) {
+  return request<ClassroomDtosStudentProfileDto>(
+    "PUT",
+    "/api/student-portal/me",
+    studentToken,
+    input,
+  );
+}
+
+/** 加入过的课堂列表（进行中的排前）。 */
+export function getMyClassrooms(studentToken: string) {
+  return request<ClassroomDtosMyClassroomItemDto[]>(
+    "GET",
+    "/api/student-portal/my/classrooms",
+    studentToken,
+  );
+}
+
+/** 本人某课堂的答题记录（门户令牌；正确答案仅公布后下发）。 */
+export function getMyClassroomAnswers(studentToken: string, sessionId: string) {
+  return request<ClassroomDtosStudentAnswerHistoryDto>(
+    "GET",
+    `/api/student-portal/my/classrooms/${sessionId}/answers`,
+    studentToken,
+  );
+}
+
+/** 从门户进入课堂：校验会员关系后签发课堂短期令牌。 */
+export function resumeClassroom(studentToken: string, sessionId: string) {
+  return request<ClassroomDtosResumeClassroomResultDto>(
+    "POST",
+    `/api/student-portal/my/classrooms/${sessionId}/resume`,
+    studentToken,
   );
 }
 

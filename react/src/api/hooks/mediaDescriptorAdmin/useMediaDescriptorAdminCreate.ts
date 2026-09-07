@@ -39,14 +39,13 @@ export function mediaDescriptorAdminCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, query, body }) => {
-      const { data } = await mediaDescriptorAdminCreate({
+      return mediaDescriptorAdminCreate({
         ...config,
         path,
         query,
         body,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

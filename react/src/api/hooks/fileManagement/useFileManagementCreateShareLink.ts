@@ -29,13 +29,7 @@ export function fileManagementCreateShareLinkMutationOptions<TContext = unknown>
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await fileManagementCreateShareLink({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return fileManagementCreateShareLink({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

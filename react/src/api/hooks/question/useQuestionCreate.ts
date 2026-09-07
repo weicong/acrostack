@@ -41,8 +41,7 @@ export function questionCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await questionCreate({ ...config, body, throwOnError: true });
-      return data;
+      return questionCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -41,8 +41,7 @@ export function tenantCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await tenantCreate({ ...config, body, throwOnError: true });
-      return data;
+      return tenantCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

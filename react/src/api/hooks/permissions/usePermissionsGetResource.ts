@@ -47,13 +47,12 @@ export function permissionsGetResourceQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await permissionsGetResource({
+      return permissionsGetResource({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

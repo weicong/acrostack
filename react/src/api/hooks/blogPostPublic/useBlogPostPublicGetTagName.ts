@@ -51,14 +51,13 @@ export function blogPostPublicGetTagNameQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogPostPublicGetTagName({
+      return blogPostPublicGetTagName({
         ...config,
         path,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

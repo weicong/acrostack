@@ -39,8 +39,7 @@ export function classSessionRestartMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await classSessionRestart({ ...config, path, throwOnError: true });
-      return data;
+      return classSessionRestart({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

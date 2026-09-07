@@ -49,13 +49,12 @@ export function abpApplicationConfigurationGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await abpApplicationConfigurationGet({
+      return abpApplicationConfigurationGet({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

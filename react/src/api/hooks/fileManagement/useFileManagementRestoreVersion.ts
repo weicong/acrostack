@@ -26,8 +26,7 @@ export function fileManagementRestoreVersionMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await fileManagementRestoreVersion({ ...config, path, throwOnError: true });
-      return data;
+      return fileManagementRestoreVersion({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

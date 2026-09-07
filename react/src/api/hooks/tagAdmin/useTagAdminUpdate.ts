@@ -41,8 +41,7 @@ export function tagAdminUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await tagAdminUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return tagAdminUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

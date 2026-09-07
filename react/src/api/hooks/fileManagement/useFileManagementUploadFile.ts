@@ -26,13 +26,7 @@ export function fileManagementUploadFileMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query, body }) => {
-      const { data } = await fileManagementUploadFile({
-        ...config,
-        query,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return fileManagementUploadFile({ ...config, query, body, throwOnError: true }).unwrap();
     },
   });
 }

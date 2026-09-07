@@ -49,13 +49,12 @@ export function tenantGetDefaultConnectionStringQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await tenantGetDefaultConnectionString({
+      return tenantGetDefaultConnectionString({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

@@ -40,13 +40,7 @@ export function permissionsUpdateResourceMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query, body }) => {
-      const { data } = await permissionsUpdateResource({
-        ...config,
-        query,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return permissionsUpdateResource({ ...config, query, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -39,12 +39,7 @@ export function classSessionCreatePresentationTokenMutationOptions<TContext = un
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await classSessionCreatePresentationToken({
-        ...config,
-        path,
-        throwOnError: true,
-      });
-      return data;
+      return classSessionCreatePresentationToken({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

@@ -49,13 +49,12 @@ export function menuItemAdminGetAvailableMenuOrderQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await menuItemAdminGetAvailableMenuOrder({
+      return menuItemAdminGetAvailableMenuOrder({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

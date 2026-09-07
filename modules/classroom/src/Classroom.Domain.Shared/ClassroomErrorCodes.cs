@@ -30,4 +30,8 @@ public static class ClassroomErrorCodes
     public const string RateLimited = "Classroom:RateLimited";
     public const string InvalidPresentationToken = "Classroom:InvalidPresentationToken";
     public const string NoParticipantsToPick = "Classroom:NoParticipantsToPick";
+    public const string InvalidPhoneFormat = "Classroom:InvalidPhoneFormat";
+    public const string StudentProfileNotFound = "Classroom:StudentProfileNotFound";
+    public const string StudentProfileFieldsRequired = "Classroom:StudentProfileFieldsRequired";
+    public const string StudentProfileNameMismatch = "Classroom:StudentProfileNameMismatch";
 }

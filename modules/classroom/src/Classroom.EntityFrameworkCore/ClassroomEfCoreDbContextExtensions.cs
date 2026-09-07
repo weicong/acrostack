@@ -92,6 +92,24 @@ public static class ClassroomEfCoreDbContextExtensions
             // SessionId + ParticipantId 检索索引（重复昵称允许，以 ParticipantId 区分）
             b.HasIndex(x => x.SessionId);
             b.HasIndex(x => new { x.SessionId, x.Nickname });
+
+            // 门户查询：按学员档案聚合其加入过的课堂；幂等重进按 SessionId + StudentProfileId 判定
+            b.HasIndex(x => x.StudentProfileId);
+            b.HasIndex(x => new { x.SessionId, x.StudentProfileId });
+        });
+
+        builder.Entity<StudentProfile>(b =>
+        {
+            b.ToTable(tablePrefix + "StudentProfiles", schema);
+            b.ConfigureByConvention();
+
+            b.Property(x => x.Name).IsRequired().HasMaxLength(ClassroomConsts.MaxStudentNameLength);
+            b.Property(x => x.Phone).IsRequired().HasMaxLength(ClassroomConsts.MaxPhoneLength);
+            b.Property(x => x.Unit).IsRequired().HasMaxLength(ClassroomConsts.MaxUnitLength);
+            b.Property(x => x.Position).IsRequired().HasMaxLength(ClassroomConsts.MaxPositionLength);
+
+            // 学员档案唯一键：手机号（租户内唯一；软删除的档案占号，可经门户恢复语义规避）
+            b.HasIndex(x => new { x.TenantId, x.Phone }).IsUnique();
         });
 
         builder.Entity<AnswerRecord>(b =>

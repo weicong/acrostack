@@ -37,8 +37,7 @@ export function dynamicClaimsRefreshMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async (_) => {
-      const { data } = await dynamicClaimsRefresh({ ...config, throwOnError: true });
-      return data;
+      return dynamicClaimsRefresh({ ...config, throwOnError: true }).unwrap();
     },
   });
 }

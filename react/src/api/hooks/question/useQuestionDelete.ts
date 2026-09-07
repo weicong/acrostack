@@ -37,8 +37,7 @@ export function questionDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await questionDelete({ ...config, path, throwOnError: true });
-      return data;
+      return questionDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

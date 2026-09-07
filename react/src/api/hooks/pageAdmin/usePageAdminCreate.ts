@@ -41,8 +41,7 @@ export function pageAdminCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await pageAdminCreate({ ...config, body, throwOnError: true });
-      return data;
+      return pageAdminCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

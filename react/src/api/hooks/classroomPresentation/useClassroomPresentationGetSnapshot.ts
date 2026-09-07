@@ -36,13 +36,12 @@ export function classroomPresentationGetSnapshotQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await classroomPresentationGetSnapshot({
+      return classroomPresentationGetSnapshot({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

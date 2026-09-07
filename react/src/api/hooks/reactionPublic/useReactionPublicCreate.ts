@@ -38,8 +38,7 @@ export function reactionPublicCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await reactionPublicCreate({ ...config, path, throwOnError: true });
-      return data;
+      return reactionPublicCreate({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

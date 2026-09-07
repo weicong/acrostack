@@ -45,12 +45,11 @@ export function pagesPublicFindDefaultHomePageQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await pagesPublicFindDefaultHomePage({
+      return pagesPublicFindDefaultHomePage({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

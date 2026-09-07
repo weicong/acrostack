@@ -38,8 +38,7 @@ export function pageAdminSetAsHomePageMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await pageAdminSetAsHomePage({ ...config, path, throwOnError: true });
-      return data;
+      return pageAdminSetAsHomePage({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

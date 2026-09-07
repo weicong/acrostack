@@ -43,12 +43,11 @@ export function commentAdminGetWaitingCountQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await commentAdminGetWaitingCount({
+      return commentAdminGetWaitingCount({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

@@ -42,12 +42,11 @@ export function conversationSendMessageWithAttachmentMutationOptions<TContext = 
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await conversationSendMessageWithAttachment({
+      return conversationSendMessageWithAttachment({
         ...config,
         body,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

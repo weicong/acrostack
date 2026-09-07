@@ -39,8 +39,7 @@ export function userUpdateRolesMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await userUpdateRoles({ ...config, path, body, throwOnError: true });
-      return data;
+      return userUpdateRoles({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

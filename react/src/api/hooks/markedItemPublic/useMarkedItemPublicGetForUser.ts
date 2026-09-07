@@ -47,13 +47,12 @@ export function markedItemPublicGetForUserQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await markedItemPublicGetForUser({
+      return markedItemPublicGetForUser({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

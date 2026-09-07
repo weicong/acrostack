@@ -52,13 +52,12 @@ export function permissionsGetResourceDefinitionsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await permissionsGetResourceDefinitions({
+      return permissionsGetResourceDefinitions({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

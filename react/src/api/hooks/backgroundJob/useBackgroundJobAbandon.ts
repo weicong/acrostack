@@ -38,8 +38,7 @@ export function backgroundJobAbandonMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await backgroundJobAbandon({ ...config, path, throwOnError: true });
-      return data;
+      return backgroundJobAbandon({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

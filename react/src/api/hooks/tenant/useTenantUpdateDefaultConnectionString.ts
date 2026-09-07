@@ -38,13 +38,12 @@ export function tenantUpdateDefaultConnectionStringMutationOptions<TContext = un
   >({
     mutationKey,
     mutationFn: async ({ path, query }) => {
-      const { data } = await tenantUpdateDefaultConnectionString({
+      return tenantUpdateDefaultConnectionString({
         ...config,
         path,
         query,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

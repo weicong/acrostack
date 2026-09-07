@@ -38,8 +38,7 @@ export function mediaDescriptorAdminDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await mediaDescriptorAdminDelete({ ...config, path, throwOnError: true });
-      return data;
+      return mediaDescriptorAdminDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

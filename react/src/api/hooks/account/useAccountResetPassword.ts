@@ -40,8 +40,7 @@ export function accountResetPasswordMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await accountResetPassword({ ...config, body, throwOnError: true });
-      return data;
+      return accountResetPassword({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

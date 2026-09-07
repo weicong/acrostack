@@ -38,8 +38,7 @@ export function permissionsDeleteResourceMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await permissionsDeleteResource({ ...config, query, throwOnError: true });
-      return data;
+      return permissionsDeleteResource({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

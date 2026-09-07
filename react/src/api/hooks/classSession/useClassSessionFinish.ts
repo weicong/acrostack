@@ -39,8 +39,7 @@ export function classSessionFinishMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await classSessionFinish({ ...config, path, throwOnError: true });
-      return data;
+      return classSessionFinish({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

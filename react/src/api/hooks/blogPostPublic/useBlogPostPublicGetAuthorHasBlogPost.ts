@@ -49,13 +49,12 @@ export function blogPostPublicGetAuthorHasBlogPostQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogPostPublicGetAuthorHasBlogPost({
+      return blogPostPublicGetAuthorHasBlogPost({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

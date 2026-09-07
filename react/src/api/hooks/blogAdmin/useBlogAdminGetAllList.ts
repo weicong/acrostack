@@ -42,12 +42,11 @@ export function blogAdminGetAllListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await blogAdminGetAllList({
+      return blogAdminGetAllList({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

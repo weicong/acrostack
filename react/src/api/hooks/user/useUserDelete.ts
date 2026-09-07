@@ -37,8 +37,7 @@ export function userDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await userDelete({ ...config, path, throwOnError: true });
-      return data;
+      return userDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

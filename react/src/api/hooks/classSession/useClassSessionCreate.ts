@@ -41,8 +41,7 @@ export function classSessionCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await classSessionCreate({ ...config, body, throwOnError: true });
-      return data;
+      return classSessionCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -33,6 +33,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
     private readonly IClassroomDashboardThrottler _dashboardThrottler;
     private readonly IClassroomRealtimeNotifier _notifier;
     private readonly IClassroomAutoCloseService _autoCloseService;
+    private readonly IClassroomAnswerHistoryService _historyService;
     private readonly ICurrentPrincipalAccessor _principalAccessor;
     private readonly ICurrentTenant _currentTenant;
     private readonly IServiceProvider _serviceProvider;
@@ -49,6 +50,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         IClassroomDashboardThrottler dashboardThrottler,
         IClassroomRealtimeNotifier notifier,
         IClassroomAutoCloseService autoCloseService,
+        IClassroomAnswerHistoryService historyService,
         ICurrentPrincipalAccessor principalAccessor,
         ICurrentTenant currentTenant,
         IServiceProvider serviceProvider)
@@ -64,6 +66,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
         _dashboardThrottler = dashboardThrottler;
         _notifier = notifier;
         _autoCloseService = autoCloseService;
+        _historyService = historyService;
         _principalAccessor = principalAccessor;
         _currentTenant = currentTenant;
         _serviceProvider = serviceProvider;
@@ -101,8 +104,6 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
 
         using (_currentTenant.Change(payload.TenantId))
         {
-            var session = await _sessionRepository.GetAsync(sessionId);
-
             var participant = await _participantRepository.FindAsync(
                 p => p.Id == payload.ParticipantId && p.SessionId == sessionId);
             if (participant is null)
@@ -110,75 +111,7 @@ public class StudentAppService : ClassroomAppServiceBase, IStudentAppService
                 throw new BusinessException(ClassroomErrorCodes.InvalidClassroomToken);
             }
 
-            var sessionQuestions = (await _sessionQuestionRepository
-                .GetListAsync(sq => sq.SessionId == sessionId))
-                .OrderBy(sq => sq.Order)
-                .ToList();
-
-            var questionIds = sessionQuestions.Select(sq => sq.QuestionId).Distinct().ToList();
-            var questions = (await _questionRepository.GetListAsync(q => questionIds.Contains(q.Id)))
-                .ToDictionary(q => q.Id);
-
-            var answers = (await _answerRepository.GetListAsync(
-                a => a.SessionId == sessionId && a.ParticipantId == payload.ParticipantId))
-                .ToDictionary(a => a.SessionQuestionId);
-
-            var items = new List<StudentAnswerHistoryItemDto>();
-            var answeredCount = 0;
-            var correctCount = 0;
-
-            foreach (var sq in sessionQuestions)
-            {
-                if (!questions.TryGetValue(sq.QuestionId, out var question))
-                {
-                    continue;
-                }
-
-                var answerPublished = sq.Status == SessionQuestionStatus.AnswerPublished;
-                answers.TryGetValue(sq.Id, out var myAnswer);
-
-                if (myAnswer is not null)
-                {
-                    answeredCount++;
-                }
-
-                // 判分结果仅在公布答案后下发（与快照规则一致）
-                bool? myIsCorrect = answerPublished ? myAnswer?.IsCorrect : null;
-                if (myIsCorrect == true)
-                {
-                    correctCount++;
-                }
-
-                items.Add(new StudentAnswerHistoryItemDto
-                {
-                    Order = sq.Order,
-                    QuestionType = question.Type,
-                    Stem = question.Stem,
-                    Options = question.Options
-                        .Select(o => new QuestionOptionDto { Key = o.Key, Text = o.Text })
-                        .ToList(),
-                    QuestionStatus = sq.Status,
-                    MyAnswerContent = myAnswer?.AnswerContent,
-                    MyIsCorrect = myIsCorrect,
-                    MyRevision = myAnswer?.Revision ?? 0,
-                    MyLastSubmittedAt = myAnswer?.LastSubmittedAt,
-                    CorrectAnswer = answerPublished ? question.CorrectAnswer : null,
-                    Explanation = answerPublished ? question.Explanation : null,
-                });
-            }
-
-            return new StudentAnswerHistoryDto
-            {
-                SessionId = session.Id,
-                Status = session.Status,
-                Version = session.Version,
-                ServerTime = DateTimeOffset.UtcNow,
-                Nickname = participant.Nickname,
-                QuestionCount = items.Count,
-                AnsweredCount = answeredCount,
-                CorrectCount = correctCount,
-                Items = items,
-            };
+            return await _historyService.BuildAsync(sessionId, payload.ParticipantId!.Value, participant.Nickname);
         }
     }
 

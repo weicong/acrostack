@@ -45,12 +45,11 @@ export function identityClaimTypeGetAllClaimTypesQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await identityClaimTypeGetAllClaimTypes({
+      return identityClaimTypeGetAllClaimTypes({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

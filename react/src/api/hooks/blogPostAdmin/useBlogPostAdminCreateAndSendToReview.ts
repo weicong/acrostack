@@ -42,12 +42,7 @@ export function blogPostAdminCreateAndSendToReviewMutationOptions<TContext = unk
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await blogPostAdminCreateAndSendToReview({
-        ...config,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return blogPostAdminCreateAndSendToReview({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -43,12 +43,11 @@ export function chatBlockGetBlockedUsersQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await chatBlockGetBlockedUsers({
+      return chatBlockGetBlockedUsers({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

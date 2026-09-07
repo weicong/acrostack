@@ -42,13 +42,7 @@ export function classSessionNextQuestionMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await classSessionNextQuestion({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return classSessionNextQuestion({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -43,12 +43,11 @@ export function globalResourceAdminGetQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await globalResourceAdminGet({
+      return globalResourceAdminGet({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

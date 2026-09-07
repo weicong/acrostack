@@ -42,8 +42,7 @@ export function identityRoleClaimCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await identityRoleClaimCreate({ ...config, body, throwOnError: true });
-      return data;
+      return identityRoleClaimCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

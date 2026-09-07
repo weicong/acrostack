@@ -40,13 +40,7 @@ export function menuItemAdminMoveMenuItemMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await menuItemAdminMoveMenuItem({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return menuItemAdminMoveMenuItem({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

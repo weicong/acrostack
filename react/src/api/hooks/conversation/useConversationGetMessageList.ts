@@ -47,13 +47,12 @@ export function conversationGetMessageListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await conversationGetMessageList({
+      return conversationGetMessageList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

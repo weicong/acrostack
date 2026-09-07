@@ -37,8 +37,7 @@ export function bookDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await bookDelete({ ...config, path, throwOnError: true });
-      return data;
+      return bookDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

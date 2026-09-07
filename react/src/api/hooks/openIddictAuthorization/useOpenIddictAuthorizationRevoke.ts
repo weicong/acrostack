@@ -38,8 +38,7 @@ export function openIddictAuthorizationRevokeMutationOptions<TContext = unknown>
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await openIddictAuthorizationRevoke({ ...config, path, throwOnError: true });
-      return data;
+      return openIddictAuthorizationRevoke({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

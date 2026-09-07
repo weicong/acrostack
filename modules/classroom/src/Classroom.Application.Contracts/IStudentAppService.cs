@@ -8,7 +8,14 @@ namespace Classroom;
 public interface IClassroomPublicAppService : IApplicationService
 {
     /// <summary>
-    /// 加入课堂：校验课堂码有效性 -> 创建 Participant -> 签发课堂范围短期令牌。
+    /// 探测加入：按手机号判断是否已有学员档案，客户端据此决定是否展示 单位/职务 表单。
+    /// 限流：与加入接口共享每 IP 每分钟 MaxJoinsPerMinute 次（clientIp 由控制器层传入）。
+    /// </summary>
+    Task<PreJoinResultDto> PreJoinAsync(PreJoinClassroomInputDto input, string? clientIp = null);
+
+    /// <summary>
+    /// 加入课堂：手机号识别学员档案 -> 无档案则建档（须带 单位/职务）-> 创建 Participant（重复进入幂等）
+    /// -> 签发课堂短期令牌 + 学员门户长期令牌。
     /// 限流：每 IP 每分钟 MaxJoinsPerMinute 次（clientIp 由控制器层传入）。
     /// </summary>
     Task<JoinResultDto> JoinAsync(JoinClassroomInputDto input, string? clientIp = null);

@@ -40,12 +40,11 @@ export function globalResourceAdminSetGlobalResourcesMutationOptions<TContext = 
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await globalResourceAdminSetGlobalResources({
+      return globalResourceAdminSetGlobalResources({
         ...config,
         body,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

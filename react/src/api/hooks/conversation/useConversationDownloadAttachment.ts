@@ -39,12 +39,7 @@ export function conversationDownloadAttachmentMutationOptions<TContext = unknown
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await conversationDownloadAttachment({
-        ...config,
-        path,
-        throwOnError: true,
-      });
-      return data;
+      return conversationDownloadAttachment({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

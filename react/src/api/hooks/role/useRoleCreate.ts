@@ -41,8 +41,7 @@ export function roleCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await roleCreate({ ...config, body, throwOnError: true });
-      return data;
+      return roleCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

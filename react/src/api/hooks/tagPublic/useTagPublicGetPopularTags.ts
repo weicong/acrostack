@@ -47,13 +47,12 @@ export function tagPublicGetPopularTagsQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await tagPublicGetPopularTags({
+      return tagPublicGetPopularTags({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

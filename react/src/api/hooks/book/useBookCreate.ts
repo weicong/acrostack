@@ -41,8 +41,7 @@ export function bookCreateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await bookCreate({ ...config, body, throwOnError: true });
-      return data;
+      return bookCreate({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

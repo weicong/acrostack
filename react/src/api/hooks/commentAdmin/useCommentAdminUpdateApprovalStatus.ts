@@ -40,13 +40,12 @@ export function commentAdminUpdateApprovalStatusMutationOptions<TContext = unkno
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await commentAdminUpdateApprovalStatus({
+      return commentAdminUpdateApprovalStatus({
         ...config,
         path,
         body,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

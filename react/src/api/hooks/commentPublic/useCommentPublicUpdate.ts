@@ -42,8 +42,7 @@ export function commentPublicUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await commentPublicUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return commentPublicUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

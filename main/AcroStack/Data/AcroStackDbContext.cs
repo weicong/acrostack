@@ -53,6 +53,7 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
     public DbSet<ClassSession> ClassSessions { get; set; }
     public DbSet<SessionQuestion> SessionQuestions { get; set; }
     public DbSet<Participant> Participants { get; set; }
+    public DbSet<StudentProfile> StudentProfiles { get; set; }
     public DbSet<AnswerRecord> AnswerRecords { get; set; }
     public DbSet<AnswerRevision> AnswerRevisions { get; set; }
 

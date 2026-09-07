@@ -38,8 +38,7 @@ export function blogPostAdminSendToReviewMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await blogPostAdminSendToReview({ ...config, path, throwOnError: true });
-      return data;
+      return blogPostAdminSendToReview({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

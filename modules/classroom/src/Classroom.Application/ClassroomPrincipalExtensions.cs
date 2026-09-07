@@ -49,4 +49,41 @@ public static class ClassroomPrincipalExtensions
             TenantId = tenantId,
         };
     }
+
+    /// <summary>
+    /// 解析学员门户令牌载荷（role=studentportal，身份为 StudentProfileId）。
+    /// 非门户令牌（学员/投屏课堂令牌）一律返回 null，防止课堂令牌越权访问门户。
+    /// </summary>
+    public static ClassroomPortalTokenPayload? GetStudentPortalTokenPayload(this ClaimsPrincipal principal)
+    {
+        if (principal is null)
+        {
+            return null;
+        }
+
+        if (!string.Equals(
+                principal.FindFirst(ClassroomClaimTypes.ClientRole)?.Value,
+                nameof(ClassroomClientRole.StudentPortal),
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        if (!Guid.TryParse(principal.FindFirst(ClassroomClaimTypes.StudentProfileId)?.Value, out var profileId))
+        {
+            return null;
+        }
+
+        Guid? tenantId = null;
+        if (Guid.TryParse(principal.FindFirst("tenantid")?.Value, out var parsedTenantId))
+        {
+            tenantId = parsedTenantId;
+        }
+
+        return new ClassroomPortalTokenPayload
+        {
+            StudentProfileId = profileId,
+            TenantId = tenantId,
+        };
+    }
 }

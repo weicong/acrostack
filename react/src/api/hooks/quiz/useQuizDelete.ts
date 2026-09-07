@@ -37,8 +37,7 @@ export function quizDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await quizDelete({ ...config, path, throwOnError: true });
-      return data;
+      return quizDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

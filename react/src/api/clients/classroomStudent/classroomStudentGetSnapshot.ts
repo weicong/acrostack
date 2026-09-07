@@ -1,11 +1,11 @@
 /* oxlint-disable */
 
-import type { Options, RequestResult } from "../../.kubb/client";
+import type { Options, Unwrappable, RequestResult } from "../../.kubb/client";
 import type {
   ClassroomStudentGetSnapshotOptions,
   ClassroomStudentGetSnapshotResponses,
 } from "../../models/classroomStudent/ClassroomStudentGetSnapshot";
-import { client } from "../../.kubb/client";
+import { client, withUnwrap } from "../../.kubb/client";
 
 /**
  * @summary 学员快照：断线重连 / 刷新页面 / 版本跳跃时恢复状态。
@@ -13,13 +13,15 @@ import { client } from "../../.kubb/client";
  */
 export function classroomStudentGetSnapshot<ThrowOnError extends boolean = true>(
   options: Options<ClassroomStudentGetSnapshotOptions, ThrowOnError>,
-): Promise<RequestResult<ClassroomStudentGetSnapshotResponses, ThrowOnError>> {
+): Unwrappable<RequestResult<ClassroomStudentGetSnapshotResponses, ThrowOnError>> {
   const { client: request = client, ...config } = options;
 
-  return request({
-    method: "GET",
-    url: "/api/student/class-sessions/{id}/snapshot",
-    security: [{ type: "oauth2" }],
-    ...config,
-  }) as Promise<RequestResult<ClassroomStudentGetSnapshotResponses, ThrowOnError>>;
+  return withUnwrap(
+    request({
+      method: "GET",
+      url: "/api/student/class-sessions/{id}/snapshot",
+      security: [{ type: "oauth2" }],
+      ...config,
+    }) as Promise<RequestResult<ClassroomStudentGetSnapshotResponses, ThrowOnError>>,
+  );
 }

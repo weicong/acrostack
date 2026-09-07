@@ -12,10 +12,11 @@ public enum OnlineStatus
 
 /// <summary>
 /// 课堂短期令牌的客户端角色（写入 JWT claim "client_role"）：
-/// Student 可提交答案；Presentation 只读匿名数据。
+/// Student 可提交答案；Presentation 只读匿名数据；StudentPortal 以学员档案身份访问门户（不绑定单一课堂）。
 /// </summary>
 public enum ClassroomClientRole
 {
     Student = 1,
-    Presentation = 2
+    Presentation = 2,
+    StudentPortal = 3
 }

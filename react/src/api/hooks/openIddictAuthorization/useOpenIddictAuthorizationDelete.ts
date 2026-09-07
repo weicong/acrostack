@@ -38,8 +38,7 @@ export function openIddictAuthorizationDeleteMutationOptions<TContext = unknown>
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await openIddictAuthorizationDelete({ ...config, path, throwOnError: true });
-      return data;
+      return openIddictAuthorizationDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

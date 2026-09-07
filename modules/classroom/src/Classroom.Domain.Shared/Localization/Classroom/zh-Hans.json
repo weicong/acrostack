@@ -30,6 +30,10 @@
     "Classroom:VersionConflict": "课堂版本冲突，请刷新快照后重试",
     "Classroom:RateLimited": "请求过于频繁，请稍后再试",
     "Classroom:InvalidPresentationToken": "投屏令牌无效或已过期",
-    "Classroom:NoParticipantsToPick": "没有可抽取的学员（可能均离线或已被本轮点名排除）"
+    "Classroom:NoParticipantsToPick": "没有可抽取的学员（可能均离线或已被本轮点名排除）",
+    "Classroom:InvalidPhoneFormat": "手机号格式不正确",
+    "Classroom:StudentProfileNotFound": "学员档案不存在，请先加入课堂",
+    "Classroom:StudentProfileFieldsRequired": "首次加入课堂需要填写单位与职务",
+    "Classroom:StudentProfileNameMismatch": "该手机号已注册，姓名与注册时不一致"
   }
 }

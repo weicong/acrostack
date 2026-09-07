@@ -41,8 +41,7 @@ export function pageAdminUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await pageAdminUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return pageAdminUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

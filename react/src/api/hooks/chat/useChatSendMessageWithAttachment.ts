@@ -26,8 +26,7 @@ export function chatSendMessageWithAttachmentMutationOptions<TContext = unknown>
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await chatSendMessageWithAttachment({ ...config, body, throwOnError: true });
-      return data;
+      return chatSendMessageWithAttachment({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

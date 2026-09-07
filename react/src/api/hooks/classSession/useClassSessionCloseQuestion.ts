@@ -39,8 +39,7 @@ export function classSessionCloseQuestionMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await classSessionCloseQuestion({ ...config, path, throwOnError: true });
-      return data;
+      return classSessionCloseQuestion({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

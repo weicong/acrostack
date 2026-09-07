@@ -37,8 +37,7 @@ export function auditLogDeleteManyMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ query }) => {
-      const { data } = await auditLogDeleteMany({ ...config, query, throwOnError: true });
-      return data;
+      return auditLogDeleteMany({ ...config, query, throwOnError: true }).unwrap();
     },
   });
 }

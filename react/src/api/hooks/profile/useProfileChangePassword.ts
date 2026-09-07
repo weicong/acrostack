@@ -40,8 +40,7 @@ export function profileChangePasswordMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await profileChangePassword({ ...config, body, throwOnError: true });
-      return data;
+      return profileChangePassword({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

@@ -47,13 +47,12 @@ export function userLookupFindByUserNameQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await userLookupFindByUserName({
+      return userLookupFindByUserName({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

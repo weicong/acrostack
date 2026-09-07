@@ -39,13 +39,7 @@ export function conversationToggleReactionMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, query }) => {
-      const { data } = await conversationToggleReaction({
-        ...config,
-        path,
-        query,
-        throwOnError: true,
-      });
-      return data;
+      return conversationToggleReaction({ ...config, path, query, throwOnError: true }).unwrap();
     },
   });
 }

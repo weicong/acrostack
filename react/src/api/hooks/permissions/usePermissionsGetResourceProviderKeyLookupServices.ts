@@ -52,13 +52,12 @@ export function permissionsGetResourceProviderKeyLookupServicesQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await permissionsGetResourceProviderKeyLookupServices({
+      return permissionsGetResourceProviderKeyLookupServices({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

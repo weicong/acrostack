@@ -29,13 +29,7 @@ export function classroomStudentSubmitAnswerMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await classroomStudentSubmitAnswer({
-        ...config,
-        path,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return classroomStudentSubmitAnswer({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

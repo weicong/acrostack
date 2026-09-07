@@ -47,13 +47,12 @@ export function classSessionGetSnapshotQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await classSessionGetSnapshot({
+      return classSessionGetSnapshot({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

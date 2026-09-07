@@ -2,7 +2,7 @@
 
 用于课堂随堂练习：教师按讲课进度逐题开放试题，约 100 名学员用手机浏览器通过课堂码加入并答题，教师通过"课堂课堂面板"实时查看在线状态、作答进度、选项分布与正确率，投屏端展示匿名统计。
 
-五个界面：
+六个界面：
 
 | 界面       | 前端路由                                        | 说明                                                                   |
 | ---------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
@@ -11,6 +11,7 @@
 | 教师管理端 | `/classroom/quizzes`                            | 试卷管理：从题库选题组卷、调整题目顺序                                 |
 | 教师投屏端 | `/presentation/$sessionId`                      | 大屏只读匿名视图（无学员姓名/学号/个人答案）                           |
 | 学员移动端 | `/student/join`、`/student/sessions/$sessionId` | 手机优先，课堂码加入 + 实时答题 + 答题记录回顾（正确答案仅公布后可见） |
+| 学员门户   | `/student`、`/student/classrooms/$sessionId`、`/student/profile` | 手机优先，浏览加入过的课堂与答题记录、维护学员档案（底部 Tab 导航）   |
 
 > 教师端三页挂在侧边栏"课堂答题"子菜单组下，分别受 `Sessions.ViewDashboard` / `Questions.Manage` / `Quizzes.Manage` 权限控制。学员不加主菜单入口，仅通过教师分享的课堂码/链接进入。
 
@@ -96,10 +97,16 @@ dotnet ef database update   --project main/AcroStack --startup-project main/Acro
 
 | 方法 | 路径                                             | 认证               | 说明                                                                     |
 | ---- | ------------------------------------------------ | ------------------ | ------------------------------------------------------------------------ |
-| POST | `/api/public/class-sessions/join`                | 匿名（按 IP 限流） | 课堂码加入 → Participant + 短期令牌                                      |
+| POST | `/api/public/class-sessions/pre-join`            | 匿名（按 IP 限流） | 课堂码 + 手机号探测是否已有学员档案（决定是否展示 单位/职务 表单）       |
+| POST | `/api/public/class-sessions/join`                | 匿名（按 IP 限流） | 课堂码加入 → 建档/复用档案 + Participant（幂等）→ 短期令牌 + 门户令牌    |
 | GET  | `/api/student/class-sessions/{id}/snapshot`      | 课堂令牌           | 学员快照（含本人提交状态）                                               |
 | GET  | `/api/student/class-sessions/{id}/my-answers`    | 课堂令牌           | 本人本课堂答题记录（逐题回顾；正确答案/解析仅 `AnswerPublished` 后下发） |
 | POST | `/api/student/class-sessions/{id}/answers`       | 课堂令牌           | 提交/修改答案（RequestId 幂等）                                          |
+| GET  | `/api/student-portal/me`                         | 门户令牌           | 本人学员档案                                                             |
+| PUT  | `/api/student-portal/me`                         | 门户令牌           | 更新姓名/单位/职务（手机号不可改）                                       |
+| GET  | `/api/student-portal/my/classrooms`              | 门户令牌           | 加入过的课堂列表（进行中的排前）                                         |
+| GET  | `/api/student-portal/my/classrooms/{id}/answers` | 门户令牌           | 某课堂的答题记录（门户身份）                                             |
+| POST | `/api/student-portal/my/classrooms/{id}/resume`  | 门户令牌           | 从门户进入课堂（换取课堂短期令牌）                                       |
 | GET  | `/api/presentation/class-sessions/{id}/snapshot` | 投屏令牌           | 匿名快照（严禁含个人信息）                                               |
 
 前端 API Client 由 Kubb 从 Swagger 生成（`react/src/api/`），后端变更后执行 `vp run generate-api`。
@@ -123,6 +130,18 @@ dotnet ef database update   --project main/AcroStack --startup-project main/Acro
   - Claims：`session_id`、`participant_id`（投屏无）、`client_role`（`student`/`presentation`）、`tenantid`
   - 有效期：学员 4 小时 / 投屏 12 小时（`ClassroomConsts`）
   - 令牌仅对签发课堂有效；服务端一律从令牌解析身份，不信任请求体中的 SessionId/ParticipantId
+- **学员门户**：同一 `ClassroomToken` 方案下的长期 JWT（180 天，设备绑定）：
+  - Claims：`student_profile_id`、`client_role`（`studentportal`）、`tenantid`；无 `session_id`/`participant_id`
+  - 仅可访问 `/api/student-portal/*`；课堂令牌/投屏令牌无 `student_profile_id` claim，无法访问门户（反之亦然）
+
+## 学员身份与档案（跨课堂）
+
+- **`StudentProfile` 聚合**：学员的跨课堂持久身份，手机号为租户内唯一键（唯一索引 TenantId+Phone），字段 姓名/电话/单位/职务。首次加入任意课堂时建档（单位/职务必填），此后加入其他课堂直接复用。
+- **双层身份**：`Participant`（课堂内身份，答题/分组/在线状态挂在这里）通过可空的 `StudentProfileId` 引用档案；历史匿名参与者为 null，答题链路不受影响。
+- **加入识别**：`pre-join` 按手机号探测档案决定表单形态；`join` 无档案时建档（姓名+手机号+单位+职务），有档案时 手机号+姓名 双匹配核对（防误用他人手机号）。
+- **幂等重进**：同一档案重复加入同一课堂复用既有 Participant（不重复分组/通知教师端），顺带解决刷新页面令牌过期后需重新加入的问题。
+- **分组不变**：学习小组仍是课堂维度（加入时按人数顺序分配），档案不参与分组。
+- **安全取舍**：设备令牌丢失后凭 手机号+姓名 重新认领，适用于课堂答题的敏感度；更强的短信验证码留作后续增强。历史匿名参与者不做数据迁移。
 
 `appsettings.json` 配置节：
 

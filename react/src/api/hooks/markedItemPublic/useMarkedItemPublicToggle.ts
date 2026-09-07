@@ -39,8 +39,7 @@ export function markedItemPublicToggleMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await markedItemPublicToggle({ ...config, path, throwOnError: true });
-      return data;
+      return markedItemPublicToggle({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

@@ -39,8 +39,7 @@ export function classSessionPublishAnswerMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await classSessionPublishAnswer({ ...config, path, throwOnError: true });
-      return data;
+      return classSessionPublishAnswer({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

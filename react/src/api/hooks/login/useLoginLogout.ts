@@ -43,12 +43,11 @@ export function loginLogoutQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await loginLogout({
+      return loginLogout({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

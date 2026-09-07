@@ -42,12 +42,7 @@ export function accountVerifyPasswordResetTokenMutationOptions<TContext = unknow
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await accountVerifyPasswordResetToken({
-        ...config,
-        body,
-        throwOnError: true,
-      });
-      return data;
+      return accountVerifyPasswordResetToken({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }

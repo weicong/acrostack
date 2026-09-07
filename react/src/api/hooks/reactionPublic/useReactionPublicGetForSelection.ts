@@ -49,13 +49,12 @@ export function reactionPublicGetForSelectionQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await reactionPublicGetForSelection({
+      return reactionPublicGetForSelection({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

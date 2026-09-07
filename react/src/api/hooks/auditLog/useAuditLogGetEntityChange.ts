@@ -47,13 +47,12 @@ export function auditLogGetEntityChangeQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await auditLogGetEntityChange({
+      return auditLogGetEntityChange({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

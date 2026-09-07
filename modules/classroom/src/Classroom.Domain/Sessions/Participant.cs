@@ -5,18 +5,22 @@ using Volo.Abp.MultiTenancy;
 namespace Classroom;
 
 /// <summary>
-/// 学员（匿名身份）。重复昵称允许，教师端通过 Id 区分；
+/// 学员（课堂内身份）。重复昵称允许，教师端通过 Id 区分；
 /// 同一身份断线重连通过课堂短期令牌（ParticipantId claim）实现，无需重新 Join。
+/// 已登记学员档案的参与者通过 StudentProfileId 关联（跨课堂身份）；历史匿名参与者为 null。
 /// </summary>
 public class Participant : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {
-    public Guid? TenantId { get; set; }
+    public Guid? TenantId { get; private set; }
 
     public Guid SessionId { get; private set; }
 
     public string Nickname { get; private set; } = default!;
 
     public string? StudentNumber { get; private set; }
+
+    /// <summary>所属学员档案（跨课堂身份）；历史匿名参与者为 null。</summary>
+    public Guid? StudentProfileId { get; private set; }
 
     /// <summary>学习小组编号（1 起）。加入时按当时人数顺序分配：已有人数 / 每组人数 + 1。</summary>
     public int GroupIndex { get; private set; }
@@ -31,12 +35,13 @@ public class Participant : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
     }
 
-    public Participant(Guid id, Guid sessionId, string nickname, string? studentNumber, int groupIndex, DateTimeOffset joinedAt, Guid? tenantId = null)
+    public Participant(Guid id, Guid sessionId, string nickname, string? studentNumber, int groupIndex, DateTimeOffset joinedAt, Guid? tenantId = null, Guid? studentProfileId = null)
         : base(id)
     {
         SessionId = sessionId;
         Nickname = nickname;
         StudentNumber = studentNumber;
+        StudentProfileId = studentProfileId;
         GroupIndex = groupIndex;
         JoinedAt = joinedAt;
         LastSeenAt = joinedAt;

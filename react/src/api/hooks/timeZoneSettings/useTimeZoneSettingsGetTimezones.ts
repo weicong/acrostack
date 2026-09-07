@@ -43,12 +43,11 @@ export function timeZoneSettingsGetTimezonesQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await timeZoneSettingsGetTimezones({
+      return timeZoneSettingsGetTimezones({
         ...config,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

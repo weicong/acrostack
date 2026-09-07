@@ -38,8 +38,7 @@ export function impersonationSessionRevokeMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await impersonationSessionRevoke({ ...config, path, throwOnError: true });
-      return data;
+      return impersonationSessionRevoke({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

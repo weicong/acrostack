@@ -45,13 +45,12 @@ export function userFindByIdQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await userFindById({
+      return userFindById({
         ...config,
         path,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

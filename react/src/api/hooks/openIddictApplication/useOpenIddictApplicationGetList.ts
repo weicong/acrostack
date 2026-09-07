@@ -47,13 +47,12 @@ export function openIddictApplicationGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await openIddictApplicationGetList({
+      return openIddictApplicationGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

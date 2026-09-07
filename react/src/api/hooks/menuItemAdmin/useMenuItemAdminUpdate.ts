@@ -42,8 +42,7 @@ export function menuItemAdminUpdateMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path, body }) => {
-      const { data } = await menuItemAdminUpdate({ ...config, path, body, throwOnError: true });
-      return data;
+      return menuItemAdminUpdate({ ...config, path, body, throwOnError: true }).unwrap();
     },
   });
 }

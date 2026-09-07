@@ -47,13 +47,12 @@ export function identityRoleClaimGetListQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      const { data } = await identityRoleClaimGetList({
+      return identityRoleClaimGetList({
         ...config,
         query,
         signal: config.signal ?? signal,
         throwOnError: true,
-      });
-      return data;
+      }).unwrap();
     },
   });
 }

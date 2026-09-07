@@ -38,8 +38,7 @@ export function reactionPublicDeleteMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ path }) => {
-      const { data } = await reactionPublicDelete({ ...config, path, throwOnError: true });
-      return data;
+      return reactionPublicDelete({ ...config, path, throwOnError: true }).unwrap();
     },
   });
 }

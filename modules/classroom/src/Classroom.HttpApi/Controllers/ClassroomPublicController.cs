@@ -19,7 +19,12 @@ public class ClassroomPublicController : AbpController
         _publicAppService = publicAppService;
     }
 
-    /// <summary>加入课堂：校验课堂码 -> 创建 Participant -> 签发课堂范围短期令牌。</summary>
+    /// <summary>探测加入：按手机号判断是否已有学员档案（决定是否展示 单位/职务 表单）。</summary>
+    [HttpPost("pre-join")]
+    public Task<PreJoinResultDto> PreJoinAsync([FromBody] PreJoinClassroomInputDto input)
+        => _publicAppService.PreJoinAsync(input, HttpContext.Connection.RemoteIpAddress?.ToString());
+
+    /// <summary>加入课堂：手机号识别档案 -> 建档/复用 -> 签发课堂令牌 + 学员门户令牌。</summary>
     [HttpPost("join")]
     public Task<JoinResultDto> JoinAsync([FromBody] JoinClassroomInputDto input)
         => _publicAppService.JoinAsync(input, HttpContext.Connection.RemoteIpAddress?.ToString());

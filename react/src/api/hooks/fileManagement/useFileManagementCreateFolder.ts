@@ -29,8 +29,7 @@ export function fileManagementCreateFolderMutationOptions<TContext = unknown>(
   >({
     mutationKey,
     mutationFn: async ({ body }) => {
-      const { data } = await fileManagementCreateFolder({ ...config, body, throwOnError: true });
-      return data;
+      return fileManagementCreateFolder({ ...config, body, throwOnError: true }).unwrap();
     },
   });
 }
