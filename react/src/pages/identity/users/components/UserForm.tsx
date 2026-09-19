@@ -1,5 +1,4 @@
 import { useEffect, useMemo, type ReactNode } from "react";
-import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm, type ComboboxOption } from "@/components/ui/form";
 import { useUserCreate } from "@/api/hooks/user/useUserCreate";
 import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
@@ -17,25 +16,9 @@ interface UserFormProps {
   footer?: ReactNode;
 }
 
-// ── Styles ──────────────────────────────────────────────────────────
-
-const useStyles = makeStyles({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  actions: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: tokens.spacingHorizontalS,
-  },
-});
-
 // ── Component ───────────────────────────────────────────────────────
 
 export function UserForm({ user, onSuccess, footer }: UserFormProps) {
-  const styles = useStyles();
   const isEdit = !!user;
 
   const createMutation = useUserCreate();
@@ -124,7 +107,6 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
           e.preventDefault();
           void form.handleSubmit();
         }}
-        className={styles.form}
       >
         <form.AppField
           name="userName"
@@ -162,10 +144,8 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
           name="lockoutEnabled"
           children={(field) => <field.SwitchField label={"启用锁定"} />}
         />
-        <div className={styles.actions}>
-          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
-          {footer}
-        </div>
+        <form.SubmitButton label={isEdit ? "保存" : "创建"} />
+        {footer}
       </form>
     </form.AppForm>
   );

@@ -5,7 +5,6 @@
 import { useEffect, useState } from "react";
 import { Button, SearchBox } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { useRolesStyles } from "../styles/roles";
 
 interface RolesToolbarProps {
   onCreate: () => void;
@@ -14,7 +13,6 @@ interface RolesToolbarProps {
 }
 
 export function RolesToolbar({ onCreate, onGlobalFilterChange }: RolesToolbarProps) {
-  const styles = useRolesStyles();
   const [searchValue, setSearchValue] = useState("");
 
   // 搜索防抖：300ms 后同步到表格全局过滤
@@ -26,20 +24,16 @@ export function RolesToolbar({ onCreate, onGlobalFilterChange }: RolesToolbarPro
   }, [searchValue, onGlobalFilterChange]);
 
   return (
-    <div className={styles.toolbar}>
-      <div className={styles.filters}>
-        <SearchBox
-          placeholder={"搜索"}
-          value={searchValue}
-          onChange={(_, data) => setSearchValue(data.value)}
-          appearance="outline"
-        />
-      </div>
-      <div className={styles.actionButtons}>
-        <Button appearance="primary" icon={<Add20Regular />} onClick={onCreate}>
-          {"新角色"}
-        </Button>
-      </div>
+    <div>
+      <SearchBox
+        placeholder={"搜索"}
+        value={searchValue}
+        onChange={(_, data) => setSearchValue(data.value)}
+        appearance="outline"
+      />
+      <Button appearance="primary" icon={<Add20Regular />} onClick={onCreate}>
+        {"新角色"}
+      </Button>
     </div>
   );
 }

@@ -1,17 +1,5 @@
 import { type ReactNode } from "react";
-import { makeStyles, tokens, Text } from "@fluentui/react-components";
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalL,
-  },
-  header: {
-    paddingBottom: tokens.spacingVerticalS,
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-  },
-});
+import { Divider, Text } from "@fluentui/react-components";
 
 interface PageLayoutProps {
   title: string;
@@ -23,15 +11,12 @@ interface PageLayoutProps {
  * Use this in every page component for a uniform look.
  */
 export function PageLayout({ title, children }: PageLayoutProps) {
-  const styles = useStyles();
-
   return (
-    <div className={styles.root}>
-      <div className={styles.header}>
-        <Text as="h1" size={700} weight="bold">
-          {title}
-        </Text>
-      </div>
+    <div>
+      <Text as="h1" size={700} weight="bold">
+        {title}
+      </Text>
+      <Divider />
       {children}
     </div>
   );

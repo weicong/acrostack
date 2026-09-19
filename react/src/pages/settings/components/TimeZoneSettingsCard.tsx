@@ -21,10 +21,8 @@ import {
 import { useTimeZoneSettingsGetTimezones } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
 import { useTimeZoneSettingsUpdate } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
-import { useSettingsStyles } from "../styles/settings";
 
 export function TimeZoneSettingsCard() {
-  const styles = useSettingsStyles();
   const queryClient = useQueryClient();
   const updateMutation = useTimeZoneSettingsUpdate();
   const { dispatchToast } = useToastController();
@@ -59,7 +57,7 @@ export function TimeZoneSettingsCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
+      <Text as="h2" size={500} weight="semibold">
         {"时区"}
       </Text>
       <Field label={"时区"}>
@@ -82,15 +80,13 @@ export function TimeZoneSettingsCard() {
           "此功能允许您为服务器设置默认时区，同时用户可以选择自己的时区。如果用户的时区与服务器的时区不同，所有时间将相应调整。例如，如果服务器设置为欧洲/伦敦(00:00)，而用户在欧洲/巴黎(+01:00)，则该用户的时间将调整1小时。选择'默认时区'将自动使用服务器或浏览器的时区。"
         }
       </Text>
-      <div className={styles.actions}>
-        <Button
-          appearance="primary"
-          onClick={() => void handleSave()}
-          disabled={updateMutation.isPending}
-        >
-          {"保存"}
-        </Button>
-      </div>
+      <Button
+        appearance="primary"
+        onClick={() => void handleSave()}
+        disabled={updateMutation.isPending}
+      >
+        {"保存"}
+      </Button>
     </Card>
   );
 }

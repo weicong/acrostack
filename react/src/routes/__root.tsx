@@ -1,37 +1,11 @@
 import { createRootRoute, useRouter } from "@tanstack/react-router";
-import { Button, makeStyles, Spinner, Text, tokens } from "@fluentui/react-components";
+import { Button, Spinner, Text } from "@fluentui/react-components";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { RedirectingError } from "@/lib/routing/guards";
 
-const useNotFoundStyles = makeStyles({
-  root: {
-    display: "flex",
-    minHeight: "50vh",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: tokens.spacingVerticalL,
-  },
-});
-
-// 路由级错误/加载态共用布局（errorComponent 渲染在 FluentProvider 内，可安全使用 Fluent UI 组件）
-const useErrorStyles = makeStyles({
-  root: {
-    display: "flex",
-    minHeight: "50vh",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: tokens.spacingVerticalS,
-    padding: tokens.spacingHorizontalL,
-    textAlign: "center",
-  },
-});
-
 function NotFoundComponent() {
-  const styles = useNotFoundStyles();
   return (
-    <div className={styles.root}>
+    <div>
       <Text as="h1" size={700} weight="bold">
         404
       </Text>
@@ -49,12 +23,11 @@ function NotFoundComponent() {
  */
 function RouteErrorComponent({ error }: { error: unknown }) {
   const router = useRouter();
-  const styles = useErrorStyles();
 
   // 守卫已发起 OIDC 跳转：这是预期的"导航中断"，展示加载态而非错误页
   if (error instanceof RedirectingError) {
     return (
-      <div className={styles.root}>
+      <div>
         <Spinner label="正在跳转到登录..." />
       </div>
     );
@@ -63,7 +36,7 @@ function RouteErrorComponent({ error }: { error: unknown }) {
   const message = error instanceof Error ? error.message : String(error);
 
   return (
-    <div className={styles.root} role="alert">
+    <div role="alert">
       <Text as="h1" size={600} weight="bold">
         页面出现错误
       </Text>
@@ -80,11 +53,10 @@ function RouteErrorComponent({ error }: { error: unknown }) {
   );
 }
 
-/** 路由默认 pending 组件：居中 Spinner（root 路由配置对整棵路由树生效） */
+/** 路由默认 pending 组件：Spinner（root 路由配置对整棵路由树生效） */
 function RoutePendingComponent() {
-  const styles = useErrorStyles();
   return (
-    <div className={styles.root}>
+    <div>
       <Spinner />
     </div>
   );

@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import { makeStyles, tokens } from "@fluentui/react-components";
 import { useAppForm } from "@/components/ui/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
 import { useRoleUpdate } from "@/api/hooks/role/useRoleUpdate";
@@ -15,25 +14,9 @@ interface RoleFormProps {
   footer?: ReactNode;
 }
 
-// ── Styles ──────────────────────────────────────────────────────────
-
-const useStyles = makeStyles({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: tokens.spacingVerticalM,
-  },
-  actions: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: tokens.spacingHorizontalS,
-  },
-});
-
 // ── Component ───────────────────────────────────────────────────────
 
 export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
-  const styles = useStyles();
   const isEdit = !!role;
 
   const createMutation = useRoleCreate();
@@ -85,7 +68,6 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
           e.preventDefault();
           void form.handleSubmit();
         }}
-        className={styles.form}
       >
         <form.AppField
           name="name"
@@ -98,10 +80,8 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
           children={(field) => <field.SwitchField label={"默认"} />}
         />
         <form.AppField name="isPublic" children={(field) => <field.SwitchField label={"公开"} />} />
-        <div className={styles.actions}>
-          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
-          {footer}
-        </div>
+        <form.SubmitButton label={isEdit ? "保存" : "创建"} />
+        {footer}
       </form>
     </form.AppForm>
   );

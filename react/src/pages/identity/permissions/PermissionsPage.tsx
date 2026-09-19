@@ -2,7 +2,7 @@
  * 权限管理页（PermissionsPage）。
  *
  * 本文件只负责编排：提供程序选择状态、本地勾选状态与各子组件组装；
- * 样式见 styles/permissions，动作聚合见 hooks/usePermissionActions，
+ * 动作聚合见 hooks/usePermissionActions，
  * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permissions。
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -14,11 +14,8 @@ import type { VoloAbpPermissionManagementPermissionGroupDto } from "@/api/models
 import { type ProviderName, flattenPermissions } from "./utils/permissions";
 import { usePermissionActions } from "./hooks/usePermissionActions";
 import { PermissionsToolbar } from "./components/PermissionsToolbar";
-import { usePermissionsStyles } from "./styles/permissions";
 
 export function PermissionsPage() {
-  const styles = usePermissionsStyles();
-
   // 提供程序选择状态（驱动角色列表与权限两个查询）
   const [providerName, setProviderName] = useState<ProviderName>("R");
   const [providerKey, setProviderKey] = useState<string>("");
@@ -118,50 +115,46 @@ export function PermissionsPage() {
       {providerKey && permissionsQuery.data && (
         <>
           {flatPermissionsByGroup.length === 0 && <Text>{"未定义任何权限。"}</Text>}
-          <div className={styles.groups}>
-            {flatPermissionsByGroup.map(({ group, flat }) => {
-              const allGranted = (group.permissions ?? []).every(
-                (p) => p.name && grantedMap[p.name] === true,
-              );
-              const groupLabel = group.displayName || group.name || "";
-              return (
-                <Card key={group.name ?? groupLabel} className={styles.groupCard}>
-                  <div className={styles.permissionRow}>
+          {flatPermissionsByGroup.map(({ group, flat }) => {
+            const allGranted = (group.permissions ?? []).every(
+              (p) => p.name && grantedMap[p.name] === true,
+            );
+            const groupLabel = group.displayName || group.name || "";
+            return (
+              <Card key={group.name ?? groupLabel}>
+                <div>
+                  <Checkbox
+                    checked={allGranted}
+                    onChange={(_, data) => handleSelectAllInGroup(group, data.checked === true)}
+                  />
+                  <Text weight="semibold">{groupLabel}</Text>
+                </div>
+                {flat.map(({ permission, depth }) => (
+                  <div key={permission.name}>
                     <Checkbox
-                      checked={allGranted}
-                      onChange={(_, data) => handleSelectAllInGroup(group, data.checked === true)}
+                      checked={grantedMap[permission.name ?? ""] === true}
+                      disabled={permission.isEditable === false}
+                      onChange={(_, data) =>
+                        handleToggle(
+                          permission.name ?? "",
+                          data.checked === true,
+                          permission.isEditable,
+                        )
+                      }
                     />
-                    <Text weight="semibold">{groupLabel}</Text>
+                    <Text>
+                      {/* 层级用文本前缀表达，避免自定义缩进样式 */}
+                      {depth > 0 ? "└ " : ""}
+                      {permission.displayName || permission.name}
+                    </Text>
                   </div>
-                  {flat.map(({ permission, depth }) => (
-                    <div
-                      key={permission.name}
-                      className={styles.permissionRow}
-                      style={{ marginLeft: depth * 24 }}
-                    >
-                      <Checkbox
-                        checked={grantedMap[permission.name ?? ""] === true}
-                        disabled={permission.isEditable === false}
-                        onChange={(_, data) =>
-                          handleToggle(
-                            permission.name ?? "",
-                            data.checked === true,
-                            permission.isEditable,
-                          )
-                        }
-                      />
-                      <Text>{permission.displayName || permission.name}</Text>
-                    </div>
-                  ))}
-                </Card>
-              );
-            })}
-          </div>
-          <div className={styles.actions}>
-            <Button appearance="primary" onClick={handleSave} disabled={savePending}>
-              {"保存"}
-            </Button>
-          </div>
+                ))}
+              </Card>
+            );
+          })}
+          <Button appearance="primary" onClick={handleSave} disabled={savePending}>
+            {"保存"}
+          </Button>
         </>
       )}
     </PageLayout>

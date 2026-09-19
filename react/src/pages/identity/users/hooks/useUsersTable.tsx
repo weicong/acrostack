@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { UserListItem } from "../types/user";
-import { useUsersStyles } from "../styles/users";
 
 /** 用户列表行类型（页面本地别名）。 */
 export type UserItem = UserListItem;
@@ -51,8 +50,6 @@ export function useUsersTable({
   canImpersonate,
   currentUserId,
 }: UseUsersTableOptions) {
-  const styles = useUsersStyles();
-
   const tableState = useDataTableState({
     sorting: [{ id: "userName", desc: false }],
   });
@@ -73,7 +70,7 @@ export function useUsersTable({
         cell: (info) => {
           const userName = (info.getValue() as string) ?? "";
           return (
-            <div className={styles.userNameCell}>
+            <div>
               <Avatar aria-label={userName} name={userName} size={24} />
               <span>{userName || "-"}</span>
             </div>
@@ -110,7 +107,7 @@ export function useUsersTable({
           const row = info.row.original;
           const canImpersonateRow = canImpersonate && !!row.id && row.id !== currentUserId;
           return (
-            <div className={styles.actionsCell}>
+            <div>
               <Button
                 size="small"
                 appearance="subtle"
@@ -149,15 +146,7 @@ export function useUsersTable({
         },
       },
     ],
-    [
-      styles.userNameCell,
-      styles.actionsCell,
-      onEdit,
-      onDelete,
-      onImpersonate,
-      canImpersonate,
-      currentUserId,
-    ],
+    [onEdit, onDelete, onImpersonate, canImpersonate, currentUserId],
   );
 
   const table = useDataTable({

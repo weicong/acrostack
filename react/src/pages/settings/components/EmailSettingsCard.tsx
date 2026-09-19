@@ -21,10 +21,8 @@ import {
 import { useEmailSettingsUpdate } from "@/api/hooks/emailSettings/useEmailSettingsUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { emailSchema } from "../schemas/emailSettings";
-import { useSettingsStyles } from "../styles/settings";
 
 export function EmailSettingsCard() {
-  const styles = useSettingsStyles();
   const queryClient = useQueryClient();
   const updateMutation = useEmailSettingsUpdate();
   const { dispatchToast } = useToastController();
@@ -94,90 +92,76 @@ export function EmailSettingsCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
+      <Text as="h2" size={500} weight="semibold">
         {"邮件"}
       </Text>
-      <div className={styles.form}>
-        <div className={styles.row}>
-          <Field label={"主机"} className={styles.rowItem}>
-            <Input
-              value={form.smtpHost}
-              onChange={(_, d) => setForm((p) => ({ ...p, smtpHost: d.value }))}
-            />
-          </Field>
-          <Field label={"端口"} className={styles.rowItem}>
-            <Input
-              type="number"
-              value={String(form.smtpPort ?? "")}
-              onChange={(_, d) =>
-                setForm((p) => ({
-                  ...p,
-                  smtpPort: d.value === "" ? null : Number(d.value),
-                }))
-              }
-            />
-          </Field>
-        </div>
-        <div className={styles.row}>
-          <Field label={"用户名"} className={styles.rowItem}>
-            <Input
-              value={form.smtpUserName}
-              onChange={(_, d) => setForm((p) => ({ ...p, smtpUserName: d.value }))}
-            />
-          </Field>
-          <Field label={"密码"} className={styles.rowItem}>
-            <Input
-              type="password"
-              placeholder={"输入一个值以更新密码"}
-              value={form.smtpPassword}
-              onChange={(_, d) => setForm((p) => ({ ...p, smtpPassword: d.value }))}
-            />
-          </Field>
-        </div>
-        <div className={styles.row}>
-          <Field label={"域"} className={styles.rowItem}>
-            <Input
-              value={form.smtpDomain}
-              onChange={(_, d) => setForm((p) => ({ ...p, smtpDomain: d.value }))}
-            />
-          </Field>
-        </div>
-        <div className={styles.row}>
-          <Switch
-            checked={form.smtpEnableSsl}
-            onChange={(_, d) => setForm((p) => ({ ...p, smtpEnableSsl: d.checked }))}
-            label={"启用ssl"}
-          />
-          <Switch
-            checked={form.smtpUseDefaultCredentials}
-            onChange={(_, d) => setForm((p) => ({ ...p, smtpUseDefaultCredentials: d.checked }))}
-            label={"使用默认凭据"}
-          />
-        </div>
-        <div className={styles.row}>
-          <Field label={"默认发件人"} className={styles.rowItem} required>
-            <Input
-              value={form.defaultFromAddress}
-              onChange={(_, d) => setForm((p) => ({ ...p, defaultFromAddress: d.value }))}
-            />
-          </Field>
-          <Field label={"默认显示名称"} className={styles.rowItem} required>
-            <Input
-              value={form.defaultFromDisplayName}
-              onChange={(_, d) => setForm((p) => ({ ...p, defaultFromDisplayName: d.value }))}
-            />
-          </Field>
-        </div>
-        <div className={styles.actions}>
-          <Button
-            appearance="primary"
-            onClick={() => void handleSave()}
-            disabled={updateMutation.isPending}
-          >
-            {"保存"}
-          </Button>
-        </div>
-      </div>
+      <Field label={"主机"}>
+        <Input
+          value={form.smtpHost}
+          onChange={(_, d) => setForm((p) => ({ ...p, smtpHost: d.value }))}
+        />
+      </Field>
+      <Field label={"端口"}>
+        <Input
+          type="number"
+          value={String(form.smtpPort ?? "")}
+          onChange={(_, d) =>
+            setForm((p) => ({
+              ...p,
+              smtpPort: d.value === "" ? null : Number(d.value),
+            }))
+          }
+        />
+      </Field>
+      <Field label={"用户名"}>
+        <Input
+          value={form.smtpUserName}
+          onChange={(_, d) => setForm((p) => ({ ...p, smtpUserName: d.value }))}
+        />
+      </Field>
+      <Field label={"密码"}>
+        <Input
+          type="password"
+          placeholder={"输入一个值以更新密码"}
+          value={form.smtpPassword}
+          onChange={(_, d) => setForm((p) => ({ ...p, smtpPassword: d.value }))}
+        />
+      </Field>
+      <Field label={"域"}>
+        <Input
+          value={form.smtpDomain}
+          onChange={(_, d) => setForm((p) => ({ ...p, smtpDomain: d.value }))}
+        />
+      </Field>
+      <Switch
+        checked={form.smtpEnableSsl}
+        onChange={(_, d) => setForm((p) => ({ ...p, smtpEnableSsl: d.checked }))}
+        label={"启用ssl"}
+      />
+      <Switch
+        checked={form.smtpUseDefaultCredentials}
+        onChange={(_, d) => setForm((p) => ({ ...p, smtpUseDefaultCredentials: d.checked }))}
+        label={"使用默认凭据"}
+      />
+      <Field label={"默认发件人"} required>
+        <Input
+          value={form.defaultFromAddress}
+          onChange={(_, d) => setForm((p) => ({ ...p, defaultFromAddress: d.value }))}
+        />
+      </Field>
+      <Field label={"默认显示名称"} required>
+        <Input
+          value={form.defaultFromDisplayName}
+          onChange={(_, d) => setForm((p) => ({ ...p, defaultFromDisplayName: d.value }))}
+        />
+      </Field>
+      <Button
+        appearance="primary"
+        onClick={() => void handleSave()}
+        disabled={updateMutation.isPending}
+      >
+        {"保存"}
+      </Button>
     </Card>
   );
 }

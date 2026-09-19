@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
 import type { RoleItem } from "../types/role";
-import { useRolesStyles } from "../styles/roles";
 
 /** 角色列表行类型（页面本地别名）。 */
 export type RoleItemRow = RoleItem;
@@ -26,8 +25,6 @@ interface UseRolesTableOptions {
 
 /** 构建角色列表表格：列定义 + 查询 + 表实例。 */
 export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
-  const styles = useRolesStyles();
-
   const tableState = useDataTableState({
     sorting: [{ id: "name", desc: false }],
   });
@@ -93,7 +90,7 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
           const row = info.row.original;
           const isStatic = row.isStatic === true;
           return (
-            <div className={styles.actionsCell}>
+            <div>
               <Button
                 size="small"
                 appearance="subtle"
@@ -120,7 +117,7 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
         },
       },
     ],
-    [styles.actionsCell, onEdit, onDelete],
+    [onEdit, onDelete],
   );
 
   const table = useDataTable({

@@ -16,7 +16,6 @@ import {
   type AbpGridParams,
 } from "@/components/ui/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
-import { useImpersonationSessionsStyles } from "../styles/impersonationSessions";
 
 export type SessionItem = ImpersonationSessionDto;
 
@@ -38,8 +37,6 @@ export function useImpersonationSessionsTable({
   canRevoke,
   onRevoke,
 }: ImpersonationSessionsTableOptions) {
-  const styles = useImpersonationSessionsStyles();
-
   const [statusFilter, setStatusFilter] = useState<SessionStatusFilter>("all");
 
   const tableState = useDataTableState({
@@ -113,22 +110,20 @@ export function useImpersonationSessionsTable({
         header: "操作",
         cell: ({ row }) =>
           row.original.isActive ? (
-            <div className={styles.actionsCell}>
-              <Button
-                size="small"
-                appearance="subtle"
-                icon={<Dismiss20Regular />}
-                onClick={() => onRevoke(row.original.id ?? "")}
-                title={"撤销会话"}
-                aria-label={"撤销会话"}
-              />
-            </div>
+            <Button
+              size="small"
+              appearance="subtle"
+              icon={<Dismiss20Regular />}
+              onClick={() => onRevoke(row.original.id ?? "")}
+              title={"撤销会话"}
+              aria-label={"撤销会话"}
+            />
           ) : null,
       });
     }
 
     return base;
-  }, [styles.actionsCell, canRevoke, onRevoke]);
+  }, [canRevoke, onRevoke]);
 
   const table = useDataTable({
     columns,

@@ -15,7 +15,6 @@ import {
 import { z } from "zod";
 import { useEmailSettingsSendTestEmail } from "@/api/hooks/emailSettings/useEmailSettingsSendTestEmail";
 import { extractAbpErrorMessage } from "@/lib/http/error";
-import { useSettingsStyles } from "../styles/settings";
 
 const testEmailSchema = z.object({
   senderEmailAddress: z.string().min(1).email(),
@@ -25,7 +24,6 @@ const testEmailSchema = z.object({
 });
 
 export function TestEmailCard() {
-  const styles = useSettingsStyles();
   const sendMutation = useEmailSettingsSendTestEmail();
   const { dispatchToast } = useToastController();
 
@@ -60,46 +58,40 @@ export function TestEmailCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
+      <Text as="h2" size={500} weight="semibold">
         {"发送测试邮件"}
       </Text>
-      <div className={styles.form}>
-        <div className={styles.row}>
-          <Field label={"发件人邮箱地址"} className={styles.rowItem} required>
-            <Input
-              value={form.senderEmailAddress}
-              onChange={(_, d) => setForm((p) => ({ ...p, senderEmailAddress: d.value }))}
-            />
-          </Field>
-          <Field label={"收件人邮箱地址"} className={styles.rowItem} required>
-            <Input
-              value={form.targetEmailAddress}
-              onChange={(_, d) => setForm((p) => ({ ...p, targetEmailAddress: d.value }))}
-            />
-          </Field>
-        </div>
-        <Field label={"主题"} required>
-          <Input
-            value={form.subject}
-            onChange={(_, d) => setForm((p) => ({ ...p, subject: d.value }))}
-          />
-        </Field>
-        <Field label={"正文"}>
-          <Textarea
-            value={form.body}
-            onChange={(_, d) => setForm((p) => ({ ...p, body: d.value }))}
-          />
-        </Field>
-        <div className={styles.actions}>
-          <Button
-            appearance="primary"
-            onClick={() => void handleSend()}
-            disabled={sendMutation.isPending}
-          >
-            {"发送"}
-          </Button>
-        </div>
-      </div>
+      <Field label={"发件人邮箱地址"} required>
+        <Input
+          value={form.senderEmailAddress}
+          onChange={(_, d) => setForm((p) => ({ ...p, senderEmailAddress: d.value }))}
+        />
+      </Field>
+      <Field label={"收件人邮箱地址"} required>
+        <Input
+          value={form.targetEmailAddress}
+          onChange={(_, d) => setForm((p) => ({ ...p, targetEmailAddress: d.value }))}
+        />
+      </Field>
+      <Field label={"主题"} required>
+        <Input
+          value={form.subject}
+          onChange={(_, d) => setForm((p) => ({ ...p, subject: d.value }))}
+        />
+      </Field>
+      <Field label={"正文"}>
+        <Textarea
+          value={form.body}
+          onChange={(_, d) => setForm((p) => ({ ...p, body: d.value }))}
+        />
+      </Field>
+      <Button
+        appearance="primary"
+        onClick={() => void handleSend()}
+        disabled={sendMutation.isPending}
+      >
+        {"发送"}
+      </Button>
     </Card>
   );
 }

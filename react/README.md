@@ -32,7 +32,6 @@ react/
 │   │                     #   routing（guards/菜单）、theme、runtimeConfig
 │   ├── pages/            # 页面，按业务域分目录（account、identity 等）
 │   ├── routes/           # TanStack Router 文件路由（routeTree.gen.ts 自动生成）
-│   ├── styles/           # 全局样式
 │   ├── App.tsx           # 根组件（Providers）
 │   ├── env.ts            # 编译期环境变量兜底
 │   └── main.tsx          # 启动：config → OIDC → interceptors → render

@@ -5,11 +5,9 @@ import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfil
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { profileSchema } from "../schemas/profile";
-import { useProfileStyles } from "../styles/profile";
 
 /** 个人设置卡片：资料查询与更新自包含。 */
 export function ProfileFormCard() {
-  const styles = useProfileStyles();
   const queryClient = useQueryClient();
   const updateMutation = useProfileUpdate();
   const { dispatchToast } = useToastController();
@@ -62,7 +60,7 @@ export function ProfileFormCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
+      <Text as="h2" size={500} weight="semibold">
         {"个人设置"}
       </Text>
       <form.AppForm>
@@ -71,7 +69,6 @@ export function ProfileFormCard() {
             e.preventDefault();
             void form.handleSubmit();
           }}
-          className={styles.form}
         >
           <form.AppField
             name="userName"
@@ -87,9 +84,7 @@ export function ProfileFormCard() {
             name="phoneNumber"
             children={(field) => <field.TextField label={"手机号"} />}
           />
-          <div className={styles.actions}>
-            <form.SubmitButton label={"保存"} />
-          </div>
+          <form.SubmitButton label={"保存"} />
         </form>
       </form.AppForm>
     </Card>

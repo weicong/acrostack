@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Card, tokens, Text } from "@fluentui/react-components";
+import { Card, Text } from "@fluentui/react-components";
 import { Settings20Regular } from "@fluentui/react-icons";
 import { getApplicationName } from "@/lib/runtimeConfig";
-import { usePortalStyles } from "./styles/portal";
 
 /**
  * 门户入口页（/）。
@@ -19,8 +18,6 @@ interface WorkspaceEntry {
   description: string;
 }
 
-const useStyles = usePortalStyles;
-
 const ENTRIES: WorkspaceEntry[] = [
   {
     to: "/admin",
@@ -31,45 +28,35 @@ const ENTRIES: WorkspaceEntry[] = [
 ];
 
 export function PortalPage() {
-  const styles = useStyles();
   const appName = getApplicationName();
 
   return (
-    <div className={styles.root}>
-      <div className={styles.brand}>
-        <div className={styles.logo} aria-hidden="true">
-          {appName.charAt(0)}
-        </div>
-        <Text as="h1" size={800} weight="bold">
-          {appName}
-        </Text>
-        <Text size={400} style={{ color: tokens.colorNeutralForeground2 }}>
-          选择工作区
-        </Text>
-      </div>
+    <div>
+      <Text as="h1" size={800} weight="bold">
+        {appName}
+      </Text>
+      <Text size={400} block>
+        选择工作区
+      </Text>
 
-      <div className={styles.cards}>
-        {ENTRIES.map((entry) => {
-          const Icon = entry.icon;
-          return (
-            <Link key={entry.to} to={entry.to} className={styles.cardLink}>
-              <Card className={styles.card}>
-                <div className={styles.cardIcon}>
-                  <Icon />
-                </div>
-                <Text size={500} weight="semibold">
-                  {entry.title}
-                </Text>
-                <Text size={300} style={{ color: tokens.colorNeutralForeground2 }}>
-                  {entry.description}
-                </Text>
-              </Card>
-            </Link>
-          );
-        })}
-      </div>
+      {ENTRIES.map((entry) => {
+        const Icon = entry.icon;
+        return (
+          <Link key={entry.to} to={entry.to}>
+            <Card>
+              <Icon />
+              <Text size={500} weight="semibold">
+                {entry.title}
+              </Text>
+              <Text size={300} block>
+                {entry.description}
+              </Text>
+            </Card>
+          </Link>
+        );
+      })}
 
-      <Text as="p" size={200} className={styles.footer}>
+      <Text as="p" size={200} block>
         © {new Date().getFullYear()} {appName}
       </Text>
     </div>

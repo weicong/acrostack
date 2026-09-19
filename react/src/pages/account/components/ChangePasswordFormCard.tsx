@@ -3,11 +3,9 @@ import { useAppForm } from "@/components/ui/form";
 import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { passwordSchema } from "../schemas/profile";
-import { useProfileStyles } from "../styles/profile";
 
 /** 修改密码卡片：改密动作自包含，成功后清空表单。 */
 export function ChangePasswordFormCard() {
-  const styles = useProfileStyles();
   const changePasswordMutation = useProfileChangePassword();
   const { dispatchToast } = useToastController();
 
@@ -44,7 +42,7 @@ export function ChangePasswordFormCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold" className={styles.sectionTitle}>
+      <Text as="h2" size={500} weight="semibold">
         {"修改密码"}
       </Text>
       <form.AppForm>
@@ -53,7 +51,6 @@ export function ChangePasswordFormCard() {
             e.preventDefault();
             void form.handleSubmit();
           }}
-          className={styles.form}
         >
           <form.AppField
             name="currentPassword"
@@ -73,9 +70,7 @@ export function ChangePasswordFormCard() {
               <field.TextField label={"确认新密码"} required inputProps={{ type: "password" }} />
             )}
           />
-          <div className={styles.actions}>
-            <form.SubmitButton label={"保存"} />
-          </div>
+          <form.SubmitButton label={"保存"} />
         </form>
       </form.AppForm>
     </Card>

@@ -1,6 +1,5 @@
 import { useMemo, useCallback } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
-import { makeStyles, mergeClasses } from "@fluentui/react-components";
 import { Open20Regular } from "@fluentui/react-icons";
 import {
   NavDrawer,
@@ -17,35 +16,17 @@ import { menuRoutes } from "@/lib/routing/route-config";
 import { usePermissions } from "@/lib/auth/permissions";
 import { useAuth } from "@/lib/auth/AuthContext";
 
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-    height: "100%",
-    minWidth: 0,
-  },
-  collapsed: {
-    width: "52px",
-    minWidth: "52px",
-  },
-});
-
-interface SidebarProps {
-  onNavigate?: () => void;
-  collapsed?: boolean;
-  onExpand?: () => void;
-}
-
 function isActivePath(pathname: string, itemPath: string): boolean {
   return pathname === itemPath || pathname.startsWith(itemPath + "/");
 }
 
-export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
+/** 侧边导航：使用 Fluent UI 的 NavDrawer（inline 常开），不自定义宽度与配色。 */
+export function Sidebar() {
   const navigate = useNavigate();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const { isGranted } = usePermissions();
   const { isAuthenticated } = useAuth();
-  const styles = useStyles();
 
   // Menu routes are collected from route files via route-config.ts (single source of truth).
   const allMenuRoutes = menuRoutes;
@@ -125,13 +106,10 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
     } else {
       void navigate({ to: matched.path });
     }
-
-    onNavigate?.();
   };
 
   return (
     <NavDrawer
-      className={mergeClasses(styles.root, collapsed ? styles.collapsed : "")}
       type="inline"
       open
       selectedValue={selectedValue}
@@ -157,21 +135,6 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
           }
 
           if (hasChildren) {
-            // When collapsed, render as a plain NavItem with icon only (no expandable category)
-            if (collapsed) {
-              return (
-                <NavItem
-                  key={path}
-                  value={path}
-                  icon={Icon ? <Icon /> : undefined}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onExpand?.();
-                  }}
-                />
-              );
-            }
-
             return (
               <NavCategory key={path} value={path}>
                 <NavCategoryItem icon={Icon ? <Icon /> : undefined}>{menu.name}</NavCategoryItem>
@@ -195,7 +158,7 @@ export function Sidebar({ onNavigate, collapsed, onExpand }: SidebarProps) {
               value={path}
               icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
             >
-              {!collapsed && menu.name}
+              {menu.name}
             </NavItem>
           );
         })}

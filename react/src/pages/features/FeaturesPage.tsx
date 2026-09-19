@@ -3,7 +3,7 @@
  *
  * 本文件只负责编排：功能组卡片列表与底部保存/重置动作；
  * 卡片渲染见 components/FeatureGroupCard，保存/重置动作见 hooks/useFeatureActions，
- * 助手见 utils/features，样式见 styles/features。
+ * 助手见 utils/features。
  */
 import { useEffect, useMemo, useState } from "react";
 import { Button, Spinner, Text } from "@fluentui/react-components";
@@ -12,11 +12,8 @@ import { useFeaturesGet } from "@/api/hooks/features/useFeaturesGet";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { FeatureGroupCard } from "./components/FeatureGroupCard";
 import { useFeatureActions } from "./hooks/useFeatureActions";
-import { useFeaturesStyles } from "./styles/features";
 
 export function FeaturesPage() {
-  const styles = useFeaturesStyles();
-
   // 宿主级功能（不指定提供者）
   const featuresQuery = useFeaturesGet();
 
@@ -65,25 +62,19 @@ export function FeaturesPage() {
 
       {featuresQuery.data && groups.length > 0 && (
         <>
-          <div className={styles.groups}>
-            {groups.map((group) => (
-              <FeatureGroupCard
-                key={group.name}
-                group={group}
-                valueMap={valueMap}
-                onValueChange={handleValueChange}
-              />
-            ))}
-          </div>
+          {groups.map((group) => (
+            <FeatureGroupCard
+              key={group.name}
+              group={group}
+              valueMap={valueMap}
+              onValueChange={handleValueChange}
+            />
+          ))}
 
-          <div className={styles.actions}>
-            <div className={styles.leftActions}>
-              <Button onClick={() => setResetOpen(true)}>{"重置为默认值"}</Button>
-            </div>
-            <Button appearance="primary" onClick={() => void saveFeatures()} disabled={isSaving}>
-              {"保存"}
-            </Button>
-          </div>
+          <Button onClick={() => setResetOpen(true)}>{"重置为默认值"}</Button>
+          <Button appearance="primary" onClick={() => void saveFeatures()} disabled={isSaving}>
+            {"保存"}
+          </Button>
         </>
       )}
 

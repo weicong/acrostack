@@ -5,7 +5,6 @@
 import { Card, Input, Switch, Text } from "@fluentui/react-components";
 import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@/api/models/volo/abp/featureManagement/FeatureGroupDto";
 import { isBooleanFeature } from "../utils/features";
-import { useFeaturesStyles } from "../styles/features";
 
 interface FeatureGroupCardProps {
   /** 功能组数据。 */
@@ -17,11 +16,9 @@ interface FeatureGroupCardProps {
 }
 
 export function FeatureGroupCard({ group, valueMap, onValueChange }: FeatureGroupCardProps) {
-  const styles = useFeaturesStyles();
-
   return (
-    <Card className={styles.groupCard}>
-      <Text as="h2" size={500} weight="semibold" className={styles.groupTitle}>
+    <Card>
+      <Text as="h2" size={500} weight="semibold">
         {group.displayName || group.name}
       </Text>
       {(group.features ?? []).map((feature) => {
@@ -29,7 +26,7 @@ export function FeatureGroupCard({ group, valueMap, onValueChange }: FeatureGrou
         const value = valueMap[featureName] ?? "";
         const isBool = isBooleanFeature(feature);
         return (
-          <div key={featureName} className={styles.featureRow}>
+          <div key={featureName}>
             {isBool ? (
               <Switch
                 checked={value === "true"}

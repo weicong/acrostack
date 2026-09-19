@@ -5,7 +5,6 @@
 import { Dropdown, Field, Option } from "@fluentui/react-components";
 import type { VoloAbpIdentityIdentityRoleDto } from "@/api/models/volo/abp/identity/IdentityRoleDto";
 import type { ProviderName } from "../utils/permissions";
-import { usePermissionsStyles } from "../styles/permissions";
 
 interface PermissionsToolbarProps {
   providerName: ProviderName;
@@ -23,11 +22,9 @@ export function PermissionsToolbar({
   onSelectProviderName,
   onSelectProviderKey,
 }: PermissionsToolbarProps) {
-  const styles = usePermissionsStyles();
-
   return (
-    <div className={styles.toolbar}>
-      <Field label={"提供程序"} className={styles.providerSelect}>
+    <div>
+      <Field label={"提供程序"}>
         <Dropdown
           value={providerName === "R" ? "角色" : "用户"}
           selectedOptions={[providerName]}
@@ -40,7 +37,7 @@ export function PermissionsToolbar({
         </Dropdown>
       </Field>
 
-      <Field label={providerName === "R" ? "角色" : "用户"} className={styles.providerSelect}>
+      <Field label={providerName === "R" ? "角色" : "用户"}>
         <Dropdown
           placeholder={"选择提供程序"}
           selectedOptions={providerKey ? [providerKey] : []}
