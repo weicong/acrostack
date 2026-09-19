@@ -25,7 +25,7 @@ const STORAGE_KEY = "theme";
  * 课堂品牌色（indigo 系）：教育科技感，与默认 Fluent 蓝区分。
  * 色阶遵循 Fluent UI v9 BrandVariants（10–160，由深到浅）。
  */
-const classroomBrand: BrandVariants = {
+const brandPalette: BrandVariants = {
   10: "#07030f",
   20: "#100823",
   30: "#1a0e3a",
@@ -44,8 +44,8 @@ const classroomBrand: BrandVariants = {
   160: "#e8b6ff",
 };
 
-const brandLightTheme: FluentTheme = { ...webLightTheme, ...createLightTheme(classroomBrand) };
-const brandDarkTheme: FluentTheme = { ...webDarkTheme, ...createDarkTheme(classroomBrand) };
+const brandLightTheme: FluentTheme = { ...webLightTheme, ...createLightTheme(brandPalette) };
+const brandDarkTheme: FluentTheme = { ...webDarkTheme, ...createDarkTheme(brandPalette) };
 
 function getSystemPreference(): "light" | "dark" {
   // SSR / 测试环境守卫：无 window 时默认浅色

@@ -9,13 +9,7 @@
  * Layout areas (see components/layout/RootLayout.tsx):
  *   /              — portal (workspace launcher, no menu)
  *   /admin/*       — management console (AppLayout + Sidebar, this menu)
- *   /classroom/*   — teacher console (own layout, Tab nav rendered by
- *                    ClassroomLayout — NOT part of this admin menu)
- *   /student/*     — student mobile (no management chrome)
- *   /presentation/* — projection (bare)
- *
- * Workspace switching happens via the portal (/), not cross-domain menu
- * entries in the admin sidebar.
+ *   /account/*     — anonymous account pages (AccountLayout)
  *
  * To add a new page: create the route .tsx (export `menu` + `Route` +
  * `routeConfig`), or for folder modules add a `route-config.ts`. No changes
@@ -24,9 +18,7 @@
  *
  * Menu layering convention (mirrors ABP's startup template):
  *   order 1            — Home (dashboard, /admin)
- *   order 10–40        — Business modules (Books, Chat, FileManagement, CMS)
- *   order 100–160      — System administration (Identity, OpenIddict, SaaS,
- *                        Features, AuditLogs, BackgroundJobs, Settings)
+ *   order 100–160      — System administration (Identity, Features, Settings)
  *   (removed)          — Profile lives in the Header user menu, not here
  *
  * The `requiredPolicy` in menu metadata is for display filtering only.

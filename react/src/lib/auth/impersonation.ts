@@ -1,5 +1,5 @@
 /**
- * User & tenant impersonation utilities.
+ * User impersonation utilities.
  *
  * The open-source ABP Account OpenIddict module does NOT ship the
  * impersonation feature (commercial Pro only). The backend implements the
@@ -8,11 +8,10 @@
  *
  * Impersonation is backed by a server-side session record
  * (<c>ImpersonationSession</c>). The impersonated JWT embeds ABP's official
- * impersonator claims (<c>impersonator_userid</c>, <c>impersonator_tenantid</c>,
- * <c>impersonator_username</c>) plus a project-specific
- * <c>impersonation_session_id</c> claim pointing at that session. The admin's
- * original access token is intentionally NOT embedded — exiting impersonation
- * re-issues a fresh admin token from the session via the
+ * impersonator claims (<c>impersonator_userid</c>, <c>impersonator_username</c>)
+ * plus a project-specific <c>impersonation_session_id</c> claim pointing at that
+ * session. The admin's original access token is intentionally NOT embedded —
+ * exiting impersonation re-issues a fresh admin token from the session via the
  * <c>BackToImpersonator</c> grant.
  *
  * Flow:
@@ -32,7 +31,6 @@
  */
 import { User } from "oidc-client-ts";
 import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
-import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
 import { localizeAbpError } from "@/lib/http/error";
 import { decodeJwtPayload } from "./jwt";
@@ -110,16 +108,12 @@ async function extractImpersonationError(response: Response): Promise<string> {
  * Requests a token for the given custom grant at <c>/connect/token</c>,
  * stores the result as the active OIDC user session, then reloads the page.
  *
- * @param params Form parameters to send (e.g. `{ user_id }` or `{ tenant_id }`).
- * @param options.sendTenantHeader When `true` (default), sends the current
- *   localStorage tenant ID as the `__tenant` header so the backend resolves
- *   the target user in the correct tenant. Set to `false` for flows where the
- *   backend switches tenant internally via `ICurrentTenant.Change`.
+ * @param grantType Custom grant type (`Impersonation` or `BackToImpersonator`).
+ * @param params Form parameters to send (e.g. `{ user_id }`).
  */
 async function requestTokenAndSwitchSession(
   grantType: string,
   params: Record<string, string>,
-  options: { sendTenantHeader?: boolean } = {},
 ): Promise<void> {
   const user = await userManager.getUser();
   if (!user?.access_token) {
@@ -132,19 +126,13 @@ async function requestTokenAndSwitchSession(
     ...params,
   });
 
-  const headers: Record<string, string> = {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: `Bearer ${user.access_token}`,
-  };
-  if (options.sendTenantHeader !== false) {
-    const tenantId = getTenantId();
-    if (tenantId) headers.__tenant = tenantId;
-  }
-
   const baseUrl = getApiBaseUrl().replace(/\/$/, "");
   const response = await fetch(`${baseUrl}/connect/token`, {
     method: "POST",
-    headers,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${user.access_token}`,
+    },
     body: formBody.toString(),
   });
 
@@ -171,7 +159,7 @@ async function requestTokenAndSwitchSession(
   });
 
   await userManager.storeUser(nextUser);
-  // Full reload so OIDC state, app config and tenant context are reinitialized.
+  // Full reload so OIDC state and app config are reinitialized.
   window.location.replace("/");
 }
 
@@ -182,23 +170,6 @@ async function requestTokenAndSwitchSession(
  */
 export async function impersonateUser(userId: string): Promise<void> {
   await requestTokenAndSwitchSession(IMPERSONATION_GRANT_TYPE, { user_id: userId });
-}
-
-/**
- * Impersonates the admin user of the specified tenant via the
- * <c>Impersonation</c> custom grant type.
- * Host admins only — the backend rejects tenant impersonation for tenant users.
- *
- * The <c>__tenant</c> header is intentionally NOT sent: the caller is a host
- * user and the backend switches tenant internally via
- * <c>ICurrentTenant.Change(tenantId)</c> while resolving the target admin.
- */
-export async function impersonateTenant(tenantId: string): Promise<void> {
-  await requestTokenAndSwitchSession(
-    IMPERSONATION_GRANT_TYPE,
-    { tenant_id: tenantId },
-    { sendTenantHeader: false },
-  );
 }
 
 /**
@@ -219,11 +190,5 @@ export async function backToMyAccount(): Promise<void> {
     throw new Error("Not currently impersonating");
   }
 
-  // No __tenant header: the session record identifies the impersonator's
-  // tenant and the backend switches tenant internally.
-  await requestTokenAndSwitchSession(
-    BACK_TO_IMPERSONATOR_GRANT_TYPE,
-    {},
-    { sendTenantHeader: false },
-  );
+  await requestTokenAndSwitchSession(BACK_TO_IMPERSONATOR_GRANT_TYPE, {});
 }

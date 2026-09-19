@@ -7,8 +7,6 @@ import { useCurrentUser } from "@/lib/auth/permissions";
 
 interface ImpersonationState {
   isImpersonating: boolean;
-  impersonatorUserId?: string;
-  impersonatorTenantId?: string;
   impersonatorUserName?: string;
 }
 
@@ -19,17 +17,12 @@ interface ImpersonationState {
  */
 function useImpersonationState(): ImpersonationState {
   const currentUser = useCurrentUser();
-  if (!currentUser) return { isImpersonating: false };
-
-  const impersonatorUserId = currentUser.impersonatorUserId ?? undefined;
-  const impersonatorTenantId = currentUser.impersonatorTenantId ?? undefined;
-  if (!impersonatorUserId && !impersonatorTenantId) {
+  if (!currentUser?.impersonatorUserId) {
     return { isImpersonating: false };
   }
+
   return {
     isImpersonating: true,
-    impersonatorUserId,
-    impersonatorTenantId,
     impersonatorUserName: currentUser.impersonatorUserName ?? undefined,
   };
 }
@@ -63,9 +56,7 @@ export function ImpersonationBanner() {
 
   if (!state.isImpersonating) return null;
 
-  const impersonatorLabel =
-    state.impersonatorUserName ?? (state.impersonatorTenantId ? "租户" : "用户");
-
+  const impersonatorLabel = state.impersonatorUserName ?? "管理员";
   const message = `返回 ${impersonatorLabel} 的账户`;
 
   async function handleBack() {

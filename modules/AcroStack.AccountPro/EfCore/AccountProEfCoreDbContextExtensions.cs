@@ -27,9 +27,9 @@ public static class AccountProEfCoreDbContextExtensions
 
             // 管理页按"谁发起的"或"谁被模拟"查询历史，两条索引各自覆盖一侧；
             // 第三条覆盖按时间倒序的全量列表。
-            b.HasIndex(x => new { x.TenantId, x.ImpersonatorUserId, x.CreationTime });
-            b.HasIndex(x => new { x.TenantId, x.TargetUserId, x.CreationTime });
-            b.HasIndex(x => new { x.TenantId, x.CreationTime });
+            b.HasIndex(x => new { x.ImpersonatorUserId, x.CreationTime });
+            b.HasIndex(x => new { x.TargetUserId, x.CreationTime });
+            b.HasIndex(x => x.CreationTime);
         });
     }
 }

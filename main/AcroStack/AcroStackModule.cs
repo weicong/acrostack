@@ -7,7 +7,6 @@ using AcroStack.Data;
 using AcroStack.Localization;
 using AcroStack.HealthChecks;
 using AcroStack.Swagger;
-using Volo.Abp.Domain.Entities.Events.Distributed;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 using OpenIddict.Validation.AspNetCore;
@@ -36,7 +35,6 @@ using Volo.Abp.Emailing;
 using Volo.Abp.Localization;
 using Localization.Resources.AbpUi;
 using Volo.Abp.Modularity;
-using Volo.Abp.MultiTenancy;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.PermissionManagement.Identity;
@@ -44,12 +42,10 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.TenantManagement;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
@@ -59,19 +55,7 @@ using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
-using Volo.CmsKit;
-using Volo.CmsKit.EntityFrameworkCore;
 using Volo.Abp.BackgroundWorkers;
-using AcroStack.Books;
-using AcroStack.BackgroundJobs;
-using AcroStack.OpenIddictManagement;
-using AcroStack.IdentityClaims;
-using AcroStack.AuditLogging;
-using AcroStack.AppUsers;
-using AcroStack.FileManagement;
-using AcroStack.Chat;
-using Classroom;
-using Classroom.EntityFrameworkCore;
 
 namespace AcroStack;
 
@@ -99,10 +83,6 @@ namespace AcroStack;
     typeof(AbpIdentityApplicationModule),
     typeof(AbpIdentityHttpApiModule),
 
-    // Tenant Management module packages
-    typeof(AbpTenantManagementHttpApiModule),
-    typeof(AbpTenantManagementApplicationModule),
-
     // Permission Management module packages
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpPermissionManagementHttpApiModule),
@@ -119,7 +99,6 @@ namespace AcroStack;
     typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     typeof(AbpIdentityEntityFrameworkCoreModule),
     typeof(AbpOpenIddictEntityFrameworkCoreModule),
-    typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpFeatureManagementEntityFrameworkCoreModule),
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
@@ -127,32 +106,11 @@ namespace AcroStack;
     typeof(BlobStoringDatabaseEntityFrameworkCoreModule),
     typeof(AbpEntityFrameworkCoreSqliteModule),
 
-    // CMS Kit module packages (open-source Volo.CmsKit)
-    typeof(CmsKitDomainModule),
-    typeof(CmsKitApplicationModule),
-    typeof(CmsKitHttpApiModule),
-    typeof(CmsKitEntityFrameworkCoreModule),
-
     // AcroStack modules
-    typeof(BooksModule),
-    typeof(BackgroundJobsModule),
-    typeof(OpenIddictManagementModule),
-    typeof(IdentityClaimsModule),
-    typeof(AuditLoggingModule),
-    typeof(AccountProModule),
-    typeof(AppUsersModule),
-    typeof(FileManagementModule),
-    typeof(ChatModule),
-
-    // Classroom 课堂实时答题模块（分层模块：HttpApi + EF Core）
-    typeof(ClassroomHttpApiModule),
-    typeof(ClassroomEntityFrameworkCoreModule)
+    typeof(AccountProModule)
 )]
 public class AcroStackModule : AbpModule
 {
-    /* Single point to enable/disable multi-tenancy */
-    public const bool IsMultiTenant = true;
-
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
@@ -221,32 +179,6 @@ public class AcroStackModule : AbpModule
             });
         }
 
-        // Classroom 短期令牌签名密钥：与上面 OpenIddict 证书同等重要。
-        // 学员/投屏令牌是 HMAC-SHA256 对称密钥（无 PKI 兜底），密钥一旦泄露，
-        // 任何拿到代码的人都能伪造任意 sessionId/participantId 的令牌答题或看投屏。
-        // 因此对两种情形均 fail fast，而不是等到令牌校验阶段才以"令牌无效"的形式暴露：
-        //   1) 任何环境缺失密钥 —— 令牌服务构造时无法得到有效对称密钥；
-        //   2) 非 Development 环境沿用仓库历史内置的 dev-only 占位值。
-        var classroomSigningKey = configuration["Classroom:TokenSigningKey"];
-        if (classroomSigningKey.IsNullOrWhiteSpace())
-        {
-            throw new AbpInitializationException(
-                "Missing 'Classroom:TokenSigningKey' (HMAC-SHA256 key for classroom " +
-                "student/presentation tokens). Add it to appsettings.secrets.json " +
-                "(git-ignored), e.g. {\"Classroom\": {\"TokenSigningKey\": \"<random-64+-chars>\"}}, " +
-                "or set environment variable Classroom__TokenSigningKey.");
-        }
-
-        if (!hostingEnvironment.IsDevelopment() &&
-            classroomSigningKey.StartsWith("dev-only", StringComparison.OrdinalIgnoreCase))
-        {
-            throw new AbpInitializationException(
-                "Production must not use the development placeholder classroom signing key " +
-                "(values prefixed with 'dev-only'). Provide a strong random value via " +
-                "appsettings.secrets.json or Classroom__TokenSigningKey.");
-        }
-
-        AcroStackGlobalFeatureConfigurator.Configure();
         AcroStackModuleExtensionConfigurator.Configure();
         AcroStackEfCoreEntityExtensionMappings.Configure();
     }
@@ -271,7 +203,6 @@ public class AcroStackModule : AbpModule
 
         ConfigureAuthentication(context);
         ConfigureBundles(hostingEnvironment);
-        ConfigureMultiTenancy();
         ConfigureUrls(configuration);
         ConfigureHealthChecks(context);
         ConfigureSwagger(context);
@@ -284,20 +215,11 @@ public class AcroStackModule : AbpModule
         ConfigureRateLimiting(context);
         ConfigureAuditing();
 
-        // SignalR for the Chat module (real-time messaging).
-        context.Services.AddSignalR();
-
         if (hostingEnvironment.IsDevelopment())
         {
             context.Services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
         }
-        Configure<AbpDistributedEntityEventOptions>(options =>
-        {
-            options.AutoEventSelectors.AddAll();
-            options.AutoEventSelectors.Add<Volo.Abp.Identity.IdentityUser>();
-            options.EtoMappings.Add<Volo.Abp.Identity.IdentityUser, AppUsers.AppIdentityUserEto>();
-        });
 
         // Configure impersonation options (mirrors ABP Account Pro's AbpAccountOptions).
         Configure<ImpersonationOptions>(configuration.GetSection("Impersonation"));
@@ -313,22 +235,6 @@ public class AcroStackModule : AbpModule
     {
         Configure<AbpAuditingOptions>(options =>
         {
-            // ABP 默认不记录任何实体的变更历史（EntityHistorySelectors 为空），
-            // 审计日志 UI 的"实体变更"页面需要显式配置选择器才有数据来源。
-            //
-            // 仅勾选业务实体（Books / AppUsers / FileManagement）：
-            // - 排除 Chat：消息写入高频，且聊天记录已有独立查询界面，
-            //   双写 AbpEntityChanges + AbpEntityPropertyChanges 会成倍放大表体积；
-            // - 切勿改用 AddAllEntities()：OpenIddict 令牌/授权等框架实体的
-            //   每次刷新都会触发实体变更记录，数据量不可控。
-            options.EntityHistorySelectors.Add(
-                new NamedTypeSelector(
-                    "AcroStackBusinessEntities",
-                    type => type.Namespace is not null
-                            && (type.Namespace.StartsWith("AcroStack.Books")
-                                || type.Namespace.StartsWith("AcroStack.AppUsers")
-                                || type.Namespace.StartsWith("AcroStack.FileManagement"))));
-
             // HTTP GET 请求不产生审计日志（ABP 默认即 false；显式声明，
             // 避免被误开启后只读流量刷爆审计表）。
             options.IsEnabledForGetRequests = false;
@@ -370,14 +276,6 @@ public class AcroStackModule : AbpModule
         });
     }
 
-    private void ConfigureMultiTenancy()
-    {
-        Configure<AbpMultiTenancyOptions>(options =>
-        {
-            options.IsEnabled = IsMultiTenant;
-        });
-    }
-
     private void ConfigureUrls(IConfiguration configuration)
     {
         Configure<AppUrlOptions>(options =>
@@ -411,16 +309,7 @@ public class AcroStackModule : AbpModule
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
             options.ConventionalControllers.Create(typeof(AcroStackModule).Assembly);
-            options.ConventionalControllers.Create(typeof(BooksModule).Assembly);
-            options.ConventionalControllers.Create(typeof(BackgroundJobsModule).Assembly);
-            options.ConventionalControllers.Create(typeof(OpenIddictManagementModule).Assembly);
-            options.ConventionalControllers.Create(typeof(IdentityClaimsModule).Assembly);
-            options.ConventionalControllers.Create(typeof(AuditLoggingModule).Assembly);
-            options.ConventionalControllers.Create(typeof(AppUsersModule).Assembly);
-            options.ConventionalControllers.Create(typeof(FileManagementModule).Assembly);
-            options.ConventionalControllers.Create(typeof(ChatModule).Assembly);
             options.ConventionalControllers.Create(typeof(AccountProModule).Assembly);
-            options.ConventionalControllers.Create(typeof(ClassroomApplicationModule).Assembly);
         });
     }
 
@@ -576,30 +465,8 @@ public class AcroStackModule : AbpModule
         app.UseAbpSecurityHeaders();
         app.UseCors();
 
-        // SignalR cannot set Authorization header for WebSocket/SSE transports,
-        // so the access token is sent as a query string. Move it to the header
-        // for hub paths (chat: OpenIddict teacher token; classroom: OpenIddict
-        // teacher token — student/presentation classroom tokens are validated
-        // by the hub itself via IClassroomTokenService) so the ABP/OpenIddict
-        // auth middleware picks it up.
-        app.Use(async (httpContext, next) =>
-        {
-            var accessToken = httpContext.Request.Query["access_token"];
-            var path = httpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/signalr-hubs"))
-            {
-                httpContext.Request.Headers["Authorization"] = "Bearer " + accessToken;
-            }
-            await next();
-        });
-
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
-
-        if (IsMultiTenant)
-        {
-            app.UseMultiTenancy();
-        }
 
         app.UseUnitOfWork();
         app.UseDynamicClaims();
@@ -620,8 +487,6 @@ public class AcroStackModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints(endpoints =>
         {
-            endpoints.MapHub<ChatHub>("/signalr-hubs/chat");
-            endpoints.MapHub<ClassroomHub>(ClassroomHttpApiModule.HubPath);
             endpoints.MapFallbackToFile("index.html");
         });
     }

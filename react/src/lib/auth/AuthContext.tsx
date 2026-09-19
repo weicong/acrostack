@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Fetch app config on user load (initial session or new login).
   // Goes through the same ensureAppConfig path as guards, so both share the
-  // TanStack Query cache and requests are deduplicated per tenant.
+  // TanStack Query cache and requests are deduplicated.
   // Subscribe once on mount. authClient is a stable singleton from
   // getAuthClient(), so it is intentionally excluded from the dep array.
   useEffect(() => {

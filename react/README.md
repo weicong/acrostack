@@ -16,7 +16,6 @@ AcroStack 解决方案的 React SPA，基于 [Vite+](https://viteplus.dev/)、[R
 | [oidc-client-ts](https://github.com/authts/oidc-client-ts) | OIDC 认证（对接 ABP Auth Server）              |
 | [Zod](https://zod.dev/)                                    | Schema 校验                                    |
 | [Kubb](https://kubb.dev/)                                  | 从 Swagger 生成 API 客户端                     |
-| @microsoft/signalr                                         | 实时推送（课堂、聊天）                         |
 
 ABP 官方包：`@volo/abp-app-config`、`@volo/abp-oidc-auth`、`@volo/abp-react-app-config`、`@volo/abp-react-oidc-auth`。
 
@@ -30,8 +29,8 @@ react/
 │   ├── api/              # Kubb 自动生成（models / clients / hooks），禁止手改
 │   ├── components/       # layout（RootLayout 等）+ ui 通用组件
 │   ├── lib/              # 框架级基础设施：auth（OIDC/权限/模拟登录）、http、
-│   │                     #   routing（guards/菜单）、theme、runtimeConfig、tenant
-│   ├── pages/            # 页面，按业务域分目录（account、admin、classroom、chat 等）
+│   │                     #   routing（guards/菜单）、theme、runtimeConfig
+│   ├── pages/            # 页面，按业务域分目录（account、identity 等）
 │   ├── routes/           # TanStack Router 文件路由（routeTree.gen.ts 自动生成）
 │   ├── styles/           # 全局样式
 │   ├── App.tsx           # 根组件（Providers）
@@ -73,6 +72,8 @@ Kubb 从 Swagger 生成 TypeScript 类型（models）、Axios 客户端（client
 vp run generate-api    # 需要后端已在 44320 运行
 ```
 
+Kubb 配置为 `clean: true`：生成前会清空 `src/api/`，因此后端必须先启动（否则会拿到空契约）。
+
 ## 环境变量
 
 | 变量            | 用途                   | 开发默认                  |
@@ -98,4 +99,4 @@ vp build
 docker build -t acrostack/react:latest .
 ```
 
-镜像为 node:20-alpine 构建 + nginx:alpine 运行，`nginx.conf` 处理 SPA fallback 与 API 代理。
+镜像为 `node:20-alpine` 构建（Corepack + pnpm，`pnpm run build` 内部即 `vp check && vp build`）+ `nginx:alpine` 运行，`nginx.conf` 处理 SPA fallback 与 API 代理。

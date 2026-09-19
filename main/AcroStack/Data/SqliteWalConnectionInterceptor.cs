@@ -10,7 +10,7 @@ namespace AcroStack.Data;
 /// 背景：此前 WAL 只因开发库文件被手工执行过一次 <c>PRAGMA journal_mode=WAL</c> 而生效。
 /// journal_mode 是数据库文件的持久属性，代码从未设定——删库重建、新环境、CI、
 /// Docker 首次建库都会退回默认 rollback journal 模式，读写锁互斥，
-/// classroom 目标 100 人并发场景下极易出现 "database is locked"。
+/// 并发写入场景下极易出现 "database is locked"。
 /// 在连接打开时显式设定，保证任何环境建出的库都处于同一模式。
 /// </summary>
 public class SqliteWalConnectionInterceptor : DbConnectionInterceptor

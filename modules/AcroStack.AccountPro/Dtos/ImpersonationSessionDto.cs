@@ -6,18 +6,11 @@ namespace AcroStack.AccountPro;
 /// <summary>模拟登录会话的展示模型。</summary>
 public class ImpersonationSessionDto : CreationAuditedEntityDto<Guid>
 {
-    /// <summary>记录归属租户（模拟者所在租户，host 为 <c>null</c>）。</summary>
-    public Guid? TenantId { get; set; }
-
     public Guid ImpersonatorUserId { get; set; }
-
-    public Guid? ImpersonatorTenantId { get; set; }
 
     public string? ImpersonatorUserName { get; set; }
 
     public Guid TargetUserId { get; set; }
-
-    public Guid? TargetTenantId { get; set; }
 
     public string? TargetUserName { get; set; }
 

@@ -4,14 +4,9 @@
  */
 import { useMemo } from "react";
 import { Avatar, Badge, Button } from "@fluentui/react-components";
-import {
-  Edit20Regular,
-  Delete20Regular,
-  PersonArrowLeft20Regular,
-  Tag20Regular,
-} from "@fluentui/react-icons";
+import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import { appUserGetListQueryOptions } from "@/api/hooks/appUser/useAppUserGetList";
+import { userGetListQueryOptions } from "@/api/hooks/user/useUserGetList";
 import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
 import {
   useDataTableQuery,
@@ -44,9 +39,7 @@ interface UseUsersTableOptions {
   onEdit: (user: UserItem) => void;
   onDelete: (id: string) => void;
   onImpersonate: (user: UserItem) => void;
-  onManageClaims: (user: UserItem) => void;
   canImpersonate: boolean;
-  canManageClaims: boolean;
   currentUserId?: string;
 }
 
@@ -55,9 +48,7 @@ export function useUsersTable({
   onEdit,
   onDelete,
   onImpersonate,
-  onManageClaims,
   canImpersonate,
-  canManageClaims,
   currentUserId,
 }: UseUsersTableOptions) {
   const styles = useUsersStyles();
@@ -67,7 +58,7 @@ export function useUsersTable({
   });
 
   const query = useDataTableQuery<UserItem, AbpGridParams>({
-    queryOptions: appUserGetListQueryOptions,
+    queryOptions: userGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,
     globalFilter: tableState.state.globalFilter,
@@ -118,7 +109,6 @@ export function useUsersTable({
         cell: (info) => {
           const row = info.row.original;
           const canImpersonateRow = canImpersonate && !!row.id && row.id !== currentUserId;
-          const canManageClaimsRow = canManageClaims && !!row.id;
           return (
             <div className={styles.actionsCell}>
               <Button
@@ -154,19 +144,6 @@ export function useUsersTable({
                   title={"模拟登录"}
                 />
               )}
-              {canManageClaimsRow && (
-                <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<Tag20Regular />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onManageClaims(row);
-                  }}
-                  aria-label={"声明"}
-                  title={"声明"}
-                />
-              )}
             </div>
           );
         },
@@ -178,9 +155,7 @@ export function useUsersTable({
       onEdit,
       onDelete,
       onImpersonate,
-      onManageClaims,
       canImpersonate,
-      canManageClaims,
       currentUserId,
     ],
   );

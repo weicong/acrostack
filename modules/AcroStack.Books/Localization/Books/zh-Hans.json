@@ -1,9 +1,0 @@
-{
-  "culture": "zh-Hans",
-  "texts": {
-    "Permission:Books": "图书",
-    "Permission:Books.Create": "创建",
-    "Permission:Books.Edit": "编辑",
-    "Permission:Books.Delete": "删除"
-  }
-}

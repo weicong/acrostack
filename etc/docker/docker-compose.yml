@@ -19,7 +19,7 @@ services:
     container_name: acrostack-api-container
     build:
       context: ../../
-      dockerfile: AcroStack/Dockerfile.local
+      dockerfile: main/AcroStack/Dockerfile.local
     environment:
       - ASPNETCORE_URLS=https://+:8081;http://+:8080;
       - Kestrel__Certificates__Default__Path=/app/certs/localhost.pfx
@@ -50,7 +50,7 @@ services:
     container_name: db-migrator
     build:
       context: ../../
-      dockerfile: AcroStack/Dockerfile.local
+      dockerfile: main/AcroStack/Dockerfile.local
     environment:
       - ConnectionStrings__Default=DataSource=/data/AcroStack.db
     command:

@@ -5,12 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
-using Volo.Abp.MultiTenancy;
 using Volo.Abp.Security.Claims;
 
 using IdentityUser = Volo.Abp.Identity.IdentityUser;
@@ -31,36 +29,30 @@ public abstract class ImpersonationGrantHandlerBase : IOpenIddictServerHandler<H
     protected IdentityUserManager UserManager { get; }
     protected SignInManager<IdentityUser> SignInManager { get; }
     protected IOpenIddictScopeManager ScopeManager { get; }
-    protected ICurrentTenant CurrentTenant { get; }
     protected ICurrentPrincipalAccessor CurrentPrincipalAccessor { get; }
     protected IAbpClaimsPrincipalFactory ClaimsPrincipalFactory { get; }
     protected IOpenIddictServerDispatcher Dispatcher { get; }
     protected IHttpContextAccessor HttpContextAccessor { get; }
     protected ImpersonationTokenValidator TokenValidator { get; }
-    protected ImpersonationOptions Options { get; }
 
     protected ImpersonationGrantHandlerBase(
         IdentityUserManager userManager,
         SignInManager<IdentityUser> signInManager,
         IOpenIddictScopeManager scopeManager,
-        ICurrentTenant currentTenant,
         ICurrentPrincipalAccessor currentPrincipalAccessor,
         IAbpClaimsPrincipalFactory claimsPrincipalFactory,
         IOpenIddictServerDispatcher dispatcher,
         IHttpContextAccessor httpContextAccessor,
-        ImpersonationTokenValidator tokenValidator,
-        IOptions<ImpersonationOptions> impersonationOptions)
+        ImpersonationTokenValidator tokenValidator)
     {
         UserManager = userManager;
         SignInManager = signInManager;
         ScopeManager = scopeManager;
-        CurrentTenant = currentTenant;
         CurrentPrincipalAccessor = currentPrincipalAccessor;
         ClaimsPrincipalFactory = claimsPrincipalFactory;
         Dispatcher = dispatcher;
         HttpContextAccessor = httpContextAccessor;
         TokenValidator = tokenValidator;
-        Options = impersonationOptions.Value;
     }
 
     public abstract ValueTask HandleAsync(HandleTokenRequestContext context);

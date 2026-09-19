@@ -10,25 +10,22 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
-import { toFormUser, type UserFormUser } from "./types/user";
+import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";
 import { useUsersTable } from "./hooks/useUsersTable";
 import { useUserActions } from "./hooks/useUserActions";
 import { UsersToolbar } from "./components/UsersToolbar";
 import { UserFormDialog } from "./components/UserFormDialog";
-import { UserClaimsDialog } from "./components/UserClaimsDialog";
 
 export function UsersPage() {
   const { isGranted } = usePermissions();
   const currentUser = useCurrentUser();
   const canImpersonate = isGranted("AbpIdentity.Users.Impersonation");
-  const canManageUserClaims = isGranted("AcroStack.IdentityClaims.UserClaims");
 
   // 对话框开关状态
   const [formOpen, setFormOpen] = useState(false);
   const [formUser, setFormUser] = useState<UserFormUser | undefined>();
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
-  const [claimsUser, setClaimsUser] = useState<UserItem | null>(null);
 
   // 动作聚合：删除/模拟登录（内含列表失效与统一错误提示）
   const { remove, removePending, impersonate, invalidateList } = useUserActions();
@@ -39,16 +36,12 @@ export function UsersPage() {
   }, []);
 
   const handleEdit = useCallback((user: UserItem) => {
-    setFormUser(toFormUser(user));
+    setFormUser(toFormUserFromIdentity(user));
     setFormOpen(true);
   }, []);
 
   const handleDelete = useCallback((id: string) => {
     setDeleteUserId(id);
-  }, []);
-
-  const handleManageClaims = useCallback((user: UserItem) => {
-    setClaimsUser(user);
   }, []);
 
   const handleFormSuccess = useCallback(() => {
@@ -60,9 +53,7 @@ export function UsersPage() {
     onEdit: handleEdit,
     onDelete: handleDelete,
     onImpersonate: impersonate,
-    onManageClaims: handleManageClaims,
     canImpersonate,
-    canManageClaims: canManageUserClaims,
     currentUserId: currentUser?.id,
   });
 
@@ -85,15 +76,6 @@ export function UsersPage() {
         onOpenChange={setFormOpen}
         user={formUser}
         onSuccess={handleFormSuccess}
-      />
-
-      <UserClaimsDialog
-        open={claimsUser !== null}
-        onOpenChange={(open) => {
-          if (!open) setClaimsUser(null);
-        }}
-        userId={claimsUser?.id}
-        userName={claimsUser?.userName}
       />
 
       <ConfirmDialog

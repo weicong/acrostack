@@ -1,7 +1,7 @@
 /**
  * 角色管理页（RolesPage）。
  *
- * 本文件只负责编排：权限判定、对话框开关状态与各子组件组装；
+ * 本文件只负责编排：对话框开关状态与各子组件组装；
  * 样式见 styles/roles，表格聚合见 hooks/useRolesTable，
  * 动作聚合见 hooks/useRoleActions，工具栏见 components/RolesToolbar。
  */
@@ -9,24 +9,18 @@ import { useCallback, useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { usePermissions } from "@/lib/auth/permissions";
 import { toFormRole, type RoleFormRole } from "./types/role";
 import type { RoleItemRow } from "./hooks/useRolesTable";
 import { useRolesTable } from "./hooks/useRolesTable";
 import { useRoleActions } from "./hooks/useRoleActions";
 import { RolesToolbar } from "./components/RolesToolbar";
 import { RoleFormDialog } from "./components/RoleFormDialog";
-import { RoleClaimsDialog } from "./components/RoleClaimsDialog";
 
 export function RolesPage() {
-  const { isGranted } = usePermissions();
-  const canManageRoleClaims = isGranted("AcroStack.IdentityClaims.RoleClaims");
-
   // 对话框开关状态
   const [formOpen, setFormOpen] = useState(false);
   const [formRole, setFormRole] = useState<RoleFormRole | undefined>();
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
-  const [claimsRole, setClaimsRole] = useState<RoleItemRow | null>(null);
 
   // 动作聚合：删除角色（内含列表失效与统一错误提示）
   const { remove, removePending, notifySaved } = useRoleActions();
@@ -45,10 +39,6 @@ export function RolesPage() {
     setDeleteRoleId(id);
   }, []);
 
-  const handleManageClaims = useCallback((role: RoleItemRow) => {
-    setClaimsRole(role);
-  }, []);
-
   const handleFormSuccess = useCallback(() => {
     setFormOpen(false);
     notifySaved();
@@ -57,8 +47,6 @@ export function RolesPage() {
   const { table, query, tableState } = useRolesTable({
     onEdit: handleEdit,
     onDelete: handleDelete,
-    onManageClaims: handleManageClaims,
-    canManageClaims: canManageRoleClaims,
   });
 
   return (
@@ -80,15 +68,6 @@ export function RolesPage() {
         onOpenChange={setFormOpen}
         role={formRole}
         onSuccess={handleFormSuccess}
-      />
-
-      <RoleClaimsDialog
-        open={claimsRole !== null}
-        onOpenChange={(open) => {
-          if (!open) setClaimsRole(null);
-        }}
-        roleId={claimsRole?.id}
-        roleName={claimsRole?.name}
       />
 
       <ConfirmDialog

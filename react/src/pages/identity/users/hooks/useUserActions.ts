@@ -5,7 +5,7 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
-import { appUserGetListQueryKey } from "@/api/hooks/appUser/useAppUserGetList";
+import { userGetListQueryKey } from "@/api/hooks/user/useUserGetList";
 import { useUserDelete } from "@/api/hooks/user/useUserDelete";
 import { impersonateUser } from "@/lib/auth/impersonation";
 import { extractAbpErrorMessage } from "@/lib/http/error";
@@ -18,12 +18,12 @@ export function useUserActions() {
 
   /** 失效用户列表查询。 */
   const invalidateList = useCallback(() => {
-    void queryClient.invalidateQueries({ queryKey: appUserGetListQueryKey() });
+    void queryClient.invalidateQueries({ queryKey: userGetListQueryKey() });
   }, [queryClient]);
 
   /**
    * 删除用户；成功后失效用户列表并返回是否成功。
-   * 注意：与原实现一致，失败时不弹提示（静默返回 false，由调用方保持对话框打开）。
+   * 失败时不弹提示（静默返回 false，由调用方保持对话框打开）。
    */
   const remove = useCallback(
     async (id: string | null): Promise<boolean> => {

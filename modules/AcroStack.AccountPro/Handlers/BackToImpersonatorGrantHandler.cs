@@ -3,14 +3,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
-using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
-using Volo.Abp.MultiTenancy;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Timing;
 using Volo.Abp.Uow;
@@ -42,39 +39,32 @@ public class BackToImpersonatorGrantHandler : ImpersonationGrantHandlerBase, ISc
 
     private readonly IRepository<ImpersonationSession, Guid> _sessionRepository;
     private readonly IUnitOfWorkManager _unitOfWorkManager;
-    private readonly IDataFilter<IMultiTenant> _multiTenantFilter;
     private readonly IClock _clock;
 
     public BackToImpersonatorGrantHandler(
         IdentityUserManager userManager,
         SignInManager<IdentityUser> signInManager,
         IOpenIddictScopeManager scopeManager,
-        ICurrentTenant currentTenant,
         ICurrentPrincipalAccessor currentPrincipalAccessor,
         IAbpClaimsPrincipalFactory claimsPrincipalFactory,
         IOpenIddictServerDispatcher dispatcher,
         IHttpContextAccessor httpContextAccessor,
         ImpersonationTokenValidator tokenValidator,
-        IOptions<ImpersonationOptions> impersonationOptions,
         IRepository<ImpersonationSession, Guid> sessionRepository,
         IUnitOfWorkManager unitOfWorkManager,
-        IDataFilter<IMultiTenant> multiTenantFilter,
         IClock clock)
         : base(
             userManager,
             signInManager,
             scopeManager,
-            currentTenant,
             currentPrincipalAccessor,
             claimsPrincipalFactory,
             dispatcher,
             httpContextAccessor,
-            tokenValidator,
-            impersonationOptions)
+            tokenValidator)
     {
         _sessionRepository = sessionRepository;
         _unitOfWorkManager = unitOfWorkManager;
-        _multiTenantFilter = multiTenantFilter;
         _clock = clock;
     }
 
@@ -131,10 +121,7 @@ public class BackToImpersonatorGrantHandler : ImpersonationGrantHandlerBase, ISc
         }
 
         // --- 加载会话记录 ---
-        // 会话记录的归属租户是"模拟者"所在租户，可能与当前被模拟方的租户不同
-        // （租户模拟场景：host 管理员 → 租户），因此按 Id 精确定位时禁用租户过滤。
         ImpersonationSession? session;
-        using (_multiTenantFilter.Disable())
         using (var uow = _unitOfWorkManager.Begin())
         {
             session = await _sessionRepository.FindAsync(sessionId);
@@ -161,13 +148,7 @@ public class BackToImpersonatorGrantHandler : ImpersonationGrantHandlerBase, ISc
             return;
         }
 
-        // --- 解析管理员（在其所属租户下）---
-        IdentityUser? impersonatorUser;
-        using (CurrentTenant.Change(session.ImpersonatorTenantId))
-        {
-            impersonatorUser = await UserManager.FindByIdAsync(session.ImpersonatorUserId.ToString());
-        }
-
+        var impersonatorUser = await UserManager.FindByIdAsync(session.ImpersonatorUserId.ToString());
         if (impersonatorUser == null)
         {
             Reject(context, "Volo.Account:ImpersonatorUserNotFound");
@@ -177,7 +158,6 @@ public class BackToImpersonatorGrantHandler : ImpersonationGrantHandlerBase, ISc
         // --- 关闭会话后再签发 ---
         // 顺序很重要：先落库关闭，再签发令牌。反之若数据库写入失败，会留下一条
         // "进行中"的会话，任何人都能靠旧会话重复换回管理员令牌。
-        using (_multiTenantFilter.Disable())
         using (var uow = _unitOfWorkManager.Begin())
         {
             var tracked = await _sessionRepository.GetAsync(session.Id);
@@ -187,19 +167,10 @@ public class BackToImpersonatorGrantHandler : ImpersonationGrantHandlerBase, ISc
         }
 
         // --- 为管理员签发新令牌 ---
-        ClaimsPrincipal adminPrincipal;
-        using (CurrentTenant.Change(session.ImpersonatorTenantId))
-        {
-            adminPrincipal = await CreatePrincipalAsync(
-                impersonatorUser,
-                principal,
-                context.Request.ClientId ?? session.ClientId);
-        }
-
-        if (session.ImpersonatorTenantId.HasValue)
-        {
-            adminPrincipal.SetClaim(AbpClaimTypes.TenantId, session.ImpersonatorTenantId.Value.ToString());
-        }
+        var adminPrincipal = await CreatePrincipalAsync(
+            impersonatorUser,
+            principal,
+            context.Request.ClientId ?? session.ClientId);
 
         await SignInAsync(context, adminPrincipal);
     }

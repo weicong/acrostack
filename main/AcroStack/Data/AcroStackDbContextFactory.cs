@@ -7,7 +7,6 @@ public class AcroStackDbContextFactory : IDesignTimeDbContextFactory<AcroStackDb
 {
     public AcroStackDbContext CreateDbContext(string[] args)
     {
-        AcroStackGlobalFeatureConfigurator.Configure();
         AcroStackModuleExtensionConfigurator.Configure();
 
         AcroStackEfCoreEntityExtensionMappings.Configure();

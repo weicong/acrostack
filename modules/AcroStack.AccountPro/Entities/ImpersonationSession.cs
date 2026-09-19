@@ -1,6 +1,5 @@
 using System;
 using Volo.Abp.Domain.Entities.Auditing;
-using Volo.Abp.MultiTenancy;
 
 namespace AcroStack.AccountPro;
 
@@ -20,28 +19,16 @@ namespace AcroStack.AccountPro;
 /// <item>管理员可主动撤销会话。</item>
 /// </list>
 /// </summary>
-public class ImpersonationSession : CreationAuditedAggregateRoot<Guid>, IMultiTenant
+public class ImpersonationSession : CreationAuditedAggregateRoot<Guid>
 {
-    /// <summary>
-    /// 记录归属租户：取模拟者所在租户（host 为 <c>null</c>）。
-    /// 这样 host 管理员能看到自己发起的模拟，租户管理员只能看到本租户内的模拟。
-    /// </summary>
-    public virtual Guid? TenantId { get; protected set; }
-
     /// <summary>发起模拟的管理员 Id。</summary>
     public virtual Guid ImpersonatorUserId { get; protected set; }
-
-    /// <summary>管理员所在租户（host 管理员为 <c>null</c>）。</summary>
-    public virtual Guid? ImpersonatorTenantId { get; protected set; }
 
     /// <summary>管理员用户名快照（用户被删除后仍可追溯）。</summary>
     public virtual string? ImpersonatorUserName { get; protected set; }
 
     /// <summary>被模拟用户 Id。</summary>
     public virtual Guid TargetUserId { get; protected set; }
-
-    /// <summary>被模拟用户所在租户（租户模拟时为租户 Id）。</summary>
-    public virtual Guid? TargetTenantId { get; protected set; }
 
     /// <summary>被模拟用户名快照。</summary>
     public virtual string? TargetUserName { get; protected set; }
@@ -74,20 +61,16 @@ public class ImpersonationSession : CreationAuditedAggregateRoot<Guid>, IMultiTe
     public ImpersonationSession(
         Guid id,
         Guid impersonatorUserId,
-        Guid? impersonatorTenantId,
         string? impersonatorUserName,
         Guid targetUserId,
-        Guid? targetTenantId,
         string? targetUserName,
         string? clientId,
         DateTime creationTime)
         : base(id)
     {
         ImpersonatorUserId = impersonatorUserId;
-        ImpersonatorTenantId = impersonatorTenantId;
         ImpersonatorUserName = impersonatorUserName;
         TargetUserId = targetUserId;
-        TargetTenantId = targetTenantId;
         TargetUserName = targetUserName;
         ClientId = clientId;
 
@@ -95,9 +78,6 @@ public class ImpersonationSession : CreationAuditedAggregateRoot<Guid>, IMultiTe
         // 中间件管线内，审计属性填充不可依赖。
         CreatorId = impersonatorUserId;
         CreationTime = creationTime;
-
-        // 归属租户 = 模拟者所在租户（见 TenantId 注释）。
-        TenantId = impersonatorTenantId;
     }
 
     /// <summary>结束会话（"返回我的账户"时调用）。已结束的会话保持原状，保证幂等。</summary>

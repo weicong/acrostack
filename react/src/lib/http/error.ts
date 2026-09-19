@@ -12,8 +12,6 @@
 const ABP_ERROR_MESSAGES: Record<string, string> = {
   "Volo.Account:NestedImpersonationIsNotAllowed": "不允许嵌套模拟登录",
   "Volo.Account:RequirePermissionToImpersonateUser": "无模拟该用户的权限",
-  "Volo.Account:RequirePermissionToImpersonateTenant": "无模拟该租户的权限",
-  "Volo.Account:ImpersonateTenantOnlyAvailableForHost": "仅主机管理员可模拟租户",
   "Volo.Account:YouCanNotImpersonateYourself": "不能模拟自己",
   "Volo.Account:NotImpersonating": "当前并非模拟状态",
   "Volo.Account:ImpersonationSessionNotFound": "模拟会话不存在",

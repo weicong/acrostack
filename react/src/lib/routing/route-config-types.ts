@@ -5,7 +5,7 @@
  *   - Each leaf route file exports a `menu` constant of type RouteMenuConfig.
  *   - Each route module exports a `routeConfig: MenuRoute[]` array:
  *       * Folder modules: `routes/<module>/route-config.ts` aggregates its
- *         children (e.g. identity, openiddict, saas).
+ *         children (e.g. identity).
  *       * Flat top-level routes: the route file itself exports `routeConfig`.
  *   - The top-level `lib/routing/route-config.ts` aggregator concatenates all
  *     module configs into the single `menuRoutes` array consumed by the Sidebar.
@@ -47,7 +47,7 @@ export type RouteMenuConfigChild = Omit<RouteMenuConfig, "children"> & {
  * Module configs export arrays of these; the main aggregator concatenates them.
  */
 export interface MenuRoute {
-  /** Absolute path of the route (e.g. "/books", "/identity"). */
+  /** Absolute path of the route (e.g. "/admin/features", "/admin/identity"). */
   path: string;
   /** Menu metadata from the route file. */
   menu: RouteMenuConfig;

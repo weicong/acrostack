@@ -107,16 +107,11 @@ if (-not $SkipDevCert) {
         Assert-LastExit "dotnet dev-certs"
     }
 
-    # Classroom 签名密钥：每次构建随机生成——不落仓库、非固定值，
-    # 从根上杜绝"已知默认密钥逃逸 ProductionSigningKeyValidator 校验"的缺口；
-    # 代价是重建产物后已签发的课堂令牌失效，本地测试可接受。
-    $classroomKey = [Convert]::ToBase64String(
-        [System.Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
+    # 仅注入 OpenIddict 证书口令（产物内文件，不落仓库）。
     @{
         AuthServer = @{ CertificatePassPhrase = $certPassPhrase }
-        Classroom  = @{ TokenSigningKey = $classroomKey }
     } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $apiArtifacts "appsettings.secrets.json") -Encoding UTF8
-    Write-Host "  Dev cert + appsettings.secrets.json (random Classroom key) placed in artifacts/api (local run only)" -ForegroundColor DarkGray
+    Write-Host "  Dev cert + appsettings.secrets.json (OpenIddict pass phrase) placed in artifacts/api (local run only)" -ForegroundColor DarkGray
 }
 
 Write-Host "********* BUILD ARTIFACTS COMPLETED *********" -ForegroundColor Green

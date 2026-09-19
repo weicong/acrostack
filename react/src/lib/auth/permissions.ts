@@ -5,7 +5,6 @@
 import { createAbpReactAppConfig } from "@volo/abp-react-app-config";
 import type { QueryClient } from "@tanstack/react-query";
 import { getApiUrl } from "@/lib/runtimeConfig";
-import { getTenantId } from "@/lib/tenant";
 import { userManager } from "@/lib/auth/userManager";
 
 function evaluatePolicy(policies: Record<string, boolean>, policy: string): boolean {
@@ -25,24 +24,18 @@ export const appConfig = createAbpReactAppConfig({
 });
 
 export async function fetchAppConfig(token: string | null): Promise<void> {
-  const headers: Record<string, string> = {};
-  const tenantId = getTenantId();
-  if (tenantId) headers.__tenant = tenantId;
-  await appConfig.fetchConfig(token, { headers });
+  await appConfig.fetchConfig(token, { headers: {} });
 }
 
-/**
- * Query key for the ABP application configuration.
- * Includes the current tenant so switching tenants refetches permissions.
- */
+/** Query key for the ABP application configuration. */
 export function appConfigQueryKey(): readonly unknown[] {
-  return ["abp-app-config", getTenantId() ?? "host"];
+  return ["abp-app-config"];
 }
 
 /**
  * Single entry point for loading app config through TanStack Query.
- * Deduplicates concurrent calls and caches per tenant. Used by guards
- * (beforeLoad) and AuthContext (on user load) so there is one code path.
+ * Deduplicates concurrent calls. Used by guards (beforeLoad) and AuthContext
+ * (on user load) so there is one code path.
  */
 export async function ensureAppConfig(queryClient: QueryClient): Promise<void> {
   await queryClient.ensureQueryData({
@@ -57,8 +50,8 @@ export async function ensureAppConfig(queryClient: QueryClient): Promise<void> {
 }
 
 /**
- * Invalidates cached app config (e.g. after switching tenant or refreshing
- * dynamic claims) so the next guard/navigation refetches permissions.
+ * Invalidates cached app config (e.g. after refreshing dynamic claims) so the
+ * next guard/navigation refetches permissions.
  */
 export function invalidateAppConfig(queryClient: QueryClient): void {
   void queryClient.invalidateQueries({ queryKey: ["abp-app-config"] });
@@ -85,11 +78,8 @@ interface CurrentUser {
   userName?: string;
   name?: string;
   email?: string;
-  tenantId?: string | null;
   impersonatorUserId?: string | null;
-  impersonatorTenantId?: string | null;
   impersonatorUserName?: string | null;
-  impersonatorTenantName?: string | null;
 }
 
 interface AppConfigSnapshot {

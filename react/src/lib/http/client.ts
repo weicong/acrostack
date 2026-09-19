@@ -1,6 +1,6 @@
 /**
  * Axios instance with ABP auth interceptors.
- * - Request: Bearer token, __tenant (multi-tenancy), Accept-Language
+ * - Request: Bearer token, Accept-Language
  * - Response: 401 → redirect to login (with returnUrl), 403 → router.navigate via event bus
  * - baseURL: Resolved from runtimeConfig (dynamic-env.json) at request time
  */
@@ -8,13 +8,12 @@ import type { InternalAxiosRequestConfig } from "axios";
 import { client } from "@/api/.kubb/client";
 import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
-import { getTenantId } from "@/lib/tenant";
 import { emitRouteEvent } from "@/lib/routing/routeEvents";
 import { DEFAULT_CULTURE } from "@/env";
 
 /**
- * Applies ABP auth/tenant/locale headers and resolves the base URL at request
- * time. Exported for unit testing; also used as the request interceptor.
+ * Applies ABP auth/locale headers and resolves the base URL at request time.
+ * Exported for unit testing; also used as the request interceptor.
  */
 export async function applyRequestConfig(
   config: InternalAxiosRequestConfig,
@@ -26,16 +25,11 @@ export async function applyRequestConfig(
     config.headers.Authorization = `Bearer ${user.access_token}`;
   }
 
-  const tenantId = getTenantId();
-  if (tenantId && !config.headers.__tenant) {
-    config.headers.__tenant = tenantId;
-  }
-
   // 默认文化从 VITE_DEFAULT_CULTURE 注入（默认 zh-Hans），服务端据此返回本地化消息
   config.headers["Accept-Language"] = config.headers["Accept-Language"] ?? DEFAULT_CULTURE;
 
-  // GET 显式禁用 HTTP 缓存：轮询型读取（快照/课堂面板/到时自动截止的 refetch）必须拿到
-  // 最新数据；浏览器启发式缓存会返回过期快照，使界面状态"卡"在上一刻
+  // GET 显式禁用 HTTP 缓存：使界面读取必须拿到最新数据；
+  // 浏览器启发式缓存会返回过期响应，使界面状态"卡"在上一刻
   if ((config.method ?? "get").toLowerCase() === "get") {
     config.headers["Cache-Control"] = "no-cache";
     config.headers.Pragma = "no-cache";

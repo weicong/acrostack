@@ -24,24 +24,11 @@ export type AcroStackAccountProImpersonationSessionDto = {
    */
   creatorId?: string | null;
   /**
-   * @description 记录归属租户（模拟者所在租户，host 为 `null`）。
-   *
-   * Format: `uuid`
-   * @type string | undefined
-   */
-  tenantId?: string | null;
-  /**
    * @description
    * Format: `uuid`
    * @type string | undefined
    */
   impersonatorUserId?: string;
-  /**
-   * @description
-   * Format: `uuid`
-   * @type string | undefined
-   */
-  impersonatorTenantId?: string | null;
   impersonatorUserName?: string | null;
   /**
    * @description
@@ -49,12 +36,6 @@ export type AcroStackAccountProImpersonationSessionDto = {
    * @type string | undefined
    */
   targetUserId?: string;
-  /**
-   * @description
-   * Format: `uuid`
-   * @type string | undefined
-   */
-  targetTenantId?: string | null;
   targetUserName?: string | null;
   clientId?: string | null;
   /**

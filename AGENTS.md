@@ -2,13 +2,15 @@
 
 ## Architecture
 
-ABP modular monolith: a thin ASP.NET Core host + feature modules + one React SPA. Multi-tenancy is enabled (`AcroStackModule.IsMultiTenant = true`). The solution file is `AcroStack.slnx`.
+ABP modular monolith: a thin ASP.NET Core host + feature modules + one React SPA. The solution file is `AcroStack.slnx`.
 
-- **`main/AcroStack/`** — Composition root / host only: `AcroStackModule.cs`, the single `AcroStackDbContext` (hosts ALL module schemas), EF migrations (`Data/Migrations/`), seed contributors, health checks, Swagger, `HomeController`. Contains **no business logic**.
-  - Host disables global UoW transactions (SQLite); multi-aggregate writes must use explicit transactions (shared `IAcroStackTransactionExecutor` in `modules/AcroStack.Common/`, or classroom's EF-native `IClassroomTransactionExecutor`).
-- **`modules/<Feature>/`** — Feature-style single-project modules: `AcroStack.Books`, `AcroStack.AppUsers` (Identity read-model), `AcroStack.Chat`, `AcroStack.FileManagement`, `AcroStack.AccountPro` (impersonation), `AcroStack.AuditLogging`, `AcroStack.BackgroundJobs`, `AcroStack.IdentityClaims`, `AcroStack.OpenIddictManagement`. Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
+The module set deliberately stays aligned with the **ABP official single-layer (no-layer) template**, with one self-built addition (impersonation). CMS Kit, Chat, File Management, OpenIddict management UI and Tenant Management / SaaS are intentionally **not** part of this solution. Multi-tenancy is **off** (ABP default; no tenant resolution, no `TenantId` on entities).
+
+- **`main/AcroStack/`** — Composition root / host only: `AcroStackModule.cs`, the single `AcroStackDbContext`, EF migrations (`Migrations/`), data seed contributors, health checks, Swagger, `HomeController`. Contains **no business logic**.
+  - Host disables global UoW transactions (SQLite single-writer). Any write spanning multiple aggregates must open an explicit transaction (e.g. `IUnitOfWorkManager.Begin(requiresNew: true, isTransactional: true)`, or a `DbContext`-level transaction when the writes share one `DbContext`). A shared `IAcroStackTransactionExecutor` used to live in `modules/AcroStack.Common/`; that module was removed together with the Pro-replacement modules and can be recovered from git history if needed.
+- **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.AccountPro` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
   - Mappers live in each module's `ObjectMapping/` folder (not in the host).
-- **`modules/classroom/src/`** — Fully layered ABP module (`Domain.Shared / Domain / Application.Contracts / Application / EntityFrameworkCore / HttpApi / Tests`) for the classroom feature (questions, quizzes, class sessions, participants, answer records). Multi-aggregate writes go through `IClassroomTransactionExecutor`; realtime via SignalR hubs with post-commit broadcast.
+  - Business logic belongs in `modules/<Feature>/`, never in the host.
 - **`react/`** — React 19 SPA. Vite+ toolchain, TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth.
 
 ## Backend Commands
@@ -37,15 +39,15 @@ vp check --fix      # Format + lint + typecheck
 vp run generate-api # Kubb: regenerate API client from Swagger (backend must be running)
 ```
 
-Backend must be running before `generate-api` — Kubb reads `http://localhost:5173/swagger/v1/swagger.json` (proxied).
+Backend must be running before `generate-api` — Kubb reads `http://localhost:5173/swagger/v1/swagger.json` (proxied by the dev server).
 
 ## Key Conventions
 
 - **Mapperly** (not AutoMapper) for object mapping. Mappers live in each module's `ObjectMapping/` folder. Extend `MapperBase<TSource, TDest>` with `[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]`. Register via `context.Services.AddMapperlyObjectMapper<XxxModule>()` in each module.
 - **Generic repositories** only — no custom repository interfaces (single-layer pattern). Use `IRepository<T, TKey>` directly.
-- **Feature folders** inside each module (`Entities/`, `Services/`, `Dtos/` co-located) — group entity, DTOs, service together. Business logic belongs in `modules/<Feature>/`, never in the host.
-- **Auto API controllers** — ABP exposes app services as REST endpoints automatically. Only `HomeController` and FileManagement/classroom HttpApi controllers are hand-written.
-- **Explicit transactions** — global UoW transactions are disabled (SQLite). Any write spanning multiple aggregates must use an explicit transaction executor. Prefer the shared UoW-based `IAcroStackTransactionExecutor` (`modules/AcroStack.Common/Transactions/`) for module-level multi-step writes; classroom's EF-native `IClassroomTransactionExecutor` (`modules/classroom/src/Classroom.EntityFrameworkCore/ClassroomEntityFrameworkCoreModule.cs`) remains for classroom's same-DbContext scenarios. Do not hand-roll `IUnitOfWorkManager.Begin` in app services.
+- **Feature folders** inside each module (`Entities/`, `Services/`, `Dtos/` co-located) — group entity, DTOs, service together.
+- **Auto API controllers** — ABP exposes app services as REST endpoints automatically. `HomeController` is the only hand-written controller.
+- **Explicit transactions** — global UoW transactions are disabled (SQLite). See the Architecture section above.
 - **`react/src/api/`** is auto-generated by Kubb. Do not manually edit; regenerate with `vp run generate-api`.
 - **`react/src/lib/`** is framework-level infrastructure only — no business semantics, no imports of generated `src/api/` code except in `lib/http/client.ts`. Admission rules in `react/AGENTS.md`.
 - **Path alias**: `@` → `./src` in the React app (configured in `vite.config.ts`).
@@ -64,7 +66,7 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 
 Only three kinds of docs are maintained (anything else tends to rot):
 
-- **Evergreen** (update alongside code): this file, root `README.md`, per-module `modules/<Feature>/README.md` (business scenario, which ABP Pro module it replaces, key design decisions + why, dependencies — no API listings, Swagger covers that), `react/README.md` + `react/AGENTS.md`.
+- **Evergreen** (update alongside code): this file, root `README.md`, per-module `modules/<Feature>/README.md` (business scenario, which ABP Pro feature it corresponds to, key design decisions + why, dependencies — no API listings, Swagger covers that), `react/README.md` + `react/AGENTS.md`.
 - **Process docs** (one-off): handoff/fix-plan documents live temporarily in repo root or `docs/`, and move to `docs/archive/` once their tasks are complete.
 - **ADRs** (`docs/adr/`): short records for "why we chose X over Y" decisions (e.g. why global UoW transactions are disabled).
 
@@ -77,8 +79,8 @@ Rules: when adding/renaming a module, update that module's README and the module
 
 ## Reference
 
-- `README.md` — architecture overview, module table (which module replaces which ABP Pro module), quick start
-- `modules/*/README.md` — per-module business scenario, replaced Pro module, key design decisions
+- `README.md` — architecture overview, module table, quick start
+- `modules/*/README.md` — per-module business scenario, corresponding Pro feature, key design decisions
 - `.agents/` — agent configuration in the [.agents Protocol](https://dotagentsprotocol.com/) format: `agents.md` (project guidelines) + `skills/` — detailed ABP patterns (development flow, dependency rules, DDD, CLI commands, testing, EF Core, auth, multi-tenancy)
 - `react/AGENTS.md` — Vite+ toolchain details and review checklist
 - `react/README.md` — React app tech stack, env vars, Docker
