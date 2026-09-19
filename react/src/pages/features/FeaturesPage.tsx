@@ -6,7 +6,7 @@
  * 助手见 utils/features。
  */
 import { useEffect, useMemo, useState } from "react";
-import { Button, Spinner, Text } from "@fluentui/react-components";
+import { Spinner, Text, ToolbarButton } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useFeaturesGet } from "@/api/hooks/features/useFeaturesGet";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -53,30 +53,37 @@ export function FeaturesPage() {
   });
 
   return (
-    <PageLayout title={"功能"}>
+    <PageLayout
+      title={"功能"}
+      description="开启或关闭应用功能开关，修改后需保存才会生效。"
+      actions={
+        <>
+          <ToolbarButton onClick={() => setResetOpen(true)}>{"重置为默认值"}</ToolbarButton>
+          <ToolbarButton
+            appearance="primary"
+            onClick={() => void saveFeatures()}
+            disabled={isSaving}
+          >
+            {"保存"}
+          </ToolbarButton>
+        </>
+      }
+    >
       {featuresQuery.isLoading && <Spinner label={"加载中..."} />}
 
       {featuresQuery.isError && <Text>{"没有任何可用的功能。"}</Text>}
 
       {featuresQuery.data && groups.length === 0 && <Text>{"没有任何可用的功能。"}</Text>}
 
-      {featuresQuery.data && groups.length > 0 && (
-        <>
-          {groups.map((group) => (
-            <FeatureGroupCard
-              key={group.name}
-              group={group}
-              valueMap={valueMap}
-              onValueChange={handleValueChange}
-            />
-          ))}
-
-          <Button onClick={() => setResetOpen(true)}>{"重置为默认值"}</Button>
-          <Button appearance="primary" onClick={() => void saveFeatures()} disabled={isSaving}>
-            {"保存"}
-          </Button>
-        </>
-      )}
+      {featuresQuery.data &&
+        groups.map((group) => (
+          <FeatureGroupCard
+            key={group.name}
+            group={group}
+            valueMap={valueMap}
+            onValueChange={handleValueChange}
+          />
+        ))}
 
       <ConfirmDialog
         open={resetOpen}

@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, Text, useToastController } from "@fluentui/react-components";
+import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
 import { useAppForm } from "@/components/ui/form";
 import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
@@ -51,18 +51,26 @@ export function ProfileFormCard() {
   });
 
   if (profileQuery.isLoading) {
-    return <Text>{"加载中..."}</Text>;
+    return (
+      <Card>
+        <CardHeader header={<Text weight="semibold">个人设置</Text>} />
+        <Text>{"加载中..."}</Text>
+      </Card>
+    );
   }
 
   if (profileQuery.isError || !profile) {
-    return <Text>{"错误"}</Text>;
+    return (
+      <Card>
+        <CardHeader header={<Text weight="semibold">个人设置</Text>} />
+        <Text>{"错误"}</Text>
+      </Card>
+    );
   }
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {"个人设置"}
-      </Text>
+      <CardHeader header={<Text weight="semibold">个人设置</Text>} />
       <form.AppForm>
         <form
           onSubmit={(e) => {

@@ -1,66 +1,102 @@
+import { ArrowExit20Regular, Navigation20Regular } from "@fluentui/react-icons";
 import {
-  ArrowExit20Regular,
-  WeatherMoon20Regular,
-  WeatherSunny20Regular,
-  Desktop20Regular,
-} from "@fluentui/react-icons";
-import { Link } from "@tanstack/react-router";
-import { Button, Text } from "@fluentui/react-components";
-import { useTheme, type Theme } from "@/lib/theme/ThemeProvider";
-import { getApplicationName } from "@/lib/runtimeConfig";
+  Breadcrumb,
+  BreadcrumbDivider,
+  BreadcrumbItem,
+  Button,
+  makeStyles,
+  Text,
+  shorthands,
+  tokens,
+} from "@fluentui/react-components";
 import { UserMenu } from "./UserMenu";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { useShellMenu } from "./shellMenu";
+import { DESKTOP_MEDIA_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
 
-const THEME_CYCLE: Theme[] = ["light", "dark", "system"];
+const useStyles = makeStyles({
+  bar: {
+    display: "flex",
+    alignItems: "center",
+    ...shorthands.gap(tokens.spacingHorizontalS),
+    width: "100%",
+    minWidth: 0,
+  },
+  navButton: {
+    flexShrink: 0,
+    "@media (min-width: 1024px)": {
+      display: "none",
+    },
+  },
+  crumbs: {
+    minWidth: 0,
+    ...shorthands.overflow("hidden"),
+  },
+  crumbMuted: {
+    color: tokens.colorNeutralForeground3,
+  },
+  actions: {
+    marginLeft: "auto",
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    ...shorthands.gap(tokens.spacingHorizontalXS),
+  },
+});
 
-function ThemeToggle() {
-  const { theme, resolvedTheme, setTheme } = useTheme();
-
-  function cycleTheme() {
-    const currentIndex = THEME_CYCLE.indexOf(theme);
-    const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % THEME_CYCLE.length;
-    setTheme(THEME_CYCLE[nextIndex]);
-  }
-
-  const label = theme === "light" ? "浅色" : theme === "dark" ? "深色" : "跟随系统";
-
-  const Icon =
-    theme === "system"
-      ? Desktop20Regular
-      : resolvedTheme === "light"
-        ? WeatherSunny20Regular
-        : WeatherMoon20Regular;
-
-  return (
-    <Button
-      appearance="subtle"
-      size="small"
-      onClick={cycleTheme}
-      aria-label={label}
-      title={label}
-      icon={<Icon />}
-    ></Button>
-  );
+interface HeaderProps {
+  /** 窄屏下打开导航抽屉。 */
+  onOpenNav: () => void;
 }
 
-export function Header() {
+/**
+ * 顶栏：左侧为「导航开关（窄屏）+ 当前位置」，右侧为外观切换与账户区。
+ * 面包屑显示所属分组与当前页面，窄屏下只保留当前页面，避免挤压。
+ */
+export function Header({ onOpenNav }: HeaderProps) {
+  const styles = useStyles();
+  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
   const { isAuthenticated, isLoading, login } = useAuth();
-  const appName = getApplicationName();
+  const { activeGroupCaption, activeItem } = useShellMenu();
 
   return (
-    <header>
-      <Link to="/" aria-label={appName}>
-        <Text weight="semibold">{appName}</Text>
-      </Link>
-      <ThemeToggle />
-      {!isLoading &&
-        (isAuthenticated ? (
-          <UserMenu />
-        ) : (
-          <Button size="small" onClick={() => void login()} icon={<ArrowExit20Regular />}>
-            {"登录"}
-          </Button>
-        ))}
-    </header>
+    <div className={styles.bar}>
+      <Button
+        className={styles.navButton}
+        appearance="subtle"
+        icon={<Navigation20Regular />}
+        aria-label="打开导航"
+        onClick={onOpenNav}
+      />
+
+      <Breadcrumb aria-label="当前位置" className={styles.crumbs}>
+        {isDesktop && activeGroupCaption && (
+          <>
+            <BreadcrumbItem>
+              <Text className={styles.crumbMuted}>{activeGroupCaption}</Text>
+            </BreadcrumbItem>
+            <BreadcrumbDivider />
+          </>
+        )}
+        {activeItem && (
+          <BreadcrumbItem>
+            <Text weight="semibold">{activeItem.name}</Text>
+          </BreadcrumbItem>
+        )}
+      </Breadcrumb>
+
+      <div className={styles.actions}>
+        <ThemeSwitcher />
+        {!isLoading &&
+          (isAuthenticated ? (
+            <UserMenu />
+          ) : (
+            <Button appearance="primary" icon={<ArrowExit20Regular />} onClick={() => void login()}>
+              登录
+            </Button>
+          ))}
+      </div>
+    </div>
   );
 }

@@ -19,6 +19,12 @@ export interface RouteMenuConfig {
   icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   /** Sort order for menu items (lower = higher priority). */
   order?: number;
+  /**
+   * Sidebar group caption for top-level leaf items (e.g. "概览"、"系统").
+   * Items with children own their caption (the category name); this field is
+   * only read for leaves. Groups are ordered by their items' `order`.
+   */
+  group?: string;
   /** ABP policy required to view this menu item (checked by isGranted). */
   requiredPolicy?: string;
   /** Whether authentication is required to view this menu item. */

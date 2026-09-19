@@ -2,7 +2,7 @@
  * 功能组卡片：渲染单个功能组的特性列表（布尔型用 Switch，其余用文本 Input）。
  * 编辑值统一存放在父级的 valueMap 中，通过 onValueChange 回写，由父级统一保存。
  */
-import { Card, Input, Switch, Text } from "@fluentui/react-components";
+import { Card, CardHeader, Input, Switch, Text } from "@fluentui/react-components";
 import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@/api/models/volo/abp/featureManagement/FeatureGroupDto";
 import { isBooleanFeature } from "../utils/features";
 
@@ -18,9 +18,7 @@ interface FeatureGroupCardProps {
 export function FeatureGroupCard({ group, valueMap, onValueChange }: FeatureGroupCardProps) {
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {group.displayName || group.name}
-      </Text>
+      <CardHeader header={<Text weight="semibold">{group.displayName || group.name || ""}</Text>} />
       {(group.features ?? []).map((feature) => {
         const featureName = feature.name ?? "";
         const value = valueMap[featureName] ?? "";

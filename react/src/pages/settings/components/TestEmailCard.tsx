@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   Button,
   Card,
+  CardHeader,
   Field,
   Input,
   Text,
@@ -58,9 +59,18 @@ export function TestEmailCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {"发送测试邮件"}
-      </Text>
+      <CardHeader
+        header={<Text weight="semibold">发送测试邮件</Text>}
+        action={
+          <Button
+            appearance="primary"
+            onClick={() => void handleSend()}
+            disabled={sendMutation.isPending}
+          >
+            {"发送"}
+          </Button>
+        }
+      />
       <Field label={"发件人邮箱地址"} required>
         <Input
           value={form.senderEmailAddress}
@@ -85,13 +95,6 @@ export function TestEmailCard() {
           onChange={(_, d) => setForm((p) => ({ ...p, body: d.value }))}
         />
       </Field>
-      <Button
-        appearance="primary"
-        onClick={() => void handleSend()}
-        disabled={sendMutation.isPending}
-      >
-        {"发送"}
-      </Button>
     </Card>
   );
 }

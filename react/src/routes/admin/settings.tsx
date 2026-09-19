@@ -12,6 +12,7 @@ const SettingsPage = lazyRouteComponent(
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
   name: "设置",
+  group: "系统",
   icon: Settings20Regular,
   order: 160,
   requiredPolicy: "AbpSettingManagement.Emailing",

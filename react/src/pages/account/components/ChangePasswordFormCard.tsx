@@ -1,4 +1,4 @@
-import { Card, Text, useToastController } from "@fluentui/react-components";
+import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
 import { useAppForm } from "@/components/ui/form";
 import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@/lib/http/error";
@@ -42,9 +42,7 @@ export function ChangePasswordFormCard() {
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {"修改密码"}
-      </Text>
+      <CardHeader header={<Text weight="semibold">修改密码</Text>} />
       <form.AppForm>
         <form
           onSubmit={(e) => {

@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
+  CardHeader,
   Dropdown,
   Field,
   Option,
@@ -52,14 +53,28 @@ export function TimeZoneSettingsCard() {
   };
 
   if (tzQuery.isLoading || timezonesQuery.isLoading) {
-    return <Spinner label={"加载中..."} />;
+    return (
+      <Card>
+        <CardHeader header={<Text weight="semibold">时区</Text>} />
+        <Spinner label={"加载中..."} />
+      </Card>
+    );
   }
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {"时区"}
-      </Text>
+      <CardHeader
+        header={<Text weight="semibold">时区</Text>}
+        action={
+          <Button
+            appearance="primary"
+            onClick={() => void handleSave()}
+            disabled={updateMutation.isPending}
+          >
+            {"保存"}
+          </Button>
+        }
+      />
       <Field label={"时区"}>
         <Dropdown
           value={timezones.find((tz) => tz.name === selectedTz)?.value ?? selectedTz ?? ""}
@@ -80,13 +95,6 @@ export function TimeZoneSettingsCard() {
           "此功能允许您为服务器设置默认时区，同时用户可以选择自己的时区。如果用户的时区与服务器的时区不同，所有时间将相应调整。例如，如果服务器设置为欧洲/伦敦(00:00)，而用户在欧洲/巴黎(+01:00)，则该用户的时间将调整1小时。选择'默认时区'将自动使用服务器或浏览器的时区。"
         }
       </Text>
-      <Button
-        appearance="primary"
-        onClick={() => void handleSave()}
-        disabled={updateMutation.isPending}
-      >
-        {"保存"}
-      </Button>
     </Card>
   );
 }

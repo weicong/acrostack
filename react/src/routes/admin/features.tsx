@@ -12,6 +12,7 @@ const FeaturesPage = lazyRouteComponent(
 /** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
 export const menu: RouteMenuConfig = {
   name: "功能",
+  group: "系统",
   icon: Sparkle20Regular,
   order: 130,
   requiredPolicy: "AbpFeatureManagement.ManageHostFeatures",

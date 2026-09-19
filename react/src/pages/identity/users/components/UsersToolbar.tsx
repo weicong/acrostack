@@ -1,10 +1,17 @@
 /**
- * 用户工具栏：搜索框（300ms 防抖）与新建用户按钮。
- * 搜索输入为纯本地 UI 状态，内部化在此组件。
+ * 用户工具栏：搜索（300ms 防抖）与新建用户。
+ * 排布交给共用的 ListToolbar，保证与其它列表页操作位置一致。
  */
 import { useEffect, useState } from "react";
-import { Button, SearchBox } from "@fluentui/react-components";
+import { Button, SearchBox, makeStyles } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
+import { ListToolbar } from "@/components/ui/ListToolbar";
+
+const useStyles = makeStyles({
+  search: {
+    width: "100%",
+  },
+});
 
 interface UsersToolbarProps {
   onCreate: () => void;
@@ -13,6 +20,7 @@ interface UsersToolbarProps {
 }
 
 export function UsersToolbar({ onCreate, onGlobalFilterChange }: UsersToolbarProps) {
+  const styles = useStyles();
   const [searchValue, setSearchValue] = useState("");
 
   // 搜索防抖：300ms 后同步到表格全局过滤
@@ -24,16 +32,23 @@ export function UsersToolbar({ onCreate, onGlobalFilterChange }: UsersToolbarPro
   }, [searchValue, onGlobalFilterChange]);
 
   return (
-    <div>
-      <SearchBox
-        placeholder={"搜索"}
-        value={searchValue}
-        onChange={(_, data) => setSearchValue(data.value)}
-        appearance="outline"
-      />
-      <Button appearance="primary" icon={<Add20Regular />} onClick={onCreate}>
-        {"新用户"}
-      </Button>
-    </div>
+    <ListToolbar
+      label="用户筛选与操作"
+      search={
+        <SearchBox
+          className={styles.search}
+          placeholder="按用户名或邮箱搜索"
+          aria-label="搜索用户"
+          appearance="outline"
+          value={searchValue}
+          onChange={(_event, data) => setSearchValue(data.value)}
+        />
+      }
+      actions={
+        <Button appearance="primary" icon={<Add20Regular />} onClick={onCreate}>
+          新用户
+        </Button>
+      }
+    />
   );
 }

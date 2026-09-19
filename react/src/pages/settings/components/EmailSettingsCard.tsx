@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
+  CardHeader,
   Field,
   Input,
   Spinner,
@@ -87,14 +88,28 @@ export function EmailSettingsCard() {
   };
 
   if (emailQuery.isLoading) {
-    return <Spinner label={"加载中..."} />;
+    return (
+      <Card>
+        <CardHeader header={<Text weight="semibold">邮件</Text>} />
+        <Spinner label={"加载中..."} />
+      </Card>
+    );
   }
 
   return (
     <Card>
-      <Text as="h2" size={500} weight="semibold">
-        {"邮件"}
-      </Text>
+      <CardHeader
+        header={<Text weight="semibold">邮件</Text>}
+        action={
+          <Button
+            appearance="primary"
+            onClick={() => void handleSave()}
+            disabled={updateMutation.isPending}
+          >
+            {"保存"}
+          </Button>
+        }
+      />
       <Field label={"主机"}>
         <Input
           value={form.smtpHost}
@@ -155,13 +170,6 @@ export function EmailSettingsCard() {
           onChange={(_, d) => setForm((p) => ({ ...p, defaultFromDisplayName: d.value }))}
         />
       </Field>
-      <Button
-        appearance="primary"
-        onClick={() => void handleSave()}
-        disabled={updateMutation.isPending}
-      >
-        {"保存"}
-      </Button>
     </Card>
   );
 }

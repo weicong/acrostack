@@ -7,6 +7,7 @@ const HomePage = lazyRouteComponent(() => import("@/pages/home/HomePage"), "Home
 
 export const menu: RouteMenuConfig = {
   name: "首页",
+  group: "概览",
   icon: Home20Regular,
   order: 1,
 };

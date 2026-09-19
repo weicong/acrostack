@@ -11,7 +11,7 @@ import { TimeZoneSettingsCard } from "./components/TimeZoneSettingsCard";
 
 export function SettingsPage() {
   return (
-    <PageLayout title={"设置"}>
+    <PageLayout title={"设置"} description="邮件发送与系统时区等应用级设置。">
       <EmailSettingsCard />
       <TestEmailCard />
       <TimeZoneSettingsCard />

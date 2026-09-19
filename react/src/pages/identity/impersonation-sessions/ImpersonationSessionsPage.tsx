@@ -6,6 +6,7 @@
  * 权限为 host 专属：AbpIdentity.Users.ManageImpersonationSessions。
  */
 import { useCallback, useState } from "react";
+import { Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -32,15 +33,20 @@ export function ImpersonationSessionsPage() {
   });
 
   return (
-    <PageLayout title={"模拟登录记录"}>
-      <ImpersonationSessionsToolbar status={statusFilter} onStatusChange={setStatusFilter} />
+    <PageLayout
+      title={"模拟登录记录"}
+      description="查看谁在何时以他人身份登录，并可在必要时提前撤销会话。"
+    >
+      <Card>
+        <ImpersonationSessionsToolbar status={statusFilter} onStatusChange={setStatusFilter} />
 
-      <DataTable
-        table={table}
-        isLoading={query.isLoading}
-        isError={query.isError}
-        errorMessage={query.error ? String(query.error) : undefined}
-      />
+        <DataTable
+          table={table}
+          isLoading={query.isLoading}
+          isError={query.isError}
+          errorMessage={query.error ? String(query.error) : undefined}
+        />
+      </Card>
 
       <ConfirmDialog
         open={revokeTarget !== null}

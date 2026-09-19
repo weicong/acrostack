@@ -58,8 +58,8 @@ export function ResetPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{"重置密码"}</Text>}
-          description={<Text size={200}>{"此密码重置链接无效或已过期。"}</Text>}
+          header={<Text weight="semibold">重置密码</Text>}
+          description={<Text size={200}>此密码重置链接无效或已过期。</Text>}
         />
         <Link to="/account/forgot-password">
           <Button>{"发送重置密码邮件"}</Button>
@@ -71,8 +71,8 @@ export function ResetPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{"重置密码"}</Text>}
-        description={<Text size={200}>{"请输入您的新密码。"}</Text>}
+        header={<Text weight="semibold">重置密码</Text>}
+        description={<Text size={200}>请输入您的新密码。</Text>}
       />
       <form
         onSubmit={(e) => {

@@ -1,168 +1,162 @@
-import { useMemo, useCallback } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
-import { Open20Regular } from "@fluentui/react-icons";
+import { Fragment, useMemo } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import {
+  makeStyles,
   NavDrawer,
   NavDrawerBody,
+  NavDrawerHeader,
   NavItem,
-  NavCategory,
-  NavCategoryItem,
-  NavSubItemGroup,
-  NavSubItem,
-  type OnNavItemSelectData,
+  NavSectionHeader,
+  Text,
+  shorthands,
+  tokens,
+  type NavDrawerProps,
 } from "@fluentui/react-components";
-import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-config-types";
-import { menuRoutes } from "@/lib/routing/route-config";
-import { usePermissions } from "@/lib/auth/permissions";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { getApplicationName } from "@/lib/runtimeConfig";
+import { useShellMenu } from "./shellMenu";
 
-function isActivePath(pathname: string, itemPath: string): boolean {
-  return pathname === itemPath || pathname.startsWith(itemPath + "/");
-}
+type SidebarProps =
+  | { variant: "inline" }
+  | { variant: "overlay"; open: boolean; onOpenChange: (open: boolean) => void };
 
-/** 侧边导航：使用 Fluent UI 的 NavDrawer（inline 常开），不自定义宽度与配色。 */
-export function Sidebar() {
+const useStyles = makeStyles({
+  brand: {
+    display: "flex",
+    alignItems: "center",
+    ...shorthands.gap(tokens.spacingHorizontalS),
+    paddingTop: tokens.spacingVerticalXS,
+    paddingBottom: tokens.spacingVerticalXS,
+  },
+  brandMark: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+    width: "32px",
+    height: "32px",
+    borderRadius: tokens.borderRadiusMedium,
+    backgroundColor: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
+    fontSize: tokens.fontSizeBase400,
+    fontWeight: tokens.fontWeightSemibold,
+  },
+  brandText: {
+    display: "flex",
+    flexDirection: "column",
+    minWidth: 0,
+  },
+  brandSubtitle: {
+    color: tokens.colorNeutralForeground3,
+  },
+  body: {
+    display: "flex",
+    flexDirection: "column",
+    ...shorthands.gap(tokens.spacingVerticalXS),
+  },
+});
+
+/**
+ * 侧边导航：宽屏常驻（inline），窄屏为浮层抽屉（overlay）。
+ *
+ * 导航项来自 route-config 的菜单模型（按权限过滤），选中态由当前路由驱动：
+ *   - 内部路由渲染为按钮，点击后经 NavDrawer 的 onNavItemSelect 走 SPA 导航；
+ *   - 外链渲染为链接并交给浏览器打开（新标签页）。
+ * 颜色与间距全部取自 Fluent 令牌，因此自动跟随品牌与明暗主题。
+ */
+export function Sidebar(props: SidebarProps) {
+  const styles = useStyles();
   const navigate = useNavigate();
-  const routerState = useRouterState();
-  const pathname = routerState.location.pathname;
-  const { isGranted } = usePermissions();
-  const { isAuthenticated } = useAuth();
+  const { groups, activeItem } = useShellMenu();
+  const appName = getApplicationName();
 
-  // Menu routes are collected from route files via route-config.ts (single source of truth).
-  const allMenuRoutes = menuRoutes;
-
-  const isItemVisible = useCallback(
-    (menu: RouteMenuConfig | RouteMenuConfigChild) => {
-      if (menu.requiresAuth && !isAuthenticated) return false;
-      if (!menu.requiredPolicy) return true;
-      if (!isAuthenticated) return false;
-      return isGranted(menu.requiredPolicy);
-    },
-    [isAuthenticated, isGranted],
-  );
-
-  const visibleItems = useMemo(
+  // 外链项由浏览器直接打开，不参与 SPA 导航
+  const externalPaths = useMemo(
     () =>
-      allMenuRoutes
-        .filter(({ menu }) => isItemVisible(menu))
-        .sort((a, b) => (a.menu.order ?? 0) - (b.menu.order ?? 0)),
-    [allMenuRoutes, isItemVisible],
+      new Set(
+        groups.flatMap((group) =>
+          group.items.filter((item) => item.externalHref).map((item) => item.path),
+        ),
+      ),
+    [groups],
   );
 
-  // Determine the selected NavItem value based on current pathname
-  const selectedValue = useMemo(() => {
-    for (const { path, menu } of visibleItems) {
-      const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
-      if (visibleChildren) {
-        for (const child of visibleChildren) {
-          if (isActivePath(pathname, path + child.path)) return child.path;
-        }
-      }
-      if (isActivePath(pathname, path)) return path;
-    }
-    return undefined;
-  }, [pathname, visibleItems, isItemVisible]);
+  const handleNavItemSelect: NavDrawerProps["onNavItemSelect"] = (_event, data) => {
+    if (props.variant === "overlay") props.onOpenChange(false);
 
-  // Determine which categories should show as selected (when a child is active but category is collapsed)
-  const selectedCategoryValue = useMemo(() => {
-    for (const { path, menu } of visibleItems) {
-      const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
-      if (visibleChildren && visibleChildren.some((c) => isActivePath(pathname, path + c.path))) {
-        return path;
-      }
-    }
-    return undefined;
-  }, [pathname, visibleItems, isItemVisible]);
-
-  const handleNavItemSelect = (_: unknown, data: OnNavItemSelectData) => {
-    const value = data.value;
-    if (!value) return;
-
-    // value is an absolute path. Search both top-level items and their children.
-    type Matched = { path: string; menu: RouteMenuConfig | RouteMenuConfigChild };
-    let matched: Matched | undefined;
-    for (const item of visibleItems) {
-      if (item.path === value) {
-        matched = item;
-        break;
-      }
-      const child = item.menu.children?.find((c) => item.path + c.path === value);
-      if (child) {
-        matched = { path: item.path + child.path, menu: child };
-        break;
-      }
-    }
-    if (!matched) return;
-
-    const externalHref =
-      typeof matched.menu.externalHref === "function"
-        ? matched.menu.externalHref()
-        : matched.menu.externalHref;
-
-    if (externalHref) {
-      window
-        .open(externalHref, matched.menu.externalTarget ?? "_blank", matched.menu.externalRel)
-        ?.focus();
-    } else {
-      void navigate({ to: matched.path });
+    const value = typeof data.value === "string" ? data.value : "";
+    if (value.startsWith("/") && !externalPaths.has(value)) {
+      void navigate({ to: value });
     }
   };
+
+  const content = (
+    <>
+      <NavDrawerHeader>
+        <div className={styles.brand}>
+          <span className={styles.brandMark} aria-hidden="true">
+            {appName.charAt(0).toUpperCase()}
+          </span>
+          <span className={styles.brandText}>
+            <Text weight="semibold">{appName}</Text>
+            <Text size={200} className={styles.brandSubtitle}>
+              管理后台
+            </Text>
+          </span>
+        </div>
+      </NavDrawerHeader>
+
+      <NavDrawerBody className={styles.body}>
+        {groups.map((group) => (
+          <Fragment key={group.caption}>
+            <NavSectionHeader>{group.caption}</NavSectionHeader>
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              const isExternal = Boolean(item.externalHref);
+
+              return (
+                <NavItem
+                  key={item.path}
+                  value={item.path}
+                  href={isExternal ? item.externalHref : undefined}
+                  target={isExternal ? (item.externalTarget ?? "_blank") : undefined}
+                  rel={isExternal ? item.externalRel : undefined}
+                  icon={Icon ? <Icon /> : undefined}
+                >
+                  {item.name}
+                </NavItem>
+              );
+            })}
+          </Fragment>
+        ))}
+      </NavDrawerBody>
+    </>
+  );
+
+  if (props.variant === "overlay") {
+    return (
+      <NavDrawer
+        type="overlay"
+        open={props.open}
+        onOpenChange={(_event, data) => props.onOpenChange(data.open)}
+        size="small"
+        aria-label="主导航"
+        selectedValue={activeItem?.path}
+        onNavItemSelect={handleNavItemSelect}
+      >
+        {content}
+      </NavDrawer>
+    );
+  }
 
   return (
     <NavDrawer
       type="inline"
       open
-      selectedValue={selectedValue}
-      selectedCategoryValue={selectedCategoryValue}
+      aria-label="主导航"
+      selectedValue={activeItem?.path}
       onNavItemSelect={handleNavItemSelect}
-      multiple
-      defaultOpenCategories={visibleItems
-        .filter(({ path, menu }) =>
-          menu.children
-            ?.filter((child) => isItemVisible(child))
-            .some((c) => isActivePath(pathname, path + c.path)),
-        )
-        .map(({ path }) => path)}
     >
-      <NavDrawerBody>
-        {visibleItems.map(({ path, menu }) => {
-          const Icon = menu.icon;
-          const visibleChildren = menu.children?.filter((child) => isItemVisible(child));
-          const hasChildren = visibleChildren && visibleChildren.length > 0;
-
-          if (menu.children && !hasChildren) {
-            return null;
-          }
-
-          if (hasChildren) {
-            return (
-              <NavCategory key={path} value={path}>
-                <NavCategoryItem icon={Icon ? <Icon /> : undefined}>{menu.name}</NavCategoryItem>
-                <NavSubItemGroup>
-                  {visibleChildren.map((child) => (
-                    <NavSubItem key={path + child.path} value={path + child.path}>
-                      {child.name}
-                    </NavSubItem>
-                  ))}
-                </NavSubItemGroup>
-              </NavCategory>
-            );
-          }
-
-          const externalHref =
-            typeof menu.externalHref === "function" ? menu.externalHref() : menu.externalHref;
-
-          return (
-            <NavItem
-              key={path}
-              value={path}
-              icon={externalHref ? <Open20Regular /> : Icon ? <Icon /> : undefined}
-            >
-              {menu.name}
-            </NavItem>
-          );
-        })}
-      </NavDrawerBody>
+      {content}
     </NavDrawer>
   );
 }

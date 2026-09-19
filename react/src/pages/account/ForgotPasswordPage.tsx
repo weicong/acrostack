@@ -40,8 +40,8 @@ export function ForgotPasswordPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{"忘记密码？"}</Text>}
-          description={<Text size={200}>{"如果该邮箱地址存在，我们已发送密码重置链接。"}</Text>}
+          header={<Text weight="semibold">忘记密码？</Text>}
+          description={<Text size={200}>如果该邮箱地址存在，我们已发送密码重置链接。</Text>}
         />
         <Link to="/account/login">
           <Button>{"登录"}</Button>
@@ -53,8 +53,8 @@ export function ForgotPasswordPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{"忘记密码？"}</Text>}
-        description={<Text size={200}>{"输入您的邮箱地址，我们将向您发送重置密码的链接。"}</Text>}
+        header={<Text weight="semibold">忘记密码？</Text>}
+        description={<Text size={200}>输入您的邮箱地址，我们将向您发送重置密码的链接。</Text>}
       />
       <form
         onSubmit={(e) => {

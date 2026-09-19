@@ -2,10 +2,11 @@
  * 角色管理页（RolesPage）。
  *
  * 本文件只负责编排：对话框开关状态与各子组件组装；
- * 样式见 styles/roles，表格聚合见 hooks/useRolesTable，
+ * 表格聚合见 hooks/useRolesTable，
  * 动作聚合见 hooks/useRoleActions，工具栏见 components/RolesToolbar。
  */
 import { useCallback, useState } from "react";
+import { Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@/components/ui/data-table/DataTable";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -50,18 +51,20 @@ export function RolesPage() {
   });
 
   return (
-    <PageLayout title={"角色"}>
-      <RolesToolbar
-        onCreate={handleCreate}
-        onGlobalFilterChange={tableState.state.onGlobalFilterChange}
-      />
+    <PageLayout title={"角色"} description="维护角色及其权限，用户通过角色获得权限。">
+      <Card>
+        <RolesToolbar
+          onCreate={handleCreate}
+          onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+        />
 
-      <DataTable
-        table={table}
-        isLoading={query.isLoading}
-        isError={query.isError}
-        errorMessage={query.error ? String(query.error) : undefined}
-      />
+        <DataTable
+          table={table}
+          isLoading={query.isLoading}
+          isError={query.isError}
+          errorMessage={query.error ? String(query.error) : undefined}
+        />
+      </Card>
 
       <RoleFormDialog
         open={formOpen}

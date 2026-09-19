@@ -53,8 +53,8 @@ export function RegisterPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{"注册"}</Text>}
-        description={<Text size={200}>{"创建新账户"}</Text>}
+        header={<Text weight="semibold">注册</Text>}
+        description={<Text size={200}>创建新账户</Text>}
       />
       <form
         onSubmit={(e) => {

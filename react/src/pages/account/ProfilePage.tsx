@@ -7,7 +7,7 @@ import { ProfileFormCard } from "./components/ProfileFormCard";
 
 export function ProfilePage() {
   return (
-    <PageLayout title={" 个人信息"}>
+    <PageLayout title={"个人信息"} description="修改个人资料与登录密码。">
       <ProfileFormCard />
       <ChangePasswordFormCard />
     </PageLayout>

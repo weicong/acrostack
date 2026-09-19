@@ -6,7 +6,7 @@
  * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permissions。
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Card, Checkbox, Spinner, Text } from "@fluentui/react-components";
+import { Button, Card, CardHeader, Checkbox, Spinner, Text } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { usePermissionsGet } from "@/api/hooks/permissions/usePermissionsGet";
 import { useRoleGetAllList } from "@/api/hooks/role/useRoleGetAllList";
@@ -97,14 +97,16 @@ export function PermissionsPage() {
   }, []);
 
   return (
-    <PageLayout title={"权限"}>
-      <PermissionsToolbar
-        providerName={providerName}
-        providerKey={providerKey}
-        roles={roles}
-        onSelectProviderName={handleSelectProviderName}
-        onSelectProviderKey={handleSelectProviderKey}
-      />
+    <PageLayout title={"权限"} description="先选择授权对象（角色或用户），再逐项开启或关闭其权限。">
+      <Card>
+        <PermissionsToolbar
+          providerName={providerName}
+          providerKey={providerKey}
+          roles={roles}
+          onSelectProviderName={handleSelectProviderName}
+          onSelectProviderKey={handleSelectProviderKey}
+        />
+      </Card>
 
       {!providerKey && <Text>{"请选择提供程序和权限"}</Text>}
 
@@ -122,13 +124,15 @@ export function PermissionsPage() {
             const groupLabel = group.displayName || group.name || "";
             return (
               <Card key={group.name ?? groupLabel}>
-                <div>
-                  <Checkbox
-                    checked={allGranted}
-                    onChange={(_, data) => handleSelectAllInGroup(group, data.checked === true)}
-                  />
-                  <Text weight="semibold">{groupLabel}</Text>
-                </div>
+                <CardHeader
+                  header={<Text weight="semibold">{groupLabel}</Text>}
+                  action={
+                    <Checkbox
+                      checked={allGranted}
+                      onChange={(_, data) => handleSelectAllInGroup(group, data.checked === true)}
+                    />
+                  }
+                />
                 {flat.map(({ permission, depth }) => (
                   <div key={permission.name}>
                     <Checkbox

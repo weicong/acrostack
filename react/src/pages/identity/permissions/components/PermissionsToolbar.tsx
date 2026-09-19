@@ -1,9 +1,12 @@
 /**
- * 权限工具栏：提供程序（角色/用户）与具体提供程序键两个下拉。
- * 选择状态由页面持有并驱动查询，本组件仅展示并通过回调写回。
+ * 权限工具栏：先选提供程序（角色/用户），再选具体对象。
+ *
+ * 「提供程序」一词过于抽象，这里用「授权对象」表达，
+ * 并把两个下拉放进统一的工具栏排布中，与其它列表页保持一致。
  */
 import { Dropdown, Field, Option } from "@fluentui/react-components";
 import type { VoloAbpIdentityIdentityRoleDto } from "@/api/models/volo/abp/identity/IdentityRoleDto";
+import { ListToolbar } from "@/components/ui/ListToolbar";
 import type { ProviderName } from "../utils/permissions";
 
 interface PermissionsToolbarProps {
@@ -22,37 +25,44 @@ export function PermissionsToolbar({
   onSelectProviderName,
   onSelectProviderKey,
 }: PermissionsToolbarProps) {
-  return (
-    <div>
-      <Field label={"提供程序"}>
-        <Dropdown
-          value={providerName === "R" ? "角色" : "用户"}
-          selectedOptions={[providerName]}
-          onOptionSelect={(_, data) => {
-            onSelectProviderName(data.optionValue as ProviderName);
-          }}
-        >
-          <Option value="R">{"角色"}</Option>
-          <Option value="U">{"用户"}</Option>
-        </Dropdown>
-      </Field>
+  const isRole = providerName === "R";
 
-      <Field label={providerName === "R" ? "角色" : "用户"}>
-        <Dropdown
-          placeholder={"选择提供程序"}
-          selectedOptions={providerKey ? [providerKey] : []}
-          value={roles.find((r) => r.id === providerKey)?.name ?? ""}
-          onOptionSelect={(_, data) => {
-            onSelectProviderKey(data.optionValue as string);
-          }}
-        >
-          {roles.map((role) => (
-            <Option key={role.id ?? ""} value={role.id ?? ""}>
-              {role.name ?? ""}
-            </Option>
-          ))}
-        </Dropdown>
-      </Field>
-    </div>
+  return (
+    <ListToolbar
+      label="权限筛选"
+      filters={
+        <>
+          <Field label="授权对象类型">
+            <Dropdown
+              value={isRole ? "角色" : "用户"}
+              selectedOptions={[providerName]}
+              onOptionSelect={(_event, data) => {
+                onSelectProviderName(data.optionValue as ProviderName);
+              }}
+            >
+              <Option value="R">角色</Option>
+              <Option value="U">用户</Option>
+            </Dropdown>
+          </Field>
+
+          <Field label={isRole ? "选择角色" : "用户 ID"}>
+            <Dropdown
+              placeholder={isRole ? "请选择角色" : "请输入用户 ID"}
+              selectedOptions={providerKey ? [providerKey] : []}
+              value={roles.find((role) => role.id === providerKey)?.name ?? ""}
+              onOptionSelect={(_event, data) => {
+                onSelectProviderKey(data.optionValue as string);
+              }}
+            >
+              {roles.map((role) => (
+                <Option key={role.id ?? ""} value={role.id ?? ""}>
+                  {role.name ?? ""}
+                </Option>
+              ))}
+            </Dropdown>
+          </Field>
+        </>
+      }
+    />
   );
 }

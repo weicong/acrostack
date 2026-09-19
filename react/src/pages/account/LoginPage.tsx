@@ -22,8 +22,8 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{"登录"}</Text>}
-          description={<Text size={200}>{"正在跳转到登录..."}</Text>}
+          header={<Text weight="semibold">登录</Text>}
+          description={<Text size={200}>正在跳转到登录...</Text>}
         />
         <Spinner />
       </Card>
@@ -34,8 +34,8 @@ export function LoginPage() {
     return (
       <Card>
         <CardHeader
-          header={<Text weight="semibold">{"登录"}</Text>}
-          description={<Text size={200}>{"您已登录。"}</Text>}
+          header={<Text weight="semibold">登录</Text>}
+          description={<Text size={200}>您已登录。</Text>}
         />
         <Link to="/">
           <Button>{"返回应用"}</Button>
@@ -47,8 +47,8 @@ export function LoginPage() {
   return (
     <Card>
       <CardHeader
-        header={<Text weight="semibold">{"登录"}</Text>}
-        description={<Text size={200}>{"正在跳转到登录..."}</Text>}
+        header={<Text weight="semibold">登录</Text>}
+        description={<Text size={200}>正在跳转到登录...</Text>}
       />
       <Button onClick={() => void login()}>{"登录"}</Button>
       <Text as="p" size={200} block>
