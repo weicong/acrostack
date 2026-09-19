@@ -23,7 +23,7 @@ namespace AcroStack.Migrations
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.Sqlite)
                 .HasAnnotation("ProductVersion", "10.0.9");
 
-            modelBuilder.Entity("AcroStack.AccountPro.ImpersonationSession", b =>
+            modelBuilder.Entity("AcroStack.Impersonation.ImpersonationSession", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");

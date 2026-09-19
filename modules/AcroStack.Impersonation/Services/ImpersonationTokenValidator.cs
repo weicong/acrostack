@@ -10,7 +10,7 @@ using OpenIddict.Abstractions;
 using OpenIddict.Server;
 using Volo.Abp.DependencyInjection;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 在 <c>/connect/token</c> 端点上手工校验调用方携带的 Bearer 访问令牌。

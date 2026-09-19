@@ -8,7 +8,7 @@ The module set deliberately stays aligned with the **ABP official single-layer (
 
 - **`main/AcroStack/`** — Composition root / host only: `AcroStackModule.cs`, the single `AcroStackDbContext`, EF migrations (`Migrations/`), data seed contributors, health checks, Swagger, `HomeController`. Contains **no business logic**.
   - Host disables global UoW transactions (SQLite single-writer). Any write spanning multiple aggregates must open an explicit transaction (e.g. `IUnitOfWorkManager.Begin(requiresNew: true, isTransactional: true)`, or a `DbContext`-level transaction when the writes share one `DbContext`). A shared `IAcroStackTransactionExecutor` used to live in `modules/AcroStack.Common/`; that module was removed together with the Pro-replacement modules and can be recovered from git history if needed.
-- **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.AccountPro` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
+- **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.Impersonation` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
   - Mappers live in each module's `ObjectMapping/` folder (not in the host).
   - Business logic belongs in `modules/<Feature>/`, never in the host.
 - **`react/`** — React 19 SPA. Vite+ toolchain, TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth.

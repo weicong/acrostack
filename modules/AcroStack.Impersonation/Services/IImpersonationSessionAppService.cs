@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 模拟登录会话的查询与撤销接口（对应 ABP Account Pro 中基于

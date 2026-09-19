@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
-public static class AccountProEfCoreDbContextExtensions
+public static class ImpersonationEfCoreDbContextExtensions
 {
     /// <summary>与 <c>IdentityUser.UserName</c> 的列宽保持一致。</summary>
     private const int MaxUserNameLength = 256;
@@ -11,7 +11,7 @@ public static class AccountProEfCoreDbContextExtensions
     /// <summary>与 OpenIddict 应用表 <c>ClientId</c> 的列宽保持一致。</summary>
     private const int MaxClientIdLength = 200;
 
-    public static void ConfigureAccountPro(
+    public static void ConfigureImpersonation(
         this ModelBuilder builder,
         string tablePrefix = "App",
         string? schema = null)

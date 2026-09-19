@@ -8,7 +8,7 @@ ABP **单层（no-layer）模板**的基础版：ASP.NET Core 宿主 + React 19 
 main/AcroStack/        组合根（宿主）：AcroStackModule、唯一 AcroStackDbContext、
 │                      EF 迁移、种子、Swagger、HomeController。不含业务逻辑。
 modules/
-│  └── AcroStack.AccountPro   自研模块：用户模拟登录（对应 ABP Account Pro 的 impersonation）
+│  └── AcroStack.Impersonation   自研模块：用户模拟登录（对应 ABP Account Pro 的 impersonation）
 react/                 React 19 SPA（Vite+ 工具链，TanStack Router/Query/Form，Fluent UI v9）
 ```
 
@@ -27,9 +27,9 @@ react/                 React 19 SPA（Vite+ 工具链，TanStack Router/Query/Fo
 | --- | --- | --- |
 | Account / Identity / OpenIddict / Permission / Setting / Feature Management | 官方单层模板的基础模块 | ABP 开源包 |
 | Audit Logging / Background Jobs / BLOB Storing | 官方单层模板预配置的数据与后台能力 | ABP 开源包 |
-| `AcroStack.AccountPro` | 用户模拟登录：服务端持久化会话，可审计可撤销 | 自研（对应 Account Pro 的 impersonation） |
+| `AcroStack.Impersonation` | 用户模拟登录：服务端持久化会话，可审计可撤销 | 自研（对应 Account Pro 的 impersonation） |
 
-各模块详情见 `modules/<模块名>/README.md`，AccountPro 见 [modules/AcroStack.AccountPro/README.md](modules/AcroStack.AccountPro/README.md)。
+各模块详情见 `modules/<模块名>/README.md`，Impersonation 见 [modules/AcroStack.Impersonation/README.md](modules/AcroStack.Impersonation/README.md)。
 
 ## 快速开始
 

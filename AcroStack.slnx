@@ -3,7 +3,7 @@
     <Platform Name="Any CPU" />
   </Configurations>
   <Folder Name="/modules/">
-    <Project Path="modules/AcroStack.AccountPro/AcroStack.AccountPro.csproj" />
+    <Project Path="modules/AcroStack.Impersonation/AcroStack.Impersonation.csproj" />
   </Folder>
   <Folder Name="/main/">
     <Project Path="main/AcroStack/AcroStack.csproj" />

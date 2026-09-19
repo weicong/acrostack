@@ -1,8 +1,8 @@
-using AcroStack.AccountPro.Localization;
+using AcroStack.Impersonation.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace AcroStack.AccountPro.Permissions;
+namespace AcroStack.Impersonation.Permissions;
 
 // The open-source ABP Identity module does NOT define impersonation permissions
 // (only the commercial Pro module does).
@@ -28,6 +28,6 @@ public class ImpersonationPermissionDefinitionProvider : PermissionDefinitionPro
 
     private static LocalizableString L(string name)
     {
-        return LocalizableString.Create<AccountProResource>(name);
+        return LocalizableString.Create<ImpersonationResource>(name);
     }
 }

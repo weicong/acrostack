@@ -1,8 +1,8 @@
 using Volo.Abp.Localization;
 
-namespace AcroStack.AccountPro.Localization;
+namespace AcroStack.Impersonation.Localization;
 
-[LocalizationResourceName("AccountPro")]
-public class AccountProResource
+[LocalizationResourceName("Impersonation")]
+public class ImpersonationResource
 {
 }

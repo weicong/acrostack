@@ -9,7 +9,7 @@ import { Badge, Button } from "@fluentui/react-components";
 import { Dismiss20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { impersonationSessionGetListQueryOptions } from "@/api/hooks/impersonationSession/useImpersonationSessionGetList";
-import type { AcroStackAccountProImpersonationSessionDto as ImpersonationSessionDto } from "@/api/models/acroStack/accountPro/ImpersonationSessionDto";
+import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@/api/models/acroStack/impersonation/ImpersonationSessionDto";
 import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
 import {
   useDataTableQuery,

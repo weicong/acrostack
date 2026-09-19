@@ -1,4 +1,4 @@
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 public static class ImpersonationPermissions
 {

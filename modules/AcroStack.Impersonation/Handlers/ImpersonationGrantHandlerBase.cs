@@ -14,7 +14,7 @@ using Volo.Abp.Security.Claims;
 using IdentityUser = Volo.Abp.Identity.IdentityUser;
 using static OpenIddict.Server.OpenIddictServerEvents;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 自定义 grant 处理器的公共逻辑：读取调用方 Bearer 令牌、校验、为目标用户

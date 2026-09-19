@@ -95,7 +95,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\AcroStack.AccountPro\AcroStack.AccountPro.csproj" />
+    <ProjectReference Include="..\..\modules\AcroStack.Impersonation\AcroStack.Impersonation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

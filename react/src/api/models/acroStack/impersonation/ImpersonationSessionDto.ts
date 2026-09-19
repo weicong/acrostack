@@ -4,7 +4,7 @@
  * @description 模拟登录会话的展示模型。
  * @type object
  */
-export type AcroStackAccountProImpersonationSessionDto = {
+export type AcroStackImpersonationImpersonationSessionDto = {
   /**
    * @description
    * Format: `uuid`

@@ -1,6 +1,6 @@
 /* oxlint-disable */
 
-import type { PagedResultDtoOfAcroStackAccountProImpersonationSessionDto } from "../pagedResultDtoOfAcroStack/accountPro/ImpersonationSessionDto";
+import type { PagedResultDtoOfAcroStackImpersonationImpersonationSessionDto } from "../pagedResultDtoOfAcroStack/impersonation/ImpersonationSessionDto";
 import type { VoloAbpHttpRemoteServiceErrorResponse } from "../volo/abp/http/RemoteServiceErrorResponse";
 
 export type ImpersonationSessionGetListQuery = {
@@ -53,13 +53,13 @@ export type ImpersonationSessionGetListQuery = {
 };
 
 export type ImpersonationSessionGetListStatus200Plain =
-  PagedResultDtoOfAcroStackAccountProImpersonationSessionDto;
+  PagedResultDtoOfAcroStackImpersonationImpersonationSessionDto;
 
 export type ImpersonationSessionGetListStatus200Json =
-  PagedResultDtoOfAcroStackAccountProImpersonationSessionDto;
+  PagedResultDtoOfAcroStackImpersonationImpersonationSessionDto;
 
 export type ImpersonationSessionGetListStatus200Json2 =
-  PagedResultDtoOfAcroStackAccountProImpersonationSessionDto;
+  PagedResultDtoOfAcroStackImpersonationImpersonationSessionDto;
 
 export type ImpersonationSessionGetListStatus200 =
   | ImpersonationSessionGetListStatus200Plain

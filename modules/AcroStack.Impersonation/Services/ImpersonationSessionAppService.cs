@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Timing;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 模拟登录会话管理：审计（谁在何时模拟了谁）与撤销（终止进行中的模拟）。
@@ -23,7 +23,7 @@ namespace AcroStack.AccountPro;
 /// </remarks>
 [Authorize(ImpersonationPermissions.ManageImpersonationSessions)]
 public class ImpersonationSessionAppService
-    : AccountProAppServiceBase,
+    : ImpersonationAppServiceBase,
         IImpersonationSessionAppService
 {
     private readonly IRepository<ImpersonationSession, Guid> _sessionRepository;

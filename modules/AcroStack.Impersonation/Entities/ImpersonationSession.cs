@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 模拟登录会话记录，对应 ABP Account Pro 的 <c>IdentityUserDelegation</c> 概念。

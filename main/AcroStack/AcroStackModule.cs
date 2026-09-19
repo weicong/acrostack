@@ -10,7 +10,7 @@ using AcroStack.Swagger;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 using OpenIddict.Validation.AspNetCore;
-using AcroStack.AccountPro;
+using AcroStack.Impersonation;
 using static OpenIddict.Server.OpenIddictServerEvents;
 using Volo.Abp;
 using Volo.Abp.Studio;
@@ -107,7 +107,7 @@ namespace AcroStack;
     typeof(AbpEntityFrameworkCoreSqliteModule),
 
     // AcroStack modules
-    typeof(AccountProModule)
+    typeof(ImpersonationModule)
 )]
 public class AcroStackModule : AbpModule
 {
@@ -309,7 +309,7 @@ public class AcroStackModule : AbpModule
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
             options.ConventionalControllers.Create(typeof(AcroStackModule).Assembly);
-            options.ConventionalControllers.Create(typeof(AccountProModule).Assembly);
+            options.ConventionalControllers.Create(typeof(ImpersonationModule).Assembly);
         });
     }
 

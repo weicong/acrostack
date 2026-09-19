@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>模拟登录会话的查询条件。</summary>
 public class GetImpersonationSessionListInput : PagedAndSortedResultRequestDto

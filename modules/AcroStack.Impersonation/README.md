@@ -1,4 +1,4 @@
-# AcroStack.AccountPro
+# AcroStack.Impersonation
 
 用户模拟登录（impersonation）：管理员以某个用户的身份登录系统，并提供会话审计与撤销。**对应 ABP Account Pro 的 impersonation 能力**（开源 Account 模块不含该功能，Account Pro 需商业许可）。
 

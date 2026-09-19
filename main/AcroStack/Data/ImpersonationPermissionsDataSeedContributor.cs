@@ -9,7 +9,7 @@ namespace AcroStack.Data;
 /// <summary>
 /// Grants the impersonation permissions to the <c>admin</c> role so that
 /// administrators can use the self-built Account Pro impersonation feature
-/// (see <c>modules/AcroStack.AccountPro</c>).
+/// (see <c>modules/AcroStack.Impersonation</c>).
 /// The permission names are the ones ABP itself uses
 /// (<c>IdentityPermissions.Users.Impersonation</c>), plus the extra permission
 /// guarding the impersonation session audit/revoke API.

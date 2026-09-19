@@ -1,4 +1,4 @@
-using AcroStack.AccountPro.Localization;
+using AcroStack.Impersonation.Localization;
 using Volo.Abp.Application;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
@@ -7,27 +7,27 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 [DependsOn(
     typeof(AbpDddApplicationModule),
     typeof(AbpIdentityDomainModule),
     typeof(AbpOpenIddictDomainModule))]
-public class AccountProModule : AbpModule
+public class ImpersonationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
-            options.FileSets.AddEmbedded<AccountProModule>();
+            options.FileSets.AddEmbedded<ImpersonationModule>();
         });
 
         Configure<AbpLocalizationOptions>(options =>
         {
             options
-                .Resources.Add<AccountProResource>("en")
+                .Resources.Add<ImpersonationResource>("en")
                 .AddBaseTypes(typeof(AbpValidationResource))
-                .AddVirtualJson("/Localization/AccountPro");
+                .AddVirtualJson("/Localization/Impersonation");
         });
     }
 }

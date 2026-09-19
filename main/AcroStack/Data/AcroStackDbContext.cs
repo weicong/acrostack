@@ -10,13 +10,13 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using AcroStack.AccountPro;
+using AcroStack.Impersonation;
 
 namespace AcroStack.Data;
 
 /// <summary>
 /// 宿主 DbContext：承载 ABP 开源模块（Identity / OpenIddict / Permission / Setting /
-/// Feature / AuditLogging / BackgroundJobs / BlobStoring）与 AcroStack.AccountPro 的实体，
+/// Feature / AuditLogging / BackgroundJobs / BlobStoring）与 AcroStack.Impersonation 的实体，
 /// 单库（SQLite）统一建模。
 /// </summary>
 public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggingDbContext
@@ -59,6 +59,6 @@ public class AcroStackDbContext : AbpDbContext<AcroStackDbContext>, IAuditLoggin
         // 该表，此处显式移除以保持数据库 schema 干净。
         builder.Ignore<AuditLogExcelFile>();
 
-        builder.ConfigureAccountPro(DbTablePrefix, DbSchema);
+        builder.ConfigureImpersonation(DbTablePrefix, DbSchema);
     }
 }

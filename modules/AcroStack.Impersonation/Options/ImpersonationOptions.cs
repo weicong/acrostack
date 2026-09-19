@@ -1,4 +1,4 @@
-﻿namespace AcroStack.AccountPro;
+﻿namespace AcroStack.Impersonation;
 
 /// <summary>
 /// Configuration options for the <see cref="ImpersonationGrantHandler"/>.

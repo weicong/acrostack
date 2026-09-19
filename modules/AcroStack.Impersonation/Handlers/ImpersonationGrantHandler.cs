@@ -18,7 +18,7 @@ using Volo.Abp.Uow;
 using IdentityUser = Volo.Abp.Identity.IdentityUser;
 using static OpenIddict.Server.OpenIddictServerEvents;
 
-namespace AcroStack.AccountPro;
+namespace AcroStack.Impersonation;
 
 /// <summary>
 /// 处理 <c>/connect/token</c> 上的自定义 <c>Impersonation</c> 授权类型，
