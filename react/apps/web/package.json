@@ -1,17 +1,17 @@
 {
-  "name": "AcroStack",
+  "name": "@acrostack/web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp check && vp build",
+    "build": "vp build",
     "preview": "vp preview",
-    "check": "vp check --fix",
     "generate-api": "kubb generate",
-    "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../main/AcroStack"
+    "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../../../main/AcroStack"
   },
   "dependencies": {
+    "@acrostack/app-shell": "workspace:*",
     "@fluentui/react-calendar-compat": "^0.4.6",
     "@fluentui/react-components": "^9.74.7",
     "@fluentui/react-datepicker-compat": "^0.6.37",
@@ -42,6 +42,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "kubb": "^5.1.0",
     "typescript": "~7.0.2",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "devEngines": {

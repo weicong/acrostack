@@ -6,6 +6,7 @@ import {
   Spinner,
   Text,
   Title2,
+  Toolbar,
   makeStyles,
   shorthands,
   tokens,
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "100%",
+    minHeight: "100dvh",
     ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalL),
     backgroundColor: tokens.colorNeutralBackground2,
   },
@@ -27,14 +28,9 @@ const useStyles = makeStyles({
     width: "100%",
     maxWidth: "520px",
   },
-  actions: {
-    display: "flex",
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-  },
+  // 后端错误信息可能包含长 URL，强制换行避免溢出
   detail: {
     overflowWrap: "anywhere",
-    color: tokens.colorNeutralForeground3,
   },
 });
 
@@ -68,17 +64,16 @@ function CenteredCard({
 }
 
 function NotFoundComponent() {
-  const styles = useStyles();
   const navigate = useNavigate();
 
   return (
     <CenteredCard title="页面不存在" description={<Text>你访问的地址可能已被移动或删除。</Text>}>
-      <div className={styles.actions}>
+      <Toolbar aria-label="前往其他页面">
         <Button appearance="primary" onClick={() => void navigate({ to: "/admin" })}>
           返回首页
         </Button>
         <Button onClick={() => void navigate({ to: "/" })}>回到入口页</Button>
-      </div>
+      </Toolbar>
     </CenteredCard>
   );
 }
@@ -113,12 +108,12 @@ function RouteErrorComponent({ error }: { error: unknown }) {
       <Text className={styles.detail} size={200}>
         {message}
       </Text>
-      <div className={styles.actions}>
+      <Toolbar aria-label="错误处理">
         <Button appearance="primary" onClick={() => void router.invalidate()}>
           重试
         </Button>
         <Button onClick={() => void navigate({ to: "/admin" })}>返回首页</Button>
-      </div>
+      </Toolbar>
     </CenteredCard>
   );
 }

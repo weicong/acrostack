@@ -2,10 +2,10 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   Card,
   CardHeader,
-  Text,
-  Title1,
   makeStyles,
   shorthands,
+  Text,
+  Title1,
   tokens,
 } from "@fluentui/react-components";
 import { Person20Regular, Settings20Regular } from "@fluentui/react-icons";
@@ -17,27 +17,24 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    minHeight: "100dvh",
     ...shorthands.gap(tokens.spacingVerticalL),
-    minHeight: "100%",
     ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalL),
     backgroundColor: tokens.colorNeutralBackground2,
   },
   container: {
     display: "flex",
     flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalM),
     width: "100%",
     maxWidth: "520px",
+    ...shorthands.gap(tokens.spacingVerticalM),
   },
   hero: {
     display: "flex",
     flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalXS),
     textAlign: "center",
+    ...shorthands.gap(tokens.spacingVerticalXS),
     marginBottom: tokens.spacingVerticalS,
-  },
-  lead: {
-    color: tokens.colorNeutralForeground3,
   },
   entry: {
     cursor: "pointer",
@@ -45,10 +42,8 @@ const useStyles = makeStyles({
 });
 
 /**
- * 门户入口页（/）：匿名可访问。
- *
- * 只做一件事——让用户选一个去处。进入受保护的工作区时，
- * 由目标路由的守卫触发登录并自动回跳，无需用户理解跳转细节。
+ * 门户入口页（/）：匿名可访问，只做一件事——让用户选一个去处。
+ * 进入受保护的工作区时，由目标路由的守卫触发登录并自动回跳。
  */
 export function PortalPage() {
   const styles = useStyles();
@@ -60,7 +55,7 @@ export function PortalPage() {
       <div className={styles.container}>
         <div className={styles.hero}>
           <Title1 as="h1">{appName}</Title1>
-          <Text className={styles.lead}>选择要进入的工作区</Text>
+          <Text>选择要进入的工作区</Text>
         </div>
 
         <Card

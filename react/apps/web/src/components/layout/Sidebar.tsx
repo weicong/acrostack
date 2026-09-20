@@ -1,13 +1,13 @@
 import { Fragment, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  makeStyles,
   NavDrawer,
   NavDrawerBody,
   NavDrawerHeader,
   NavItem,
   NavSectionHeader,
   Text,
+  makeStyles,
   shorthands,
   tokens,
   type NavDrawerProps,
@@ -15,17 +15,12 @@ import {
 import { getApplicationName } from "@/lib/runtimeConfig";
 import { useShellMenu } from "./shellMenu";
 
-type SidebarProps =
-  | { variant: "inline" }
-  | { variant: "overlay"; open: boolean; onOpenChange: (open: boolean) => void };
-
 const useStyles = makeStyles({
   brand: {
     display: "flex",
     alignItems: "center",
     ...shorthands.gap(tokens.spacingHorizontalS),
-    paddingTop: tokens.spacingVerticalXS,
-    paddingBottom: tokens.spacingVerticalXS,
+    ...shorthands.padding(tokens.spacingVerticalXS, 0),
   },
   brandMark: {
     display: "flex",
@@ -45,9 +40,6 @@ const useStyles = makeStyles({
     flexDirection: "column",
     minWidth: 0,
   },
-  brandSubtitle: {
-    color: tokens.colorNeutralForeground3,
-  },
   body: {
     display: "flex",
     flexDirection: "column",
@@ -55,21 +47,11 @@ const useStyles = makeStyles({
   },
 });
 
-/**
- * 侧边导航：宽屏常驻（inline），窄屏为浮层抽屉（overlay）。
- *
- * 导航项来自 route-config 的菜单模型（按权限过滤），选中态由当前路由驱动：
- *   - 内部路由渲染为按钮，点击后经 NavDrawer 的 onNavItemSelect 走 SPA 导航；
- *   - 外链渲染为链接并交给浏览器打开（新标签页）。
- * 颜色与间距全部取自 Fluent 令牌，因此自动跟随品牌与明暗主题。
- */
-export function Sidebar(props: SidebarProps) {
-  const styles = useStyles();
+/** 导航选中逻辑：内部路由交给 SPA，外链留给浏览器。 */
+function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
   const navigate = useNavigate();
-  const { groups, activeItem } = useShellMenu();
-  const appName = getApplicationName();
+  const { groups } = useShellMenu();
 
-  // 外链项由浏览器直接打开，不参与 SPA 导航
   const externalPaths = useMemo(
     () =>
       new Set(
@@ -80,16 +62,26 @@ export function Sidebar(props: SidebarProps) {
     [groups],
   );
 
-  const handleNavItemSelect: NavDrawerProps["onNavItemSelect"] = (_event, data) => {
-    if (props.variant === "overlay") props.onOpenChange(false);
-
+  return (_event, data) => {
     const value = typeof data.value === "string" ? data.value : "";
     if (value.startsWith("/") && !externalPaths.has(value)) {
       void navigate({ to: value });
     }
   };
+}
 
-  const content = (
+/**
+ * 导航内容（品牌区 + 分组条目）。
+ *
+ * 与容器解耦：宽屏由 `Sidebar` 放进常驻侧栏，窄屏由 `@acrostack/app-shell`
+ * 自动生成的移动抽屉原样复用同一份内容。
+ */
+export function SidebarNav() {
+  const styles = useStyles();
+  const { groups } = useShellMenu();
+  const appName = getApplicationName();
+
+  return (
     <>
       <NavDrawerHeader>
         <div className={styles.brand}>
@@ -98,9 +90,7 @@ export function Sidebar(props: SidebarProps) {
           </span>
           <span className={styles.brandText}>
             <Text weight="semibold">{appName}</Text>
-            <Text size={200} className={styles.brandSubtitle}>
-              管理后台
-            </Text>
+            <Text size={200}>管理后台</Text>
           </span>
         </div>
       </NavDrawerHeader>
@@ -131,22 +121,12 @@ export function Sidebar(props: SidebarProps) {
       </NavDrawerBody>
     </>
   );
+}
 
-  if (props.variant === "overlay") {
-    return (
-      <NavDrawer
-        type="overlay"
-        open={props.open}
-        onOpenChange={(_event, data) => props.onOpenChange(data.open)}
-        size="small"
-        aria-label="主导航"
-        selectedValue={activeItem?.path}
-        onNavItemSelect={handleNavItemSelect}
-      >
-        {content}
-      </NavDrawer>
-    );
-  }
+/** 宽屏常驻侧栏（窄屏由 AppShell 的移动抽屉承载同一份 `SidebarNav`）。 */
+export function Sidebar() {
+  const { activeItem } = useShellMenu();
+  const handleNavItemSelect = useNavItemSelect();
 
   return (
     <NavDrawer
@@ -156,7 +136,7 @@ export function Sidebar(props: SidebarProps) {
       selectedValue={activeItem?.path}
       onNavItemSelect={handleNavItemSelect}
     >
-      {content}
+      <SidebarNav />
     </NavDrawer>
   );
 }

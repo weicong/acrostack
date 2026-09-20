@@ -1,15 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vite-plus: ^0.3.0
-minimumReleaseAgeExclude:
-  - "@kubb/plugin-axios@5.0.0"
-  - "@kubb/plugin-react-query@5.0.0"
-  - "@kubb/plugin-ts@5.0.0"
-  - "@kubb/plugin-zod@5.0.0"
+  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
+  vite-plus: 0.3.3
+
 overrides:
-  vite: "catalog:"
-peerDependencyRules:
-  allowAny:
-    - vite
-  allowedVersions:
-    vite: "*"
+  vite@*: "catalog:"

@@ -2,18 +2,11 @@ import type { ReactNode } from "react";
 import { Toolbar, makeStyles, shorthands, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
+  // Toolbar 自带 display:flex / align-items:center 与默认内边距；
+  // 这里只补它没有的两件事：窄屏换行、以及"搜索在左、操作在右"的两端对齐。
   toolbar: {
-    // Toolbar 自带 display:flex / align-items:center，这里只补默认没有的换行与令牌化间距
     flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-  },
-  search: {
-    flexGrow: 1,
-    minWidth: "180px",
-    maxWidth: "320px",
-  },
-  actions: {
-    marginLeft: "auto",
+    justifyContent: "space-between",
     ...shorthands.gap(tokens.spacingHorizontalS),
   },
 });
@@ -31,8 +24,7 @@ interface ListToolbarProps {
 
 /**
  * 列表页工具栏：基于 Fluent `Toolbar` 构建（自带 `role="toolbar"`、
- * 默认内边距与方向键导航），只补充三件事：
- * 搜索靠左并限宽、窄屏自动换行、主要操作靠右。
+ * 默认内边距与方向键导航），只补充两点排布：两端对齐与窄屏换行。
  * 各列表页共用同一排布，使用户在不同页面看到一致的操作位置。
  */
 export function ListToolbar({ label, search, filters, actions }: ListToolbarProps) {
@@ -40,9 +32,9 @@ export function ListToolbar({ label, search, filters, actions }: ListToolbarProp
 
   return (
     <Toolbar className={styles.toolbar} aria-label={label}>
-      {search && <div className={styles.search}>{search}</div>}
+      {search}
       {filters}
-      {actions && <div className={styles.actions}>{actions}</div>}
+      {actions}
     </Toolbar>
   );
 }

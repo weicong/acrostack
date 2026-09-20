@@ -18,11 +18,7 @@ const useStyles = makeStyles({
     minWidth: 0,
     flexGrow: 1,
   },
-  title: {
-    display: "block",
-  },
   description: {
-    display: "block",
     marginTop: tokens.spacingVerticalXS,
     maxWidth: "72ch",
     color: tokens.colorNeutralForeground3,
@@ -53,9 +49,9 @@ interface PageLayoutProps {
  * 页面骨架：标题 + 说明 + 操作区 + 内容区。
  *
  * 操作区由 Fluent `Toolbar` 承载（自带 `role="toolbar"`、方向键导航，
- * 根元素在 small/medium 下无额外内边距），页面之间只通过令牌化间距对齐；
- * 页头一行用 `space-between` 把操作推到右侧，不使用 `margin-left: auto` 之类的技巧。
- * 所有页面共用同一套间距与排版，保证视觉层次与风格一致。
+ * 根元素在 small/medium 下无额外内边距）；页头一行用 `space-between`
+ * 把操作推到右侧。标题与说明直接用 Fluent 排版组件（`h1`/`p` 本身就是块级，
+ * 无需额外声明），页面之间只通过令牌化间距对齐。
  */
 export function PageLayout({
   title,
@@ -70,11 +66,11 @@ export function PageLayout({
     <div className={styles.page}>
       <div className={styles.head}>
         <div className={styles.headText}>
-          <Title2 as="h1" className={styles.title}>
+          <Title2 as="h1" block>
             {title}
           </Title2>
           {description && (
-            <Text as="p" className={styles.description}>
+            <Text as="p" block className={styles.description}>
               {description}
             </Text>
           )}

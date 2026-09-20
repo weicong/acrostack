@@ -156,6 +156,8 @@ PublishScripts/
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
+# 前端工作区包（react/packages/*）是源代码，不受上面的 NuGet packages 规则影响
+!react/packages/**
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 # NuGet v3's project.json files produces more ignoreable files

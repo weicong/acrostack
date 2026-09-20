@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { FluentProvider, makeStyles, type Theme } from "@fluentui/react-components";
+import { FluentProvider, type Theme } from "@fluentui/react-components";
 import { appDarkTheme, appLightTheme } from "./brand";
 
 /** 外观模式：可显式指定浅色/深色，或跟随系统偏好。 */
@@ -35,12 +35,6 @@ function readStoredMode(): ThemeMode {
   }
 }
 
-const useStyles = makeStyles({
-  provider: {
-    height: "100%",
-  },
-});
-
 /**
  * 解析当前应使用的主题（供 FluentProvider 之外的兜底界面使用）：
  * 优先用户已保存的显式选择，否则跟随系统偏好。
@@ -53,11 +47,10 @@ export function getPreferredTheme(): Theme {
 }
 
 /**
- * 应用主题：把品牌主题交给 FluentProvider，并提供外观切换能力。
- * 用户的显式选择持久化在 localStorage；默认跟随系统偏好并实时响应其变化。
+ * 应用主题：只负责把品牌主题交给 FluentProvider，并提供外观切换能力。
+ * 高度无需在这里约束——页面骨架用 `100dvh` 自持高度，样式一律由消费方负责。
  */
 export function AppThemeProvider({ children }: { children: ReactNode }) {
-  const styles = useStyles();
   const [mode, setModeState] = useState<ThemeMode>(readStoredMode);
   const [prefersDark, setPrefersDark] = useState(
     () => typeof window !== "undefined" && window.matchMedia(DARK_QUERY).matches,
@@ -89,9 +82,7 @@ export function AppThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeModeContext.Provider value={value}>
-      <FluentProvider theme={theme} className={styles.provider}>
-        {children}
-      </FluentProvider>
+      <FluentProvider theme={theme}>{children}</FluentProvider>
     </ThemeModeContext.Provider>
   );
 }

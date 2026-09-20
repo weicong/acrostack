@@ -1,17 +1,11 @@
 /**
  * 用户工具栏：搜索（300ms 防抖）与新建用户。
- * 排布交给共用的 ListToolbar，保证与其它列表页操作位置一致。
+ * 排布交给共用的 ListToolbar；本文件不含任何自定义样式。
  */
 import { useEffect, useState } from "react";
-import { Button, SearchBox, makeStyles } from "@fluentui/react-components";
+import { Button, SearchBox } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
 import { ListToolbar } from "@/components/ui/ListToolbar";
-
-const useStyles = makeStyles({
-  search: {
-    width: "100%",
-  },
-});
 
 interface UsersToolbarProps {
   onCreate: () => void;
@@ -20,7 +14,6 @@ interface UsersToolbarProps {
 }
 
 export function UsersToolbar({ onCreate, onGlobalFilterChange }: UsersToolbarProps) {
-  const styles = useStyles();
   const [searchValue, setSearchValue] = useState("");
 
   // 搜索防抖：300ms 后同步到表格全局过滤
@@ -36,7 +29,6 @@ export function UsersToolbar({ onCreate, onGlobalFilterChange }: UsersToolbarPro
       label="用户筛选与操作"
       search={
         <SearchBox
-          className={styles.search}
           placeholder="按用户名或邮箱搜索"
           aria-label="搜索用户"
           appearance="outline"

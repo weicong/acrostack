@@ -1,80 +1,36 @@
-import { ArrowExit20Regular, Navigation20Regular } from "@fluentui/react-icons";
+import { ArrowExit20Regular } from "@fluentui/react-icons";
+import { useAppShellMobile } from "@acrostack/app-shell";
 import {
   Breadcrumb,
   BreadcrumbDivider,
   BreadcrumbItem,
   Button,
-  makeStyles,
   Text,
-  shorthands,
-  tokens,
+  Toolbar,
 } from "@fluentui/react-components";
 import { UserMenu } from "./UserMenu";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { useShellMenu } from "./shellMenu";
-import { DESKTOP_MEDIA_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
-
-const useStyles = makeStyles({
-  bar: {
-    display: "flex",
-    alignItems: "center",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-    width: "100%",
-    minWidth: 0,
-  },
-  navButton: {
-    flexShrink: 0,
-    "@media (min-width: 1024px)": {
-      display: "none",
-    },
-  },
-  crumbs: {
-    minWidth: 0,
-    ...shorthands.overflow("hidden"),
-  },
-  crumbMuted: {
-    color: tokens.colorNeutralForeground3,
-  },
-  actions: {
-    marginLeft: "auto",
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    ...shorthands.gap(tokens.spacingHorizontalXS),
-  },
-});
-
-interface HeaderProps {
-  /** 窄屏下打开导航抽屉。 */
-  onOpenNav: () => void;
-}
 
 /**
- * 顶栏：左侧为「导航开关（窄屏）+ 当前位置」，右侧为外观切换与账户区。
- * 面包屑显示所属分组与当前页面，窄屏下只保留当前页面，避免挤压。
+ * 顶栏内容：左侧当前位置（面包屑），右侧外观切换与账户区。
+ *
+ * 布局与窄屏行为（汉堡开关、侧栏收进抽屉）由 `@acrostack/app-shell` 提供：
+ * 这里只根据 `useAppShellMobile()` 决定窄屏下是否省略分组名，不含任何样式。
  */
-export function Header({ onOpenNav }: HeaderProps) {
-  const styles = useStyles();
-  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
+export function Header() {
+  const { isMobile } = useAppShellMobile();
   const { isAuthenticated, isLoading, login } = useAuth();
   const { activeGroupCaption, activeItem } = useShellMenu();
 
   return (
-    <div className={styles.bar}>
-      <Button
-        className={styles.navButton}
-        appearance="subtle"
-        icon={<Navigation20Regular />}
-        aria-label="打开导航"
-        onClick={onOpenNav}
-      />
-
-      <Breadcrumb aria-label="当前位置" className={styles.crumbs}>
-        {isDesktop && activeGroupCaption && (
+    <>
+      <Breadcrumb aria-label="当前位置">
+        {!isMobile && activeGroupCaption && (
           <>
             <BreadcrumbItem>
-              <Text className={styles.crumbMuted}>{activeGroupCaption}</Text>
+              <Text>{activeGroupCaption}</Text>
             </BreadcrumbItem>
             <BreadcrumbDivider />
           </>
@@ -86,7 +42,7 @@ export function Header({ onOpenNav }: HeaderProps) {
         )}
       </Breadcrumb>
 
-      <div className={styles.actions}>
+      <Toolbar aria-label="外观与账户">
         <ThemeSwitcher />
         {!isLoading &&
           (isAuthenticated ? (
@@ -96,7 +52,7 @@ export function Header({ onOpenNav }: HeaderProps) {
               登录
             </Button>
           ))}
-      </div>
-    </div>
+      </Toolbar>
+    </>
   );
 }

@@ -1,47 +1,13 @@
-import { useEffect, useState } from "react";
-import { Outlet, useRouterState } from "@tanstack/react-router";
+import { Outlet } from "@tanstack/react-router";
+import { AppShell } from "@acrostack/app-shell";
 import { makeStyles, shorthands, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
+import { Sidebar, SidebarNav } from "./Sidebar";
 import { ImpersonationBanner } from "./ImpersonationBanner";
-import { DESKTOP_MEDIA_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
 
 const useStyles = makeStyles({
-  shell: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: tokens.colorNeutralBackground2,
-  },
-  body: {
-    ...shorthands.flex(1),
-    minWidth: 0,
-    display: "flex",
-    flexDirection: "column",
-  },
-  topbar: {
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    minHeight: "56px",
-    paddingTop: tokens.spacingVerticalXS,
-    paddingBottom: tokens.spacingVerticalXS,
-    paddingLeft: tokens.spacingHorizontalM,
-    paddingRight: tokens.spacingHorizontalM,
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderBottomWidth: tokens.strokeWidthThin,
-    borderBottomStyle: "solid",
-    borderBottomColor: tokens.colorNeutralStroke2,
-  },
+  // 长行可读性：内容区居中并限宽（外壳自身的两列与留白由 AppShell 负责）
   content: {
-    ...shorthands.flex(1),
-    minHeight: 0,
-    overflowY: "auto",
-    ...shorthands.padding(tokens.spacingVerticalL, tokens.spacingHorizontalM),
-    "@media (min-width: 1024px)": {
-      ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalXXL),
-    },
-  },
-  contentInner: {
     width: "100%",
     maxWidth: "1440px",
     marginLeft: "auto",
@@ -50,61 +16,31 @@ const useStyles = makeStyles({
     flexDirection: "column",
     ...shorthands.gap(tokens.spacingVerticalL),
   },
-  skipLink: {
-    position: "absolute",
-    top: tokens.spacingVerticalS,
-    left: "-9999px",
-    zIndex: 1000,
-    ...shorthands.padding(tokens.spacingVerticalS, tokens.spacingHorizontalM),
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorNeutralBackground1,
-    color: tokens.colorNeutralForeground1,
-    boxShadow: tokens.shadow8,
-    ":focus": {
-      left: tokens.spacingHorizontalM,
-    },
-  },
 });
 
 /**
- * 管理后台外壳：侧边导航 + 顶栏 + 内容区。
+ * 管理后台布局：外壳交给 `@acrostack/app-shell`。
  *
- * 响应式策略：
- *   - 宽屏（≥1024px）侧边导航常驻，内容区居中且限宽，保证长行可读性；
- *   - 窄屏导航收进浮层抽屉（由顶栏按钮打开），切换路由后自动收起；
- *   - 切换页面只替换 <Outlet />，外壳不重建，导航滚动位置与抽屉状态不丢。
+ * 槽位映射：`topNav` = 顶栏（含面包屑与账户区）、`sideNav` = 常驻侧栏、
+ * `banner` = 模拟登录提示、`children` = 当前页面（`<Outlet />`）。
+ * 窄屏（< lg）时 AppShell 把侧栏收进浮层抽屉并自动渲染汉堡开关，
+ * 抽屉内容复用同一份 `SidebarNav`。
  */
 export function AppLayout() {
   const styles = useStyles();
-  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
-  const [navOpen, setNavOpen] = useState(false);
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
-
-  useEffect(() => {
-    setNavOpen(false);
-  }, [pathname]);
 
   return (
-    <div className={styles.shell}>
-      <a className={styles.skipLink} href="#main-content">
-        跳到主要内容
-      </a>
-
-      {isDesktop && <Sidebar variant="inline" />}
-
-      <div className={styles.body}>
-        <header className={styles.topbar}>
-          <Header onOpenNav={() => setNavOpen(true)} />
-        </header>
-        <main id="main-content" className={styles.content} tabIndex={-1}>
-          <div className={styles.contentInner}>
-            <ImpersonationBanner />
-            <Outlet />
-          </div>
-        </main>
+    <AppShell
+      variant="elevated"
+      contentPadding={6}
+      mobileNav={{ hasToggle: true, breakpoint: "lg", content: <SidebarNav /> }}
+      banner={<ImpersonationBanner />}
+      topNav={<Header />}
+      sideNav={<Sidebar />}
+    >
+      <div className={styles.content}>
+        <Outlet />
       </div>
-
-      {!isDesktop && navOpen && <Sidebar variant="overlay" open onOpenChange={setNavOpen} />}
-    </div>
+    </AppShell>
   );
 }

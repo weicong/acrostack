@@ -1,31 +1,18 @@
 import { useNavigate } from "@tanstack/react-router";
-import {
-  Button,
-  Card,
-  CardHeader,
-  Text,
-  Title3,
-  makeStyles,
-  shorthands,
-  tokens,
-} from "@fluentui/react-components";
+import { Button, Card, CardHeader, makeStyles, Text, Title3 } from "@fluentui/react-components";
 import { ShieldError20Regular } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 const useStyles = makeStyles({
+  // 说明卡片不需要占满整行，限宽以保证可读性
   card: {
     maxWidth: "560px",
-  },
-  actions: {
-    display: "flex",
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
   },
 });
 
 /**
  * 403 页面：说明「为什么进不来」以及「下一步怎么做」，
- * 并给出明确出口（返回首页），避免用户卡在死胡同。
+ * 并给出明确出口（返回首页）。卡片内只有一个按钮，直接作为 Card 子元素即可。
  */
 export function ForbiddenPage() {
   const styles = useStyles();
@@ -45,11 +32,9 @@ export function ForbiddenPage() {
             <Text>请联系管理员为你的账号（或所属角色）分配相应权限，然后重新打开该页面。</Text>
           }
         />
-        <div className={styles.actions}>
-          <Button appearance="primary" onClick={() => void navigate({ to: "/admin" })}>
-            返回首页
-          </Button>
-        </div>
+        <Button appearance="primary" onClick={() => void navigate({ to: "/admin" })}>
+          返回首页
+        </Button>
       </Card>
     </PageLayout>
   );

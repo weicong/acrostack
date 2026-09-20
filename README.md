@@ -9,7 +9,7 @@ main/AcroStack/        组合根（宿主）：AcroStackModule、唯一 AcroStac
 │                      EF 迁移、种子、Swagger、HomeController。不含业务逻辑。
 modules/
 │  └── AcroStack.Impersonation   自研模块：用户模拟登录（对应 ABP Account Pro 的 impersonation）
-react/                 React 19 SPA（Vite+ 工具链，TanStack Router/Query/Form，Fluent UI v9）
+react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 19 SPA、packages/app-shell = 布局基座
 ```
 
 要点：
@@ -19,7 +19,7 @@ react/                 React 19 SPA（Vite+ 工具链，TanStack Router/Query/Fo
 - 数据库为 SQLite（`main/AcroStack/AcroStack.db`）。宿主**禁用了全局 UoW 事务**（SQLite 单写者限制），跨聚合写入必须走显式事务。
 - **Mapperly** 做对象映射（非 AutoMapper）。
 - **自动 API**：应用服务按约定暴露为 REST 端点；仅 `HomeController` 手写。
-- 前端 `react/src/api/` 由 **Kubb** 从 Swagger 生成，禁止手改。
+- 前端 `react/apps/web/src/api/` 由 **Kubb** 从 Swagger 生成，禁止手改。
 
 ## 模块一览
 
@@ -57,7 +57,8 @@ vp dev                                     # http://localhost:5173
 | [AGENTS.md](AGENTS.md) | 架构约定、命令、编码规范（最权威，随代码同步维护） |
 | `.agents/skills/` | ABP 各专题模式沉淀（应用层、DDD、EF Core、多租户等） |
 | `modules/*/README.md` | 各模块的业务场景、对应关系、关键设计决策 |
-| [react/README.md](react/README.md) / [react/AGENTS.md](react/AGENTS.md) | 前端技术栈、目录结构、工具链与准入规则 |
+| [react/README.md](react/README.md) | 前端工作区（Monorepo）结构、命令与约定 |
+| [react/apps/web/README.md](react/apps/web/README.md) / [react/apps/web/AGENTS.md](react/apps/web/AGENTS.md) | 应用技术栈、目录结构、样式准则与准入规则 |
 | `docs/archive/` | 已完结的过程性文档（交接、修复计划），仅作历史参考 |
 
 维护规则：新增/重命名模块时同步更新该模块 README 与本文件的模块一览；过程性文档完成后移入 `docs/archive/`。
@@ -71,7 +72,7 @@ dotnet dev-certs https -v -ep openiddict.pfx -p <your-password>
 ```
 
 - 生产 OpenIddict 证书等配置见 `main/AcroStack/appsettings.json`（证书口令经环境变量 `AuthServer__CertificatePassPhrase` 或 `appsettings.secrets.json` 提供）。
-- 前端 Docker 部署见 [react/README.md](react/README.md)，支持 `dynamic-env.json` 运行时覆盖环境变量（无需重新构建）。
+- 前端 Docker 部署见 [react/apps/web/README.md](react/apps/web/README.md)，支持 `dynamic-env.json` 运行时覆盖环境变量（无需重新构建）。
 - 参考部署脚本：`etc/build/`（镜像构建）、`etc/docker/`（docker-compose）。
 
 ## 相关资源

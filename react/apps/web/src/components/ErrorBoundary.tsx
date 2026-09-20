@@ -6,6 +6,7 @@ import {
   FluentProvider,
   Text,
   Title3,
+  Toolbar,
   makeStyles,
   shorthands,
   tokens,
@@ -13,25 +14,18 @@ import {
 import { getPreferredTheme } from "@/lib/theme/ThemeProvider";
 
 const useStyles = makeStyles({
-  provider: {
-    height: "100%",
-  },
   root: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "100%",
+    minHeight: "100dvh",
     ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalL),
     backgroundColor: tokens.colorNeutralBackground2,
   },
+  // 说明卡片不需要占满整行，限宽以保证可读性
   card: {
     width: "100%",
     maxWidth: "480px",
-  },
-  actions: {
-    display: "flex",
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
   },
 });
 
@@ -40,7 +34,7 @@ function ErrorFallback({ onRetry }: { onRetry: () => void }) {
   const styles = useStyles();
 
   return (
-    <FluentProvider theme={getPreferredTheme()} className={styles.provider}>
+    <FluentProvider theme={getPreferredTheme()}>
       <div className={styles.root}>
         <Card className={styles.card}>
           <CardHeader
@@ -55,12 +49,12 @@ function ErrorFallback({ onRetry }: { onRetry: () => void }) {
               </Text>
             }
           />
-          <div className={styles.actions}>
+          <Toolbar aria-label="错误处理">
             <Button appearance="primary" onClick={onRetry}>
               重试
             </Button>
             <Button onClick={() => window.location.reload()}>刷新页面</Button>
-          </div>
+          </Toolbar>
         </Card>
       </div>
     </FluentProvider>
@@ -79,8 +73,8 @@ interface ErrorBoundaryState {
  * 全局错误边界：捕获渲染期未处理错误，避免整页白屏。
  *
  * 它位于应用最外层（App 的 FluentProvider 之外），因此兜底界面自带一个
- * FluentProvider —— 这样错误页依然使用 Fluent 组件与令牌，
- * 并按用户已选/系统偏好的明暗外观展示。
+ * FluentProvider——错误页依然使用 Fluent 组件与令牌，并按用户已选/系统偏好的
+ * 明暗外观展示；高度由自身 `100dvh` 提供，无需上层约束。
  */
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false };

@@ -4,7 +4,7 @@ services:
     container_name: acrostack-web
     build:
       context: ../../../
-      dockerfile: react/Dockerfile
+      dockerfile: react/apps/web/Dockerfile
     ports:
       - "5173:80"
     depends_on:

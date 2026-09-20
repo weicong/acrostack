@@ -14,8 +14,8 @@ import {
   MenuList,
   MenuPopover,
   MenuTrigger,
-  makeStyles,
   Text,
+  makeStyles,
   shorthands,
   tokens,
 } from "@fluentui/react-components";
@@ -24,23 +24,19 @@ import { useCurrentUser } from "@/lib/auth/permissions";
 import { getBackendAccountUrl } from "@/lib/runtimeConfig";
 
 const useStyles = makeStyles({
-  trigger: {
-    maxWidth: "220px",
-  },
+  // 用户名过长时截断，避免把顶栏撑开
   triggerText: {
-    ...shorthands.overflow("hidden"),
+    maxWidth: "180px",
+    overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+  // 菜单顶部的身份区：与菜单项左内边距对齐
   account: {
     display: "flex",
     flexDirection: "column",
     ...shorthands.gap(tokens.spacingVerticalXXS),
     ...shorthands.padding(tokens.spacingVerticalXS, tokens.spacingHorizontalM),
-    minWidth: "200px",
-  },
-  muted: {
-    color: tokens.colorNeutralForeground3,
   },
 });
 
@@ -64,11 +60,7 @@ export function UserMenu() {
   return (
     <Menu>
       <MenuTrigger>
-        <Button
-          className={styles.trigger}
-          appearance="subtle"
-          aria-label={`账户菜单：${displayFullName}`}
-        >
+        <Button appearance="subtle" aria-label={`账户菜单：${displayFullName}`}>
           <Avatar name={displayFullName} size={24} color="colorful" />
           {displayName && (
             <Text className={styles.triggerText} weight="medium">
@@ -82,9 +74,7 @@ export function UserMenu() {
           <div className={styles.account}>
             <Text weight="semibold">{displayFullName}</Text>
             {displayEmailAddress && displayEmailAddress !== displayFullName && (
-              <Text size={200} className={styles.muted}>
-                {displayEmailAddress}
-              </Text>
+              <Text size={200}>{displayEmailAddress}</Text>
             )}
           </div>
           <MenuDivider />

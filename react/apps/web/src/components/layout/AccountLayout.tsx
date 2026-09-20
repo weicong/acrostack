@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { makeStyles, Text, Title3, shorthands, tokens } from "@fluentui/react-components";
+import { makeStyles, shorthands, Text, Title3, tokens } from "@fluentui/react-components";
 import type { ReactNode } from "react";
 import { getApplicationName } from "@/lib/runtimeConfig";
 
@@ -9,30 +9,24 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    minHeight: "100dvh",
     ...shorthands.gap(tokens.spacingVerticalL),
-    minHeight: "100%",
     ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalL),
     backgroundColor: tokens.colorNeutralBackground2,
   },
   container: {
     display: "flex",
     flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalL),
     width: "100%",
     maxWidth: "440px",
+    ...shorthands.gap(tokens.spacingVerticalL),
   },
   brand: {
     display: "flex",
     flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalXS),
     alignItems: "center",
     textAlign: "center",
-  },
-  brandSubtitle: {
-    color: tokens.colorNeutralForeground3,
-  },
-  footer: {
-    color: tokens.colorNeutralForeground3,
+    ...shorthands.gap(tokens.spacingVerticalXS),
   },
   link: {
     color: tokens.colorBrandForegroundLink,
@@ -41,7 +35,7 @@ const useStyles = makeStyles({
 
 /**
  * 匿名账户区布局（登录/注册/找回密码等）：
- * 居中窄栏、品牌标题在上、返回入口在下，窄屏自动收边距。
+ * 居中窄栏、品牌标题在上、返回入口在下；高度自持（100dvh），窄屏自动收边距。
  */
 export function AccountLayout({ children }: { children: ReactNode }) {
   const styles = useStyles();
@@ -52,11 +46,11 @@ export function AccountLayout({ children }: { children: ReactNode }) {
       <div className={styles.container}>
         <div className={styles.brand}>
           <Title3 as="h1">{appName}</Title3>
-          <Text className={styles.brandSubtitle}>请登录以继续</Text>
+          <Text>请登录以继续</Text>
         </div>
         {children}
       </div>
-      <Text as="p" size={200} className={styles.footer}>
+      <Text as="p" size={200}>
         <Link to="/" className={styles.link}>
           返回应用首页
         </Link>

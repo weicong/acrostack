@@ -1,0 +1,25 @@
+{
+  "name": "@acrostack/workspace",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp -C apps/web dev",
+    "build": "vp -C apps/web build",
+    "preview": "vp -C apps/web preview",
+    "check": "vp check --fix",
+    "test": "vp test",
+    "generate-api": "vp -C apps/web run generate-api"
+  },
+  "devDependencies": {
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.8.0",
+      "onFail": "download"
+    }
+  }
+}
