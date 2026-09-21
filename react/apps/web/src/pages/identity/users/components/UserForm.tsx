@@ -1,5 +1,5 @@
 import { useEffect, useMemo, type ReactNode } from "react";
-import { useAppForm, type ComboboxOption } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm, type ComboboxOption } from "@/components/ui/form";
 import { useUserCreate } from "@/api/hooks/user/useUserCreate";
 import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
 import { useUserGetAssignableRoles } from "@/api/hooks/user/useUserGetAssignableRoles";
@@ -102,7 +102,7 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
 
   return (
     <form.AppForm>
-      <form
+      <FormStack
         onSubmit={(e) => {
           e.preventDefault();
           void form.handleSubmit();
@@ -144,9 +144,11 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
           name="lockoutEnabled"
           children={(field) => <field.SwitchField label={"启用锁定"} />}
         />
-        <form.SubmitButton label={isEdit ? "保存" : "创建"} />
-        {footer}
-      </form>
+        <FormActions>
+          {footer}
+          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
+        </FormActions>
+      </FormStack>
     </form.AppForm>
   );
 }

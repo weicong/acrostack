@@ -120,13 +120,22 @@ export function useShellMenu(): ShellMenuState {
 
   // 最长路径匹配优先：/admin 是 /admin/identity/users 的前缀，
   // 必须选中更深的那一项，否则面包屑与选中态会停在父级。
+  //
+  // 但「索引项」只允许精确匹配：/admin（首页）是所有后台路由的前缀，
+  // 若按前缀命中，访问 /admin/profile 这类非菜单页会错误地显示为「首页」。
   const active = useMemo(() => {
+    const allPaths = groups.flatMap((group) => group.items.map((item) => item.path));
+    const isIndexPath = (path: string) =>
+      allPaths.some((other) => other !== path && other.startsWith(path + "/"));
+
     let best: { item: ShellMenuItem; caption: string } | undefined;
     for (const group of groups) {
       for (const item of group.items) {
-        if (item.externalHref || !isActivePath(pathname, item.path)) {
-          continue;
-        }
+        if (item.externalHref) continue;
+        const matched = isIndexPath(item.path)
+          ? pathname === item.path
+          : isActivePath(pathname, item.path);
+        if (!matched) continue;
         if (!best || item.path.length > best.item.path.length) {
           best = { item, caption: group.caption };
         }

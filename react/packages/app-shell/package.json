@@ -3,21 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts"
   },
-  "types": "./src/index.ts",
   "dependencies": {
     "@fluentui/react-components": "^9.74.7",
     "@fluentui/react-icons": "^2.0.339"
-  },
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

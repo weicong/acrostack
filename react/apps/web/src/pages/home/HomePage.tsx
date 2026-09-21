@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   info: {
     display: "grid",
     gridTemplateColumns: "minmax(96px, auto) 1fr",
-    rowGap: tokens.spacingVerticalS,
+    rowGap: tokens.spacingVerticalM,
     columnGap: tokens.spacingHorizontalL,
     ...shorthands.margin(0),
   },

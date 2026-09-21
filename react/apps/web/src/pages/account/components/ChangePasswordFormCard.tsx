@@ -1,5 +1,5 @@
 import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { passwordSchema } from "../schemas/profile";
@@ -44,7 +44,7 @@ export function ChangePasswordFormCard() {
     <Card>
       <CardHeader header={<Text weight="semibold">修改密码</Text>} />
       <form.AppForm>
-        <form
+        <FormStack
           onSubmit={(e) => {
             e.preventDefault();
             void form.handleSubmit();
@@ -68,8 +68,10 @@ export function ChangePasswordFormCard() {
               <field.TextField label={"确认新密码"} required inputProps={{ type: "password" }} />
             )}
           />
-          <form.SubmitButton label={"保存"} />
-        </form>
+          <FormActions>
+            <form.SubmitButton label={"保存"} />
+          </FormActions>
+        </FormStack>
       </form.AppForm>
     </Card>
   );

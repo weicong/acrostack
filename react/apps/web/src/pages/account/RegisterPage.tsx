@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Card, CardHeader, MessageBar, MessageBarBody, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 
@@ -56,7 +56,7 @@ export function RegisterPage() {
         header={<Text weight="semibold">注册</Text>}
         description={<Text size={200}>创建新账户</Text>}
       />
-      <form
+      <FormStack
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -105,12 +105,14 @@ export function RegisterPage() {
           )}
         />
         <form.AppForm>
-          <form.SubmitButton label={"注册"} />
+          <FormActions>
+            <form.SubmitButton label={"注册"} />
+          </FormActions>
         </form.AppForm>
         <Text as="p" size={200} block>
           {"已经有账户了？"} <Link to="/account/login">{"登录"}</Link>
         </Text>
-      </form>
+      </FormStack>
     </Card>
   );
 }

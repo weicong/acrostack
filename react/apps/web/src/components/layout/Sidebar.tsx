@@ -13,6 +13,7 @@ import {
   type NavDrawerProps,
 } from "@fluentui/react-components";
 import { getApplicationName } from "@/lib/runtimeConfig";
+import { BrandMark } from "./BrandMark";
 import { useShellMenu } from "./shellMenu";
 
 const useStyles = makeStyles({
@@ -21,19 +22,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     ...shorthands.gap(tokens.spacingHorizontalS),
     ...shorthands.padding(tokens.spacingVerticalXS, 0),
-  },
-  brandMark: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
-    width: "32px",
-    height: "32px",
-    borderRadius: tokens.borderRadiusMedium,
-    backgroundColor: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
-    fontSize: tokens.fontSizeBase400,
-    fontWeight: tokens.fontWeightSemibold,
   },
   brandText: {
     display: "flex",
@@ -85,9 +73,7 @@ export function SidebarNav() {
     <>
       <NavDrawerHeader>
         <div className={styles.brand}>
-          <span className={styles.brandMark} aria-hidden="true">
-            {appName.charAt(0).toUpperCase()}
-          </span>
+          <BrandMark name={appName} />
           <span className={styles.brandText}>
             <Text weight="semibold">{appName}</Text>
             <Text size={200}>管理后台</Text>

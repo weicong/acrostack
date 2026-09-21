@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
@@ -72,7 +72,7 @@ export function ProfileFormCard() {
     <Card>
       <CardHeader header={<Text weight="semibold">个人设置</Text>} />
       <form.AppForm>
-        <form
+        <FormStack
           onSubmit={(e) => {
             e.preventDefault();
             void form.handleSubmit();
@@ -92,8 +92,10 @@ export function ProfileFormCard() {
             name="phoneNumber"
             children={(field) => <field.TextField label={"手机号"} />}
           />
-          <form.SubmitButton label={"保存"} />
-        </form>
+          <FormActions>
+            <form.SubmitButton label={"保存"} />
+          </FormActions>
+        </FormStack>
       </form.AppForm>
     </Card>
   );

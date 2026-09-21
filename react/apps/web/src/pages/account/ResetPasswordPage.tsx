@@ -10,7 +10,7 @@ import {
   Text,
 } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 
@@ -74,7 +74,7 @@ export function ResetPasswordPage() {
         header={<Text weight="semibold">重置密码</Text>}
         description={<Text size={200}>请输入您的新密码。</Text>}
       />
-      <form
+      <FormStack
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -108,12 +108,14 @@ export function ResetPasswordPage() {
           )}
         />
         <form.AppForm>
-          <form.SubmitButton label={"重置密码"} />
+          <FormActions>
+            <form.SubmitButton label={"重置密码"} />
+          </FormActions>
         </form.AppForm>
         <Text as="p" size={200} block>
           <Link to="/account/login">{"登录"}</Link>
         </Text>
-      </form>
+      </FormStack>
     </Card>
   );
 }

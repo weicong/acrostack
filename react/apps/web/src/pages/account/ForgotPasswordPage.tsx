@@ -10,7 +10,7 @@ import {
   Text,
 } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 const forgotPasswordSchema = z.object({
@@ -56,7 +56,7 @@ export function ForgotPasswordPage() {
         header={<Text weight="semibold">忘记密码？</Text>}
         description={<Text size={200}>输入您的邮箱地址，我们将向您发送重置密码的链接。</Text>}
       />
-      <form
+      <FormStack
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -78,12 +78,14 @@ export function ForgotPasswordPage() {
           )}
         />
         <form.AppForm>
-          <form.SubmitButton label={"提交"} />
+          <FormActions>
+            <form.SubmitButton label={"提交"} />
+          </FormActions>
         </form.AppForm>
         <Text as="p" size={200} block>
           <Link to="/account/login">{"返回应用"}</Link>
         </Text>
-      </form>
+      </FormStack>
     </Card>
   );
 }

@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import { Text, Title2, Toolbar, makeStyles, shorthands, tokens } from "@fluentui/react-components";
+import { usePageTitle } from "@/lib/usePageTitle";
 
 const useStyles = makeStyles({
   page: {
@@ -19,7 +20,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   description: {
-    marginTop: tokens.spacingVerticalXS,
+    /* 标题与说明之间留一档（S=8），避免说明贴住标题 */
+    marginTop: tokens.spacingVerticalS,
     maxWidth: "72ch",
     color: tokens.colorNeutralForeground3,
   },
@@ -61,6 +63,8 @@ export function PageLayout({
   children,
 }: PageLayoutProps) {
   const styles = useStyles();
+  // 页面名同时用于浏览器标签页与顶栏面包屑（非菜单页也能显示正确位置）
+  usePageTitle(title);
 
   return (
     <div className={styles.page}>

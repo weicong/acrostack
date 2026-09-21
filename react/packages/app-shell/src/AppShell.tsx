@@ -129,10 +129,7 @@ function useMediaQuery(query: string): boolean {
 /** 配置对象与 React 节点（逃生舱）的判别：元素一律当内容。 */
 function isMobileNavConfig(value: unknown): value is MobileNavConfig {
   return (
-    typeof value === "object" &&
-    value !== null &&
-    !Array.isArray(value) &&
-    !isValidElement(value)
+    typeof value === "object" && value !== null && !Array.isArray(value) && !isValidElement(value)
   );
 }
 
@@ -168,11 +165,16 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     ...shorthands.gap(tokens.spacingHorizontalS),
-    ...shorthands.padding(tokens.spacingVerticalXS, tokens.spacingHorizontalM),
+    /* 纵向 S(8)：配合 32px 的按钮得到 48px 的顶栏高度；横向与主内容留白同档（L=16），
+       使左侧定位元素与下方内容左边缘对齐 */
+    ...shorthands.padding(tokens.spacingVerticalS, tokens.spacingHorizontalL),
   },
   topNavContent: {
     display: "flex",
     alignItems: "center",
+    /* 顶栏两端对齐：定位/品牌在左，操作区在右 */
+    justifyContent: "space-between",
+    ...shorthands.gap(tokens.spacingHorizontalL),
     flexGrow: 1,
     minWidth: 0,
   },

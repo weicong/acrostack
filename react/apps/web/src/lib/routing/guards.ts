@@ -34,6 +34,13 @@ export async function authGuard({ location }: GuardContext) {
     });
     throw new RedirectingError();
   }
+
+  // 已登录即确保应用配置（当前用户、权限）已加载。
+  // 只做登录检查的路由（如个人信息页）同样依赖它渲染侧栏菜单、
+  // 用户区与面包屑；否则冷加载/刷新这类页面时配置为空，
+  // 侧栏会缩到只剩「首页」。createPermissionGuard 会再次调用，
+  // 由 TanStack Query 去重，不产生额外请求。
+  await ensureAppConfig(queryClient);
 }
 
 /**

@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
 import { useRoleUpdate } from "@/api/hooks/role/useRoleUpdate";
 import type { RoleFormRole } from "../types/role";
@@ -63,7 +63,7 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
 
   return (
     <form.AppForm>
-      <form
+      <FormStack
         onSubmit={(e) => {
           e.preventDefault();
           void form.handleSubmit();
@@ -80,9 +80,11 @@ export function RoleForm({ role, onSuccess, footer }: RoleFormProps) {
           children={(field) => <field.SwitchField label={"默认"} />}
         />
         <form.AppField name="isPublic" children={(field) => <field.SwitchField label={"公开"} />} />
-        <form.SubmitButton label={isEdit ? "保存" : "创建"} />
-        {footer}
-      </form>
+        <FormActions>
+          {footer}
+          <form.SubmitButton label={isEdit ? "保存" : "创建"} />
+        </FormActions>
+      </FormStack>
     </form.AppForm>
   );
 }
