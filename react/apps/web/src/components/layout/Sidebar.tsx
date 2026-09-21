@@ -3,31 +3,16 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   NavDrawer,
   NavDrawerBody,
-  NavDrawerHeader,
   NavItem,
   NavSectionHeader,
-  Text,
   makeStyles,
   shorthands,
   tokens,
   type NavDrawerProps,
 } from "@fluentui/react-components";
-import { getApplicationName } from "@/lib/runtimeConfig";
-import { BrandMark } from "./BrandMark";
 import { useShellMenu } from "./shellMenu";
 
 const useStyles = makeStyles({
-  brand: {
-    display: "flex",
-    alignItems: "center",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-    ...shorthands.padding(tokens.spacingVerticalXS, 0),
-  },
-  brandText: {
-    display: "flex",
-    flexDirection: "column",
-    minWidth: 0,
-  },
   body: {
     display: "flex",
     flexDirection: "column",
@@ -59,7 +44,7 @@ function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
 }
 
 /**
- * 导航内容（品牌区 + 分组条目）。
+ * 导航内容（分组条目）。品牌标识常驻顶栏（见 `Header`），侧栏不再重复展示。
  *
  * 与容器解耦：宽屏由 `Sidebar` 放进常驻侧栏，窄屏由 `@acrostack/app-shell`
  * 自动生成的移动抽屉原样复用同一份内容。
@@ -67,45 +52,32 @@ function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
 export function SidebarNav() {
   const styles = useStyles();
   const { groups } = useShellMenu();
-  const appName = getApplicationName();
 
   return (
-    <>
-      <NavDrawerHeader>
-        <div className={styles.brand}>
-          <BrandMark name={appName} />
-          <span className={styles.brandText}>
-            <Text weight="semibold">{appName}</Text>
-            <Text size={200}>管理后台</Text>
-          </span>
-        </div>
-      </NavDrawerHeader>
+    <NavDrawerBody className={styles.body}>
+      {groups.map((group) => (
+        <Fragment key={group.caption}>
+          <NavSectionHeader>{group.caption}</NavSectionHeader>
+          {group.items.map((item) => {
+            const Icon = item.icon;
+            const isExternal = Boolean(item.externalHref);
 
-      <NavDrawerBody className={styles.body}>
-        {groups.map((group) => (
-          <Fragment key={group.caption}>
-            <NavSectionHeader>{group.caption}</NavSectionHeader>
-            {group.items.map((item) => {
-              const Icon = item.icon;
-              const isExternal = Boolean(item.externalHref);
-
-              return (
-                <NavItem
-                  key={item.path}
-                  value={item.path}
-                  href={isExternal ? item.externalHref : undefined}
-                  target={isExternal ? (item.externalTarget ?? "_blank") : undefined}
-                  rel={isExternal ? item.externalRel : undefined}
-                  icon={Icon ? <Icon /> : undefined}
-                >
-                  {item.name}
-                </NavItem>
-              );
-            })}
-          </Fragment>
-        ))}
-      </NavDrawerBody>
-    </>
+            return (
+              <NavItem
+                key={item.path}
+                value={item.path}
+                href={isExternal ? item.externalHref : undefined}
+                target={isExternal ? (item.externalTarget ?? "_blank") : undefined}
+                rel={isExternal ? item.externalRel : undefined}
+                icon={Icon ? <Icon /> : undefined}
+              >
+                {item.name}
+              </NavItem>
+            );
+          })}
+        </Fragment>
+      ))}
+    </NavDrawerBody>
   );
 }
 
