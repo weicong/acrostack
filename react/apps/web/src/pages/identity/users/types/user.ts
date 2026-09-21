@@ -1,4 +1,4 @@
-import type { VoloAbpIdentityIdentityUserDto } from "@/api/models/volo/abp/identity/IdentityUserDto";
+import type { VoloAbpIdentityIdentityUserDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityUserDto";
 
 /** List item as returned by `GET /api/identity/users` (ABP Identity, open source).
  * Feature-local alias so pages don't depend on the generated (Kubb) type name directly. */

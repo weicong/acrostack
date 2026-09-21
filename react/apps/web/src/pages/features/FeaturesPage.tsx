@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Spinner, Text, ToolbarButton } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useFeaturesGet } from "@/api/hooks/features/useFeaturesGet";
+import { useFeaturesGet } from "@acrostack/api-client/hooks/features/useFeaturesGet";
 import { ConfirmDialog } from "@acrostack/ui/dialog";
 import { FeatureGroupCard } from "./components/FeatureGroupCard";
 import { useFeatureActions } from "./hooks/useFeatureActions";

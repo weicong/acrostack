@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { Badge, Button } from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import { roleGetListQueryOptions } from "@/api/hooks/role/useRoleGetList";
+import { roleGetListQueryOptions } from "@acrostack/api-client/hooks/role/useRoleGetList";
 import { useDataTableState } from "@acrostack/ui/data-table";
 import { RowActions } from "@acrostack/ui/data-table";
 import { useDataTableQuery, type GridQueryParams } from "@/lib/data-table/useDataTableQuery";

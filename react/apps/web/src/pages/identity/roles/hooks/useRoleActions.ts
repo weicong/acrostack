@@ -6,8 +6,8 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
-import { roleGetListQueryKey } from "@/api/hooks/role/useRoleGetList";
-import { useRoleDelete } from "@/api/hooks/role/useRoleDelete";
+import { roleGetListQueryKey } from "@acrostack/api-client/hooks/role/useRoleGetList";
+import { useRoleDelete } from "@acrostack/api-client/hooks/role/useRoleDelete";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useRoleActions() {

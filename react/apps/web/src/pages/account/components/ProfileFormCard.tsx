@@ -1,8 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { useProfileGet, profileGetQueryKey } from "@/api/hooks/profile/useProfileGet";
-import { useProfileUpdate } from "@/api/hooks/profile/useProfileUpdate";
+import {
+  useProfileGet,
+  profileGetQueryKey,
+} from "@acrostack/api-client/hooks/profile/useProfileGet";
+import { useProfileUpdate } from "@acrostack/api-client/hooks/profile/useProfileUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { profileSchema } from "../schemas/profile";
 

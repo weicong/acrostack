@@ -9,7 +9,7 @@ import {
   useId,
 } from "@fluentui/react-components";
 import { AccessibleDialogSurface } from "@acrostack/ui/dialog";
-import { useUserGet } from "@/api/hooks/user/useUserGet";
+import { useUserGet } from "@acrostack/api-client/hooks/user/useUserGet";
 import { toFormUserFromIdentity, type UserFormUser } from "../types/user";
 import { UserForm } from "./UserForm";
 

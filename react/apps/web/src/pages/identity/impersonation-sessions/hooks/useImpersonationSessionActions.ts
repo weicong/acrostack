@@ -5,8 +5,8 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
-import { impersonationSessionGetListQueryKey } from "@/api/hooks/impersonationSession/useImpersonationSessionGetList";
-import { useImpersonationSessionRevoke } from "@/api/hooks/impersonationSession/useImpersonationSessionRevoke";
+import { impersonationSessionGetListQueryKey } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
+import { useImpersonationSessionRevoke } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionRevoke";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function useImpersonationSessionActions() {

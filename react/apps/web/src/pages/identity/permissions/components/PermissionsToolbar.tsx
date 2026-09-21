@@ -5,7 +5,7 @@
  * 并把两个下拉放进统一的工具栏排布中，与其它列表页保持一致。
  */
 import { Dropdown, Field, Option } from "@fluentui/react-components";
-import type { VoloAbpIdentityIdentityRoleDto } from "@/api/models/volo/abp/identity/IdentityRoleDto";
+import type { VoloAbpIdentityIdentityRoleDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityRoleDto";
 import { ListToolbar } from "@/components/ui/ListToolbar";
 import type { ProviderName } from "../utils/permissions";
 

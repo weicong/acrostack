@@ -8,9 +8,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, CardHeader, Checkbox, Spinner, Text } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { usePermissionsGet } from "@/api/hooks/permissions/usePermissionsGet";
-import { useRoleGetAllList } from "@/api/hooks/role/useRoleGetAllList";
-import type { VoloAbpPermissionManagementPermissionGroupDto } from "@/api/models/volo/abp/permissionManagement/PermissionGroupDto";
+import { usePermissionsGet } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
+import { useRoleGetAllList } from "@acrostack/api-client/hooks/role/useRoleGetAllList";
+import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
 import { type ProviderName, flattenPermissions } from "./utils/permissions";
 import { usePermissionActions } from "./hooks/usePermissionActions";
 import { PermissionsToolbar } from "./components/PermissionsToolbar";

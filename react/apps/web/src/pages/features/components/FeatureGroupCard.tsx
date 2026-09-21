@@ -3,7 +3,7 @@
  * 编辑值统一存放在父级的 valueMap 中，通过 onValueChange 回写，由父级统一保存。
  */
 import { Card, CardHeader, Input, Switch, Text } from "@fluentui/react-components";
-import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@/api/models/volo/abp/featureManagement/FeatureGroupDto";
+import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@acrostack/api-client/models/volo/abp/featureManagement/FeatureGroupDto";
 import { isBooleanFeature } from "../utils/features";
 
 interface FeatureGroupCardProps {

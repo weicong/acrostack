@@ -5,8 +5,8 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
-import { userGetListQueryKey } from "@/api/hooks/user/useUserGetList";
-import { useUserDelete } from "@/api/hooks/user/useUserDelete";
+import { userGetListQueryKey } from "@acrostack/api-client/hooks/user/useUserGetList";
+import { useUserDelete } from "@acrostack/api-client/hooks/user/useUserDelete";
 import { impersonateUser } from "@/lib/auth/impersonation";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import type { UserItem } from "./useUsersTable";

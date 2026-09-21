@@ -4,8 +4,9 @@
 
 ## 结构
 
-- `apps/web/` — React 19 SPA（TanStack Router/Query/Form、Fluent UI v9、Kubb、OIDC）。源码布局、样式准则与评审清单见 `apps/web/AGENTS.md`。
+- `apps/web/` — React 19 SPA（TanStack Router/Query/Form、Fluent UI v9、OIDC）。源码布局、样式准则与评审清单见 `apps/web/AGENTS.md`。
 - `packages/ui/` — `@acrostack/ui`：可复用 UI 组件包，子路径导出 `app-shell` / `data-table` / `dialog` / `form`（app-shell 对标 Astryx AppShell，槽位式 API，用 Fluent 实现）。域间零依赖、禁止导入应用层，约定见 `packages/ui/AGENTS.md`。
+- `packages/api-client/` — `@acrostack/api-client`：Kubb 从后端 Swagger 生成的 API 客户端（models / clients / hooks）+ 生成配置与工具链。**生成物禁止手改**；生成命令见 `packages/api-client/AGENTS.md`。
 - `vite.config.ts` — 工作区根配置：`lint`/`fmt` 默认值与 `overrides`（Vite+ **不支持**包级嵌套 lint 配置）、`defaultPackage: './apps/web'`。
 - `pnpm-workspace.yaml` — 工作区成员、`catalog`（工具链版本锁定）、`overrides`（`vite@*` → Vite+ core 别名，pnpm 必需）。
 

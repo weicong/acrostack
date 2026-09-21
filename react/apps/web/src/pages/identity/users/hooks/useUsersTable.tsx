@@ -14,7 +14,7 @@ import {
 } from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
-import { userGetListQueryOptions } from "@/api/hooks/user/useUserGetList";
+import { userGetListQueryOptions } from "@acrostack/api-client/hooks/user/useUserGetList";
 import { useDataTableState } from "@acrostack/ui/data-table";
 import { RowActions } from "@acrostack/ui/data-table";
 import { useDataTableQuery, type GridQueryParams } from "@/lib/data-table/useDataTableQuery";

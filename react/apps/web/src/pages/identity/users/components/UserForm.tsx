@@ -1,9 +1,9 @@
 import { useEffect, useMemo, type ReactNode } from "react";
 import { FormActions, FormStack, useAppForm, type ComboboxOption } from "@acrostack/ui/form";
-import { useUserCreate } from "@/api/hooks/user/useUserCreate";
-import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
-import { useUserGetAssignableRoles } from "@/api/hooks/user/useUserGetAssignableRoles";
-import { useUserGetRoles } from "@/api/hooks/user/useUserGetRoles";
+import { useUserCreate } from "@acrostack/api-client/hooks/user/useUserCreate";
+import { useUserUpdate } from "@acrostack/api-client/hooks/user/useUserUpdate";
+import { useUserGetAssignableRoles } from "@acrostack/api-client/hooks/user/useUserGetAssignableRoles";
+import { useUserGetRoles } from "@acrostack/api-client/hooks/user/useUserGetRoles";
 import type { UserFormUser } from "../types/user";
 import { createSchema, updateSchema } from "../schemas/user";
 

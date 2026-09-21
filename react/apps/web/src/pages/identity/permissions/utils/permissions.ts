@@ -1,7 +1,7 @@
 /**
  * 权限页共享工具：提供程序类型与权限树扁平化。
  */
-import type { VoloAbpPermissionManagementPermissionGrantInfoDto } from "@/api/models/volo/abp/permissionManagement/PermissionGrantInfoDto";
+import type { VoloAbpPermissionManagementPermissionGrantInfoDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGrantInfoDto";
 
 /** 权限提供程序类型：R=角色，U=用户。 */
 export type ProviderName = "R" | "U";

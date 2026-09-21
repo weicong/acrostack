@@ -5,9 +5,9 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
-import { featuresGetQueryKey } from "@/api/hooks/features/useFeaturesGet";
-import { useFeaturesUpdate } from "@/api/hooks/features/useFeaturesUpdate";
-import { useFeaturesDelete } from "@/api/hooks/features/useFeaturesDelete";
+import { featuresGetQueryKey } from "@acrostack/api-client/hooks/features/useFeaturesGet";
+import { useFeaturesUpdate } from "@acrostack/api-client/hooks/features/useFeaturesUpdate";
+import { useFeaturesDelete } from "@acrostack/api-client/hooks/features/useFeaturesDelete";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 interface UseFeatureActionsOptions {

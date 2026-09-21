@@ -14,7 +14,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { z } from "zod";
-import { useEmailSettingsSendTestEmail } from "@/api/hooks/emailSettings/useEmailSettingsSendTestEmail";
+import { useEmailSettingsSendTestEmail } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsSendTestEmail";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 const testEmailSchema = z.object({

@@ -13,7 +13,8 @@ const INPUT = process.env.KUBB_INPUT ?? "http://localhost:5173/swagger/v1/swagge
 
 export default defineConfig({
   input: INPUT,
-  output: { path: "./src/api", clean: true, defaultBanner: false },
+  // 生成物统一落在 src/generated：clean 只清该目录，src/client.ts 等手写文件不受影响
+  output: { path: "./src/generated", clean: true, defaultBanner: false },
   plugins: [
     pluginTs({
       output: { path: "models", banner: BANNER },

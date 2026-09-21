@@ -9,7 +9,7 @@ import {
   MessageBarBody,
   Text,
 } from "@fluentui/react-components";
-import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
+import { accountSendPasswordResetCode } from "@acrostack/api-client/clients/account/accountSendPasswordResetCode";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 

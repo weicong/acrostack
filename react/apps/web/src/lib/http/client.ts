@@ -5,7 +5,7 @@
  * - baseURL: Resolved from runtimeConfig (dynamic-env.json) at request time
  */
 import type { InternalAxiosRequestConfig } from "axios";
-import { client } from "@/api/.kubb/client";
+import { client } from "@acrostack/api-client/client";
 import { userManager } from "@/lib/auth/userManager";
 import { getApiBaseUrl } from "@/lib/runtimeConfig";
 import { emitRouteEvent } from "@/lib/routing/routeEvents";

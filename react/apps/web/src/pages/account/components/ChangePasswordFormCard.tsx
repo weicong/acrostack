@@ -1,6 +1,6 @@
 import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { useProfileChangePassword } from "@/api/hooks/profile/useProfileChangePassword";
+import { useProfileChangePassword } from "@acrostack/api-client/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { passwordSchema } from "../schemas/profile";
 

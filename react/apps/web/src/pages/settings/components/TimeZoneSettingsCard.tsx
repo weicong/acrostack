@@ -18,9 +18,9 @@ import {
 import {
   useTimeZoneSettingsGet,
   timeZoneSettingsGetQueryKey,
-} from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsGet";
-import { useTimeZoneSettingsGetTimezones } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
-import { useTimeZoneSettingsUpdate } from "@/api/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
+} from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGet";
+import { useTimeZoneSettingsGetTimezones } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
+import { useTimeZoneSettingsUpdate } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 export function TimeZoneSettingsCard() {
