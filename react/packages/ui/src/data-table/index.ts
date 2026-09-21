@@ -5,9 +5,6 @@ export type {
   AppTableFeatures,
 } from "./useDataTable";
 
-export { useDataTableQuery } from "./useDataTableQuery";
-export type { UseDataTableQueryOptions, PagedResult, GridQueryParams } from "./useDataTableQuery";
-
 export { useDataTableState } from "./useDataTableState";
 export type { DataTableState } from "./useDataTableState";
 

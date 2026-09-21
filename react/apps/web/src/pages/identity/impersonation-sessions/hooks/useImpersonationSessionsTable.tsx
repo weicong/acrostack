@@ -11,7 +11,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { impersonationSessionGetListQueryOptions } from "@/api/hooks/impersonationSession/useImpersonationSessionGetList";
 import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@/api/models/acroStack/impersonation/ImpersonationSessionDto";
 import { useDataTableState } from "@acrostack/ui/data-table";
-import { useDataTableQuery, type GridQueryParams } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@/lib/data-table/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
 
 export type SessionItem = ImpersonationSessionDto;
