@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { useRoleCreate } from "@/api/hooks/role/useRoleCreate";
 import { useRoleUpdate } from "@/api/hooks/role/useRoleUpdate";
 import type { RoleFormRole } from "../types/role";

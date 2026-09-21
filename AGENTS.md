@@ -11,7 +11,7 @@ The module set deliberately stays aligned with the **ABP official single-layer (
 - **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.Impersonation` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
   - Mappers live in each module's `ObjectMapping/` folder (not in the host).
   - Business logic belongs in `modules/<Feature>/`, never in the host.
-- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` is the React 19 SPA (TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth); `packages/app-shell` is the reusable layout base `@acrostack/app-shell`. Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
+- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` is the React 19 SPA (TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth); `packages/ui` is the reusable UI package `@acrostack/ui` (subpath exports: app-shell / data-table / dialog / form). Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
 
 ## Backend Commands
 
@@ -85,5 +85,5 @@ Rules: when adding/renaming a module, update that module's README and the module
 - `react/README.md` + `react/AGENTS.md` — 前端 Monorepo 工作区（结构、命令、约定）
 - `react/apps/web/README.md` — 应用技术栈、环境变量、Docker
 - `react/apps/web/AGENTS.md` — 应用源码布局、样式准则与评审清单
-- `react/packages/app-shell/` — 布局基座 `@acrostack/app-shell`
+- `react/packages/ui/` — 可复用 UI 包 `@acrostack/ui`（app-shell / data-table / dialog / form）
 - `docs/archive/` — completed handoff/fix-plan documents (historical reference only)

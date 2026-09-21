@@ -1,5 +1,5 @@
 import { ArrowExit20Regular } from "@fluentui/react-icons";
-import { useAppShellMobile } from "@acrostack/app-shell";
+import { useAppShellMobile } from "@acrostack/ui/app-shell";
 import {
   Breadcrumb,
   BreadcrumbDivider,
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
  * 品牌标识常驻顶栏（所有尺寸），侧栏不再重复展示；
  * 宽屏在品牌后附面包屑，窄屏由内容区标题定位（顶栏空间有限）。
  * 面包屑使用 Fluent 默认样式（默认字号配色，当前页标 `aria-current="page"`）。
- * 顶栏高度、内外边距与两端对齐由 `@acrostack/app-shell` 提供。
+ * 顶栏高度、内外边距与两端对齐由 `@acrostack/ui/app-shell` 提供。
  */
 export function Header() {
   const styles = useStyles();

@@ -15,13 +15,10 @@ import {
 import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { userGetListQueryOptions } from "@/api/hooks/user/useUserGetList";
-import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
-import { RowActions } from "@/components/ui/data-table/RowActions";
-import {
-  useDataTableQuery,
-  type AbpGridParams,
-} from "@/components/ui/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
+import { useDataTableState } from "@acrostack/ui/data-table";
+import { RowActions } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@acrostack/ui/data-table";
+import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
 import type { UserListItem } from "../types/user";
 
 /** 用户列表行类型（页面本地别名）。 */
@@ -76,7 +73,7 @@ export function useUsersTable({
     sorting: [{ id: "userName", desc: false }],
   });
 
-  const query = useDataTableQuery<UserItem, AbpGridParams>({
+  const query = useDataTableQuery<UserItem, GridQueryParams>({
     queryOptions: userGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,

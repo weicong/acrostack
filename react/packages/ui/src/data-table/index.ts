@@ -6,10 +6,13 @@ export type {
 } from "./useDataTable";
 
 export { useDataTableQuery } from "./useDataTableQuery";
-export type { UseDataTableQueryOptions, AbpPagedResult, AbpGridParams } from "./useDataTableQuery";
+export type { UseDataTableQueryOptions, PagedResult, GridQueryParams } from "./useDataTableQuery";
 
 export { useDataTableState } from "./useDataTableState";
 export type { DataTableState } from "./useDataTableState";
+
+export { RowActions } from "./RowActions";
+export type { RowActionsProps } from "./RowActions";
 
 export { DataTable } from "./DataTable";
 export type { DataTableProps } from "./DataTable";

@@ -46,7 +46,7 @@ function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
 /**
  * 导航内容（分组条目）。品牌标识常驻顶栏（见 `Header`），侧栏不再重复展示。
  *
- * 与容器解耦：宽屏由 `Sidebar` 放进常驻侧栏，窄屏由 `@acrostack/app-shell`
+ * 与容器解耦：宽屏由 `Sidebar` 放进常驻侧栏，窄屏由 `@acrostack/ui/app-shell`
  * 自动生成的移动抽屉原样复用同一份内容。
  */
 export function SidebarNav() {

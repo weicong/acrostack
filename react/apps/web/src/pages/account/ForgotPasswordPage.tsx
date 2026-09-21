@@ -10,7 +10,7 @@ import {
   Text,
 } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@/api/clients/account/accountSendPasswordResetCode";
-import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 
 const forgotPasswordSchema = z.object({

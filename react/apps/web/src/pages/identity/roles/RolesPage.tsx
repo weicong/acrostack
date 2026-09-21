@@ -8,8 +8,8 @@
 import { useCallback, useState } from "react";
 import { Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/ui/data-table/DataTable";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { DataTable } from "@acrostack/ui/data-table";
+import { ConfirmDialog } from "@acrostack/ui/dialog";
 import { toFormRole, type RoleFormRole } from "./types/role";
 import type { RoleItemRow } from "./hooks/useRolesTable";
 import { useRolesTable } from "./hooks/useRolesTable";

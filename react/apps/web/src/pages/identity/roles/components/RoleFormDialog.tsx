@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@fluentui/react-components";
-import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
+import { AccessibleDialogSurface } from "@acrostack/ui/dialog";
 import { useId } from "@fluentui/react-components";
 import type { RoleFormRole } from "../types/role";
 import { RoleForm } from "./RoleForm";

@@ -11,7 +11,7 @@
     "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../../../main/AcroStack"
   },
   "dependencies": {
-    "@acrostack/app-shell": "workspace:*",
+    "@acrostack/ui": "workspace:*",
     "@fluentui/react-calendar-compat": "^0.4.6",
     "@fluentui/react-components": "^9.74.7",
     "@fluentui/react-datepicker-compat": "^0.6.37",

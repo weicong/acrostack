@@ -10,7 +10,7 @@ import {
   Text,
 } from "@fluentui/react-components";
 import { accountResetPassword } from "@/api/clients/account/accountResetPassword";
-import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 

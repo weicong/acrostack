@@ -2,12 +2,13 @@ import { useMemo, useRef } from "react";
 import { useQuery, useQueryClient, type QueryFunction, type QueryKey } from "@tanstack/react-query";
 import type { SortingState, PaginationState } from "@tanstack/react-table";
 
-interface AbpPagedResult<T> {
+interface PagedResult<T> {
   items?: T[] | null;
   totalCount?: number | bigint;
 }
 
-interface AbpGridParams {
+// 字段与 ABP 列表接口约定保持一致（PascalCase 线协议），由调用方的 queryOptions 负责编码。
+interface GridQueryParams {
   Filter?: string;
   Sorting?: string;
   SkipCount?: number;
@@ -24,10 +25,10 @@ interface AbpGridParams {
  */
 interface PagedQueryOptions<TData> {
   queryKey: QueryKey;
-  queryFn?: (context: never) => AbpPagedResult<TData> | Promise<AbpPagedResult<TData>>;
+  queryFn?: (context: never) => PagedResult<TData> | Promise<PagedResult<TData>>;
 }
 
-interface UseDataTableQueryOptions<TData, TParams extends AbpGridParams> {
+interface UseDataTableQueryOptions<TData, TParams extends GridQueryParams> {
   /**
    * Kubb v5 生成的 xxxQueryOptions 第一个参数是 { query?: {...} }，
    * 第二参数 config 类型为 never：本 hook 从不透传 config
@@ -47,7 +48,7 @@ function buildSortingString(sorting: SortingState): string | undefined {
   return sorting.map((s) => `${s.id} ${s.desc ? "desc" : "asc"}`).join(", ");
 }
 
-function useDataTableQuery<TData, TParams extends AbpGridParams>(
+function useDataTableQuery<TData, TParams extends GridQueryParams>(
   options: UseDataTableQueryOptions<TData, TParams>,
 ) {
   const {
@@ -83,11 +84,11 @@ function useDataTableQuery<TData, TParams extends AbpGridParams>(
 
   const resolvedOptions = useMemo(() => queryOptionsRef.current(params), [params]);
 
-  const query = useQuery<AbpPagedResult<TData>, Error>({
+  const query = useQuery<PagedResult<TData>, Error>({
     ...resolvedOptions,
     // 桥接 queryFn：Kubb 实现运行时接受完整 QueryFunctionContext，
     // 声明侧的 never 参数仅用于兼容各种 Kubb 签名，此处做类型适配
-    queryFn: resolvedOptions.queryFn as QueryFunction<AbpPagedResult<TData>, QueryKey> | undefined,
+    queryFn: resolvedOptions.queryFn as QueryFunction<PagedResult<TData>, QueryKey> | undefined,
     enabled,
     placeholderData: keepPreviousData ? (prev) => prev : undefined,
   });
@@ -119,4 +120,4 @@ function useDataTableQuery<TData, TParams extends AbpGridParams>(
 }
 
 export { useDataTableQuery };
-export type { UseDataTableQueryOptions, AbpPagedResult, AbpGridParams };
+export type { UseDataTableQueryOptions, PagedResult, GridQueryParams };

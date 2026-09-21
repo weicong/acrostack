@@ -8,8 +8,8 @@
 import { useCallback, useState } from "react";
 import { Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { DataTable } from "@/components/ui/data-table/DataTable";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { DataTable } from "@acrostack/ui/data-table";
+import { ConfirmDialog } from "@acrostack/ui/dialog";
 import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
 import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";

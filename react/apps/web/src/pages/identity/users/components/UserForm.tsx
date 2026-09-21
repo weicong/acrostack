@@ -1,5 +1,5 @@
 import { useEffect, useMemo, type ReactNode } from "react";
-import { FormActions, FormStack, useAppForm, type ComboboxOption } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm, type ComboboxOption } from "@acrostack/ui/form";
 import { useUserCreate } from "@/api/hooks/user/useUserCreate";
 import { useUserUpdate } from "@/api/hooks/user/useUserUpdate";
 import { useUserGetAssignableRoles } from "@/api/hooks/user/useUserGetAssignableRoles";

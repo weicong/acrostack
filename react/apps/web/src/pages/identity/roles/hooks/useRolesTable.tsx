@@ -7,13 +7,10 @@ import { Badge, Button } from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { roleGetListQueryOptions } from "@/api/hooks/role/useRoleGetList";
-import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
-import { RowActions } from "@/components/ui/data-table/RowActions";
-import {
-  useDataTableQuery,
-  type AbpGridParams,
-} from "@/components/ui/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
+import { useDataTableState } from "@acrostack/ui/data-table";
+import { RowActions } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@acrostack/ui/data-table";
+import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
 import type { RoleItem } from "../types/role";
 
 /** 角色列表行类型（页面本地别名）。 */
@@ -30,7 +27,7 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
     sorting: [{ id: "name", desc: false }],
   });
 
-  const query = useDataTableQuery<RoleItemRow, AbpGridParams>({
+  const query = useDataTableQuery<RoleItemRow, GridQueryParams>({
     queryOptions: roleGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,

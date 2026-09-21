@@ -9,7 +9,7 @@ main/AcroStack/        组合根（宿主）：AcroStackModule、唯一 AcroStac
 │                      EF 迁移、种子、Swagger、HomeController。不含业务逻辑。
 modules/
 │  └── AcroStack.Impersonation   自研模块：用户模拟登录（对应 ABP Account Pro 的 impersonation）
-react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 19 SPA、packages/app-shell = 布局基座
+react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 19 SPA、packages/ui = 可复用 UI 包
 ```
 
 要点：

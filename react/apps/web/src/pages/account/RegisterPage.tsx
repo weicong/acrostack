@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Card, CardHeader, MessageBar, MessageBarBody, Text } from "@fluentui/react-components";
 import { accountRegister } from "@/api/clients/account/accountRegister";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { FormActions, FormStack, useAppForm } from "@/components/ui/form";
+import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 

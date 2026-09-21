@@ -1,5 +1,5 @@
 import { Outlet } from "@tanstack/react-router";
-import { AppShell } from "@acrostack/app-shell";
+import { AppShell } from "@acrostack/ui/app-shell";
 import { makeStyles, shorthands, tokens } from "@fluentui/react-components";
 import { Header } from "./Header";
 import { Sidebar, SidebarNav } from "./Sidebar";
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 /**
- * 管理后台布局：外壳交给 `@acrostack/app-shell`。
+ * 管理后台布局：外壳交给 `@acrostack/ui/app-shell`。
  *
  * 槽位映射：`topNav` = 顶栏（含面包屑与账户区）、`sideNav` = 常驻侧栏、
  * `banner` = 模拟登录提示、`children` = 当前页面（`<Outlet />`）。

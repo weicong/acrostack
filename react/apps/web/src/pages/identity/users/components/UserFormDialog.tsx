@@ -8,7 +8,7 @@ import {
   Spinner,
   useId,
 } from "@fluentui/react-components";
-import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
+import { AccessibleDialogSurface } from "@acrostack/ui/dialog";
 import { useUserGet } from "@/api/hooks/user/useUserGet";
 import { toFormUserFromIdentity, type UserFormUser } from "../types/user";
 import { UserForm } from "./UserForm";

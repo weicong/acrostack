@@ -10,12 +10,9 @@ import { Dismiss20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { impersonationSessionGetListQueryOptions } from "@/api/hooks/impersonationSession/useImpersonationSessionGetList";
 import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@/api/models/acroStack/impersonation/ImpersonationSessionDto";
-import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
-import {
-  useDataTableQuery,
-  type AbpGridParams,
-} from "@/components/ui/data-table/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@/components/ui/data-table/useDataTable";
+import { useDataTableState } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@acrostack/ui/data-table";
+import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
 
 export type SessionItem = ImpersonationSessionDto;
 
@@ -48,7 +45,7 @@ export function useImpersonationSessionsTable({
     [statusFilter],
   );
 
-  const query = useDataTableQuery<SessionItem, AbpGridParams>({
+  const query = useDataTableQuery<SessionItem, GridQueryParams>({
     queryOptions: impersonationSessionGetListQueryOptions,
     sorting: tableState.state.sorting,
     pagination: tableState.state.pagination,

@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface RowActionsProps {
+export interface RowActionsProps {
   children: ReactNode;
 }
 

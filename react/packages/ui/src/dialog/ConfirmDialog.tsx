@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   useId,
 } from "@fluentui/react-components";
-import { AccessibleDialogSurface } from "@/components/ui/AccessibleDialogSurface";
+import { AccessibleDialogSurface } from "./AccessibleDialogSurface";
 
 interface ConfirmDialogProps {
   open: boolean;
