@@ -3,7 +3,15 @@
  * 查询组装与 TanStack 表实例构建。
  */
 import { useMemo } from "react";
-import { Badge, Button, Persona } from "@fluentui/react-components";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Text,
+  makeStyles,
+  shorthands,
+  tokens,
+} from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { userGetListQueryOptions } from "@/api/hooks/user/useUserGetList";
@@ -18,6 +26,17 @@ import type { UserListItem } from "../types/user";
 
 /** 用户列表行类型（页面本地别名）。 */
 export type UserItem = UserListItem;
+
+const useStyles = makeStyles({
+  /* 用户格：头像与名称横向排列并互相垂直居中；
+     单元格本身已随行垂直居中（Fluent 默认 middle），
+     因此任意行高、内容长度与屏幕尺寸下两者都保持在行中线上 */
+  user: {
+    display: "flex",
+    alignItems: "center",
+    ...shorthands.gap(tokens.spacingHorizontalS),
+  },
+});
 
 /** 用户激活状态徽标。 */
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
@@ -51,6 +70,8 @@ export function useUsersTable({
   canImpersonate,
   currentUserId,
 }: UseUsersTableOptions) {
+  const styles = useStyles();
+
   const tableState = useDataTableState({
     sorting: [{ id: "userName", desc: false }],
   });
@@ -70,7 +91,12 @@ export function useUsersTable({
         header: "用户名称",
         cell: (info) => {
           const userName = (info.getValue() as string) ?? "";
-          return <Persona avatar={{ name: userName }} name={userName || "-"} size="small" />;
+          return (
+            <span className={styles.user}>
+              <Avatar name={userName || "-"} size={24} aria-hidden />
+              <Text>{userName || "-"}</Text>
+            </span>
+          );
         },
       },
       {
@@ -142,7 +168,7 @@ export function useUsersTable({
         },
       },
     ],
-    [onEdit, onDelete, onImpersonate, canImpersonate, currentUserId],
+    [onEdit, onDelete, onImpersonate, canImpersonate, currentUserId, styles],
   );
 
   const table = useDataTable({
