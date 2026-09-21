@@ -8,6 +8,7 @@ import { Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { roleGetListQueryOptions } from "@/api/hooks/role/useRoleGetList";
 import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import { RowActions } from "@/components/ui/data-table/RowActions";
 import {
   useDataTableQuery,
   type AbpGridParams,
@@ -90,7 +91,7 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
           const row = info.row.original;
           const isStatic = row.isStatic === true;
           return (
-            <div>
+            <RowActions>
               <Button
                 size="small"
                 appearance="subtle"
@@ -112,7 +113,7 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
                 }}
                 aria-label={"删除"}
               />
-            </div>
+            </RowActions>
           );
         },
       },

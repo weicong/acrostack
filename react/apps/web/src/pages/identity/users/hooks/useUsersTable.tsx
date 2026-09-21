@@ -3,11 +3,12 @@
  * 查询组装与 TanStack 表实例构建。
  */
 import { useMemo } from "react";
-import { Avatar, Badge, Button } from "@fluentui/react-components";
+import { Badge, Button, Persona } from "@fluentui/react-components";
 import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { userGetListQueryOptions } from "@/api/hooks/user/useUserGetList";
 import { useDataTableState } from "@/components/ui/data-table/useDataTableState";
+import { RowActions } from "@/components/ui/data-table/RowActions";
 import {
   useDataTableQuery,
   type AbpGridParams,
@@ -69,12 +70,7 @@ export function useUsersTable({
         header: "用户名称",
         cell: (info) => {
           const userName = (info.getValue() as string) ?? "";
-          return (
-            <div>
-              <Avatar aria-label={userName} name={userName} size={24} />
-              <span>{userName || "-"}</span>
-            </div>
-          );
+          return <Persona avatar={{ name: userName }} name={userName || "-"} size="small" />;
         },
       },
       {
@@ -107,7 +103,7 @@ export function useUsersTable({
           const row = info.row.original;
           const canImpersonateRow = canImpersonate && !!row.id && row.id !== currentUserId;
           return (
-            <div>
+            <RowActions>
               <Button
                 size="small"
                 appearance="subtle"
@@ -141,7 +137,7 @@ export function useUsersTable({
                   title={"模拟登录"}
                 />
               )}
-            </div>
+            </RowActions>
           );
         },
       },

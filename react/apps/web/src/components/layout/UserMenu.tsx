@@ -60,8 +60,11 @@ export function UserMenu() {
   return (
     <Menu>
       <MenuTrigger>
-        <Button appearance="subtle" aria-label={`账户菜单：${displayFullName}`}>
-          <Avatar name={displayFullName} size={24} color="colorful" />
+        <Button
+          appearance="subtle"
+          icon={<Avatar name={displayFullName} size={24} color="colorful" />}
+          aria-label={`账户菜单：${displayFullName}`}
+        >
           {displayName && (
             <Text className={styles.triggerText} weight="medium">
               {displayName}
