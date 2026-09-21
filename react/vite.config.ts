@@ -16,6 +16,9 @@ export default defineConfig({
       typeAware: true,
       typeCheck: true,
     },
+    // TanStack Router 生成的路由树：不是手写代码，不参与 lint/fmt
+    // （包级 ignorePatterns 在本工作区不生效，包级差异必须写在这份根配置里）
+    ignorePatterns: ["**/routeTree.gen.ts"],
     overrides: [
       {
         files: ["apps/web/**", "packages/**"],
@@ -28,6 +31,7 @@ export default defineConfig({
     ],
   },
   fmt: {
+    ignorePatterns: ["**/routeTree.gen.ts"],
     overrides: [
       {
         files: ["**/*.md"],

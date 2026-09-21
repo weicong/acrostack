@@ -4,20 +4,19 @@ AcroStack 解决方案的 React SPA，基于 [Vite+](https://viteplus.dev/)、[R
 
 ## 技术栈
 
-| 技术                                                       | 用途                                              |
-| ---------------------------------------------------------- | ------------------------------------------------- |
-| [Vite+](https://viteplus.dev/)                             | 统一工具链（Vite、Oxlint、Oxfmt 等，`vp` CLI）    |
-| [React](https://react.dev/) 19                             | UI 框架                                           |
-| [TanStack Router](https://tanstack.com/router)             | 文件式路由                                        |
-| [TanStack Query](https://tanstack.com/query)               | 服务端状态与请求编排                              |
-| [TanStack Form](https://tanstack.com/form)                 | 表单状态管理                                      |
-| [Fluent UI React](https://react.fluentui.dev/) v9          | 组件库                                            |
-| [Axios](https://axios-http.com/)                           | HTTP 客户端                                       |
-| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | OIDC 认证（对接 ABP Auth Server）                 |
-| [Zod](https://zod.dev/)                                    | Schema 校验                                       |
-| [@acrostack/api-client](../../packages/api-client)         | Kubb 从 Swagger 生成的 API 客户端（本应用只消费） |
-
-ABP 官方包：`@volo/abp-app-config`、`@volo/abp-oidc-auth`、`@volo/abp-react-app-config`、`@volo/abp-react-oidc-auth`。
+| 技术                                                       | 用途                                                                 |
+| ---------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Vite+](https://viteplus.dev/)                             | 统一工具链（Vite、Oxlint、Oxfmt 等，`vp` CLI）                       |
+| [React](https://react.dev/) 19                             | UI 框架                                                              |
+| [TanStack Router](https://tanstack.com/router)             | 文件式路由                                                           |
+| [TanStack Query](https://tanstack.com/query)               | 服务端状态与请求编排                                                 |
+| [TanStack Form](https://tanstack.com/form)                 | 表单状态管理                                                         |
+| [Fluent UI React](https://react.fluentui.dev/) v9          | 组件库                                                               |
+| [Axios](https://axios-http.com/)                           | HTTP 客户端                                                          |
+| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | OIDC 认证（对接 ABP Auth Server）                                    |
+| [Zod](https://zod.dev/)                                    | Schema 校验                                                          |
+| [@acrostack/core](../../packages/core)                     | ABP 框架接入层：运行时配置 / OIDC 授权 / 权限 / 多租户 / HTTP 拦截器 |
+| [@acrostack/api-client](../../packages/api-client)         | Kubb 从 Swagger 生成的 API 客户端（本应用只消费）                    |
 
 ## 目录结构
 
@@ -26,8 +25,8 @@ react/
 ├── dynamic-env.json      # 运行时环境变量（部署时可改，无需重新构建）
 ├── src/
 │   ├── components/       # layout（RootLayout 等）+ ui 通用组件
-│   ├── lib/              # 框架级基础设施：auth（OIDC/权限/模拟登录）、http、
-│   │                     #   routing（guards/菜单）、theme、runtimeConfig
+│   ├── lib/              # 应用横切基础设施：core.ts（组合根：注入 env / 403 跳转 /
+│   │                     #   共享 axios 实例）、routing（router/菜单/403 事件）、theme
 │   ├── pages/            # 页面，按业务域分目录（account、identity 等）
 │   ├── routes/           # TanStack Router 文件路由（routeTree.gen.ts 自动生成）
 │   ├── App.tsx           # 根组件（Providers）
@@ -87,7 +86,7 @@ Kubb 配置为 `clean: true`：生成前会清空 `src/generated/`，因此后�
 
 ## 认证
 
-OIDC 授权码流程（`lib/auth/userManager.ts` 基于 `@volo/abp-react-oidc-auth` 创建 client，自动静默续期）：受保护路由的 `beforeLoad` 中由 `lib/routing/guards.ts` 的 `authGuard` 校验，未登录跳转 OAuth 登录页。模拟登录（impersonation）状态由 `lib/auth` 的 impersonation 模块处理。
+OIDC 授权码流程（`@acrostack/core` 的 `initUserManager` 基于 `@volo/abp-react-oidc-auth` 创建 client，自动静默续期）：受保护路由的 `beforeLoad` 中由 `@acrostack/core` 的 `authGuard` / `createPermissionGuard` 校验，未登录跳转 OAuth 登录页，权限不足跳 `/admin/403`。模拟登录（impersonation）、HTTP 拦截器（Bearer 注入、401 刷新重放、403 分流、`__tenant` 多租户头）同样由 `@acrostack/core` 提供；宿主差异（env、403 跳转、共享 axios 实例）统一在 `src/lib/core.ts` 注入。
 
 ## Docker
 

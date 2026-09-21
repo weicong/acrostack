@@ -1,7 +1,7 @@
 import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { useProfileChangePassword } from "@acrostack/api-client/hooks/profile/useProfileChangePassword";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 import { passwordSchema } from "../schemas/profile";
 
 /** 修改密码卡片：改密动作自包含，成功后清空表单。 */

@@ -12,12 +12,11 @@ import {
   shorthands,
   tokens,
 } from "@fluentui/react-components";
-import { getApplicationName } from "@/lib/runtimeConfig";
+import { getApplicationName, useAuth } from "@acrostack/core";
 import { useCurrentPageTitle } from "@/lib/usePageTitle";
 import { BrandMark } from "./BrandMark";
 import { UserMenu } from "./UserMenu";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import { useAuth } from "@/lib/auth/AuthContext";
 import { useShellMenu } from "./shellMenu";
 
 const useStyles = makeStyles({

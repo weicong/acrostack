@@ -19,9 +19,7 @@ import {
   shorthands,
   tokens,
 } from "@fluentui/react-components";
-import { useAuth } from "@/lib/auth/AuthContext";
-import { useCurrentUser } from "@/lib/auth/permissions";
-import { getBackendAccountUrl } from "@/lib/runtimeConfig";
+import { getBackendAccountUrl, useAuth, useCurrentUser } from "@acrostack/core";
 
 const useStyles = makeStyles({
   // 用户名过长时截断，避免把顶栏撑开

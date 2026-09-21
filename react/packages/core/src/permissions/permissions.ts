@@ -1,12 +1,18 @@
 /**
- * ABP application configuration client.
- * Provides permissions, config fetching, localization, and reactive hooks.
+ * ABP application configuration：授权数据的唯一来源。
+ *
+ * 权限在服务端定义，经 `application-configuration` 下发给前端，用于
+ * 路由守卫、菜单过滤与组件级条件渲染（见 ABP React 权限管理文档）。
+ * 拉取时携带当前 access token 与租户头（多租户下权限随租户变化）。
  */
 import { createAbpReactAppConfig } from "@volo/abp-react-app-config";
-import type { QueryClient } from "@tanstack/react-query";
-import { getApiUrl } from "@/lib/runtimeConfig";
-import { userManager } from "@/lib/auth/userManager";
+import { userManager } from "../auth/user-manager";
+import { getApiUrl } from "../config/runtime-config";
+import { APP_CONFIG_QUERY_KEY } from "../query/query-keys";
+import { queryClient } from "../query/query-client";
+import { tenantHeaders } from "../tenant/tenant";
 
+/** 复合策略求值（`A || B`、`A && B`），语义与 @volo/abp-react-app-config 一致。 */
 function evaluatePolicy(policies: Record<string, boolean>, policy: string): boolean {
   const hasPolicy = (p: string) => policies[p.trim()] === true;
   if (policy.includes("||")) {
@@ -20,26 +26,27 @@ function evaluatePolicy(policies: Record<string, boolean>, policy: string): bool
 
 export const appConfig = createAbpReactAppConfig({
   baseUrl: () => getApiUrl(),
+  // 本项目不做前端 i18n：后端本地化 key 的翻译集中在 http/error.ts
   includeLocalizationResources: false,
 });
 
+/** 拉取 application configuration（当前用户 + grantedPolicies）。 */
 export async function fetchAppConfig(token: string | null): Promise<void> {
-  await appConfig.fetchConfig(token, { headers: {} });
+  await appConfig.fetchConfig(token, { headers: tenantHeaders() });
 }
 
-/** Query key for the ABP application configuration. */
+/** application configuration 的查询键。 */
 export function appConfigQueryKey(): readonly unknown[] {
-  return ["abp-app-config"];
+  return APP_CONFIG_QUERY_KEY;
 }
 
 /**
- * Single entry point for loading app config through TanStack Query.
- * Deduplicates concurrent calls. Used by guards (beforeLoad) and AuthContext
- * (on user load) so there is one code path.
+ * 通过 TanStack Query 加载 application configuration 的唯一入口：
+ * 并发调用去重，守卫（beforeLoad）与 AuthProvider 共用同一条路径。
  */
-export async function ensureAppConfig(queryClient: QueryClient): Promise<void> {
+export async function ensureAppConfig(): Promise<void> {
   await queryClient.ensureQueryData({
-    queryKey: appConfigQueryKey(),
+    queryKey: APP_CONFIG_QUERY_KEY,
     queryFn: async () => {
       const user = await userManager.getUser();
       await fetchAppConfig(user?.access_token ?? null);
@@ -50,14 +57,14 @@ export async function ensureAppConfig(queryClient: QueryClient): Promise<void> {
 }
 
 /**
- * Invalidates cached app config (e.g. after refreshing dynamic claims) so the
- * next guard/navigation refetches permissions.
+ * 失效缓存的 application configuration（如刷新动态声明、切换租户后），
+ * 使下一次守卫/导航重新拉取权限。
  */
-export function invalidateAppConfig(queryClient: QueryClient): void {
-  void queryClient.invalidateQueries({ queryKey: ["abp-app-config"] });
+export function invalidateAppConfig(): void {
+  void queryClient.invalidateQueries({ queryKey: APP_CONFIG_QUERY_KEY });
 }
 
-/** For non-React guard usage. Supports compound policies (|| and &&). */
+/** 非 React 上下文（守卫）用：支持复合策略（`||` 与 `&&`）。 */
 export function isPolicyGranted(policy: string): boolean {
   const sections = appConfig.getSections() as {
     auth?: {
@@ -69,6 +76,7 @@ export function isPolicyGranted(policy: string): boolean {
   return evaluatePolicy(policies, policy);
 }
 
+/** 组件内权限判定（响应式）：`const { isGranted } = usePermissions()`。 */
 export function usePermissions() {
   return appConfig.usePolicies();
 }
@@ -88,6 +96,7 @@ interface AppConfigSnapshot {
   };
 }
 
+/** 当前用户（来自 application configuration，含模拟登录标记）。 */
 export function useCurrentUser(): CurrentUser | null {
   const snapshot = appConfig.useSnapshot() as AppConfigSnapshot | null;
   return snapshot?.sections?.currentUser ?? null;

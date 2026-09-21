@@ -11,8 +11,7 @@ import { useCallback, useMemo } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { menuRoutes } from "@/lib/routing/route-config";
 import type { RouteMenuConfig, RouteMenuConfigChild } from "@/lib/routing/route-config-types";
-import { usePermissions } from "@/lib/auth/permissions";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuth, usePermissions } from "@acrostack/core";
 
 export interface ShellMenuItem {
   /** 绝对路径（外链为原始 URL）。 */

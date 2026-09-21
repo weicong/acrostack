@@ -2,9 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { Card, CardHeader, MessageBar, MessageBarBody, Text } from "@fluentui/react-components";
 import { accountRegister } from "@acrostack/api-client/clients/account/accountRegister";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { extractAbpErrorMessage, useAuth } from "@acrostack/core";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { extractAbpErrorMessage } from "@/lib/http/error";
 import { useState } from "react";
 
 const registerSchema = z

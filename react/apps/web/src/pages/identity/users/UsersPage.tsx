@@ -10,7 +10,7 @@ import { Card } from "@fluentui/react-components";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { DataTable } from "@acrostack/ui/data-table";
 import { ConfirmDialog } from "@acrostack/ui/dialog";
-import { usePermissions, useCurrentUser } from "@/lib/auth/permissions";
+import { usePermissions, useCurrentUser } from "@acrostack/core";
 import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";
 import { useUsersTable } from "./hooks/useUsersTable";

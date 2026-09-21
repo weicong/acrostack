@@ -7,8 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { userGetListQueryKey } from "@acrostack/api-client/hooks/user/useUserGetList";
 import { useUserDelete } from "@acrostack/api-client/hooks/user/useUserDelete";
-import { impersonateUser } from "@/lib/auth/impersonation";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage, impersonateUser } from "@acrostack/core";
 import type { UserItem } from "./useUsersTable";
 
 export function useUserActions() {

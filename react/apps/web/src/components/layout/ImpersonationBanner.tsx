@@ -9,8 +9,7 @@ import {
   useToastController,
 } from "@fluentui/react-components";
 import { PersonArrowBack20Regular } from "@fluentui/react-icons";
-import { backToMyAccount } from "@/lib/auth/impersonation";
-import { useCurrentUser } from "@/lib/auth/permissions";
+import { backToMyAccount, useCurrentUser } from "@acrostack/core";
 
 interface ImpersonationState {
   isImpersonating: boolean;

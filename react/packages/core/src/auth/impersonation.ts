@@ -30,10 +30,10 @@
  *    token via <c>grant_type=BackToImpersonator</c>.
  */
 import { User } from "oidc-client-ts";
-import { getApiBaseUrl, getOAuthConfig } from "@/lib/runtimeConfig";
-import { userManager } from "@/lib/auth/userManager";
-import { localizeAbpError } from "@/lib/http/error";
+import { getApiBaseUrl, getOAuthConfig } from "../config/runtime-config";
+import { localizeAbpError } from "../http/error";
 import { decodeJwtPayload } from "./jwt";
+import { userManager } from "./user-manager";
 
 /**
  * Custom OAuth2 grant type implemented by the backend's
@@ -73,8 +73,8 @@ interface OAuth2ErrorResponse {
  * The backend returns ABP localization resource keys (e.g.
  * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) as the OAuth2
  * <c>error_description</c> for known impersonation errors. Key translation is
- * centralized in <c>lib/http/error.ts</c> (localizeAbpError). For unknown
- * errors we fall back to the raw description or HTTP status.
+ * centralized in `@acrostack/core` 的 http/error.ts (localizeAbpError). For
+ * unknown errors we fall back to the raw description or HTTP status.
  */
 async function extractImpersonationError(response: Response): Promise<string> {
   let rawBody: string | undefined;

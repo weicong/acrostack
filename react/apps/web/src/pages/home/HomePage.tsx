@@ -18,10 +18,8 @@ import {
 } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useShellMenu } from "@/components/layout/shellMenu";
-import { useAuth } from "@/lib/auth/AuthContext";
-import { useCurrentUser } from "@/lib/auth/permissions";
+import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@acrostack/core";
 import { useThemeMode } from "@/lib/theme/ThemeProvider";
-import { getApiUrl, getApplicationName } from "@/lib/runtimeConfig";
 
 const useStyles = makeStyles({
   grid: {

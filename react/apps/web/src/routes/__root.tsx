@@ -13,7 +13,7 @@ import {
 } from "@fluentui/react-components";
 import type { ReactElement, ReactNode } from "react";
 import { RootLayout } from "@/components/layout/RootLayout";
-import { RedirectingError } from "@/lib/routing/guards";
+import { RedirectingError } from "@acrostack/core";
 
 const useStyles = makeStyles({
   root: {

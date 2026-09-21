@@ -1,6 +1,6 @@
 import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as identityRoute } from "./route";
-import { createPermissionGuard } from "@/lib/routing/guards";
+import { createPermissionGuard } from "@acrostack/core";
 import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
 import { People20Regular } from "@fluentui/react-icons";
 

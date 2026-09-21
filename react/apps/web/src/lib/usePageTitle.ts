@@ -6,7 +6,7 @@
  * 非菜单页匹配不到），顶栏若只认菜单就会显示错误的位置。
  */
 import { useEffect, useSyncExternalStore } from "react";
-import { getApplicationName } from "./runtimeConfig";
+import { getApplicationName } from "@acrostack/core";
 
 let currentPageTitle: string | undefined;
 const listeners = new Set<() => void>();

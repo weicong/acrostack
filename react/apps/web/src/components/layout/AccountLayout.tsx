@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { makeStyles, shorthands, Text, Title3, tokens } from "@fluentui/react-components";
 import type { ReactNode } from "react";
-import { getApplicationName } from "@/lib/runtimeConfig";
+import { getApplicationName } from "@acrostack/core";
 
 const useStyles = makeStyles({
   root: {

@@ -1,6 +1,6 @@
 import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { Route as rootRoute } from "../__root";
-import { authGuard } from "@/lib/routing/guards";
+import { authGuard } from "@acrostack/core";
 
 const AppLayout = lazyRouteComponent(() => import("@/components/layout/AppLayout"), "AppLayout");
 

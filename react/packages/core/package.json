@@ -1,0 +1,35 @@
+{
+  "name": "@acrostack/core",
+  "version": "10.6.0",
+  "private": true,
+  "description": "ABP 框架接入层：运行时配置、OIDC 授权、权限判定、多租户与 ABP 语义的 HTTP 拦截器（宿主差异全部经 configureCore / setupHttpClient 注入）",
+  "type": "module",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config/index.ts",
+    "./http": "./src/http/index.ts",
+    "./auth": "./src/auth/index.ts",
+    "./permissions": "./src/permissions/index.ts",
+    "./tenant": "./src/tenant/index.ts",
+    "./query": "./src/query/index.ts"
+  },
+  "dependencies": {
+    "@volo/abp-react-app-config": "^10.6.0",
+    "@volo/abp-react-oidc-auth": "^10.6.0",
+    "axios": "^1.20.0",
+    "oidc-client-ts": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "@tanstack/react-router": "^1.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

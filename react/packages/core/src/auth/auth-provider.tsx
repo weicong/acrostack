@@ -1,7 +1,14 @@
+/**
+ * 认证 Provider 与 hook。
+ *
+ * - 处理 OIDC 回调（URL 上的 `?code=&state=`）；
+ * - 用户加载后拉取 application configuration（当前用户 + 权限），
+ *   登出时清空并失效缓存；
+ * - 其余认证能力（isAuthenticated / login / logout / user）来自 OIDC 适配器。
+ */
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
-import { getAuthClient } from "./userManager";
-import { ensureAppConfig, invalidateAppConfig, appConfig } from "./permissions";
-import { queryClient } from "@/lib/queryClient";
+import { appConfig, ensureAppConfig, invalidateAppConfig } from "../permissions/permissions";
+import { getAuthClient } from "./user-manager";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const authClient = getAuthClient();
@@ -31,11 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     return authClient.subscribe(async (event) => {
       if (event.eventName === "userLoaded" && event.isAuthenticated) {
-        await ensureAppConfig(queryClient);
+        await ensureAppConfig();
       }
       if (event.eventName === "userUnloaded") {
         appConfig.clear();
-        invalidateAppConfig(queryClient);
+        invalidateAppConfig();
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

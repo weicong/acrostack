@@ -6,7 +6,7 @@ import {
   profileGetQueryKey,
 } from "@acrostack/api-client/hooks/profile/useProfileGet";
 import { useProfileUpdate } from "@acrostack/api-client/hooks/profile/useProfileUpdate";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 import { profileSchema } from "../schemas/profile";
 
 /** 个人设置卡片：资料查询与更新自包含。 */

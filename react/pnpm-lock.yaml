@@ -231,24 +231,18 @@ importers:
       '@acrostack/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@acrostack/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@acrostack/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@fluentui/react-calendar-compat':
-        specifier: ^0.4.6
-        version: 0.4.6(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@fluentui/react-components':
         specifier: ^9.74.7
         version: 9.74.7(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(scheduler@0.27.0)
-      '@fluentui/react-datepicker-compat':
-        specifier: ^0.6.37
-        version: 0.6.37(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(scheduler@0.27.0)
       '@fluentui/react-icons':
         specifier: ^2.0.339
         version: 2.0.339(react@19.2.8)
-      '@tanstack/react-form':
-        specifier: ^1.33.5
-        version: 1.33.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@tanstack/react-query':
         specifier: ^5.102.8
         version: 5.102.8(react@19.2.8)
@@ -258,27 +252,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^9.2.4
         version: 9.2.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@volo/abp-app-config':
-        specifier: ^10.6.0
-        version: 10.6.0
-      '@volo/abp-oidc-auth':
-        specifier: ^10.6.0
-        version: 10.6.0
-      '@volo/abp-react-app-config':
-        specifier: ^10.6.0
-        version: 10.6.0(react@19.2.8)
-      '@volo/abp-react-oidc-auth':
-        specifier: ^10.6.0
-        version: 10.6.0(react@19.2.8)
-      axios:
-        specifier: ^1.20.0
-        version: 1.20.0
-      date-fns:
-        specifier: ^4.4.0
-        version: 4.4.0
-      oidc-client-ts:
-        specifier: ^3.5.0
-        version: 3.5.0
       react:
         specifier: ^19.2.8
         version: 19.2.8
@@ -338,6 +311,40 @@ importers:
       kubb:
         specifier: ^5.1.0
         version: 5.1.0(@voidzero-dev/vite-plus-core@0.3.3(@types/node@26.4.1)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.0))(openapi-types@12.1.3)(rolldown@1.2.7)(typescript@7.0.2)
+
+  packages/core:
+    dependencies:
+      '@tanstack/react-query':
+        specifier: ^5.0.0
+        version: 5.102.8(react@19.2.8)
+      '@tanstack/react-router':
+        specifier: ^1.0.0
+        version: 1.170.32(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@volo/abp-react-app-config':
+        specifier: ^10.6.0
+        version: 10.6.0(react@19.2.8)
+      '@volo/abp-react-oidc-auth':
+        specifier: ^10.6.0
+        version: 10.6.0(react@19.2.8)
+      axios:
+        specifier: ^1.20.0
+        version: 1.20.0
+      oidc-client-ts:
+        specifier: ^3.5.0
+        version: 3.5.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.2.7
+        version: 19.2.7(@types/react@19.2.18)
+      react:
+        specifier: ^19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.2.8
+        version: 19.2.8(react@19.2.8)
 
   packages/ui:
     dependencies:

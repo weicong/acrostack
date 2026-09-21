@@ -8,7 +8,7 @@ import { useToastController } from "@fluentui/react-components";
 import { featuresGetQueryKey } from "@acrostack/api-client/hooks/features/useFeaturesGet";
 import { useFeaturesUpdate } from "@acrostack/api-client/hooks/features/useFeaturesUpdate";
 import { useFeaturesDelete } from "@acrostack/api-client/hooks/features/useFeaturesDelete";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 interface UseFeatureActionsOptions {
   /** 服务端当前值（用于计算变更项）。 */

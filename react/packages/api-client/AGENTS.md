@@ -4,17 +4,17 @@
 
 ## 结构
 
-| 路径               | 性质                                                                 |
-| ------------------ | -------------------------------------------------------------------- |
-| `src/generated/**` | **生成物**（`kubb generate` 的输出；`clean: true` 会整目录清空重建） |
-| `src/client.ts`    | **手写**：唯一的稳定入口，re-export 生成客户端的 axios 实例与类型    |
-| `kubb.config.ts`   | 生成配置（输入 = 后端 Swagger JSON）                                 |
-| `openapi/`（预留） | 契约快照目录（当前直连后端 URL，未使用）                             |
+| 路径               | 性质                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `src/generated/**` | **生成物**（`kubb generate` 的输出；`clean: true` 会整目录清空重建）                         |
+| `src/client.ts`    | **手写**：唯一的稳定入口，re-export 生成客户端与共享 `transport`（并把生成单例接到该实例上） |
+| `kubb.config.ts`   | 生成配置（输入 = 后端 Swagger JSON）                                                         |
+| `openapi/`（预留） | 契约快照目录（当前直连后端 URL，未使用）                                                     |
 
 ## 公开 API
 
 ```ts
-import { client } from "@acrostack/api-client/client"; // 裸 axios 实例（应用注册拦截器）
+import { transport } from "@acrostack/api-client/client"; // 共享 axios 实例（宿主交给 @acrostack/core 注册拦截器）
 import { useUserGetList } from "@acrostack/api-client/hooks/user/useUserGetList";
 import type { IdentityUserDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityUserDto";
 ```
@@ -46,5 +46,5 @@ KUBB_INPUT=https://localhost:44320/swagger/v1/swagger.json vp -C packages/api-cl
 
 ## 边界
 
-- 本包**不含**应用语义：拦截器（baseURL、OIDC 令牌、错误归一化）在 `apps/web/src/lib/http/client.ts`。
-- 应用侧**只允许** `lib/http/client.ts` 直接 import 本包（依赖边规则见 `apps/web/AGENTS.md`）；其余位置经由业务 hooks。
+- 本包**不含**应用语义：拦截器（baseURL、OIDC 令牌、租户头、401/403 处理）由 `@acrostack/core` 的 `setupHttpClient(transport)` 注册到 `transport` 上。
+- 应用侧**只允许**组合根 `apps/web/src/lib/core.ts` 直接 import 本包（依赖边规则见 `apps/web/AGENTS.md`）；其余位置经由业务 hooks。

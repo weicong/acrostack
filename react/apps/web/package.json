@@ -6,27 +6,17 @@
   "scripts": {
     "dev": "vp dev",
     "build": "vp build",
-    "preview": "vp preview",
-    "generate-proxy": "abp generate-proxy -t js -u https://localhost:44320 --working-directory ../../../main/AcroStack"
+    "preview": "vp preview"
   },
   "dependencies": {
     "@acrostack/api-client": "workspace:*",
+    "@acrostack/core": "workspace:*",
     "@acrostack/ui": "workspace:*",
-    "@fluentui/react-calendar-compat": "^0.4.6",
     "@fluentui/react-components": "^9.74.7",
-    "@fluentui/react-datepicker-compat": "^0.6.37",
     "@fluentui/react-icons": "^2.0.339",
-    "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-router": "^1.170.32",
     "@tanstack/react-table": "^9.2.4",
-    "@volo/abp-app-config": "^10.6.0",
-    "@volo/abp-oidc-auth": "^10.6.0",
-    "@volo/abp-react-app-config": "^10.6.0",
-    "@volo/abp-react-oidc-auth": "^10.6.0",
-    "axios": "^1.20.0",
-    "date-fns": "^4.4.0",
-    "oidc-client-ts": "^3.5.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "zod": "^4.5.4"

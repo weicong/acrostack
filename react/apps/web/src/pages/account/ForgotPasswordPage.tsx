@@ -11,7 +11,7 @@ import {
 } from "@fluentui/react-components";
 import { accountSendPasswordResetCode } from "@acrostack/api-client/clients/account/accountSendPasswordResetCode";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),

@@ -1,5 +1,5 @@
 import { makeStyles, mergeClasses, tokens } from "@fluentui/react-components";
-import { getApplicationName } from "@/lib/runtimeConfig";
+import { getApplicationName } from "@acrostack/core";
 
 const useStyles = makeStyles({
   mark: {

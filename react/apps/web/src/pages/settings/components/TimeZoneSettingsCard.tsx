@@ -21,7 +21,7 @@ import {
 } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGet";
 import { useTimeZoneSettingsGetTimezones } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
 import { useTimeZoneSettingsUpdate } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 export function TimeZoneSettingsCard() {
   const queryClient = useQueryClient();

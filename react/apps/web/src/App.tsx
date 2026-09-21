@@ -2,8 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { Toaster } from "@fluentui/react-components";
 import { router } from "@/lib/routing/router";
-import { AuthProvider } from "@/lib/auth/AuthContext";
-import { queryClient } from "@/lib/queryClient";
+import { AuthProvider, queryClient } from "@acrostack/core";
 import { RouteEventProvider } from "@/lib/routing/RouteEventProvider";
 import { AppThemeProvider } from "@/lib/theme/ThemeProvider";
 

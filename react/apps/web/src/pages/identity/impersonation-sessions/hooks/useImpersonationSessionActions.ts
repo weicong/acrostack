@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { impersonationSessionGetListQueryKey } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
 import { useImpersonationSessionRevoke } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionRevoke";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 export function useImpersonationSessionActions() {
   const { dispatchToast } = useToastController();

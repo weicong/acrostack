@@ -28,7 +28,7 @@ export function localizeAbpError(message: string): string {
 }
 
 /**
- * 从 Kubb/axios 抛出的错误中提取 ABP 用户可读消息
+ * 从 HTTP 层抛出的错误中提取 ABP 用户可读消息
  * （RemoteServiceErrorResponse.error.message，详细文案由后端本地化下发，
  * 若为本地化 key 则经 {@link localizeAbpError} 翻译）。
  */

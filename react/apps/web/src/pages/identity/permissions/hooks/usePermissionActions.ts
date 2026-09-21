@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { permissionsGetQueryKey } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
 import { usePermissionsUpdate } from "@acrostack/api-client/hooks/permissions/usePermissionsUpdate";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
 import type { ProviderName } from "../utils/permissions";
 

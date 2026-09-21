@@ -15,7 +15,7 @@ import {
 } from "@fluentui/react-components";
 import { z } from "zod";
 import { useEmailSettingsSendTestEmail } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsSendTestEmail";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 const testEmailSchema = z.object({
   senderEmailAddress: z.string().min(1).email(),

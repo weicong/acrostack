@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastController } from "@fluentui/react-components";
 import { roleGetListQueryKey } from "@acrostack/api-client/hooks/role/useRoleGetList";
 import { useRoleDelete } from "@acrostack/api-client/hooks/role/useRoleDelete";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 
 export function useRoleActions() {
   const { dispatchToast } = useToastController();

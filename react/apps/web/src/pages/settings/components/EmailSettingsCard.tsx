@@ -20,7 +20,7 @@ import {
   emailSettingsGetQueryKey,
 } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsGet";
 import { useEmailSettingsUpdate } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsUpdate";
-import { extractAbpErrorMessage } from "@/lib/http/error";
+import { extractAbpErrorMessage } from "@acrostack/core";
 import { emailSchema } from "../schemas/emailSettings";
 
 export function EmailSettingsCard() {

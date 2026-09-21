@@ -9,7 +9,7 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { Person20Regular, Settings20Regular } from "@fluentui/react-icons";
-import { getApplicationName, getBackendAccountUrl } from "@/lib/runtimeConfig";
+import { getApplicationName, getBackendAccountUrl } from "@acrostack/core";
 
 const useStyles = makeStyles({
   root: {

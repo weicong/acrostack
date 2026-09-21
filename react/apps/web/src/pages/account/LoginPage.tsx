@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { Button, Card, CardHeader, Spinner, Text } from "@fluentui/react-components";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuth } from "@acrostack/core";
 
 export function LoginPage() {
   const { isAuthenticated, isLoading, login } = useAuth();
