@@ -3,7 +3,7 @@
  *
  * 本文件只负责编排：提供程序选择状态、本地勾选状态与各子组件组装；
  * 动作聚合见 hooks/usePermissionActions，
- * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permissions。
+ * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permission-tree。
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, CardHeader, Checkbox, Spinner, Text } from "@fluentui/react-components";
@@ -11,7 +11,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { usePermissionsGet } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
 import { useRoleGetAllList } from "@acrostack/api-client/hooks/role/useRoleGetAllList";
 import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
-import { type ProviderName, flattenPermissions } from "./utils/permissions";
+import { type ProviderName, flattenPermissions } from "./utils/permission-tree";
 import { usePermissionActions } from "./hooks/usePermissionActions";
 import { PermissionsToolbar } from "./components/PermissionsToolbar";
 

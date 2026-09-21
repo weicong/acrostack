@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { Button, SearchBox } from "@fluentui/react-components";
 import { Add20Regular } from "@fluentui/react-icons";
-import { ListToolbar } from "@/components/ui/ListToolbar";
+import { ListToolbar } from "@acrostack/ui/data-table";
 
 interface RolesToolbarProps {
   onCreate: () => void;

@@ -6,8 +6,8 @@
  */
 import { Dropdown, Field, Option } from "@fluentui/react-components";
 import type { VoloAbpIdentityIdentityRoleDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityRoleDto";
-import { ListToolbar } from "@/components/ui/ListToolbar";
-import type { ProviderName } from "../utils/permissions";
+import { ListToolbar } from "@acrostack/ui/data-table";
+import type { ProviderName } from "../utils/permission-tree";
 
 interface PermissionsToolbarProps {
   providerName: ProviderName;

@@ -17,7 +17,7 @@ import {
   Code20Regular,
 } from "@fluentui/react-icons";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useShellMenu } from "@/components/layout/shellMenu";
+import { useShellMenu } from "@/lib/routing/shell-menu";
 import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@acrostack/core";
 import { useThemeMode } from "@/lib/theme/ThemeProvider";
 

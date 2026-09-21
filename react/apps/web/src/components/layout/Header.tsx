@@ -17,7 +17,7 @@ import { useCurrentPageTitle } from "@/lib/usePageTitle";
 import { BrandMark } from "./BrandMark";
 import { UserMenu } from "./UserMenu";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import { useShellMenu } from "./shellMenu";
+import { useShellMenu } from "@/lib/routing/shell-menu";
 
 const useStyles = makeStyles({
   /* 顶栏左侧：品牌 +（宽屏）面包屑，作为一组贴左 */

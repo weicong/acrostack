@@ -13,3 +13,6 @@ export type { RowActionsProps } from "./RowActions";
 
 export { DataTable } from "./DataTable";
 export type { DataTableProps } from "./DataTable";
+
+export { ListToolbar } from "./ListToolbar";
+export type { ListToolbarProps } from "./ListToolbar";

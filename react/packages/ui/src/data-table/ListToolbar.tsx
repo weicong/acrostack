@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface ListToolbarProps {
+export interface ListToolbarProps {
   /** 供读屏识别的工具栏名称（如「用户筛选与操作」）。 */
   label: string;
   /** 搜索框（可选）。 */

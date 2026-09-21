@@ -9,7 +9,7 @@ import { permissionsGetQueryKey } from "@acrostack/api-client/hooks/permissions/
 import { usePermissionsUpdate } from "@acrostack/api-client/hooks/permissions/usePermissionsUpdate";
 import { extractAbpErrorMessage } from "@acrostack/core";
 import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
-import type { ProviderName } from "../utils/permissions";
+import type { ProviderName } from "../utils/permission-tree";
 
 /** 保存权限变更所需的输入。 */
 export interface SavePermissionsInput {

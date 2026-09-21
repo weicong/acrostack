@@ -10,7 +10,7 @@ import {
   tokens,
   type NavDrawerProps,
 } from "@fluentui/react-components";
-import { useShellMenu } from "./shellMenu";
+import { useShellMenu } from "@/lib/routing/shell-menu";
 
 const useStyles = makeStyles({
   body: {

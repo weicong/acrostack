@@ -3,7 +3,7 @@
  * 后端查询输入不含自由文本过滤，因此只提供状态下拉。
  */
 import { Field, Select } from "@fluentui/react-components";
-import { ListToolbar } from "@/components/ui/ListToolbar";
+import { ListToolbar } from "@acrostack/ui/data-table";
 import type { SessionStatusFilter } from "../hooks/useImpersonationSessionsTable";
 
 const statusOptions: { value: SessionStatusFilter; label: string }[] = [

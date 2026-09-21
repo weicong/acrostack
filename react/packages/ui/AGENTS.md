@@ -14,7 +14,7 @@
 约定：
 
 - **宿主提供的库走 `peerDependencies`**：`react` / `react-dom`（必须与宿主共享同一实例）；其余第三方库为 `dependencies`，版本与 `apps/web` 对齐。
-- **`data-table` 域只做表格机制与展示**：基于 `@tanstack/react-table` + Fluent，**禁止引入任何数据获取库**（`@tanstack/react-query`、axios 等）。取数编排（查询参数编码、缓存、变更后失效）属应用数据层，见 `apps/web/src/lib/data-table/useDataTableQuery.ts`。
+- **`data-table` 域只做表格机制与展示**：基于 `@tanstack/react-table` + Fluent，**禁止引入任何数据获取库**（`@tanstack/react-query`、axios 等）。取数编排（查询参数编码、缓存、变更后失效）属应用数据层，见 `apps/web/src/lib/useDataTableQuery.ts`。
 - **`form` 域逻辑与表现分离**：`create-form.ts` / `form-context.ts` 负责 TanStack Form 的逻辑装配（校验器由调用方注入），`field-components/`、`form-components/` 只做 Fluent 表现封装。
 - **每个域只有 `index.ts` 是公共 API**；域内文件是对外实现的私有细节，可以自由重构。
 - **域之间零依赖**：A 域需要 B 域的能力时，优先在应用层组合；确需下沉时先在评审中论证。
