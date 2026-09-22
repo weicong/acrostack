@@ -7,16 +7,9 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import {
-  Button,
-  DrawerBody,
-  OverlayDrawer,
-  makeStyles,
-  mergeClasses,
-  shorthands,
-  tokens,
-} from "@fluentui/react-components";
+import { Button, DrawerBody, OverlayDrawer } from "@fluentui/react-components";
 import { Navigation20Regular } from "@fluentui/react-icons";
+import { HStack, StackItem, VStack, type LayoutHeight, type SpacingStep } from "../layout";
 
 /**
  * 断点名与像素宽度的对应表（对标 Astryx `AppShellBreakpoint` 的语义：
@@ -40,19 +33,6 @@ export function resolveMobileNavBreakpoint(breakpoint: AppShellBreakpoint = "md"
   return breakpoint === "none" ? null : APP_SHELL_BREAKPOINTS[breakpoint];
 }
 
-/** 导航区与内容区的对比方式（对应 Astryx 的四个内置变体）。 */
-export interface AppShellVariantMap {
-  wash: true;
-  surface: true;
-  section: true;
-  elevated: true;
-}
-
-export type AppShellVariant = keyof AppShellVariantMap;
-
-/** 主内容区留白档位（映射到 Fluent 间距令牌；`0` 用于需要贴边的表格/看板页面）。 */
-export type AppShellSpacingStep = 0 | 3 | 4 | 5 | 6;
-
 /** 移动端导航配置：控制自动生成的抽屉与汉堡开关。 */
 export interface MobileNavConfig {
   /** 是否自动渲染汉堡开关（默认 true）；关掉后可用 `useAppShellMobile()` 自行放置。 */
@@ -71,16 +51,14 @@ export interface MobileNavConfig {
 export interface AppShellProps {
   /** 根元素 ref。 */
   ref?: Ref<HTMLDivElement>;
-  /** 导航区与内容区的对比方式，默认 `elevated`。 */
-  variant?: AppShellVariant;
   /** 系统级通告条，渲染在顶栏之上。 */
   banner?: ReactNode;
   /** 主内容区（渲染为 `<main>`）。 */
   children: ReactNode;
-  /** 主内容区留白，默认 `4`。 */
-  contentPadding?: AppShellSpacingStep;
-  /** 高度模式：`fill` 撑满视口、内容内部滚动（默认）；`auto` 随内容增长、整页滚动。 */
-  height?: "fill" | "auto";
+  /** 主内容内边距（间距刻度），默认 `4`（16px）。 */
+  contentPadding?: SpacingStep;
+  /** 高度模式：`fill` 撑满视口、内容区内部滚动（默认）；`auto` 随内容增长、整页滚动。 */
+  height?: LayoutHeight;
   /** 移动端导航：`false` 禁用；配置对象为受控/自定义；节点为完全自定义的抽屉内容。 */
   mobileNav?: false | MobileNavConfig | ReactNode;
   /** 侧边导航槽位；没有侧栏时不要传（不要传渲染 null 的组件）。 */
@@ -133,137 +111,18 @@ function isMobileNavConfig(value: unknown): value is MobileNavConfig {
   );
 }
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-  },
-  fill: {
-    height: "100dvh",
-    ...shorthands.overflow("hidden"),
-  },
-  auto: {
-    minHeight: "100dvh",
-  },
-  body: {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    minHeight: 0,
-  },
-  banner: {
-    flexShrink: 0,
-  },
-  row: {
-    display: "flex",
-    flexGrow: 1,
-    minHeight: 0,
-  },
-  topNav: {
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-    /* 纵向 S(8)：配合 32px 的按钮得到 48px 的顶栏高度；横向与主内容留白同档（L=16），
-       使左侧定位元素与下方内容左边缘对齐 */
-    ...shorthands.padding(tokens.spacingVerticalS, tokens.spacingHorizontalL),
-  },
-  topNavContent: {
-    display: "flex",
-    alignItems: "center",
-    /* 顶栏两端对齐：定位/品牌在左，操作区在右 */
-    justifyContent: "space-between",
-    ...shorthands.gap(tokens.spacingHorizontalL),
-    flexGrow: 1,
-    minWidth: 0,
-  },
-  sideNav: {
-    flexShrink: 0,
-    display: "flex",
-  },
-  main: {
-    flexGrow: 1,
-    minWidth: 0,
-    ...shorthands.overflow("auto"),
-  },
-  /* ── 变体：只调整背景与分隔线，颜色全部来自令牌 ── */
-  rootElevated: {
-    backgroundColor: tokens.colorNeutralBackground2,
-  },
-  navElevated: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderBottomWidth: tokens.strokeWidthThin,
-    borderBottomStyle: "solid",
-    borderBottomColor: tokens.colorNeutralStroke2,
-  },
-  sideElevated: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  rootSection: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  navSection: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderBottomWidth: tokens.strokeWidthThin,
-    borderBottomStyle: "solid",
-    borderBottomColor: tokens.colorNeutralStroke2,
-  },
-  sideSection: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRightWidth: tokens.strokeWidthThin,
-    borderRightStyle: "solid",
-    borderRightColor: tokens.colorNeutralStroke2,
-  },
-  rootWash: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  navWash: {
-    backgroundColor: tokens.colorNeutralBackground2,
-  },
-  sideWash: {
-    backgroundColor: tokens.colorNeutralBackground2,
-  },
-  rootSurface: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  navSurface: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  sideSurface: {
-    backgroundColor: tokens.colorNeutralBackground1,
-  },
-  /* ── 内容留白档位 ── */
-  pad0: {
-    ...shorthands.padding(0),
-  },
-  pad3: {
-    ...shorthands.padding(tokens.spacingVerticalM, tokens.spacingHorizontalM),
-  },
-  pad4: {
-    ...shorthands.padding(tokens.spacingVerticalL, tokens.spacingHorizontalL),
-  },
-  pad5: {
-    ...shorthands.padding(tokens.spacingVerticalXL, tokens.spacingHorizontalXL),
-  },
-  pad6: {
-    ...shorthands.padding(tokens.spacingVerticalXXL, tokens.spacingHorizontalXXL),
-  },
-});
-
 /**
  * `AppShell` —— 应用级页面骨架（对标 Astryx `@astryxdesign/core` 的 AppShell）。
  *
  * 槽位式 API：`banner` / `topNav` / `sideNav` / `children`（主内容，渲染为 `<main>`）。
  * 行为：
- *   - `height`：`fill` 撑满视口、内容内部滚动；`auto` 随内容增长；
+ *   - 外壳自身的布局（`fill` 高度、顶栏/侧栏常驻、内容区滚动、内边距）由
+ *     `@acrostack/ui/layout` 的布局原语组合而成，消费方不必再补样式；
  *   - 响应式：低于 `mobileNav.breakpoint` 时侧栏移入浮层抽屉，并自动渲染汉堡开关；
  *   - `mobileNav` 支持 `false`（禁用）、配置对象（受控/定制）、或直接给节点（完全自定义）。
- * 样式全部来自 Fluent 令牌与 `shorthands`，不覆盖 Fluent 组件外观。
  */
 export function AppShell({
   ref,
-  variant = "elevated",
   banner,
   children,
   contentPadding = 4,
@@ -273,8 +132,6 @@ export function AppShell({
   topNav,
   className,
 }: AppShellProps) {
-  const styles = useStyles();
-
   const navDisabled = mobileNav === false;
   const navConfig = !navDisabled && isMobileNavConfig(mobileNav) ? mobileNav : undefined;
   const customDrawer = !navDisabled && !navConfig ? (mobileNav as ReactNode) : undefined;
@@ -299,79 +156,57 @@ export function AppShell({
 
   const drawerContent = navDisabled ? undefined : (navConfig?.content ?? customDrawer ?? sideNav);
   const showToggle = isMobile && !navDisabled && navConfig?.hasToggle !== false;
-
-  const rootVariant =
-    variant === "wash"
-      ? styles.rootWash
-      : variant === "section"
-        ? styles.rootSection
-        : variant === "surface"
-          ? styles.rootSurface
-          : styles.rootElevated;
-  const navVariant =
-    variant === "wash"
-      ? styles.navWash
-      : variant === "section"
-        ? styles.navSection
-        : variant === "surface"
-          ? styles.navSurface
-          : styles.navElevated;
-  const sideVariant =
-    variant === "wash"
-      ? styles.sideWash
-      : variant === "section"
-        ? styles.sideSection
-        : variant === "surface"
-          ? styles.sideSurface
-          : styles.sideElevated;
-
-  const paddingClass =
-    contentPadding === 0
-      ? styles.pad0
-      : contentPadding === 3
-        ? styles.pad3
-        : contentPadding === 5
-          ? styles.pad5
-          : contentPadding === 6
-            ? styles.pad6
-            : styles.pad4;
+  const isFill = height === "fill";
 
   return (
     <AppShellMobileContext.Provider value={contextValue}>
-      <div
+      <VStack
         ref={ref}
-        className={mergeClasses(
-          styles.root,
-          rootVariant,
-          height === "fill" ? styles.fill : styles.auto,
-          className,
-        )}
+        className={className}
+        height={isFill ? "100dvh" : undefined}
+        minHeight={isFill ? undefined : "100dvh"}
       >
-        {banner && <div className={styles.banner}>{banner}</div>}
+        {banner !== undefined && <StackItem>{banner}</StackItem>}
 
-        <div className={styles.body}>
-          {topNav && (
-            <header className={mergeClasses(styles.topNav, navVariant)}>
-              {showToggle && (
-                <Button
-                  appearance="subtle"
-                  icon={<Navigation20Regular />}
-                  aria-label="打开导航"
-                  aria-expanded={isOpen}
-                  onClick={() => setOpen(!isOpen)}
-                />
-              )}
-              <div className={styles.topNavContent}>{topNav}</div>
-            </header>
-          )}
-
-          <div className={styles.row}>
-            {!isMobile && sideNav && (
-              <aside className={mergeClasses(styles.sideNav, sideVariant)}>{sideNav}</aside>
+        {/* 顶栏以下（含侧栏与内容）占满剩余高度 */}
+        <StackItem size="fill">
+          <VStack height="100%">
+            {topNav !== undefined && (
+              <StackItem>
+                <header>
+                  <HStack align="center" gap={2} paddingBlock={2} paddingInline={4}>
+                    {showToggle && (
+                      <Button
+                        appearance="subtle"
+                        icon={<Navigation20Regular />}
+                        aria-label="打开导航"
+                        aria-expanded={isOpen}
+                        onClick={() => setOpen(!isOpen)}
+                      />
+                    )}
+                    {/* 槽位内容两端对齐：定位/品牌在左，操作区在右 */}
+                    <HStack gap={4} justify="between" align="center" width="100%" minWidth={0}>
+                      {topNav}
+                    </HStack>
+                  </HStack>
+                </header>
+              </StackItem>
             )}
-            <main className={mergeClasses(styles.main, paddingClass)}>{children}</main>
-          </div>
-        </div>
+
+            <StackItem size="fill">
+              <HStack height="100%" minHeight={0}>
+                {!isMobile && sideNav !== undefined && <StackItem>{sideNav}</StackItem>}
+
+                {/* 内容区自己滚动（`auto` 模式下交给整页滚动），内边距由外壳统一给出 */}
+                <StackItem size="fill" isScrollable={isFill}>
+                  <main>
+                    <VStack padding={contentPadding}>{children}</VStack>
+                  </main>
+                </StackItem>
+              </HStack>
+            </StackItem>
+          </VStack>
+        </StackItem>
 
         {isMobile && drawerContent && (
           <OverlayDrawer
@@ -383,7 +218,7 @@ export function AppShell({
             <DrawerBody>{drawerContent}</DrawerBody>
           </OverlayDrawer>
         )}
-      </div>
+      </VStack>
     </AppShellMobileContext.Provider>
   );
 }

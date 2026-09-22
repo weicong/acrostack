@@ -15,32 +15,12 @@ import {
   MenuPopover,
   MenuTrigger,
   Text,
-  makeStyles,
-  shorthands,
-  tokens,
 } from "@fluentui/react-components";
+import { VStack } from "@acrostack/ui/layout";
 import { getBackendAccountUrl, useAuth, useCurrentUser } from "@acrostack/core";
-
-const useStyles = makeStyles({
-  // 用户名过长时截断，避免把顶栏撑开
-  triggerText: {
-    maxWidth: "180px",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-  // 菜单顶部的身份区：与菜单项左内边距对齐
-  account: {
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalXXS),
-    ...shorthands.padding(tokens.spacingVerticalXS, tokens.spacingHorizontalM),
-  },
-});
 
 /** 账户菜单：展示当前身份，并提供个人信息、账户安全、登录会话与退出登录。 */
 export function UserMenu() {
-  const styles = useStyles();
   const { user, logout } = useAuth();
   const currentUser = useCurrentUser();
   const navigate = useNavigate();
@@ -63,21 +43,17 @@ export function UserMenu() {
           icon={<Avatar name={displayFullName} size={24} color="colorful" />}
           aria-label={`账户菜单：${displayFullName}`}
         >
-          {displayName && (
-            <Text className={styles.triggerText} weight="medium">
-              {displayName}
-            </Text>
-          )}
+          {displayName && <Text weight="medium">{displayName}</Text>}
         </Button>
       </MenuTrigger>
       <MenuPopover>
         <MenuList>
-          <div className={styles.account}>
+          <VStack gap={0.5} paddingBlock={1} paddingInline={3}>
             <Text weight="semibold">{displayFullName}</Text>
             {displayEmailAddress && displayEmailAddress !== displayFullName && (
               <Text size={200}>{displayEmailAddress}</Text>
             )}
-          </div>
+          </VStack>
           <MenuDivider />
           <MenuItem
             icon={<PersonInfo20Regular />}

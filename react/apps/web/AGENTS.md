@@ -27,12 +27,9 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - `src/pages/` — feature folders owning page UI, sub-components, hooks and schemas. `src/routes/` — thin TanStack Router file-route wrappers (guard + layout binding) that delegate to `pages/`.
 - Menus: route modules export `routeConfig`, auto-discovered by `lib/routing/route-config.ts` via `import.meta.glob` — no manual registration.
 - **No frontend i18n**: UI text is hardcoded Chinese. Backend-localized error keys are translated centrally in `@acrostack/core` (`localizeAbpError` / `extractAbpErrorMessage`) — never hand-map keys elsewhere.
-- **Styling rules** (Fluent UI v9 — see the official _Concepts / Developer / Styling components_ doc):
-  - **Use Fluent components as-is.** Never re-skin their default appearance (padding, radius, colors, shadows, focus rings). `Card`/`CardHeader` already provide padding + gap via `--fui-Card--size` (8/12/16px) — pass `size` instead of writing `padding`.
-  - **All styling goes through Griffel `makeStyles`** (module scope, one `useStyles` hook). The only global CSS is the document-level reset in `src/styles/globals.css` (box-sizing + full height) — no component appearance there, ever.
-  - **Design decisions come from tokens** (`tokens.colorNeutralBackground2`, `tokens.spacingVerticalL`, `tokens.borderRadiusMedium`, `tokens.fontSizeBase400`, …). Hardcoded colors are forbidden; the brand color is defined once in `src/lib/theme/brand.ts` and expanded by `createLightTheme`/`createDarkTheme`.
-  - **No CSS shorthand properties** in Griffel styles (unsupported): use `shorthands.padding(...)`, `shorthands.gap(...)`, `shorthands.borderBottom(...)`, `shorthands.flex(...)`, `shorthands.overflow(...)`.
-  - **Class merging only via `mergeClasses()`** — never string-concatenate class names, and a parent-provided `className` always goes last.
-  - **No inline `style={{…}}`**; layout wrappers of our own (`<div className={styles.grid}>`) are fine, but do not target Fluent component internals with selectors.
-  - Responsive layout uses Griffel media queries with the shared breakpoint (`DESKTOP_MEDIA_QUERY` in `src/lib/useMediaQuery.ts`); colors/typography never change per breakpoint.
-  - **Theme-agnostic**: light / dark / system are all first-class (`AppThemeProvider`). Never assume a light canvas or a specific brand hue in styles.
+- **Styling**: 排布一律用 `@acrostack/ui/layout` 的布局原语表达（`VStack`/`HStack`/`Grid`/`GridSpan`/`Center`/`Section`/`Layout` 家族/`FormLayout`）——间距、居中、限宽、滚动都通过它们的 props 声明，应用内**不写任何样式**（无 CSS、无 `makeStyles`、无 `className` 样式绑定）。
+  - 间距只取间距刻度：`0 · 0.5 · 1 · 1.5 · 2 · 3 · 4 · 5 · 6 · 8 · 10`（2/4/6/8/12/16/20/24/32/40px）；任意尺寸用 `width`/`height`/`maxWidth`/`minHeight`（数字按像素）。
+  - 缺少的排布能力补进 `@acrostack/ui/layout`，不要在页面里就地写样式。
+  - `src/styles/globals.css` 是唯一的全局样式入口（当前为空文件，由 `main.tsx` 引入）。
+- **主题仍在使用**（与样式解耦）：明暗/品牌由 `src/lib/theme/` 提供（`AppThemeProvider` + `createLightTheme`/`createDarkTheme`，品牌色阶在 `brand.ts`），`ThemeSwitcher` 负责切换。
+- **Use Fluent components as-is.** 不改造 Fluent 组件自带外观；`Card`/`CardHeader` 已自带 padding 与 gap，需要更松/更紧时用它们的 `size` 属性。

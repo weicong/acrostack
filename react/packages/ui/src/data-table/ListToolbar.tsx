@@ -1,15 +1,5 @@
 import type { ReactNode } from "react";
-import { Toolbar, makeStyles, shorthands, tokens } from "@fluentui/react-components";
-
-const useStyles = makeStyles({
-  // Toolbar 自带 display:flex / align-items:center 与默认内边距；
-  // 这里只补它没有的两件事：窄屏换行、以及"搜索在左、操作在右"的两端对齐。
-  toolbar: {
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-  },
-});
+import { HStack } from "../layout";
 
 export interface ListToolbarProps {
   /** 供读屏识别的工具栏名称（如「用户筛选与操作」）。 */
@@ -23,18 +13,16 @@ export interface ListToolbarProps {
 }
 
 /**
- * 列表页工具栏：基于 Fluent `Toolbar` 构建（自带 `role="toolbar"`、
- * 默认内边距与方向键导航），只补充两点排布：两端对齐与窄屏换行。
- * 各列表页共用同一排布，使用户在不同页面看到一致的操作位置。
+ * 列表页工具栏：搜索在左、操作在右，窄屏自动换行。
+ * 自带 `role="toolbar"` 与读屏名称，排布由布局原语给出，
+ * 各列表页共用同一节奏，使用户在不同页面看到一致的操作位置。
  */
 export function ListToolbar({ label, search, filters, actions }: ListToolbarProps) {
-  const styles = useStyles();
-
   return (
-    <Toolbar className={styles.toolbar} aria-label={label}>
+    <HStack role="toolbar" aria-label={label} justify="between" align="center" gap={2} wrap="wrap">
       {search}
       {filters}
       {actions}
-    </Toolbar>
+    </HStack>
   );
 }

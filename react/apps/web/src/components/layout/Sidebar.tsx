@@ -5,20 +5,9 @@ import {
   NavDrawerBody,
   NavItem,
   NavSectionHeader,
-  makeStyles,
-  shorthands,
-  tokens,
   type NavDrawerProps,
 } from "@fluentui/react-components";
 import { useShellMenu } from "@/lib/routing/shell-menu";
-
-const useStyles = makeStyles({
-  body: {
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalXS),
-  },
-});
 
 /** 导航选中逻辑：内部路由交给 SPA，外链留给浏览器。 */
 function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
@@ -50,11 +39,10 @@ function useNavItemSelect(): NavDrawerProps["onNavItemSelect"] {
  * 自动生成的移动抽屉原样复用同一份内容。
  */
 export function SidebarNav() {
-  const styles = useStyles();
   const { groups } = useShellMenu();
 
   return (
-    <NavDrawerBody className={styles.body}>
+    <NavDrawerBody>
       {groups.map((group) => (
         <Fragment key={group.caption}>
           <NavSectionHeader>{group.caption}</NavSectionHeader>

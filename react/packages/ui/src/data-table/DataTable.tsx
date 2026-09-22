@@ -14,9 +14,6 @@ import {
   Text,
   Toolbar,
   ToolbarButton,
-  makeStyles,
-  shorthands,
-  tokens,
 } from "@fluentui/react-components";
 import {
   ChevronLeftFilled,
@@ -24,6 +21,7 @@ import {
   ArrowPreviousFilled,
   ChevronRightFilled,
 } from "@fluentui/react-icons";
+import { HStack, Stack, VStack } from "../layout";
 
 interface DataTableProps<TData extends RowData> {
   table: ReactTable<AppTableFeatures, TData>;
@@ -40,34 +38,6 @@ interface DataTableProps<TData extends RowData> {
 }
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalM),
-  },
-  /** 窄屏下让表格自身横向滚动，避免撑破页面布局 */
-  tableScroll: {
-    overflowX: "auto",
-  },
-  /** 空态/加载/错误提示：整行合并，避免被读成"第一列的内容" */
-  statusCell: {
-    color: tokens.colorNeutralForeground3,
-  },
-  /** Toolbar 自带 display / align-items / 内边距，这里只补右对齐与窄屏换行 */
-  pagination: {
-    justifyContent: "flex-end",
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-  },
-  pageSize: {
-    minWidth: "110px",
-  },
-  pageIndicator: {
-    color: tokens.colorNeutralForeground3,
-  },
-});
 
 /**
  * Fluent Table 封装：使用 Fluent 原生表格组件与默认外观，
@@ -87,7 +57,6 @@ function DataTable<TData extends RowData>({
   onRowClick,
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData>) {
-  const styles = useStyles();
   // 未显式传入时使用中文默认值
   const empty = emptyMessage ?? "无数据";
   const loading = loadingMessage ?? "正在加载...";
@@ -100,8 +69,8 @@ function DataTable<TData extends RowData>({
   const currentPageSize = table.state.pagination.pageSize;
 
   return (
-    <div className={styles.root}>
-      <div className={styles.tableScroll}>
+    <VStack gap={3}>
+      <Stack isScrollable>
         <FluentTable
           aria-label={ariaLabelledBy ? undefined : ariaLabel}
           aria-labelledby={ariaLabelledBy}
@@ -142,21 +111,19 @@ function DataTable<TData extends RowData>({
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={columnCount} className={styles.statusCell}>
+                <TableCell colSpan={columnCount}>
                   <Spinner size="tiny" label={loading} labelPosition="after" />
                 </TableCell>
               </TableRow>
             ) : isError ? (
               <TableRow>
-                <TableCell colSpan={columnCount} className={styles.statusCell}>
+                <TableCell colSpan={columnCount}>
                   {errorMessage ?? "数据加载失败，请稍后重试"}
                 </TableCell>
               </TableRow>
             ) : rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columnCount} className={styles.statusCell}>
-                  {empty}
-                </TableCell>
+                <TableCell colSpan={columnCount}>{empty}</TableCell>
               </TableRow>
             ) : (
               rows.map((row) => {
@@ -190,60 +157,59 @@ function DataTable<TData extends RowData>({
             )}
           </TableBody>
         </FluentTable>
-      </div>
+      </Stack>
 
       {showPagination && (
-        <Toolbar className={styles.pagination} aria-label="分页">
-          <Select
-            className={styles.pageSize}
-            value={String(currentPageSize)}
-            onChange={(e) => {
-              table.setPageSize(Number(e.currentTarget.value));
-            }}
-            aria-label="每页行数"
-          >
-            {pageSizeOptions.map((size) => (
-              <option key={size} value={size}>
-                {`${size} 条/页`}
-              </option>
-            ))}
-          </Select>
+        <HStack justify="end" wrap="wrap">
+          <Toolbar aria-label="分页">
+            <Select
+              value={String(currentPageSize)}
+              onChange={(e) => {
+                table.setPageSize(Number(e.currentTarget.value));
+              }}
+              aria-label="每页行数"
+            >
+              {pageSizeOptions.map((size) => (
+                <option key={size} value={size}>
+                  {`${size} 条/页`}
+                </option>
+              ))}
+            </Select>
 
-          <Text size={200} className={styles.pageIndicator}>
-            {`第 ${currentPageIndex + 1} 页，共 ${pageCount} 页`}
-          </Text>
+            <Text size={200}>{`第 ${currentPageIndex + 1} 页，共 ${pageCount} 页`}</Text>
 
-          <ToolbarButton
-            appearance="subtle"
-            icon={<ArrowPreviousFilled />}
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            aria-label="首页"
-          />
-          <ToolbarButton
-            appearance="subtle"
-            icon={<ChevronLeftFilled />}
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            aria-label="上一页"
-          />
-          <ToolbarButton
-            appearance="subtle"
-            icon={<ChevronRightFilled />}
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            aria-label="下一页"
-          />
-          <ToolbarButton
-            appearance="subtle"
-            icon={<ArrowNextFilled />}
-            onClick={() => table.setPageIndex(pageCount - 1)}
-            disabled={!table.getCanNextPage()}
-            aria-label="末页"
-          />
-        </Toolbar>
+            <ToolbarButton
+              appearance="subtle"
+              icon={<ArrowPreviousFilled />}
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              aria-label="首页"
+            />
+            <ToolbarButton
+              appearance="subtle"
+              icon={<ChevronLeftFilled />}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              aria-label="上一页"
+            />
+            <ToolbarButton
+              appearance="subtle"
+              icon={<ChevronRightFilled />}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              aria-label="下一页"
+            />
+            <ToolbarButton
+              appearance="subtle"
+              icon={<ArrowNextFilled />}
+              onClick={() => table.setPageIndex(pageCount - 1)}
+              disabled={!table.getCanNextPage()}
+              aria-label="末页"
+            />
+          </Toolbar>
+        </HStack>
       )}
-    </div>
+    </VStack>
   );
 }
 

@@ -11,7 +11,7 @@ The module set deliberately stays aligned with the **ABP official single-layer (
 - **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.Impersonation` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
   - Mappers live in each module's `ObjectMapping/` folder (not in the host).
   - Business logic belongs in `modules/<Feature>/`, never in the host.
-- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` is the React 19 SPA (TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth); `packages/ui` is the reusable UI package `@acrostack/ui` (subpath exports: app-shell / data-table / dialog / form); `packages/api-client` is the Kubb-generated API client `@acrostack/api-client` (generated code must never be hand-edited). Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
+- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` is the React 19 SPA (TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth); `packages/ui` is the reusable UI package `@acrostack/ui` (subpath exports: app-shell / layout / data-table / dialog / form; `layout` holds the Astryx-style layout primitives — Stack/Grid/Center/Section/Layout/FormLayout — and is the only place where layout styling is written); `packages/api-client` is the Kubb-generated API client `@acrostack/api-client` (generated code must never be hand-edited). Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
 
 ## Backend Commands
 

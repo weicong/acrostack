@@ -9,7 +9,8 @@
     "./app-shell": "./src/app-shell/index.ts",
     "./data-table": "./src/data-table/index.ts",
     "./dialog": "./src/dialog/index.ts",
-    "./form": "./src/form/index.ts"
+    "./form": "./src/form/index.ts",
+    "./layout": "./src/layout/index.ts"
   },
   "dependencies": {
     "@fluentui/react-calendar-compat": "^0.4.6",

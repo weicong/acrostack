@@ -1,25 +1,15 @@
 import { Outlet } from "@tanstack/react-router";
 import { AppShell } from "@acrostack/ui/app-shell";
-import { makeStyles, shorthands, tokens } from "@fluentui/react-components";
+import { Center, VStack } from "@acrostack/ui/layout";
 import { Header } from "./Header";
 import { Sidebar, SidebarNav } from "./Sidebar";
 import { ImpersonationBanner } from "./ImpersonationBanner";
 
-const useStyles = makeStyles({
-  // 长行可读性：内容区居中并限宽（外壳自身的两列与留白由 AppShell 负责）
-  content: {
-    width: "100%",
-    maxWidth: "1440px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalL),
-  },
-});
+/** 内容列最大宽度：与外壳的内边距一起保证长行可读。 */
+const CONTENT_MAX_WIDTH = 1440;
 
 /**
- * 管理后台布局：外壳交给 `@acrostack/ui/app-shell`。
+ * 管理后台布局：外壳交给 `@acrostack/ui/app-shell`，内容列宽用布局原语表达。
  *
  * 槽位映射：`topNav` = 顶栏（含面包屑与账户区）、`sideNav` = 常驻侧栏、
  * `banner` = 模拟登录提示、`children` = 当前页面（`<Outlet />`）。
@@ -27,20 +17,20 @@ const useStyles = makeStyles({
  * 抽屉内容复用同一份 `SidebarNav`。
  */
 export function AppLayout() {
-  const styles = useStyles();
-
   return (
     <AppShell
-      variant="elevated"
       contentPadding={6}
       mobileNav={{ hasToggle: true, breakpoint: "lg", content: <SidebarNav /> }}
       banner={<ImpersonationBanner />}
       topNav={<Header />}
       sideNav={<Sidebar />}
     >
-      <div className={styles.content}>
-        <Outlet />
-      </div>
+      {/* 内容列限宽并水平居中；窄屏时自然占满 */}
+      <Center axis="horizontal">
+        <VStack gap={4} width="100%" maxWidth={CONTENT_MAX_WIDTH}>
+          <Outlet />
+        </VStack>
+      </Center>
     </AppShell>
   );
 }

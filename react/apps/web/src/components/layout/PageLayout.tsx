@@ -1,40 +1,7 @@
 import { type ReactNode } from "react";
-import { Text, Title2, Toolbar, makeStyles, shorthands, tokens } from "@fluentui/react-components";
+import { Text, Title2 } from "@fluentui/react-components";
+import { HStack, VStack } from "@acrostack/ui/layout";
 import { usePageTitle } from "@/lib/usePageTitle";
-
-const useStyles = makeStyles({
-  page: {
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalL),
-  },
-  head: {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingVerticalS, tokens.spacingHorizontalL),
-  },
-  headText: {
-    minWidth: 0,
-    flexGrow: 1,
-  },
-  description: {
-    /* 标题与说明之间留一档（S=8），避免说明贴住标题 */
-    marginTop: tokens.spacingVerticalS,
-    maxWidth: "72ch",
-    color: tokens.colorNeutralForeground3,
-  },
-  actions: {
-    flexWrap: "wrap",
-    ...shorthands.gap(tokens.spacingHorizontalS),
-  },
-  body: {
-    display: "flex",
-    flexDirection: "column",
-    ...shorthands.gap(tokens.spacingVerticalL),
-  },
-});
 
 interface PageLayoutProps {
   title: string;
@@ -50,10 +17,8 @@ interface PageLayoutProps {
 /**
  * 页面骨架：标题 + 说明 + 操作区 + 内容区。
  *
- * 操作区由 Fluent `Toolbar` 承载（自带 `role="toolbar"`、方向键导航，
- * 根元素在 small/medium 下无额外内边距）；页头一行用 `space-between`
- * 把操作推到右侧。标题与说明直接用 Fluent 排版组件（`h1`/`p` 本身就是块级，
- * 无需额外声明），页面之间只通过令牌化间距对齐。
+ * 页头一行两端对齐、内容区纵向堆叠，间距全部来自间距刻度；
+ * 标题与说明直接用 Fluent 排版组件（`h1`/`p` 本身就是块级）。
  */
 export function PageLayout({
   title,
@@ -62,30 +27,31 @@ export function PageLayout({
   actionsLabel = "页面操作",
   children,
 }: PageLayoutProps) {
-  const styles = useStyles();
   // 页面名同时用于浏览器标签页与顶栏面包屑（非菜单页也能显示正确位置）
   usePageTitle(title);
 
   return (
-    <div className={styles.page}>
-      <div className={styles.head}>
-        <div className={styles.headText}>
+    <VStack gap={4}>
+      <HStack justify="between" align="start" gap={4} wrap="wrap">
+        <VStack gap={1}>
           <Title2 as="h1" block>
             {title}
           </Title2>
           {description && (
-            <Text as="p" block className={styles.description}>
+            <Text as="p" block>
               {description}
             </Text>
           )}
-        </div>
+        </VStack>
+
         {actions && (
-          <Toolbar className={styles.actions} aria-label={actionsLabel}>
+          <HStack role="toolbar" aria-label={actionsLabel} gap={2} wrap="wrap">
             {actions}
-          </Toolbar>
+          </HStack>
         )}
-      </div>
-      <div className={styles.body}>{children}</div>
-    </div>
+      </HStack>
+
+      <VStack gap={4}>{children}</VStack>
+    </VStack>
   );
 }

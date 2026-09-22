@@ -7,45 +7,20 @@ import {
   MessageBarActions,
   MessageBarBody,
   Text,
-  makeStyles,
-  shorthands,
-  tokens,
 } from "@fluentui/react-components";
 import {
   ArrowExit20Regular,
   BookQuestionMark20Regular,
   Code20Regular,
 } from "@fluentui/react-icons";
+import { Grid } from "@acrostack/ui/layout";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useShellMenu } from "@/lib/routing/shell-menu";
 import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@acrostack/core";
 import { useThemeMode } from "@/lib/theme/ThemeProvider";
 
-const useStyles = makeStyles({
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-    ...shorthands.gap(tokens.spacingHorizontalM),
-  },
-  tile: {
-    cursor: "pointer",
-  },
-  info: {
-    display: "grid",
-    gridTemplateColumns: "minmax(96px, auto) 1fr",
-    rowGap: tokens.spacingVerticalM,
-    columnGap: tokens.spacingHorizontalL,
-    ...shorthands.margin(0),
-  },
-  term: {
-    color: tokens.colorNeutralForeground3,
-  },
-  value: {
-    ...shorthands.margin(0),
-    minWidth: 0,
-    overflowWrap: "anywhere",
-  },
-});
+/** 卡片墙列配置：按最小宽度自动排布，窄屏自然折行。 */
+const TILE_COLUMNS = { minWidth: 220 };
 
 /**
  * 工作台首页：把「能做什么」直接摆在用户面前。
@@ -55,7 +30,6 @@ const useStyles = makeStyles({
  *  - 帮助与文档：需要查资料时不必离开应用去找入口。
  */
 export function HomePage() {
-  const styles = useStyles();
   const navigate = useNavigate();
   const { isAuthenticated, navigateToLogin } = useAuth();
   const currentUser = useCurrentUser();
@@ -100,15 +74,14 @@ export function HomePage() {
           description={<Text size={200}>按你拥有的权限展示，点击卡片直接进入</Text>}
         />
         {shortcuts.length === 0 ? (
-          <Text className={styles.term}>当前没有可访问的功能，请联系管理员分配权限。</Text>
+          <Text>当前没有可访问的功能，请联系管理员分配权限。</Text>
         ) : (
-          <div className={styles.grid}>
+          <Grid columns={TILE_COLUMNS} gap={3}>
             {shortcuts.map((item) => {
               const Icon = item.icon;
               return (
                 <Card
                   key={item.path}
-                  className={styles.tile}
                   appearance="outline"
                   focusMode="tab-only"
                   aria-label={`${item.name}（${item.group}）`}
@@ -117,16 +90,12 @@ export function HomePage() {
                   <CardHeader
                     image={Icon ? <Icon /> : undefined}
                     header={<Text weight="semibold">{item.name}</Text>}
-                    description={
-                      <Text size={200} className={styles.term}>
-                        {item.group}
-                      </Text>
-                    }
+                    description={<Text size={200}>{item.group}</Text>}
                   />
                 </Card>
               );
             })}
-          </div>
+          </Grid>
         )}
       </Card>
 
@@ -135,16 +104,17 @@ export function HomePage() {
           header={<Text weight="semibold">运行信息</Text>}
           description={<Text size={200}>当前会话与应用配置</Text>}
         />
-        <dl className={styles.info}>
-          <dt className={styles.term}>应用名称</dt>
-          <dd className={styles.value}>{appName}</dd>
-          <dt className={styles.term}>当前用户</dt>
-          <dd className={styles.value}>{displayName ?? "未登录"}</dd>
-          <dt className={styles.term}>外观</dt>
-          <dd className={styles.value}>{themeLabel}</dd>
-          <dt className={styles.term}>后端地址</dt>
-          <dd className={styles.value}>{getApiUrl()}</dd>
-        </dl>
+        {/* 两列对齐的键值表；用 Grid 承载（`dl` 的默认 `dd` 缩进会破坏对齐） */}
+        <Grid columns={2} gap={2}>
+          <Text>应用名称</Text>
+          <Text>{appName}</Text>
+          <Text>当前用户</Text>
+          <Text>{displayName ?? "未登录"}</Text>
+          <Text>外观</Text>
+          <Text>{themeLabel}</Text>
+          <Text>后端地址</Text>
+          <Text>{getApiUrl()}</Text>
+        </Grid>
       </Card>
 
       <Card>
@@ -152,7 +122,7 @@ export function HomePage() {
           header={<Text weight="semibold">帮助与文档</Text>}
           description={<Text size={200}>需要查资料时可直接打开</Text>}
         />
-        <div className={styles.grid}>
+        <Grid columns={TILE_COLUMNS} gap={3}>
           <Button
             as="a"
             appearance="outline"
@@ -173,7 +143,7 @@ export function HomePage() {
           >
             ABP React UI 文档
           </Button>
-        </div>
+        </Grid>
       </Card>
     </PageLayout>
   );
