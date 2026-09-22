@@ -19,6 +19,7 @@ const CONTENT_MAX_WIDTH = 1440;
 export function AppLayout() {
   return (
     <AppShell
+      variant="elevated"
       contentPadding={6}
       mobileNav={{ hasToggle: true, breakpoint: "lg", content: <SidebarNav /> }}
       banner={<ImpersonationBanner />}

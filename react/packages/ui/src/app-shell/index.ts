@@ -10,5 +10,6 @@ export {
   type AppShellMobileContextValue,
   type AppShellProps,
   type AppShellBreakpoint,
+  type AppShellVariant,
   type MobileNavConfig,
 } from "./AppShell";

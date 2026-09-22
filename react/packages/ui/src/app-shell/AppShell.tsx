@@ -9,7 +9,15 @@ import {
 } from "react";
 import { Button, DrawerBody, OverlayDrawer } from "@fluentui/react-components";
 import { Navigation20Regular } from "@fluentui/react-icons";
-import { HStack, StackItem, VStack, type LayoutHeight, type SpacingStep } from "../layout";
+import {
+  HStack,
+  Section,
+  StackItem,
+  VStack,
+  type LayoutHeight,
+  type SectionVariant,
+  type SpacingStep,
+} from "../layout";
 
 /**
  * 断点名与像素宽度的对应表（对标 Astryx `AppShellBreakpoint` 的语义：
@@ -33,6 +41,44 @@ export function resolveMobileNavBreakpoint(breakpoint: AppShellBreakpoint = "md"
   return breakpoint === "none" ? null : APP_SHELL_BREAKPOINTS[breakpoint];
 }
 
+/**
+ * 外观变体（沿用 Astryx AppShell 的四个内置变体）：
+ * - `elevated`（默认）：内容在画布上，顶栏与侧栏为表面（白）——Fluent 后台最常见的一种；
+ * - `wash`：反过来，内容为表面、导航区为画布底色（弱化导航）；
+ * - `section`：全部为表面，靠分隔线分区；
+ * - `surface`：全部为表面，不画分隔线。
+ */
+export type AppShellVariant = "elevated" | "wash" | "section" | "surface";
+
+/**
+ * 顶栏内容行的最小高度：Fluent 中等尺寸控件为 32px，
+ * 配合上下各 8px 的内边距即 48px —— 常规顶栏高度（不写死高度，内容更高时自然增长）。
+ */
+const TOP_BAR_CONTENT_MIN_HEIGHT = 32;
+
+interface AppShellSurfaces {
+  /** 画布（根）底色。 */
+  root: SectionVariant;
+  /** 顶栏底色。 */
+  topNav: SectionVariant;
+  /** 侧栏底色。 */
+  sideNav: SectionVariant;
+  /** 是否画分隔线（顶栏底边、侧栏尾边）。 */
+  hasDividers: boolean;
+}
+
+/**
+ * 变体 → 表面与分隔线。
+ * 底色只用 Fluent 中性令牌（`section` = `colorNeutralBackground1`，`muted` = `colorNeutralBackground2`），
+ * 分隔线由 `Section` 用 `colorNeutralStroke2` 画出，这里不写任何颜色值。
+ */
+const SURFACES: Record<AppShellVariant, AppShellSurfaces> = {
+  elevated: { root: "muted", topNav: "section", sideNav: "section", hasDividers: true },
+  wash: { root: "section", topNav: "muted", sideNav: "muted", hasDividers: true },
+  section: { root: "section", topNav: "section", sideNav: "section", hasDividers: true },
+  surface: { root: "section", topNav: "section", sideNav: "section", hasDividers: false },
+};
+
 /** 移动端导航配置：控制自动生成的抽屉与汉堡开关。 */
 export interface MobileNavConfig {
   /** 是否自动渲染汉堡开关（默认 true）；关掉后可用 `useAppShellMobile()` 自行放置。 */
@@ -51,11 +97,13 @@ export interface MobileNavConfig {
 export interface AppShellProps {
   /** 根元素 ref。 */
   ref?: Ref<HTMLDivElement>;
+  /** 外观变体，默认 `elevated`。 */
+  variant?: AppShellVariant;
   /** 系统级通告条，渲染在顶栏之上。 */
   banner?: ReactNode;
   /** 主内容区（渲染为 `<main>`）。 */
   children: ReactNode;
-  /** 主内容内边距（间距刻度），默认 `4`（16px）。 */
+  /** 主内容内边距（间距刻度），默认 `4`（16px）；顶栏的横向留白与之同档，保证两侧边缘对齐。 */
   contentPadding?: SpacingStep;
   /** 高度模式：`fill` 撑满视口、内容区内部滚动（默认）；`auto` 随内容增长、整页滚动。 */
   height?: LayoutHeight;
@@ -115,14 +163,19 @@ function isMobileNavConfig(value: unknown): value is MobileNavConfig {
  * `AppShell` —— 应用级页面骨架（对标 Astryx `@astryxdesign/core` 的 AppShell）。
  *
  * 槽位式 API：`banner` / `topNav` / `sideNav` / `children`（主内容，渲染为 `<main>`）。
+ *
+ * 外壳外观（画布与面板底色、分隔线、顶栏节奏、内容内边距与滚动）全部由
+ * `@acrostack/ui/layout` 的原语组合而成——底色只用 Fluent 中性令牌，
+ * 因此自动跟随明暗主题；本组件不写任何 CSS，也不接受样式类。
+ *
  * 行为：
- *   - 外壳自身的布局（`fill` 高度、顶栏/侧栏常驻、内容区滚动、内边距）由
- *     `@acrostack/ui/layout` 的布局原语组合而成，消费方不必再补样式；
  *   - 响应式：低于 `mobileNav.breakpoint` 时侧栏移入浮层抽屉，并自动渲染汉堡开关；
- *   - `mobileNav` 支持 `false`（禁用）、配置对象（受控/定制）、或直接给节点（完全自定义）。
+ *   - `mobileNav` 支持 `false`（禁用）、配置对象（受控/定制）、或直接给节点（完全自定义）；
+ *   - `fill` 模式下只有内容区滚动，顶栏与侧栏常驻。
  */
 export function AppShell({
   ref,
+  variant = "elevated",
   banner,
   children,
   contentPadding = 4,
@@ -157,68 +210,94 @@ export function AppShell({
   const drawerContent = navDisabled ? undefined : (navConfig?.content ?? customDrawer ?? sideNav);
   const showToggle = isMobile && !navDisabled && navConfig?.hasToggle !== false;
   const isFill = height === "fill";
+  const surfaces = SURFACES[variant];
 
   return (
     <AppShellMobileContext.Provider value={contextValue}>
-      <VStack
+      {/* 画布：撑满视口，内部两列（侧栏常驻 + 内容自滚） */}
+      <Section
         ref={ref}
         className={className}
+        variant={surfaces.root}
+        padding={0}
         height={isFill ? "100dvh" : undefined}
         minHeight={isFill ? undefined : "100dvh"}
       >
-        {banner !== undefined && <StackItem>{banner}</StackItem>}
+        <VStack height="100%">
+          {banner !== undefined && <StackItem>{banner}</StackItem>}
 
-        {/* 顶栏以下（含侧栏与内容）占满剩余高度 */}
-        <StackItem size="fill">
-          <VStack height="100%">
-            {topNav !== undefined && (
-              <StackItem>
-                <header>
-                  <HStack align="center" gap={2} paddingBlock={2} paddingInline={4}>
-                    {showToggle && (
-                      <Button
-                        appearance="subtle"
-                        icon={<Navigation20Regular />}
-                        aria-label="打开导航"
-                        aria-expanded={isOpen}
-                        onClick={() => setOpen(!isOpen)}
-                      />
-                    )}
-                    {/* 槽位内容两端对齐：定位/品牌在左，操作区在右 */}
-                    <HStack gap={4} justify="between" align="center" width="100%" minWidth={0}>
-                      {topNav}
-                    </HStack>
-                  </HStack>
-                </header>
-              </StackItem>
-            )}
-
-            <StackItem size="fill">
-              <HStack height="100%" minHeight={0}>
-                {!isMobile && sideNav !== undefined && <StackItem>{sideNav}</StackItem>}
-
-                {/* 内容区自己滚动（`auto` 模式下交给整页滚动），内边距由外壳统一给出 */}
-                <StackItem size="fill" isScrollable={isFill}>
-                  <main>
-                    <VStack padding={contentPadding}>{children}</VStack>
-                  </main>
+          {/* 顶栏以下（含侧栏与内容）占满剩余高度 */}
+          <StackItem size="fill">
+            <VStack height="100%">
+              {topNav !== undefined && (
+                <StackItem>
+                  <header>
+                    <Section
+                      variant={surfaces.topNav}
+                      dividers={surfaces.hasDividers ? ["bottom"] : undefined}
+                      padding={0}
+                      paddingBlock={2}
+                      paddingInline={contentPadding}
+                    >
+                      <HStack align="center" gap={2} minHeight={TOP_BAR_CONTENT_MIN_HEIGHT}>
+                        {showToggle && (
+                          <Button
+                            appearance="subtle"
+                            icon={<Navigation20Regular />}
+                            aria-label="打开导航"
+                            aria-expanded={isOpen}
+                            onClick={() => setOpen(!isOpen)}
+                          />
+                        )}
+                        {/* 槽位内容两端对齐：定位/品牌在左，操作区在右 */}
+                        <HStack gap={4} justify="between" align="center" width="100%" minWidth={0}>
+                          {topNav}
+                        </HStack>
+                      </HStack>
+                    </Section>
+                  </header>
                 </StackItem>
-              </HStack>
-            </StackItem>
-          </VStack>
-        </StackItem>
+              )}
 
-        {isMobile && drawerContent && (
-          <OverlayDrawer
-            open={isOpen}
-            onOpenChange={(_event, data) => setOpen(data.open)}
-            size="small"
-            aria-label="导航"
-          >
-            <DrawerBody>{drawerContent}</DrawerBody>
-          </OverlayDrawer>
-        )}
-      </VStack>
+              <StackItem size="fill">
+                <HStack height="100%" minHeight={0}>
+                  {!isMobile && sideNav !== undefined && (
+                    /* 侧栏为独立面板：不压缩、自身滚动，内边距交给面板内容（如 NavDrawer） */
+                    <StackItem isScrollable>
+                      <Section
+                        variant={surfaces.sideNav}
+                        dividers={surfaces.hasDividers ? ["end"] : undefined}
+                        padding={0}
+                        height="100%"
+                      >
+                        {sideNav}
+                      </Section>
+                    </StackItem>
+                  )}
+
+                  {/* 内容区自己滚动（`auto` 模式下交给整页滚动），内边距由外壳统一给出 */}
+                  <StackItem size="fill" isScrollable={isFill}>
+                    <main>
+                      <VStack padding={contentPadding}>{children}</VStack>
+                    </main>
+                  </StackItem>
+                </HStack>
+              </StackItem>
+            </VStack>
+          </StackItem>
+        </VStack>
+      </Section>
+
+      {isMobile && drawerContent && (
+        <OverlayDrawer
+          open={isOpen}
+          onOpenChange={(_event, data) => setOpen(data.open)}
+          size="small"
+          aria-label="导航"
+        >
+          <DrawerBody>{drawerContent}</DrawerBody>
+        </OverlayDrawer>
+      )}
     </AppShellMobileContext.Provider>
   );
 }
