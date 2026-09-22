@@ -4,8 +4,8 @@ import { createDarkTheme, createLightTheme, type BrandVariants } from "@fluentui
  * 品牌色阶：Fluent 主题要求 16 阶（10 最暗 → 160 最亮）。
  *
  * 颜色只在这一个文件里定义；明暗主题、语义化颜色令牌（背景/描边/前景/
- * 焦点环等）全部由 createLightTheme / createDarkTheme 派生，组件样式重建后
- * 引用 Fluent 令牌即可自动跟随品牌与主题变化。
+ * 焦点环等）全部由 createLightTheme / createDarkTheme 派生，组件消费
+ * Fluent 令牌即可自动跟随品牌与主题变化。
  */
 export const brandRamp: BrandVariants = {
   10: "#020305",

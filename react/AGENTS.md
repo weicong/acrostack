@@ -6,7 +6,7 @@
 
 - `apps/web/` — React 19 SPA（TanStack Router/Query/Form、Fluent UI v9、OIDC）。源码布局、样式准则与评审清单见 `apps/web/AGENTS.md`。
 - `packages/core/` — `@acrostack/core`：ABP 框架接入层，子路径导出 `config` / `http` / `auth` / `permissions` / `tenant` / `query`。宿主差异（env、403 目标、共享 axios 实例）经 `configureCore` / `setupHttpClient` 注入；不依赖 `ui` 与 `api-client`。约定见 `packages/core/AGENTS.md`。
-- `packages/ui/` — `@acrostack/ui`：可复用 UI 组件包，子路径导出 `app-shell` / `data-table` / `dialog` / `form` / `layout`（app-shell 与 layout 对标 Astryx 的 AppShell 与 Layout 家族，用 Fluent 实现）。`layout` 是零依赖的基础域，其余域可依赖它；除此之外域间零依赖、禁止导入应用层，约定见 `packages/ui/AGENTS.md`。
+- `packages/ui/` — `@acrostack/ui`：可复用 UI 组件包，子路径导出 `app-shell` / `data-table` / `dialog` / `form` / `layout` / `theme`，外加全局样式表 `styles/globals.css`（app-shell 与 layout 对标 Astryx 的 AppShell 与 Layout 家族，用 Fluent 实现）。**样式定义只允许出现在本包**：`layout` 负责原语与间距刻度、`theme` 负责颜色令牌与明暗外观，应用侧只组合不定义。`layout` 是零依赖的基础域，其余域可依赖它；除此之外域间零依赖、禁止导入应用层，约定见 `packages/ui/AGENTS.md`。
 - `packages/api-client/` — `@acrostack/api-client`：Kubb 从后端 Swagger 生成的 API 客户端（models / clients / hooks）+ 生成配置与工具链。**生成物禁止手改**；生成命令见 `packages/api-client/AGENTS.md`。
 - `vite.config.ts` — 工作区根配置：`lint`/`fmt` 默认值与 `overrides`（Vite+ **不支持**包级嵌套 lint 配置）、`defaultPackage: './apps/web'`。
 - `pnpm-workspace.yaml` — 工作区成员、`catalog`（工具链版本锁定）、`overrides`（`vite@*` → Vite+ core 别名，pnpm 必需）。

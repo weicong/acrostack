@@ -17,7 +17,7 @@ import { Grid } from "@acrostack/ui/layout";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useShellMenu } from "@/lib/routing/shell-menu";
 import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@acrostack/core";
-import { useThemeMode } from "@/lib/theme/ThemeProvider";
+import { useThemeMode } from "@acrostack/ui/theme";
 
 /** 卡片墙列配置：按最小宽度自动排布，窄屏自然折行。 */
 const TILE_COLUMNS = { minWidth: 220 };

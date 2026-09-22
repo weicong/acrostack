@@ -48,7 +48,7 @@ export function getPreferredTheme(): Theme {
 
 /**
  * 应用主题：只负责把品牌主题交给 FluentProvider，并提供外观切换能力。
- * 高度无需在这里约束——页面骨架用 `100dvh` 自持高度，样式一律由消费方负责。
+ * 页面骨架与高度由消费方（`@acrostack/ui/layout` 与 `app-shell`）负责。
  */
 export function AppThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(readStoredMode);

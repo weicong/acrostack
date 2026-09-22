@@ -1,7 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { Button, Card, CardHeader, FluentProvider, Text, Title3 } from "@fluentui/react-components";
 import { Center, HStack, VStack } from "@acrostack/ui/layout";
-import { getPreferredTheme } from "@/lib/theme/ThemeProvider";
+import { getPreferredTheme } from "@acrostack/ui/theme";
 
 /** 兜底界面：函数组件，自带 FluentProvider 以便使用 Fluent 组件。 */
 function ErrorFallback({ onRetry }: { onRetry: () => void }) {

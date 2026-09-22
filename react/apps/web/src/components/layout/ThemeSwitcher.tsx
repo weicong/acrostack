@@ -12,7 +12,7 @@ import {
   WeatherMoon20Regular,
   WeatherSunny20Regular,
 } from "@fluentui/react-icons";
-import { useThemeMode, type ThemeMode } from "@/lib/theme/ThemeProvider";
+import { useThemeMode, type ThemeMode } from "@acrostack/ui/theme";
 
 interface ThemeOption {
   value: ThemeMode;
