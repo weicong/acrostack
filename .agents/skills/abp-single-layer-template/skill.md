@@ -12,18 +12,26 @@ enabled: true
 
 ## Solution Structure
 
-Single project containing everything:
+Single project containing everything. **This repo's actual layout** (host under `main/`, self-built feature modules under `modules/`, SPA under `react/`):
 
 ```
 AcroStack/
-├── src/
-│   └── AcroStack/
-│       ├── Data/              # EF Core DbContext, migrations
-│       ├── Entities/          # Domain entities
-│       ├── Services/          # Application services + DTOs
-│       ├── react/             # React SPA (separate folder)
+├── main/
+│   └── AcroStack/             # Composition root / host only (no business logic)
+│       ├── Data/              # EF Core DbContext, migrations, seed contributors
+│       ├── Migrations/
+│       ├── Controllers/       # HomeController (the only hand-written controller)
 │       └── AcroStackModule.cs
+├── modules/
+│   └── <Feature>/             # Feature-style single-project modules
+│       ├── Entities/ Dtos/ Services/ Handlers/ EfCore/
+│       └── Permissions/ Localization/ Options/
+└── react/                     # React SPA (pnpm workspace, Vite+)
+    ├── apps/web/
+    └── packages/{core,ui,api-client}/
 ```
+
+Feature modules are separate projects but still "single-layer": entity, DTOs, app service and permissions live side by side in one project, with no Application/Domain layering.
 
 ## Key Differences from Layered
 

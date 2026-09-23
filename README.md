@@ -33,7 +33,7 @@ react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 1
 
 ## 快速开始
 
-环境要求：.NET 10 SDK、Node 22、pnpm（`devEngines` 锁定 11.8.0）、`vp` CLI（[Vite+](https://viteplus.dev/)）。
+环境要求：.NET 10 SDK、Node 22、pnpm（`devEngines` 锁定 `^12.5.1`，由 pnpm 按需自动下载）、`vp` CLI（[Vite+](https://viteplus.dev/)）。
 
 ```bash
 # 1. 后端（首次或拉取后先迁移 + 种子）

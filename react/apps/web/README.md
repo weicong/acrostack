@@ -57,7 +57,7 @@ vp dev          # http://localhost:5173，API 请求自动代理到后端
 | `build` | `vp build` | 生产构建 |
 | `preview` | `vp preview` | 预览生产构建 |
 
-提交前在工作区根跑 `vp check`（格式化 + lint + 类型检查）。改了后端 API 后先执行 `vp run generate-api` 重新生成客户端，再写前端调用；生成规程与已知问题见 [packages/api-client/AGENTS.md](../../packages/api-client/AGENTS.md)。
+提交前在工作区根跑 `vp check`（格式化 + lint + 类型检查）与 `vp test`。改了后端 API 后先执行 `vp run generate-api` 重新生成客户端，再写前端调用；生成规程与已知问题见 [packages/api-client/AGENTS.md](../../packages/api-client/AGENTS.md)。
 
 ## 环境变量
 
