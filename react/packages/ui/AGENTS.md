@@ -22,7 +22,7 @@
 - **`data-table` 域只做表格机制与展示**：基于 `@tanstack/react-table` + Fluent，**禁止引入任何数据获取库**（`@tanstack/react-query`、axios 等）。取数编排（查询参数编码、缓存、变更后失效）属应用数据层，见 `apps/web/src/lib/useDataTableQuery.ts`。
 - **`form` 域逻辑与表现分离**：`create-form.ts` / `form-context.ts` 负责 TanStack Form 的逻辑装配（校验器由调用方注入），`field-components/`、`form-components/` 只做 Fluent 表现封装。
 - **每个域只有 `index.ts` 是公共 API**；域内文件是对外实现的私有细节，可以自由重构。
-- **域之间零依赖**（`layout` / `theme` 两个基础域例外，见下方样式所有权规则）：A 域需要 B 域的能力时，优先在应用层组合；确需下沉时先在评审中论证。
+- **域之间零依赖**：A 域需要 B 域的能力时，优先在应用层组合；确需下沉时先在评审中论证。
 - **禁止导入应用层**：`@/lib`、`@/api`、`@tanstack/react-router`、`@volo/*`、OIDC/认证等一律不得出现。出现即说明该组件属于应用而非 ui 包。
 - **样式所有权：样式定义只允许出现在本包**（其他位置一律不允许），规则如下：
   - **R1 定义位置**：CSS-in-JS（`makeStyles`/`tokens`/`shorthands`/`mergeClasses`）与 CSS 文件只允许在本包内出现，且集中在 `layout`（间距刻度 + 布局原语）与 `theme`（颜色令牌）；其他域只提供结构与行为。
@@ -31,7 +31,7 @@
   - **R4 语义 props 不算样式**：Fluent 的 `appearance`/`size`/`block`/`Card size`，以及本包原语的 `gap`/`padding`/`columns`/`variant` 等属于结构或语义 API，不受禁令约束。
   - **R5 包内分层**：只有 `layout` 与 `theme` 可以 import `makeStyles`/`tokens`/`shorthands` 并书写颜色值；`app-shell`/`data-table`/`dialog`/`form` 只消费布局原语与 Fluent 组件。
   - 缺少的排布能力补进 `layout` 做成**通用原语**（而不是页面专用组件），不要在别处就地写样式。
-- **`layout` 是基础域**（对标 Astryx `@astryxdesign/core` 的 Layout 家族）：`app-shell` / `data-table` / `dialog` / `form` 可以依赖 `layout`，`layout` 与 `theme` 不得依赖任何其他域。
+- **唯一的例外是 `layout` / `theme` 两个基础域**（对标 Astryx `@astryxdesign/core` 的 Layout 家族）：`app-shell` / `data-table` / `dialog` / `form` 可依赖 `layout`，而 `layout` 与 `theme` 不得依赖任何其他域。
 - 测试与被测代码同目录（`*.test.ts(x)`），用 `vite-plus/test`；优先测纯逻辑（hooks 的纯函数部分、工具函数）。
 
 ## 何时把组件移入本包

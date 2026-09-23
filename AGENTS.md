@@ -1,17 +1,19 @@
 # AGENTS.md
 
+本文件是**跨栈约定的唯一权威**（架构边界、命令、编码规范、文档规则）。各级 README 只做门面与导航，与本文件冲突时以本文件为准。
+
 ## Architecture
 
-ABP modular monolith: a thin ASP.NET Core host + feature modules + one React SPA. The solution file is `AcroStack.slnx`.
+ABP modular monolith: a thin ASP.NET Core host + feature modules + one React SPA. Solution file: `AcroStack.slnx`.
 
-The module set deliberately stays aligned with the **ABP official single-layer (no-layer) template**, with one self-built addition (impersonation). CMS Kit, Chat, File Management, OpenIddict management UI and Tenant Management / SaaS are intentionally **not** part of this solution. Multi-tenancy is **off** (ABP default; no tenant resolution, no `TenantId` on entities).
+Module set stays aligned with the **ABP official single-layer (no-layer) template**, with one self-built addition (impersonation). CMS Kit, Chat, File Management, OpenIddict management UI and Tenant Management / SaaS are intentionally **not** part of this solution. Multi-tenancy is **off** (ABP default; no tenant resolution, no `TenantId` on entities).
 
 - **`main/AcroStack/`** — Composition root / host only: `AcroStackModule.cs`, the single `AcroStackDbContext`, EF migrations (`Migrations/`), data seed contributors, health checks, Swagger, `HomeController`. Contains **no business logic**.
-  - Host disables global UoW transactions (SQLite single-writer). Any write spanning multiple aggregates must open an explicit transaction (e.g. `IUnitOfWorkManager.Begin(requiresNew: true, isTransactional: true)`, or a `DbContext`-level transaction when the writes share one `DbContext`). A shared `IAcroStackTransactionExecutor` used to live in `modules/AcroStack.Common/`; that module was removed together with the Pro-replacement modules and can be recovered from git history if needed.
-- **`modules/<Feature>/`** — Feature-style single-project modules. Currently: `AcroStack.Impersonation` (user impersonation). Each has internal folders: `Entities/ Services/ Dtos/ ObjectMapping/ Permissions/ Localization/`.
-  - Mappers live in each module's `ObjectMapping/` folder (not in the host).
+  - Host disables global UoW transactions (SQLite single-writer). Any write spanning multiple aggregates must open an explicit transaction (`IUnitOfWorkManager.Begin(requiresNew: true, isTransactional: true)`, or a `DbContext`-level transaction when the writes share one `DbContext`).
+- **`modules/<Feature>/`** — Feature-style single-project modules. Currently one: `AcroStack.Impersonation`. Folder set per module: `Entities/ Dtos/ Services/ Handlers/ EfCore/ Permissions/ Localization/ Options/`.
   - Business logic belongs in `modules/<Feature>/`, never in the host.
-- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` is the React 19 SPA (TanStack Router/Query/Form, Fluent UI v9, Kubb codegen, OIDC auth); `packages/ui` is the reusable UI package `@acrostack/ui` (subpath exports: app-shell / layout / theme / data-table / dialog / form, plus the single global stylesheet `styles/globals.css`). **All style definitions live in this package**: `layout` holds the Astryx-style primitives (Stack/Grid/Center/Section/Layout/FormLayout) and the spacing scale, `theme` holds the brand ramp plus light/dark themes, `styles` the one global entry; outside this package no styles may be defined at all; `packages/api-client` is the Kubb-generated API client `@acrostack/api-client` (generated code must never be hand-edited). Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
+- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` (React 19 SPA: TanStack Router/Query/Form, Fluent UI v9, OIDC auth), `packages/core` (`@acrostack/core`: ABP 框架接入层 — 运行时配置 / HTTP / auth / permissions / tenant / query), `packages/ui` (`@acrostack/ui`: app-shell / layout / theme / data-table / dialog / form + 唯一的全局样式表), `packages/api-client` (`@acrostack/api-client`: Kubb 生成的 API 客户端，生成物禁止手改).
+  - Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
 
 ## Backend Commands
 
@@ -30,12 +32,14 @@ dotnet ef database update --project main/AcroStack --startup-project main/AcroSt
 
 ## Frontend Commands
 
-Uses **Vite+** (`vp` CLI), not raw npm/pnpm scripts. Package manager is pnpm.
+Uses **Vite+** (`vp` CLI), not raw npm/pnpm scripts. Package manager is pnpm. Run all of these from `react/` (workspace root); use `vp -C <pkg> <cmd>` to target a single package.
 
 ```bash
 vp install          # Install deps (run after pulling)
 vp dev              # Dev server (http://localhost:5173)
 vp check --fix      # Format + lint + typecheck
+vp test             # Vitest (各包 *.test.ts(x))
+vp build            # Build app
 vp run generate-api # Kubb: regenerate API client from Swagger (backend must be running)
 ```
 
@@ -43,47 +47,35 @@ Backend must be running before `generate-api` — Kubb reads `http://localhost:5
 
 ## Key Conventions
 
-- **Mapperly** (not AutoMapper) for object mapping. Mappers live in each module's `ObjectMapping/` folder. Extend `MapperBase<TSource, TDest>` with `[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]`. Register via `context.Services.AddMapperlyObjectMapper<XxxModule>()` in each module.
+- **Mapperly** (not AutoMapper) for object mapping. Mappers live in the owning module's `ObjectMapping/` folder (currently no module defines one). Extend `MapperBase<TSource, TDest>` with `[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]`; register via `context.Services.AddMapperlyObjectMapper<XxxModule>()`.
 - **Generic repositories** only — no custom repository interfaces (single-layer pattern). Use `IRepository<T, TKey>` directly.
-- **Feature folders** inside each module (`Entities/`, `Services/`, `Dtos/` co-located) — group entity, DTOs, service together.
+- **Feature folders** inside each module — group entity, DTOs, service together.
 - **Auto API controllers** — ABP exposes app services as REST endpoints automatically. `HomeController` is the only hand-written controller.
 - **Explicit transactions** — global UoW transactions are disabled (SQLite). See the Architecture section above.
-- **`react/packages/api-client/src/generated/`** is auto-generated by Kubb. Do not manually edit; regenerate with `vp run generate-api` (from `react/`). The package's `src/client.ts` is the only hand-written file and the stable entry point.
-- **`react/apps/web/src/lib/`** is framework-level infrastructure only — no business semantics, no imports of the generated API layer except `@acrostack/api-client/client` inside `lib/http/client.ts`. Admission rules in `react/apps/web/AGENTS.md`.
+- **`react/packages/api-client/src/generated/`** is auto-generated by Kubb. Do not edit; regenerate with `vp run generate-api` (from `react/`). The package's `src/client.ts` is the only hand-written file and the stable entry point.
+- **`react/apps/web/src/lib/`** is framework-level infrastructure only — no business semantics; `lib/core.ts` is the only place allowed to import the generated API layer. Admission rules in `react/apps/web/AGENTS.md`.
 - **Path alias**: `@` → `./src` in the React app (configured in `vite.config.ts`).
 - **SQLite** database (`AcroStack.db` in `main/AcroStack/`). Connection string in `appsettings.json`.
-- **Swagger UI** available at `/swagger` when backend is running.
+- **Swagger UI** at `/swagger` when backend is running.
 
 ## Development Flow
 
 1. Start backend: `dotnet run --project main/AcroStack`
-2. In `react/` (workspace root): `vp install && vp dev` — `vp dev` resolves to `apps/web` via `defaultPackage`
+2. In `react/` (workspace root): `vp install && vp dev`
 3. After changing backend API: `vp run generate-api` (from `react/`)
 4. After adding/modifying an entity: add EF migration, then `dotnet run --project main/AcroStack --migrate-database`
 5. Before committing: `vp check` and `vp test` in `react/`
 
 ## Documentation
 
-Only three kinds of docs are maintained (anything else tends to rot):
+Only two kinds of docs are maintained (anything else tends to rot):
 
-- **Evergreen** (update alongside code): this file, root `README.md`, per-module `modules/<Feature>/README.md` (business scenario, which ABP Pro feature it corresponds to, key design decisions + why, dependencies — no API listings, Swagger covers that), `react/README.md` + `react/AGENTS.md` (workspace) and `react/apps/web/README.md` + `react/apps/web/AGENTS.md` (app).
+- **Evergreen** (update alongside code): this file, root `README.md`, per-module `modules/<Feature>/README.md` (business scenario, which ABP Pro feature it corresponds to, key design decisions + why, dependencies — no API listings, Swagger covers that), `react/README.md` + `react/AGENTS.md` (workspace), `react/apps/web/README.md` + `react/apps/web/AGENTS.md` (app), `react/packages/*/AGENTS.md` (package contracts).
 - **Process docs** (one-off): handoff/fix-plan documents live temporarily in repo root or `docs/`, and move to `docs/archive/` once their tasks are complete.
-- **ADRs** (`docs/adr/`): short records for "why we chose X over Y" decisions (e.g. why global UoW transactions are disabled).
 
-Rules: when adding/renaming a module, update that module's README and the module table in root `README.md`; when a process doc's tasks are done, archive it. Don't document volatile details (method names, file lists, directory trees beyond the top level) — the code and Swagger are the source of truth.
+Rules: when adding/renaming a module, update that module's README and the module table in root `README.md`; when a process doc's tasks are done, archive it; when architecture, commands or package layout change, update this file **and** the docs that restate it. Don't document volatile details (method names, file lists, directory trees beyond the top level) — the code and Swagger are the source of truth.
 
 ## Testing
 
-- No frontend tests currently.
+- Frontend: Vitest, test files next to the code (`*.test.ts(x)`), run with `vp test`. Currently only `packages/ui` has tests.
 - Backend: no test project in this solution currently.
-
-## Reference
-
-- `README.md` — architecture overview, module table, quick start
-- `modules/*/README.md` — per-module business scenario, corresponding Pro feature, key design decisions
-- `.agents/` — agent configuration in the [.agents Protocol](https://dotagentsprotocol.com/) format: `agents.md` (project guidelines) + `skills/` — detailed ABP patterns (development flow, dependency rules, DDD, CLI commands, testing, EF Core, auth, multi-tenancy)
-- `react/README.md` + `react/AGENTS.md` — 前端 Monorepo 工作区（结构、命令、约定）
-- `react/apps/web/README.md` — 应用技术栈、环境变量、Docker
-- `react/apps/web/AGENTS.md` — 应用源码布局、样式准则与评审清单
-- `react/packages/ui/` — 可复用 UI 包 `@acrostack/ui`（app-shell / data-table / dialog / form）
-- `docs/archive/` — completed handoff/fix-plan documents (historical reference only)

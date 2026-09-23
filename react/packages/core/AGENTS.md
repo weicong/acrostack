@@ -1,7 +1,6 @@
 # @acrostack/core — ABP 框架接入层
 
-把 ABP React 的框架能力从应用里抽出来的可复用包：运行时配置、OIDC 授权、权限判定、多租户、
-ABP 语义的 HTTP 拦截器。应用侧只保留业务（路由表、页面、组合根）。
+把 ABP React 的框架能力从应用里抽出来的可复用包：运行时配置、OIDC 授权、权限判定、多租户、ABP 语义的 HTTP 拦截器。应用侧只保留业务（路由表、页面、组合根）。
 
 ## 结构
 
@@ -21,10 +20,7 @@ ABP 语义的 HTTP 拦截器。应用侧只保留业务（路由表、页面、�
 - **不 import `@acrostack/api-client`**：共享 axios 实例由 `setupHttpClient(transport)` 注入。
 - **不直接操作宿主路由**：403 交给 `onForbidden` 回调（缺省整页跳转）。
 
-因此本包可脱离具体应用编译与替换，也不产生循环依赖。
-
-依赖方向：`core ← apps/web`；`core` 与 `ui`、`api-client` 互不依赖，由应用的组合根
-（`apps/web/src/lib/core.ts`）把三者接在一起。
+因此本包可脱离具体应用编译与替换，也不产生循环依赖：`core ← apps/web`，`core` 与 `ui`、`api-client` 互不依赖，由应用的组合根（`apps/web/src/lib/core.ts`）把三者接在一起。
 
 ## 与 ABP 官方文档的对应
 
