@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noUncheckedSideEffectImports": true,
+
+    "skipLibCheck": true,
+    "noEmit": true,
+
+    "paths": {
+      "#components/*": ["./src/components/*"],
+      "#hooks/*": ["./src/hooks/*"],
+      "#lib/*": ["./src/lib/*"]
+    }
+  },
+  "include": ["src"]
+}

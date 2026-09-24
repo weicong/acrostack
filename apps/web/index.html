@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TanStack Router + shadcn/ui</title>
+    <script>
+      // Apply the persisted theme before first paint so there is no flash of the
+      // wrong palette. Kept inline on purpose: it must run before React mounts.
+      (function () {
+        try {
+          var stored = localStorage.getItem("ui-theme") || "system";
+          var dark =
+            stored === "dark" ||
+            (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.add(dark ? "dark" : "light");
+        } catch (_) {
+          document.documentElement.classList.add("light");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "tsr-mono",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ready": "vp check && vp -C apps/web typecheck && vp run -r build",
+    "dev": "vp -C apps/web dev",
+    "build": "vp -C apps/web build",
+    "preview": "vp -C apps/web preview",
+    "check": "vp check",
+    "typecheck": "vp run -r typecheck"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.6.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

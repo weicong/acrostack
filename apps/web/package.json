@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev --port 5173",
+    "build": "vp build",
+    "preview": "vp preview",
+    "typecheck": "tsc --noEmit",
+    "routes": "tsr generate"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "latest",
+    "@workspace/ui": "workspace:*",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "@tanstack/router-cli": "latest",
+    "@tanstack/router-plugin": "latest",
+    "@types/node": "^24",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6",
+    "tailwindcss": "latest",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
