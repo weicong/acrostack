@@ -9,12 +9,15 @@ import {
   BreadcrumbSeparator,
 } from "@workspace/ui/components/breadcrumb";
 
-import { findNavItem } from "@/data/nav";
+import { findNavItem, findStaticRouteLabel, matchDynamicRoute } from "@/data/nav";
+import { useBreadcrumbOverrides } from "./breadcrumb-label";
 
 export type Crumb = {
   path: string;
   label: string;
   icon?: ComponentType<{ className?: string }>;
+  /** False when no route is attached (e.g. a dynamic segment mid-load). */
+  linkable: boolean;
 };
 
 /**
@@ -23,8 +26,11 @@ export type Crumb = {
  * Every path prefix is a candidate crumb, so `/posts/new` becomes
  * 首页 / 文章 / 新建 — no per-route hardcoding. Labels come from the shared
  * nav map, so the sidebar and the breadcrumb can never drift apart.
+ *
+ * Dynamic segments (`/posts/abc123`) fall back to the pattern declared in
+ * `dynamicRoutes`; `overrides` lets the page substitute the real title.
  */
-export function buildCrumbs(pathname: string): Crumb[] {
+export function buildCrumbs(pathname: string, overrides: Record<string, string> = {}): Crumb[] {
   const segments = pathname.split("/").filter(Boolean);
 
   const paths = segments.map((_, index) => `/${segments.slice(0, index + 1).join("/")}`);
@@ -35,15 +41,34 @@ export function buildCrumbs(pathname: string): Crumb[] {
 
   for (const path of paths) {
     const node = findNavItem(path);
-    if (!node) continue;
-    crumbs.push({ path, label: node.label, icon: node.icon });
+    if (node) {
+      crumbs.push({ path, label: node.label, icon: node.icon, linkable: true });
+      continue;
+    }
+
+    // Static routes that the sidebar omits (e.g. `/posts/new`).
+    const staticLabel = findStaticRouteLabel(path);
+    if (staticLabel !== undefined) {
+      crumbs.push({ path, label: staticLabel, linkable: true });
+      continue;
+    }
+
+    const dynamic = matchDynamicRoute(path);
+    if (dynamic) {
+      crumbs.push({
+        path,
+        label: overrides[dynamic.pattern] ?? dynamic.label,
+        linkable: true,
+      });
+    }
   }
 
   return crumbs;
 }
 
 export function RouteBreadcrumb({ pathname }: { pathname: string }) {
-  const crumbs = buildCrumbs(pathname);
+  const overrides = useBreadcrumbOverrides();
+  const crumbs = buildCrumbs(pathname, overrides);
   const current = crumbs.at(-1);
   const parents = crumbs.slice(0, -1);
 
@@ -55,19 +80,27 @@ export function RouteBreadcrumb({ pathname }: { pathname: string }) {
         {parents.map((crumb) => (
           <Fragment key={crumb.path}>
             <BreadcrumbItem className="hidden md:inline-flex">
-              <BreadcrumbLink
-                render={
-                  <Link to={crumb.path} className="transition-colors hover:text-foreground" />
-                }
-              >
-                {crumb.label}
-              </BreadcrumbLink>
+              {crumb.linkable ? (
+                <BreadcrumbLink
+                  render={
+                    <Link
+                      to={crumb.path}
+                      // Lengthy post titles would otherwise stretch the header.
+                      className="max-w-[16rem] truncate transition-colors hover:text-foreground"
+                    />
+                  }
+                >
+                  {crumb.label}
+                </BreadcrumbLink>
+              ) : (
+                <span className="max-w-[16rem] truncate text-muted-foreground">{crumb.label}</span>
+              )}
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden md:block" />
           </Fragment>
         ))}
         <BreadcrumbItem>
-          <BreadcrumbPage>{current.label}</BreadcrumbPage>
+          <BreadcrumbPage className="max-w-[16rem] truncate">{current.label}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

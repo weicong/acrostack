@@ -4,6 +4,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/com
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { RouteBreadcrumb } from "@/lib/breadcrumb";
+import { BreadcrumbLabelProvider } from "@/lib/breadcrumb-label";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -33,28 +34,30 @@ function RootComponent() {
 
   return (
     <ThemeProvider>
-      <SidebarProvider defaultOpen={readSidebarOpen()}>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="flex w-full items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-              />
-              <RouteBreadcrumb pathname={pathname} />
-              <div className="ml-auto">
-                <ThemeToggle />
+      <BreadcrumbLabelProvider>
+        <SidebarProvider defaultOpen={readSidebarOpen()}>
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+              <div className="flex w-full items-center gap-2 px-4">
+                <SidebarTrigger className="-ml-1" />
+                <Separator
+                  orientation="vertical"
+                  className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+                />
+                <RouteBreadcrumb pathname={pathname} />
+                <div className="ml-auto">
+                  <ThemeToggle />
+                </div>
               </div>
-            </div>
-          </header>
+            </header>
 
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <Outlet />
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+              <Outlet />
+            </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </BreadcrumbLabelProvider>
     </ThemeProvider>
   );
 }

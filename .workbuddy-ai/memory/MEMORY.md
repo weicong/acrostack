@@ -18,11 +18,32 @@
 ## 目录约定
 
 - `apps/web` = 应用；`packages/ui` = `@workspace/ui` 共享包（组件 / 样式 / 工具）
-- **导航数据只在 `apps/web/src/data/nav.ts` 声明一次**，侧边栏与面包屑都读它。
-  新增路由时改这一处 + 加路由文件即可。
+- **侧边栏导航在 `data/nav.ts` 的 `navGroups` 里显式声明**（路由树表达不了排序与分组）。
+  ⚠️ 曾经有过一版 `staticData` + `lib/nav/*` 的重构，**当前工作树里没有**——
+  `lib/nav/` 是空目录（已删）、全仓 0 处 `staticData`。别照那份设计文档改代码。
+- **「文章」是普通可点击项**（→ `/posts`），无折叠子菜单。理由：原来两个子项里
+  「全部文章」与父项同址、「新建」已有列表页按钮入口，展开树只带来多一次点击 + 高亮重叠。
+  `NavNode.children` 能力保留，供未来真需要分组的项用。
+- **面包屑标签的三级优先级**（`buildCrumbs`）：
+  `navGroups` 项 → `staticRoutes`（如 `/posts/new`）→ `dynamicRoutes` 的 `$param` 模式。
+- **`staticRoutes` 是必需的一道守卫**：`/posts/new` 与 `/posts/$postId` 形状相同，
+  不先登记静态表就会把 `new` 当成 `$postId` 的值、错标成「文章详情」。
+  `matchDynamicRoute` 内部也有同样的 early-return 守卫。
+- 动态段路由（`/posts/$postId`、`/posts/$postId/edit`）在 `dynamicRoutes` 登记。
+- 面包屑末级可被页面覆盖：`useBreadcrumbLabel(pattern, label)`（`lib/breadcrumb-label.tsx`）。
 - 别名：UI 包内部用 `#components/*` `#lib/*` `#hooks/*`（package.json imports）；
   app 侧用 `@/*` 指自己、`@workspace/ui/*` 指共享包。
 - 根 `vite.config.ts` 有 `defaultPackage: "./apps/web"` → 仓库根直接 `vp dev` / `vp build`。
+
+## 文章 CRUD（数据层模式）
+
+- `apps/web/src/data/posts/`：模块级数组 + `Set<Listener>`，
+  `useSyncExternalStore` 暴露 `usePosts()` / `usePost(id)`。
+  **快照必须稳定引用**——每次调用都返回新解析的数组会无限重渲染。
+- 持久化键 `tsr-mono.posts`；读失败回退 `seedPosts`；按 `updatedAt` 倒序。
+- 新建/编辑共用 `components/post-form.tsx`；编辑页用 `key={post.id}` 强制重挂载。
+- 校验：`aria-invalid` + `aria-describedby`，提交时触发后转实时。
+- 路由表：`/posts`（列表）、`/posts/new`、`/posts/$postId`（详情）、`/posts/$postId/edit`。
 
 ## 铁律（都是踩过坑换来的）
 
@@ -44,6 +65,19 @@
 5. **两个 `components.json` 的 `style` / `iconLibrary` / `baseColor` 必须一致**，
    Tailwind v4 下 `tailwind.config` 留空 `""`。
 
+6. **加了新 UI 组件后要清 Vite 依赖预打包缓存。**
+   报 `Cannot read properties of null (reading 'useContext')` 时，
+   先 `rm -rf apps/web/node_modules/.vite/deps` 再重启 dev，别先去查 node_modules 重复。
+   （沙箱拦批量删除，需 `dangerouslyDisableSandbox`。）
+
+7. **⚠️ 沙箱标签页 `visibilityState` 恒 hidden → CSS 动画时钟被冻结。**
+   靠 `animation.finished` 触发状态迁移的组件（Base UI 的 `AlertDialog` / `Dialog`、
+   折叠、Toast 等）在沙箱里会「关不掉」，`getAnimations()[0].currentTime` 永远停在 0。
+   **这是环境假象，代码通常是对的。**
+   验证逻辑用 `globalThis.BASE_UI_ANIMATIONS_DISABLED = true`——置上后弹层立即卸载即证明无误。
+   相关源码：`@base-ui/react/internals/useAnimationsFinished.js`、
+   `dialog/popup/DialogPopup.js` 的 `hidden: !mounted`。
+
 ## 环境注意
 
 - **`vp check` 里 tsgolint 在本沙箱必失败**（`os error 231`，Windows 管道耗尽）——
@@ -61,7 +95,13 @@
 ## 验证手法
 
 - 交互后的 UI 状态**不要靠截图**（沙箱标签页 `visibilityState` 恒 hidden，截图只返回上一帧）。
-  用 `bsk evaluate` 读 `data-state` / `data-open` / `getBoundingClientRect()`。
+  用 `bsk evaluate` 读 `data-state` / `data-open` / `data-closed` / `getBoundingClientRect()`。
+- **点按钮要派发完整事件序列**：`pointerdown → mousedown → pointerup → mouseup → click`，
+  只调 `.click()` 有时不触发 Base UI 的 Close。
+- bsk 会插入 `BROWSER-SKILL-OVERLAY`，`document.elementFromPoint` 会先命中它，
+  比较「最顶层元素」时要绕开。
+- **`bsk` 的 CLI 用位置参数**：`bsk navigate --session <id> <url>`、
+  `bsk evaluate --session <id> "<expr>"`。写成 `--url` / `--expression` 只会打印 help 后静默不做。
 - 用脚本遍历 `document.styleSheets` 找 CSS 规则时，**必须递归 `@layer` / `@media` 的
   `cssRules`**，否则得到「0 条规则」的假象。
 
