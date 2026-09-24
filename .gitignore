@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# TanStack Router codegen scratch (regenerated on every `tsr generate`)
+.tanstack/
+
 # dotenv environment variable files
 .env
 .env.*
