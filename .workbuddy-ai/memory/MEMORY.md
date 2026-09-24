@@ -19,8 +19,15 @@
 
 - `apps/web` = 应用；`packages/ui` = `@workspace/ui` 共享包（组件 / 样式 / 工具）
 - **侧边栏导航在 `data/nav.ts` 的 `navGroups` 里显式声明**（路由树表达不了排序与分组）。
+  当前只有 **1 组 `Platform`、3 项**（首页 `/`、文章 `/posts`、关于 `/about`）。
+  模板自带的 `Projects` 分组（设计工程 / 市场与销售 / 差旅，三项都指向 `/about`）
+  已于 2026-09-25 连同 `components/nav-projects.tsx` 一并删除；
+  `app-sidebar.tsx` 现在直接 `<NavMain groups={navGroups} />`，
+  **别再写 `navGroups.slice(0,1)` / `navGroups[1]` 这种按索引切片的耦合**（加组就会错位）。
   ⚠️ 曾经有过一版 `staticData` + `lib/nav/*` 的重构，**当前工作树里没有**——
-  `lib/nav/` 是空目录（已删）、全仓 0 处 `staticData`。别照那份设计文档改代码。
+  `lib/nav/` 是空目录（已删）、全仓 0 处 `staticData`。
+  评估文档 `docs/static-route-data-evaluation.md` 也已于 2026-09-25 被删且**从未提交**（不可恢复）；
+  结论改记在 skill 的「staticData」一节：**面包屑该迁，侧边栏能迁但不划算**。
 - **「文章」是普通可点击项**（→ `/posts`），无折叠子菜单。理由：原来两个子项里
   「全部文章」与父项同址、「新建」已有列表页按钮入口，展开树只带来多一次点击 + 高亮重叠。
   `NavNode.children` 能力保留，供未来真需要分组的项用。
@@ -83,6 +90,12 @@
 - **`vp check` 里 tsgolint 在本沙箱必失败**（`os error 231`，Windows 管道耗尽）——
   环境限制，非项目问题。类型验证用：
   `cd apps/web && ./node_modules/.bin/tsc --noEmit`（同理 packages/ui）。
+  要单独跑 `vp lint` 时：`vp lint --help` 只有 `--type-aware` / `--type-check`，
+  **没有反向的 `--no-type-aware`**，`vp` 也没有全局 `--config`
+  （所以早前设想的「临时 `probe.config.ts`」走不通）。
+  可行做法：临时把根 `vite.config.ts` 的 `lint.options` 改成
+  `{ typeAware: false, typeCheck: false }` → 跑 `vp lint` → **立刻改回**，
+  再用 `git diff vite.config.ts` 为空自证已还原。
 - `vp install` 时根 `package.json` **不要放 `prepare: vp config`**，
   本机 git 路径让 `vp config` 报 `git command not found`（exit 1）导致安装失败。
 - `tsr generate` 会打一条 `replaceRouteChunk` 的 circular dependency warning，无害。

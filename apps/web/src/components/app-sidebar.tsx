@@ -8,7 +8,6 @@ import {
 } from "@workspace/ui/components/sidebar";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher, type Team } from "@/components/team-switcher";
 import { navGroups } from "@/data/nav";
@@ -26,8 +25,7 @@ export function AppSidebar() {
         <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain groups={navGroups.slice(0, 1)} />
-        <NavProjects projects={navGroups[1]?.items ?? []} />
+        <NavMain groups={navGroups} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={{ name: "shadcn", email: "m@example.com", initials: "CN" }} />

@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { CircleHelp, Files, Frame, Home, Map as MapIcon, PieChart } from "lucide-react";
+import { CircleHelp, Files, Home } from "lucide-react";
 
 /**
  * Sidebar navigation data, plus the dynamic-segment table used by breadcrumbs.
@@ -79,26 +79,6 @@ export const navGroups: NavGroup[] = [
         to: "/about",
         label: "关于",
         icon: CircleHelp,
-      },
-    ],
-  },
-  {
-    label: "Projects",
-    items: [
-      {
-        to: "/about",
-        label: "设计工程",
-        icon: Frame,
-      },
-      {
-        to: "/about",
-        label: "市场与销售",
-        icon: PieChart,
-      },
-      {
-        to: "/about",
-        label: "差旅",
-        icon: MapIcon,
       },
     ],
   },
