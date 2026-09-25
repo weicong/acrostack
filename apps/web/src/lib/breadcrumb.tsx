@@ -75,16 +75,14 @@ export function RouteBreadcrumb({ pathname }: { pathname: string }) {
           <Fragment key={crumb.path}>
             <BreadcrumbItem className="hidden md:inline-flex">
               {crumb.linkable ? (
-                <BreadcrumbLink
-                  render={
-                    <Link
-                      to={crumb.path}
-                      // Lengthy post titles would otherwise stretch the header.
-                      className="max-w-[16rem] truncate transition-colors hover:text-foreground"
-                    />
-                  }
-                >
-                  {crumb.label}
+                <BreadcrumbLink asChild>
+                  <Link
+                    to={crumb.path}
+                    // Lengthy post titles would otherwise stretch the header.
+                    className="max-w-[16rem] truncate transition-colors hover:text-foreground"
+                  >
+                    {crumb.label}
+                  </Link>
                 </BreadcrumbLink>
               ) : (
                 <span className="max-w-[16rem] truncate text-muted-foreground">{crumb.label}</span>

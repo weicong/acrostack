@@ -42,52 +42,47 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
               if (!hasChildren) {
                 return (
                   <SidebarMenuItem key={key}>
-                    <SidebarMenuButton
-                      tooltip={item.label}
-                      isActive={isActive}
-                      render={<Link to={item.to} />}
-                    >
-                      {item.icon ? <item.icon /> : null}
-                      <span>{item.label}</span>
+                    <SidebarMenuButton tooltip={item.label} isActive={isActive} asChild>
+                      <Link to={item.to}>
+                        {item.icon ? <item.icon /> : null}
+                        <span>{item.label}</span>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               }
 
               return (
-                <Collapsible
-                  key={key}
-                  defaultOpen={isActive}
-                  className="group/collapsible"
-                  render={<SidebarMenuItem />}
-                >
-                  <CollapsibleTrigger
-                    render={
+                <Collapsible key={key} asChild defaultOpen={isActive} className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.label}
                         isActive={isActive}
                         className="cursor-pointer"
-                      />
-                    }
-                  >
-                    {item.icon ? <item.icon /> : null}
-                    <span>{item.label}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.children?.map((child) => (
-                        <SidebarMenuSubItem key={child.to}>
-                          <SidebarMenuSubButton
-                            isActive={Boolean(matchRoute({ to: child.to, fuzzy: false }))}
-                            render={<Link to={child.to} />}
-                          >
-                            <span>{child.label}</span>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
+                      >
+                        {item.icon ? <item.icon /> : null}
+                        <span>{item.label}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.children?.map((child) => (
+                          <SidebarMenuSubItem key={child.to}>
+                            <SidebarMenuSubButton
+                              isActive={Boolean(matchRoute({ to: child.to, fuzzy: false }))}
+                              asChild
+                            >
+                              <Link to={child.to}>
+                                <span>{child.label}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
                 </Collapsible>
               );
             })}

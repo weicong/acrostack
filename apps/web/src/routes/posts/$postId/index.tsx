@@ -48,9 +48,11 @@ function PostDetailPage() {
         <p className="text-xs text-muted-foreground">
           它可能已被删除，或链接里的 id（{postId}）有误。
         </p>
-        <Button size="sm" variant="outline" render={<Link to="/posts" />}>
-          <ArrowLeft data-icon="inline-start" />
-          返回列表
+        <Button size="sm" variant="outline" asChild>
+          <Link to="/posts">
+            <ArrowLeft data-icon="inline-start" />
+            返回列表
+          </Link>
         </Button>
       </div>
     );
@@ -71,19 +73,19 @@ function PostDetailPage() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            render={<Link to="/posts/$postId/edit" params={{ postId: post.id }} />}
-          >
-            <Pencil data-icon="inline-start" />
-            编辑
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/posts/$postId/edit" params={{ postId: post.id }}>
+              <Pencil data-icon="inline-start" />
+              编辑
+            </Link>
           </Button>
 
           <AlertDialog>
-            <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
-              <Trash2 data-icon="inline-start" />
-              删除
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm">
+                <Trash2 data-icon="inline-start" />
+                删除
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -112,9 +114,11 @@ function PostDetailPage() {
       <Separator />
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" render={<Link to="/posts" />}>
-          <ArrowLeft data-icon="inline-start" />
-          返回列表
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/posts">
+            <ArrowLeft data-icon="inline-start" />
+            返回列表
+          </Link>
         </Button>
       </div>
     </>

@@ -39,9 +39,11 @@ function EditPostPage() {
         <p className="text-xs text-muted-foreground">
           它可能已被删除，或链接里的 id（{postId}）有误。
         </p>
-        <Button size="sm" variant="outline" render={<Link to="/posts" />}>
-          <ArrowLeft data-icon="inline-start" />
-          返回列表
+        <Button size="sm" variant="outline" asChild>
+          <Link to="/posts">
+            <ArrowLeft data-icon="inline-start" />
+            返回列表
+          </Link>
         </Button>
       </div>
     );
@@ -62,9 +64,11 @@ function EditPostPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-heading text-base font-medium">编辑文章</h2>
         <AlertDialog>
-          <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
-            <Trash2 data-icon="inline-start" />
-            删除
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm">
+              <Trash2 data-icon="inline-start" />
+              删除
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

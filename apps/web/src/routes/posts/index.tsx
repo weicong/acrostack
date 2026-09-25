@@ -42,17 +42,19 @@ function PostsPage() {
           <h2 className="font-heading text-base font-medium">全部文章</h2>
           <span className="text-xs text-muted-foreground">共 {posts.length} 篇</span>
         </div>
-        <Button size="sm" render={<Link to="/posts/new" />}>
-          <Plus data-icon="inline-start" />
-          新建文章
+        <Button size="sm" asChild>
+          <Link to="/posts/new">
+            <Plus data-icon="inline-start" />
+            新建文章
+          </Link>
         </Button>
       </div>
 
       {posts.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 rounded-xl bg-muted/50 p-6 text-center">
           <p className="text-sm text-muted-foreground">还没有文章，先创建一篇吧。</p>
-          <Button size="sm" render={<Link to="/posts/new" />}>
-            新建文章
+          <Button size="sm" asChild>
+            <Link to="/posts/new">新建文章</Link>
           </Button>
         </div>
       ) : (
@@ -77,23 +79,19 @@ function PostsPage() {
               </div>
 
               <div className="flex shrink-0 items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  render={<Link to="/posts/$postId/edit" params={{ postId: post.id }} />}
-                >
-                  <Pencil data-icon="inline-start" />
-                  编辑
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/posts/$postId/edit" params={{ postId: post.id }}>
+                    <Pencil data-icon="inline-start" />
+                    编辑
+                  </Link>
                 </Button>
 
                 <AlertDialog>
-                  <AlertDialogTrigger
-                    render={
-                      <Button variant="ghost" size="sm" aria-label={`删除「${post.title}」`} />
-                    }
-                  >
-                    <Trash2 data-icon="inline-start" />
-                    删除
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="sm" aria-label={`删除「${post.title}」`}>
+                      <Trash2 data-icon="inline-start" />
+                      删除
+                    </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>

@@ -19,10 +19,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@base-ui/react": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
+    "radix-ui": "latest",
     "tailwind-merge": "latest",
     "tw-animate-css": "catalog:"
   },

@@ -12,7 +12,7 @@ const stack = [
   ["构建工具", "Vite+ (vp) — 统一负责 dev / build / check"],
   ["包管理器", "pnpm，由 Vite+ 托管"],
   ["路由", "TanStack Router，router-only（纯 SPA）"],
-  ["UI", "shadcn/ui base-nova 风格，基于 Base UI"],
+  ["UI", "shadcn/ui new-york-v4 风格，基于 Radix UI"],
   ["样式", "Tailwind CSS v4"],
   ["校验 / 格式化", "oxlint + oxfmt（无 eslint / prettier / biome）"],
 ];

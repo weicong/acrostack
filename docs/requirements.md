@@ -19,7 +19,7 @@
 | 构建工具      | Vite+ 最新版 ——`vp` 统一负责 dev / build / check / 依赖安装                                       |
 | 包管理器      | pnpm 最新版——由 Vite+ 托管  |
 | 路由          | TanStack Router 最新版，**router-only 模式（纯 SPA，非 TanStack Start）**                                               |
-| UI            | shadcn/ui 最新版 `Nova` 风格（基于 `Base UI`）                                                                         |
+| UI            | shadcn/ui `new-york-v4` 风格（基于 `Radix UI`）—— 2026-09-25 由 `base-nova`（Base UI）迁移而来                                                                        |
 | 样式          | Tailwind v4 最新版                                                                                           |
 | 校验 / 格式化 | Vite+ 自带 oxlint + oxfmt（项目内不引入 eslint / prettier / biome）                                                         |
 
