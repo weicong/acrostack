@@ -56,8 +56,11 @@ export function TeamSwitcher({ teams }: { teams: Team[] }) {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel>Teams</DropdownMenuLabel>
             <DropdownMenuGroup>
+              {/* Base UI's GroupLabel reads MenuGroupContext, so the label has
+                  to live *inside* the group — unlike the Radix version, where it
+                  is just a styled div and may sit next to it. */}
+              <DropdownMenuLabel>Teams</DropdownMenuLabel>
               {teams.map((team, index) => (
                 <DropdownMenuItem key={team.name} className="gap-2 p-2">
                   <div className="flex size-6 items-center justify-center rounded-md border">
