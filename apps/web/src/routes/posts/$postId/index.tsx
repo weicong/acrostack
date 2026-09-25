@@ -20,6 +20,11 @@ import { useBreadcrumbLabel } from "@/lib/breadcrumb-label";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/posts/$postId/")({
+  staticData: {
+    // Falls back to a generic name; the page overrides it with the real post
+    // title via `useBreadcrumbLabel` so a deleted post still labels sanely.
+    breadcrumb: { label: "文章详情" },
+  },
   component: PostDetailPage,
 });
 

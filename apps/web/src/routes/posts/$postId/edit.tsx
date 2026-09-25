@@ -19,6 +19,9 @@ import { useBreadcrumbLabel } from "@/lib/breadcrumb-label";
 import { PostForm } from "@/components/post-form";
 
 export const Route = createFileRoute("/posts/$postId/edit")({
+  staticData: {
+    breadcrumb: { label: "编辑" },
+  },
   component: EditPostPage,
 });
 

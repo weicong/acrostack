@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Files, Pencil, Plus, Trash2 } from "lucide-react";
 
 import {
   AlertDialog,
@@ -18,6 +18,9 @@ import { deletePost, usePosts } from "@/data/posts";
 import { excerpt, formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/posts/")({
+  staticData: {
+    nav: { label: "文章", icon: Files, group: "Platform", order: 20 },
+  },
   component: PostsPage,
 });
 

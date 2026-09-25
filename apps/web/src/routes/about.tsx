@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CircleHelp } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
+  staticData: {
+    nav: { label: "关于", icon: CircleHelp, group: "Platform", order: 30 },
+  },
   component: AboutPage,
 });
 

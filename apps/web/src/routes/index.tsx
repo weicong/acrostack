@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Home } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  staticData: {
+    nav: { label: "首页", icon: Home, group: "Platform", order: 10 },
+  },
   component: HomePage,
 });
 

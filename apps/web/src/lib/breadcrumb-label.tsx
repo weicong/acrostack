@@ -8,7 +8,10 @@ import * as React from "react";
  * registers its own title here so the trail reads 「首页 › 文章 › 用 Vite+…」
  * instead of a raw id, without the layout having to know about posts.
  *
- * Keyed by the matched pattern so nested routes can override independently.
+ * Keyed by route path so nested routes can override independently — the key
+ * must be the same string the router reports as `Route.to` (trailing slash
+ * trimmed, e.g. `/posts/$postId`), because that is what the trail is resolved
+ * against.
  */
 type Overrides = Record<string, string>;
 
@@ -47,7 +50,7 @@ export function useBreadcrumbOverrides(): Overrides {
  * component is mounted.
  *
  * Pass `undefined` while the data is still loading and the generic label from
- * `dynamicRoutes` stays in place.
+ * the route's `staticData.breadcrumb` stays in place.
  */
 export function useBreadcrumbLabel(pattern: string, label: string | undefined) {
   const context = React.useContext(OverridesContext);

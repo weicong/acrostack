@@ -4,6 +4,11 @@ import { createPost, EMPTY_DRAFT, type PostDraft } from "@/data/posts";
 import { PostForm } from "@/components/post-form";
 
 export const Route = createFileRoute("/posts/new")({
+  // Reached from the list page's button rather than the sidebar, so it only
+  // needs a breadcrumb name — see `staticData.breadcrumb`.
+  staticData: {
+    breadcrumb: { label: "新建" },
+  },
   component: NewPostPage,
 });
 

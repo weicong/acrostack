@@ -10,7 +10,7 @@ import {
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher, type Team } from "@/components/team-switcher";
-import { navGroups } from "@/data/nav";
+import { useNavGroups } from "@/lib/route-meta";
 
 const teams: Team[] = [
   { name: "Acme Inc", logo: GalleryVerticalEnd, plan: "Enterprise" },
@@ -19,13 +19,16 @@ const teams: Team[] = [
 ];
 
 export function AppSidebar() {
+  // The menu is the route tree: each route declares its own `staticData.nav`.
+  const groups = useNavGroups();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain groups={navGroups} />
+        <NavMain groups={groups} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={{ name: "shadcn", email: "m@example.com", initials: "CN" }} />

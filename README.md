@@ -32,10 +32,10 @@ apps/
         app-sidebar.tsx  nav-main.tsx  nav-user.tsx  team-switcher.tsx
         theme-toggle.tsx  post-form.tsx   # post-form 为新建/编辑共用
       data/
-        nav.ts               # 侧边栏分组 + dynamicRoutes + staticRoutes
         posts/               # 文章数据层：types / store / index
       hooks/                 # use-theme
       lib/
+        route-meta.ts        # 路由元数据（staticData 的 nav / breadcrumb）→ 菜单与面包屑标签
         breadcrumb.tsx       # 由 URL 推导面包屑
         breadcrumb-label.tsx # 面包屑末级标签覆盖（详情页显示真实标题）
         format.ts            # formatDateTime / excerpt
@@ -62,4 +62,3 @@ vp run routes      # 重新生成 routeTree.gen.ts（在 apps/web 内）
 
 根 `vite.config.ts` 里设了 `defaultPackage: "./apps/web"`，所以在仓库根目录直接 `vp dev` /
 `vp build` 就会作用于 `apps/web`，不需要 `-C apps/web`。
- 

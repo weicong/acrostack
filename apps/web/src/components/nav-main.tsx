@@ -16,7 +16,7 @@ import {
   SidebarMenuSubItem,
 } from "@workspace/ui/components/sidebar";
 
-import type { NavGroup } from "@/data/nav";
+import type { NavGroup } from "@/lib/route-meta";
 
 /**
  * The primary sidebar group.
