@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
 const stats = [
   { label: "路由数", value: "4" },
   { label: "UI 组件", value: "11" },
-  { label: "样式风格", value: "new-york-v4" },
+  { label: "样式风格", value: "base-nova" },
 ];
 
 function HomePage() {
@@ -31,7 +31,7 @@ function HomePage() {
         <p className="mt-2 max-w-prose text-sm text-muted-foreground">
           纯 SPA（router-only）模式，由 Vite+ 统一负责 dev / build / check 与依赖安装， 组件来自{" "}
           <code className="font-mono">@workspace/ui</code> 共享包， 样式为 shadcn/ui 的{" "}
-          <code className="font-mono">new-york-v4</code> 风格（基于 Radix UI）。
+          <code className="font-mono">base-nova</code> 风格（基于 Base UI）。
         </p>
         <ul className="mt-4 space-y-1 text-sm text-muted-foreground">
           <li>· 侧边栏导航映射真实路由，可折叠到图标态并跨刷新保持</li>

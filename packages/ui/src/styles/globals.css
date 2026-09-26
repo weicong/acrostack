@@ -13,7 +13,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ---------------------------------------------------------------------------
- * Design tokens — shadcn/ui "new-york-v4" style, neutral base color.
+ * Design tokens — shadcn/ui "base-nova" style, neutral base color.
  * Values mirror https://ui.shadcn.com/r/colors/neutral.json (cssVarsV4).
  * ------------------------------------------------------------------------- */
 :root {
@@ -161,5 +161,28 @@
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Flips directional icons in RTL contexts. Used by the Base UI registry
+     components (breadcrumb, dropdown-menu, sidebar). */
+  .cn-rtl-flip:where([dir="rtl"], [dir="rtl"] *) {
+    transform: scaleX(-1);
+  }
+
+  /*
+   * Base UI's Collapsible panel exposes its size through
+   * `--collapsible-panel-height`. tw-animate-css ships the
+   * `collapsible-down` / `collapsible-up` keyframes that consume that variable,
+   * but nothing defines the open-state height itself, so an open panel
+   * collapses to 0px. These rules supply it.
+   */
+  [data-slot="collapsible-content"][data-open] {
+    height: var(--collapsible-panel-height, auto);
+    overflow: hidden;
+  }
+
+  [data-slot="collapsible-content"][data-closed] {
+    height: 0;
+    overflow: hidden;
   }
 }

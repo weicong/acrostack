@@ -38,9 +38,9 @@ export const seedPosts: Post[] = [
   },
   {
     id: "p3",
-    title: "shadcn/ui 的 new-york-v4 风格与 Radix UI",
+    title: "shadcn/ui 的 Nova 风格与 Base UI",
     tag: "UI",
-    body: "new-york-v4 是 registry 里经典的那套，底层是 Radix UI。\n组件用 asChild + Slot 透传元素，状态走 data-state（如 data-[state=open]:），不是扁平属性。",
+    body: "Nova 风格在 registry 里的完整标识是 `base-nova`，底层是 Base UI 而不是 Radix。\nAPI 差异集中在 render={<Comp />} 与扁平数据属性 data-open 上。",
     createdAt: Date.parse("2026-09-22T14:15:00+08:00"),
     updatedAt: Date.parse("2026-09-22T14:15:00+08:00"),
   },

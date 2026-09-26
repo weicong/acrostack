@@ -9,7 +9,7 @@ TanStack Router（router-only / 纯 SPA）+ shadcn/ui 脚手架，pnpm monorepo�
 | 构建工具      | Vite+ (`vp`) — dev / build / check / 依赖安装统一入口      |
 | 包管理器      | pnpm（由 Vite+ 托管）                                      |
 | 路由          | TanStack Router，文件式路由 + **router-only**（无 Start）  |
-| UI            | shadcn/ui `new-york-v4` 风格（基于 Radix UI）              |
+| UI            | shadcn/ui `base-nova` 风格（基于 Base UI）                 |
 | 样式          | Tailwind CSS v4                                            |
 | 校验 / 格式化 | oxlint + oxfmt（Vite+ 自带，无 eslint / prettier / biome） |
 
@@ -41,7 +41,7 @@ apps/
         format.ts            # formatDateTime / excerpt
 packages/
   ui/                  # @workspace/ui —— 共享 UI 包
-    src/components/    # shadcn new-york-v4 组件（含 button/input/textarea/label/
+    src/components/    # shadcn base-nova 组件（含 button/input/textarea/label/
                        #   alert-dialog/separator/sidebar/collapsible/...）
     src/hooks/
     src/lib/utils.ts   # cn()

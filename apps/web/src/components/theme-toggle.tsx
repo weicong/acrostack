@@ -21,10 +21,8 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="切换主题">
-          <Active />
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="切换主题" />}>
+        <Active />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-36">
         {options.map((option) => (
