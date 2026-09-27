@@ -5,17 +5,20 @@
  * `AppShell` (e.g. only a theme toggle, or your own sidebar composition).
  */
 
-export { NavMain, type NavMainProps } from "./nav-main";
-export { NavUser, type NavUserAction, type NavUserProps } from "./nav-user";
-export { TeamSwitcher, type TeamSwitcherProps } from "./team-switcher";
-export { RouteBreadcrumb, type RouteBreadcrumbProps } from "./breadcrumb";
+export { NavMain, type NavMainProps } from "#components/nav-main";
+export { NavUser, type NavUserAction, type NavUserProps } from "#components/nav-user";
+export { TeamSwitcher, type TeamSwitcherProps } from "#components/team-switcher";
+export { RouteBreadcrumb, type RouteBreadcrumbProps } from "#components/breadcrumb";
+export { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";
+export { ThemeProvider, type ThemeProviderProps } from "#components/theme-provider";
+export { ThemeToggle, type ThemeToggleProps } from "#components/theme-toggle";
+
+export { useTheme, type Theme } from "#hooks/use-theme";
 export {
-  BreadcrumbLabelProvider,
   useBreadcrumbLabel,
   useBreadcrumbOverrides,
-} from "./breadcrumb-label";
-export { ThemeProvider, useTheme, type Theme, type ThemeProviderProps } from "./theme";
-export { ThemeToggle, type ThemeToggleProps } from "./theme-toggle";
+  type BreadcrumbOverrides,
+} from "#hooks/use-breadcrumb-label";
 
 export type {
   Crumb,
@@ -26,4 +29,4 @@ export type {
   NavItem,
   ShellUser,
   Team,
-} from "./types";
+} from "#lib/types";

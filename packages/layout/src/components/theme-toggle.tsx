@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 
-import { useTheme, type Theme } from "./theme";
+import { useTheme, type Theme } from "#hooks/use-theme";
 
 export type ThemeToggleProps = {
   /** Override the visible copy (i18n). Defaults are Simplified Chinese. */

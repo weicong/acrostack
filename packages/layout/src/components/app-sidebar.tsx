@@ -6,10 +6,10 @@ import {
   SidebarRail,
 } from "@workspace/ui/components/sidebar";
 
-import { NavMain } from "./nav-main";
-import { NavUser, type NavUserAction, type NavUserProps } from "./nav-user";
-import { TeamSwitcher, type TeamSwitcherProps } from "./team-switcher";
-import type { LinkRenderer, NavGroup, ShellUser, Team } from "./types";
+import { NavMain } from "#components/nav-main";
+import { NavUser, type NavUserAction, type NavUserProps } from "#components/nav-user";
+import { TeamSwitcher, type TeamSwitcherProps } from "#components/team-switcher";
+import type { LinkRenderer, NavGroup, ShellUser, Team } from "#lib/types";
 
 export type AppSidebarProps = {
   nav: NavGroup[];

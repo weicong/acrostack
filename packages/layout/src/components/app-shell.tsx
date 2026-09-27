@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import { Separator } from "@workspace/ui/components/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
 
-import { AppSidebar, type AppSidebarProps } from "./app-sidebar";
-import { BreadcrumbLabelProvider } from "./breadcrumb-label";
-import { ThemeProvider } from "./theme";
-import { ThemeToggle } from "./theme-toggle";
-import type { LinkRenderer, NavGroup, ShellUser, Team } from "./types";
+import { AppSidebar, type AppSidebarProps } from "#components/app-sidebar";
+import { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";
+import { ThemeProvider } from "#components/theme-provider";
+import { ThemeToggle } from "#components/theme-toggle";
+import type { LinkRenderer, NavGroup, ShellUser, Team } from "#lib/types";
 
 export type AppShellProps = {
   nav: NavGroup[];

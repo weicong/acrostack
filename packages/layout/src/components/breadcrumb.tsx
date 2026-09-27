@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@workspace/ui/components/breadcrumb";
 
-import type { Crumb, LinkRenderer } from "./types";
+import type { Crumb, LinkRenderer } from "#lib/types";
 
 export type RouteBreadcrumbProps = {
   /**

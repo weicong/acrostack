@@ -15,7 +15,7 @@ import {
   SidebarMenuSubItem,
 } from "@workspace/ui/components/sidebar";
 
-import type { LinkRenderer, NavGroup } from "./types";
+import type { LinkRenderer, NavGroup } from "#lib/types";
 
 export type NavMainProps = {
   groups: NavGroup[];

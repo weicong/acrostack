@@ -16,7 +16,7 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 
-import type { Team } from "./types";
+import type { Team } from "#lib/types";
 
 export type TeamSwitcherProps = {
   teams: Team[];

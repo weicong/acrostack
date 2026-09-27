@@ -1,17 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-export type Theme = "dark" | "light" | "system";
-
-type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>({
-  theme: "system",
-  setTheme: () => null,
-});
+import { ThemeContext, type Theme } from "#hooks/use-theme";
 
 export type ThemeProviderProps = {
   children: ReactNode;
@@ -73,13 +63,5 @@ export function ThemeProvider({
   // parent render.
   const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
 
-  return <ThemeProviderContext.Provider value={value}>{children}</ThemeProviderContext.Provider>;
-}
-
-export function useTheme() {
-  const context = useContext(ThemeProviderContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

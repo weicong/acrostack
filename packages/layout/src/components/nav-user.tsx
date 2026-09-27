@@ -16,7 +16,7 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 
-import type { ShellUser } from "./types";
+import type { ShellUser } from "#lib/types";
 
 /** Actions the built-in user menu can emit. */
 export type NavUserAction = "upgrade" | "account" | "notifications" | "logout";
