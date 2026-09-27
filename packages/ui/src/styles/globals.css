@@ -12,6 +12,35 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Custom data variants that upstream ships in `shadcn/tailwind.css` (the `shadcn`
+ * package). We don't install that package, so the two that DON'T behave like
+ * Tailwind's default `data-*` shorthand are restated here verbatim.
+ *
+ * `data-horizontal:` / `data-vertical:` must map to `data-orientation`, because
+ * that is the attribute Base UI emits (`@base-ui/react/separator` →
+ * `SeparatorDataAttributes.orientation = "data-orientation"`). Without these,
+ * `data-vertical:w-px` compiles to `[data-vertical]`, never matches, and every
+ * <Separator> collapses to 0x0.
+ *
+ * The other upstream variants (data-open / data-closed / data-checked /
+ * data-unchecked / data-disabled / data-active) are supersets of Tailwind's
+ * default shorthand — they additionally accept `[data-state="…"]` — so for a
+ * Base UI-only project the default shorthand is equivalent. Revisit this if a
+ * Radix-based part is ever mixed back in.
+ */
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
+}
+
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
+
 /* ---------------------------------------------------------------------------
  * Design tokens — shadcn/ui "base-nova" style, neutral base color.
  * Values mirror https://ui.shadcn.com/r/colors/neutral.json (cssVarsV4).
