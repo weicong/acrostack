@@ -14,8 +14,8 @@ import {
 } from "@workspace/ui/components/alert-dialog";
 import { Button } from "@workspace/ui/components/button";
 
-import { deletePost, usePosts } from "@/data/posts";
-import { excerpt, formatDateTime } from "@/lib/format";
+import { deletePost, excerpt, usePosts } from "@/features/posts";
+import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/posts/")({
   staticData: {

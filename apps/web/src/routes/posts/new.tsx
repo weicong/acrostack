@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { createPost, EMPTY_DRAFT, type PostDraft } from "@/data/posts";
-import { PostForm } from "@/components/post-form";
+import { createPost, EMPTY_DRAFT, PostForm, type PostDraft } from "@/features/posts";
 
 export const Route = createFileRoute("/posts/new")({
   // Reached from the list page's button rather than the sidebar, so it only

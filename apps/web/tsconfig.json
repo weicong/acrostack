@@ -9,10 +9,9 @@
     "types": ["vite/client", "node"],
 
     "paths": {
-      "@/components/*": ["./src/components/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/data/*": ["./src/data/*"]
+      "@/features/*": ["./src/features/*"],
+      "@/shell/*": ["./src/shell/*"],
+      "@/lib/*": ["./src/lib/*"]
     },
 
     /* Bundler mode */

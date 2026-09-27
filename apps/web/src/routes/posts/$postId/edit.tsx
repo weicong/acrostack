@@ -14,9 +14,8 @@ import {
 } from "@workspace/ui/components/alert-dialog";
 import { Button } from "@workspace/ui/components/button";
 
-import { deletePost, updatePost, usePost, type PostDraft } from "@/data/posts";
 import { useBreadcrumbLabel } from "@workspace/layout";
-import { PostForm } from "@/components/post-form";
+import { deletePost, PostForm, updatePost, usePost, type PostDraft } from "@/features/posts";
 
 export const Route = createFileRoute("/posts/$postId/edit")({
   staticData: {

@@ -1,8 +1,8 @@
 import { Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
 import { AppShell } from "@workspace/layout";
 
-import { AppBreadcrumb } from "@/lib/breadcrumb";
-import { readSidebarOpen, renderLink, teams, useShellNav, user } from "@/lib/layout";
+import { AppBreadcrumb } from "@/shell/breadcrumb";
+import { readSidebarOpen, renderLink, teams, useShellNav, user } from "@/shell/layout";
 
 import "@workspace/ui/globals.css";
 

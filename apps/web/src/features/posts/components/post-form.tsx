@@ -5,7 +5,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Textarea } from "@workspace/ui/components/textarea";
 
-import type { PostDraft } from "@/data/posts";
+import type { PostDraft } from "../data";
 
 export type PostFormErrors = Partial<Record<keyof PostDraft, string>>;
 
