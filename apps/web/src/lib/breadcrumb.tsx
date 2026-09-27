@@ -1,24 +1,7 @@
-import { Fragment, type ComponentType } from "react";
-import { Link } from "@tanstack/react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@workspace/ui/components/breadcrumb";
+import { useBreadcrumbOverrides, RouteBreadcrumb, type Crumb } from "@workspace/layout";
 
 import { matchRouteLabel, useRouteLabelIndex, type RouteLabelIndex } from "./route-meta";
-import { useBreadcrumbOverrides } from "./breadcrumb-label";
-
-export type Crumb = {
-  path: string;
-  label: string;
-  icon?: ComponentType<{ className?: string }>;
-  /** False when no route is attached (e.g. a dynamic segment mid-load). */
-  linkable: boolean;
-};
+import { renderLink } from "./layout";
 
 /**
  * Derives a breadcrumb trail from a pathname.
@@ -30,6 +13,9 @@ export type Crumb = {
  *
  * Dynamic segments (`/posts/abc123`) resolve to the route that matched them,
  * e.g. `/posts/$postId`; `overrides` lets the page substitute the real title.
+ *
+ * Deriving the trail is app-specific, so it lives here; `@workspace/layout`
+ * only renders the `Crumb[]` it produces.
  */
 export function buildCrumbs(
   pathname: string,
@@ -49,54 +35,21 @@ export function buildCrumbs(
     if (!label) continue;
 
     crumbs.push({
-      path,
+      to: path,
       label: overrides[label.pattern] ?? label.label,
       icon: label.icon,
-      linkable: true,
     });
   }
 
   return crumbs;
 }
 
-export function RouteBreadcrumb({ pathname }: { pathname: string }) {
+/** The breadcrumb for the current pathname, rendered by the layout package. */
+export function AppBreadcrumb({ pathname }: { pathname: string }) {
   const index = useRouteLabelIndex();
   const overrides = useBreadcrumbOverrides();
-  const crumbs = buildCrumbs(pathname, index, overrides);
-  const current = crumbs.at(-1);
-  const parents = crumbs.slice(0, -1);
-
-  if (!current) return null;
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {parents.map((crumb) => (
-          <Fragment key={crumb.path}>
-            <BreadcrumbItem className="hidden md:inline-flex">
-              {crumb.linkable ? (
-                <BreadcrumbLink
-                  render={
-                    <Link
-                      to={crumb.path}
-                      // Lengthy post titles would otherwise stretch the header.
-                      className="max-w-[16rem] truncate transition-colors hover:text-foreground"
-                    />
-                  }
-                >
-                  {crumb.label}
-                </BreadcrumbLink>
-              ) : (
-                <span className="max-w-[16rem] truncate text-muted-foreground">{crumb.label}</span>
-              )}
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-          </Fragment>
-        ))}
-        <BreadcrumbItem>
-          <BreadcrumbPage className="max-w-[16rem] truncate">{current.label}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <RouteBreadcrumb items={buildCrumbs(pathname, index, overrides)} renderLink={renderLink} />
   );
 }

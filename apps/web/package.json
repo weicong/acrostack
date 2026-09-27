@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tanstack/react-router": "latest",
+    "@workspace/layout": "workspace:*",
     "@workspace/ui": "workspace:*",
     "lucide-react": "catalog:",
     "react": "catalog:",

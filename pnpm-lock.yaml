@@ -172,7 +172,7 @@ catalogs:
       version: 19.3.0
     lucide-react:
       specifier: ^1.47.0
-      version: 1.47.0
+      version: 1.48.0
     react:
       specifier: ^19
       version: 19.3.0
@@ -208,6 +208,9 @@ importers:
       '@tanstack/react-router':
         specifier: latest
         version: 1.170.39(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@workspace/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -254,6 +257,31 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 1.0.0-rc.0(@types/node@24.13.6)(@vitest/ui@5.0.1)(jiti@2.7.0)(typescript@7.0.2)
+
+  packages/layout:
+    dependencies:
+      lucide-react:
+        specifier: 'catalog:'
+        version: 1.48.0(react@19.3.0)
+    devDependencies:
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.3.0(@types/react@19.3.0)
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../ui
+      react:
+        specifier: 'catalog:'
+        version: 19.3.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.3.0(react@19.3.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
 
   packages/ui:
     dependencies:

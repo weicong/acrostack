@@ -16,7 +16,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Separator } from "@workspace/ui/components/separator";
 
 import { deletePost, usePost } from "@/data/posts";
-import { useBreadcrumbLabel } from "@/lib/breadcrumb-label";
+import { useBreadcrumbLabel } from "@workspace/layout";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/posts/$postId/")({

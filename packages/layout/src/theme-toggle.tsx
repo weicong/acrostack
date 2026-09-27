@@ -1,5 +1,3 @@
-import type { Theme } from "@/hooks/use-theme";
-import { useTheme } from "@/hooks/use-theme";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -9,19 +7,36 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 
-const options: { value: Theme; label: string; icon: typeof Sun }[] = [
-  { value: "light", label: "浅色", icon: Sun },
-  { value: "dark", label: "深色", icon: Moon },
-  { value: "system", label: "跟随系统", icon: Monitor },
-];
+import { useTheme, type Theme } from "./theme";
 
-export function ThemeToggle() {
+export type ThemeToggleProps = {
+  /** Override the visible copy (i18n). Defaults are Simplified Chinese. */
+  labels?: {
+    trigger?: string;
+    light?: string;
+    dark?: string;
+    system?: string;
+  };
+};
+
+export function ThemeToggle({ labels }: ThemeToggleProps = {}) {
   const { theme, setTheme } = useTheme();
+
+  const options: { value: Theme; label: string; icon: typeof Sun }[] = [
+    { value: "light", label: labels?.light ?? "浅色", icon: Sun },
+    { value: "dark", label: labels?.dark ?? "深色", icon: Moon },
+    { value: "system", label: labels?.system ?? "跟随系统", icon: Monitor },
+  ];
+
   const Active = options.find((option) => option.value === theme)?.icon ?? Sun;
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="切换主题" />}>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="ghost" size="icon-sm" aria-label={labels?.trigger ?? "切换主题"} />
+        }
+      >
         <Active />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-36">

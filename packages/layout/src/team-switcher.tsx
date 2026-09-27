@@ -1,4 +1,3 @@
-import type { ComponentType } from "react";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,13 +16,20 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 
-export type Team = {
-  name: string;
-  logo: ComponentType<{ className?: string }>;
-  plan: string;
+import type { Team } from "./types";
+
+export type TeamSwitcherProps = {
+  teams: Team[];
+  /** Override the visible copy (i18n). Defaults are Simplified Chinese / English. */
+  labels?: {
+    heading?: string;
+    addTeam?: string;
+  };
+  onSelectTeam?: (team: Team) => void;
+  onAddTeam?: () => void;
 };
 
-export function TeamSwitcher({ teams }: { teams: Team[] }) {
+export function TeamSwitcher({ teams, labels, onSelectTeam, onAddTeam }: TeamSwitcherProps) {
   const { isMobile } = useSidebar();
   const activeTeam = teams[0];
 
@@ -59,9 +65,13 @@ export function TeamSwitcher({ teams }: { teams: Team[] }) {
             {/* Base UI's GroupLabel reads MenuGroupContext, so it must live
                 inside a DropdownMenuGroup. */}
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Teams</DropdownMenuLabel>
+              <DropdownMenuLabel>{labels?.heading ?? "Teams"}</DropdownMenuLabel>
               {teams.map((team, index) => (
-                <DropdownMenuItem key={team.name} className="gap-2 p-2">
+                <DropdownMenuItem
+                  key={team.name}
+                  className="gap-2 p-2"
+                  onClick={onSelectTeam ? () => onSelectTeam(team) : undefined}
+                >
                   <div className="flex size-6 items-center justify-center rounded-md border">
                     <team.logo className="size-3.5 shrink-0" />
                   </div>
@@ -71,11 +81,16 @@ export function TeamSwitcher({ teams }: { teams: Team[] }) {
               ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={onAddTeam ? () => onAddTeam() : undefined}
+            >
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">添加团队</div>
+              <div className="font-medium text-muted-foreground">
+                {labels?.addTeam ?? "添加团队"}
+              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

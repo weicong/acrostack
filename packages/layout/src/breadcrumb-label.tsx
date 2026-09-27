@@ -6,12 +6,11 @@ import * as React from "react";
  * The breadcrumb is derived purely from the URL, but a dynamic segment like
  * `/posts/$postId` has no human-readable name in the URL itself. A detail page
  * registers its own title here so the trail reads 「首页 › 文章 › 用 Vite+…」
- * instead of a raw id, without the layout having to know about posts.
+ * instead of a raw id, without the layout having to know about the page.
  *
  * Keyed by route path so nested routes can override independently — the key
- * must be the same string the router reports as `Route.to` (trailing slash
- * trimmed, e.g. `/posts/$postId`), because that is what the trail is resolved
- * against.
+ * must be the same string the host derives crumbs from (e.g. a route pattern
+ * with the trailing slash trimmed, such as `/posts/$postId`).
  */
 type Overrides = Record<string, string>;
 
@@ -49,15 +48,21 @@ export function useBreadcrumbOverrides(): Overrides {
  * Register a label for a dynamic breadcrumb segment for as long as the calling
  * component is mounted.
  *
- * Pass `undefined` while the data is still loading and the generic label from
- * the route's `staticData.breadcrumb` stays in place.
+ * Pass `undefined` while the data is still loading and the generic label stays
+ * in place.
+ *
+ * ⚠️ Depend on the **stable setter**, never on the whole context value: the
+ * context identity changes whenever `overrides` changes, and since this effect
+ * writes to `overrides`, depending on the context makes it re-run on every
+ * write — cleanup deletes the entry, the effect re-adds it, the object identity
+ * changes again, and React spins until it hits "Maximum update depth exceeded".
  */
 export function useBreadcrumbLabel(pattern: string, label: string | undefined) {
-  const context = React.useContext(OverridesContext);
+  const setOverride = React.useContext(OverridesContext)?.setOverride;
 
   React.useEffect(() => {
-    if (!context) return;
-    context.setOverride(pattern, label);
-    return () => context.setOverride(pattern, undefined);
-  }, [context, pattern, label]);
+    if (!setOverride) return;
+    setOverride(pattern, label);
+    return () => setOverride(pattern, undefined);
+  }, [setOverride, pattern, label]);
 }

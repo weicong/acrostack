@@ -1,4 +1,3 @@
-import { Link, useMatchRoute } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import {
   Collapsible,
@@ -16,17 +15,30 @@ import {
   SidebarMenuSubItem,
 } from "@workspace/ui/components/sidebar";
 
-import type { NavGroup } from "@/lib/route-meta";
+import type { LinkRenderer, NavGroup } from "./types";
+
+export type NavMainProps = {
+  groups: NavGroup[];
+  /**
+   * Renders a link element for a given `to`. Omit to render a plain `<a href>`,
+   * which keeps the package usable without a router.
+   *
+   * The returned element receives the button's own `className` and the item's
+   * children through Base UI's `render` merge, so it should be a *bare* element
+   * (`<Link to={to} />`), not one with its own children.
+   */
+  renderLink?: LinkRenderer;
+};
 
 /**
  * The primary sidebar group.
  *
- * Groups that contain the active route auto-expand, and the matching leaf gets
- * the active highlight — both driven by the router rather than by hand-set
- * `isActive` flags. `fuzzy` matching means `/posts/new` also lights up `/posts`.
+ * Items with `children` become collapsible parents that auto-open when active.
+ * `active` is supplied by the host app, which is what keeps this component free
+ * of any routing dependency.
  */
-export function NavMain({ groups }: { groups: NavGroup[] }) {
-  const matchRoute = useMatchRoute();
+export function NavMain({ groups, renderLink }: NavMainProps) {
+  const link = (to: string) => (renderLink ? renderLink({ to }) : <a href={to} />);
 
   return (
     <>
@@ -36,7 +48,6 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
           <SidebarMenu>
             {group.items.map((item) => {
               const hasChildren = Boolean(item.children?.length);
-              const isActive = Boolean(matchRoute({ to: item.to, fuzzy: true }));
               const key = `${group.label}:${item.to}`;
 
               if (!hasChildren) {
@@ -44,8 +55,8 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                   <SidebarMenuItem key={key}>
                     <SidebarMenuButton
                       tooltip={item.label}
-                      isActive={isActive}
-                      render={<Link to={item.to} />}
+                      isActive={item.active}
+                      render={link(item.to)}
                     >
                       {item.icon ? <item.icon /> : null}
                       <span>{item.label}</span>
@@ -57,7 +68,7 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
               return (
                 <Collapsible
                   key={key}
-                  defaultOpen={isActive}
+                  defaultOpen={item.active}
                   className="group/collapsible"
                   render={<SidebarMenuItem />}
                 >
@@ -65,7 +76,7 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                     render={
                       <SidebarMenuButton
                         tooltip={item.label}
-                        isActive={isActive}
+                        isActive={item.active}
                         className="cursor-pointer"
                       />
                     }
@@ -78,10 +89,7 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                     <SidebarMenuSub>
                       {item.children?.map((child) => (
                         <SidebarMenuSubItem key={child.to}>
-                          <SidebarMenuSubButton
-                            isActive={Boolean(matchRoute({ to: child.to, fuzzy: false }))}
-                            render={<Link to={child.to} />}
-                          >
+                          <SidebarMenuSubButton isActive={child.active} render={link(child.to)}>
                             <span>{child.label}</span>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>

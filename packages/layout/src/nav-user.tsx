@@ -16,14 +16,27 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 
-export type SidebarUser = {
-  name: string;
-  email: string;
-  initials: string;
+import type { ShellUser } from "./types";
+
+/** Actions the built-in user menu can emit. */
+export type NavUserAction = "upgrade" | "account" | "notifications" | "logout";
+
+export type NavUserProps = {
+  user: ShellUser;
+  /** Override the visible copy (i18n). Defaults are Simplified Chinese. */
+  labels?: {
+    upgrade?: string;
+    account?: string;
+    notifications?: string;
+    logout?: string;
+  };
+  onSelect?: (action: NavUserAction) => void;
 };
 
-export function NavUser({ user }: { user: SidebarUser }) {
+export function NavUser({ user, labels, onSelect }: NavUserProps) {
   const { isMobile } = useSidebar();
+
+  const pick = (action: NavUserAction) => (onSelect ? () => onSelect(action) : undefined);
 
   return (
     <SidebarMenu>
@@ -69,26 +82,26 @@ export function NavUser({ user }: { user: SidebarUser }) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={pick("upgrade")}>
                 <Sparkles />
-                升级到 Pro
+                {labels?.upgrade ?? "升级到 Pro"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={pick("account")}>
                 <BadgeCheck />
-                账号
+                {labels?.account ?? "账号"}
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={pick("notifications")}>
                 <Bell />
-                通知
+                {labels?.notifications ?? "通知"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem variant="destructive" onClick={pick("logout")}>
               <LogOut />
-              退出登录
+              {labels?.logout ?? "退出登录"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
