@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CircleHelp, ExternalLink } from "lucide-react";
 
+import { PageHeader } from "@workspace/layout";
 import { Badge } from "@workspace/ui/components/badge";
 import {
   Card,
@@ -35,12 +36,10 @@ const workspace = [
 function AboutPage() {
   return (
     <>
-      <header className="flex flex-col gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">关于</h1>
-        <p className="text-sm text-muted-foreground">
-          一个用于快速起步的 Vite+ monorepo 脚手架，技术选型与目录约定如下。
-        </p>
-      </header>
+      <PageHeader
+        title="关于"
+        description="一个用于快速起步的 Vite+ monorepo 脚手架，技术选型与目录约定如下。"
+      />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>

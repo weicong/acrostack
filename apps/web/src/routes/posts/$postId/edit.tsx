@@ -23,7 +23,7 @@ import {
   EmptyTitle,
 } from "@workspace/ui/components/empty";
 
-import { useBreadcrumbLabel } from "@workspace/layout";
+import { PageHeader, useBreadcrumbLabel } from "@workspace/layout";
 import { deletePost, PostForm, updatePost, usePost, type PostDraft } from "@/features/posts";
 
 export const Route = createFileRoute("/posts/$postId/edit")({
@@ -81,33 +81,32 @@ function EditPostPage() {
 
   return (
     <>
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">编辑文章</h1>
-          <p className="text-sm text-muted-foreground">保存后会刷新「更新于」时间。</p>
-        </div>
-
-        <AlertDialog>
-          <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
-            <Trash2 data-icon="inline-start" />
-            删除
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>删除这篇草稿？</AlertDialogTitle>
-              <AlertDialogDescription>
-                「{post.title}」将从本地存储中永久移除，此操作不可撤销。
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
-              <AlertDialogAction variant="destructive" onClick={handleDelete}>
-                确认删除
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </header>
+      <PageHeader
+        title="编辑文章"
+        description="保存后会刷新「更新于」时间。"
+        actions={
+          <AlertDialog>
+            <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
+              <Trash2 data-icon="inline-start" />
+              删除
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>删除这篇草稿？</AlertDialogTitle>
+                <AlertDialogDescription>
+                  「{post.title}」将从本地存储中永久移除，此操作不可撤销。
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogAction variant="destructive" onClick={handleDelete}>
+                  确认删除
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        }
+      />
 
       <Card>
         <CardContent>

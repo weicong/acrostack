@@ -10,6 +10,7 @@ import {
   Terminal,
 } from "lucide-react";
 
+import { PageHeader } from "@workspace/layout";
 import {
   Card,
   CardAction,
@@ -61,12 +62,10 @@ const commands = [
 function HomePage() {
   return (
     <>
-      <header className="flex flex-col gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">脚手架概览</h1>
-        <p className="text-sm text-muted-foreground">
-          TanStack Router（router-only 纯 SPA）+ shadcn/ui，由 Vite+ 统一负责构建与校验。
-        </p>
-      </header>
+      <PageHeader
+        title="脚手架概览"
+        description="TanStack Router（router-only 纯 SPA）+ shadcn/ui，由 Vite+ 统一负责构建与校验。"
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (

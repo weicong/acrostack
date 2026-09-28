@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { FileText, Files, Pencil, Plus, Trash2 } from "lucide-react";
 
+import { PageHeader } from "@workspace/layout";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -58,18 +59,16 @@ function PostsPage() {
 
   return (
     <>
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">文章</h1>
-          <p className="text-sm text-muted-foreground">
-            共 {posts.length} 篇 · 数据保存在浏览器 localStorage
-          </p>
-        </div>
-        <Button size="sm" nativeButton={false} render={<Link to="/posts/new" />}>
-          <Plus data-icon="inline-start" />
-          新建文章
-        </Button>
-      </header>
+      <PageHeader
+        title="文章"
+        description={`共 ${posts.length} 篇 · 数据保存在浏览器 localStorage`}
+        actions={
+          <Button size="sm" nativeButton={false} render={<Link to="/posts/new" />}>
+            <Plus data-icon="inline-start" />
+            新建文章
+          </Button>
+        }
+      />
 
       <Card>
         <CardContent>

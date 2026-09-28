@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
+import { PageHeader } from "@workspace/layout";
 import { Card, CardContent } from "@workspace/ui/components/card";
 
 import { createPost, EMPTY_DRAFT, PostForm, type PostDraft } from "@/features/posts";
@@ -24,12 +25,7 @@ function NewPostPage() {
 
   return (
     <>
-      <header className="flex flex-col gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">新建文章</h1>
-        <p className="text-sm text-muted-foreground">
-          标题必填，标签与正文可选；保存后直接进入详情页。
-        </p>
-      </header>
+      <PageHeader title="新建文章" description="标题必填，标签与正文可选；保存后直接进入详情页。" />
 
       <Card>
         <CardContent>

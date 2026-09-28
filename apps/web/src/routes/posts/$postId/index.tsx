@@ -25,7 +25,7 @@ import {
 } from "@workspace/ui/components/empty";
 
 import { deletePost, usePost } from "@/features/posts";
-import { useBreadcrumbLabel } from "@workspace/layout";
+import { PageHeader, useBreadcrumbLabel } from "@workspace/layout";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/posts/$postId/")({
@@ -81,57 +81,55 @@ function PostDetailPage() {
 
   return (
     <>
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-col gap-2">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight break-words">
-            {post.title}
-          </h1>
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{post.tag || "未分类"}</Badge>
+      <PageHeader
+        title={post.title}
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              nativeButton={false}
+              render={<Link to="/posts/$postId/edit" params={{ postId: post.id }} />}
+            >
+              <Pencil data-icon="inline-start" />
+              编辑
+            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
+                <Trash2 data-icon="inline-start" />
+                删除
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>删除这篇草稿？</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    「{post.title}」将从本地存储中永久移除，此操作不可撤销。
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>取消</AlertDialogCancel>
+                  <AlertDialogAction variant="destructive" onClick={handleDelete}>
+                    确认删除
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </>
+        }
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="secondary">{post.tag || "未分类"}</Badge>
+          <span className="text-xs text-muted-foreground">
+            创建于 {formatDateTime(post.createdAt)}
+          </span>
+          {post.updatedAt !== post.createdAt && (
             <span className="text-xs text-muted-foreground">
-              创建于 {formatDateTime(post.createdAt)}
+              更新于 {formatDateTime(post.updatedAt)}
             </span>
-            {post.updatedAt !== post.createdAt && (
-              <span className="text-xs text-muted-foreground">
-                更新于 {formatDateTime(post.updatedAt)}
-              </span>
-            )}
-          </div>
+          )}
         </div>
-
-        <div className="flex shrink-0 items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={<Link to="/posts/$postId/edit" params={{ postId: post.id }} />}
-          >
-            <Pencil data-icon="inline-start" />
-            编辑
-          </Button>
-
-          <AlertDialog>
-            <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
-              <Trash2 data-icon="inline-start" />
-              删除
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>删除这篇草稿？</AlertDialogTitle>
-                <AlertDialogDescription>
-                  「{post.title}」将从本地存储中永久移除，此操作不可撤销。
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={handleDelete}>
-                  确认删除
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      </header>
+      </PageHeader>
 
       <Card>
         <CardContent>

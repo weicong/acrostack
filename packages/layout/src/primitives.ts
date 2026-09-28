@@ -8,6 +8,7 @@
 export { NavMain, type NavMainProps } from "#components/nav-main";
 export { NavUser, type NavUserAction, type NavUserProps } from "#components/nav-user";
 export { TeamSwitcher, type TeamSwitcherProps } from "#components/team-switcher";
+export { PageHeader, type PageHeaderProps } from "#components/page-header";
 export { RouteBreadcrumb, type RouteBreadcrumbProps } from "#components/breadcrumb";
 export { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";
 export { ThemeProvider, type ThemeProviderProps } from "#components/theme-provider";
