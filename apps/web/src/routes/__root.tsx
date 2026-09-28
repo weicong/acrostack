@@ -3,11 +3,16 @@ import { AppShell } from "@workspace/layout";
 
 import { AppBreadcrumb } from "@/shell/breadcrumb";
 import { readSidebarOpen, renderLink, teams, useShellNav, user } from "@/shell/layout";
+import { RouteError, RouteNotFound, RoutePending } from "@/shell/route-states";
 
 import "@workspace/ui/globals.css";
 
 export const Route = createRootRoute({
   component: RootComponent,
+  // App-wide states; they render inside the shell, so navigation stays usable.
+  pendingComponent: RoutePending,
+  notFoundComponent: RouteNotFound,
+  errorComponent: RouteError,
 });
 
 function RootComponent() {

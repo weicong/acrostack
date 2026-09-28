@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, FileQuestion, Trash2 } from "lucide-react";
 
 import {
   AlertDialog,
@@ -13,6 +13,15 @@ import {
   AlertDialogTrigger,
 } from "@workspace/ui/components/alert-dialog";
 import { Button } from "@workspace/ui/components/button";
+import { Card, CardContent } from "@workspace/ui/components/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@workspace/ui/components/empty";
 
 import { useBreadcrumbLabel } from "@workspace/layout";
 import { deletePost, PostForm, updatePost, usePost, type PostDraft } from "@/features/posts";
@@ -33,16 +42,30 @@ function EditPostPage() {
 
   if (!post) {
     return (
-      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 rounded-xl bg-muted/50 p-6 text-center">
-        <p className="text-sm font-medium">文章不存在</p>
-        <p className="text-xs text-muted-foreground">
-          它可能已被删除，或链接里的 id（{postId}）有误。
-        </p>
-        <Button size="sm" variant="outline" nativeButton={false} render={<Link to="/posts" />}>
-          <ArrowLeft data-icon="inline-start" />
-          返回列表
-        </Button>
-      </div>
+      <Card>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FileQuestion />
+              </EmptyMedia>
+              <EmptyTitle>文章不存在</EmptyTitle>
+              <EmptyDescription>它可能已被删除，或链接里的 id（{postId}）有误。</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button
+                size="sm"
+                variant="outline"
+                nativeButton={false}
+                render={<Link to="/posts" />}
+              >
+                <ArrowLeft data-icon="inline-start" />
+                返回列表
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -58,8 +81,12 @@ function EditPostPage() {
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-heading text-base font-medium">编辑文章</h2>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-heading text-2xl font-semibold tracking-tight">编辑文章</h1>
+          <p className="text-sm text-muted-foreground">保存后会刷新「更新于」时间。</p>
+        </div>
+
         <AlertDialog>
           <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>
             <Trash2 data-icon="inline-start" />
@@ -80,17 +107,21 @@ function EditPostPage() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      </div>
+      </header>
 
-      <PostForm
-        // Re-mount the form if the user navigates to a different post's edit
-        // page, so the uncontrolled inputs pick up the new defaults.
-        key={post.id}
-        defaultValues={{ title: post.title, tag: post.tag, body: post.body }}
-        submitLabel="保存修改"
-        onSubmit={handleSubmit}
-        onCancel={() => void navigate({ to: "/posts/$postId", params: { postId } })}
-      />
+      <Card>
+        <CardContent>
+          <PostForm
+            // Re-mount the form if the user navigates to a different post's edit
+            // page, so the uncontrolled inputs pick up the new defaults.
+            key={post.id}
+            defaultValues={{ title: post.title, tag: post.tag, body: post.body }}
+            submitLabel="保存修改"
+            onSubmit={handleSubmit}
+            onCancel={() => void navigate({ to: "/posts/$postId", params: { postId } })}
+          />
+        </CardContent>
+      </Card>
     </>
   );
 }

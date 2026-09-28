@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, FileQuestion, Pencil, Trash2 } from "lucide-react";
 
 import {
   AlertDialog,
@@ -12,8 +12,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@workspace/ui/components/alert-dialog";
+import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { Separator } from "@workspace/ui/components/separator";
+import { Card, CardContent } from "@workspace/ui/components/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@workspace/ui/components/empty";
 
 import { deletePost, usePost } from "@/features/posts";
 import { useBreadcrumbLabel } from "@workspace/layout";
@@ -43,29 +52,49 @@ function PostDetailPage() {
 
   if (!post) {
     return (
-      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 rounded-xl bg-muted/50 p-6 text-center">
-        <p className="text-sm font-medium">文章不存在</p>
-        <p className="text-xs text-muted-foreground">
-          它可能已被删除，或链接里的 id（{postId}）有误。
-        </p>
-        <Button size="sm" variant="outline" nativeButton={false} render={<Link to="/posts" />}>
-          <ArrowLeft data-icon="inline-start" />
-          返回列表
-        </Button>
-      </div>
+      <Card>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FileQuestion />
+              </EmptyMedia>
+              <EmptyTitle>文章不存在</EmptyTitle>
+              <EmptyDescription>它可能已被删除，或链接里的 id（{postId}）有误。</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button
+                size="sm"
+                variant="outline"
+                nativeButton={false}
+                render={<Link to="/posts" />}
+              >
+                <ArrowLeft data-icon="inline-start" />
+                返回列表
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <>
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-2">
-          <h2 className="font-heading text-xl font-medium break-words">{post.title}</h2>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-            <span className="rounded-md bg-muted px-2 py-0.5">{post.tag || "未分类"}</span>
-            <span>创建于 {formatDateTime(post.createdAt)}</span>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight break-words">
+            {post.title}
+          </h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{post.tag || "未分类"}</Badge>
+            <span className="text-xs text-muted-foreground">
+              创建于 {formatDateTime(post.createdAt)}
+            </span>
             {post.updatedAt !== post.createdAt && (
-              <span>更新于 {formatDateTime(post.updatedAt)}</span>
+              <span className="text-xs text-muted-foreground">
+                更新于 {formatDateTime(post.updatedAt)}
+              </span>
             )}
           </div>
         </div>
@@ -102,15 +131,15 @@ function PostDetailPage() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </header>
 
-      <Separator />
-
-      <article className="max-w-prose text-sm leading-relaxed whitespace-pre-wrap text-foreground/90">
-        {post.body || "（暂无正文）"}
-      </article>
-
-      <Separator />
+      <Card>
+        <CardContent>
+          <article className="max-w-prose text-sm leading-relaxed whitespace-pre-wrap">
+            {post.body || "（暂无正文）"}
+          </article>
+        </CardContent>
+      </Card>
 
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" nativeButton={false} render={<Link to="/posts" />}>

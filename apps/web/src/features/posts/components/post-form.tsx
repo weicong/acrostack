@@ -1,8 +1,14 @@
 import * as React from "react";
 
 import { Button } from "@workspace/ui/components/button";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@workspace/ui/components/field";
 import { Input } from "@workspace/ui/components/input";
-import { Label } from "@workspace/ui/components/label";
 import { Textarea } from "@workspace/ui/components/textarea";
 
 import type { PostDraft } from "../data";
@@ -62,53 +68,50 @@ export function PostForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex max-w-2xl flex-col gap-5" noValidate>
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="post-title">标题</Label>
-        <Input
-          id="post-title"
-          value={draft.title}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="给这篇文章起个标题"
-          aria-invalid={Boolean(errors.title)}
-          aria-describedby={errors.title ? "post-title-error" : undefined}
-        />
-        {errors.title && (
-          <p id="post-title-error" className="text-xs text-destructive">
-            {errors.title}
-          </p>
-        )}
-      </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+      <FieldGroup>
+        <Field data-invalid={Boolean(errors.title)}>
+          <FieldLabel htmlFor="post-title">标题</FieldLabel>
+          <Input
+            id="post-title"
+            value={draft.title}
+            onChange={(e) => set("title", e.target.value)}
+            placeholder="给这篇文章起个标题"
+            aria-invalid={Boolean(errors.title)}
+            aria-describedby={errors.title ? "post-title-error" : undefined}
+          />
+          <FieldDescription>最多 80 个字符，会显示在列表、详情页与面包屑里。</FieldDescription>
+          <FieldError id="post-title-error">{errors.title}</FieldError>
+        </Field>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="post-tag">标签</Label>
-        <Input
-          id="post-tag"
-          value={draft.tag}
-          onChange={(e) => set("tag", e.target.value)}
-          placeholder="例如：路由 / UI / 工具链"
-          aria-invalid={Boolean(errors.tag)}
-          aria-describedby={errors.tag ? "post-tag-error" : undefined}
-        />
-        {errors.tag && (
-          <p id="post-tag-error" className="text-xs text-destructive">
-            {errors.tag}
-          </p>
-        )}
-      </div>
+        <Field data-invalid={Boolean(errors.tag)}>
+          <FieldLabel htmlFor="post-tag">标签</FieldLabel>
+          <Input
+            id="post-tag"
+            value={draft.tag}
+            onChange={(e) => set("tag", e.target.value)}
+            placeholder="例如：路由 / UI / 工具链"
+            aria-invalid={Boolean(errors.tag)}
+            aria-describedby={errors.tag ? "post-tag-error" : undefined}
+          />
+          <FieldDescription>可选，最多 20 个字符；留空时显示为「未分类」。</FieldDescription>
+          <FieldError id="post-tag-error">{errors.tag}</FieldError>
+        </Field>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="post-body">正文</Label>
-        <Textarea
-          id="post-body"
-          value={draft.body}
-          onChange={(e) => set("body", e.target.value)}
-          placeholder="写点什么…"
-          rows={10}
-        />
-      </div>
+        <Field>
+          <FieldLabel htmlFor="post-body">正文</FieldLabel>
+          <Textarea
+            id="post-body"
+            value={draft.body}
+            onChange={(e) => set("body", e.target.value)}
+            placeholder="写点什么…"
+            rows={10}
+          />
+          <FieldDescription>纯文本，保留换行。</FieldDescription>
+        </Field>
+      </FieldGroup>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-5">
         <div className="flex items-center gap-2">
           <Button type="submit">{submitLabel}</Button>
           {onCancel && (

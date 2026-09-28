@@ -1,5 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
+import { Card, CardContent } from "@workspace/ui/components/card";
+
 import { createPost, EMPTY_DRAFT, PostForm, type PostDraft } from "@/features/posts";
 
 export const Route = createFileRoute("/posts/new")({
@@ -22,13 +24,23 @@ function NewPostPage() {
 
   return (
     <>
-      <h2 className="font-heading text-base font-medium">新建文章</h2>
-      <PostForm
-        defaultValues={EMPTY_DRAFT}
-        submitLabel="创建"
-        onSubmit={handleSubmit}
-        onCancel={() => void navigate({ to: "/posts" })}
-      />
+      <header className="flex flex-col gap-1">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight">新建文章</h1>
+        <p className="text-sm text-muted-foreground">
+          标题必填，标签与正文可选；保存后直接进入详情页。
+        </p>
+      </header>
+
+      <Card>
+        <CardContent>
+          <PostForm
+            defaultValues={EMPTY_DRAFT}
+            submitLabel="创建"
+            onSubmit={handleSubmit}
+            onCancel={() => void navigate({ to: "/posts" })}
+          />
+        </CardContent>
+      </Card>
     </>
   );
 }
