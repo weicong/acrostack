@@ -11,9 +11,9 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/components",
+    "components": "@workspace/ui/components",
     "ui": "@workspace/ui/components",
-    "hooks": "@/hooks",
+    "hooks": "@workspace/ui/hooks",
     "lib": "@/lib",
     "utils": "@workspace/ui/lib/utils"
   }
