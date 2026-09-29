@@ -11,6 +11,7 @@
 - `packages/api-client/` — `@workspace/api-client`：Kubb 从后端 Swagger 生成的 API 客户端（models / clients / hooks）+ 生成配置。**生成物禁止手改**。
 - `vite.config.ts` — 工作区根配置：`lint`/`fmt` 默认值与 `overrides`（Vite+ **不支持**包级嵌套 lint 配置）、`defaultPackage: './apps/web'`。
 - `pnpm-workspace.yaml` — 工作区成员、`catalog`（工具链版本锁定）、`overrides`（`vite@*` → Vite+ core 别名）。
+- `.gitignore` — 工作区**唯一**的忽略配置，规则同时覆盖 `apps/` 与 `packages/`（`node_modules` / `dist` / `dist-ssr` / `*.local` / `*.tsbuildinfo` / `.tanstack/`）；仓库根 `.gitignore` 只管 .NET 与通用项。
 
 ## 包命名
 
@@ -41,4 +42,5 @@ vp run -r <script>            # 递归执行各包脚本
 - 共享包以源码形式被应用消费（`exports` 指向 `src/index.ts`），由应用的构建器编译；不要为它们单独配置构建产物路径。
 - 依赖统一通过工作区根的 `catalog:` 引用工具链版本；运行时依赖按包声明，避免重复安装。
 - 包级差异写进根 `vite.config.ts` 的 `overrides`（包目录下的 `lint`/`fmt` 块不生效）；每个包仍可保留自己的 `vite.config.ts`（dev/build/插件）。
+- 忽略规则同样集中在工作区根 `.gitignore`，**不要在包目录里再建 `.gitignore`**（`apps/web` 曾有一份，已上移合并）。
 - 测试文件与被测代码同目录（`*.test.ts(x)`），用 `vp test` 运行。
