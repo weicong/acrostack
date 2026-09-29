@@ -1,67 +1,112 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-import { ThemeContext, type Theme } from "#hooks/use-theme";
+import {
+  ThemeContext,
+  THEME_STYLES,
+  styleClassName,
+  type ThemeMode,
+  type ThemeStyle,
+} from "#hooks/use-theme";
 
 export type ThemeProviderProps = {
   children: ReactNode;
   /**
-   * `localStorage` key the choice is persisted under. Give each host app its own
+   * `localStorage` key the mode is persisted under. Give each host app its own
    * key — two apps on the same origin would otherwise fight over one value.
    */
-  storageKey?: string;
+  modeStorageKey?: string;
+  /** `localStorage` key the palette ("风格") is persisted under. */
+  styleStorageKey?: string;
   /** Class applied to `<html>` in dark mode. Must match the app's `@custom-variant dark`. */
   darkClassName?: string;
+  /** Style selected on first visit, before anything is stored. */
+  defaultStyle?: ThemeStyle;
 };
 
-function readStoredTheme(storageKey: string): Theme {
+function readStoredMode(storageKey: string): ThemeMode {
   if (typeof localStorage === "undefined") return "system";
   const stored = localStorage.getItem(storageKey);
   return stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
 }
 
-function applyTheme(theme: Theme, darkClassName: string) {
+function readStoredStyle(storageKey: string, fallback: ThemeStyle): ThemeStyle {
+  if (typeof localStorage === "undefined") return fallback;
+  const stored = localStorage.getItem(storageKey);
+  return THEME_STYLES.find((style) => style === stored) ?? fallback;
+}
+
+function applyMode(mode: ThemeMode, darkClassName: string) {
   const root = window.document.documentElement;
   root.classList.remove("light", darkClassName);
   root.classList.add(
-    theme === "system"
+    mode === "system"
       ? window.matchMedia("(prefers-color-scheme: dark)").matches
         ? darkClassName
         : "light"
-      : theme,
+      : mode,
   );
+}
+
+/** Only one style class is ever present, so the CSS can stay flat. */
+function applyStyle(style: ThemeStyle) {
+  const root = window.document.documentElement;
+  for (const candidate of THEME_STYLES) {
+    root.classList.remove(styleClassName(candidate));
+  }
+  root.classList.add(styleClassName(style));
 }
 
 export function ThemeProvider({
   children,
-  storageKey = "ui-theme",
+  modeStorageKey = "ui-theme",
+  styleStorageKey = `${modeStorageKey}-style`,
   darkClassName = "dark",
+  defaultStyle = "default",
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme(storageKey));
+  const [mode, setModeState] = useState<ThemeMode>(() => readStoredMode(modeStorageKey));
+  const [style, setStyleState] = useState<ThemeStyle>(() =>
+    readStoredStyle(styleStorageKey, defaultStyle),
+  );
 
   useEffect(() => {
-    applyTheme(theme, darkClassName);
+    applyMode(mode, darkClassName);
 
     // While on "system", keep following the OS preference as it changes.
-    if (theme !== "system") return;
+    if (mode !== "system") return;
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => applyTheme("system", darkClassName);
+    const onChange = () => applyMode("system", darkClassName);
     mql.addEventListener("change", onChange);
     return () => mql.removeEventListener("change", onChange);
-  }, [theme, darkClassName]);
+  }, [mode, darkClassName]);
 
-  const setTheme = useCallback(
-    (next: Theme) => {
-      localStorage.setItem(storageKey, next);
-      setThemeState(next);
+  useEffect(() => {
+    applyStyle(style);
+  }, [style]);
+
+  const setMode = useCallback(
+    (next: ThemeMode) => {
+      localStorage.setItem(modeStorageKey, next);
+      setModeState(next);
     },
-    [storageKey],
+    [modeStorageKey],
+  );
+
+  const setStyle = useCallback(
+    (next: ThemeStyle) => {
+      localStorage.setItem(styleStorageKey, next);
+      setStyleState(next);
+    },
+    [styleStorageKey],
   );
 
   // Memoised so that toggling a theme does not re-render every consumer on each
   // parent render.
-  const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
+  const value = useMemo(
+    () => ({ mode, setMode, style, setStyle }),
+    [mode, setMode, style, setStyle],
+  );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

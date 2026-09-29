@@ -23,7 +23,13 @@ export { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";
 export { ThemeProvider, type ThemeProviderProps } from "#components/theme-provider";
 export { ThemeToggle, type ThemeToggleProps } from "#components/theme-toggle";
 
-export { useTheme, type Theme } from "#hooks/use-theme";
+export {
+  useTheme,
+  THEME_STYLES,
+  styleClassName,
+  type ThemeMode,
+  type ThemeStyle,
+} from "#hooks/use-theme";
 export {
   useBreadcrumbLabel,
   useBreadcrumbOverrides,

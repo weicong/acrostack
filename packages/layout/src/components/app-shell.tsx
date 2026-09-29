@@ -6,6 +6,7 @@ import { AppSidebar, type AppSidebarProps } from "#components/app-sidebar";
 import { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";
 import { ThemeProvider } from "#components/theme-provider";
 import { ThemeToggle } from "#components/theme-toggle";
+import type { ThemeStyle } from "#hooks/use-theme";
 import type { LinkRenderer, NavGroup, ShellUser, Team } from "#lib/types";
 
 export type AppShellProps = {
@@ -21,8 +22,12 @@ export type AppShellProps = {
    * or storage and pass the value in.
    */
   defaultSidebarOpen?: boolean;
-  /** `localStorage` key for the theme. Give each app its own. */
-  themeStorageKey?: string;
+  /** `localStorage` key for the mode (light/dark/system). Give each app its own. */
+  modeStorageKey?: string;
+  /** `localStorage` key for the palette ("风格"). Defaults to `<modeStorageKey>-style`. */
+  styleStorageKey?: string;
+  /** Palette used on first visit. */
+  defaultThemeStyle?: ThemeStyle;
   /** Class applied to `<html>` in dark mode; must match your `@custom-variant dark`. */
   darkClassName?: string;
   renderLink?: LinkRenderer;
@@ -45,14 +50,21 @@ export function AppShell({
   header,
   actions,
   defaultSidebarOpen,
-  themeStorageKey,
+  modeStorageKey,
+  styleStorageKey,
+  defaultThemeStyle,
   darkClassName,
   renderLink,
   sidebarProps,
   children,
 }: AppShellProps) {
   return (
-    <ThemeProvider storageKey={themeStorageKey} darkClassName={darkClassName}>
+    <ThemeProvider
+      modeStorageKey={modeStorageKey}
+      styleStorageKey={styleStorageKey}
+      defaultStyle={defaultThemeStyle}
+      darkClassName={darkClassName}
+    >
       <BreadcrumbLabelProvider>
         <SidebarProvider defaultOpen={defaultSidebarOpen}>
           <AppSidebar

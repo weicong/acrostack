@@ -7,15 +7,21 @@
     <script>
       // Apply the persisted theme before first paint so there is no flash of the
       // wrong palette. Kept inline on purpose: it must run before React mounts.
+      // Keys and class names mirror ThemeProvider: mode under "ui-theme",
+      // palette ("风格") under "ui-theme-style" → `theme-default` / `theme-fluent`.
       (function () {
         try {
           var stored = localStorage.getItem("ui-theme") || "system";
           var dark =
             stored === "dark" ||
             (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-          document.documentElement.classList.add(dark ? "dark" : "light");
+          var root = document.documentElement.classList;
+          root.add(dark ? "dark" : "light");
+
+          var style = localStorage.getItem("ui-theme-style");
+          root.add(style === "fluent" ? "theme-fluent" : "theme-default");
         } catch (_) {
-          document.documentElement.classList.add("light");
+          document.documentElement.classList.add("light", "theme-default");
         }
       })();
     </script>
