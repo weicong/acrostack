@@ -1,0 +1,7 @@
+# Keep line endings LF — in the repository and in every checkout.
+#
+# Without this, `core.autocrlf=true` (the Windows default) checks every file out
+# as CRLF while oxfmt expects LF, so `vp check` reports the whole tree as
+# mis-formatted on a fresh Windows clone. `text=auto` still detects binaries and
+# leaves them alone.
+* text=auto eol=lf
