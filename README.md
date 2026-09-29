@@ -9,9 +9,9 @@ main/AcroStack/        组合根（宿主）：AcroStackModule、唯一 AcroStac
 │                      EF 迁移、种子、Swagger、HomeController。不含业务逻辑。
 modules/
 │  └── AcroStack.Impersonation   自研模块：用户模拟登录（对应 ABP Account Pro 的 impersonation）
-react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 19 SPA，
-│                      packages/core = ABP 框架接入层、packages/ui = 可复用 UI 包、
-│                      packages/api-client = Kubb 生成的 API 客户端
+react/                 前端 Monorepo（Vite+ 工作区）：apps/web = React 19 SPA（shadcn/ui + Tailwind v4），
+│                      packages/core = ABP 框架接入层、packages/ui = shadcn 原语与样式、
+│                      packages/layout = 路由无关的应用外壳、packages/api-client = Kubb 生成的 API 客户端
 ```
 
 要点：
@@ -58,7 +58,7 @@ vp dev                                     # http://localhost:5173
 | `modules/*/README.md` | 各模块的业务场景、对应 Pro 能力、关键设计决策 |
 | [react/README.md](react/README.md) / [react/AGENTS.md](react/AGENTS.md) | 前端 Monorepo 工作区：结构、命令与约定 |
 | [react/apps/web/README.md](react/apps/web/README.md) / [react/apps/web/AGENTS.md](react/apps/web/AGENTS.md) | 应用技术栈、环境变量、Docker；源码布局与准入规则 |
-| `react/packages/*/AGENTS.md` | 三个包的契约：`core`（框架接入）/ `ui`（组件与样式所有权）/ `api-client`（生成物） |
+| `react/packages/*/AGENTS.md` | 四个包的契约：`core`（框架接入）/ `ui`（shadcn 原语与样式所有权）/ `layout`（路由无关外壳）/ `api-client`（生成物） |
 | `.agents/` | [.agents Protocol](https://dotagentsprotocol.com/) 配置：根 AGENTS.md 的精简镜像 + `skills/`（ABP 专题模式） |
 | `docs/archive/` | 已完结的过程性文档，仅作历史参考 |
 

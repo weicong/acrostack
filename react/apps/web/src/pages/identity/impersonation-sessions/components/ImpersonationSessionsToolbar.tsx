@@ -2,8 +2,15 @@
  * 模拟登录会话工具栏：按会话状态筛选。
  * 后端查询输入不含自由文本过滤，因此只提供状态下拉。
  */
-import { Field, Select } from "@fluentui/react-components";
 import { ListToolbar } from "@acrostack/ui/data-table";
+import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acrostack/ui/components/select";
 import type { SessionStatusFilter } from "../hooks/useImpersonationSessionsTable";
 
 const statusOptions: { value: SessionStatusFilter; label: string }[] = [
@@ -23,19 +30,23 @@ export function ImpersonationSessionsToolbar({
     <ListToolbar
       label="会话筛选"
       filters={
-        <Field label="会话状态">
+        <Field>
+          <FieldLabel>会话状态</FieldLabel>
           <Select
-            appearance="outline"
             value={status}
-            onChange={(_event, data) =>
-              onStatusChange((data.value as SessionStatusFilter) ?? "all")
-            }
+            onValueChange={(value) => onStatusChange((value as SessionStatusFilter) ?? "all")}
+            items={statusOptions.map((option) => ({ value: option.value, label: option.label }))}
           >
-            {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
+            <SelectTrigger aria-label="会话状态">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </Field>
       }

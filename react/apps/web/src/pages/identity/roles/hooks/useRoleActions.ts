@@ -4,14 +4,13 @@
  * 删除返回是否成功，供调用方决定关闭确认框。
  */
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToastController } from "@fluentui/react-components";
 import { roleGetListQueryKey } from "@acrostack/api-client/hooks/role/useRoleGetList";
 import { useRoleDelete } from "@acrostack/api-client/hooks/role/useRoleDelete";
 import { extractAbpErrorMessage } from "@acrostack/core";
 
 export function useRoleActions() {
-  const { dispatchToast } = useToastController();
   const queryClient = useQueryClient();
   const deleteMutation = useRoleDelete();
 
@@ -23,8 +22,8 @@ export function useRoleActions() {
   /** 表单保存成功后的统一处理：失效列表并提示。 */
   const notifySaved = useCallback(() => {
     invalidateList();
-    dispatchToast("保存成功", { intent: "success" });
-  }, [invalidateList, dispatchToast]);
+    toast.success("保存成功");
+  }, [invalidateList]);
 
   /** 删除角色；成功后失效列表并提示，失败时以 ABP 错误消息提示。 */
   const remove = useCallback(
@@ -33,14 +32,14 @@ export function useRoleActions() {
       try {
         await deleteMutation.mutateAsync({ path: { id } });
       } catch (err) {
-        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+        toast.error(extractAbpErrorMessage(err));
         return false;
       }
       invalidateList();
-      dispatchToast("删除成功", { intent: "success" });
+      toast.success("删除成功");
       return true;
     },
-    [deleteMutation, invalidateList, dispatchToast],
+    [deleteMutation, invalidateList],
   );
 
   return { remove, removePending: deleteMutation.isPending, notifySaved, invalidateList };

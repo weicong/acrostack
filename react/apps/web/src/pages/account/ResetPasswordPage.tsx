@@ -1,14 +1,15 @@
 import { Link } from "@tanstack/react-router";
 
 import { z } from "zod";
+import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
+import { Button } from "@acrostack/ui/components/button";
 import {
-  Button,
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
-  MessageBar,
-  MessageBarBody,
-  Text,
-} from "@fluentui/react-components";
+  CardTitle,
+} from "@acrostack/ui/components/card";
 import { accountResetPassword } from "@acrostack/api-client/clients/account/accountResetPassword";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@acrostack/core";
@@ -56,66 +57,70 @@ export function ResetPasswordPage() {
 
   if (isInvalidLink) {
     return (
-      <Card>
-        <CardHeader
-          header={<Text weight="semibold">重置密码</Text>}
-          description={<Text size={200}>此密码重置链接无效或已过期。</Text>}
-        />
-        <Link to="/account/forgot-password">
-          <Button>{"发送重置密码邮件"}</Button>
-        </Link>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>重置密码</CardTitle>
+          <CardDescription>此密码重置链接无效或已过期。</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button render={<Link to="/account/forgot-password" />} nativeButton={false}>
+            {"发送重置密码邮件"}
+          </Button>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader
-        header={<Text weight="semibold">重置密码</Text>}
-        description={<Text size={200}>请输入您的新密码。</Text>}
-      />
-      <FormStack
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          void form.handleSubmit();
-        }}
-      >
-        {rootError && (
-          <MessageBar intent="error">
-            <MessageBarBody>{rootError}</MessageBarBody>
-          </MessageBar>
-        )}
-        <form.AppField
-          name="password"
-          children={(field) => (
-            <field.TextField
-              label={"密码"}
-              inputProps={{ type: "password", autoComplete: "new-password" }}
-            />
-          )}
-        />
-        <form.AppField
-          name="confirmPassword"
-          validators={{
-            onChangeListenTo: ["password"],
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>重置密码</CardTitle>
+        <CardDescription>请输入您的新密码。</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormStack
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
           }}
-          children={(field) => (
-            <field.TextField
-              label={"确认密码"}
-              inputProps={{ type: "password", autoComplete: "new-password" }}
-            />
+        >
+          {rootError && (
+            <Alert variant="destructive">
+              <AlertDescription>{rootError}</AlertDescription>
+            </Alert>
           )}
-        />
-        <form.AppForm>
-          <FormActions>
-            <form.SubmitButton label={"重置密码"} />
-          </FormActions>
-        </form.AppForm>
-        <Text as="p" size={200} block>
-          <Link to="/account/login">{"登录"}</Link>
-        </Text>
-      </FormStack>
+          <form.AppField
+            name="password"
+            children={(field) => (
+              <field.TextField
+                label={"密码"}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
+            )}
+          />
+          <form.AppField
+            name="confirmPassword"
+            validators={{
+              onChangeListenTo: ["password"],
+            }}
+            children={(field) => (
+              <field.TextField
+                label={"确认密码"}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
+            )}
+          />
+          <form.AppForm>
+            <FormActions>
+              <form.SubmitButton label={"重置密码"} />
+            </FormActions>
+          </form.AppForm>
+          <p className="text-sm text-muted-foreground">
+            <Link to="/account/login">{"登录"}</Link>
+          </p>
+        </FormStack>
+      </CardContent>
     </Card>
   );
 }

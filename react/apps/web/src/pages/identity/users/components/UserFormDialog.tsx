@@ -1,15 +1,8 @@
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-  Spinner,
-  useId,
-} from "@fluentui/react-components";
-import { AccessibleDialogSurface } from "@acrostack/ui/dialog";
+import { Spinner } from "@acrostack/ui/components/spinner";
+import { Button } from "@acrostack/ui/components/button";
+import { FormDialog } from "@acrostack/ui/dialog";
 import { useUserGet } from "@acrostack/api-client/hooks/user/useUserGet";
+
 import { toFormUserFromIdentity, type UserFormUser } from "../types/user";
 import { UserForm } from "./UserForm";
 
@@ -26,7 +19,6 @@ type UserFormDialogProps = {
 // ── Component ───────────────────────────────────────────────────────
 
 export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserFormDialogProps) {
-  const dialogId = useId("user-form-");
   const isEdit = !!user;
 
   // Fetch the full IdentityUserDto (with concurrencyStamp / lockoutEnabled) when editing.
@@ -47,27 +39,30 @@ export function UserFormDialog({ open, onOpenChange, user, onSuccess }: UserForm
   const showForm = !isEdit || !!formUser;
 
   return (
-    <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
-        <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新用户"}</DialogTitle>
-          <DialogContent>
-            {open && !showForm && <Spinner label={"加载中..."} />}
-            {open && showForm && (
-              <UserForm
-                key={formUser?.id ?? "create"}
-                user={formUser}
-                onSuccess={onSuccess}
-                footer={
-                  <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="secondary">{"取消"}</Button>
-                  </DialogTrigger>
-                }
-              />
-            )}
-          </DialogContent>
-        </DialogBody>
-      </AccessibleDialogSurface>
-    </Dialog>
+    <FormDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title={isEdit ? "编辑" : "新用户"}
+      size="lg"
+    >
+      {open && !showForm && (
+        <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+          <Spinner />
+          {"加载中..."}
+        </span>
+      )}
+      {open && showForm && (
+        <UserForm
+          key={formUser?.id ?? "create"}
+          user={formUser}
+          onSuccess={onSuccess}
+          footer={
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              {"取消"}
+            </Button>
+          }
+        />
+      )}
+    </FormDialog>
   );
 }

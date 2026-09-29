@@ -6,8 +6,17 @@
  * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permission-tree。
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Card, CardHeader, Checkbox, Spinner, Text } from "@fluentui/react-components";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHeader } from "@acrostack/layout";
+import { Button } from "@acrostack/ui/components/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@acrostack/ui/components/card";
+import { Checkbox } from "@acrostack/ui/components/checkbox";
+import { Spinner } from "@acrostack/ui/components/spinner";
 import { usePermissionsGet } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
 import { useRoleGetAllList } from "@acrostack/api-client/hooks/role/useRoleGetAllList";
 import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
@@ -97,26 +106,42 @@ export function PermissionsPage() {
   }, []);
 
   return (
-    <PageLayout title={"权限"} description="先选择授权对象（角色或用户），再逐项开启或关闭其权限。">
+    <>
+      <PageHeader
+        title={"权限"}
+        description="先选择授权对象（角色或用户），再逐项开启或关闭其权限。"
+      />
+
       <Card>
-        <PermissionsToolbar
-          providerName={providerName}
-          providerKey={providerKey}
-          roles={roles}
-          onSelectProviderName={handleSelectProviderName}
-          onSelectProviderKey={handleSelectProviderKey}
-        />
+        <CardContent>
+          <PermissionsToolbar
+            providerName={providerName}
+            providerKey={providerKey}
+            roles={roles}
+            onSelectProviderName={handleSelectProviderName}
+            onSelectProviderKey={handleSelectProviderKey}
+          />
+        </CardContent>
       </Card>
 
-      {!providerKey && <Text>{"请选择提供程序和权限"}</Text>}
+      {!providerKey && <p className="text-sm text-muted-foreground">{"请选择提供程序和权限"}</p>}
 
-      {providerKey && permissionsQuery.isLoading && <Spinner label={"加载中..."} />}
+      {providerKey && permissionsQuery.isLoading && (
+        <span className="inline-flex items-center gap-2 text-muted-foreground">
+          <Spinner />
+          {"加载中..."}
+        </span>
+      )}
 
-      {providerKey && permissionsQuery.isError && <Text>{"加载权限时出错"}</Text>}
+      {providerKey && permissionsQuery.isError && (
+        <p className="text-sm text-destructive">{"加载权限时出错"}</p>
+      )}
 
       {providerKey && permissionsQuery.data && (
         <>
-          {flatPermissionsByGroup.length === 0 && <Text>{"未定义任何权限。"}</Text>}
+          {flatPermissionsByGroup.length === 0 && (
+            <p className="text-sm text-muted-foreground">{"未定义任何权限。"}</p>
+          )}
           {flatPermissionsByGroup.map(({ group, flat }) => {
             const allGranted = (group.permissions ?? []).every(
               (p) => p.name && grantedMap[p.name] === true,
@@ -124,43 +149,43 @@ export function PermissionsPage() {
             const groupLabel = group.displayName || group.name || "";
             return (
               <Card key={group.name ?? groupLabel}>
-                <CardHeader
-                  header={<Text weight="semibold">{groupLabel}</Text>}
-                  action={
+                <CardHeader>
+                  <CardTitle>{groupLabel}</CardTitle>
+                  <CardAction>
                     <Checkbox
                       checked={allGranted}
-                      onChange={(_, data) => handleSelectAllInGroup(group, data.checked === true)}
+                      onCheckedChange={(checked) => handleSelectAllInGroup(group, checked)}
                     />
-                  }
-                />
-                {flat.map(({ permission, depth }) => (
-                  <div key={permission.name}>
-                    <Checkbox
-                      checked={grantedMap[permission.name ?? ""] === true}
-                      disabled={permission.isEditable === false}
-                      onChange={(_, data) =>
-                        handleToggle(
-                          permission.name ?? "",
-                          data.checked === true,
-                          permission.isEditable,
-                        )
-                      }
-                    />
-                    <Text>
-                      {/* 层级用文本前缀表达，避免自定义缩进样式 */}
-                      {depth > 0 ? "└ " : ""}
-                      {permission.displayName || permission.name}
-                    </Text>
-                  </div>
-                ))}
+                  </CardAction>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
+                  {flat.map(({ permission, depth }) => (
+                    <div key={permission.name} className="flex items-center gap-2">
+                      <Checkbox
+                        checked={grantedMap[permission.name ?? ""] === true}
+                        disabled={permission.isEditable === false}
+                        onCheckedChange={(checked) =>
+                          handleToggle(permission.name ?? "", checked, permission.isEditable)
+                        }
+                      />
+                      <span>
+                        {/* 层级用文本前缀表达，避免自定义缩进样式 */}
+                        {depth > 0 ? "└ " : ""}
+                        {permission.displayName || permission.name}
+                      </span>
+                    </div>
+                  ))}
+                </CardContent>
               </Card>
             );
           })}
-          <Button appearance="primary" onClick={handleSave} disabled={savePending}>
-            {"保存"}
-          </Button>
+          <div>
+            <Button onClick={handleSave} disabled={savePending}>
+              {"保存"}
+            </Button>
+          </div>
         </>
       )}
-    </PageLayout>
+    </>
   );
 }

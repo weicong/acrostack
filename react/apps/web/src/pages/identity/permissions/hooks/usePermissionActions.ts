@@ -4,7 +4,7 @@
  */
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToastController } from "@fluentui/react-components";
+import { toast } from "sonner";
 import { permissionsGetQueryKey } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
 import { usePermissionsUpdate } from "@acrostack/api-client/hooks/permissions/usePermissionsUpdate";
 import { extractAbpErrorMessage } from "@acrostack/core";
@@ -22,7 +22,6 @@ export interface SavePermissionsInput {
 }
 
 export function usePermissionActions() {
-  const { dispatchToast } = useToastController();
   const queryClient = useQueryClient();
   const updateMutation = usePermissionsUpdate();
 
@@ -53,7 +52,7 @@ export function usePermissionActions() {
         .map(([name, isGranted]) => ({ name, isGranted }));
 
       if (changedPermissions.length === 0) {
-        dispatchToast("保存成功", { intent: "info" });
+        toast.info("保存成功");
         return;
       }
 
@@ -63,16 +62,16 @@ export function usePermissionActions() {
           body: { permissions: changedPermissions },
         });
       } catch (err) {
-        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+        toast.error(extractAbpErrorMessage(err));
         return;
       }
 
       void queryClient.invalidateQueries({
         queryKey: permissionsGetQueryKey({ query: { providerName, providerKey } }),
       });
-      dispatchToast("保存成功", { intent: "success" });
+      toast.success("保存成功");
     },
-    [updateMutation, queryClient, dispatchToast],
+    [updateMutation, queryClient],
   );
 
   return { save, savePending: updateMutation.isPending };

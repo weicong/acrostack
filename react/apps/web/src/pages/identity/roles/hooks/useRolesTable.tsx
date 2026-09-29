@@ -3,14 +3,16 @@
  * 查询组装与 TanStack 表实例构建。
  */
 import { useMemo } from "react";
-import { Badge, Button } from "@fluentui/react-components";
-import { Edit20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { Pencil, Trash2 } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 import { roleGetListQueryOptions } from "@acrostack/api-client/hooks/role/useRoleGetList";
+import { Badge } from "@acrostack/ui/components/badge";
+import { Button } from "@acrostack/ui/components/button";
 import { useDataTableState } from "@acrostack/ui/data-table";
 import { RowActions } from "@acrostack/ui/data-table";
-import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
+
 import type { RoleItem } from "../types/role";
 
 /** 角色列表行类型（页面本地别名）。 */
@@ -46,40 +48,19 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
         id: "isDefault",
         accessorKey: "isDefault",
         header: "默认",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="brand" size="small">
-              {"默认"}
-            </Badge>
-          ) : (
-            "-"
-          ),
+        cell: (info) => (info.getValue() ? <Badge>{"默认"}</Badge> : "-"),
       },
       {
         id: "isPublic",
         accessorKey: "isPublic",
         header: "公开",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="success" size="small">
-              {"公开"}
-            </Badge>
-          ) : (
-            "-"
-          ),
+        cell: (info) => (info.getValue() ? <Badge variant="secondary">{"公开"}</Badge> : "-"),
       },
       {
         id: "isStatic",
         accessorKey: "isStatic",
         header: "静态",
-        cell: (info) =>
-          info.getValue() ? (
-            <Badge appearance="filled" color="warning" size="small">
-              {"是"}
-            </Badge>
-          ) : (
-            "-"
-          ),
+        cell: (info) => (info.getValue() ? <Badge variant="outline">{"是"}</Badge> : "-"),
       },
       {
         id: "actions",
@@ -90,26 +71,28 @@ export function useRolesTable({ onEdit, onDelete }: UseRolesTableOptions) {
           return (
             <RowActions>
               <Button
-                size="small"
-                appearance="subtle"
-                icon={<Edit20Regular />}
+                size="icon-sm"
+                variant="ghost"
                 onClick={(e) => {
                   e.stopPropagation();
                   onEdit(row);
                 }}
                 aria-label={"编辑"}
-              />
+              >
+                <Pencil />
+              </Button>
               <Button
-                size="small"
-                appearance="subtle"
-                icon={<Delete20Regular />}
+                size="icon-sm"
+                variant="ghost"
                 disabled={isStatic}
                 onClick={(e) => {
                   e.stopPropagation();
                   onDelete(row.id!);
                 }}
                 aria-label={"删除"}
-              />
+              >
+                <Trash2 />
+              </Button>
             </RowActions>
           );
         },

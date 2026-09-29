@@ -1,42 +1,43 @@
-import { Field, Input, type InputProps, type FieldProps } from "@fluentui/react-components";
+import type { ComponentProps } from "react";
+import { Field, FieldError, FieldLabel } from "#components/field";
+import { Input } from "#components/input";
 import { useFieldContext } from "../form-context";
 import { getErrorMessage } from "./field-error";
 
 export interface TextFieldProps {
   /** Label displayed above the input */
   label?: string;
-  /** Whether the field is required */
+  /** Whether the field is required (renders a marker next to the label) */
   required?: boolean;
-  /** Additional props forwarded to the Fluent UI Input */
-  inputProps?: Partial<InputProps>;
-  /** Additional props forwarded to the Fluent UI Field wrapper */
-  fieldProps?: Partial<FieldProps>;
+  /** Additional props forwarded to the input element */
+  inputProps?: ComponentProps<typeof Input>;
 }
 
 /**
  * A text input field bound to a TanStack Form field of type `string`.
- *
- * Wraps Fluent UI `<Input>` inside `<Field>` for label + validation display.
  */
-export function TextField({ label, required, inputProps, fieldProps }: TextFieldProps) {
+export function TextField({ label, required, inputProps }: TextFieldProps) {
   const field = useFieldContext<string>();
   const errorMsg = getErrorMessage(field.state.meta);
 
   return (
-    <Field
-      label={label}
-      required={required}
-      validationState={errorMsg ? "error" : undefined}
-      validationMessage={errorMsg}
-      {...fieldProps}
-    >
+    <Field data-invalid={errorMsg ? true : undefined}>
+      {label !== undefined && (
+        <FieldLabel htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
+      )}
       <Input
+        id={field.name}
         name={field.name}
         value={field.state.value ?? ""}
-        onChange={(_e, data) => field.handleChange(data.value)}
+        onChange={(event) => field.handleChange(event.target.value)}
         onBlur={field.handleBlur}
+        aria-invalid={errorMsg ? true : undefined}
         {...inputProps}
       />
+      <FieldError errors={errorMsg ? [{ message: errorMsg }] : undefined} />
     </Field>
   );
 }

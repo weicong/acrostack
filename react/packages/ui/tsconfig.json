@@ -9,7 +9,13 @@
     "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "types": ["react", "react-dom"]
+    "allowImportingTsExtensions": true,
+    "types": ["react", "react-dom"],
+    "paths": {
+      "#components/*": ["./src/components/*.tsx"],
+      "#hooks/*": ["./src/hooks/*.ts"],
+      "#lib/*": ["./src/lib/*.ts"]
+    }
   },
   "include": ["src"]
 }

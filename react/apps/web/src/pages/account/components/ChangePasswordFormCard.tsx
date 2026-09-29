@@ -1,4 +1,5 @@
-import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
+import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "@acrostack/ui/components/card";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { useProfileChangePassword } from "@acrostack/api-client/hooks/profile/useProfileChangePassword";
 import { extractAbpErrorMessage } from "@acrostack/core";
@@ -7,7 +8,6 @@ import { passwordSchema } from "../schemas/profile";
 /** 修改密码卡片：改密动作自包含，成功后清空表单。 */
 export function ChangePasswordFormCard() {
   const changePasswordMutation = useProfileChangePassword();
-  const { dispatchToast } = useToastController();
 
   const form = useAppForm({
     defaultValues: {
@@ -33,46 +33,50 @@ export function ChangePasswordFormCard() {
           },
         });
         form.reset();
-        dispatchToast("你已成功更改密码。", { intent: "success" });
+        toast.success("你已成功更改密码。");
       } catch (err) {
-        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+        toast.error(extractAbpErrorMessage(err));
       }
     },
   });
 
   return (
     <Card>
-      <CardHeader header={<Text weight="semibold">修改密码</Text>} />
-      <form.AppForm>
-        <FormStack
-          onSubmit={(e) => {
-            e.preventDefault();
-            void form.handleSubmit();
-          }}
-        >
-          <form.AppField
-            name="currentPassword"
-            children={(field) => (
-              <field.TextField label={"当前密码"} inputProps={{ type: "password" }} />
-            )}
-          />
-          <form.AppField
-            name="newPassword"
-            children={(field) => (
-              <field.TextField label={"新密码"} required inputProps={{ type: "password" }} />
-            )}
-          />
-          <form.AppField
-            name="newPasswordConfirm"
-            children={(field) => (
-              <field.TextField label={"确认新密码"} required inputProps={{ type: "password" }} />
-            )}
-          />
-          <FormActions>
-            <form.SubmitButton label={"保存"} />
-          </FormActions>
-        </FormStack>
-      </form.AppForm>
+      <CardHeader>
+        <CardTitle>修改密码</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form.AppForm>
+          <FormStack
+            onSubmit={(e) => {
+              e.preventDefault();
+              void form.handleSubmit();
+            }}
+          >
+            <form.AppField
+              name="currentPassword"
+              children={(field) => (
+                <field.TextField label={"当前密码"} inputProps={{ type: "password" }} />
+              )}
+            />
+            <form.AppField
+              name="newPassword"
+              children={(field) => (
+                <field.TextField label={"新密码"} required inputProps={{ type: "password" }} />
+              )}
+            />
+            <form.AppField
+              name="newPasswordConfirm"
+              children={(field) => (
+                <field.TextField label={"确认新密码"} required inputProps={{ type: "password" }} />
+              )}
+            />
+            <FormActions>
+              <form.SubmitButton label={"保存"} />
+            </FormActions>
+          </FormStack>
+        </form.AppForm>
+      </CardContent>
     </Card>
   );
 }

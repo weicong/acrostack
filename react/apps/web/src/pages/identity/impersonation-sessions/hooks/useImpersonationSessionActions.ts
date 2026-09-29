@@ -4,13 +4,12 @@
  */
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToastController } from "@fluentui/react-components";
+import { toast } from "sonner";
 import { impersonationSessionGetListQueryKey } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
 import { useImpersonationSessionRevoke } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionRevoke";
 import { extractAbpErrorMessage } from "@acrostack/core";
 
 export function useImpersonationSessionActions() {
-  const { dispatchToast } = useToastController();
   const queryClient = useQueryClient();
 
   const revokeMutation = useImpersonationSessionRevoke();
@@ -29,14 +28,14 @@ export function useImpersonationSessionActions() {
       try {
         await revokeMutation.mutateAsync({ path: { id } });
       } catch (err) {
-        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+        toast.error(extractAbpErrorMessage(err));
         return false;
       }
       invalidateList();
-      dispatchToast("已撤销模拟会话", { intent: "success" });
+      toast.success("已撤销模拟会话");
       return true;
     },
-    [revokeMutation, invalidateList, dispatchToast],
+    [revokeMutation, invalidateList],
   );
 
   return { revoke, revokePending: revokeMutation.isPending };

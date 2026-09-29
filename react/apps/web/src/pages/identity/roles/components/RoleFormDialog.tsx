@@ -1,13 +1,6 @@
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@fluentui/react-components";
-import { AccessibleDialogSurface } from "@acrostack/ui/dialog";
-import { useId } from "@fluentui/react-components";
+import { Button } from "@acrostack/ui/components/button";
+import { FormDialog } from "@acrostack/ui/dialog";
+
 import type { RoleFormRole } from "../types/role";
 import { RoleForm } from "./RoleForm";
 
@@ -23,28 +16,20 @@ type RoleFormDialogProps = {
 // ── Component ───────────────────────────────────────────────────────
 
 export function RoleFormDialog({ open, onOpenChange, role, onSuccess }: RoleFormDialogProps) {
-  const dialogId = useId("role-form-");
   const isEdit = !!role;
 
   return (
-    <Dialog open={open} onOpenChange={(_, data) => onOpenChange(data.open)}>
-      <AccessibleDialogSurface aria-labelledby={`${dialogId}-title`}>
-        <DialogBody>
-          <DialogTitle id={`${dialogId}-title`}>{isEdit ? "编辑" : "新角色"}</DialogTitle>
-          <DialogContent>
-            <RoleForm
-              key={role?.id ?? "create"}
-              role={role}
-              onSuccess={onSuccess}
-              footer={
-                <DialogTrigger disableButtonEnhancement>
-                  <Button appearance="secondary">{"取消"}</Button>
-                </DialogTrigger>
-              }
-            />
-          </DialogContent>
-        </DialogBody>
-      </AccessibleDialogSurface>
-    </Dialog>
+    <FormDialog open={open} onOpenChange={onOpenChange} title={isEdit ? "编辑" : "新角色"}>
+      <RoleForm
+        key={role?.id ?? "create"}
+        role={role}
+        onSuccess={onSuccess}
+        footer={
+          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            {"取消"}
+          </Button>
+        }
+      />
+    </FormDialog>
   );
 }

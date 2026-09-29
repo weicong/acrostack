@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardHeader, Text, useToastController } from "@fluentui/react-components";
+import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "@acrostack/ui/components/card";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import {
   useProfileGet,
@@ -13,7 +14,6 @@ import { profileSchema } from "../schemas/profile";
 export function ProfileFormCard() {
   const queryClient = useQueryClient();
   const updateMutation = useProfileUpdate();
-  const { dispatchToast } = useToastController();
 
   const profileQuery = useProfileGet();
   const profile = profileQuery.data;
@@ -46,9 +46,9 @@ export function ProfileFormCard() {
           },
         });
         void queryClient.invalidateQueries({ queryKey: profileGetQueryKey() });
-        dispatchToast("你的个人设置保存成功。", { intent: "success" });
+        toast.success("你的个人设置保存成功。");
       } catch (err) {
-        dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+        toast.error(extractAbpErrorMessage(err));
       }
     },
   });
@@ -56,8 +56,12 @@ export function ProfileFormCard() {
   if (profileQuery.isLoading) {
     return (
       <Card>
-        <CardHeader header={<Text weight="semibold">个人设置</Text>} />
-        <Text>{"加载中..."}</Text>
+        <CardHeader>
+          <CardTitle>个人设置</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>{"加载中..."}</p>
+        </CardContent>
       </Card>
     );
   }
@@ -65,41 +69,49 @@ export function ProfileFormCard() {
   if (profileQuery.isError || !profile) {
     return (
       <Card>
-        <CardHeader header={<Text weight="semibold">个人设置</Text>} />
-        <Text>{"错误"}</Text>
+        <CardHeader>
+          <CardTitle>个人设置</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>{"错误"}</p>
+        </CardContent>
       </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader header={<Text weight="semibold">个人设置</Text>} />
-      <form.AppForm>
-        <FormStack
-          onSubmit={(e) => {
-            e.preventDefault();
-            void form.handleSubmit();
-          }}
-        >
-          <form.AppField
-            name="userName"
-            children={(field) => <field.TextField label={"用户名称"} required />}
-          />
-          <form.AppField
-            name="email"
-            children={(field) => <field.TextField label={"邮箱"} required />}
-          />
-          <form.AppField name="name" children={(field) => <field.TextField label={"名称"} />} />
-          <form.AppField name="surname" children={(field) => <field.TextField label={"姓"} />} />
-          <form.AppField
-            name="phoneNumber"
-            children={(field) => <field.TextField label={"手机号"} />}
-          />
-          <FormActions>
-            <form.SubmitButton label={"保存"} />
-          </FormActions>
-        </FormStack>
-      </form.AppForm>
+      <CardHeader>
+        <CardTitle>个人设置</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form.AppForm>
+          <FormStack
+            onSubmit={(e) => {
+              e.preventDefault();
+              void form.handleSubmit();
+            }}
+          >
+            <form.AppField
+              name="userName"
+              children={(field) => <field.TextField label={"用户名称"} required />}
+            />
+            <form.AppField
+              name="email"
+              children={(field) => <field.TextField label={"邮箱"} required />}
+            />
+            <form.AppField name="name" children={(field) => <field.TextField label={"名称"} />} />
+            <form.AppField name="surname" children={(field) => <field.TextField label={"姓"} />} />
+            <form.AppField
+              name="phoneNumber"
+              children={(field) => <field.TextField label={"手机号"} />}
+            />
+            <FormActions>
+              <form.SubmitButton label={"保存"} />
+            </FormActions>
+          </FormStack>
+        </form.AppForm>
+      </CardContent>
     </Card>
   );
 }

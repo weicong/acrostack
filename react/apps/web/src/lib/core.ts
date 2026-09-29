@@ -12,7 +12,7 @@
 import { transport } from "@acrostack/api-client/client";
 import { bootstrapCore, configureCore, setupHttpClient } from "@acrostack/core";
 import { DEFAULT_CULTURE, env } from "@/env";
-import { emitRouteEvent } from "@/lib/routing/routeEvents";
+import { emitRouteEvent } from "@/lib/routeEvents";
 
 /** 应用启动（首次渲染前）的唯一入口。 */
 export async function bootstrapApp(): Promise<void> {

@@ -2,32 +2,45 @@
   "name": "@acrostack/ui",
   "version": "0.0.0",
   "private": true,
+  "description": "shadcn/ui（base-nova / Base UI）原语 + 全局样式表；附带 data-table / dialog / form 三个业务无关的机制封装",
   "type": "module",
-  "types": "./src/index.ts",
+  "imports": {
+    "#components/*": "./src/components/*.tsx",
+    "#hooks/*": "./src/hooks/*.ts",
+    "#lib/*": "./src/lib/*.ts"
+  },
   "exports": {
-    ".": "./src/index.ts",
-    "./app-shell": "./src/app-shell/index.ts",
+    "./globals.css": "./src/styles/globals.css",
+    "./components/*": "./src/components/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./lib/*": "./src/lib/*.ts",
     "./data-table": "./src/data-table/index.ts",
     "./dialog": "./src/dialog/index.ts",
-    "./form": "./src/form/index.ts",
-    "./layout": "./src/layout/index.ts",
-    "./theme": "./src/theme/index.ts",
-    "./styles/globals.css": "./src/styles/globals.css"
+    "./form": "./src/form/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@fluentui/react-calendar-compat": "^0.4.6",
-    "@fluentui/react-components": "^9.74.7",
-    "@fluentui/react-datepicker-compat": "^0.6.37",
-    "@fluentui/react-icons": "^2.0.339",
+    "@base-ui/react": "^1.8.0",
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-table": "^9.2.4",
-    "date-fns": "^4.4.0"
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
+    "lucide-react": "catalog:",
+    "react-day-picker": "^10.0.1",
+    "sonner": "^2.0.8",
+    "tailwind-merge": "^3.7.0",
+    "tw-animate-css": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "react": "^19.0.0",

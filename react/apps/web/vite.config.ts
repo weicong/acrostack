@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, loadEnv } from "vite-plus";
-import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import viteReact from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 function copyDynamicEnv() {
@@ -32,18 +33,15 @@ export default defineConfig((({ mode }) => {
         // generatedRouteTree 的父目录，从而在根目录留下空的 src/
         routesDirectory: path.resolve(__dirname, "./src/routes"),
         generatedRouteTree: path.resolve(__dirname, "./src/routeTree.gen.ts"),
-        // route-config.ts files are module menu configs (not routes), so exclude
-        // them from TanStack Router's file-based route generation.
-        routeFileIgnorePattern: "route-config\\.ts$",
       }),
       copyDynamicEnv(),
-      react(),
+      viteReact(),
+      tailwindcss(),
     ],
     resolve: {
       dedupe: ["react", "react-dom"],
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
+      // Vite 8 原生解析 tsconfig.json 的 `paths`（@/* 与 #/*），无需手写 resolve.alias
+      tsconfigPaths: true,
     },
     server: {
       port: 5173,
@@ -71,15 +69,6 @@ export default defineConfig((({ mode }) => {
           secure: false,
         },
       },
-    },
-    fmt: {
-      ignorePatterns: ["**/routeTree.gen.ts"],
-    },
-    lint: {
-      jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
-      rules: { "vite-plus/prefer-vite-plus-imports": "error" },
-      options: { typeAware: true, typeCheck: true },
-      ignorePatterns: ["**/routeTree.gen.ts"],
     },
   };
 }) as Parameters<typeof defineConfig>[0]);

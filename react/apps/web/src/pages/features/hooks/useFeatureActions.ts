@@ -4,7 +4,7 @@
  */
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToastController } from "@fluentui/react-components";
+import { toast } from "sonner";
 import { featuresGetQueryKey } from "@acrostack/api-client/hooks/features/useFeaturesGet";
 import { useFeaturesUpdate } from "@acrostack/api-client/hooks/features/useFeaturesUpdate";
 import { useFeaturesDelete } from "@acrostack/api-client/hooks/features/useFeaturesDelete";
@@ -25,7 +25,6 @@ export function useFeatureActions({
   onResetSuccess,
 }: UseFeatureActionsOptions) {
   const queryClient = useQueryClient();
-  const { dispatchToast } = useToastController();
   const updateMutation = useFeaturesUpdate();
   const deleteMutation = useFeaturesDelete();
 
@@ -36,18 +35,18 @@ export function useFeatureActions({
       .map(([name, value]) => ({ name, value }));
 
     if (changedFeatures.length === 0) {
-      dispatchToast("保存成功", { intent: "info" });
+      toast.info("保存成功");
       return;
     }
 
     try {
       await updateMutation.mutateAsync({ body: { features: changedFeatures } });
       void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
-      dispatchToast("保存成功", { intent: "success" });
+      toast.success("保存成功");
     } catch (err) {
-      dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+      toast.error(extractAbpErrorMessage(err));
     }
-  }, [originalMap, valueMap, updateMutation, queryClient, dispatchToast]);
+  }, [originalMap, valueMap, updateMutation, queryClient]);
 
   /** 重置为默认值（删除提供者级别的特性值）。 */
   const resetFeatures = useCallback(async () => {
@@ -55,11 +54,11 @@ export function useFeatureActions({
       await deleteMutation.mutateAsync({});
       void queryClient.invalidateQueries({ queryKey: featuresGetQueryKey() });
       onResetSuccess?.();
-      dispatchToast("已重置为默认值", { intent: "success" });
+      toast.success("已重置为默认值");
     } catch (err) {
-      dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+      toast.error(extractAbpErrorMessage(err));
     }
-  }, [deleteMutation, queryClient, onResetSuccess, dispatchToast]);
+  }, [deleteMutation, queryClient, onResetSuccess]);
 
   return {
     saveFeatures,

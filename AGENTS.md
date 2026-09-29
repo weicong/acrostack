@@ -12,7 +12,7 @@ Module set stays aligned with the **ABP official single-layer (no-layer) templat
   - Host disables global UoW transactions (SQLite single-writer). Any write spanning multiple aggregates must open an explicit transaction (`IUnitOfWorkManager.Begin(requiresNew: true, isTransactional: true)`, or a `DbContext`-level transaction when the writes share one `DbContext`).
 - **`modules/<Feature>/`** — Feature-style single-project modules. Currently one: `AcroStack.Impersonation`. Folder set per module: `Entities/ Dtos/ Services/ Handlers/ EfCore/ Permissions/ Localization/ Options/`.
   - Business logic belongs in `modules/<Feature>/`, never in the host.
-- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` (React 19 SPA: TanStack Router/Query/Form, Fluent UI v9, OIDC auth), `packages/core` (`@acrostack/core`: ABP 框架接入层 — 运行时配置 / HTTP / auth / permissions / tenant / query), `packages/ui` (`@acrostack/ui`: app-shell / layout / theme / data-table / dialog / form + 唯一的全局样式表), `packages/api-client` (`@acrostack/api-client`: Kubb 生成的 API 客户端，生成物禁止手改).
+- **`react/`** — Frontend **monorepo workspace** (Vite+, pnpm): `apps/web` (React 19 SPA: TanStack Router/Query/Form, shadcn/ui `base-nova` + Tailwind CSS v4, OIDC auth), `packages/core` (`@acrostack/core`: ABP 框架接入层 — 运行时配置 / HTTP / auth / permissions / tenant / query), `packages/ui` (`@acrostack/ui`: shadcn 原语 + 唯一的全局样式表 + `data-table`/`dialog`/`form` 三个业务无关的机制封装), `packages/layout` (`@acrostack/layout`: **路由无关**的应用外壳 AppShell / 侧栏 / 面包屑 / 主题), `packages/api-client` (`@acrostack/api-client`: Kubb 生成的 API 客户端，生成物禁止手改).
   - Workspace-root config (`vite.config.ts` + `pnpm-workspace.yaml`) owns shared lint/format and the default build target.
 
 ## Backend Commands

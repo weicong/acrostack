@@ -1,27 +1,21 @@
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  InboxIcon,
+} from "lucide-react";
 import { flexRender } from "@tanstack/react-table";
 import type { ReactTable, RowData } from "@tanstack/react-table";
+import { Button } from "#components/button";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "#components/empty";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "#components/select";
+import { Spinner } from "#components/spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "#components/table";
+import { cn } from "#lib/utils";
 import type { AppTableFeatures } from "./useDataTable";
-
-import {
-  Table as FluentTable,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableHeaderCell,
-  Select,
-  Spinner,
-  Text,
-  Toolbar,
-  ToolbarButton,
-} from "@fluentui/react-components";
-import {
-  ChevronLeftFilled,
-  ArrowNextFilled,
-  ArrowPreviousFilled,
-  ChevronRightFilled,
-} from "@fluentui/react-icons";
-import { HStack, Stack, VStack } from "../layout";
 
 interface DataTableProps<TData extends RowData> {
   table: ReactTable<AppTableFeatures, TData>;
@@ -40,9 +34,11 @@ interface DataTableProps<TData extends RowData> {
 const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
 
 /**
- * Fluent Table 封装：使用 Fluent 原生表格组件与默认外观，
- * 不设置列宽、粘性列等自定义样式（需要更宽的列时请在列定义中调整内容）。
- * 排序、行选中、分页均带键盘与读屏支持，状态提示整行合并。
+ * 数据表格：TanStack Table v9 的渲染层。
+ *
+ * 机制（排序 / 分页 / 行选中 / 列宽）全部来自 `useDataTable`，这里只负责把它
+ * 画成 shadcn 的 `<Table>`，并统一加载态、错误态与空态的呈现——三者都整行合并，
+ * 列数变化时不用改调用方。排序表头用真实的 `<button>`，键盘与读屏天然可达。
  */
 function DataTable<TData extends RowData>({
   table,
@@ -57,7 +53,6 @@ function DataTable<TData extends RowData>({
   onRowClick,
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData>) {
-  // 未显式传入时使用中文默认值
   const empty = emptyMessage ?? "无数据";
   const loading = loadingMessage ?? "正在加载...";
 
@@ -69,40 +64,38 @@ function DataTable<TData extends RowData>({
   const currentPageSize = table.state.pagination.pageSize;
 
   return (
-    <VStack gap={3}>
-      <Stack isScrollable>
-        <FluentTable
-          aria-label={ariaLabelledBy ? undefined : ariaLabel}
-          aria-labelledby={ariaLabelledBy}
-        >
+    <div className="flex flex-col gap-3">
+      <div className="overflow-hidden rounded-xl border">
+        <Table aria-label={ariaLabelledBy ? undefined : ariaLabel} aria-labelledby={ariaLabelledBy}>
           <TableHeader>
             {headerGroups.map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="hover:bg-transparent">
                 {headerGroup.headers.map((header) => {
                   const sorted = header.column.getIsSorted();
                   const sortable = header.column.getCanSort();
-
-                  const sortDirection =
-                    sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined;
+                  const content = header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext());
 
                   return (
-                    <TableHeaderCell
-                      key={header.id}
-                      sortDirection={sortDirection}
-                      onClick={sortable ? header.column.getToggleSortingHandler() : undefined}
-                      onKeyDown={(e) => {
-                        if (sortable && (e.key === "Enter" || e.key === " ")) {
-                          e.preventDefault();
-                          // 直接切换排序方向，避免把键盘事件强转为鼠标事件处理器
-                          header.column.toggleSorting(header.column.getIsSorted() === "asc");
-                        }
-                      }}
-                      tabIndex={sortable ? 0 : undefined}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHeaderCell>
+                    <TableHead key={header.id}>
+                      {sortable ? (
+                        <button
+                          type="button"
+                          className="-ml-2 inline-flex h-8 items-center gap-1.5 rounded-md px-2 font-medium transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {content}
+                          {sorted === "asc" ? (
+                            <ChevronUpIcon className="size-3.5" />
+                          ) : sorted === "desc" ? (
+                            <ChevronDownIcon className="size-3.5" />
+                          ) : null}
+                        </button>
+                      ) : (
+                        content
+                      )}
+                    </TableHead>
                   );
                 })}
               </TableRow>
@@ -110,20 +103,33 @@ function DataTable<TData extends RowData>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={columnCount}>
-                  <Spinner size="tiny" label={loading} labelPosition="after" />
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={columnCount} className="h-24 text-center">
+                  <span className="inline-flex items-center gap-2 text-muted-foreground">
+                    <Spinner />
+                    {loading}
+                  </span>
                 </TableCell>
               </TableRow>
             ) : isError ? (
-              <TableRow>
-                <TableCell colSpan={columnCount}>
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={columnCount} className="h-24 text-center text-destructive">
                   {errorMessage ?? "数据加载失败，请稍后重试"}
                 </TableCell>
               </TableRow>
             ) : rows.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={columnCount}>{empty}</TableCell>
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={columnCount} className="p-0">
+                  <Empty className="border-0">
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <InboxIcon />
+                      </EmptyMedia>
+                      <EmptyTitle>{empty}</EmptyTitle>
+                      <EmptyDescription>调整筛选条件或稍后重试</EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                </TableCell>
               </TableRow>
             ) : (
               rows.map((row) => {
@@ -131,14 +137,15 @@ function DataTable<TData extends RowData>({
                 return (
                   <TableRow
                     key={row.id}
-                    appearance={selected ? "brand" : undefined}
+                    data-state={selected ? "selected" : undefined}
                     aria-selected={selected || undefined}
+                    className={cn(onRowClick && "cursor-pointer")}
                     onClick={onRowClick ? () => onRowClick(row.original) : undefined}
                     onKeyDown={
                       onRowClick
-                        ? (e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
+                        ? (event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
                               onRowClick(row.original);
                             }
                           }
@@ -156,60 +163,78 @@ function DataTable<TData extends RowData>({
               })
             )}
           </TableBody>
-        </FluentTable>
-      </Stack>
+        </Table>
+      </div>
 
       {showPagination && (
-        <HStack justify="end" wrap="wrap">
-          <Toolbar aria-label="分页">
-            <Select
-              value={String(currentPageSize)}
-              onChange={(e) => {
-                table.setPageSize(Number(e.currentTarget.value));
-              }}
-              aria-label="每页行数"
-            >
+        <div
+          className="flex flex-wrap items-center justify-end gap-2"
+          role="group"
+          aria-label="分页"
+        >
+          <Select
+            value={String(currentPageSize)}
+            onValueChange={(value) => {
+              table.setPageSize(Number(value));
+            }}
+          >
+            <SelectTrigger size="sm" aria-label="每页行数">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
               {pageSizeOptions.map((size) => (
-                <option key={size} value={size}>
+                <SelectItem key={size} value={String(size)}>
                   {`${size} 条/页`}
-                </option>
+                </SelectItem>
               ))}
-            </Select>
+            </SelectContent>
+          </Select>
 
-            <Text size={200}>{`第 ${currentPageIndex + 1} 页，共 ${pageCount} 页`}</Text>
+          <span className="text-sm text-muted-foreground">
+            {`第 ${currentPageIndex + 1} 页，共 ${pageCount} 页`}
+          </span>
 
-            <ToolbarButton
-              appearance="subtle"
-              icon={<ArrowPreviousFilled />}
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="icon-sm"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
               aria-label="首页"
-            />
-            <ToolbarButton
-              appearance="subtle"
-              icon={<ChevronLeftFilled />}
+            >
+              <ArrowLeftIcon />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon-sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
               aria-label="上一页"
-            />
-            <ToolbarButton
-              appearance="subtle"
-              icon={<ChevronRightFilled />}
+            >
+              <ChevronLeftIcon />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon-sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
               aria-label="下一页"
-            />
-            <ToolbarButton
-              appearance="subtle"
-              icon={<ArrowNextFilled />}
+            >
+              <ChevronRightIcon />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon-sm"
               onClick={() => table.setPageIndex(pageCount - 1)}
               disabled={!table.getCanNextPage()}
               aria-label="末页"
-            />
-          </Toolbar>
-        </HStack>
+            >
+              <ArrowRightIcon />
+            </Button>
+          </div>
+        </div>
       )}
-    </VStack>
+    </div>
   );
 }
 

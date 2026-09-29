@@ -1,10 +1,12 @@
+import { Field, FieldError, FieldLabel } from "#components/field";
 import {
-  Field,
   Combobox,
-  Option,
-  type ComboboxProps,
-  type FieldProps,
-} from "@fluentui/react-components";
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "#components/combobox";
 import { useFieldContext } from "../form-context";
 import { getErrorMessage } from "./field-error";
 
@@ -20,76 +22,96 @@ export interface ComboboxFieldProps {
   options: ComboboxOption[];
   /** Placeholder text */
   placeholder?: string;
-  comboboxProps?: Partial<ComboboxProps>;
-  fieldProps?: Partial<FieldProps>;
+  /** Whether the field holds `string[]` instead of `string` */
+  multiple?: boolean;
+  /** Text shown when the filter matches nothing */
+  emptyMessage?: string;
 }
 
 /**
- * A combobox (searchable dropdown) field bound to a TanStack Form field.
+ * A combobox (filterable dropdown) field bound to a TanStack Form field.
  *
- * Supports both single-select (`string`) and multiselect (`string[] | null`)
- * via the `comboboxProps.multiselect` flag.
+ * The form value stays a plain `string` (or `string[]` when `multiple`); the
+ * option objects are mapped at this boundary so callers never deal with them.
  */
 export function ComboboxField({
   label,
   required,
   options,
   placeholder,
-  comboboxProps,
-  fieldProps,
+  multiple = false,
+  emptyMessage = "无匹配项",
 }: ComboboxFieldProps) {
   const field = useFieldContext<string | string[] | null>();
   const errorMsg = getErrorMessage(field.state.meta);
-  const isMultiselect = !!comboboxProps?.multiselect;
 
-  const selectedOptions = isMultiselect
-    ? Array.isArray(field.state.value)
-      ? field.state.value
-      : []
-    : field.state.value
-      ? [field.state.value as string]
-      : [];
-
-  const displayValue = isMultiselect
-    ? options
-        .filter((o) => selectedOptions.includes(o.value))
-        .map((o) => o.label)
-        .join(", ")
-    : (options.find((o) => o.value === field.state.value)?.label ?? "");
-
-  const handleSelect = (
-    _e: React.SyntheticEvent,
-    data: { optionValue?: string; selectedOptions: string[] },
-  ) => {
-    if (isMultiselect) {
-      field.handleChange(data.selectedOptions);
-    } else {
-      field.handleChange(data.optionValue ?? "");
-    }
-  };
+  const raw = field.state.value;
+  const selectedValues = multiple ? (Array.isArray(raw) ? raw : []) : [];
+  const selectedSingle = multiple ? null : (options.find((o) => o.value === raw) ?? null);
 
   return (
-    <Field
-      label={label}
-      required={required}
-      validationState={errorMsg ? "error" : undefined}
-      validationMessage={errorMsg}
-      {...fieldProps}
-    >
-      <Combobox
-        value={displayValue}
-        selectedOptions={selectedOptions}
-        onOptionSelect={handleSelect}
-        onBlur={field.handleBlur}
-        placeholder={placeholder}
-        {...comboboxProps}
-      >
-        {options.map((opt) => (
-          <Option key={opt.value} value={opt.value}>
-            {opt.label}
-          </Option>
-        ))}
-      </Combobox>
+    <Field data-invalid={errorMsg ? true : undefined}>
+      {label !== undefined && (
+        <FieldLabel htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
+      )}
+
+      {multiple ? (
+        <Combobox
+          multiple
+          items={options}
+          value={options.filter((o) => selectedValues.includes(o.value))}
+          onValueChange={(next: ComboboxOption[]) => field.handleChange(next.map((o) => o.value))}
+          itemToStringLabel={(option: ComboboxOption) => option.label}
+          isItemEqualToValue={(a: ComboboxOption, b: ComboboxOption) => a.value === b.value}
+        >
+          <ComboboxInput
+            id={field.name}
+            placeholder={placeholder}
+            showClear
+            aria-invalid={errorMsg ? true : undefined}
+          />
+          <ComboboxContent>
+            <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
+            <ComboboxList>
+              {(item: ComboboxOption) => (
+                <ComboboxItem key={item.value} value={item}>
+                  {item.label}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
+      ) : (
+        <Combobox
+          items={options}
+          value={selectedSingle}
+          onValueChange={(next: ComboboxOption | null) => field.handleChange(next?.value ?? "")}
+          itemToStringLabel={(option: ComboboxOption) => option.label}
+          isItemEqualToValue={(a: ComboboxOption, b: ComboboxOption) => a.value === b.value}
+        >
+          <ComboboxInput
+            id={field.name}
+            placeholder={placeholder}
+            showClear
+            aria-invalid={errorMsg ? true : undefined}
+          />
+          <ComboboxContent>
+            <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>
+            <ComboboxList>
+              {(item: ComboboxOption) => (
+                <ComboboxItem key={item.value} value={item}>
+                  {item.label}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
+      )}
+
+      <FieldError errors={errorMsg ? [{ message: errorMsg }] : undefined} />
     </Field>
   );
 }

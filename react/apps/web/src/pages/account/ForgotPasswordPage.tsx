@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
+import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
+import { Button } from "@acrostack/ui/components/button";
 import {
-  Button,
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
-  MessageBar,
-  MessageBarBody,
-  Text,
-} from "@fluentui/react-components";
+  CardTitle,
+} from "@acrostack/ui/components/card";
 import { accountSendPasswordResetCode } from "@acrostack/api-client/clients/account/accountSendPasswordResetCode";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
 import { extractAbpErrorMessage } from "@acrostack/core";
@@ -38,54 +39,58 @@ export function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <Card>
-        <CardHeader
-          header={<Text weight="semibold">忘记密码？</Text>}
-          description={<Text size={200}>如果该邮箱地址存在，我们已发送密码重置链接。</Text>}
-        />
-        <Link to="/account/login">
-          <Button>{"登录"}</Button>
-        </Link>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>忘记密码？</CardTitle>
+          <CardDescription>如果该邮箱地址存在，我们已发送密码重置链接。</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button render={<Link to="/account/login" />} nativeButton={false}>
+            {"登录"}
+          </Button>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader
-        header={<Text weight="semibold">忘记密码？</Text>}
-        description={<Text size={200}>输入您的邮箱地址，我们将向您发送重置密码的链接。</Text>}
-      />
-      <FormStack
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          void form.handleSubmit();
-        }}
-      >
-        {rootError && (
-          <MessageBar intent="error">
-            <MessageBarBody>{rootError}</MessageBarBody>
-          </MessageBar>
-        )}
-        <form.AppField
-          name="email"
-          children={(field) => (
-            <field.TextField
-              label={"电子邮件地址"}
-              inputProps={{ type: "email", autoComplete: "email" }}
-            />
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>忘记密码？</CardTitle>
+        <CardDescription>输入您的邮箱地址，我们将向您发送重置密码的链接。</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormStack
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
+        >
+          {rootError && (
+            <Alert variant="destructive">
+              <AlertDescription>{rootError}</AlertDescription>
+            </Alert>
           )}
-        />
-        <form.AppForm>
-          <FormActions>
-            <form.SubmitButton label={"提交"} />
-          </FormActions>
-        </form.AppForm>
-        <Text as="p" size={200} block>
-          <Link to="/account/login">{"返回应用"}</Link>
-        </Text>
-      </FormStack>
+          <form.AppField
+            name="email"
+            children={(field) => (
+              <field.TextField
+                label={"电子邮件地址"}
+                inputProps={{ type: "email", autoComplete: "email" }}
+              />
+            )}
+          />
+          <form.AppForm>
+            <FormActions>
+              <form.SubmitButton label={"提交"} />
+            </FormActions>
+          </form.AppForm>
+          <p className="text-sm text-muted-foreground">
+            <Link to="/account/login">{"返回应用"}</Link>
+          </p>
+        </FormStack>
+      </CardContent>
     </Card>
   );
 }

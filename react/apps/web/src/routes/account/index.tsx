@@ -1,9 +1,6 @@
-import { createRoute, redirect } from "@tanstack/react-router";
-import { Route as accountRoute } from "./route";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createRoute({
-  getParentRoute: () => accountRoute,
-  path: "/",
+export const Route = createFileRoute("/account/")({
   beforeLoad: () => redirect({ to: "/account/login" }),
   component: () => null,
 });

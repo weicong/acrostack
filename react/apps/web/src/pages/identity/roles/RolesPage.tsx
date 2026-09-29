@@ -2,14 +2,15 @@
  * 角色管理页（RolesPage）。
  *
  * 本文件只负责编排：对话框开关状态与各子组件组装；
- * 表格聚合见 hooks/useRolesTable，
- * 动作聚合见 hooks/useRoleActions，工具栏见 components/RolesToolbar。
+ * 表格聚合见 hooks/useRolesTable，动作聚合见 hooks/useRoleActions，
+ * 工具栏见 components/RolesToolbar。
  */
 import { useCallback, useState } from "react";
-import { Card } from "@fluentui/react-components";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHeader } from "@acrostack/layout";
+import { Card, CardContent } from "@acrostack/ui/components/card";
 import { DataTable } from "@acrostack/ui/data-table";
 import { ConfirmDialog } from "@acrostack/ui/dialog";
+
 import { toFormRole, type RoleFormRole } from "./types/role";
 import type { RoleItemRow } from "./hooks/useRolesTable";
 import { useRolesTable } from "./hooks/useRolesTable";
@@ -51,19 +52,23 @@ export function RolesPage() {
   });
 
   return (
-    <PageLayout title={"角色"} description="维护角色及其权限，用户通过角色获得权限。">
-      <Card>
-        <RolesToolbar
-          onCreate={handleCreate}
-          onGlobalFilterChange={tableState.state.onGlobalFilterChange}
-        />
+    <>
+      <PageHeader title={"角色"} description="维护角色及其权限，用户通过角色获得权限。" />
 
-        <DataTable
-          table={table}
-          isLoading={query.isLoading}
-          isError={query.isError}
-          errorMessage={query.error ? String(query.error) : undefined}
-        />
+      <Card>
+        <CardContent className="flex flex-col gap-4">
+          <RolesToolbar
+            onCreate={handleCreate}
+            onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+          />
+
+          <DataTable
+            table={table}
+            isLoading={query.isLoading}
+            isError={query.isError}
+            errorMessage={query.error ? String(query.error) : undefined}
+          />
+        </CardContent>
       </Card>
 
       <RoleFormDialog
@@ -85,6 +90,6 @@ export function RolesPage() {
         onConfirm={() => void remove(deleteRoleId).then((ok) => ok && setDeleteRoleId(null))}
         isPending={removePending}
       />
-    </PageLayout>
+    </>
   );
 }

@@ -4,17 +4,19 @@
  */
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Button } from "@acrostack/ui/components/button";
 import {
-  Button,
   Card,
+  CardAction,
+  CardContent,
   CardHeader,
-  Field,
-  Input,
-  Spinner,
-  Switch,
-  Text,
-  useToastController,
-} from "@fluentui/react-components";
+  CardTitle,
+} from "@acrostack/ui/components/card";
+import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import { Input } from "@acrostack/ui/components/input";
+import { Spinner } from "@acrostack/ui/components/spinner";
+import { Switch } from "@acrostack/ui/components/switch";
 import {
   useEmailSettingsGet,
   emailSettingsGetQueryKey,
@@ -26,7 +28,6 @@ import { emailSchema } from "../schemas/emailSettings";
 export function EmailSettingsCard() {
   const queryClient = useQueryClient();
   const updateMutation = useEmailSettingsUpdate();
-  const { dispatchToast } = useToastController();
 
   const emailQuery = useEmailSettingsGet();
   const data = emailQuery.data;
@@ -62,7 +63,7 @@ export function EmailSettingsCard() {
   const handleSave = async () => {
     const result = emailSchema.safeParse(form);
     if (result.error) {
-      dispatchToast(String(result.error.issues[0]?.message), { intent: "error" });
+      toast.error(String(result.error.issues[0]?.message));
       return;
     }
 
@@ -81,95 +82,130 @@ export function EmailSettingsCard() {
         },
       });
       void queryClient.invalidateQueries({ queryKey: emailSettingsGetQueryKey() });
-      dispatchToast("保存成功", { intent: "success" });
+      toast.success("保存成功");
     } catch (err) {
-      dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+      toast.error(extractAbpErrorMessage(err));
     }
   };
 
   if (emailQuery.isLoading) {
     return (
       <Card>
-        <CardHeader header={<Text weight="semibold">邮件</Text>} />
-        <Spinner label={"加载中..."} />
+        <CardHeader>
+          <CardTitle>{"邮件"}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <span className="inline-flex items-center gap-2 text-muted-foreground">
+            <Spinner />
+            {"加载中..."}
+          </span>
+        </CardContent>
       </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader
-        header={<Text weight="semibold">邮件</Text>}
-        action={
-          <Button
-            appearance="primary"
-            onClick={() => void handleSave()}
-            disabled={updateMutation.isPending}
-          >
+      <CardHeader>
+        <CardTitle>{"邮件"}</CardTitle>
+        <CardAction>
+          <Button onClick={() => void handleSave()} disabled={updateMutation.isPending}>
             {"保存"}
           </Button>
-        }
-      />
-      <Field label={"主机"}>
-        <Input
-          value={form.smtpHost}
-          onChange={(_, d) => setForm((p) => ({ ...p, smtpHost: d.value }))}
-        />
-      </Field>
-      <Field label={"端口"}>
-        <Input
-          type="number"
-          value={String(form.smtpPort ?? "")}
-          onChange={(_, d) =>
-            setForm((p) => ({
-              ...p,
-              smtpPort: d.value === "" ? null : Number(d.value),
-            }))
-          }
-        />
-      </Field>
-      <Field label={"用户名"}>
-        <Input
-          value={form.smtpUserName}
-          onChange={(_, d) => setForm((p) => ({ ...p, smtpUserName: d.value }))}
-        />
-      </Field>
-      <Field label={"密码"}>
-        <Input
-          type="password"
-          placeholder={"输入一个值以更新密码"}
-          value={form.smtpPassword}
-          onChange={(_, d) => setForm((p) => ({ ...p, smtpPassword: d.value }))}
-        />
-      </Field>
-      <Field label={"域"}>
-        <Input
-          value={form.smtpDomain}
-          onChange={(_, d) => setForm((p) => ({ ...p, smtpDomain: d.value }))}
-        />
-      </Field>
-      <Switch
-        checked={form.smtpEnableSsl}
-        onChange={(_, d) => setForm((p) => ({ ...p, smtpEnableSsl: d.checked }))}
-        label={"启用ssl"}
-      />
-      <Switch
-        checked={form.smtpUseDefaultCredentials}
-        onChange={(_, d) => setForm((p) => ({ ...p, smtpUseDefaultCredentials: d.checked }))}
-        label={"使用默认凭据"}
-      />
-      <Field label={"默认发件人"} required>
-        <Input
-          value={form.defaultFromAddress}
-          onChange={(_, d) => setForm((p) => ({ ...p, defaultFromAddress: d.value }))}
-        />
-      </Field>
-      <Field label={"默认显示名称"} required>
-        <Input
-          value={form.defaultFromDisplayName}
-          onChange={(_, d) => setForm((p) => ({ ...p, defaultFromDisplayName: d.value }))}
-        />
-      </Field>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Field>
+          <FieldLabel htmlFor="smtp-host">{"主机"}</FieldLabel>
+          <Input
+            id="smtp-host"
+            value={form.smtpHost}
+            onChange={(e) => setForm((p) => ({ ...p, smtpHost: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="smtp-port">{"端口"}</FieldLabel>
+          <Input
+            id="smtp-port"
+            type="number"
+            value={String(form.smtpPort ?? "")}
+            onChange={(e) =>
+              setForm((p) => ({
+                ...p,
+                smtpPort: e.target.value === "" ? null : Number(e.target.value),
+              }))
+            }
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="smtp-user-name">{"用户名"}</FieldLabel>
+          <Input
+            id="smtp-user-name"
+            value={form.smtpUserName}
+            onChange={(e) => setForm((p) => ({ ...p, smtpUserName: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="smtp-password">{"密码"}</FieldLabel>
+          <Input
+            id="smtp-password"
+            type="password"
+            placeholder={"输入一个值以更新密码"}
+            value={form.smtpPassword}
+            onChange={(e) => setForm((p) => ({ ...p, smtpPassword: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="smtp-domain">{"域"}</FieldLabel>
+          <Input
+            id="smtp-domain"
+            value={form.smtpDomain}
+            onChange={(e) => setForm((p) => ({ ...p, smtpDomain: e.target.value }))}
+          />
+        </Field>
+        <Field orientation="horizontal">
+          <Switch
+            id="smtp-enable-ssl"
+            checked={form.smtpEnableSsl}
+            onCheckedChange={(checked) => setForm((p) => ({ ...p, smtpEnableSsl: checked }))}
+          />
+          <FieldLabel htmlFor="smtp-enable-ssl">{"启用ssl"}</FieldLabel>
+        </Field>
+        <Field orientation="horizontal">
+          <Switch
+            id="smtp-use-default-credentials"
+            checked={form.smtpUseDefaultCredentials}
+            onCheckedChange={(checked) =>
+              setForm((p) => ({ ...p, smtpUseDefaultCredentials: checked }))
+            }
+          />
+          <FieldLabel htmlFor="smtp-use-default-credentials">{"使用默认凭据"}</FieldLabel>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="default-from-address">
+            {"默认发件人"}
+            <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            id="default-from-address"
+            required
+            value={form.defaultFromAddress}
+            onChange={(e) => setForm((p) => ({ ...p, defaultFromAddress: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="default-from-display-name">
+            {"默认显示名称"}
+            <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            id="default-from-display-name"
+            required
+            value={form.defaultFromDisplayName}
+            onChange={(e) => setForm((p) => ({ ...p, defaultFromDisplayName: e.target.value }))}
+          />
+        </Field>
+      </CardContent>
     </Card>
   );
 }

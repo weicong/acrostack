@@ -1,13 +1,10 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as adminRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
 
-const ForbiddenPage = lazyRouteComponent(
-  () => import("@/pages/forbidden/ForbiddenPage"),
-  "ForbiddenPage",
-);
+import { ForbiddenPage } from "@/pages/forbidden/ForbiddenPage";
 
-export const Route = createRoute({
-  getParentRoute: () => adminRoute,
-  path: "/403",
+export const Route = createFileRoute("/admin/403")({
   component: ForbiddenPage,
+  staticData: {
+    breadcrumb: { label: "无权访问" },
+  },
 });

@@ -1,7 +1,15 @@
 import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { Button, Card, CardHeader, Spinner, Text } from "@fluentui/react-components";
+import { Button } from "@acrostack/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@acrostack/ui/components/card";
+import { Spinner } from "@acrostack/ui/components/spinner";
 import { useAuth } from "@acrostack/core";
 
 export function LoginPage() {
@@ -20,43 +28,49 @@ export function LoginPage() {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader
-          header={<Text weight="semibold">登录</Text>}
-          description={<Text size={200}>正在跳转到登录...</Text>}
-        />
-        <Spinner />
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>登录</CardTitle>
+          <CardDescription>正在跳转到登录...</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Spinner />
+        </CardContent>
       </Card>
     );
   }
 
   if (isAuthenticated) {
     return (
-      <Card>
-        <CardHeader
-          header={<Text weight="semibold">登录</Text>}
-          description={<Text size={200}>您已登录。</Text>}
-        />
-        <Link to="/">
-          <Button>{"返回应用"}</Button>
-        </Link>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>登录</CardTitle>
+          <CardDescription>您已登录。</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button render={<Link to="/" />} nativeButton={false}>
+            {"返回应用"}
+          </Button>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader
-        header={<Text weight="semibold">登录</Text>}
-        description={<Text size={200}>正在跳转到登录...</Text>}
-      />
-      <Button onClick={() => void login()}>{"登录"}</Button>
-      <Text as="p" size={200} block>
-        <Link to="/account/forgot-password">{"忘记密码？"}</Link>
-      </Text>
-      <Text as="p" size={200} block>
-        {"还没有账户？"} <Link to="/account/register">{"注册"}</Link>
-      </Text>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>登录</CardTitle>
+        <CardDescription>正在跳转到登录...</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Button onClick={() => void login()}>{"登录"}</Button>
+        <p className="text-sm text-muted-foreground">
+          <Link to="/account/forgot-password">{"忘记密码？"}</Link>
+        </p>
+        <p className="text-sm text-muted-foreground">
+          {"还没有账户？"} <Link to="/account/register">{"注册"}</Link>
+        </p>
+      </CardContent>
     </Card>
   );
 }

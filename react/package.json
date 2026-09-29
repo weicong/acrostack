@@ -9,6 +9,7 @@
     "preview": "vp -C apps/web preview",
     "check": "vp check --fix",
     "test": "vp test",
+    "typecheck": "vp run -r typecheck",
     "generate-api": "vp -C packages/api-client run generate"
   },
   "devDependencies": {
@@ -18,7 +19,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^12.5.1",
+      "version": "^12.6.0",
       "onFail": "download"
     }
   }

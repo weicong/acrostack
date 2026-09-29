@@ -1,28 +1,15 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as adminRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
+import { Sparkles } from "lucide-react";
 import { createPermissionGuard } from "@acrostack/core";
-import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
-import { Sparkle20Regular } from "@fluentui/react-icons";
 
-const FeaturesPage = lazyRouteComponent(
-  () => import("@/pages/features/FeaturesPage"),
-  "FeaturesPage",
-);
+import { FeaturesPage } from "@/pages/features/FeaturesPage";
 
-/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
-export const menu: RouteMenuConfig = {
-  name: "功能",
-  group: "系统",
-  icon: Sparkle20Regular,
-  order: 130,
-  requiredPolicy: "AbpFeatureManagement.ManageHostFeatures",
-};
+const POLICY = "AbpFeatureManagement.ManageHostFeatures";
 
-export const routeConfig: MenuRoute[] = [{ path: "/admin/features", menu }];
-
-export const Route = createRoute({
-  getParentRoute: () => adminRoute,
-  path: "/features",
+export const Route = createFileRoute("/admin/features")({
+  beforeLoad: createPermissionGuard(POLICY),
   component: FeaturesPage,
-  beforeLoad: createPermissionGuard("AbpFeatureManagement.ManageHostFeatures"),
+  staticData: {
+    nav: { label: "功能", group: "系统", icon: Sparkles, order: 130, requiredPolicy: POLICY },
+  },
 });

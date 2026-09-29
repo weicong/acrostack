@@ -3,16 +3,18 @@
  * 变更走 Kubb mutation（mutateAsync），表单为卡片内部状态。
  */
 import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@acrostack/ui/components/button";
 import {
-  Button,
   Card,
+  CardAction,
+  CardContent,
   CardHeader,
-  Field,
-  Input,
-  Text,
-  Textarea,
-  useToastController,
-} from "@fluentui/react-components";
+  CardTitle,
+} from "@acrostack/ui/components/card";
+import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import { Input } from "@acrostack/ui/components/input";
+import { Textarea } from "@acrostack/ui/components/textarea";
 import { z } from "zod";
 import { useEmailSettingsSendTestEmail } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsSendTestEmail";
 import { extractAbpErrorMessage } from "@acrostack/core";
@@ -26,7 +28,6 @@ const testEmailSchema = z.object({
 
 export function TestEmailCard() {
   const sendMutation = useEmailSettingsSendTestEmail();
-  const { dispatchToast } = useToastController();
 
   const [form, setForm] = useState({
     senderEmailAddress: "",
@@ -38,7 +39,7 @@ export function TestEmailCard() {
   const handleSend = async () => {
     const result = testEmailSchema.safeParse(form);
     if (result.error) {
-      dispatchToast(String(result.error.issues[0]?.message), { intent: "error" });
+      toast.error(String(result.error.issues[0]?.message));
       return;
     }
 
@@ -51,50 +52,68 @@ export function TestEmailCard() {
           body: form.body || undefined,
         },
       });
-      dispatchToast("发送成功", { intent: "success" });
+      toast.success("发送成功");
     } catch (err) {
-      dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+      toast.error(extractAbpErrorMessage(err));
     }
   };
 
   return (
     <Card>
-      <CardHeader
-        header={<Text weight="semibold">发送测试邮件</Text>}
-        action={
-          <Button
-            appearance="primary"
-            onClick={() => void handleSend()}
-            disabled={sendMutation.isPending}
-          >
+      <CardHeader>
+        <CardTitle>{"发送测试邮件"}</CardTitle>
+        <CardAction>
+          <Button onClick={() => void handleSend()} disabled={sendMutation.isPending}>
             {"发送"}
           </Button>
-        }
-      />
-      <Field label={"发件人邮箱地址"} required>
-        <Input
-          value={form.senderEmailAddress}
-          onChange={(_, d) => setForm((p) => ({ ...p, senderEmailAddress: d.value }))}
-        />
-      </Field>
-      <Field label={"收件人邮箱地址"} required>
-        <Input
-          value={form.targetEmailAddress}
-          onChange={(_, d) => setForm((p) => ({ ...p, targetEmailAddress: d.value }))}
-        />
-      </Field>
-      <Field label={"主题"} required>
-        <Input
-          value={form.subject}
-          onChange={(_, d) => setForm((p) => ({ ...p, subject: d.value }))}
-        />
-      </Field>
-      <Field label={"正文"}>
-        <Textarea
-          value={form.body}
-          onChange={(_, d) => setForm((p) => ({ ...p, body: d.value }))}
-        />
-      </Field>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Field>
+          <FieldLabel htmlFor="test-sender-email">
+            {"发件人邮箱地址"}
+            <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            id="test-sender-email"
+            required
+            value={form.senderEmailAddress}
+            onChange={(e) => setForm((p) => ({ ...p, senderEmailAddress: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="test-target-email">
+            {"收件人邮箱地址"}
+            <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            id="test-target-email"
+            required
+            value={form.targetEmailAddress}
+            onChange={(e) => setForm((p) => ({ ...p, targetEmailAddress: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="test-subject">
+            {"主题"}
+            <span className="text-destructive">*</span>
+          </FieldLabel>
+          <Input
+            id="test-subject"
+            required
+            value={form.subject}
+            onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="test-body">{"正文"}</FieldLabel>
+          <Textarea
+            id="test-body"
+            value={form.body}
+            onChange={(e) => setForm((p) => ({ ...p, body: e.target.value }))}
+          />
+        </Field>
+      </CardContent>
     </Card>
   );
 }

@@ -1,21 +1,15 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as identityRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
+import { Users } from "lucide-react";
 import { createPermissionGuard } from "@acrostack/core";
-import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
-import { PeopleTeam20Regular } from "@fluentui/react-icons";
 
-const RolesPage = lazyRouteComponent(() => import("@/pages/identity/roles/RolesPage"), "RolesPage");
+import { RolesPage } from "@/pages/identity/roles/RolesPage";
 
-/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
-export const menu: RouteMenuConfig = {
-  name: "角色",
-  icon: PeopleTeam20Regular,
-  requiredPolicy: "AbpIdentity.Roles",
-};
+const POLICY = "AbpIdentity.Roles";
 
-export const Route = createRoute({
-  getParentRoute: () => identityRoute,
-  path: "/roles",
+export const Route = createFileRoute("/admin/identity/roles")({
+  beforeLoad: createPermissionGuard(POLICY),
   component: RolesPage,
-  beforeLoad: createPermissionGuard("AbpIdentity.Roles"),
+  staticData: {
+    nav: { label: "角色", group: "系统", icon: Users, order: 2, requiredPolicy: POLICY },
+  },
 });

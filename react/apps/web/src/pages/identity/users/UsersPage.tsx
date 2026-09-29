@@ -2,15 +2,16 @@
  * 用户管理页（UsersPage）。
  *
  * 本文件只负责编排：权限判定、对话框开关状态与各子组件组装；
- * 表格聚合见 hooks/useUsersTable，
- * 动作聚合见 hooks/useUserActions，工具栏见 components/UsersToolbar。
+ * 表格聚合见 hooks/useUsersTable，动作聚合见 hooks/useUserActions，
+ * 工具栏见 components/UsersToolbar。
  */
 import { useCallback, useState } from "react";
-import { Card } from "@fluentui/react-components";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHeader } from "@acrostack/layout";
+import { Card, CardContent } from "@acrostack/ui/components/card";
 import { DataTable } from "@acrostack/ui/data-table";
 import { ConfirmDialog } from "@acrostack/ui/dialog";
 import { usePermissions, useCurrentUser } from "@acrostack/core";
+
 import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";
 import { useUsersTable } from "./hooks/useUsersTable";
@@ -59,22 +60,26 @@ export function UsersPage() {
   });
 
   return (
-    <PageLayout
-      title={"用户"}
-      description="创建与管理用户账户、分配角色，并对指定用户发起模拟登录。"
-    >
-      <Card>
-        <UsersToolbar
-          onCreate={handleCreate}
-          onGlobalFilterChange={tableState.state.onGlobalFilterChange}
-        />
+    <>
+      <PageHeader
+        title={"用户"}
+        description="创建与管理用户账户、分配角色，并对指定用户发起模拟登录。"
+      />
 
-        <DataTable
-          table={table}
-          isLoading={query.isLoading}
-          isError={query.isError}
-          errorMessage={query.error ? String(query.error) : undefined}
-        />
+      <Card>
+        <CardContent className="flex flex-col gap-4">
+          <UsersToolbar
+            onCreate={handleCreate}
+            onGlobalFilterChange={tableState.state.onGlobalFilterChange}
+          />
+
+          <DataTable
+            table={table}
+            isLoading={query.isLoading}
+            isError={query.isError}
+            errorMessage={query.error ? String(query.error) : undefined}
+          />
+        </CardContent>
       </Card>
 
       <UserFormDialog
@@ -96,6 +101,6 @@ export function UsersPage() {
         onConfirm={() => void remove(deleteUserId).then((ok) => ok && setDeleteUserId(null))}
         isPending={removePending}
       />
-    </PageLayout>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "@acrostack/ui/styles/globals.css";
+import "@acrostack/ui/globals.css";
 import App from "./App.tsx";
 import { getApplicationName } from "@acrostack/core";
 import { ErrorBoundary } from "@/components/ErrorBoundary";

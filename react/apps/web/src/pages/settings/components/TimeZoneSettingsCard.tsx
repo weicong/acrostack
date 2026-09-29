@@ -4,17 +4,24 @@
  */
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Button } from "@acrostack/ui/components/button";
 import {
-  Button,
   Card,
+  CardAction,
+  CardContent,
   CardHeader,
-  Dropdown,
-  Field,
-  Option,
-  Spinner,
-  Text,
-  useToastController,
-} from "@fluentui/react-components";
+  CardTitle,
+} from "@acrostack/ui/components/card";
+import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acrostack/ui/components/select";
+import { Spinner } from "@acrostack/ui/components/spinner";
 import {
   useTimeZoneSettingsGet,
   timeZoneSettingsGetQueryKey,
@@ -26,7 +33,6 @@ import { extractAbpErrorMessage } from "@acrostack/core";
 export function TimeZoneSettingsCard() {
   const queryClient = useQueryClient();
   const updateMutation = useTimeZoneSettingsUpdate();
-  const { dispatchToast } = useToastController();
 
   const tzQuery = useTimeZoneSettingsGet();
   const timezonesQuery = useTimeZoneSettingsGetTimezones();
@@ -46,55 +52,64 @@ export function TimeZoneSettingsCard() {
     try {
       await updateMutation.mutateAsync({ query: { timezone: selectedTz } });
       void queryClient.invalidateQueries({ queryKey: timeZoneSettingsGetQueryKey() });
-      dispatchToast("保存成功", { intent: "success" });
+      toast.success("保存成功");
     } catch (err) {
-      dispatchToast(extractAbpErrorMessage(err), { intent: "error" });
+      toast.error(extractAbpErrorMessage(err));
     }
   };
 
   if (tzQuery.isLoading || timezonesQuery.isLoading) {
     return (
       <Card>
-        <CardHeader header={<Text weight="semibold">时区</Text>} />
-        <Spinner label={"加载中..."} />
+        <CardHeader>
+          <CardTitle>{"时区"}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <span className="inline-flex items-center gap-2 text-muted-foreground">
+            <Spinner />
+            {"加载中..."}
+          </span>
+        </CardContent>
       </Card>
     );
   }
 
   return (
     <Card>
-      <CardHeader
-        header={<Text weight="semibold">时区</Text>}
-        action={
-          <Button
-            appearance="primary"
-            onClick={() => void handleSave()}
-            disabled={updateMutation.isPending}
-          >
+      <CardHeader>
+        <CardTitle>{"时区"}</CardTitle>
+        <CardAction>
+          <Button onClick={() => void handleSave()} disabled={updateMutation.isPending}>
             {"保存"}
           </Button>
-        }
-      />
-      <Field label={"时区"}>
-        <Dropdown
-          value={timezones.find((tz) => tz.name === selectedTz)?.value ?? selectedTz ?? ""}
-          selectedOptions={selectedTz ? [selectedTz] : []}
-          onOptionSelect={(_, data) => {
-            setSelectedTz(data.optionValue as string);
-          }}
-        >
-          {timezones.map((tz) => (
-            <Option key={tz.name ?? ""} value={tz.name ?? ""}>
-              {tz.value ?? tz.name ?? ""}
-            </Option>
-          ))}
-        </Dropdown>
-      </Field>
-      <Text size={200}>
-        {
-          "此功能允许您为服务器设置默认时区，同时用户可以选择自己的时区。如果用户的时区与服务器的时区不同，所有时间将相应调整。例如，如果服务器设置为欧洲/伦敦(00:00)，而用户在欧洲/巴黎(+01:00)，则该用户的时间将调整1小时。选择'默认时区'将自动使用服务器或浏览器的时区。"
-        }
-      </Text>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Field>
+          <FieldLabel htmlFor="server-timezone">{"时区"}</FieldLabel>
+          <Select value={selectedTz} onValueChange={(value) => setSelectedTz(value as string)}>
+            <SelectTrigger id="server-timezone" className="w-full">
+              <SelectValue>
+                {(value) =>
+                  timezones.find((tz) => tz.name === value)?.value ?? (value as string) ?? ""
+                }
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {timezones.map((tz) => (
+                <SelectItem key={tz.name ?? ""} value={tz.name ?? ""}>
+                  {tz.value ?? tz.name ?? ""}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+        <p className="text-sm text-muted-foreground">
+          {
+            "此功能允许您为服务器设置默认时区，同时用户可以选择自己的时区。如果用户的时区与服务器的时区不同，所有时间将相应调整。例如，如果服务器设置为欧洲/伦敦(00:00)，而用户在欧洲/巴黎(+01:00)，则该用户的时间将调整1小时。选择'默认时区'将自动使用服务器或浏览器的时区。"
+          }
+        </p>
+      </CardContent>
     </Card>
   );
 }

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { HStack } from "../../layout";
 
 interface FormActionsProps {
   children: ReactNode;
@@ -10,9 +9,5 @@ interface FormActionsProps {
  * 弹窗表单与卡片表单共用，保证按钮位置与间距一致。
  */
 export function FormActions({ children }: FormActionsProps) {
-  return (
-    <HStack justify="end" gap={2} wrap="wrap">
-      {children}
-    </HStack>
-  );
+  return <div className="flex flex-wrap items-center justify-end gap-2">{children}</div>;
 }

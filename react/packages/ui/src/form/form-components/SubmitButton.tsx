@@ -1,7 +1,12 @@
-import { Button, type ButtonProps, Spinner } from "@fluentui/react-components";
+import type { ComponentProps } from "react";
+import { Loader2Icon } from "lucide-react";
+import { Button } from "#components/button";
 import { useFormContext } from "../form-context";
 
-export interface SubmitButtonProps extends Omit<ButtonProps, "type" | "disabled"> {
+export interface SubmitButtonProps extends Omit<
+  ComponentProps<typeof Button>,
+  "type" | "disabled"
+> {
   /** Button label text */
   label?: string;
 }
@@ -10,11 +15,11 @@ export interface SubmitButtonProps extends Omit<ButtonProps, "type" | "disabled"
  * A submit button that reactively disables during form submission.
  *
  * - Disables when the form is invalid (`canSubmit === false`) or submitting.
- * - Shows a spinner icon while submitting.
+ * - Shows a spinner while submitting.
  *
  * Must be used inside `<form.AppForm>` to access the form context.
  */
-export function SubmitButton({ label = "Submit", ...rest }: SubmitButtonProps) {
+export function SubmitButton({ label = "Submit", children, ...rest }: SubmitButtonProps) {
   const form = useFormContext();
 
   return (
@@ -25,14 +30,9 @@ export function SubmitButton({ label = "Submit", ...rest }: SubmitButtonProps) {
       })}
     >
       {({ canSubmit, isSubmitting }) => (
-        <Button
-          {...(rest as ButtonProps)}
-          type="submit"
-          appearance="primary"
-          disabled={!canSubmit || isSubmitting}
-          icon={isSubmitting ? <Spinner size="tiny" /> : undefined}
-        >
-          {label}
+        <Button {...rest} type="submit" disabled={!canSubmit || isSubmitting}>
+          {isSubmitting && <Loader2Icon className="size-4 animate-spin" />}
+          {children ?? label}
         </Button>
       )}
     </form.Subscribe>

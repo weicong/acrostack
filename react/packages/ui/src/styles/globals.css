@@ -1,19 +1,232 @@
-/* ============================================================
-   全应用唯一的全局样式表（契约见 packages/ui/AGENTS.md「样式所有权」R2）。
-   只放文档级规则，不放组件外观——颜色、字体、圆角、焦点环、滚动条
-   一律交给 Fluent 主题与组件，因此这里不出现任何颜色与字体声明。
+@import "tailwindcss";
+@import "tw-animate-css";
 
-   当前只有两条基线，但它们缺一不可：
-   1) 盒模型统一为 border-box：否则带内边距的容器上 width: 100% 会溢出；
-   2) 去掉 body 默认外边距：否则 fill 模式的外壳（100dvh）会多出外层滚动条。
-   ============================================================ */
+/*
+ * Tailwind v4 的默认扫描起点是 cwd（`vp build` 时是 apps/web），在 monorepo 里
+ * 这会漏掉别的 workspace。`@source` 只接受**字面路径、不支持 glob**，所以一个
+ * workspace 一行；**不要**指向仓库根，那会把 .md 文档当源码扫、多编译出没人用的类。
+ * 路径相对本文件。
+ */
+@source "../../../../apps/web/src";
+@source "../../../../packages/ui/src";
+@source "../../../../packages/layout/src";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 上游把这两条放在 `shadcn/tailwind.css`（`shadcn` 包）里，本项目没装那个包，
+ * 所以在此逐字复述。`data-horizontal:` / `data-vertical:` 必须映射到
+ * `data-orientation`，因为 Base UI 的 Separator 只输出那个属性
+ * （`SeparatorDataAttributes.orientation = "data-orientation"`）；少了它们，
+ * `data-vertical:w-px` 编译成 `[data-vertical]` 永不匹配，<Separator> 会塌成 0×0。
+ *
+ * 其余上游变体（data-open / data-closed / data-checked / data-unchecked /
+ * data-disabled / data-active）是 Tailwind 默认简写的超集，纯 Base UI 项目用
+ * 默认写法等价。
+ */
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
 }
 
-body {
-  margin: 0;
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 设计令牌 —— shadcn/ui "base-nova" 风格，neutral 基色。
+ * 取值对齐 https://ui.shadcn.com/r/colors/neutral.json（cssVarsV4）。
+ *
+ * 品牌色是**唯一的本地偏离**：把产品原有的蓝色阶注入 primary / ring /
+ * sidebar-primary 三处，其余保持 base-nova 原生中性色。对比度已实测，不靠肉眼：
+ *   浅色 primary #0F6CBD 对白字 5.38:1；ring #2F80ED 对白底 3.87:1
+ *   深色 primary #4A94FA 对深字 5.04:1；ring #4A94FA 对深底 5.04:1
+ * ------------------------------------------------------------------------- */
+:root {
+  --radius: 0.625rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  --primary: #0f6cbd;
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: #2f80ed;
+
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #0f6cbd;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: #2f80ed;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: #4a94fa;
+  --primary-foreground: #111723;
+
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #4a94fa;
+
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #4a94fa;
+  --sidebar-primary-foreground: #111723;
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #4a94fa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-heading: var(--font-sans);
+  --font-sans:
+    "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans SC", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/*
+ * 上游把这条放在 `shadcn/tailwind.css` 里（本项目没装 `shadcn` 包）。
+ * `card.tsx` / `alert-dialog.tsx` / `empty.tsx` / `sheet.tsx` 都引用了它，
+ * 不补的话这四处不会跟随 `--font-heading`。
+ */
+@utility cn-font-heading {
+  font-family: var(--font-heading);
+}
+
+@layer utilities {
+  /* Hides the scrollbar on the sidebar's scroll container. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Flips directional icons in RTL contexts. Used by the Base UI registry
+     components (breadcrumb, dropdown-menu, sidebar). */
+  .cn-rtl-flip:where([dir="rtl"], [dir="rtl"] *) {
+    transform: scaleX(-1);
+  }
+
+  /*
+   * Base UI's Collapsible panel exposes its size through
+   * `--collapsible-panel-height`. tw-animate-css ships the
+   * `collapsible-down` / `collapsible-up` keyframes that consume that variable,
+   * but nothing defines the open-state height itself, so an open panel
+   * collapses to 0px. These rules supply it.
+   */
+  [data-slot="collapsible-content"][data-open] {
+    height: var(--collapsible-panel-height, auto);
+    overflow: hidden;
+  }
+
+  [data-slot="collapsible-content"][data-closed] {
+    height: 0;
+    overflow: hidden;
+  }
 }

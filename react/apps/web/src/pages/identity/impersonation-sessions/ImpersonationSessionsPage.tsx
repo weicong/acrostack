@@ -6,8 +6,8 @@
  * 权限为 host 专属：AbpIdentity.Users.ManageImpersonationSessions。
  */
 import { useCallback, useState } from "react";
-import { Card } from "@fluentui/react-components";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHeader } from "@acrostack/layout";
+import { Card, CardContent } from "@acrostack/ui/components/card";
 import { DataTable } from "@acrostack/ui/data-table";
 import { ConfirmDialog } from "@acrostack/ui/dialog";
 import { useImpersonationSessionActions } from "./hooks/useImpersonationSessionActions";
@@ -33,19 +33,23 @@ export function ImpersonationSessionsPage() {
   });
 
   return (
-    <PageLayout
-      title={"模拟登录记录"}
-      description="查看谁在何时以他人身份登录，并可在必要时提前撤销会话。"
-    >
-      <Card>
-        <ImpersonationSessionsToolbar status={statusFilter} onStatusChange={setStatusFilter} />
+    <>
+      <PageHeader
+        title={"模拟登录记录"}
+        description="查看谁在何时以他人身份登录，并可在必要时提前撤销会话。"
+      />
 
-        <DataTable
-          table={table}
-          isLoading={query.isLoading}
-          isError={query.isError}
-          errorMessage={query.error ? String(query.error) : undefined}
-        />
+      <Card>
+        <CardContent className="flex flex-col gap-4">
+          <ImpersonationSessionsToolbar status={statusFilter} onStatusChange={setStatusFilter} />
+
+          <DataTable
+            table={table}
+            isLoading={query.isLoading}
+            isError={query.isError}
+            errorMessage={query.error ? String(query.error) : undefined}
+          />
+        </CardContent>
       </Card>
 
       <ConfirmDialog
@@ -60,6 +64,6 @@ export function ImpersonationSessionsPage() {
         onConfirm={handleConfirm}
         isPending={revokePending}
       />
-    </PageLayout>
+    </>
   );
 }

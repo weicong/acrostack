@@ -1,7 +1,7 @@
 import { createFormHookContexts } from "@tanstack/react-form";
 
 /**
- * Shared form hook contexts for TanStack Form + Fluent UI integration.
+ * Shared form hook contexts for the TanStack Form integration.
  *
  * - `fieldContext` / `formContext` — pass to `createFormHook()`
  * - `useFieldContext` — use inside field components to access the field API

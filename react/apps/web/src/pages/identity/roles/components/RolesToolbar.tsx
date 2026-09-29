@@ -3,8 +3,9 @@
  * 排布交给共用的 ListToolbar；本文件不含任何自定义样式。
  */
 import { useEffect, useState } from "react";
-import { Button, SearchBox } from "@fluentui/react-components";
-import { Add20Regular } from "@fluentui/react-icons";
+import { Plus } from "lucide-react";
+import { Button } from "@acrostack/ui/components/button";
+import { Input } from "@acrostack/ui/components/input";
 import { ListToolbar } from "@acrostack/ui/data-table";
 
 interface RolesToolbarProps {
@@ -28,16 +29,18 @@ export function RolesToolbar({ onCreate, onGlobalFilterChange }: RolesToolbarPro
     <ListToolbar
       label="角色筛选与操作"
       search={
-        <SearchBox
+        <Input
+          type="search"
+          className="w-full sm:w-64"
           placeholder="按角色名搜索"
           aria-label="搜索角色"
-          appearance="outline"
           value={searchValue}
-          onChange={(_event, data) => setSearchValue(data.value)}
+          onChange={(event) => setSearchValue(event.target.value)}
         />
       }
       actions={
-        <Button appearance="primary" icon={<Add20Regular />} onClick={onCreate}>
+        <Button onClick={onCreate}>
+          <Plus />
           新角色
         </Button>
       }

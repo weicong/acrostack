@@ -5,9 +5,10 @@
  * （通过 extraParams.IsActive 透传）。
  */
 import { useMemo, useState } from "react";
-import { Badge, Button } from "@fluentui/react-components";
-import { Dismiss20Regular } from "@fluentui/react-icons";
+import { X } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
+import { Badge } from "@acrostack/ui/components/badge";
+import { Button } from "@acrostack/ui/components/button";
 import { impersonationSessionGetListQueryOptions } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
 import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@acrostack/api-client/models/acroStack/impersonation/ImpersonationSessionDto";
 import { useDataTableState } from "@acrostack/ui/data-table";
@@ -79,18 +80,12 @@ export function useImpersonationSessionsTable({
         header: "状态",
         cell: ({ row }) => {
           if (row.original.isActive) {
-            return (
-              <Badge appearance="filled" color="success">
-                {"进行中"}
-              </Badge>
-            );
+            return <Badge variant="default">{"进行中"}</Badge>;
           }
           return row.original.isRevoked ? (
-            <Badge appearance="filled" color="danger">
-              {"已撤销"}
-            </Badge>
+            <Badge variant="destructive">{"已撤销"}</Badge>
           ) : (
-            <Badge appearance="filled">{`已结束 ${row.original.endTime ? `· ${formatDateTime(row.original.endTime)}` : ""}`}</Badge>
+            <Badge variant="secondary">{`已结束 ${row.original.endTime ? `· ${formatDateTime(row.original.endTime)}` : ""}`}</Badge>
           );
         },
       },
@@ -108,13 +103,17 @@ export function useImpersonationSessionsTable({
         cell: ({ row }) =>
           row.original.isActive ? (
             <Button
-              size="small"
-              appearance="subtle"
-              icon={<Dismiss20Regular />}
-              onClick={() => onRevoke(row.original.id ?? "")}
+              variant="ghost"
+              size="icon-sm"
+              onClick={(event) => {
+                event.stopPropagation();
+                onRevoke(row.original.id ?? "");
+              }}
               title={"撤销会话"}
               aria-label={"撤销会话"}
-            />
+            >
+              <X />
+            </Button>
           ) : null,
       });
     }

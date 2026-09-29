@@ -4,9 +4,16 @@
  * 「提供程序」一词过于抽象，这里用「授权对象」表达，
  * 并把两个下拉放进统一的工具栏排布中，与其它列表页保持一致。
  */
-import { Dropdown, Field, Option } from "@fluentui/react-components";
 import type { VoloAbpIdentityIdentityRoleDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityRoleDto";
 import { ListToolbar } from "@acrostack/ui/data-table";
+import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acrostack/ui/components/select";
 import type { ProviderName } from "../utils/permission-tree";
 
 interface PermissionsToolbarProps {
@@ -32,34 +39,44 @@ export function PermissionsToolbar({
       label="权限筛选"
       filters={
         <>
-          <Field label="授权对象类型">
-            <Dropdown
-              value={isRole ? "角色" : "用户"}
-              selectedOptions={[providerName]}
-              onOptionSelect={(_event, data) => {
-                onSelectProviderName(data.optionValue as ProviderName);
-              }}
+          <Field>
+            <FieldLabel>授权对象类型</FieldLabel>
+            <Select
+              value={providerName}
+              onValueChange={(value) => onSelectProviderName(value as ProviderName)}
+              items={[
+                { value: "R", label: "角色" },
+                { value: "U", label: "用户" },
+              ]}
             >
-              <Option value="R">角色</Option>
-              <Option value="U">用户</Option>
-            </Dropdown>
+              <SelectTrigger aria-label="授权对象类型">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="R">角色</SelectItem>
+                <SelectItem value="U">用户</SelectItem>
+              </SelectContent>
+            </Select>
           </Field>
 
-          <Field label={isRole ? "选择角色" : "用户 ID"}>
-            <Dropdown
-              placeholder={isRole ? "请选择角色" : "请输入用户 ID"}
-              selectedOptions={providerKey ? [providerKey] : []}
-              value={roles.find((role) => role.id === providerKey)?.name ?? ""}
-              onOptionSelect={(_event, data) => {
-                onSelectProviderKey(data.optionValue as string);
-              }}
+          <Field>
+            <FieldLabel>{isRole ? "选择角色" : "用户 ID"}</FieldLabel>
+            <Select
+              value={providerKey || null}
+              onValueChange={(value) => onSelectProviderKey(value ?? "")}
+              items={roles.map((role) => ({ value: role.id ?? "", label: role.name ?? "" }))}
             >
-              {roles.map((role) => (
-                <Option key={role.id ?? ""} value={role.id ?? ""}>
-                  {role.name ?? ""}
-                </Option>
-              ))}
-            </Dropdown>
+              <SelectTrigger aria-label={isRole ? "选择角色" : "用户 ID"}>
+                <SelectValue placeholder={isRole ? "请选择角色" : "请输入用户 ID"} />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map((role) => (
+                  <SelectItem key={role.id ?? ""} value={role.id ?? ""}>
+                    {role.name ?? ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
         </>
       }

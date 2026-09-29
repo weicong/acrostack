@@ -1,28 +1,15 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as adminRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
+import { Settings } from "lucide-react";
 import { createPermissionGuard } from "@acrostack/core";
-import { type MenuRoute, type RouteMenuConfig } from "@/lib/routing/route-config-types";
-import { Settings20Regular } from "@fluentui/react-icons";
 
-const SettingsPage = lazyRouteComponent(
-  () => import("@/pages/settings/SettingsPage"),
-  "SettingsPage",
-);
+import { SettingsPage } from "@/pages/settings/SettingsPage";
 
-/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
-export const menu: RouteMenuConfig = {
-  name: "设置",
-  group: "系统",
-  icon: Settings20Regular,
-  order: 160,
-  requiredPolicy: "AbpSettingManagement.Emailing",
-};
+const POLICY = "AbpSettingManagement.Emailing";
 
-export const routeConfig: MenuRoute[] = [{ path: "/admin/settings", menu }];
-
-export const Route = createRoute({
-  getParentRoute: () => adminRoute,
-  path: "/settings",
+export const Route = createFileRoute("/admin/settings")({
+  beforeLoad: createPermissionGuard(POLICY),
   component: SettingsPage,
-  beforeLoad: createPermissionGuard("AbpSettingManagement.Emailing"),
+  staticData: {
+    nav: { label: "设置", group: "系统", icon: Settings, order: 160, requiredPolicy: POLICY },
+  },
 });

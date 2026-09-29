@@ -4,6 +4,7 @@ import { useUserCreate } from "@acrostack/api-client/hooks/user/useUserCreate";
 import { useUserUpdate } from "@acrostack/api-client/hooks/user/useUserUpdate";
 import { useUserGetAssignableRoles } from "@acrostack/api-client/hooks/user/useUserGetAssignableRoles";
 import { useUserGetRoles } from "@acrostack/api-client/hooks/user/useUserGetRoles";
+
 import type { UserFormUser } from "../types/user";
 import { createSchema, updateSchema } from "../schemas/user";
 
@@ -135,7 +136,7 @@ export function UserForm({ user, onSuccess, footer }: UserFormProps) {
               label={"角色"}
               options={roleOptions}
               placeholder={"请选择角色"}
-              comboboxProps={{ multiselect: true }}
+              multiple
             />
           )}
         />

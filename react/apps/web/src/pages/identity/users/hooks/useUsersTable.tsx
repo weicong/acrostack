@@ -3,14 +3,17 @@
  * 查询组装与 TanStack 表实例构建。
  */
 import { useMemo } from "react";
-import { Avatar, Badge, Button, Text } from "@fluentui/react-components";
-import { Edit20Regular, Delete20Regular, PersonArrowLeft20Regular } from "@fluentui/react-icons";
+import { Pencil, Trash2, UserRoundCog } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 import { userGetListQueryOptions } from "@acrostack/api-client/hooks/user/useUserGetList";
+import { Avatar, AvatarFallback } from "@acrostack/ui/components/avatar";
+import { Badge } from "@acrostack/ui/components/badge";
+import { Button } from "@acrostack/ui/components/button";
 import { useDataTableState } from "@acrostack/ui/data-table";
 import { RowActions } from "@acrostack/ui/data-table";
-import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
 import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
+import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
+
 import type { UserListItem } from "../types/user";
 
 /** 用户列表行类型（页面本地别名）。 */
@@ -19,17 +22,9 @@ export type UserItem = UserListItem;
 /** 用户激活状态徽标。 */
 function UserStatusBadge({ isActive }: { isActive?: boolean }) {
   if (isActive === false) {
-    return (
-      <Badge appearance="filled" color="danger" size="small">
-        {"未激活"}
-      </Badge>
-    );
+    return <Badge variant="destructive">{"未激活"}</Badge>;
   }
-  return (
-    <Badge appearance="filled" color="success" size="small">
-      {"激活"}
-    </Badge>
-  );
+  return <Badge variant="secondary">{"激活"}</Badge>;
 }
 
 interface UseUsersTableOptions {
@@ -68,9 +63,11 @@ export function useUsersTable({
         cell: (info) => {
           const userName = (info.getValue() as string) ?? "";
           return (
-            <span>
-              <Avatar name={userName || "-"} size={24} aria-hidden />
-              <Text>{userName || "-"}</Text>
+            <span className="inline-flex items-center gap-2">
+              <Avatar className="size-6">
+                <AvatarFallback>{(userName || "-").charAt(0).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              {userName || "-"}
             </span>
           );
         },
@@ -107,37 +104,40 @@ export function useUsersTable({
           return (
             <RowActions>
               <Button
-                size="small"
-                appearance="subtle"
-                icon={<Edit20Regular />}
+                size="icon-sm"
+                variant="ghost"
                 onClick={(e) => {
                   e.stopPropagation();
                   onEdit(row);
                 }}
                 aria-label={"编辑"}
-              />
+              >
+                <Pencil />
+              </Button>
               <Button
-                size="small"
-                appearance="subtle"
-                icon={<Delete20Regular />}
+                size="icon-sm"
+                variant="ghost"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDelete(row.id!);
                 }}
                 aria-label={"删除"}
-              />
+              >
+                <Trash2 />
+              </Button>
               {canImpersonateRow && (
                 <Button
-                  size="small"
-                  appearance="subtle"
-                  icon={<PersonArrowLeft20Regular />}
+                  size="icon-sm"
+                  variant="ghost"
                   onClick={(e) => {
                     e.stopPropagation();
                     onImpersonate(row);
                   }}
                   aria-label={"模拟登录"}
                   title={"模拟登录"}
-                />
+                >
+                  <UserRoundCog />
+                </Button>
               )}
             </RowActions>
           );

@@ -4,8 +4,8 @@
  * 直接使用 router 实例而非 useNavigate()，避免必须在 <RouterProvider> 内部使用的限制。
  */
 import { useEffect } from "react";
-import { addRouteListener } from "./routeEvents";
-import { router } from "./router";
+import { addRouteListener } from "@/lib/routeEvents";
+import { router } from "@/router";
 
 export function RouteEventProvider() {
   useEffect(() => {

@@ -1,6 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Card, CardHeader, MessageBar, MessageBarBody, Text } from "@fluentui/react-components";
+import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@acrostack/ui/components/card";
 import { accountRegister } from "@acrostack/api-client/clients/account/accountRegister";
 import { extractAbpErrorMessage, useAuth } from "@acrostack/core";
 import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
@@ -50,68 +57,70 @@ export function RegisterPage() {
   });
 
   return (
-    <Card>
-      <CardHeader
-        header={<Text weight="semibold">注册</Text>}
-        description={<Text size={200}>创建新账户</Text>}
-      />
-      <FormStack
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          void form.handleSubmit();
-        }}
-      >
-        {rootError && (
-          <MessageBar intent="error">
-            <MessageBarBody>{rootError}</MessageBarBody>
-          </MessageBar>
-        )}
-        <form.AppField
-          name="userName"
-          children={(field) => (
-            <field.TextField label={"用户名"} inputProps={{ autoComplete: "username" }} />
-          )}
-        />
-        <form.AppField
-          name="emailAddress"
-          children={(field) => (
-            <field.TextField
-              label={"电子邮件地址"}
-              inputProps={{ type: "email", autoComplete: "email" }}
-            />
-          )}
-        />
-        <form.AppField
-          name="password"
-          children={(field) => (
-            <field.TextField
-              label={"密码"}
-              inputProps={{ type: "password", autoComplete: "new-password" }}
-            />
-          )}
-        />
-        <form.AppField
-          name="confirmPassword"
-          validators={{
-            onChangeListenTo: ["password"],
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>注册</CardTitle>
+        <CardDescription>创建新账户</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormStack
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
           }}
-          children={(field) => (
-            <field.TextField
-              label={"确认密码"}
-              inputProps={{ type: "password", autoComplete: "new-password" }}
-            />
+        >
+          {rootError && (
+            <Alert variant="destructive">
+              <AlertDescription>{rootError}</AlertDescription>
+            </Alert>
           )}
-        />
-        <form.AppForm>
-          <FormActions>
-            <form.SubmitButton label={"注册"} />
-          </FormActions>
-        </form.AppForm>
-        <Text as="p" size={200} block>
-          {"已经有账户了？"} <Link to="/account/login">{"登录"}</Link>
-        </Text>
-      </FormStack>
+          <form.AppField
+            name="userName"
+            children={(field) => (
+              <field.TextField label={"用户名"} inputProps={{ autoComplete: "username" }} />
+            )}
+          />
+          <form.AppField
+            name="emailAddress"
+            children={(field) => (
+              <field.TextField
+                label={"电子邮件地址"}
+                inputProps={{ type: "email", autoComplete: "email" }}
+              />
+            )}
+          />
+          <form.AppField
+            name="password"
+            children={(field) => (
+              <field.TextField
+                label={"密码"}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
+            )}
+          />
+          <form.AppField
+            name="confirmPassword"
+            validators={{
+              onChangeListenTo: ["password"],
+            }}
+            children={(field) => (
+              <field.TextField
+                label={"确认密码"}
+                inputProps={{ type: "password", autoComplete: "new-password" }}
+              />
+            )}
+          />
+          <form.AppForm>
+            <FormActions>
+              <form.SubmitButton label={"注册"} />
+            </FormActions>
+          </form.AppForm>
+          <p className="text-sm text-muted-foreground">
+            {"已经有账户了？"} <Link to="/account/login">{"登录"}</Link>
+          </p>
+        </FormStack>
+      </CardContent>
     </Card>
   );
 }

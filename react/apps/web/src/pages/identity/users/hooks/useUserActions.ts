@@ -3,15 +3,15 @@
  * 内聚列表失效刷新；错误提示统一 extractAbpErrorMessage。
  */
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToastController } from "@fluentui/react-components";
 import { userGetListQueryKey } from "@acrostack/api-client/hooks/user/useUserGetList";
 import { useUserDelete } from "@acrostack/api-client/hooks/user/useUserDelete";
 import { extractAbpErrorMessage, impersonateUser } from "@acrostack/core";
+
 import type { UserItem } from "./useUsersTable";
 
 export function useUserActions() {
-  const { dispatchToast } = useToastController();
   const queryClient = useQueryClient();
   const deleteMutation = useUserDelete();
 
@@ -39,17 +39,13 @@ export function useUserActions() {
   );
 
   /** 模拟登录指定用户；失败时记录日志并以 extractAbpErrorMessage 提示。 */
-  const impersonate = useCallback(
-    (user: UserItem) => {
-      if (!user.id) return;
-      void impersonateUser(user.id).catch((err: unknown) => {
-        const message = extractAbpErrorMessage(err);
-        console.error("[impersonation] failed:", err);
-        dispatchToast(message, { intent: "error" });
-      });
-    },
-    [dispatchToast],
-  );
+  const impersonate = useCallback((user: UserItem) => {
+    if (!user.id) return;
+    void impersonateUser(user.id).catch((err: unknown) => {
+      console.error("[impersonation] failed:", err);
+      toast.error(extractAbpErrorMessage(err));
+    });
+  }, []);
 
   return { remove, removePending: deleteMutation.isPending, impersonate, invalidateList };
 }

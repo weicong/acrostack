@@ -1,18 +1,17 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as adminRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
 import { authGuard } from "@acrostack/core";
 
-const ProfilePage = lazyRouteComponent(() => import("@/pages/account/ProfilePage"), "ProfilePage");
+import { ProfilePage } from "@/pages/account/ProfilePage";
 
 /**
- * Profile route. Not shown in the main sidebar — accessed via the user menu
- * in the Header (see components/layout/UserMenu.tsx), mirroring ABP's
- * convention where "Personal info" lives under the user dropdown, not the
- * navigation menu.
+ * 个人信息页。**不进侧栏**——它从侧栏页脚的账户菜单进入（ABP 的约定是
+ * 「个人信息」放在用户下拉里而不是导航菜单里），但仍声明 `breadcrumb`
+ * 以便面包屑能给它一个名字。
  */
-export const Route = createRoute({
-  getParentRoute: () => adminRoute,
-  path: "/profile",
-  component: ProfilePage,
+export const Route = createFileRoute("/admin/profile")({
   beforeLoad: authGuard,
+  component: ProfilePage,
+  staticData: {
+    breadcrumb: { label: "个人信息" },
+  },
 });

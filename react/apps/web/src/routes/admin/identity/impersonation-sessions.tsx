@@ -1,24 +1,15 @@
-import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { Route as identityRoute } from "./route";
+import { createFileRoute } from "@tanstack/react-router";
+import { UserX } from "lucide-react";
 import { createPermissionGuard } from "@acrostack/core";
-import { type RouteMenuConfig } from "@/lib/routing/route-config-types";
-import { PersonProhibited20Regular } from "@fluentui/react-icons";
 
-const ImpersonationSessionsPage = lazyRouteComponent(
-  () => import("@/pages/identity/impersonation-sessions/ImpersonationSessionsPage"),
-  "ImpersonationSessionsPage",
-);
+import { ImpersonationSessionsPage } from "@/pages/identity/impersonation-sessions/ImpersonationSessionsPage";
 
-/** Menu metadata for this route (consumed by Sidebar via route-config.ts). */
-export const menu: RouteMenuConfig = {
-  name: "模拟登录记录",
-  icon: PersonProhibited20Regular,
-  requiredPolicy: "AbpIdentity.Users.ManageImpersonationSessions",
-};
+const POLICY = "AbpIdentity.Users.ManageImpersonationSessions";
 
-export const Route = createRoute({
-  getParentRoute: () => identityRoute,
-  path: "/impersonation-sessions",
+export const Route = createFileRoute("/admin/identity/impersonation-sessions")({
+  beforeLoad: createPermissionGuard(POLICY),
   component: ImpersonationSessionsPage,
-  beforeLoad: createPermissionGuard("AbpIdentity.Users.ManageImpersonationSessions"),
+  staticData: {
+    nav: { label: "模拟登录记录", group: "系统", icon: UserX, order: 4, requiredPolicy: POLICY },
+  },
 });
