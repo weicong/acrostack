@@ -120,9 +120,27 @@
  *
  * Applied by `<html class="theme-fluent">` (see `ThemeProvider`); it stacks on
  * top of the mode, so `.theme-fluent` is the light set and `.theme-fluent.dark`
- * the dark one. Source colours: Fluent 2 neutrals + brand ramp
- * (light #0f6cbd / dark #479ef5) and the classic Office chart series.
- * Fluent chrome is squarer and uses Segoe UI, so radius and font move too.
+ * the dark one.
+ *
+ * Every value is lifted from Fluent UI React v9's own Storybook
+ * (https://storybooks.fluentui.dev/react/?path=/docs/theme-colors--docs,
+ * themes `web-light` / `web-dark`) and is written down as the source hex:
+ *
+ *   web-light  brand #0f6cbd (hover #115ea3, pressed #0c3b5e), on-brand #ffffff
+ *              neutral bg #ffffff / #fafafa / #f5f5f5 / #f0f0f0 / #ebebeb
+ *              foreground #242424 / #424242 / #616161
+ *              stroke #d1d1d1 (accessible) / #e0e0e0 (subtle)
+ *   web-dark   brand #115ea3 (hover #0f6cbd, pressed #0c3b5e), on-brand #ffffff
+ *              neutral bg #292929 (raised) / #1f1f1f / #141414 (recessed)
+ *              foreground #ffffff / #d6d6d6 / #adadad
+ *              stroke #666666 / #525252 / #3d3d3d
+ *
+ * Note the dark brand is *darker* than the light one (#115ea3, not #479ef5 —
+ * that one is `colorBrandForeground`, i.e. link/text blue on dark surfaces, and
+ * is only used here for the focus ring).
+ *
+ * Fluent chrome is squarer and uses Segoe UI, so radius and font move too:
+ * `--radius` 0.375rem maps to Fluent's own ramp (sm 2px / md 4px / lg 6px).
  * ------------------------------------------------------------------------- */
 .theme-fluent {
   --radius: 0.375rem;
@@ -131,23 +149,23 @@
     "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans SC", "PingFang SC",
     "Microsoft YaHei", sans-serif;
 
-  --background: oklch(0.962 0.002 67.802); /* #f3f2f1 */
-  --foreground: oklch(0.26 0 0); /* #242424 */
-  --card: oklch(1 0 0);
+  --background: oklch(0.985 0 0); /* #fafafa — neutralBackground2 */
+  --foreground: oklch(0.26 0 0); /* #242424 — neutralForeground1 */
+  --card: oklch(1 0 0); /* #ffffff — neutralBackground1 */
   --card-foreground: oklch(0.26 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.26 0 0);
-  --primary: oklch(0.526 0.149 251.625); /* #0f6cbd */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0); /* #f5f5f5 */
-  --secondary-foreground: oklch(0.314 0.002 67.742); /* #323130 */
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.483 0.004 67.729); /* #605e5c */
-  --accent: oklch(0.905 0.003 67.78); /* #e1dfdd */
-  --accent-foreground: oklch(0.314 0.002 67.742);
-  --destructive: oklch(0.523 0.206 25.85); /* #c50f1f */
-  --border: oklch(0.905 0.003 67.78);
-  --input: oklch(0.905 0.003 67.78);
+  --primary: oklch(0.526 0.149 251.625); /* #0f6cbd — brandBackground */
+  --primary-foreground: oklch(1 0 0); /* #ffffff — foregroundOnBrand */
+  --secondary: oklch(0.955 0 0); /* #f0f0f0 — neutralBackground4 */
+  --secondary-foreground: oklch(0.26 0 0);
+  --muted: oklch(0.97 0 0); /* #f5f5f5 — neutralBackground3 */
+  --muted-foreground: oklch(0.493 0 0); /* #616161 — neutralForeground3 */
+  --accent: oklch(0.97 0 0); /* #f5f5f5 — neutralBackground1Hover */
+  --accent-foreground: oklch(0.26 0 0);
+  --destructive: oklch(0.57 0.193 24.684); /* #d13438 — redBackground3 */
+  --border: oklch(0.907 0 0); /* #e0e0e0 — neutralStroke2 */
+  --input: oklch(0.861 0 0); /* #d1d1d1 — neutralStroke1 */
   --ring: oklch(0.526 0.149 251.625);
 
   /* Classic Office chart series: blue / orange / grey / yellow / green. */
@@ -157,43 +175,43 @@
   --chart-4: oklch(0.842 0.173 84.575); /* #ffc000 */
   --chart-5: oklch(0.684 0.149 134.599); /* #70ad47 */
 
-  --sidebar: oklch(0.983 0.002 67.803); /* #faf9f8 */
+  --sidebar: oklch(0.97 0 0); /* #f5f5f5 */
   --sidebar-foreground: oklch(0.26 0 0);
   --sidebar-primary: oklch(0.526 0.149 251.625);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.905 0.003 67.78);
+  --sidebar-accent: oklch(0.94 0 0); /* #ebebeb — neutralBackground1Selected */
   --sidebar-accent-foreground: oklch(0.26 0 0);
-  --sidebar-border: oklch(0.922 0.002 67.801); /* #e6e5e4 */
+  --sidebar-border: oklch(0.907 0 0);
   --sidebar-ring: oklch(0.526 0.149 251.625);
 }
 
 .theme-fluent.dark {
-  --background: oklch(0.219 0.002 67.696); /* #1b1a19 */
+  --background: oklch(0.239 0 0); /* #1f1f1f — neutralBackground2 */
   --foreground: oklch(1 0 0);
-  --card: oklch(0.261 0.002 67.722); /* #252423 */
+  --card: oklch(0.281 0 0); /* #292929 — neutralBackground1 (raised) */
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.261 0.002 67.722);
+  --popover: oklch(0.281 0 0);
   --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.686 0.153 251.073); /* #479ef5 */
-  --primary-foreground: oklch(0.219 0.002 67.696);
-  --secondary: oklch(0.278 0.002 67.729); /* #292827 */
+  --primary: oklch(0.476 0.131 251.415); /* #115ea3 — brandBackground (dark) */
+  --primary-foreground: oklch(1 0 0); /* #ffffff — foregroundOnBrand */
+  --secondary: oklch(0.321 0 0); /* #333333 — neutralBackground2Hover */
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.278 0.002 67.729);
-  --muted-foreground: oklch(0.828 0.004 67.775); /* #c8c6c4 */
-  --accent: oklch(0.314 0.002 67.742); /* #323130 */
+  --muted: oklch(0.321 0 0);
+  --muted-foreground: oklch(0.748 0 0); /* #adadad — neutralForeground3 */
+  --accent: oklch(0.36 0 0); /* #3d3d3d — neutralBackground1Hover */
   --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.702 0.159 16.869); /* #f1707b */
-  --border: oklch(0.349 0.002 67.752); /* #3b3a39 */
-  --input: oklch(0.349 0.002 67.752);
-  --ring: oklch(0.686 0.153 251.073);
+  --destructive: oklch(0.703 0.126 18.944); /* #e37d80 — redForeground1 */
+  --border: oklch(0.439 0 0); /* #525252 — neutralStroke2 */
+  --input: oklch(0.51 0 0); /* #666666 — neutralStroke1 */
+  --ring: oklch(0.686 0.153 251.073); /* #479ef5 — brandForeground1 */
 
-  --sidebar: oklch(0.196 0.003 67.678); /* #161514 */
+  --sidebar: oklch(0.191 0 0); /* #141414 — neutralBackground3 (recessed) */
   --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.686 0.153 251.073);
-  --sidebar-primary-foreground: oklch(0.196 0.003 67.678);
-  --sidebar-accent: oklch(0.278 0.002 67.729);
+  --sidebar-primary: oklch(0.476 0.131 251.415);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.321 0 0); /* #333333 */
   --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.349 0.002 67.752);
+  --sidebar-border: oklch(0.36 0 0); /* #3d3d3d */
   --sidebar-ring: oklch(0.686 0.153 251.073);
 }
 
