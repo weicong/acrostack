@@ -315,3 +315,22 @@
     overflow: hidden;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Override (deliberately OUTSIDE any `@layer`): filled buttons should paint
+ * their background all the way to the outer edge, not stop at the padding box.
+ *
+ * `button.tsx` is a vendored file copied verbatim from the base-nova template,
+ * which sets `bg-clip-padding` (background-clip: padding-box) on the shared base
+ * class. That leaves a 1px transparent inset on the primary (filled) button,
+ * making it read smaller than the outlined one. Instead of editing the vendored
+ * file (which would break upstream parity), we override only the clip here.
+ *
+ * Written unlayered so it beats Tailwind's `.bg-clip-padding` utility (which
+ * lives in `@layer utilities`) at equal specificity. Scoped to
+ * `[data-slot="button"]` so other base-nova components that use
+ * `bg-clip-padding` (e.g. sheet.tsx) are untouched.
+ * ------------------------------------------------------------------------- */
+[data-slot="button"] {
+  background-clip: border-box;
+}
