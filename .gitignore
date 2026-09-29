@@ -35,5 +35,15 @@ dist-ssr
 # AI agent worktrees
 .claude/worktrees/
 
+# Per-tool skill mirrors.
+# `.agents/skills/` is the real installation (see skills-lock.json); the four
+# below are Windows junctions pointing into it. Git cannot store a junction, so
+# tracking them would materialise five real copies of the same files on clone —
+# and collide with the existing junctions on checkout.
+/.codeartsdoer/
+/.codebuddy/
+/.trae/
+/.zcode/
+
 # Browser-automation scratch files
 .tmp-*

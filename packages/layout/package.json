@@ -21,11 +21,6 @@
   "dependencies": {
     "lucide-react": "catalog:"
   },
-  "peerDependencies": {
-    "@workspace/ui": "workspace:*",
-    "react": "^19",
-    "react-dom": "^19"
-  },
   "devDependencies": {
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -33,5 +28,10 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@workspace/ui": "workspace:*",
+    "react": "^19",
+    "react-dom": "^19"
   }
 }
