@@ -43,7 +43,7 @@ export function initUserManager(): void {
 export function getAuthClient(): OidcClient {
   if (!client) {
     throw new Error(
-      "[@acrostack/core] OIDC 客户端尚未初始化：请在 main.tsx 中于 loadRuntimeConfig() 之后调用 initUserManager()。",
+      "[@workspace/core] OIDC 客户端尚未初始化：请在 main.tsx 中于 loadRuntimeConfig() 之后调用 initUserManager()。",
     );
   }
 
@@ -54,7 +54,7 @@ export const userManager = new Proxy({} as OidcUserManager, {
   get(_, prop) {
     if (!instance) {
       throw new Error(
-        "[@acrostack/core] userManager 尚未初始化：请在 main.tsx 中于 loadRuntimeConfig() 之后调用 initUserManager()。",
+        "[@workspace/core] userManager 尚未初始化：请在 main.tsx 中于 loadRuntimeConfig() 之后调用 initUserManager()。",
       );
     }
     return (instance as unknown as Record<string | symbol, unknown>)[prop];

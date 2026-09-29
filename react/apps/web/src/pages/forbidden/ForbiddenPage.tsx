@@ -1,14 +1,14 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ShieldAlert } from "lucide-react";
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { PageHeader } from "@acrostack/layout";
+} from "@workspace/ui/components/card";
+import { PageHeader } from "@workspace/layout";
 
 /**
  * 403 页面：说明「为什么进不来」以及「下一步怎么做」，

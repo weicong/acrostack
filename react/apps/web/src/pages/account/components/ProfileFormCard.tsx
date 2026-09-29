@@ -1,13 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@acrostack/ui/components/card";
-import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { FormActions, FormStack, useAppForm } from "@workspace/ui/form";
 import {
   useProfileGet,
   profileGetQueryKey,
-} from "@acrostack/api-client/hooks/profile/useProfileGet";
-import { useProfileUpdate } from "@acrostack/api-client/hooks/profile/useProfileUpdate";
-import { extractAbpErrorMessage } from "@acrostack/core";
+} from "@workspace/api-client/hooks/profile/useProfileGet";
+import { useProfileUpdate } from "@workspace/api-client/hooks/profile/useProfileUpdate";
+import { extractAbpErrorMessage } from "@workspace/core";
 import { profileSchema } from "../schemas/profile";
 
 /** 个人设置卡片：资料查询与更新自包含。 */

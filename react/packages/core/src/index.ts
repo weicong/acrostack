@@ -1,11 +1,11 @@
 /**
- * `@acrostack/core` —— ABP 框架接入层。
+ * `@workspace/core` —— ABP 框架接入层。
  *
  * 覆盖：运行时配置（dynamic-env → env 回退）、OIDC 授权（PKCE + 静默续期 + 路由守卫）、
  * 权限判定（application configuration + 复合策略 + 权限守卫 + `<Authorize>`）、
  * 多租户（`__tenant` 传播）与 ABP 语义的 HTTP 拦截器（401 刷新重放 / 403 分流 / 逃逸开关）。
  *
- * 依赖倒置：core 不读 `import.meta.env`、不 import `@acrostack/api-client`，
+ * 依赖倒置：core 不读 `import.meta.env`、不 import `@workspace/api-client`，
  * 宿主的 env、403 目标与跳转方式、共享 axios 实例全部在组合根注入。
  *
  * bootstrap 顺序（与 ABP React 官方模板一致）：

@@ -1,5 +1,5 @@
-import { Button } from "@acrostack/ui/components/button";
-import { FormDialog } from "@acrostack/ui/dialog";
+import { Button } from "@workspace/ui/components/button";
+import { FormDialog } from "@workspace/ui/dialog";
 
 import type { RoleFormRole } from "../types/role";
 import { RoleForm } from "./RoleForm";

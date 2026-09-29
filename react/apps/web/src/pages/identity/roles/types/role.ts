@@ -1,4 +1,4 @@
-import type { VoloAbpIdentityIdentityRoleDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityRoleDto";
+import type { VoloAbpIdentityIdentityRoleDto } from "@workspace/api-client/models/volo/abp/identity/IdentityRoleDto";
 
 /** List/form item as returned by role endpoints. */
 export type RoleItem = VoloAbpIdentityIdentityRoleDto;

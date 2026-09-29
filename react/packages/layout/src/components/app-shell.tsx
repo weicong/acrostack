@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { Separator } from "@acrostack/ui/components/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@acrostack/ui/components/sidebar";
+import { Separator } from "@workspace/ui/components/separator";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
 
 import { AppSidebar, type AppSidebarProps } from "#components/app-sidebar";
 import { BreadcrumbLabelProvider } from "#components/breadcrumb-label-provider";

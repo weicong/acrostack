@@ -3,7 +3,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@acrostack/ui/components/collapsible";
+} from "@workspace/ui/components/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,7 +13,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@acrostack/ui/components/sidebar";
+} from "@workspace/ui/components/sidebar";
 
 import type { LinkRenderer, NavGroup } from "#lib/types";
 

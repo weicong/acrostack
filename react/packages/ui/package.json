@@ -1,5 +1,5 @@
 {
-  "name": "@acrostack/ui",
+  "name": "@workspace/ui",
   "version": "0.0.0",
   "private": true,
   "description": "shadcn/ui（base-nova / Base UI）原语 + 全局样式表；附带 data-table / dialog / form 三个业务无关的机制封装",

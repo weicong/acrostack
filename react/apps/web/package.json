@@ -1,5 +1,5 @@
 {
-  "name": "@acrostack/web",
+  "name": "web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,13 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acrostack/api-client": "workspace:*",
-    "@acrostack/core": "workspace:*",
-    "@acrostack/layout": "workspace:*",
-    "@acrostack/ui": "workspace:*",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-router": "^1.170.32",
     "@tanstack/react-table": "^9.2.4",
+    "@workspace/api-client": "workspace:*",
+    "@workspace/core": "workspace:*",
+    "@workspace/layout": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

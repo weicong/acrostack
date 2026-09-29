@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { RouteBreadcrumb } from "@acrostack/layout";
-import type { Crumb } from "@acrostack/layout";
+import { RouteBreadcrumb } from "@workspace/layout";
+import type { Crumb } from "@workspace/layout";
 
 import { matchRouteLabel, useRouteLabelIndex } from "./route-meta";
 import { renderLink } from "./layout";

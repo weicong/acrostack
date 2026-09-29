@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "@tanstack/react-router";
-import { AppShell } from "@acrostack/layout";
-import { getApplicationName, getBackendAccountUrl, useAuth } from "@acrostack/core";
-import type { NavUserAction } from "@acrostack/layout";
+import { AppShell } from "@workspace/layout";
+import { getApplicationName, getBackendAccountUrl, useAuth } from "@workspace/core";
+import type { NavUserAction } from "@workspace/layout";
 
 import { AppBreadcrumb } from "./breadcrumb";
 import { renderLink, useShellNav, useShellUser } from "./layout";
@@ -22,7 +22,7 @@ function readSidebarOpen(): boolean {
 /**
  * 管理后台布局（/admin/*）。
  *
- * 外壳来自 `@acrostack/layout`：它不认识路由库，导航数据与链接渲染器都由这里注入。
+ * 外壳来自 `@workspace/layout`：它不认识路由库，导航数据与链接渲染器都由这里注入。
  * 槽位映射：`header` = 面包屑、`banner` = 模拟登录提示、`children` = 当前页面。
  * 窄屏（< md）时外壳把侧栏收进抽屉并自动渲染开关。
  */

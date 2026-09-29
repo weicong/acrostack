@@ -13,7 +13,7 @@ import { Toaster as Sonner, type ToasterProps } from "sonner";
 /**
  * 读取 `<html>` 上的 `dark` 类，并订阅它的变化。
  *
- * 本包是 `@acrostack/layout` 的**下层**（layout 依赖 ui，不能反向依赖），所以这里不能
+ * 本包是 `@workspace/layout` 的**下层**（layout 依赖 ui，不能反向依赖），所以这里不能
  * 用 layout 的 `useTheme`。主题在文档根节点上的类名是两者唯一稳定的交汇点。
  */
 function useDocumentTheme(): "light" | "dark" {

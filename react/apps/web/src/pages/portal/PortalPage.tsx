@@ -1,8 +1,8 @@
 import type { KeyboardEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Settings, UserRound } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle } from "@acrostack/ui/components/card";
-import { getApplicationName, getBackendAccountUrl } from "@acrostack/core";
+import { Card, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { getApplicationName, getBackendAccountUrl } from "@workspace/core";
 
 /** 可点击卡片：Enter / Space 与鼠标点击行为一致，保持键盘可达。 */
 function activateOnKey(event: KeyboardEvent<HTMLDivElement>, action: () => void) {

@@ -73,7 +73,7 @@ interface OAuth2ErrorResponse {
  * The backend returns ABP localization resource keys (e.g.
  * <c>Volo.Account:NestedImpersonationIsNotAllowed</c>) as the OAuth2
  * <c>error_description</c> for known impersonation errors. Key translation is
- * centralized in `@acrostack/core` 的 http/error.ts (localizeAbpError). For
+ * centralized in `@workspace/core` 的 http/error.ts (localizeAbpError). For
  * unknown errors we fall back to the raw description or HTTP status.
  */
 async function extractImpersonationError(response: Response): Promise<string> {

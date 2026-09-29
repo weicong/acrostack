@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@acrostack/ui/components/breadcrumb";
+} from "@workspace/ui/components/breadcrumb";
 
 import type { Crumb, LinkRenderer } from "#lib/types";
 

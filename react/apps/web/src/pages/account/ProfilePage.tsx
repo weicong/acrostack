@@ -1,7 +1,7 @@
 /**
  * 个人信息页：个人设置与修改密码两张自包含卡片的编排。
  */
-import { PageHeader } from "@acrostack/layout";
+import { PageHeader } from "@workspace/layout";
 import { ChangePasswordFormCard } from "./components/ChangePasswordFormCard";
 import { ProfileFormCard } from "./components/ProfileFormCard";
 

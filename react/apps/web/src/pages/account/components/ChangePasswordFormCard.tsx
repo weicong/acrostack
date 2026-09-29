@@ -1,8 +1,8 @@
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@acrostack/ui/components/card";
-import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { useProfileChangePassword } from "@acrostack/api-client/hooks/profile/useProfileChangePassword";
-import { extractAbpErrorMessage } from "@acrostack/core";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { FormActions, FormStack, useAppForm } from "@workspace/ui/form";
+import { useProfileChangePassword } from "@workspace/api-client/hooks/profile/useProfileChangePassword";
+import { extractAbpErrorMessage } from "@workspace/core";
 import { passwordSchema } from "../schemas/profile";
 
 /** 修改密码卡片：改密动作自包含，成功后清空表单。 */

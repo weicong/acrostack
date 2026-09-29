@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Shield } from "lucide-react";
-import { createPermissionGuard } from "@acrostack/core";
+import { createPermissionGuard } from "@workspace/core";
 
 import { PermissionsPage } from "@/pages/identity/permissions/PermissionsPage";
 

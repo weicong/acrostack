@@ -1,16 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { accountRegister } from "@acrostack/api-client/clients/account/accountRegister";
-import { extractAbpErrorMessage, useAuth } from "@acrostack/core";
-import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
+} from "@workspace/ui/components/card";
+import { accountRegister } from "@workspace/api-client/clients/account/accountRegister";
+import { extractAbpErrorMessage, useAuth } from "@workspace/core";
+import { FormActions, FormStack, useAppForm } from "@workspace/ui/form";
 import { useState } from "react";
 
 const registerSchema = z

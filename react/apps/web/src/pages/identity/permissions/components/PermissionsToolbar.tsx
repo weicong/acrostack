@@ -4,16 +4,16 @@
  * 「提供程序」一词过于抽象，这里用「授权对象」表达，
  * 并把两个下拉放进统一的工具栏排布中，与其它列表页保持一致。
  */
-import type { VoloAbpIdentityIdentityRoleDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityRoleDto";
-import { ListToolbar } from "@acrostack/ui/data-table";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import type { VoloAbpIdentityIdentityRoleDto } from "@workspace/api-client/models/volo/abp/identity/IdentityRoleDto";
+import { ListToolbar } from "@workspace/ui/data-table";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acrostack/ui/components/select";
+} from "@workspace/ui/components/select";
 import type { ProviderName } from "../utils/permission-tree";
 
 interface PermissionsToolbarProps {

@@ -1,17 +1,17 @@
 import type { KeyboardEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { BookOpen, Code, Info, LogOut } from "lucide-react";
-import { Alert, AlertAction, AlertDescription } from "@acrostack/ui/components/alert";
-import { Button } from "@acrostack/ui/components/button";
+import { Alert, AlertAction, AlertDescription } from "@workspace/ui/components/alert";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { PageHeader, useTheme } from "@acrostack/layout";
-import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@acrostack/core";
+} from "@workspace/ui/components/card";
+import { PageHeader, useTheme } from "@workspace/layout";
+import { getApiUrl, getApplicationName, useAuth, useCurrentUser } from "@workspace/core";
 import { useShellNav } from "@/shell/layout";
 
 /** 卡片墙列配置：按最小宽度自动排布，窄屏自然折行。 */

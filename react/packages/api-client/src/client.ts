@@ -2,7 +2,7 @@
  * 应用与生成客户端之间的唯一入口（本文件手写，其余均为生成物）。
  *
  * 生成物 `src/generated/.kubb/client` 只提供**裸客户端**：baseURL、鉴权头、
- * 租户头、Accept-Language 与错误处理由应用在 bootstrap 时经 `@acrostack/core`
+ * 租户头、Accept-Language 与错误处理由应用在 bootstrap 时经 `@workspace/core`
  * 的 `setupHttpClient(transport)` 注册拦截器注入——本包不含应用语义。
  *
  * `transport` 单独导出的原因：ABP 的"401 刷新后重放一次"必须注册在**原生 axios

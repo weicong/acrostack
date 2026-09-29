@@ -1,5 +1,5 @@
 {
-  "name": "@acrostack/layout",
+  "name": "@workspace/layout",
   "version": "0.0.0",
   "private": true,
   "description": "应用外壳（AppShell / 侧边栏 / 面包屑 / 主题），刻意与路由库无关：导航数据由宿主传入，链接渲染经 renderLink 注入",
@@ -23,15 +23,15 @@
     "lucide-react": "catalog:"
   },
   "devDependencies": {
-    "@acrostack/ui": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@workspace/ui": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@acrostack/ui": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

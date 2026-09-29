@@ -7,13 +7,13 @@
 import { useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@acrostack/ui/components/badge";
-import { Button } from "@acrostack/ui/components/button";
-import { impersonationSessionGetListQueryOptions } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
-import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@acrostack/api-client/models/acroStack/impersonation/ImpersonationSessionDto";
-import { useDataTableState } from "@acrostack/ui/data-table";
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import { impersonationSessionGetListQueryOptions } from "@workspace/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
+import type { AcroStackImpersonationImpersonationSessionDto as ImpersonationSessionDto } from "@workspace/api-client/models/acroStack/impersonation/ImpersonationSessionDto";
+import { useDataTableState } from "@workspace/ui/data-table";
 import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
-import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
+import { useDataTable, type AppTableFeatures } from "@workspace/ui/data-table";
 
 export type SessionItem = ImpersonationSessionDto;
 

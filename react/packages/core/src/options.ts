@@ -1,7 +1,7 @@
 /**
  * 宿主注入点。
  *
- * core 不读 `import.meta.env`、不 import `from "@acrostack/api-client"`，也不直接操作宿主路由：
+ * core 不读 `import.meta.env`、不 import `from "@workspace/api-client"`，也不直接操作宿主路由：
  * 环境差异（后端地址、默认文化、403 目标与跳转方式、共享 axios 实例）一律由宿主在 bootstrap 时注入。
  * 这样 core 可脱离具体应用单测，也让"换部署环境/换宿主"只改宿主的组合根。
  */
@@ -51,7 +51,7 @@ export function configureCore(next: CoreOptions): void {
 export function getCoreOptions(): CoreOptions {
   if (!options) {
     throw new Error(
-      "[@acrostack/core] 尚未配置：请在应用入口先调用 configureCore({ env, ... })（见 apps/web/src/lib/core.ts）。",
+      "[@workspace/core] 尚未配置：请在应用入口先调用 configureCore({ env, ... })（见 apps/web/src/lib/core.ts）。",
     );
   }
   return options;

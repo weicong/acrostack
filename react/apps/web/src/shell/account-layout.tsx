@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { getApplicationName } from "@acrostack/core";
+import { getApplicationName } from "@workspace/core";
 
 /**
  * 匿名账户区布局（登录/注册/找回密码等）：
  * 整屏居中、品牌标题在上、返回入口在下，中间是路由提供的账户表单。
  *
- * 这里刻意不用 `@acrostack/layout` 的 AppShell——账户页没有导航，套外壳只会
+ * 这里刻意不用 `@workspace/layout` 的 AppShell——账户页没有导航，套外壳只会
  * 多出一圈侧栏与顶栏。它也不需要主题 Provider：主题类挂在 `<html>` 上（见
  * `index.html` 的首屏脚本），页面用 Tailwind 令牌即可。
  */

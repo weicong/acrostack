@@ -1,5 +1,5 @@
 /**
- * @acrostack/layout — the application shell.
+ * @workspace/layout — the application shell.
  *
  * Router-agnostic by design: it takes nav data as props and asks the host for a
  * `renderLink`, so it never imports a routing library. Everything that depends
@@ -7,8 +7,8 @@
  * persistence) stays in the app.
  *
  * This barrel is a convenience entry point. The directory-based exports
- * (`@acrostack/layout/components/app-shell`, `.../hooks/use-theme`,
- * `.../lib/types`) mirror `@acrostack/ui` and are the shape shadcn's CLI
+ * (`@workspace/layout/components/app-shell`, `.../hooks/use-theme`,
+ * `.../lib/types`) mirror `@workspace/ui` and are the shape shadcn's CLI
  * expects, so prefer those when you only need one piece.
  */
 

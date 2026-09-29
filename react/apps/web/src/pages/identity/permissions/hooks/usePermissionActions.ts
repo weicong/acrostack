@@ -5,10 +5,10 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { permissionsGetQueryKey } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
-import { usePermissionsUpdate } from "@acrostack/api-client/hooks/permissions/usePermissionsUpdate";
-import { extractAbpErrorMessage } from "@acrostack/core";
-import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
+import { permissionsGetQueryKey } from "@workspace/api-client/hooks/permissions/usePermissionsGet";
+import { usePermissionsUpdate } from "@workspace/api-client/hooks/permissions/usePermissionsUpdate";
+import { extractAbpErrorMessage } from "@workspace/core";
+import type { VoloAbpPermissionManagementPermissionGroupDto } from "@workspace/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
 import type { ProviderName } from "../utils/permission-tree";
 
 /** 保存权限变更所需的输入。 */

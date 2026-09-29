@@ -1,5 +1,5 @@
 /**
- * @acrostack/layout/primitives — the pieces that make sense on their own.
+ * @workspace/layout/primitives — the pieces that make sense on their own.
  *
  * Use these when you want the layout's building blocks without the full
  * `AppShell` (e.g. only a theme toggle, or your own sidebar composition).

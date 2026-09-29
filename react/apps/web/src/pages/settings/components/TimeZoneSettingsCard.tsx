@@ -5,30 +5,30 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
+} from "@workspace/ui/components/card";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acrostack/ui/components/select";
-import { Spinner } from "@acrostack/ui/components/spinner";
+} from "@workspace/ui/components/select";
+import { Spinner } from "@workspace/ui/components/spinner";
 import {
   useTimeZoneSettingsGet,
   timeZoneSettingsGetQueryKey,
-} from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGet";
-import { useTimeZoneSettingsGetTimezones } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
-import { useTimeZoneSettingsUpdate } from "@acrostack/api-client/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
-import { extractAbpErrorMessage } from "@acrostack/core";
+} from "@workspace/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGet";
+import { useTimeZoneSettingsGetTimezones } from "@workspace/api-client/hooks/timeZoneSettings/useTimeZoneSettingsGetTimezones";
+import { useTimeZoneSettingsUpdate } from "@workspace/api-client/hooks/timeZoneSettings/useTimeZoneSettingsUpdate";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 export function TimeZoneSettingsCard() {
   const queryClient = useQueryClient();

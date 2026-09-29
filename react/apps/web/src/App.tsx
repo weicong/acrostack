@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
-import { Toaster } from "@acrostack/ui/components/sonner";
-import { AuthProvider, queryClient } from "@acrostack/core";
+import { Toaster } from "@workspace/ui/components/sonner";
+import { AuthProvider, queryClient } from "@workspace/core";
 
 import { RouteEventProvider } from "@/lib/RouteEventProvider";
 import { router } from "@/router";

@@ -4,9 +4,9 @@
  */
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "@acrostack/ui/components/button";
-import { Input } from "@acrostack/ui/components/input";
-import { ListToolbar } from "@acrostack/ui/data-table";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { ListToolbar } from "@workspace/ui/data-table";
 
 interface UsersToolbarProps {
   onCreate: () => void;

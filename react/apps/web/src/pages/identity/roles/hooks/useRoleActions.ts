@@ -6,9 +6,9 @@
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { roleGetListQueryKey } from "@acrostack/api-client/hooks/role/useRoleGetList";
-import { useRoleDelete } from "@acrostack/api-client/hooks/role/useRoleDelete";
-import { extractAbpErrorMessage } from "@acrostack/core";
+import { roleGetListQueryKey } from "@workspace/api-client/hooks/role/useRoleGetList";
+import { useRoleDelete } from "@workspace/api-client/hooks/role/useRoleDelete";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 export function useRoleActions() {
   const queryClient = useQueryClient();

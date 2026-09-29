@@ -5,24 +5,24 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
-import { Input } from "@acrostack/ui/components/input";
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { Switch } from "@acrostack/ui/components/switch";
+} from "@workspace/ui/components/card";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
+import { Input } from "@workspace/ui/components/input";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { Switch } from "@workspace/ui/components/switch";
 import {
   useEmailSettingsGet,
   emailSettingsGetQueryKey,
-} from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsGet";
-import { useEmailSettingsUpdate } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsUpdate";
-import { extractAbpErrorMessage } from "@acrostack/core";
+} from "@workspace/api-client/hooks/emailSettings/useEmailSettingsGet";
+import { useEmailSettingsUpdate } from "@workspace/api-client/hooks/emailSettings/useEmailSettingsUpdate";
+import { extractAbpErrorMessage } from "@workspace/core";
 import { emailSchema } from "../schemas/emailSettings";
 
 export function EmailSettingsCard() {

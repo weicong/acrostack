@@ -5,9 +5,9 @@
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { userGetListQueryKey } from "@acrostack/api-client/hooks/user/useUserGetList";
-import { useUserDelete } from "@acrostack/api-client/hooks/user/useUserDelete";
-import { extractAbpErrorMessage, impersonateUser } from "@acrostack/core";
+import { userGetListQueryKey } from "@workspace/api-client/hooks/user/useUserGetList";
+import { useUserDelete } from "@workspace/api-client/hooks/user/useUserDelete";
+import { extractAbpErrorMessage, impersonateUser } from "@workspace/core";
 
 import type { UserItem } from "./useUsersTable";
 

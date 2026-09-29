@@ -214,18 +214,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@acrostack/api-client':
-        specifier: workspace:*
-        version: link:../../packages/api-client
-      '@acrostack/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@acrostack/layout':
-        specifier: workspace:*
-        version: link:../../packages/layout
-      '@acrostack/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tanstack/react-query':
         specifier: ^5.102.8
         version: 5.104.0(react@19.3.0)
@@ -235,6 +223,18 @@ importers:
       '@tanstack/react-table':
         specifier: ^9.2.4
         version: 9.2.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@workspace/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
+      '@workspace/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@workspace/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       lucide-react:
         specifier: 'catalog:'
         version: 1.48.0(react@19.3.0)
@@ -347,15 +347,15 @@ importers:
         specifier: 'catalog:'
         version: 1.48.0(react@19.3.0)
     devDependencies:
-      '@acrostack/ui':
-        specifier: workspace:*
-        version: link:../ui
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../ui
       react:
         specifier: 'catalog:'
         version: 19.3.0

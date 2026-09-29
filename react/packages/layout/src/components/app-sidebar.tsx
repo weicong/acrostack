@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@acrostack/ui/components/sidebar";
+} from "@workspace/ui/components/sidebar";
 
 import { NavMain } from "#components/nav-main";
 import { NavUser, type NavUserAction, type NavUserProps } from "#components/nav-user";

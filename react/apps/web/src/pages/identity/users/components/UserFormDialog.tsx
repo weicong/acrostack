@@ -1,7 +1,7 @@
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { Button } from "@acrostack/ui/components/button";
-import { FormDialog } from "@acrostack/ui/dialog";
-import { useUserGet } from "@acrostack/api-client/hooks/user/useUserGet";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { Button } from "@workspace/ui/components/button";
+import { FormDialog } from "@workspace/ui/dialog";
+import { useUserGet } from "@workspace/api-client/hooks/user/useUserGet";
 
 import { toFormUserFromIdentity, type UserFormUser } from "../types/user";
 import { UserForm } from "./UserForm";

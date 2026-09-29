@@ -1,16 +1,16 @@
 import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { useAuth } from "@acrostack/core";
+} from "@workspace/ui/components/card";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { useAuth } from "@workspace/core";
 
 export function LoginPage() {
   const { isAuthenticated, isLoading, login } = useAuth();

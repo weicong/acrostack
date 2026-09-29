@@ -5,13 +5,13 @@
 import { useMemo } from "react";
 import { Pencil, Trash2, UserRoundCog } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
-import { userGetListQueryOptions } from "@acrostack/api-client/hooks/user/useUserGetList";
-import { Avatar, AvatarFallback } from "@acrostack/ui/components/avatar";
-import { Badge } from "@acrostack/ui/components/badge";
-import { Button } from "@acrostack/ui/components/button";
-import { useDataTableState } from "@acrostack/ui/data-table";
-import { RowActions } from "@acrostack/ui/data-table";
-import { useDataTable, type AppTableFeatures } from "@acrostack/ui/data-table";
+import { userGetListQueryOptions } from "@workspace/api-client/hooks/user/useUserGetList";
+import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import { useDataTableState } from "@workspace/ui/data-table";
+import { RowActions } from "@workspace/ui/data-table";
+import { useDataTable, type AppTableFeatures } from "@workspace/ui/data-table";
 import { useDataTableQuery, type GridQueryParams } from "@/lib/useDataTableQuery";
 
 import type { UserListItem } from "../types/user";

@@ -5,9 +5,9 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { impersonationSessionGetListQueryKey } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
-import { useImpersonationSessionRevoke } from "@acrostack/api-client/hooks/impersonationSession/useImpersonationSessionRevoke";
-import { extractAbpErrorMessage } from "@acrostack/core";
+import { impersonationSessionGetListQueryKey } from "@workspace/api-client/hooks/impersonationSession/useImpersonationSessionGetList";
+import { useImpersonationSessionRevoke } from "@workspace/api-client/hooks/impersonationSession/useImpersonationSessionRevoke";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 export function useImpersonationSessionActions() {
   const queryClient = useQueryClient();

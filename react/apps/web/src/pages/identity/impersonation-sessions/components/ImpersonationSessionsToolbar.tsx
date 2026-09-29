@@ -2,15 +2,15 @@
  * 模拟登录会话工具栏：按会话状态筛选。
  * 后端查询输入不含自由文本过滤，因此只提供状态下拉。
  */
-import { ListToolbar } from "@acrostack/ui/data-table";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
+import { ListToolbar } from "@workspace/ui/data-table";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acrostack/ui/components/select";
+} from "@workspace/ui/components/select";
 import type { SessionStatusFilter } from "../hooks/useImpersonationSessionsTable";
 
 const statusOptions: { value: SessionStatusFilter; label: string }[] = [

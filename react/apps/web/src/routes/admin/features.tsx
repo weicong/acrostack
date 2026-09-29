@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
-import { createPermissionGuard } from "@acrostack/core";
+import { createPermissionGuard } from "@workspace/core";
 
 import { FeaturesPage } from "@/pages/features/FeaturesPage";
 

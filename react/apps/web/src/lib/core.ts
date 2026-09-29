@@ -1,16 +1,16 @@
 /**
- * 应用组合根：把宿主差异注入 `@acrostack/core`。
+ * 应用组合根：把宿主差异注入 `@workspace/core`。
  *
  * core 不读 `import.meta.env`、不 import 生成客户端、也不直接操作路由；本文件集中提供：
  * env 值、开发标记、默认文化、403 目标与 SPA 跳转方式，以及全应用共享的 axios 实例
- * （`@acrostack/api-client/client` 的 `transport`——import 它同时触发
+ * （`@workspace/api-client/client` 的 `transport`——import 它同时触发
  * `client.setConfig({ transport })`，使生成 hooks 也走同一实例）。
  *
  * 调用顺序即 ABP 官方模板的 bootstrap 顺序：
  * `configureCore → bootstrapCore（loadRuntimeConfig + initUserManager）→ setupHttpClient`。
  */
-import { transport } from "@acrostack/api-client/client";
-import { bootstrapCore, configureCore, setupHttpClient } from "@acrostack/core";
+import { transport } from "@workspace/api-client/client";
+import { bootstrapCore, configureCore, setupHttpClient } from "@workspace/core";
 import { DEFAULT_CULTURE, env } from "@/env";
 import { emitRouteEvent } from "@/lib/routeEvents";
 

@@ -1,5 +1,5 @@
 import { ChevronsUpDown, LogOut, MonitorSmartphone, Settings, UserRound } from "lucide-react";
-import { Avatar, AvatarFallback } from "@acrostack/ui/components/avatar";
+import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,13 +8,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@acrostack/ui/components/dropdown-menu";
+} from "@workspace/ui/components/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@acrostack/ui/components/sidebar";
+} from "@workspace/ui/components/sidebar";
 
 import type { ShellUser } from "#lib/types";
 

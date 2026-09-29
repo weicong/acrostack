@@ -5,10 +5,10 @@
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { featuresGetQueryKey } from "@acrostack/api-client/hooks/features/useFeaturesGet";
-import { useFeaturesUpdate } from "@acrostack/api-client/hooks/features/useFeaturesUpdate";
-import { useFeaturesDelete } from "@acrostack/api-client/hooks/features/useFeaturesDelete";
-import { extractAbpErrorMessage } from "@acrostack/core";
+import { featuresGetQueryKey } from "@workspace/api-client/hooks/features/useFeaturesGet";
+import { useFeaturesUpdate } from "@workspace/api-client/hooks/features/useFeaturesUpdate";
+import { useFeaturesDelete } from "@workspace/api-client/hooks/features/useFeaturesDelete";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 interface UseFeatureActionsOptions {
   /** 服务端当前值（用于计算变更项）。 */

@@ -6,11 +6,11 @@
  * 工具栏见 components/UsersToolbar。
  */
 import { useCallback, useState } from "react";
-import { PageHeader } from "@acrostack/layout";
-import { Card, CardContent } from "@acrostack/ui/components/card";
-import { DataTable } from "@acrostack/ui/data-table";
-import { ConfirmDialog } from "@acrostack/ui/dialog";
-import { usePermissions, useCurrentUser } from "@acrostack/core";
+import { PageHeader } from "@workspace/layout";
+import { Card, CardContent } from "@workspace/ui/components/card";
+import { DataTable } from "@workspace/ui/data-table";
+import { ConfirmDialog } from "@workspace/ui/dialog";
+import { usePermissions, useCurrentUser } from "@workspace/core";
 
 import { toFormUserFromIdentity, type UserFormUser } from "./types/user";
 import type { UserItem } from "./hooks/useUsersTable";

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { UserX } from "lucide-react";
-import { createPermissionGuard } from "@acrostack/core";
+import { createPermissionGuard } from "@workspace/core";
 
 import { ImpersonationSessionsPage } from "@/pages/identity/impersonation-sessions/ImpersonationSessionsPage";
 

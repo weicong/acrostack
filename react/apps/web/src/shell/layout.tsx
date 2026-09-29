@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import type { LinkRenderer, ShellUser } from "@acrostack/layout";
-import { useAuth, useCurrentUser, usePermissions } from "@acrostack/core";
+import type { LinkRenderer, ShellUser } from "@workspace/layout";
+import { useAuth, useCurrentUser, usePermissions } from "@workspace/core";
 
 import { useNavGroups, type NavGroup, type RouteNavMeta } from "./route-meta";
 
 /**
  * 宿主装配层：把「本应用的路由树 + ABP 权限 + OIDC 会话」翻译成
- * `@acrostack/layout` 认识的数据形状。
+ * `@workspace/layout` 认识的数据形状。
  *
- * `@acrostack/layout` 刻意不认识路由库与权限系统——它只收数据、要一个链接渲染器。
+ * `@workspace/layout` 刻意不认识路由库与权限系统——它只收数据、要一个链接渲染器。
  * 本文件就是那个翻译层，也是本应用唯一 import `@tanstack/react-router` 的壳层文件。
  */
 

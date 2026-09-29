@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
-import { Button } from "@acrostack/ui/components/button";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { accountSendPasswordResetCode } from "@acrostack/api-client/clients/account/accountSendPasswordResetCode";
-import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { extractAbpErrorMessage } from "@acrostack/core";
+} from "@workspace/ui/components/card";
+import { accountSendPasswordResetCode } from "@workspace/api-client/clients/account/accountSendPasswordResetCode";
+import { FormActions, FormStack, useAppForm } from "@workspace/ui/form";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("AbpAccount::InvalidEmailAddress"),

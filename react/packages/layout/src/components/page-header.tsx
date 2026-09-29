@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 
-import { cn } from "@acrostack/ui/lib/utils";
+import { cn } from "@workspace/ui/lib/utils";
 
 export type PageHeaderProps = Omit<ComponentProps<"header">, "title" | "children"> & {
   /** The page's `h1`. */

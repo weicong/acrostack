@@ -1,4 +1,4 @@
-# @acrostack/api-client — 后端契约的前端投影
+# @workspace/api-client — 后端契约的前端投影
 
 由 **Kubb** 从后端 Swagger 生成的 API 客户端（models / clients / hooks）+ 生成配置与工具链。**生成物一律入库、禁止手改。**
 
@@ -13,9 +13,9 @@
 ## 公开 API
 
 ```ts
-import { transport } from "@acrostack/api-client/client"; // 共享 axios 实例（宿主交给 @acrostack/core 注册拦截器）
-import { useUserGetList } from "@acrostack/api-client/hooks/user/useUserGetList";
-import type { IdentityUserDto } from "@acrostack/api-client/models/volo/abp/identity/IdentityUserDto";
+import { transport } from "@workspace/api-client/client"; // 共享 axios 实例（宿主交给 @workspace/core 注册拦截器）
+import { useUserGetList } from "@workspace/api-client/hooks/user/useUserGetList";
+import type { IdentityUserDto } from "@workspace/api-client/models/volo/abp/identity/IdentityUserDto";
 ```
 
 子路径对应生成目录：`./clients/*`、`./hooks/*`、`./models/*`（按后端 Swagger tag 分目录）。
@@ -45,5 +45,5 @@ KUBB_INPUT=https://localhost:44320/swagger/v1/swagger.json vp -C packages/api-cl
 
 ## 边界
 
-- 本包**不含**应用语义：拦截器（baseURL、OIDC 令牌、租户头、401/403 处理）由 `@acrostack/core` 的 `setupHttpClient(transport)` 注册到 `transport` 上。
+- 本包**不含**应用语义：拦截器（baseURL、OIDC 令牌、租户头、401/403 处理）由 `@workspace/core` 的 `setupHttpClient(transport)` 注册到 `transport` 上。
 - 应用侧**只允许**组合根 `apps/web/src/lib/core.ts` 直接 import 本包（依赖边规则见 `apps/web/AGENTS.md`）。

@@ -2,11 +2,11 @@
  * 功能组卡片：渲染单个功能组的特性列表（布尔型用 Switch，其余用文本 Input）。
  * 编辑值统一存放在父级的 valueMap 中，通过 onValueChange 回写，由父级统一保存。
  */
-import { Card, CardContent, CardHeader, CardTitle } from "@acrostack/ui/components/card";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
-import { Input } from "@acrostack/ui/components/input";
-import { Switch } from "@acrostack/ui/components/switch";
-import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@acrostack/api-client/models/volo/abp/featureManagement/FeatureGroupDto";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
+import { Input } from "@workspace/ui/components/input";
+import { Switch } from "@workspace/ui/components/switch";
+import type { VoloAbpFeatureManagementFeatureGroupDto as FeatureGroupDto } from "@workspace/api-client/models/volo/abp/featureManagement/FeatureGroupDto";
 import { isBooleanFeature } from "../utils/features";
 
 interface FeatureGroupCardProps {

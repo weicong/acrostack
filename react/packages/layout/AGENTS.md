@@ -1,4 +1,4 @@
-# @acrostack/layout — 应用外壳
+# @workspace/layout — 应用外壳
 
 **刻意不认识路由库**：导航数据由宿主传入，链接渲染经 `renderLink` 注入，所以本包不 import
 `@tanstack/react-router`，也不认识 ABP 权限。派生「本应用的路由树 → 导航分组」这类事留在宿主
@@ -10,9 +10,9 @@
 
 | 子路径                                                 | 内容                                                                                                                                                                                        |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@acrostack/layout`                                    | 便捷 barrel：`AppShell` / `AppSidebar` / `NavMain` / `NavUser` / `TeamSwitcher` / `PageHeader` / `RouteBreadcrumb` / `BreadcrumbLabelProvider` / `ThemeProvider` / `ThemeToggle` + 对应类型 |
-| `@acrostack/layout/primitives`                         | 只想要零件（如一个主题切换按钮）而不想要整个 `AppShell` 时用                                                                                                                                |
-| `@acrostack/layout/components/*`、`/hooks/*`、`/lib/*` | 与 `@acrostack/ui` 一致的目录式导出，shadcn CLI 认这个形状                                                                                                                                  |
+| `@workspace/layout`                                    | 便捷 barrel：`AppShell` / `AppSidebar` / `NavMain` / `NavUser` / `TeamSwitcher` / `PageHeader` / `RouteBreadcrumb` / `BreadcrumbLabelProvider` / `ThemeProvider` / `ThemeToggle` + 对应类型 |
+| `@workspace/layout/primitives`                         | 只想要零件（如一个主题切换按钮）而不想要整个 `AppShell` 时用                                                                                                                                |
+| `@workspace/layout/components/*`、`/hooks/*`、`/lib/*` | 与 `@workspace/ui` 一致的目录式导出，shadcn CLI 认这个形状                                                                                                                                  |
 
 关键组件：
 
@@ -27,5 +27,5 @@
 - **`renderLink` 必须返回裸元素**（`({ to }) => <Link to={to} />`）。Base UI 的 `render` 会把按钮自己的
   `className` 与条目的 children 合并进来，这里再带 children 会渲染两遍。
 - **`active` 由宿主计算**（如精确匹配 / 模糊匹配），本包不做路由匹配。
-- **不 import `@tanstack/react-router`**，也不 import `@acrostack/core`（权限、认证都属于宿主）。
-- 唯一允许的依赖是 `@acrostack/ui`（原语）与 `lucide-react`（图标）。
+- **不 import `@tanstack/react-router`**，也不 import `@workspace/core`（权限、认证都属于宿主）。
+- 唯一允许的依赖是 `@workspace/ui`（原语）与 `lucide-react`（图标）。

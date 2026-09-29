@@ -1,11 +1,11 @@
 import { Monitor, Moon, Sun } from "lucide-react";
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@acrostack/ui/components/dropdown-menu";
+} from "@workspace/ui/components/dropdown-menu";
 
 import { useTheme, type Theme } from "#hooks/use-theme";
 

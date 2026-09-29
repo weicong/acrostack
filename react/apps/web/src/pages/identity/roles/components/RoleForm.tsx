@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
-import { FormActions, FormStack, useAppForm } from "@acrostack/ui/form";
-import { useRoleCreate } from "@acrostack/api-client/hooks/role/useRoleCreate";
-import { useRoleUpdate } from "@acrostack/api-client/hooks/role/useRoleUpdate";
+import { FormActions, FormStack, useAppForm } from "@workspace/ui/form";
+import { useRoleCreate } from "@workspace/api-client/hooks/role/useRoleCreate";
+import { useRoleUpdate } from "@workspace/api-client/hooks/role/useRoleUpdate";
 import type { RoleFormRole } from "../types/role";
 import { createSchema, updateSchema } from "../schemas/role";
 

@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Button } from "@acrostack/ui/components/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@acrostack/ui/components/card";
+import { Button } from "@workspace/ui/components/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 
 /** 兜底界面：不依赖任何 Provider，主题由 `<html>` 上的类决定。 */
 function ErrorFallback({ onRetry }: { onRetry: () => void }) {

@@ -1,14 +1,14 @@
 /**
  * ABP 语义的 HTTP 装配（对标 ABP React 官方 HTTP Requests 文档）。
  *
- * 拦截器全部注册在宿主注入的**原生 axios 实例**上（`@acrostack/api-client/client` 的 `transport`）：
+ * 拦截器全部注册在宿主注入的**原生 axios 实例**上（`@workspace/api-client/client` 的 `transport`）：
  * - 请求：请求时解析 baseURL、注入 Bearer token（过期即静默续期）、`__tenant`、`Accept-Language`，
  *   并对 GET 显式禁用 HTTP 缓存；
  * - 响应：401 → 刷新 token 并**重放一次**；403 → 非变更请求跳 forbiddenPath，变更请求原样拒绝，
  *   交由 TanStack Query / 调用方处理。
  *
  * 逃逸开关（请求级，见下方 axios 模块扩展）：`skipAuthRedirect`、`skip403Redirect`。
- * core 不 import `@acrostack/api-client`：共享实例由宿主注入（依赖倒置，便于单测与替换）。
+ * core 不 import `@workspace/api-client`：共享实例由宿主注入（依赖倒置，便于单测与替换）。
  */
 import type { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { ensureAccessToken, userManager } from "../auth/user-manager";
@@ -133,7 +133,7 @@ function redirectToForbidden(): void {
 /**
  * 装配 ABP 所需的全部 HTTP 行为；在应用 bootstrap 中调用一次（首次请求之前）。
  *
- * @param transport 全应用共享的底层 axios 实例（`@acrostack/api-client/client` 的 `transport`）。
+ * @param transport 全应用共享的底层 axios 实例（`@workspace/api-client/client` 的 `transport`）。
  */
 export function setupHttpClient(transport: AxiosInstance): void {
   transport.interceptors.request.use(applyAbpRequestConfig);

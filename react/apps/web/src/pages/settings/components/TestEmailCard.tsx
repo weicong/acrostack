@@ -4,20 +4,20 @@
  */
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@acrostack/ui/components/button";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { Field, FieldLabel } from "@acrostack/ui/components/field";
-import { Input } from "@acrostack/ui/components/input";
-import { Textarea } from "@acrostack/ui/components/textarea";
+} from "@workspace/ui/components/card";
+import { Field, FieldLabel } from "@workspace/ui/components/field";
+import { Input } from "@workspace/ui/components/input";
+import { Textarea } from "@workspace/ui/components/textarea";
 import { z } from "zod";
-import { useEmailSettingsSendTestEmail } from "@acrostack/api-client/hooks/emailSettings/useEmailSettingsSendTestEmail";
-import { extractAbpErrorMessage } from "@acrostack/core";
+import { useEmailSettingsSendTestEmail } from "@workspace/api-client/hooks/emailSettings/useEmailSettingsSendTestEmail";
+import { extractAbpErrorMessage } from "@workspace/core";
 
 const testEmailSchema = z.object({
   senderEmailAddress: z.string().min(1).email(),

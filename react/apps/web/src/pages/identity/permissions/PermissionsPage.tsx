@@ -6,20 +6,20 @@
  * 工具栏见 components/PermissionsToolbar，权限扁平化见 utils/permission-tree。
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { PageHeader } from "@acrostack/layout";
-import { Button } from "@acrostack/ui/components/button";
+import { PageHeader } from "@workspace/layout";
+import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@acrostack/ui/components/card";
-import { Checkbox } from "@acrostack/ui/components/checkbox";
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { usePermissionsGet } from "@acrostack/api-client/hooks/permissions/usePermissionsGet";
-import { useRoleGetAllList } from "@acrostack/api-client/hooks/role/useRoleGetAllList";
-import type { VoloAbpPermissionManagementPermissionGroupDto } from "@acrostack/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
+} from "@workspace/ui/components/card";
+import { Checkbox } from "@workspace/ui/components/checkbox";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { usePermissionsGet } from "@workspace/api-client/hooks/permissions/usePermissionsGet";
+import { useRoleGetAllList } from "@workspace/api-client/hooks/role/useRoleGetAllList";
+import type { VoloAbpPermissionManagementPermissionGroupDto } from "@workspace/api-client/models/volo/abp/permissionManagement/PermissionGroupDto";
 import { type ProviderName, flattenPermissions } from "./utils/permission-tree";
 import { usePermissionActions } from "./hooks/usePermissionActions";
 import { PermissionsToolbar } from "./components/PermissionsToolbar";

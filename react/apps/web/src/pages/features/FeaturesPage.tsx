@@ -6,11 +6,11 @@
  * 助手见 utils/features。
  */
 import { useEffect, useMemo, useState } from "react";
-import { PageHeader } from "@acrostack/layout";
-import { Button } from "@acrostack/ui/components/button";
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { useFeaturesGet } from "@acrostack/api-client/hooks/features/useFeaturesGet";
-import { ConfirmDialog } from "@acrostack/ui/dialog";
+import { PageHeader } from "@workspace/layout";
+import { Button } from "@workspace/ui/components/button";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { useFeaturesGet } from "@workspace/api-client/hooks/features/useFeaturesGet";
+import { ConfirmDialog } from "@workspace/ui/dialog";
 import { FeatureGroupCard } from "./components/FeatureGroupCard";
 import { useFeatureActions } from "./hooks/useFeatureActions";
 

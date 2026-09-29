@@ -2,7 +2,7 @@
  * 服务端驱动表格的取数适配层（应用侧，非 ui 包）。
  *
  * 职责分离：
- *   - `@acrostack/ui/data-table` 只负责表格机制与展示（TanStack Table + Fluent）；
+ *   - `@workspace/ui/data-table` 只负责表格机制与展示（TanStack Table + Fluent）；
  *   - 本文件属于**应用数据层**：把表格状态翻译成后端查询参数（ABP 线协议），
  *     并借助应用唯一的 TanStack Query 客户端取数、缓存与失效。
  * 因此这里可以依赖 react-query 与 Kubb 生成物，而 ui 包不得引入数据获取库。

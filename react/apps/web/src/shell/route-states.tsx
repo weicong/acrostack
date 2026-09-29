@@ -1,9 +1,9 @@
 import type { ReactElement, ReactNode } from "react";
 import { useNavigate, useRouter } from "@tanstack/react-router";
-import { Button } from "@acrostack/ui/components/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@acrostack/ui/components/card";
-import { Spinner } from "@acrostack/ui/components/spinner";
-import { RedirectingError } from "@acrostack/core";
+import { Button } from "@workspace/ui/components/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { RedirectingError } from "@workspace/core";
 
 /** 说明卡片：用于 404、路由错误等无外壳的场景（整屏居中）。 */
 function CenteredCard({

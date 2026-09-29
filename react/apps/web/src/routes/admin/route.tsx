@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { authGuard } from "@acrostack/core";
+import { authGuard } from "@workspace/core";
 
 import { AppLayout } from "@/shell/app-layout";
 

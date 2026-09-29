@@ -1,4 +1,4 @@
-# @acrostack/core — ABP 框架接入层
+# @workspace/core — ABP 框架接入层
 
 把 ABP React 的框架能力从应用里抽出来的可复用包：运行时配置、OIDC 授权、权限判定、多租户、ABP 语义的 HTTP 拦截器。应用侧只保留业务（路由表、页面、组合根）。
 
@@ -6,7 +6,7 @@
 
 | 子路径            | 职责                                                                                      | 关键导出                                                                                                            |
 | ----------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `@acrostack/core` | 组合根与聚合导出                                                                          | `configureCore`、`bootstrapCore`、`setupHttpClient`                                                                 |
+| `@workspace/core` | 组合根与聚合导出                                                                          | `configureCore`、`bootstrapCore`、`setupHttpClient`                                                                 |
 | `./config`        | 运行时配置（`dynamic-env.json` → 宿主 env 回退）                                          | `loadRuntimeConfig`、`getApiUrl`、`getApiBaseUrl`、`getOAuthConfig`、`getApplicationName`                           |
 | `./http`          | ABP 语义拦截器（baseURL / Bearer / `__tenant` / `Accept-Language` / 401 重放 / 403 分流） | `setupHttpClient`、`applyAbpRequestConfig`、`handleAbpResponseError`、`isMutatingRequest`、`extractAbpErrorMessage` |
 | `./auth`          | OIDC（PKCE + 静默续期）、Provider、守卫、模拟登录                                         | `AuthProvider`、`useAuth`、`authGuard`、`RedirectingError`、`ensureAccessToken`、`impersonateUser`                  |
@@ -17,7 +17,7 @@
 ## 依赖倒置（本包的核心约束）
 
 - **不读 `import.meta.env`**：宿主 env、开发标记、默认文化由 `configureCore` 注入。
-- **不 import `@acrostack/api-client`**：共享 axios 实例由 `setupHttpClient(transport)` 注入。
+- **不 import `@workspace/api-client`**：共享 axios 实例由 `setupHttpClient(transport)` 注入。
 - **不直接操作宿主路由**：403 交给 `onForbidden` 回调（缺省整页跳转）。
 
 因此本包可脱离具体应用编译与替换，也不产生循环依赖：`core ← apps/web`，`core` 与 `ui`、`api-client` 互不依赖，由应用的组合根（`apps/web/src/lib/core.ts`）把三者接在一起。

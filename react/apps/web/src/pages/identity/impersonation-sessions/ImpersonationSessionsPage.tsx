@@ -6,10 +6,10 @@
  * 权限为 host 专属：AbpIdentity.Users.ManageImpersonationSessions。
  */
 import { useCallback, useState } from "react";
-import { PageHeader } from "@acrostack/layout";
-import { Card, CardContent } from "@acrostack/ui/components/card";
-import { DataTable } from "@acrostack/ui/data-table";
-import { ConfirmDialog } from "@acrostack/ui/dialog";
+import { PageHeader } from "@workspace/layout";
+import { Card, CardContent } from "@workspace/ui/components/card";
+import { DataTable } from "@workspace/ui/data-table";
+import { ConfirmDialog } from "@workspace/ui/dialog";
 import { useImpersonationSessionActions } from "./hooks/useImpersonationSessionActions";
 import { useImpersonationSessionsTable } from "./hooks/useImpersonationSessionsTable";
 import { ImpersonationSessionsToolbar } from "./components/ImpersonationSessionsToolbar";

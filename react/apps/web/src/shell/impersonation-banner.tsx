@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { UserRoundCog } from "lucide-react";
-import { Alert, AlertDescription } from "@acrostack/ui/components/alert";
-import { Button } from "@acrostack/ui/components/button";
-import { backToMyAccount, useCurrentUser } from "@acrostack/core";
+import { Alert, AlertDescription } from "@workspace/ui/components/alert";
+import { Button } from "@workspace/ui/components/button";
+import { backToMyAccount, useCurrentUser } from "@workspace/core";
 
 /**
  * 模拟登录横幅：当前会话是「以他人身份登录」时在整站顶部提示，

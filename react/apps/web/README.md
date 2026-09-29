@@ -10,18 +10,18 @@ AcroStack 解决方案的 React SPA，基于 [Vite+](https://viteplus.dev/)、[R
 | [React](https://react.dev/) 19                             | UI 框架                                                              | 直接依赖             |
 | [TanStack Router](https://tanstack.com/router)             | 文件式路由                                                           | 直接依赖             |
 | [TanStack Query](https://tanstack.com/query)               | 服务端状态与请求编排                                                 | 直接依赖             |
-| [shadcn/ui](https://ui.shadcn.com/) `base-nova`            | 组件原语（底层 [Base UI](https://base-ui.com/)）                     | 经 `@acrostack/ui`   |
+| [shadcn/ui](https://ui.shadcn.com/) `base-nova`            | 组件原语（底层 [Base UI](https://base-ui.com/)）                     | 经 `@workspace/ui`   |
 | [Tailwind CSS](https://tailwindcss.com/) v4                | 样式体系（原子类 + CSS 变量令牌）                                    | 直接依赖             |
 | [lucide-react](https://lucide.dev/)                        | 图标                                                                 | 直接依赖             |
 | [Zod](https://zod.dev/)                                    | Schema 校验                                                          | 直接依赖             |
-| [TanStack Form](https://tanstack.com/form)                 | 表单状态管理                                                         | 经 `@acrostack/ui`   |
-| [Sonner](https://sonner.emilkowal.ski/)                    | Toast                                                                | 经 `@acrostack/ui`   |
-| [Axios](https://axios-http.com/)                           | HTTP 客户端                                                          | 经 `@acrostack/core` |
-| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | OIDC 认证（对接 ABP Auth Server）                                    | 经 `@acrostack/core` |
-| [@acrostack/core](../../packages/core)                     | ABP 框架接入层：运行时配置 / OIDC 授权 / 权限 / 多租户 / HTTP 拦截器 | workspace 包         |
-| [@acrostack/ui](../../packages/ui)                         | shadcn 原语 + 全局样式表 + data-table / dialog / form 机制封装       | workspace 包         |
-| [@acrostack/layout](../../packages/layout)                 | 路由无关的应用外壳（AppShell / 侧栏 / 面包屑 / 主题）                | workspace 包         |
-| [@acrostack/api-client](../../packages/api-client)         | Kubb 从 Swagger 生成的 API 客户端（本应用只消费）                    | workspace 包         |
+| [TanStack Form](https://tanstack.com/form)                 | 表单状态管理                                                         | 经 `@workspace/ui`   |
+| [Sonner](https://sonner.emilkowal.ski/)                    | Toast                                                                | 经 `@workspace/ui`   |
+| [Axios](https://axios-http.com/)                           | HTTP 客户端                                                          | 经 `@workspace/core` |
+| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | OIDC 认证（对接 ABP Auth Server）                                    | 经 `@workspace/core` |
+| [@workspace/core](../../packages/core)                     | ABP 框架接入层：运行时配置 / OIDC 授权 / 权限 / 多租户 / HTTP 拦截器 | workspace 包         |
+| [@workspace/ui](../../packages/ui)                         | shadcn 原语 + 全局样式表 + data-table / dialog / form 机制封装       | workspace 包         |
+| [@workspace/layout](../../packages/layout)                 | 路由无关的应用外壳（AppShell / 侧栏 / 面包屑 / 主题）                | workspace 包         |
+| [@workspace/api-client](../../packages/api-client)         | Kubb 从 Swagger 生成的 API 客户端（本应用只消费）                    | workspace 包         |
 
 ## 目录结构
 
@@ -81,7 +81,7 @@ vp dev          # http://localhost:5173，API 请求自动代理到后端
 
 ## 认证
 
-OIDC 授权码流程（`@acrostack/core` 的 `initUserManager` 基于 `@volo/abp-react-oidc-auth` 创建 client，自动静默续期）：受保护路由的 `beforeLoad` 中由 `authGuard` / `createPermissionGuard` 校验，未登录跳转 OAuth 登录页，权限不足跳 `/admin/403`。模拟登录（impersonation）、HTTP 拦截器（Bearer 注入、401 刷新重放、403 分流、`__tenant` 多租户头）同样由 `@acrostack/core` 提供；宿主差异（env、403 跳转、共享 axios 实例）统一在 `src/lib/core.ts` 注入。
+OIDC 授权码流程（`@workspace/core` 的 `initUserManager` 基于 `@volo/abp-react-oidc-auth` 创建 client，自动静默续期）：受保护路由的 `beforeLoad` 中由 `authGuard` / `createPermissionGuard` 校验，未登录跳转 OAuth 登录页，权限不足跳 `/admin/403`。模拟登录（impersonation）、HTTP 拦截器（Bearer 注入、401 刷新重放、403 分流、`__tenant` 多租户头）同样由 `@workspace/core` 提供；宿主差异（env、403 跳转、共享 axios 实例）统一在 `src/lib/core.ts` 注入。
 
 ## Docker
 

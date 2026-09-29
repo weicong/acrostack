@@ -1,5 +1,5 @@
 {
-  "name": "@acrostack/api-client",
+  "name": "@workspace/api-client",
   "version": "0.0.0",
   "private": true,
   "description": "由 Kubb 从后端 Swagger 生成的 API 客户端（生成物，勿手改）与生成工具链",

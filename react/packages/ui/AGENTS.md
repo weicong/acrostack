@@ -1,4 +1,4 @@
-# @acrostack/ui — shadcn 原语 + 机制封装
+# @workspace/ui — shadcn 原语 + 机制封装
 
 工作区内部 UI 包。**以源码形式被应用消费**（`exports` 指向 `src`，由应用的构建器编译），不产构建物、不发布。
 
@@ -10,13 +10,13 @@
 
 | 子路径                       | 内容                                                                                                             | 第三方依赖                                                   |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `@acrostack/ui/components/*` | shadcn 原语，一个文件一个组件（`button`、`card`、`input`、`select`、`table`、`sidebar`、`combobox`、`sonner` …） | `@base-ui/react`、`lucide-react`、`class-variance-authority` |
-| `@acrostack/ui/hooks/*`      | 原语共用的 hook（目前只有 `use-mobile`）                                                                         | —                                                            |
-| `@acrostack/ui/lib/*`        | `cn()`（clsx + tailwind-merge）                                                                                  | `clsx`、`tailwind-merge`                                     |
-| `@acrostack/ui/globals.css`  | **全应用唯一的全局样式表**：Tailwind 入口、`@source`、设计令牌、明暗主题                                         | `tailwindcss`、`tw-animate-css`                              |
-| `@acrostack/ui/data-table`   | `DataTable`、`RowActions`、`ListToolbar`、`useDataTable` / `useDataTableState`                                   | `@tanstack/react-table`（**不含数据获取库**）                |
-| `@acrostack/ui/dialog`       | `ConfirmDialog`（AlertDialog 语义）、`FormDialog`（表单弹窗外壳）                                                | Base UI alert-dialog / dialog                                |
-| `@acrostack/ui/form`         | `useAppForm` 及 `TextField` / `SwitchField` / `ComboboxField` / `SubmitButton` / `FormActions` / `FormStack`     | `@tanstack/react-form`                                       |
+| `@workspace/ui/components/*` | shadcn 原语，一个文件一个组件（`button`、`card`、`input`、`select`、`table`、`sidebar`、`combobox`、`sonner` …） | `@base-ui/react`、`lucide-react`、`class-variance-authority` |
+| `@workspace/ui/hooks/*`      | 原语共用的 hook（目前只有 `use-mobile`）                                                                         | —                                                            |
+| `@workspace/ui/lib/*`        | `cn()`（clsx + tailwind-merge）                                                                                  | `clsx`、`tailwind-merge`                                     |
+| `@workspace/ui/globals.css`  | **全应用唯一的全局样式表**：Tailwind 入口、`@source`、设计令牌、明暗主题                                         | `tailwindcss`、`tw-animate-css`                              |
+| `@workspace/ui/data-table`   | `DataTable`、`RowActions`、`ListToolbar`、`useDataTable` / `useDataTableState`                                   | `@tanstack/react-table`（**不含数据获取库**）                |
+| `@workspace/ui/dialog`       | `ConfirmDialog`（AlertDialog 语义）、`FormDialog`（表单弹窗外壳）                                                | Base UI alert-dialog / dialog                                |
+| `@workspace/ui/form`         | `useAppForm` 及 `TextField` / `SwitchField` / `ComboboxField` / `SubmitButton` / `FormActions` / `FormStack`     | `@tanstack/react-form`                                       |
 
 约定：
 
@@ -25,7 +25,7 @@
 - **`data-table` 域只做表格机制与展示**：基于 `@tanstack/react-table` **v9**（`tableFeatures` 显式注册），**禁止引入任何数据获取库**（`@tanstack/react-query`、axios 等）。取数编排属应用数据层，见 `apps/web/src/lib/useDataTableQuery.ts`。
 - **`form` 域逻辑与表现分离**：`create-form.ts` / `form-context.ts` 负责 TanStack Form 的逻辑装配（校验器由调用方注入），`field-components/`、`form-components/` 只做表现封装。
 - **域之间零依赖**：`data-table` / `dialog` / `form` 互不依赖，各自只依赖 `components/` 原语。
-- **禁止导入应用层**：`@/…`、`@tanstack/react-router`、`@acrostack/core`、`@acrostack/layout`、OIDC/认证等一律不得出现。出现即说明该组件属于应用而非 ui 包。
+- **禁止导入应用层**：`@/…`、`@tanstack/react-router`、`@workspace/core`、`@workspace/layout`、OIDC/认证等一律不得出现。出现即说明该组件属于应用而非 ui 包。
 - **测试与被测代码同目录**（`*.test.ts(x)`），用 `vp test`；优先测纯逻辑（hooks 的纯函数部分、工具函数）。
 
 ## 样式所有权
@@ -33,10 +33,10 @@
 **样式定义只允许出现在本包**（其他位置一律不允许）：
 
 - **R1 定义位置**：全局样式表只有 `src/styles/globals.css` 一份，内含 Tailwind 入口、`@source` 扫描源、设计令牌与明暗主题；原语自带的外观写在各自的 `className` 里（Tailwind 原子类 + `cn()`）。**不新增 CSS 文件、不写 `@layer` 之外的裸规则。**
-- **R2 全局入口只有一份**：由 `@acrostack/ui/globals.css` 导出，全应用只有应用入口 `main.tsx` 的一行 import 加载它。
+- **R2 全局入口只有一份**：由 `@workspace/ui/globals.css` 导出，全应用只有应用入口 `main.tsx` 的一行 import 加载它。
 - **R3 `@source` 必须逐 workspace 显式声明**：Tailwind v4 的默认扫描起点是 cwd（`vp build` 时是 `apps/web`），monorepo 里会漏掉别的 workspace。`@source` **只接受字面路径、不支持 glob**，且**不要**指向仓库根（会把 `.md` 文档当源码扫，多编译出没人用的类）。新增 workspace 包时必须加一行。
 - **R4 颜色只走语义令牌**：应用与组件一律消费 `--background` / `--foreground` / `--primary` / `--muted-foreground` / `--border` / `--ring` / `--sidebar-*` 等令牌；**不写十六进制色值**。品牌色是唯一在 `globals.css` 里被本地覆盖的令牌（`--primary` / `--ring` / `--sidebar-primary`），其余保持 shadcn neutral 原生值。
-- **R5 明暗主题靠 `<html>` 上的 `dark` 类**：没有 React 主题 Provider。首屏由 `apps/web/index.html` 的内联脚本按 `localStorage` 预先应用，避免闪白；运行时切换用 `@acrostack/layout` 的 `useTheme()`。
+- **R5 明暗主题靠 `<html>` 上的 `dark` 类**：没有 React 主题 Provider。首屏由 `apps/web/index.html` 的内联脚本按 `localStorage` 预先应用，避免闪白；运行时切换用 `@workspace/layout` 的 `useTheme()`。
 - **R6 动态值白名单**：运行时才知道的值（尺寸、位置、进度、`transform`、CSS 变量透传）允许内联 `style`；**静态外观**（颜色/间距/边框/字体/圆角）禁止内联，必须走 Tailwind 类。
 - 缺少的能力优先用 Tailwind 表达；确实要复用的，用 `shadcn` CLI 加进 `components/`。
 

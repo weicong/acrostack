@@ -13,7 +13,7 @@ export interface FormDialogProps {
   onOpenChange: (open: boolean) => void;
   title: string;
   description?: string;
-  /** 表单主体；通常传 `@acrostack/ui/form` 的 `FormStack` */
+  /** 表单主体；通常传 `@workspace/ui/form` 的 `FormStack` */
   children: ReactNode;
   /** 宽度档位：`md` 用于普通表单，`lg` 用于字段较多的表单 */
   size?: "md" | "lg";

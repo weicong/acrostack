@@ -8,13 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@acrostack/ui/components/dropdown-menu";
+} from "@workspace/ui/components/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@acrostack/ui/components/sidebar";
+} from "@workspace/ui/components/sidebar";
 
 import type { Team } from "#lib/types";
 

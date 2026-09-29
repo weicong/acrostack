@@ -1,5 +1,5 @@
 {
-  "name": "@acrostack/core",
+  "name": "@workspace/core",
   "version": "10.6.0",
   "private": true,
   "description": "ABP 框架接入层：运行时配置、OIDC 授权、权限判定、多租户与 ABP 语义的 HTTP 拦截器（宿主差异全部经 configureCore / setupHttpClient 注入）",
