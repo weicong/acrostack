@@ -78,8 +78,9 @@ docs/
 
 ```bash
 vp install          # 安装依赖
-vp dev              # 启动 dev server（http://localhost:5173）
+vp dev              # 启动 dev server（http://localhost:7527）
 vp build            # 生产构建
+vp preview          # 预览生产构建（http://localhost:7627）
 vp check            # oxfmt 格式 + oxlint 规则 + 类型检查
 vp check --fix      # 自动修复格式
 vp run -r typecheck # 各 workspace 的 tsc --noEmit
@@ -88,3 +89,21 @@ vp run routes      # 重新生成 routeTree.gen.ts（在 apps/web 内）
 
 根 `vite.config.ts` 里设了 `defaultPackage: "./apps/web"`，所以在仓库根目录直接 `vp dev` /
 `vp build` 就会作用于 `apps/web`，不需要 `-C apps/web`。
+
+### 端口
+
+**故意不用 Vite 的 5173 / 4173**——那是所有 Vite 项目的默认值，跟机器上任何别的 Vite 检出都会撞。
+端口配在 `apps/web/vite.config.ts`（dev `7527`、preview `7627`），选值的原则是：避开常见默认
+（3000 / 5173 / 8080 / 4173），且**低于 49152**，免得被操作系统当成临时端口随机占用。
+
+并且开了 `strictPort`：**被占用时直接报错，而不是静默顺延到 7528**，免得实际 URL 和这里写的不一致。
+
+要跑第二个实例（并行 worktree、另一个 agent），给它一个自己的端口：
+
+```bash
+PORT=5300 vp dev              # 环境变量
+vp -C apps/web dev --port 5300  # 或命令行（Vite 原生参数，优先级最高）
+```
+
+若你更希望"总是能起一个 server、端口随便"，把 `apps/web/vite.config.ts` 里的
+`strictPort: true` 删掉即可恢复 Vite 的自动顺延。
